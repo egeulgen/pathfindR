@@ -6,7 +6,8 @@ pathfindr <- function(input, p_val_threshold = 0.05,
                       enrichment_threshold = 1e-4,
                       adj_method = "bonferroni",
                       iterations = 10, ncores = NULL,
-                      n_snw = 1000, overlap_threshold = 0.5) {
+                      n_snw = 1000, overlap_threshold = 0.5,
+                      clustering = T) {
   ## absolute paths for cytoscape and ppi
   jactive_path <- system.file("java/myCytoscape.jar", package = "pathfindr")
   ppi_path <- system.file("data/humanPPI.sif", package = "pathfindr")
@@ -37,10 +38,10 @@ pathfindr <- function(input, p_val_threshold = 0.05,
   cl <- snow::makeCluster(ncores)
   doSNOW::registerDoSNOW(cl)
 
-  # dir.create("jActive")
+  dir.create("jActive")
   dirs <- rep("", iterations)
   for (i in 1:iterations) {
-    # dir.create(paste0("./jActive/jActive",i))
+    dir.create(paste0("./jActive/jActive",i))
     dirs[i] <- normalizePath(paste0("./jActive/jActive", i))
   }
 
@@ -50,11 +51,11 @@ pathfindr <- function(input, p_val_threshold = 0.05,
     setwd(dirs[i])
 
     # running jactivemodules
-    # system(paste0("java -jar ", jactive_path,
-    #               " -N ", ppi_path,
-    #               " -m ../../input_processed.txt",
-    #               " -so ./jActive.txt -np ", n_snw,
-    #               " -ot ", overlap_threshold))
+    system(paste0("java -jar ", jactive_path,
+                  " -N ", ppi_path,
+                  " -m ../../input_processed.txt",
+                  " -so ./jActive.txt -np ", n_snw,
+                  " -ot ", overlap_threshold))
 
     # parse
     jactive_output <- read.table("jActive.txt", stringsAsFactors = F)
@@ -109,7 +110,10 @@ pathfindr <- function(input, p_val_threshold = 0.05,
 
   final_res <- pathmap(final_res, genes_df)
 
-  cat("Annotating involved genes and generating pathway diagrams\n")
+  cat("Calculating pairwise distances between pathways\n\n")
+  PWD_mat <- cluster_pws(pw_genes[final_res$ID])
+
+  cat("Creating HTML report\n\n")
   ## Create report
   rmarkdown::render(system.file("rmd/results.Rmd", package = "pathfindr"),
                     output_dir = ".")
@@ -119,6 +123,12 @@ pathfindr <- function(input, p_val_threshold = 0.05,
   rmarkdown::render(system.file("rmd/genes_table.Rmd", package = "pathfindr"),
                     params = list(df = input_processed), output_dir = ".")
 
-  save(final_res, "final_res.RData")
+  if(clustering)
+  {
+    parameters <- list(df = final_res, mat = PWD_mat)
+    rmarkdown::run(system.file("rmd/clustering.Rmd", package = "pathfindr"),
+                   render_args = list(output_dir = ".", params = parameters))
+  }
+
   return(final_res)
 }

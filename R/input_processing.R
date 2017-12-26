@@ -58,7 +58,7 @@ input_processing <- function(input, p_val_threshold, ppi_path) {
   colnames(input) <- c("GENE", "CHANGE", "P_VALUE")
 
   ## Discard larger than p-value threshold
-  input <- input[input[, 2] <= p_val_threshold, ]
+  input <- input[input$P_VALUE <= p_val_threshold, ]
 
   ## load and prep ppi
   ppi <- read.delim(file = ppi_path, header = F, stringsAsFactors = F)

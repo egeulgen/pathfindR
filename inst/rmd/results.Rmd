@@ -9,5 +9,4 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 1. [All pathways that were found to be enriched](./all_pathways.html)
-2. [Clustering of of pathways](./clustering.html)
-3. [Table of genes with converted gene symbols](./genes_table.html)
+2. [Table of genes with converted gene symbols](./genes_table.html)

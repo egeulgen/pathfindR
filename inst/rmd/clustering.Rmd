@@ -1,0 +1,42 @@
+---
+title: "pathfindr - Clustering of Pathways"
+runtime: shiny
+output: html_document
+params:
+  mat: ""
+  df: ""
+---
+
+
+
+```{r hclust, echo=F}
+res_df <- params$df
+PWD <- params$mat
+
+dend <- hclust(as.dist(PWD), method = "average")
+  
+shiny::inputPanel(
+  shiny::sliderInput("cut_off", label = "Cut-off value for the dendrogram:",
+              min = 0, max = max(dend$height), value = 0.5)
+)
+
+shiny::renderPlot({
+  plot(dend, hang = -1, xlab="", ylab = "PD", sub = "")
+  abline(h = input$cut_off, col = "red")
+})
+
+shiny::renderTable({
+  clusters <- cutree(dend, h = input$cut_off)
+  clu_df <- as.data.frame(clusters)
+  clu_df$KEGG_ID <- rownames(clu_df)
+  clu_df$Pathway <- res_df$Pathway[match(clu_df$KEGG_ID, res_df$ID)]
+  clu_df <- clu_df[,c(2,3,1)]
+  clu_df$p_value <- res_df$lowest_p[match(clu_df$KEGG_ID, res_df$ID)]
+  clu_df <- clu_df[order(clu_df$p_value), ]
+  clu_df <- clu_df[!duplicated(clu_df$clusters),]
+  
+  write.csv(clu_df, "clusters.csv", row.names = F)
+  clu_df
+})
+
+```

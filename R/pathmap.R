@@ -17,6 +17,11 @@
 pathmap <- function(pw_table, gene_data) {
   suppressPackageStartupMessages(library(pathview)) ## cannot find work-around
 
+  ## Load required data for pathview
+  data("gene.idtype.bods", package = "pathview")
+  data("gene.idtype.list", package = "pathview")
+  data("cpd.simtypes", package = "pathview")
+
   pw_table$Involved_genes <- ""
   pw_table$Pathway <- gsub("\\/", "-", pw_table$Pathway) ## fix kegg names such as "Glycolysis / Gluconeogenesis"
 
