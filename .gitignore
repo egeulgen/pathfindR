@@ -3,5 +3,10 @@
 .RData
 .Ruserdata
 .DS_Store
+R/.DS_Store
+data/.DS_Store
+inst/.DS_Store
+inst/rmd/.DS_Store
+EXAMPLE
 EXAMPLE_run1
 EXAMPLE_run2
