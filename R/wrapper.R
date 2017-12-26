@@ -1,3 +1,7 @@
+.onAttach <- function(libname, pkgname) {
+  packageStartupMessage("Welcome to pathfindr")
+}
+
 pathfindr <- function(input, p_val_threshold = 0.05,
                       enrichment_threshold = 1e-4,
                       adj_method = "bonferroni",
