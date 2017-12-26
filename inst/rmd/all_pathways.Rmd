@@ -10,6 +10,8 @@ params:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+Pathway visualizations were performed via the R Biocondutor package __pathview__ [1].
+
 ```{r, table, echo = F, comment=NA}
 result_df <- params$df
 result_df$lowest_p <- format(result_df$lowest_p, digits = 2)
@@ -20,3 +22,5 @@ for(i in 1:nrow(result_df))
 
 knitr::kable(result_df, align = "c",table.caption.prefix ="")
 ```
+
+[1] Luo W, Brouwer C. Pathview: an R/Biocondutor package for pathway-based data integration and visualization. Bioinformatics, 2013, 29(14):1830-1831, doi: 10.1093/bioinformatics/btt285
