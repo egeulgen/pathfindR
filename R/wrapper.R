@@ -8,7 +8,7 @@ pathfindr <- function(input, p_val_threshold = 0.05,
                       iterations = 10, ncores = NULL,
                       n_snw = 1000, overlap_threshold = 0.5) {
   ## absolute paths for cytoscape and ppi
-  cytoscape_path <- system.file("java/myCytoscape.jar", package = "pathfindr")
+  jactive_path <- system.file("java/myCytoscape.jar", package = "pathfindr")
   ppi_path <- system.file("data/humanPPI.sif", package = "pathfindr")
   package_dir <- system.file(package = "pathfindr")
 
@@ -18,7 +18,7 @@ pathfindr <- function(input, p_val_threshold = 0.05,
   write.table(input_processed[, c("GENE", "SPOTPvalue")],
               "./input_processed.txt", row.names = F, quote = F, sep = "\t")
 
-  ## get current KEGG pathways
+  ## get current KEGG pathways and kegg id, pathway names
   cat("Retreiving most current KEGG pathway genes\n\n")
   pw_genes <- current_KEGG()
   pathways_list <- KEGGREST::keggList("pathway", "hsa")
@@ -27,8 +27,6 @@ pathfindr <- function(input, p_val_threshold = 0.05,
   cat("Running jActive modules and enrichment\n")
   cat("Any java window that opens will close once the task is finished\n")
   cat("DO NOT close the java window(s)!\n\n")
-
-  suppressPackageStartupMessages(library(foreach))
 
   if (is.null(ncores))
     ncores <- parallel::detectCores()
@@ -42,12 +40,13 @@ pathfindr <- function(input, p_val_threshold = 0.05,
     dirs[i] <- normalizePath(paste0("./jActive/jActive", i))
   }
 
-  final_res <- foreach(i = 1:iterations, .combine = rbind) %dopar% {
+  `%dopar%` <- foreach::`%dopar%`
+  final_res <- foreach::foreach(i = 1:iterations, .combine = rbind) %dopar% {
     devtools::load_all(package_dir)
     setwd(dirs[i])
 
     # running jactivemodules
-    system(paste0("java -jar ", cytoscape_path,
+    system(paste0("java -jar ", jactive_path,
                   " -N ", ppi_path,
                   " -m ../../input_processed.txt",
                   " -so ./jActive.txt -np ", n_snw,
@@ -55,7 +54,6 @@ pathfindr <- function(input, p_val_threshold = 0.05,
 
     # parse
     jactive_output <- read.table("jActive.txt", stringsAsFactors = F)
-    cat(paste0(input_processed$GENE[1], "WORKING\n")) # sanity check
     snws <- pathfindr::parsejActive(jactive_output, input_processed$GENE)
 
     cat(paste0("Found ", length(snws), " active subnetworks\n\n"))

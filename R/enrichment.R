@@ -1,7 +1,7 @@
 enrichment <- function(genes_by_pathway, genes_of_interest,
                        pathways_list, adj_method = "bonferroni") {
   hyperg <- Category:::.doHyperGInternal
-  hyperg_test <- function(pw_genes, chosen_genes, all_genes, over=TRUE) {
+  hyperg_test <- function(pw_genes, chosen_genes, all_genes, over = TRUE) {
     pw_genes_selected <- length(intersect(chosen_genes, pw_genes))
     pw_genes_in_pool <- length(pw_genes)
     tol_genes_n_pool <- length(all_genes)
@@ -11,8 +11,7 @@ enrichment <- function(genes_by_pathway, genes_of_interest,
            num_selected_genes, pw_genes_selected, over)
   }
 
-  suppressPackageStartupMessages(library(org.Hs.eg.db))
-  all_genes <- AnnotationDbi::keys(org.Hs.eg.db, "SYMBOL")
+  all_genes <- AnnotationDbi::keys(org.Hs.eg.db:::org.Hs.eg.db, "SYMBOL")
 
   enrichment_res <- t(sapply(genes_by_pathway, hyperg_test,
                              genes_of_interest, all_genes))
@@ -28,7 +27,7 @@ enrichment <- function(genes_by_pathway, genes_of_interest,
   ## pathway IDs
   enrichment_res$ID <- rownames(enrichment_res)
 
-  ## Pathway desriptions
+  ## Pathway descriptions
   idx <- match(paste0("path:", enrichment_res$ID), names(pathways_list))
   enrichment_res$Pathway <- pathways_list[idx]
   enrichment_res$Pathway <- sub(" - Homo sapiens \\(human\\)", "",

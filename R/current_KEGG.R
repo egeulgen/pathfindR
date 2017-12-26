@@ -9,9 +9,9 @@ current_KEGG <- function() {
   # parse pathway genes
   genes_by_pathway <- sapply(pathway_codes, function(pwid){
     pw <- KEGGREST::keggGet(pwid)
-    pw <- pw[[1]]$GENE[c(F, T)]
+    pw <- pw[[1]]$GENE[c(F, T)] ## get gene symbol
     pw <- sub(";.+", "", pw)
-    pw <- pw[grepl("^[a-zA-Z0-9_-]*$", pw)] ## removing mistaken lines
+    pw <- pw[grepl("^[a-zA-Z0-9_-]*$", pw)] ## remove mistaken lines
     pw
   })
   return(genes_by_pathway)
