@@ -1,0 +1,26 @@
+Package: pathfindr
+Type: Package
+Title: Pathway Enrichment Analysis Utilizing Active Subnetworks
+Version: 0.0.0.9000
+Authors@R: as.person(c(
+    "Ege Ulgen <egeulgen@gmail.com> [aut, cre]", 
+    "Ozan Ozisik <ozanytu@gmail.com> [aut]"
+  ))
+Maintainer: The package maintainer <yourself@somewhere.net>
+Description: Implementation of a workflow used for pathway enrichment
+    utilizing active subnetworks. The input genes are mapped onto a PPI
+    network and active subnetworks are identified. These subnetworks are
+    next used for pathway enrichment analysis. Finally, the results are 
+    presented in an HTML report.
+License: file LICENSE
+BugReports: https://github.com/egeulgen/pathfindr/issues
+Encoding: UTF-8
+LazyData: true
+Imports: doSNOW,
+    foreach,
+    knitr,
+    rmarkdown,
+    Category,
+    KEGGREST,
+    org.Hs.eg.db,
+    pathview

@@ -1,0 +1,13 @@
+---
+title: "pathfindr - Results"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1. [All pathways that were found to be enriched](./all_pathways.html)
+2. [Clustering of of pathways](./clustering.html)
+3. [Table of genes with converted gene symbols](./genes_table.html)
