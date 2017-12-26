@@ -25,3 +25,4 @@ Imports: doSNOW,
     KEGGREST,
     org.Hs.eg.db,
     pathview
+RoxygenNote: 6.0.1

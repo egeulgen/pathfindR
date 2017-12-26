@@ -1,5 +1,19 @@
-input_processing <- function(input, p_val_threshold, ppi_path) {
-  # Sanity Checks -----------------------------------------------------------
+#' Input Tesing
+#'
+#' @param input the input data that pathfindr uses. The input must be a data
+#'   frame with three columns: 1. Gene Symbol (HGNC Gene Symbol) 2. Change
+#'   value, e.g. log(fold change) 3. adjusted p value associated with test, e.g.
+#'   differential expression/methylation
+#' @param p_val_threshold the adjusted-p value threshold to use when filtering
+#'   the input data frame. Must a numeric value between 0 and 1.
+#'
+#' @return Only checks if the input and the threshold follows the required
+#'   specifications
+#' @export
+#'
+#' @examples
+#' input_testing()
+input_testing <- function(input, p_val_threshold){
   if (!is.data.frame(input))
     stop("the input is not a data frame")
   if (ncol(input) > 3)
@@ -20,7 +34,27 @@ input_processing <- function(input, p_val_threshold, ppi_path) {
   if (anyDuplicated(input[, 1]))
     stop("Duplicated genes found, please choose ones with lowest p-values among replicates")
 
-  # Processing --------------------------------------------------------------
+  cat("The input looks OK\n\n")
+}
+
+#' Process Input
+#'
+#' @param input the input data that pathfindr uses
+#' @param p_val_threshold the adjusted-p value threshold to use when filtering
+#'   the input data frame
+#' @param ppi_path path to the PPI network file used in the analysis
+#'
+#' @return This function first filters the input so that all p values are less
+#'   than or equal to the threshold. Next, gene symbols that are not found in
+#'   the PPI are identified. If aliases of these gene symbols are found in the
+#'   PPI network, the symbols are converted to the corresponding aliases. The
+#'   resulting data frame containing the original gene symbols, the updated
+#'   symbols, change values and p values is then returned.
+#' @export
+#'
+#' @examples
+#' input_processing(input, p_val_threshold = 0.05, "path/to/ppi")
+input_processing <- function(input, p_val_threshold, ppi_path) {
   colnames(input) <- c("GENE", "CHANGE", "P_VALUE")
 
   ## Discard larger than p-value threshold

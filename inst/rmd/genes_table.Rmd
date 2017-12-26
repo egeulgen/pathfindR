@@ -13,6 +13,6 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r, table, echo = F, comment=NA}
 genes_df <- params$df
 colnames(genes_df) <- c("Old Symbol", "Coverted Symbol", "Change", "p-value")
-
+genes_df <- genes_df[genes_df[, 1] != genes_df[, 2], ]
 knitr::kable(genes_df, align = "c", table.caption.prefix ="")
 ```

@@ -1,3 +1,18 @@
+#' Perform Enrichment Analysis
+#'
+#' @param genes_by_pathway List that contains genes for each pathway. Names of
+#'   this list are the KEGG IDs.
+#' @param genes_of_interest The set of gene symbols to be used for enrichment
+#'   analysis. In the scope of this package, these are genes that were
+#'   identified for a subnetwork.
+#' @param pathways_list List that contains pathway descriptions for KEGG pathway
+#'   IDs. Names of this list are the KEGG IDs.
+#' @param adj_method correction method to be used for adjusting p-values.
+#'
+#' @return A data frame that contains enrichment results.
+#' @export
+#' @seealso \code{\link[stats]{p.adjust}} for adjustment of p values.
+#' @examples
 enrichment <- function(genes_by_pathway, genes_of_interest,
                        pathways_list, adj_method = "bonferroni") {
   hyperg <- Category:::.doHyperGInternal

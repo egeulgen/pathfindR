@@ -12,8 +12,12 @@ pathfindr <- function(input, p_val_threshold = 0.05,
   ppi_path <- system.file("data/humanPPI.sif", package = "pathfindr")
   package_dir <- system.file(package = "pathfindr")
 
-  ## Process inputs
-  cat("Processing input\n\n")
+  ## Check input
+  cat("Testing input\n\n")
+  input_testing(input, p_val_threshold) # perform input testing
+
+  ## Process input
+  cat("Processing input. Converting gene symbols, if necessary\n\n")
   input_processed <- input_processing(input, p_val_threshold, ppi_path)
   write.table(input_processed[, c("GENE", "SPOTPvalue")],
               "./input_processed.txt", row.names = F, quote = F, sep = "\t")
@@ -33,10 +37,10 @@ pathfindr <- function(input, p_val_threshold = 0.05,
   cl <- snow::makeCluster(ncores)
   doSNOW::registerDoSNOW(cl)
 
-  dir.create("jActive")
+  # dir.create("jActive")
   dirs <- rep("", iterations)
   for (i in 1:iterations) {
-    dir.create(paste0("./jActive/jActive",i))
+    # dir.create(paste0("./jActive/jActive",i))
     dirs[i] <- normalizePath(paste0("./jActive/jActive", i))
   }
 
@@ -46,11 +50,11 @@ pathfindr <- function(input, p_val_threshold = 0.05,
     setwd(dirs[i])
 
     # running jactivemodules
-    system(paste0("java -jar ", jactive_path,
-                  " -N ", ppi_path,
-                  " -m ../../input_processed.txt",
-                  " -so ./jActive.txt -np ", n_snw,
-                  " -ot ", overlap_threshold))
+    # system(paste0("java -jar ", jactive_path,
+    #               " -N ", ppi_path,
+    #               " -m ../../input_processed.txt",
+    #               " -so ./jActive.txt -np ", n_snw,
+    #               " -ot ", overlap_threshold))
 
     # parse
     jactive_output <- read.table("jActive.txt", stringsAsFactors = F)
@@ -75,7 +79,7 @@ pathfindr <- function(input, p_val_threshold = 0.05,
   snow::stopCluster(cl)
 
   ## Annotate lowest p, highest p and occurence
-  cat("Processing the enrichment results\n\n")
+  cat("Processing the enrichment results over all iterations \n\n")
 
   lowest_p <- tapply(final_res$adj_p, final_res$ID, min)
   highest_p <- tapply(final_res$adj_p, final_res$ID, max)
@@ -115,5 +119,6 @@ pathfindr <- function(input, p_val_threshold = 0.05,
   rmarkdown::render(system.file("rmd/genes_table.Rmd", package = "pathfindr"),
                     params = list(df = input_processed), output_dir = ".")
 
+  save(final_res, "final_res.RData")
   return(final_res)
 }

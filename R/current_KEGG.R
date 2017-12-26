@@ -1,3 +1,11 @@
+#' Get Current KEGG Pathway Genes
+#'
+#' @return list containing genes for each pathway. The names of the list are
+#'   KEGG IDs.
+#' @export
+#' @seealso \code{\link{enrichment}} for pathway enrichment analysis.
+#' @examples
+#' current_KEGG()
 current_KEGG <- function() {
 
   # created named list, eg:  path:map00010: "Glycolysis / Gluconeogenesis"

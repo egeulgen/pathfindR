@@ -1,8 +1,21 @@
+#' Annotate Involved Genes In Pathways and Visualize Pathways
+#'
+#' @param pw_table Data frame of enrichment results. Columns are: "ID",
+#'   "Pathway", "occurence", "lowest_p", "highest_p".
+#' @param gene_data Single column data frame containing change values (e.g.
+#'   log(fold change) values) for significant genes.
+#'
+#' @return Data frame of enrichment results with genes involved in each pathway
+#'   presented. Columns are: "ID", "Pathway", "occurence", "lowest_p",
+#'   "highest_p","Involved_genes". The function also creates visualizations of
+#'   the pathways with the package "pathview".
+#' @export
+#' @seealso \code{\link[pathview]{pathview}} for pathway based data integration
+#'   and visualization.
+#' @examples
+#' pathmap(pathway_table, change_data)
 pathmap <- function(pw_table, gene_data) {
-  ## Load required data for pathview
-  data("gene.idtype.bods", package = "pathview")
-  data("gene.idtype.list", package = "pathview")
-  data("cpd.simtypes", package = "pathview")
+  suppressPackageStartupMessages(library(pathview)) ## cannot find work-around
 
   pw_table$Involved_genes <- ""
   pw_table$Pathway <- gsub("\\/", "-", pw_table$Pathway) ## fix kegg names such as "Glycolysis / Gluconeogenesis"
@@ -11,7 +24,7 @@ pathmap <- function(pw_table, gene_data) {
   setwd("pathway_maps")
 
   for (i in 1:nrow(pw_table)) {
-    tmp <- pathview::pathview(gene.data = gene_data,
+    tmp <- pathview(gene.data = gene_data,
                               gene.idtype = "SYMBOL",
                               pathway.id = pw_table$ID[i],
                               species = "hsa",
@@ -30,7 +43,7 @@ pathmap <- function(pw_table, gene_data) {
     pw_table$Involved_genes[i] <- paste(tmp, collapse = ", ")
   }
   ## remove required data for pathview
-  rm(gene.idtype.bods, gene.idtype.list, cpd.simtypes)
+  rm(gene.idtype.bods, gene.idtype.list, cpd.simtypes) ## DNW
   setwd("..")
   return(pw_table)
 }

@@ -1,3 +1,14 @@
+#' Parse jActive Output File
+#'
+#' @param jactive_output the output of a jActive run.
+#' @param signif_genes the vector of significant genes.
+#'
+#' @return A list of genes in every active subnetwork that has a score > 0 and
+#'   that has at least 2 significant genes.
+#' @export
+#'
+#' @examples
+#' parsejActive(output, significant_genes)
 parsejActive <- function(jactive_output, signif_genes) {
   ends <- grep("SPOTPvaluesig", jactive_output$V1)
   starts <- c(1, ends + 1)
