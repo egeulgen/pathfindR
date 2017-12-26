@@ -13,6 +13,7 @@ Description: Implementation of a workflow used for pathway enrichment
     next used for pathway enrichment analysis. Finally, the results are 
     presented in an HTML report.
 License: file LICENSE
+URL: https://github.com/egeulgen/pathfindr
 BugReports: https://github.com/egeulgen/pathfindr/issues
 Encoding: UTF-8
 LazyData: true
