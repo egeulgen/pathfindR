@@ -37,7 +37,9 @@ shiny::renderTable({
   clu_df <- clu_df[,c(2,3,1)]
   clu_df$p_value <- res_df$lowest_p[match(clu_df$KEGG_ID, res_df$ID)]
   clu_df <- clu_df[order(clu_df$p_value), ]
-  write.csv(clu_df, "clusters.csv", row.names = F)
+
+  res_df$Cluster <- clu_df[match(res_df$ID, clu_df$KEGG_ID), 3]
+  write.csv(res_df, "clusters.csv", row.names = F)
 
   clu_df <- clu_df[!duplicated(clu_df$clusters),]
 

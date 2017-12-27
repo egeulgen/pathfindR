@@ -14,9 +14,10 @@
 #' @param ncores optional argument for specifying the number of cores. The
 #'   function determines this automatically
 #' @param n_snw optional argument for specifying the number of active
-#'   subnetworks when running jActive modules. Defaults to 1000.
+#'   subnetworks when running jActive modules. (Default = 1000)
 #' @param overlap_threshold optional argument for specifying the overlap
-#'   thresholds when running jActive modules. Defaults to 0.5.
+#'   thresholds when running jActive modules. (Default = 0.5)
+#' @inheritParams current_KEGG
 #'
 #' @return Data frame of pathview enrichment results. Columns are: "ID",
 #'   "Pathway", "occurence", "lowest_p", "highest_p". "ID" is the KEGG ID for a
@@ -26,13 +27,22 @@
 #'   iterations.
 #' @export
 #'
+#' @seealso \code{\link{input_testing}} for input testing,
+#'   \code{\link{input_processing}} for input processing,
+#'   \code{\link{current_KEGG}} for KEGG pathway genes retrieval,
+#'   \code{\link{parsejActive}} for parsing a jActive modules output,
+#'   \code{\link{enrichment}} for pathway enrichment analysis and
+#'   \code{\link{pathmap}} for annotation of involved genes and visualization of
+#'   pathways.
+#'
 #' @examples
 #' pathfindr(input_data_frame)
 pathfindr <- function(input, p_val_threshold = 0.05,
                       enrichment_threshold = 1e-4,
                       adj_method = "bonferroni",
                       iterations = 10, ncores = NULL,
-                      n_snw = 1000, overlap_threshold = 0.5) {
+                      n_snw = 1000, overlap_threshold = 0.5,
+                      kegg_update = F) {
   ## absolute paths for cytoscape and ppi
   jactive_path <- system.file("java/myCytoscape.jar", package = "pathfindr")
   ppi_path <- system.file("data/humanPPI.sif", package = "pathfindr")
@@ -50,7 +60,7 @@ pathfindr <- function(input, p_val_threshold = 0.05,
 
   ## get current KEGG pathways and kegg id, pathway names
   cat("Retreiving most current KEGG pathway genes\n\n")
-  pw_genes <- current_KEGG()
+  pw_genes <- current_KEGG(kegg_update)
   pathways_list <- KEGGREST::keggList("pathway", "hsa")
 
   ## Prep for parallel run
@@ -145,12 +155,16 @@ pathfindr <- function(input, p_val_threshold = 0.05,
   rmarkdown::render(system.file("rmd/genes_table.Rmd", package = "pathfindr"),
                     params = list(df = input_processed), output_dir = ".")
 
+  cat("Pathway enrichment results and converted genes can be found in \"results.html\"\n\n")
+  cat("Run choose_clusters() for clustering pathways\n\n")
+
   return(final_res)
 }
 
 #' Cluster Pathways and Dynamically Cut the Dendrogram
 #'
 #' @param result_df resulting data frame of the pathfindr main workflow.
+#' @inheritParams current_KEGG
 #'
 #' @return This function first calculates the pairwise distances between the
 #'   pathways in the \code{result_df} data frame. Via a shiny HTML document, the
@@ -162,9 +176,9 @@ pathfindr <- function(input, p_val_threshold = 0.05,
 #'
 #' @examples
 #' choose_clusters(result_df)
-choose_clusters <- function(result_df) {
+choose_clusters <- function(result_df, kegg_update = F) {
   cat("Calculating pairwise distances between pathways\n\n")
-  PWD_mat <- cluster_pathways(result_df$ID)
+  PWD_mat <- cluster_pathways(result_df$ID, kegg_update)
 
   cat("Creating shiny app\n\n")
   parameters <- list(df = result_df, mat = PWD_mat)

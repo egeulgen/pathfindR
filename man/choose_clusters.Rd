@@ -4,17 +4,21 @@
 \alias{choose_clusters}
 \title{Cluster Pathways and Dynamically Cut the Dendrogram}
 \usage{
-choose_clusters(result_df)
+choose_clusters(result_df, kegg_update = F)
 }
 \arguments{
 \item{result_df}{resulting data frame of the pathfindr main workflow.}
+
+\item{kegg_update}{boolean value indicating whether or not to update KEGG
+pathway genes (default = FALSE)}
 }
 \value{
 This function first calculates the pairwise distances between the
   pathways in the \code{result_df} data frame. Via a shiny HTML document, the
   hierarchical clustering dendrogram is visualized. In this HTML document,
   the user can select the value at which to cut the tree and the resulting
-  representative pathways are presented as a table
+  representative pathways are presented as a table and pathways with cluster
+  assignments are saved as a csv file to the current directory
 }
 \description{
 Cluster Pathways and Dynamically Cut the Dendrogram

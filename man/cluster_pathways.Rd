@@ -4,8 +4,8 @@
 \alias{cluster_pathways}
 \title{Calculate Pairwise Distances Between Given Pathways}
 \usage{
-cluster_pathways(pathway_ids, agg_method = "average",
-  plot_name = "pw_clu_heatmap.pdf")
+cluster_pathways(pathway_ids, agg_method = "average", plot_heatmap = T,
+  kegg_update = F)
 }
 \arguments{
 \item{pathway_ids}{List that contains genes for selected pathways that are to
@@ -13,13 +13,17 @@ be clustered.}
 
 \item{agg_method}{the agglomeration method to be used.}
 
-\item{plot_name}{character specifying the name of the heat map pdf}
+\item{plot_heatmap}{boolean value indicating whether or not to plot the heat map
+of pathway clustering}
+
+\item{kegg_update}{boolean value indicating whether or not to update KEGG
+pathway genes (default = FALSE)}
 }
 \value{
 Pairwise distance matrix. See "Chen, Y. A. et al. Integrated pathway
   clusters with coherent biological themes for target prioritisation. PLoS
   One 9, e99030, doi:10.1371/journal.pone.0099030 (2014)." for details on the
-  method of pathway clustering. Also saves a pdf plot of heat map of pathway
+  method of pathway clustering. Optionally plots a heat map of pathway
   clustering.
 }
 \description{

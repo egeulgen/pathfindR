@@ -5,6 +5,7 @@
 #' @param agg_method the agglomeration method to be used.
 #' @param plot_heatmap boolean value indicating whether or not to plot the heat map
 #'   of pathway clustering
+#' @inheritParams current_KEGG
 #'
 #' @return Pairwise distance matrix. See "Chen, Y. A. et al. Integrated pathway
 #'   clusters with coherent biological themes for target prioritisation. PLoS
@@ -17,9 +18,10 @@
 #'
 #' @examples
 #' cluster_pathways(pathway_genes)
-cluster_pathways <- function(pathway_ids, agg_method = "average", plot_heatmap = T) {
+cluster_pathways <- function(pathway_ids, agg_method = "average",
+                             plot_heatmap = T, kegg_update = F) {
   ## Get genes for selected pathways
-  all_pw_genes <- current_KEGG()
+  all_pw_genes <- current_KEGG(kegg_update)
   pathway_genes <- all_pw_genes[pathway_ids]
 
   ## Sort according to number of genes

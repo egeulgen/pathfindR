@@ -4,7 +4,11 @@
 \alias{current_KEGG}
 \title{Get Current KEGG Pathway Genes}
 \usage{
-current_KEGG()
+current_KEGG(kegg_update = F)
+}
+\arguments{
+\item{kegg_update}{boolean value indicating whether or not to update KEGG
+pathway genes (default = FALSE)}
 }
 \value{
 list containing genes for each pathway. The names of the list are

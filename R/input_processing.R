@@ -1,7 +1,7 @@
 #' Input Tesing
 #'
 #' @param input the input data that pathfindr uses. The input must be a data
-#'   frame with three columns: #' \enumerate{ \item Gene Symbol (HGNC Gene
+#'   frame with three columns: \enumerate{ \item Gene Symbol (HGNC Gene
 #'   Symbol) \item Change value, e.g. log(fold change) \item adjusted p value
 #'   associated with test, e.g. differential expression/methylation }
 #'
