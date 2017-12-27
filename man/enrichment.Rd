@@ -26,6 +26,9 @@ A data frame that contains enrichment results.
 \description{
 Perform Enrichment Analysis
 }
+\examples{
+enrichment(genes_by_pathway, genes_of_interest, pathways_list)
+}
 \seealso{
 \code{\link[stats]{p.adjust}} for adjustment of p values.
 }

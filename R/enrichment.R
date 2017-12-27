@@ -13,6 +13,7 @@
 #' @export
 #' @seealso \code{\link[stats]{p.adjust}} for adjustment of p values.
 #' @examples
+#' enrichment(genes_by_pathway, genes_of_interest, pathways_list)
 enrichment <- function(genes_by_pathway, genes_of_interest,
                        pathways_list, adj_method = "bonferroni") {
   hyperg <- Category:::.doHyperGInternal

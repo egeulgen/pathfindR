@@ -1,5 +1,5 @@
 ---
-title: "pathfindr - Clustering of Pathways"
+title: "pathfindr - Seperate Pathways into Clusters"
 runtime: shiny
 output: html_document
 params:
@@ -7,7 +7,11 @@ params:
   df: ""
 ---
 
+This shiny app allows the user to dynamically select a cut-off value for seperating the pathways into clusters via partitioning of the dendrogram. 
 
+The plot displays the hierarchical clustering dendrogram and the chosen cut-off, i.e. the height at which the tree is cut.
+
+The table displays the representative pathways chosen for each cluster, based on smallest `lowest p value`s. A csv file containing all the pathways with their cluster memberships is also saved in the current directory.
 
 ```{r hclust, echo=F}
 res_df <- params$df
@@ -33,9 +37,10 @@ shiny::renderTable({
   clu_df <- clu_df[,c(2,3,1)]
   clu_df$p_value <- res_df$lowest_p[match(clu_df$KEGG_ID, res_df$ID)]
   clu_df <- clu_df[order(clu_df$p_value), ]
-  clu_df <- clu_df[!duplicated(clu_df$clusters),]
-  
   write.csv(clu_df, "clusters.csv", row.names = F)
+
+  clu_df <- clu_df[!duplicated(clu_df$clusters),]
+
   clu_df
 })
 

@@ -47,8 +47,6 @@ pathmap <- function(pw_table, gene_data) {
 
     pw_table$Involved_genes[i] <- paste(tmp, collapse = ", ")
   }
-  ## remove required data for pathview
-  rm(gene.idtype.bods, gene.idtype.list, cpd.simtypes) ## DNW
   setwd("..")
   return(pw_table)
 }

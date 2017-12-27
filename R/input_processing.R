@@ -1,9 +1,10 @@
 #' Input Tesing
 #'
 #' @param input the input data that pathfindr uses. The input must be a data
-#'   frame with three columns: 1. Gene Symbol (HGNC Gene Symbol) 2. Change
-#'   value, e.g. log(fold change) 3. adjusted p value associated with test, e.g.
-#'   differential expression/methylation
+#'   frame with three columns: #' \enumerate{ \item Gene Symbol (HGNC Gene
+#'   Symbol) \item Change value, e.g. log(fold change) \item adjusted p value
+#'   associated with test, e.g. differential expression/methylation }
+#'
 #' @param p_val_threshold the adjusted-p value threshold to use when filtering
 #'   the input data frame. Must a numeric value between 0 and 1.
 #'
@@ -12,7 +13,7 @@
 #' @export
 #'
 #' @examples
-#' input_testing()
+#' input_testing(input_df, p_val_threshold)
 input_testing <- function(input, p_val_threshold){
   if (!is.data.frame(input))
     stop("the input is not a data frame")
