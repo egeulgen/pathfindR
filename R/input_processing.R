@@ -63,11 +63,7 @@ input_processing <- function(input, p_val_threshold, ppi_path) {
 
   ## load and prep ppi
   ppi <- read.delim(file = ppi_path, header = F, stringsAsFactors = F)
-  ppi <- apply(ppi, 1, function(x) strsplit(x, " pp "))
-  ppi <- lapply(ppi, function(x) x$V1)
-  ppi <- ppi[sapply(ppi, length) == 2]
-  ppi <- ppi[sapply(ppi, function(x) x[1] != x[2])] ## removing loops
-  ppi <- Reduce(rbind, ppi)
+  ppi$V2 <- NULL
 
   ## Genes not in ppi
   missing <- input$GENE[!input$GENE %in% c(ppi[, 1], ppi[, 2])]
