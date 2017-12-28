@@ -46,8 +46,10 @@ pathfindr <- function(input, p_val_threshold = 0.05,
                       n_snw = 1000, overlap_threshold = 0.5,
                       kegg_update = F) {
   ## absolute paths for cytoscape and ppi
-  jactive_path <- normalizePath(system.file("java/myCytoscape.jar", package = "pathfindr"))
-  ppi_path <- normalizePath(system.file("data/Biogrid_PPI.sif", package = "pathfindr"))
+  jactive_path <- normalizePath(system.file("java/myCytoscape.jar",
+                                            package = "pathfindr"))
+  ppi_path <- normalizePath(system.file("data/Biogrid_PPI.sif",
+                                        package = "pathfindr"))
   package_dir <- normalizePath(system.file(package = "pathfindr"))
 
   ## Check input
@@ -78,7 +80,7 @@ pathfindr <- function(input, p_val_threshold = 0.05,
   dir.create("jActive")
   dirs <- rep("", iterations)
   for (i in 1:iterations) {
-    dir.create(paste0("./jActive/jActive",i))
+    dir.create(paste0("./jActive/jActive", i))
     dirs[i] <- normalizePath(paste0("./jActive/jActive", i))
   }
 
@@ -105,7 +107,8 @@ pathfindr <- function(input, p_val_threshold = 0.05,
         pathfindr::enrichment(pw_genes, x, pathways_list, adj_method))
     enrichment_res <- Reduce(rbind, enrichment_res)
 
-    ## remove p larger than enrichment_threshold and keep lowest p for each pathway
+    ## remove p larger than enrichment_threshold and keep lowest p
+    ## for each pathway
     cond <- enrichment_res$adj_p <= enrichment_threshold
     enrichment_res <- enrichment_res[cond, ]
     idx <- order(enrichment_res$adj_p, enrichment_res$ID)
@@ -156,7 +159,8 @@ pathfindr <- function(input, p_val_threshold = 0.05,
   rmarkdown::render(system.file("rmd/genes_table.Rmd", package = "pathfindr"),
                     params = list(df = input_processed), output_dir = ".")
 
-  cat("Pathway enrichment results and converted genes can be found in \"results.html\"\n\n")
+  cat("Pathway enrichment results and converted genes
+can be found in \"results.html\"\n\n")
   cat("Run choose_clusters() for clustering pathways\n\n")
 
   return(final_res)

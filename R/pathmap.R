@@ -24,7 +24,9 @@ pathmap <- function(pw_table, gene_data) {
 
   pw_table$Up_regulated <- ""
   pw_table$Down_regulated <- ""
-  pw_table$Pathway <- gsub("\\/", "-", pw_table$Pathway) ## fix kegg names such as "Glycolysis / Gluconeogenesis"
+
+  ## fix KEGG names such as "Glycolysis / Gluconeogenesis"
+  pw_table$Pathway <- gsub("\\/", "-", pw_table$Pathway)
 
   upreg <- rownames(gene_data)[gene_data > 0]
   downreg <- rownames(gene_data)[gene_data < 0]

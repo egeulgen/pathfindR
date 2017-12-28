@@ -33,7 +33,7 @@ input_testing <- function(input, p_val_threshold){
     stop("p values, provided in the third column, must all be between 0 and 1")
 
   if (anyDuplicated(input[, 1]))
-    stop("Duplicated genes found, please choose ones with lowest p-values among replicates")
+    stop("Duplicated genes found!!")
 
   cat("The input looks OK\n\n")
 }
@@ -99,8 +99,8 @@ input_processing <- function(input, p_val_threshold, ppi_path) {
 
   ## Convert to appropriate symbol
   converted <- converted[converted[, 2] != "NOT_FOUND", ]
-  input$UpdatedGene <- input$GENE
-  input$UpdatedGene[match(converted[, 1], input$UpdatedGene)] <- converted[, 2]
+  input$new_gene <- input$GENE
+  input$new_gene[match(converted[, 1], input$new_gene)] <- converted[, 2]
 
   input <- input[, c(1, 4, 2, 3)]
   colnames(input) <- c("old_GENE", "GENE", "CHANGE", "SPOTPvalue")

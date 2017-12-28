@@ -33,22 +33,22 @@ cluster_pathways <- function(pathway_ids, agg_method = "average",
 
   overlap_mat <- matrix(NA, nrow = N, ncol = N)
   diag(overlap_mat) <- 1
-  for (i in 1:(N-1)) {
+  for (i in 1:(N - 1)) {
     pw1 <- pathway_genes[[i]]
-    for (j in (i+1):N) {
+    for (j in (i + 1):N) {
       pw2 <- pathway_genes[[j]]
       tmp <- length(intersect(pw1, pw2))
 
       if (length(pw1) > length(pw2))
-        tmp <- tmp/length(pw2)
+        tmp <- tmp / length(pw2)
       else
-        tmp <- tmp/length(pw1)
+        tmp <- tmp / length(pw1)
 
       overlap_mat[i, j] <- overlap_mat[j, i] <- tmp
     }
   }
 
-  # Calculate Pairwise Distances and Cluster --------------------------------------------
+  # Calculate Pairwise Distances and Cluster -------------------------------
   cor_mat <- cor(overlap_mat)
   PWD_mat <- 1 - cor_mat
 
@@ -57,8 +57,8 @@ cluster_pathways <- function(pathway_ids, agg_method = "average",
 
   ### Heatmap
   if (plot_heatmap)
-    heatmap(PWD_mat, symm = T, distfun = function(x) as.dist(x), hclustfun = function(x) hclust(x, method = agg_method))
+    heatmap(PWD_mat, symm = T, distfun = function(x) as.dist(x),
+            hclustfun = function(x) hclust(x, method = agg_method))
 
   return(PWD_mat)
 }
-
