@@ -1,5 +1,7 @@
 .onAttach <- function(libname, pkgname) {
-  packageStartupMessage("Welcome to pathfindr")
+  packageStartupMessage("################################################################
+                      Welcome to pathfindr
+################################################################")
 }
 
 #' Wrapper Function for pathfindr
@@ -11,7 +13,7 @@
 #'   pathway enrichment results
 #' @param iterations number of iterations for active subnetwork search and
 #'   enrichment analyses
-#' @param ncores optional argument for specifying the number of cores. The
+#' @param n_threads optional argument for specifying the number of threads. The
 #'   function determines this automatically
 #' @param n_snw optional argument for specifying the number of active
 #'   subnetworks when running jActive modules. (Default = 1000)
@@ -40,13 +42,13 @@
 pathfindr <- function(input, p_val_threshold = 0.05,
                       enrichment_threshold = 1e-4,
                       adj_method = "bonferroni",
-                      iterations = 10, ncores = NULL,
+                      iterations = 10, n_threads = NULL,
                       n_snw = 1000, overlap_threshold = 0.5,
                       kegg_update = F) {
   ## absolute paths for cytoscape and ppi
-  jactive_path <- system.file("java/myCytoscape.jar", package = "pathfindr")
-  ppi_path <- system.file("data/humanPPI.sif", package = "pathfindr")
-  package_dir <- system.file(package = "pathfindr")
+  jactive_path <- normalizePath(system.file("java/myCytoscape.jar", package = "pathfindr"))
+  ppi_path <- normalizePath(system.file("data/Biogrid_PPI.sif", package = "pathfindr"))
+  package_dir <- normalizePath(system.file(package = "pathfindr"))
 
   ## Check input
   cat("Testing input\n\n")
@@ -56,7 +58,7 @@ pathfindr <- function(input, p_val_threshold = 0.05,
   cat("Processing input. Converting gene symbols, if necessary\n\n")
   input_processed <- input_processing(input, p_val_threshold, ppi_path)
   write.table(input_processed[, c("GENE", "SPOTPvalue")],
-              "./input_processed.txt", row.names = F, quote = F, sep = "\t")
+              "./input_for_jactive.txt", row.names = F, quote = F, sep = "\t")
 
   ## get current KEGG pathways and kegg id, pathway names
   cat("Retreiving most current KEGG pathway genes\n\n")
@@ -68,9 +70,9 @@ pathfindr <- function(input, p_val_threshold = 0.05,
   cat("Any java window that opens will close once the task is finished\n")
   cat("DO NOT close the java window(s)!\n\n")
 
-  if (is.null(ncores))
-    ncores <- parallel::detectCores()
-  cl <- snow::makeCluster(ncores)
+  if (is.null(n_threads))
+    n_threads <- parallel::detectCores()
+  cl <- snow::makeCluster(n_threads)
   doSNOW::registerDoSNOW(cl)
 
   dir.create("jActive")
@@ -88,7 +90,7 @@ pathfindr <- function(input, p_val_threshold = 0.05,
     # running jactivemodules
     system(paste0("java -jar ", jactive_path,
                   " -N ", ppi_path,
-                  " -m ../../input_processed.txt",
+                  " -m ../../input_for_jactive.txt",
                   " -so ./jActive.txt -np ", n_snw,
                   " -ot ", overlap_threshold))
 
@@ -142,7 +144,6 @@ pathfindr <- function(input, p_val_threshold = 0.05,
   genes_df <- input_processed[, c("GENE", "CHANGE")]
   rownames(genes_df) <- genes_df$GENE
   genes_df <- genes_df[, -1, drop = F]
-
   final_res <- pathmap(final_res, genes_df)
 
   cat("Creating HTML report\n\n")
@@ -178,7 +179,7 @@ pathfindr <- function(input, p_val_threshold = 0.05,
 #' choose_clusters(result_df)
 choose_clusters <- function(result_df, kegg_update = F) {
   cat("Calculating pairwise distances between pathways\n\n")
-  PWD_mat <- cluster_pathways(result_df$ID, kegg_update)
+  PWD_mat <- cluster_pathways(result_df$ID, kegg_update = kegg_update)
 
   cat("Creating shiny app\n\n")
   parameters <- list(df = result_df, mat = PWD_mat)

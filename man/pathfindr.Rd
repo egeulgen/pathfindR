@@ -5,7 +5,7 @@
 \title{Wrapper Function for pathfindr}
 \usage{
 pathfindr(input, p_val_threshold = 0.05, enrichment_threshold = 1e-04,
-  adj_method = "bonferroni", iterations = 10, ncores = NULL,
+  adj_method = "bonferroni", iterations = 10, n_threads = NULL,
   n_snw = 1000, overlap_threshold = 0.5, kegg_update = F)
 }
 \arguments{
@@ -26,7 +26,7 @@ pathway enrichment results}
 \item{iterations}{number of iterations for active subnetwork search and
 enrichment analyses}
 
-\item{ncores}{optional argument for specifying the number of cores. The
+\item{n_threads}{optional argument for specifying the number of threads. The
 function determines this automatically}
 
 \item{n_snw}{optional argument for specifying the number of active

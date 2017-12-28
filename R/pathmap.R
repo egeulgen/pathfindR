@@ -22,8 +22,12 @@ pathmap <- function(pw_table, gene_data) {
   data("gene.idtype.list", package = "pathview")
   data("cpd.simtypes", package = "pathview")
 
-  pw_table$Involved_genes <- ""
+  pw_table$Up_regulated <- ""
+  pw_table$Down_regulated <- ""
   pw_table$Pathway <- gsub("\\/", "-", pw_table$Pathway) ## fix kegg names such as "Glycolysis / Gluconeogenesis"
+
+  upreg <- rownames(gene_data)[gene_data > 0]
+  downreg <- rownames(gene_data)[gene_data < 0]
 
   dir.create("pathway_maps")
   setwd("pathway_maps")
@@ -45,7 +49,8 @@ pathmap <- function(pw_table, gene_data) {
       tmp <- AnnotationDbi::select(org.Hs.eg.db:::org.Hs.eg.db, tmp,
                                    "SYMBOL", "ENTREZID")[, 2]
 
-    pw_table$Involved_genes[i] <- paste(tmp, collapse = ", ")
+    pw_table$Up_regulated[i] <- paste(tmp[tmp %in% upreg], collapse = ", ")
+    pw_table$Down_regulated[i] <- paste(tmp[tmp %in% downreg], collapse = ", ")
   }
   setwd("..")
   return(pw_table)
