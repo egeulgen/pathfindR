@@ -6,6 +6,20 @@
 
 #' Wrapper Function for pathfindr
 #'
+#' \code{pathfindr} is a wrapper function for the pathfindr workflow
+#'
+#' This function takes in a data frame consisting of Gene Symbol,
+#' log-fold-change and adjusted-p values. After input testing, any gene symbols
+#' that are not in the PIN are converted to alias symbols if the alias is in the
+#' PIN. Next, active subnetwork search is performed. Pathway enrichment analysis
+#' is performed using the genes in each of the active subnetworks. Pathways with
+#' adjusted-p values lower than \code{enrichment_threshold} are discarded. The
+#' lowest adjusted-p value (over all subnetworks) for each pathway is kept. This
+#' process of active subnetwork search and enrichment is repeated  for a
+#' selected number of \code{iterations}, which is done in parallel. Over all
+#' iterations, the lowest and the highest adjusted-p values, as well as number
+#' of occurences are reported for each enriched pathway.
+#'
 #' @inheritParams input_testing
 #' @param enrichment_threshold threshold used when filtering individual pathway
 #'   enrichment results
@@ -27,8 +41,16 @@
 #'   given pathway and "Pathway" is the name. "occurence" indicates the number
 #'   of times the given pathway is encountered over all iterations. "lowest_p"
 #'   and "highest_p" indicate the lowest and highest adjusted p values over all
-#'   iterations.
+#'   iterations. The function also creates an HTML report with the pathview
+#'   enrichment results linked to the visualizations of the pathways in addition
+#'   to the table of converted gene symbols. This report can be found in
+#'   "results.html".
+#'
 #' @export
+#'
+#' @section Warning: Depending on the protein interaction network of your
+#'   choice, active subnetwork finding component of pathfindr may take a very
+#'   long time to finish. Therefore, overnight runs are recommended.
 #'
 #' @seealso \code{\link{input_testing}} for input testing,
 #'   \code{\link{input_processing}} for input processing,
@@ -37,7 +59,8 @@
 #'   \code{\link{enrichment}} for pathway enrichment analysis and
 #'   \code{\link{pathmap}} for annotation of involved genes and visualization of
 #'   pathways. See \code{\link[foreach]{foreach}} for details on parallel
-#'   execution of looping constructs.
+#'   execution of looping constructs. See also \code{\link{choose_clusters}} for
+#'   clustering the resulting enriched pathways.
 #'
 #' @examples
 #' pathfindr(input_data_frame)
