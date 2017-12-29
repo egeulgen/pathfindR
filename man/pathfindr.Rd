@@ -40,7 +40,7 @@ thresholds when running jActive modules. (Default = 0.5)}
 pathway genes (default = FALSE)}
 
 \item{pin_name}{Name of the chosen PIN. Must be one of c("Biogrid", "STRING",
-"GeneMania", "BioPlex"). Defaults to "GeneMania".}
+"GeneMania", "BioPlex"). Defaults to "Bioplex".}
 }
 \value{
 Data frame of pathview enrichment results. Columns are: "ID",
