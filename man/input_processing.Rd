@@ -4,7 +4,7 @@
 \alias{input_processing}
 \title{Process Input}
 \usage{
-input_processing(input, p_val_threshold, ppi_path)
+input_processing(input, p_val_threshold, pin_path)
 }
 \arguments{
 \item{input}{the input data that pathfindr uses}
@@ -12,13 +12,14 @@ input_processing(input, p_val_threshold, ppi_path)
 \item{p_val_threshold}{the adjusted-p value threshold to use when filtering
 the input data frame}
 
-\item{ppi_path}{path to the PPI network file used in the analysis}
+\item{pin_path}{path to the Protein Interaction Network (PIN) file used in
+the analysis}
 }
 \value{
 This function first filters the input so that all p values are less
   than or equal to the threshold. Next, gene symbols that are not found in
-  the PPI are identified. If aliases of these gene symbols are found in the
-  PPI network, the symbols are converted to the corresponding aliases. The
+  the PIN are identified. If aliases of these gene symbols are found in the
+  PIN, the symbols are converted to the corresponding aliases. The
   resulting data frame containing the original gene symbols, the updated
   symbols, change values and p values is then returned.
 }
@@ -26,5 +27,5 @@ This function first filters the input so that all p values are less
 Process Input
 }
 \examples{
-input_processing(input, p_val_threshold = 0.05, "path/to/ppi")
+input_processing(input, p_val_threshold = 0.05, "path/to/pin")
 }

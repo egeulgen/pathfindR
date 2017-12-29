@@ -13,13 +13,14 @@
 #'   pathway enrichment results
 #' @param iterations number of iterations for active subnetwork search and
 #'   enrichment analyses
-#' @param n_threads optional argument for specifying the number of threads. The
-#'   function determines this automatically
+#' @param n_processes optional argument for specifying the number of processes
+#'   used by foreach. The function determines this automatically
 #' @param n_snw optional argument for specifying the number of active
 #'   subnetworks when running jActive modules. (Default = 1000)
 #' @param overlap_threshold optional argument for specifying the overlap
 #'   thresholds when running jActive modules. (Default = 0.5)
 #' @inheritParams current_KEGG
+#' @inheritParams return_pin_path
 #'
 #' @return Data frame of pathview enrichment results. Columns are: "ID",
 #'   "Pathway", "occurence", "lowest_p", "highest_p". "ID" is the KEGG ID for a
@@ -35,21 +36,22 @@
 #'   \code{\link{parsejActive}} for parsing a jActive modules output,
 #'   \code{\link{enrichment}} for pathway enrichment analysis and
 #'   \code{\link{pathmap}} for annotation of involved genes and visualization of
-#'   pathways.
+#'   pathways. See \code{\link[foreach]{foreach}} for details on parallel
+#'   execution of looping constructs.
 #'
 #' @examples
 #' pathfindr(input_data_frame)
 pathfindr <- function(input, p_val_threshold = 0.05,
                       enrichment_threshold = 1e-4,
                       adj_method = "bonferroni",
-                      iterations = 10, n_threads = NULL,
+                      iterations = 10, n_processes = NULL,
                       n_snw = 1000, overlap_threshold = 0.5,
-                      kegg_update = F) {
-  ## absolute paths for cytoscape and ppi
+                      kegg_update = F, pin_name = "BioPlex") {
+  ## absolute paths for cytoscape and pin
   jactive_path <- normalizePath(system.file("java/myCytoscape.jar",
                                             package = "pathfindr"))
-  ppi_path <- normalizePath(system.file("data/Biogrid_PPI.sif",
-                                        package = "pathfindr"))
+  pin_path <- return_pin_path(pin_name)
+
   package_dir <- normalizePath(system.file(package = "pathfindr"))
 
   ## Check input
@@ -58,7 +60,7 @@ pathfindr <- function(input, p_val_threshold = 0.05,
 
   ## Process input
   cat("Processing input. Converting gene symbols, if necessary\n\n")
-  input_processed <- input_processing(input, p_val_threshold, ppi_path)
+  input_processed <- input_processing(input, p_val_threshold, pin_path)
   write.table(input_processed[, c("GENE", "SPOTPvalue")],
               "./input_for_jactive.txt", row.names = F, quote = F, sep = "\t")
 
@@ -72,9 +74,9 @@ pathfindr <- function(input, p_val_threshold = 0.05,
   cat("Any java window that opens will close once the task is finished\n")
   cat("DO NOT close the java window(s)!\n\n")
 
-  if (is.null(n_threads))
-    n_threads <- parallel::detectCores()
-  cl <- snow::makeCluster(n_threads)
+  if (is.null(n_processes))
+    n_processes <- parallel::detectCores()
+  cl <- snow::makeCluster(n_processes)
   doSNOW::registerDoSNOW(cl)
 
   dir.create("jActive")
@@ -91,7 +93,7 @@ pathfindr <- function(input, p_val_threshold = 0.05,
 
     # running jactivemodules
     system(paste0("java -jar ", jactive_path,
-                  " -N ", ppi_path,
+                  " -N ", pin_path,
                   " -m ../../input_for_jactive.txt",
                   " -so ./jActive.txt -np ", n_snw,
                   " -ot ", overlap_threshold))

@@ -43,30 +43,31 @@ input_testing <- function(input, p_val_threshold){
 #' @param input the input data that pathfindr uses
 #' @param p_val_threshold the adjusted-p value threshold to use when filtering
 #'   the input data frame
-#' @param ppi_path path to the PPI network file used in the analysis
+#' @param pin_path path to the Protein Interaction Network (PIN) file used in
+#'   the analysis
 #'
 #' @return This function first filters the input so that all p values are less
 #'   than or equal to the threshold. Next, gene symbols that are not found in
-#'   the PPI are identified. If aliases of these gene symbols are found in the
-#'   PPI network, the symbols are converted to the corresponding aliases. The
+#'   the PIN are identified. If aliases of these gene symbols are found in the
+#'   PIN, the symbols are converted to the corresponding aliases. The
 #'   resulting data frame containing the original gene symbols, the updated
 #'   symbols, change values and p values is then returned.
 #' @export
 #'
 #' @examples
-#' input_processing(input, p_val_threshold = 0.05, "path/to/ppi")
-input_processing <- function(input, p_val_threshold, ppi_path) {
+#' input_processing(input, p_val_threshold = 0.05, "path/to/pin")
+input_processing <- function(input, p_val_threshold, pin_path) {
   colnames(input) <- c("GENE", "CHANGE", "P_VALUE")
 
   ## Discard larger than p-value threshold
   input <- input[input$P_VALUE <= p_val_threshold, ]
 
-  ## load and prep ppi
-  ppi <- read.delim(file = ppi_path, header = F, stringsAsFactors = F)
-  ppi$V2 <- NULL
+  ## load and prep pin
+  pin <- read.delim(file = pin_path, header = F, stringsAsFactors = F)
+  pin$V2 <- NULL
 
-  ## Genes not in ppi
-  missing <- input$GENE[!input$GENE %in% c(ppi[, 1], ppi[, 2])]
+  ## Genes not in pin
+  missing <- input$GENE[!input$GENE %in% c(pin[, 1], pin[, 2])]
 
   ## use sql to get alias table and gene_info table (contains the symbols)
   ## first open the database connection
@@ -83,7 +84,7 @@ input_processing <- function(input, p_val_threshold, ppi_path) {
     result <- alias_symbol[alias_symbol$alias_symbol == missing[i], c(2, 5)]
     result <- alias_symbol[alias_symbol$symbol %in% result$symbol, c(2, 5)]
     result <- result$alias_symbol[result$alias_symbol %in%
-                                    c(ppi[, 1], ppi[, 2])]
+                                    c(pin[, 1], pin[, 2])]
 
     converted <- rbind(converted, c(missing[i],
                                     ifelse(length(result) == 0,
@@ -95,7 +96,7 @@ input_processing <- function(input, p_val_threshold, ppi_path) {
   if (sum(converted[, 2] == "NOT_FOUND") != 0)
     cat(paste0("Could not find ",
                sum(converted[, 2] == "NOT_FOUND"),
-               " (", round(perc), "%) genes in the PPI network\n\n"))
+               " (", round(perc), "%) genes in the pin network\n\n"))
 
   ## Convert to appropriate symbol
   converted <- converted[converted[, 2] != "NOT_FOUND", ]
