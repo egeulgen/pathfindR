@@ -7,6 +7,9 @@
 #'   that has at least 2 significant genes.
 #' @export
 #'
+#' @seealso See \code{\link{run_pathfindr}} for the wrapper function of the
+#'   pathfindr workflow
+#'
 #' @examples
 #' parsejActive(output, significant_genes)
 parsejActive <- function(jactive_output, signif_genes) {

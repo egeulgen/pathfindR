@@ -6,7 +6,9 @@
 #' @return list containing genes for each pathway. The names of the list are
 #'   KEGG IDs.
 #' @export
-#' @seealso \code{\link{enrichment}} for pathway enrichment analysis.
+#' @seealso \code{\link{enrichment}} for pathway enrichment analysis. See
+#'   \code{\link{run_pathfindr}} for the wrapper function of the pathfindr
+#'   workflow
 #' @examples
 #' current_KEGG()
 current_KEGG <- function(kegg_update = F) {

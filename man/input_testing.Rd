@@ -25,3 +25,7 @@ Input Tesing
 \examples{
 input_testing(input_df, p_val_threshold)
 }
+\seealso{
+See \code{\link{run_pathfindr}} for the wrapper function of the
+  pathfindr workflow
+}

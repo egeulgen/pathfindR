@@ -21,5 +21,7 @@ Get Current KEGG Pathway Genes
 current_KEGG()
 }
 \seealso{
-\code{\link{enrichment}} for pathway enrichment analysis.
+\code{\link{enrichment}} for pathway enrichment analysis. See
+  \code{\link{run_pathfindr}} for the wrapper function of the pathfindr
+  workflow
 }

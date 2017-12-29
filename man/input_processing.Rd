@@ -29,3 +29,7 @@ Process Input
 \examples{
 input_processing(input, p_val_threshold = 0.05, "path/to/pin")
 }
+\seealso{
+See \code{\link{run_pathfindr}} for the wrapper function of the
+  pathfindr workflow
+}

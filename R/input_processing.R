@@ -11,7 +11,8 @@
 #' @return Only checks if the input and the threshold follows the required
 #'   specifications
 #' @export
-#'
+#' @seealso See \code{\link{run_pathfindr}} for the wrapper function of the
+#'   pathfindr workflow
 #' @examples
 #' input_testing(input_df, p_val_threshold)
 input_testing <- function(input, p_val_threshold){
@@ -53,6 +54,9 @@ input_testing <- function(input, p_val_threshold){
 #'   resulting data frame containing the original gene symbols, the updated
 #'   symbols, change values and p values is then returned.
 #' @export
+#'
+#' @seealso See \code{\link{run_pathfindr}} for the wrapper function of the
+#'   pathfindr workflow
 #'
 #' @examples
 #' input_processing(input, p_val_threshold = 0.05, "path/to/pin")

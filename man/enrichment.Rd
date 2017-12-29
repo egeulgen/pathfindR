@@ -30,5 +30,7 @@ Perform Enrichment Analysis
 enrichment(genes_by_pathway, genes_of_interest, pathways_list)
 }
 \seealso{
-\code{\link[stats]{p.adjust}} for adjustment of p values.
+\code{\link[stats]{p.adjust}} for adjustment of p values. See
+  \code{\link{run_pathfindr}} for the wrapper function of the pathfindr
+  workflow
 }

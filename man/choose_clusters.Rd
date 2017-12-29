@@ -17,8 +17,9 @@ This function first calculates the pairwise distances between the
   pathways in the \code{result_df} data frame. Via a shiny HTML document, the
   hierarchical clustering dendrogram is visualized. In this HTML document,
   the user can select the value at which to cut the tree and the resulting
-  representative pathways are presented as a table and pathways with cluster
-  assignments are saved as a csv file to the current directory
+  representative pathways (chosen by smallest lowest p value) are presented
+  as a table and pathways with cluster assignments are saved as a csv file to
+  the current directory.
 }
 \description{
 Cluster Pathways and Dynamically Cut the Dendrogram

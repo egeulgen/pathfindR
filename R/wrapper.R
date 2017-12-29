@@ -4,9 +4,9 @@
 ##############################################################################")
 }
 
-#' Wrapper Function for pathfindr
+#' Wrapper Function for pathfindr Workflow
 #'
-#' \code{pathfindr} is a wrapper function for the pathfindr workflow
+#' \code{run_pathfindr} is the wrapper function for the pathfindr workflow
 #'
 #' This function takes in a data frame consisting of Gene Symbol,
 #' log-fold-change and adjusted-p values. After input testing, any gene symbols
@@ -59,12 +59,12 @@
 #'   \code{\link{enrichment}} for pathway enrichment analysis and
 #'   \code{\link{pathmap}} for annotation of involved genes and visualization of
 #'   pathways. See \code{\link[foreach]{foreach}} for details on parallel
-#'   execution of looping constructs. See also \code{\link{choose_clusters}} for
+#'   execution of looping constructs. See \code{\link{choose_clusters}} for
 #'   clustering the resulting enriched pathways.
 #'
 #' @examples
-#' pathfindr(input_data_frame)
-pathfindr <- function(input, p_val_threshold = 0.05,
+#' run_pathfindr(input_data_frame)
+run_pathfindr <- function(input, p_val_threshold = 0.05,
                       enrichment_threshold = 1e-4,
                       adj_method = "bonferroni",
                       iterations = 10, n_processes = NULL,
@@ -200,8 +200,9 @@ can be found in \"results.html\"\n\n")
 #'   pathways in the \code{result_df} data frame. Via a shiny HTML document, the
 #'   hierarchical clustering dendrogram is visualized. In this HTML document,
 #'   the user can select the value at which to cut the tree and the resulting
-#'   representative pathways are presented as a table and pathways with cluster
-#'   assignments are saved as a csv file to the current directory
+#'   representative pathways (chosen by smallest lowest p value) are presented
+#'   as a table and pathways with cluster assignments are saved as a csv file to
+#'   the current directory.
 #' @export
 #'
 #' @examples
@@ -224,7 +225,8 @@ choose_clusters <- function(result_df, kegg_update = F) {
 #' @return A character value that contains the path to chosen PIN.
 #'
 #' @export
-#'
+#' @seealso See \code{\link{run_pathfindr}} for the wrapper function of the
+#'   pathfindr workflow
 #' @examples
 #' pin_path <- return_pin_path("Biogrid")
 

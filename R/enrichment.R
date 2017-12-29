@@ -11,7 +11,9 @@
 #'
 #' @return A data frame that contains enrichment results.
 #' @export
-#' @seealso \code{\link[stats]{p.adjust}} for adjustment of p values.
+#' @seealso \code{\link[stats]{p.adjust}} for adjustment of p values. See
+#'   \code{\link{run_pathfindr}} for the wrapper function of the pathfindr
+#'   workflow
 #' @examples
 #' enrichment(genes_by_pathway, genes_of_interest, pathways_list)
 enrichment <- function(genes_by_pathway, genes_of_interest,

@@ -11,7 +11,8 @@
 #'   the pathways with the package "pathview".
 #' @export
 #' @seealso \code{\link[pathview]{pathview}} for pathway based data integration
-#'   and visualization.
+#'   and visualization. See \code{\link{run_pathfindr}} for the wrapper function
+#'   of the pathfindr workflow
 #' @examples
 #' pathmap(pathway_table, change_data)
 pathmap <- function(pw_table, gene_data) {
