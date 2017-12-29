@@ -5,8 +5,9 @@
 \title{Wrapper Function for pathfindr}
 \usage{
 pathfindr(input, p_val_threshold = 0.05, enrichment_threshold = 1e-04,
-  adj_method = "bonferroni", iterations = 10, n_threads = NULL,
-  n_snw = 1000, overlap_threshold = 0.5, kegg_update = F)
+  adj_method = "bonferroni", iterations = 5, n_processes = NULL,
+  n_snw = 1000, overlap_threshold = 0.5, kegg_update = F,
+  pin_name = "GeneMania")
 }
 \arguments{
 \item{input}{the input data that pathfindr uses. The input must be a data
@@ -26,8 +27,8 @@ pathway enrichment results}
 \item{iterations}{number of iterations for active subnetwork search and
 enrichment analyses}
 
-\item{n_threads}{optional argument for specifying the number of threads. The
-function determines this automatically}
+\item{n_processes}{optional argument for specifying the number of processes
+used by foreach. The function determines this automatically}
 
 \item{n_snw}{optional argument for specifying the number of active
 subnetworks when running jActive modules. (Default = 1000)}
@@ -37,6 +38,9 @@ thresholds when running jActive modules. (Default = 0.5)}
 
 \item{kegg_update}{boolean value indicating whether or not to update KEGG
 pathway genes (default = FALSE)}
+
+\item{pin_name}{Name of the chosen PIN. Must be one of c("Biogrid", "STRING",
+"GeneMania", "BioPlex"). Defaults to "GeneMania".}
 }
 \value{
 Data frame of pathview enrichment results. Columns are: "ID",
@@ -59,5 +63,6 @@ pathfindr(input_data_frame)
   \code{\link{parsejActive}} for parsing a jActive modules output,
   \code{\link{enrichment}} for pathway enrichment analysis and
   \code{\link{pathmap}} for annotation of involved genes and visualization of
-  pathways.
+  pathways. See \code{\link[foreach]{foreach}} for details on parallel
+  execution of looping constructs.
 }
