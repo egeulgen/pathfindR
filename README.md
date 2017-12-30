@@ -9,11 +9,11 @@ This workflow takes in a data frame consisting of Gene Symbol, log-fold-change a
 This function first calculates the pairwise distances between the pathways in the result_df data frame. Via a shiny HTML document, the hierarchical clustering dendrogram is visualized. In this HTML document, the user can select the value at which to cut the tree and the resulting representative pathways (chosen by smallest lowest p value) are presented as a table and pathways with cluster assignments are saved as a csv file to the current directory.
 
 ## Dependencies
-For the active subnetwork search component to work, the user must have [JAVA](https://www.java.com/en/download/manual.jsp) installed and path/to/java must be in the path.
+For the active subnetwork search component to work, the user must have [JAVA](https://www.java.com/en/download/manual.jsp) installed and path/to/java must be in the PATH environment variable.
 
 ### Resources
 The protein interaction networks (PINs) were gathered from various resources:
 - [Biogrid](https://downloads.thebiogrid.org/BioGRID)
 - [BioPlex 2.0](http://bioplex.hms.harvard.edu/downloadInteractions.php)
-- [GeneMania](http://genemania.org/data/)
-- [STRING](https://string-db.org/cgi/download.pl?UserId=eCoJ8Fv0OZg6&sessionId=H23WzOsHidKz&species_text=Homo+sapiens)
+- [GeneMania](http://genemania.org/data/): only interactions with weights >= 0.0006 were kept
+- [STRING](https://string-db.org/cgi/download.pl?UserId=eCoJ8Fv0OZg6&sessionId=H23WzOsHidKz&species_text=Homo+sapiens): only interactions with combined_score >= 800 were kept.
