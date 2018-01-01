@@ -64,7 +64,7 @@
 #'
 #' @examples
 #' run_pathfindr(input_data_frame)
-run_pathfindr <- function(input, p_val_threshold = 0.05,
+run_pathfindr <- function(input, p_val_threshold = 5e-2,
                       enrichment_threshold = 1e-4,
                       adj_method = "bonferroni",
                       iterations = 10, n_processes = NULL,
@@ -129,14 +129,11 @@ run_pathfindr <- function(input, p_val_threshold = 0.05,
 
     ## enrichment per subnetwork
     enrichment_res <- lapply(snws, function(x)
-        pathfindr::enrichment(pw_genes, x, pathways_list, adj_method))
+        pathfindr::enrichment(pw_genes, x, pathways_list, adj_method, enrichment_threshold))
     enrichment_res <- Reduce(rbind, enrichment_res)
 
-    ## remove p larger than enrichment_threshold and keep lowest p
-    ## for each pathway
-    cond <- enrichment_res$adj_p <= enrichment_threshold
-    enrichment_res <- enrichment_res[cond, ]
-    idx <- order(enrichment_res$adj_p, enrichment_res$ID)
+    ## keep lowest p for each pathway
+    idx <- order(enrichment_res$adj_p)
     enrichment_res <- enrichment_res[idx, ]
     enrichment_res <- enrichment_res[!duplicated(enrichment_res$ID), ]
 

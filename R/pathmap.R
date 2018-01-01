@@ -18,11 +18,6 @@
 pathmap <- function(pw_table, gene_data) {
   suppressPackageStartupMessages(library(pathview)) ## cannot find work-around
 
-  ## Load required data for pathview
-  data("gene.idtype.bods", package = "pathview")
-  data("gene.idtype.list", package = "pathview")
-  data("cpd.simtypes", package = "pathview")
-
   pw_table$Up_regulated <- ""
   pw_table$Down_regulated <- ""
 
@@ -44,16 +39,18 @@ pathmap <- function(pw_table, gene_data) {
                               keys.align = "y", kegg.native = T,
                               key.pos = "topright", same.layer = F)
 
-    tmp <- tmp$plot.data.gene$all.mapped
-    tmp <- tmp[tmp != ""]
-    tmp <- unlist(strsplit(tmp, split = ","))
-    tmp <- unique(tmp)
-    if (any(tmp != ""))
-      tmp <- AnnotationDbi::select(org.Hs.eg.db:::org.Hs.eg.db, tmp,
-                                   "SYMBOL", "ENTREZID")[, 2]
+   if (length(tmp) != 1) {
+     tmp <- tmp$plot.data.gene$all.mapped
+     tmp <- tmp[tmp != ""]
+     tmp <- unlist(strsplit(tmp, split = ","))
+     tmp <- unique(tmp)
+     if (any(tmp != ""))
+       tmp <- AnnotationDbi::select(org.Hs.eg.db:::org.Hs.eg.db, tmp,
+                                    "SYMBOL", "ENTREZID")[, 2]
 
-    pw_table$Up_regulated[i] <- paste(tmp[tmp %in% upreg], collapse = ", ")
-    pw_table$Down_regulated[i] <- paste(tmp[tmp %in% downreg], collapse = ", ")
+     pw_table$Up_regulated[i] <- paste(tmp[tmp %in% upreg], collapse = ", ")
+     pw_table$Down_regulated[i] <- paste(tmp[tmp %in% downreg], collapse = ", ")
+   }
   }
   setwd("..")
   return(pw_table)
