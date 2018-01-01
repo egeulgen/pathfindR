@@ -85,22 +85,27 @@ input_processing <- function(input, p_val_threshold, pin_path) {
   ## loop for getting all symbols
   converted <- c()
   for (i in 1:length(missing)) {
-    result <- alias_symbol[alias_symbol$alias_symbol == missing[i], c(2, 5)]
-    result <- alias_symbol[alias_symbol$symbol %in% result$symbol, c(2, 5)]
+    result <- alias_symbol[alias_symbol$alias_symbol == missing[i],
+                           c("alias_symbol", "symbol")]
+    result <- alias_symbol[alias_symbol$symbol %in% result$symbol,
+                           c("alias_symbol", "symbol")]
     result <- result$alias_symbol[result$alias_symbol %in%
                                     c(pin[, 1], pin[, 2])]
 
+    ## avoid duplicate entries
+    to_add <- ifelse(result[1] %in% converted, result[2], result[1])
     converted <- rbind(converted, c(missing[i],
                                     ifelse(length(result) == 0,
-                                           "NOT_FOUND", result[1])))
+                                           "NOT_FOUND", to_add)))
   }
 
   ## Give out warning indicating the number of still missing
-  perc <- sum(converted[, 2] == "NOT_FOUND") / nrow(input) * 100
+  n <- sum(converted[, 2] == "NOT_FOUND")
+  perc <- n / nrow(input) * 100
   if (sum(converted[, 2] == "NOT_FOUND") != 0)
     cat(paste0("Could not find ",
-               sum(converted[, 2] == "NOT_FOUND"),
-               " (", round(perc), "%) genes in the pin network\n\n"))
+               n,
+               " (", round(perc, 2), "%) genes in the pin network\n\n"))
 
   ## Convert to appropriate symbol
   converted <- converted[converted[, 2] != "NOT_FOUND", ]
@@ -109,6 +114,9 @@ input_processing <- function(input, p_val_threshold, pin_path) {
 
   input <- input[, c(1, 4, 2, 3)]
   colnames(input) <- c("old_GENE", "GENE", "CHANGE", "SPOTPvalue")
+
+  input <- input[order(input$SPOTPvalue), ]
+  input <- input[!duplicated(input$GENE), ]
 
   return(input)
 }
