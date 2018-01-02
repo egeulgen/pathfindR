@@ -82,6 +82,15 @@ input_processing <- function(input, p_val_threshold, pin_path) {
   ## execute the query on the database
   alias_symbol <- DBI::dbGetQuery(db_con, sql_query)
 
+  select_alias <- function(result, converted, idx) {
+    if (idx == 0)
+      return("NOT_FOUND")
+    else if (result[idx] %in% converted[,2])
+      return(result[idx-1])
+    else
+      return(result[idx])
+  }
+
   ## loop for getting all symbols
   converted <- c()
   for (i in 1:length(missing)) {
@@ -91,12 +100,9 @@ input_processing <- function(input, p_val_threshold, pin_path) {
                            c("alias_symbol", "symbol")]
     result <- result$alias_symbol[result$alias_symbol %in%
                                     c(pin[, 1], pin[, 2])]
-
     ## avoid duplicate entries
-    to_add <- ifelse(result[1] %in% converted, result[2], result[1])
-    converted <- rbind(converted, c(missing[i],
-                                    ifelse(length(result) == 0,
-                                           "NOT_FOUND", to_add)))
+    to_add <- select_alias(result, converted, length(result))
+    converted <- rbind(converted, c(missing[i], to_add))
   }
 
   ## Give out warning indicating the number of still missing
