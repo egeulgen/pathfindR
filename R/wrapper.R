@@ -69,7 +69,7 @@ run_pathfindr <- function(input, p_val_threshold = 5e-2,
                       adj_method = "bonferroni",
                       iterations = 10, n_processes = NULL,
                       n_snw = 1000, overlap_threshold = 0.5,
-                      kegg_update = F, pin_name = "BioPlex") {
+                      kegg_update = F, pin_name = "IntAct") {
   ## absolute paths for cytoscape and pin
   jactive_path <- normalizePath(system.file("java/myCytoscape.jar",
                                             package = "pathfindr"))
@@ -191,7 +191,7 @@ can be found in \"results.html\"\n\n")
 #' Cluster Pathways and Dynamically Cut the Dendrogram
 #'
 #' @param result_df resulting data frame of the pathfindr main workflow.
-#' @inheritParams current_KEGG
+#' @inheritParams cluster_pathways
 #'
 #' @return This function first calculates the pairwise distances between the
 #'   pathways in the \code{result_df} data frame. Via a shiny HTML document, the
@@ -204,9 +204,9 @@ can be found in \"results.html\"\n\n")
 #'
 #' @examples
 #' choose_clusters(result_df)
-choose_clusters <- function(result_df, kegg_update = F) {
+choose_clusters <- function(result_df, ...) {
   cat("Calculating pairwise distances between pathways\n\n")
-  PWD_mat <- cluster_pathways(result_df$ID, kegg_update = kegg_update)
+  PWD_mat <- cluster_pathways(result_df$ID, ...)
 
   cat("Creating shiny app\n\n")
   parameters <- list(df = result_df, mat = PWD_mat)
@@ -217,7 +217,7 @@ choose_clusters <- function(result_df, kegg_update = F) {
 #' Return The Path to Given Protein Interaction Network (PIN)
 #'
 #' @param pin_name Name of the chosen PIN. Must be one of c("Biogrid", "STRING",
-#'   "GeneMania", "BioPlex"). Defaults to "Bioplex".
+#'   "GeneMania", "BioPlex", "HitPredict", "IntAct"). Defaults to "IntAct".
 #'
 #' @return A character value that contains the path to chosen PIN.
 #'
@@ -227,10 +227,11 @@ choose_clusters <- function(result_df, kegg_update = F) {
 #' @examples
 #' pin_path <- return_pin_path("Biogrid")
 
-return_pin_path <- function(pin_name = "BioPlex") {
-  if (!pin_name %in% c("Biogrid", "STRING", "GeneMania", "BioPlex"))
+return_pin_path <- function(pin_name = "IntAct") {
+  if (!pin_name %in% c("Biogrid", "STRING", "GeneMania", "BioPlex",
+                       "HitPredict", "IntAct"))
     stop(paste0("The chosen PIN must be one of:\n",
-                "Biogrid, STRING, GeneMania, BioPlex"))
+                "Biogrid, STRING, GeneMania, BioPlex, HitPredict or IntAct"))
 
   path <- normalizePath(system.file(paste0("data/", pin_name, ".sif"),
                                     package = "pathfindr"))

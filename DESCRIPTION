@@ -22,7 +22,6 @@ Imports: doSNOW,
     knitr,
     rmarkdown,
     shiny,
-    Category,
     KEGGREST,
     org.Hs.eg.db,
     pathview
