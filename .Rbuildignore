@@ -1,2 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^data-raw$
+^EXAMPLE$
+^EXAMPLE_win$
+

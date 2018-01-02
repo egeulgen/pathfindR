@@ -5,7 +5,7 @@
 \title{Perform Enrichment Analysis}
 \usage{
 enrichment(genes_by_pathway, genes_of_interest, pathways_list,
-  adj_method = "bonferroni")
+  adj_method = "bonferroni", enrichment_threshold = 1e-04)
 }
 \arguments{
 \item{genes_by_pathway}{List that contains genes for each pathway. Names of
@@ -19,6 +19,9 @@ identified for a subnetwork.}
 IDs. Names of this list are the KEGG IDs.}
 
 \item{adj_method}{correction method to be used for adjusting p-values.}
+
+\item{enrichment_threshold}{adjusted p value threshold used when filtering
+pathway enrichment result}
 }
 \value{
 A data frame that contains enrichment results.

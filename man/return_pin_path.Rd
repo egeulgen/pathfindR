@@ -4,11 +4,11 @@
 \alias{return_pin_path}
 \title{Return The Path to Given Protein Interaction Network (PIN)}
 \usage{
-return_pin_path(pin_name = "BioPlex")
+return_pin_path(pin_name = "IntAct")
 }
 \arguments{
 \item{pin_name}{Name of the chosen PIN. Must be one of c("Biogrid", "STRING",
-"GeneMania", "BioPlex"). Defaults to "Bioplex".}
+"GeneMania", "BioPlex", "HitPredict", "IntAct"). Defaults to "IntAct".}
 }
 \value{
 A character value that contains the path to chosen PIN.

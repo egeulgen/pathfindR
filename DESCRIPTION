@@ -1,7 +1,7 @@
 Package: pathfindr
 Type: Package
 Title: Pathway Enrichment Analysis Utilizing Active Subnetworks
-Version: 0.0.0.9003
+Version: 0.0.0.9005
 Authors@R: as.person(c(
     "Ege Ulgen <egeulgen@gmail.com> [aut, cre]", 
     "Ozan Ozisik <ozanytu@gmail.com> [aut]"
@@ -26,3 +26,4 @@ Imports: doSNOW,
     org.Hs.eg.db,
     pathview
 RoxygenNote: 6.0.1
+VignetteBuilder: knitr

@@ -1,0 +1,72 @@
+---
+title: "pathfindr - An R Package for Pathway Enrichment Analysis Utilizing Active Subnetworks"
+author: "Ege Ulgen"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{pathfindr - An R Package for Pathway Enrichment Analysis Utilizing Active Subnetworks}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+`pathfindr` is an R package for pathway enrichment analysis of gene-level differential expression/methylation data utilizing active subnetworks. The package also enables hierarchical clustering of the enriched pathways.
+
+# Enrichment Workflow
+
+The overview of the enrichment workflow is presented in the figure below:
+
+<img src="../pathfindr.png" width="650" height="139.81" />
+
+For this workflow, the wrapper function `run_pathfindr()` is used. This function takes in a data frame consisting of Gene Symbol, log-fold-change and adjusted-p values. An example can be found below:
+
+```{r}
+suppressPackageStartupMessages(library(pathfindr))
+data("example_input")
+head(example_input)
+```
+
+After input testing, any gene symbols that are not in the protein-interaction network (PIN) are attempted to get converted to alias symbols if the alias is in the PIN. Next, active subnetwork search is performed via the selected algorithm. The available algorithms for active subnetwork search are: 
+
+- [jActiveModules](https://www.ncbi.nlm.nih.gov/pubmed/12169552) - Greedy algorithm,
+- [jActiveModules](https://www.ncbi.nlm.nih.gov/pubmed/12169552) - Simulated annealing algorithm and 
+- [Active Subnetwork GA](http://www.eurekaselect.com/142543/article) - Genetic algorithm
+
+Next, pathway enrichment analyses are performed using the genes in each of the active subnetworks. For this, up-to-date information on genes contained in each KEGG pathway are retrieved with the help of the R package `KEGGREST`. This information is saved to the current directory but can be updated during future runs by setting the argument `kegg_update` to TRUE (default = FALSE) in the wrapper function `run_pathfindr()` or the stand-alone function that gets the current KEGG pathway genes `current_KEGG()`.
+
+During enrichment analyses, pathways with adjusted-p values larger than the `enrichment_threshold` (an argument of `run_pathfindr()`) are discarded. The results of enrichment analyses over all active subnetworks are combined by keeping only the lowest adjusted-p value for each pathway. 
+
+This process of active subnetwork search and enrichment analyses is repeated for a selected number of iterations (assigned by the `iterations` argument of `run_pathfindr()`), which is performed done in parallel. 
+
+The wrapper function returns a data frame that contains the lowest and the highest adjusted-p values for each enriched pathway, as well as the numbers of times each pathway is encountered over all iterations. The function also creates an HTML report ("results.html") that can be found in the current working directory. This report contains links to two other HTML files:
+
+## 1. all_pathways.html
+This document contains a table of the active subnetwork-aided pathway enrichment results. Each enriched pathway names is linked to the visualization of that pathway. This table contains the same information as the returned data frame. Columns are:
+
+- ID: KEGG ID of enriched pathway
+- Pathway: Description the pathway
+- Occurence: The number of times the pathway was found to be enriched over all iterations
+- lowest_p: the lowest adjusted-p value of the pathway over all iterations
+- higher_p: the highest adjusted-p value of the pathway over all iterations
+- Up_regulated: the up-regulated genes involved in the pathway
+- Down_regulated: the down-regulated genes involved in the pathway
+
+## 2. genes_table.html
+This document contains a table of converted gene symbols. Columns are:
+
+- Old Symbol: the original gene symbol
+- Coverted Symbol: the alias symbol that was found in the PIN
+- Change: the provided change value
+- p-value: the provided adjusted p value
+
+# Pathway Clustering
+
+<img src="../pw_clustering.png" width="650" height="163.34" />
+
+This function first calculates the pairwise distances between the pathways in the input data frame. This step uses the distance metric described in *Chen, Y. A. et al. Integrated pathway clusters with coherent biological themes for target prioritisation. PLoS One 9, e99030, doi:10.1371/journal.pone.0099030 (2014)*. Via a shiny app, presented as an HTML document, the hierarchical clustering dendrogram is visualized. In this HTML document, the user can select the agglomeration method and the distance value at which to cut the tree. The dendrogram with the cut-off value marked with a red line is dynamically visualized and the resulting cluster assignments of the pathways along with annotation of representative pathways (chosen by smallest lowest p value) are presented as a table. This table can be saved as a csv file by pressing the button `Get Pathways w\ Cluster Info`.

@@ -190,16 +190,23 @@ can be found in \"results.html\"\n\n")
 
 #' Cluster Pathways and Dynamically Cut the Dendrogram
 #'
+#' See "Chen, Y. A. et al. Integrated pathway clusters with coherent biological
+#' themes for target prioritisation. PLoS One 9, e99030,
+#' doi:10.1371/journal.pone.0099030 (2014)." for details on the method of
+#' pathway clustering.
+#'
 #' @param result_df resulting data frame of the pathfindr main workflow.
 #' @inheritParams cluster_pathways
 #'
 #' @return This function first calculates the pairwise distances between the
 #'   pathways in the \code{result_df} data frame. Via a shiny HTML document, the
 #'   hierarchical clustering dendrogram is visualized. In this HTML document,
-#'   the user can select the value at which to cut the tree and the resulting
-#'   representative pathways (chosen by smallest lowest p value) are presented
-#'   as a table and pathways with cluster assignments are saved as a csv file to
-#'   the current directory.
+#'   the user can select the agglomeration method and the distance value at
+#'   which to cut the tree. The resulting cluster assignments of the pathways
+#'   along with annotation of representative pathways (chosen by smallest lowest
+#'   p value) are presented as a table and this table can be saved as a csv
+#'   file.
+#'
 #' @export
 #'
 #' @examples
