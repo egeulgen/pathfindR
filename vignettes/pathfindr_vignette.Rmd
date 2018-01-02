@@ -18,11 +18,19 @@ knitr::opts_chunk$set(
 
 `pathfindr` is an R package for pathway enrichment analysis of gene-level differential expression/methylation data utilizing active subnetworks. The package also enables hierarchical clustering of the enriched pathways.
 
+Our motivation to develop this package was that direct pathway enrichment analysis of differential rna/protein expression or methylation results may not provide the researcher with the full picture. That is to say; pathway enrichment of only the list of significant genes may not be informative enough to explain the underlying disease mechanisms. 
+
+An active subnetwork is defined as a group of interconnected genes in a protein-protein interaction network that contains most of the significant genes. Therefore, these active subnetworks define disease-associated sets of genes, whether discovered through differential expression analysis or discovered because of having interactions with a significant genes.
+
+We hence propose to leverage information from a protein-protein interaction network to find active subnetworks and then perform pathway enrichment analyses on these subnetworks. Briefly, this workflow first maps the input differential expression results onto a protein-protein interaction network and finds active subnetworks. Next, pathway enrichment analysis is performed with each gene set of active subnetworks. Finally, these enrichment results are summarized and returned as a data frame. This workflow is implemented as the function `run_pathfindr()` and further described in the "Enrichment Worklow" section of this vignette.
+
+This process usually yields a great number of enrichment pathways. We therefore implemented a pairwise distance metric (as proposed by Chen et al.) between pathways and eventual hierarchical clustering of the pathways through a shiny app, allowing dynamic partioning of the dendrogram into relevant clusters. Details are discussed in the "Pathway Clustering" section of this vignette.
+
 # Enrichment Workflow
 
 The overview of the enrichment workflow is presented in the figure below:
 
-<img src="../pathfindr.png" width="650" height="139.81" />
+<img src="./pathfindr.png" width="650" height="139.81" />
 
 For this workflow, the wrapper function `run_pathfindr()` is used. This function takes in a data frame consisting of Gene Symbol, log-fold-change and adjusted-p values. An example can be found below:
 
@@ -67,6 +75,6 @@ This document contains a table of converted gene symbols. Columns are:
 
 # Pathway Clustering
 
-<img src="../pw_clustering.png" width="650" height="163.34" />
+<img src="./pw_clustering.png" width="650" height="163.34" />
 
 This function first calculates the pairwise distances between the pathways in the input data frame. This step uses the distance metric described in *Chen, Y. A. et al. Integrated pathway clusters with coherent biological themes for target prioritisation. PLoS One 9, e99030, doi:10.1371/journal.pone.0099030 (2014)*. Via a shiny app, presented as an HTML document, the hierarchical clustering dendrogram is visualized. In this HTML document, the user can select the agglomeration method and the distance value at which to cut the tree. The dendrogram with the cut-off value marked with a red line is dynamically visualized and the resulting cluster assignments of the pathways along with annotation of representative pathways (chosen by smallest lowest p value) are presented as a table. This table can be saved as a csv file by pressing the button `Get Pathways w\ Cluster Info`.
