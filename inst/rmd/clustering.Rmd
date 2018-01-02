@@ -17,25 +17,38 @@ The table displays the representative pathways chosen for each cluster, based on
 res_df <- params$df
 PWD <- params$mat
 
-dend <- hclust(as.dist(PWD), method = "average")
+dend_for_h <- hclust(as.dist(PWD), method = "average")
 
 shiny::sidebarPanel(
   shiny::downloadButton("downloadData", "Get Pathways w\\ Cluster Info"))
 
 shiny::inputPanel(
+  shiny::selectInput("agg_method", label = h3("Agglomeration Method"), 
+                     choices = list("ward.D" = "ward.D", 
+                                    "ward.D2" = "ward.D2",
+                                    "single" = "single", 
+                                    "complete" = "complete",
+                                    "average" = "average",
+                                    "mcquitty" = "mcquitty",
+                                    "median" = "median",
+                                    "centroid" = "centroid"), 
+                   selected = "average"),
   shiny::sliderInput("cut_off", label = "Cut-off value for the dendrogram:",
-              min = 0, max = max(dend$height), value = 0.5, step = 0.1)
+              min = 0, max = max(dend_for_h$height), value = 0.5)
   # shiny::numericInput("cut_off", label = "", value = 0.5, min = 0, 
-  #                     max = max(dend$height)+0.1, step = 0.1)
+  #                     max = max(dend$height), step = 0.1)
 )
 
+dend <- reactive({dend <- hclust(as.dist(PWD), method = input$agg_method)})
+cut_off <- reactive({cut_off <- input$cut_off})
+
 shiny::renderPlot({
-  plot(dend, hang = -1, xlab="", ylab = "PD", sub = "")
-  abline(h = input$cut_off, col = "red")
+  plot(dend(), hang = -1, xlab="", ylab = "PD", sub = "")
+  abline(h = cut_off(), col = "red")
 })
 
 shiny::renderTable({
-  clusters <- cutree(dend, h = input$cut_off)
+  clusters <- cutree(dend(), h = cut_off())
   clu_df <- as.data.frame(clusters)
   clu_df$KEGG_ID <- rownames(clu_df)
   clu_df$Pathway <- res_df$Pathway[match(clu_df$KEGG_ID, res_df$ID)]
@@ -43,25 +56,27 @@ shiny::renderTable({
   clu_df$p_value <- res_df$lowest_p[match(clu_df$KEGG_ID, res_df$ID)]
   clu_df <- clu_df[order(clu_df$p_value), ]
 
-  res_df$Cluster <- clu_df[match(res_df$ID, clu_df$KEGG_ID), 3]
-  tmp <- res_df$lowest_p
-  names(tmp) <- res_df$ID
-  tmp <- tapply(tmp, res_df$Cluster, function(x) names(x)[which.min(x)])
-  res_df$Representative <- ifelse(res_df$ID %in% tmp, "Representative", "Member")
-  # write.csv(res_df, paste0(input$cut_off, "clusters.csv"), row.names = F)
-
-  clu_df <- clu_df[!duplicated(clu_df$clusters),]
-  clu_df$p_value <- format(clu_df$p_value, digits = 2)
-  clu_df
-})
-
-output$downloadData <- downloadHandler(
+  final_df <- res_df
+  final_df$Cluster <- clu_df[match(final_df$ID, clu_df$KEGG_ID), 3]
+  tmp <- final_df$lowest_p
+  names(tmp) <- final_df$ID
+  tmp <- tapply(tmp, final_df$Cluster, function(x) names(x)[which.min(x)])
+  final_df$Representative <- ifelse(final_df$ID %in% tmp, "Representative", "Member")
+  
+  output$downloadData <- downloadHandler(
     filename = function() {
-      paste0("clusters_", input$cut_off, ".csv")
+      paste0("clusters_", cut_off(), ".csv")
     },
     content = function(file) {
-      write.csv(res_df, file, row.names = FALSE)
+      write.csv(final_df, file, row.names = FALSE)
     }
   )
+  
+  clu_df <- final_df
+  clu_df$lowest_p  <- format(clu_df$lowest_p, digits = 2)
+  clu_df$highest_p <- format(clu_df$highest_p, digits = 2)
+
+  clu_df
+})
 
 ```
