@@ -36,8 +36,8 @@ For this workflow, the wrapper function `run_pathfindr()` is used. This function
 
 ```{r}
 suppressPackageStartupMessages(library(pathfindr))
-data("example_input")
-head(example_input)
+data("SLE_input")
+head(SLE_input)
 ```
 
 After input testing, any gene symbols that are not in the protein-interaction network (PIN) are attempted to get converted to alias symbols if the alias is in the PIN. Next, active subnetwork search is performed via the selected algorithm. The available algorithms for active subnetwork search are: 
