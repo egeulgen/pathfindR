@@ -129,7 +129,7 @@ run_pathfindr <- function(input, p_val_threshold = 5e-2,
 
     ## enrichment per subnetwork
     enrichment_res <- lapply(snws, function(x)
-        pathfindr::enrichment(pw_genes, x, pathways_list, adj_method, enrichment_threshold))
+        pathfindr::enrichment(pw_genes, x, pathways_list, adj_method, enrichment_threshold, pin_path))
     enrichment_res <- Reduce(rbind, enrichment_res)
 
     ## keep lowest p for each pathway
