@@ -22,3 +22,4 @@ The protein interaction networks (PINs) were gathered from various resources:
 - [STRING](https://string-db.org/cgi/download.pl?UserId=eCoJ8Fv0OZg6&sessionId=H23WzOsHidKz&species_text=Homo+sapiens): only interactions with combined_score >= 800 were kept.
 - [IntAct](https://www.ebi.ac.uk/intact/)
 - [HitPredict](http://hintdb.hgc.jp/htp/download.html)
+- KEGG PIN - created via an in-house script
