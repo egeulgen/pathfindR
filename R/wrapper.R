@@ -75,8 +75,6 @@ run_pathfindr <- function(input, p_val_threshold = 5e-2,
                                             package = "pathfindr"))
   pin_path <- return_pin_path(pin_name)
 
-  package_dir <- normalizePath(system.file(package = "pathfindr"))
-
   ## Check input
   cat("Testing input\n\n")
   input_testing(input, p_val_threshold) # perform input testing
@@ -111,7 +109,6 @@ run_pathfindr <- function(input, p_val_threshold = 5e-2,
 
   `%dopar%` <- foreach::`%dopar%`
   final_res <- foreach::foreach(i = 1:iterations, .combine = rbind) %dopar% {
-    devtools::load_all(package_dir)
     setwd(dirs[i])
 
     # running jactivemodules
