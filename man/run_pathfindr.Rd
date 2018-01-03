@@ -6,7 +6,7 @@
 \usage{
 run_pathfindr(input, p_val_threshold = 0.05, enrichment_threshold = 1e-04,
   adj_method = "bonferroni", iterations = 10, n_processes = NULL,
-  n_snw = 1000, overlap_threshold = 0.5, kegg_update = F,
+  n_snw = 5, overlap_threshold = 0.8, kegg_update = F,
   pin_name = "KEGG")
 }
 \arguments{
@@ -31,10 +31,10 @@ enrichment analyses}
 used by foreach. The function determines this automatically}
 
 \item{n_snw}{optional argument for specifying the number of active
-subnetworks when running jActive modules. (Default = 1000)}
+subnetworks when running jActive modules. (Default = 5)}
 
 \item{overlap_threshold}{optional argument for specifying the overlap
-thresholds when running jActive modules. (Default = 0.5)}
+thresholds when running jActive modules. (Default = 0.8)}
 
 \item{kegg_update}{boolean value indicating whether or not to update KEGG
 pathway genes (default = FALSE)}
