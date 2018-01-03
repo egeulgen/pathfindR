@@ -27,3 +27,4 @@ Imports: doSNOW,
     pathview
 RoxygenNote: 6.0.1
 VignetteBuilder: knitr
+Suggests: testthat

@@ -20,19 +20,20 @@
 #' enrichment(genes_by_pathway, genes_of_interest, pathways_list)
 enrichment <- function(genes_by_pathway, genes_of_interest,
                        pathways_list, adj_method = "bonferroni",
-                       enrichment_threshold = 1e-4) {
-  hyperg_test <- function(pw_genes, chosen_genes, all_genes, over = TRUE) {
+                       enrichment_threshold = 1e-4, pin_path) {
+  hyperg_test <- function(pw_genes, chosen_genes, all_genes) {
     pw_genes_selected <- length(intersect(chosen_genes, pw_genes))
-    pw_genes_in_pool <- sum(pw_genes %in% all_genes)
-    tol_genes_n_pool <- length(all_genes)
-    non_pw_genes_in_pool <- tol_genes_n_pool - pw_genes_in_pool
+    pw_genes_in_pool <- length(pw_genes)
+    tot_genes_in_pool <- length(all_genes)
+    non_pw_genes_in_pool <- tot_genes_in_pool - pw_genes_in_pool
     num_selected_genes <- length(chosen_genes)
 
     phyper(pw_genes_selected - 1, pw_genes_in_pool,
            non_pw_genes_in_pool, num_selected_genes, lower.tail = F)
   }
 
-  all_genes <- AnnotationDbi::keys(org.Hs.eg.db:::org.Hs.eg.db, "SYMBOL")
+  pin <- read.delim(file = pin_path, header = F, stringsAsFactors = F)
+  all_genes <- unique(c(pin$V1, pin$V2))
 
   enrichment_res <- sapply(genes_by_pathway, hyperg_test,
                              genes_of_interest, all_genes)

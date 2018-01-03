@@ -69,7 +69,7 @@ run_pathfindr <- function(input, p_val_threshold = 5e-2,
                       adj_method = "bonferroni",
                       iterations = 10, n_processes = NULL,
                       n_snw = 1000, overlap_threshold = 0.5,
-                      kegg_update = F, pin_name = "IntAct") {
+                      kegg_update = F, pin_name = "KEGG") {
   ## absolute paths for cytoscape and pin
   jactive_path <- normalizePath(system.file("java/myCytoscape.jar",
                                             package = "pathfindr"))
@@ -224,7 +224,7 @@ choose_clusters <- function(result_df, ...) {
 #' Return The Path to Given Protein Interaction Network (PIN)
 #'
 #' @param pin_name Name of the chosen PIN. Must be one of c("Biogrid", "STRING",
-#'   "GeneMania", "BioPlex", "HitPredict", "IntAct"). Defaults to "IntAct".
+#'   "GeneMania", "BioPlex", "HitPredict", "IntAct", "KEGG"). Defaults to "KEGG".
 #'
 #' @return A character value that contains the path to chosen PIN.
 #'
@@ -234,11 +234,11 @@ choose_clusters <- function(result_df, ...) {
 #' @examples
 #' pin_path <- return_pin_path("Biogrid")
 
-return_pin_path <- function(pin_name = "IntAct") {
+return_pin_path <- function(pin_name = "KEGG") {
   if (!pin_name %in% c("Biogrid", "STRING", "GeneMania", "BioPlex",
-                       "HitPredict", "IntAct"))
+                       "HitPredict", "IntAct", "KEGG"))
     stop(paste0("The chosen PIN must be one of:\n",
-                "Biogrid, STRING, GeneMania, BioPlex, HitPredict or IntAct"))
+                "Biogrid, STRING, GeneMania, BioPlex, HitPredict, IntAct or KEGG"))
 
   path <- normalizePath(system.file(paste0("data/", pin_name, ".sif"),
                                     package = "pathfindr"))
