@@ -12,4 +12,4 @@
 #'   \item{adj.P.Val}{adjusted p values, via the Benjamini & Hochberg(1995) method}
 #' }
 #' @source \url{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE50772}
-"example_input"
+"SLE_input"
