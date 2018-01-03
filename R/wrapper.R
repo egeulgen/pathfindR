@@ -30,9 +30,9 @@
 #' @param n_processes optional argument for specifying the number of processes
 #'   used by foreach. The function determines this automatically
 #' @param n_snw optional argument for specifying the number of active
-#'   subnetworks when running jActive modules. (Default = 1000)
+#'   subnetworks when running jActive modules. (Default = 5)
 #' @param overlap_threshold optional argument for specifying the overlap
-#'   thresholds when running jActive modules. (Default = 0.5)
+#'   thresholds when running jActive modules. (Default = 0.8)
 #' @inheritParams current_KEGG
 #' @inheritParams return_pin_path
 #'
@@ -68,7 +68,7 @@ run_pathfindr <- function(input, p_val_threshold = 5e-2,
                       enrichment_threshold = 1e-4,
                       adj_method = "bonferroni",
                       iterations = 10, n_processes = NULL,
-                      n_snw = 1000, overlap_threshold = 0.5,
+                      n_snw = 5, overlap_threshold = 0.8,
                       kegg_update = F, pin_name = "KEGG") {
   ## absolute paths for cytoscape and pin
   jactive_path <- normalizePath(system.file("java/myCytoscape.jar",
