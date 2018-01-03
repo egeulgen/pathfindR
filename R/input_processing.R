@@ -111,7 +111,7 @@ input_processing <- function(input, p_val_threshold, pin_path) {
   if (sum(converted[, 2] == "NOT_FOUND") != 0)
     cat(paste0("Could not find ",
                n,
-               " (", round(perc, 2), "%) genes in the pin network\n\n"))
+               " (", round(perc, 2), "%) genes in the PIN\n\n"))
 
   ## Convert to appropriate symbol
   converted <- converted[converted[, 2] != "NOT_FOUND", ]

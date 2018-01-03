@@ -5,7 +5,7 @@
 \title{Perform Enrichment Analysis}
 \usage{
 enrichment(genes_by_pathway, genes_of_interest, pathways_list,
-  adj_method = "bonferroni", enrichment_threshold = 1e-04)
+  adj_method = "bonferroni", enrichment_threshold = 1e-04, pin_path)
 }
 \arguments{
 \item{genes_by_pathway}{List that contains genes for each pathway. Names of

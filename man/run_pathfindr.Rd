@@ -7,7 +7,7 @@
 run_pathfindr(input, p_val_threshold = 0.05, enrichment_threshold = 1e-04,
   adj_method = "bonferroni", iterations = 10, n_processes = NULL,
   n_snw = 1000, overlap_threshold = 0.5, kegg_update = F,
-  pin_name = "IntAct")
+  pin_name = "KEGG")
 }
 \arguments{
 \item{input}{the input data that pathfindr uses. The input must be a data
@@ -40,7 +40,7 @@ thresholds when running jActive modules. (Default = 0.5)}
 pathway genes (default = FALSE)}
 
 \item{pin_name}{Name of the chosen PIN. Must be one of c("Biogrid", "STRING",
-"GeneMania", "BioPlex", "HitPredict", "IntAct"). Defaults to "IntAct".}
+"GeneMania", "BioPlex", "HitPredict", "IntAct", "KEGG"). Defaults to "KEGG".}
 }
 \value{
 Data frame of pathview enrichment results. Columns are: "ID",
