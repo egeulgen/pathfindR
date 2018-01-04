@@ -76,22 +76,22 @@ run_pathfindr <- function(input, p_val_threshold = 5e-2,
   pin_path <- return_pin_path(pin_name)
 
   ## Check input
-  cat("Testing input\n\n")
+  cat("## Testing input\n\n")
   input_testing(input, p_val_threshold) # perform input testing
 
   ## Process input
-  cat("Processing input. Converting gene symbols, if necessary\n\n")
+  cat("## Processing input. Converting gene symbols, if necessary\n\n")
   input_processed <- input_processing(input, p_val_threshold, pin_path)
   write.table(input_processed[, c("GENE", "SPOTPvalue")],
               "./input_for_jactive.txt", row.names = F, quote = F, sep = "\t")
 
   ## get current KEGG pathways and kegg id, pathway names
-  cat("Retreiving most current KEGG pathway genes\n\n")
+  cat("## Retreiving most current KEGG pathway genes\n\n")
   pw_genes <- current_KEGG(kegg_update)
   pathways_list <- KEGGREST::keggList("pathway", "hsa")
 
   ## Prep for parallel run
-  cat("Running jActive modules and enrichment\n")
+  cat("## Running jActive modules and enrichment\n")
   cat("Any java window that opens will close once the task is finished\n")
   cat("DO NOT close the java window(s)!\n\n")
 
@@ -143,7 +143,7 @@ run_pathfindr <- function(input, p_val_threshold = 5e-2,
   snow::stopCluster(cl)
 
   ## Annotate lowest p, highest p and occurence
-  cat("Processing the enrichment results over all iterations \n\n")
+  cat("## Processing the enrichment results over all iterations \n\n")
 
   lowest_p <- tapply(final_res$adj_p, final_res$ID, min)
   highest_p <- tapply(final_res$adj_p, final_res$ID, max)
@@ -165,14 +165,14 @@ run_pathfindr <- function(input, p_val_threshold = 5e-2,
   final_res <- final_res[!duplicated(final_res$ID), ]
   rownames(final_res) <- NULL
 
-  cat("Annotating involved genes and visualizing pathways\n\n")
+  cat("## Annotating involved genes and visualizing pathways\n\n")
   ## Annotate involved genes and generate pathway maps
   genes_df <- input_processed[, c("GENE", "CHANGE")]
   rownames(genes_df) <- genes_df$GENE
   genes_df <- genes_df[, -1, drop = F]
   final_res <- pathmap(final_res, genes_df)
 
-  cat("Creating HTML report\n\n")
+  cat("## Creating HTML report\n\n")
   ## Create report
   rmarkdown::render(system.file("rmd/results.Rmd", package = "pathfindr"),
                     output_dir = ".")
