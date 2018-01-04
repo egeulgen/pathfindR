@@ -129,10 +129,14 @@ run_pathfindr <- function(input, p_val_threshold = 5e-2,
         pathfindr::enrichment(pw_genes, x, pathways_list, adj_method, enrichment_threshold, pin_path))
     enrichment_res <- Reduce(rbind, enrichment_res)
 
-    ## keep lowest p for each pathway
-    idx <- order(enrichment_res$adj_p)
-    enrichment_res <- enrichment_res[idx, ]
-    enrichment_res <- enrichment_res[!duplicated(enrichment_res$ID), ]
+    if(nrow(enrichment_res) == 0)
+      enrichment_res <- NULL
+    else {
+      ## keep lowest p for each pathway
+      idx <- order(enrichment_res$adj_p)
+      enrichment_res <- enrichment_res[idx, ]
+      enrichment_res <- enrichment_res[!duplicated(enrichment_res$ID), ]
+    }
 
     enrichment_res
   }
@@ -161,7 +165,7 @@ run_pathfindr <- function(input, p_val_threshold = 5e-2,
   final_res <- final_res[!duplicated(final_res$ID), ]
   rownames(final_res) <- NULL
 
-  cat("Annotating involved genes and generating pathway diagrams\n\n")
+  cat("Annotating involved genes and visualizing pathways\n\n")
   ## Annotate involved genes and generate pathway maps
   genes_df <- input_processed[, c("GENE", "CHANGE")]
   rownames(genes_df) <- genes_df$GENE
@@ -221,7 +225,7 @@ choose_clusters <- function(result_df, ...) {
 #' Return The Path to Given Protein Interaction Network (PIN)
 #'
 #' @param pin_name Name of the chosen PIN. Must be one of c("Biogrid", "STRING",
-#'   "GeneMania", "BioPlex", "HitPredict", "IntAct", "KEGG"). Defaults to "KEGG".
+#'   "GeneMania", "HitPredict", "IntAct", "KEGG"). Defaults to "KEGG".
 #'
 #' @return A character value that contains the path to chosen PIN.
 #'
@@ -232,10 +236,10 @@ choose_clusters <- function(result_df, ...) {
 #' pin_path <- return_pin_path("Biogrid")
 
 return_pin_path <- function(pin_name = "KEGG") {
-  if (!pin_name %in% c("Biogrid", "STRING", "GeneMania", "BioPlex",
+  if (!pin_name %in% c("Biogrid", "STRING", "GeneMania",
                        "HitPredict", "IntAct", "KEGG"))
     stop(paste0("The chosen PIN must be one of:\n",
-                "Biogrid, STRING, GeneMania, BioPlex, HitPredict, IntAct or KEGG"))
+                "Biogrid, STRING, GeneMania, HitPredict, IntAct or KEGG"))
 
   path <- normalizePath(system.file(paste0("data/", pin_name, ".sif"),
                                     package = "pathfindr"))
