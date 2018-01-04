@@ -55,7 +55,7 @@ shiny::renderTable({
   tmp <- final_df$lowest_p
   names(tmp) <- final_df$ID
   tmp <- tapply(tmp, final_df$Cluster, function(x) names(x)[which.min(x)])
-  final_df$Representative <- ifelse(final_df$ID %in% tmp, "Representative", "Member")
+  final_df$Status <- ifelse(final_df$ID %in% tmp, "Representative", "Member")
   
   output$downloadData <- downloadHandler(
     filename = function() {
@@ -70,6 +70,7 @@ shiny::renderTable({
   clu_df$lowest_p  <- format(clu_df$lowest_p, digits = 2)
   clu_df$highest_p <- format(clu_df$highest_p, digits = 2)
   clu_df <- clu_df[order(clu_df$Cluster), ]
+  clu_df <- clu_df[order(clu_df$Status, decreasing = T), ]
   
   clu_df
 })

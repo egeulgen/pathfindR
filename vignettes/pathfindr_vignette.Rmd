@@ -32,13 +32,31 @@ The overview of the enrichment workflow is presented in the figure below:
 
 <img src="./pathfindr.png" width="650" height="139.81" />
 
-For this workflow, the wrapper function `run_pathfindr()` is used. This function takes in a data frame consisting of Gene Symbol, log-fold-change and adjusted-p values. An example can be found below:
+For this workflow, the wrapper function `run_pathfindr()` is used. This function takes in a data frame consisting of Gene Symbol, log-fold-change and adjusted-p values. The first 6 rows of an example input dataset (of rheumatoid arthritis differential-expression) can be found below:
 
 ```{r}
-suppressPackageStartupMessages(library(pathfindr))
-data("SLE_input")
-head(SLE_input)
+library(pathfindr)
+data("RA_input")
+knitr::kable(head(RA_input))
 ```
+
+Executing the workflow is straightforward:
+```{r eval=FALSE}
+result <- run_pathfindr(RA_input)
+```
+
+The user may want to change certain arguments of the function:
+```{r eval=FALSE}
+# to change the PIN (default = KEGG)
+result <- run_pathfindr(RA_input, pin_name = "Biogrid")
+# to change the number of iterations (default = 10)
+result <- run_pathfindr(RA_input, iterations = 5) 
+# to manually specify the number processes used during parallel loop by foreach
+result <- run_pathfindr(RA_input, n_processes = 2) 
+```
+For a full list of arguments, see `?run_pathfindr`.
+
+The workflow consists of the following steps :
 
 After input testing, any gene symbols that are not in the protein-interaction network (PIN) are attempted to get converted to alias symbols if the alias is in the PIN. Next, active subnetwork search is performed via the selected algorithm. The available algorithms for active subnetwork search are: 
 
@@ -52,7 +70,14 @@ During enrichment analyses, pathways with adjusted-p values larger than the `enr
 
 This process of active subnetwork search and enrichment analyses is repeated for a selected number of iterations (assigned by the `iterations` argument of `run_pathfindr()`), which is performed done in parallel. 
 
-The wrapper function returns a data frame that contains the lowest and the highest adjusted-p values for each enriched pathway, as well as the numbers of times each pathway is encountered over all iterations. The function also creates an HTML report ("results.html") that can be found in the current working directory. This report contains links to two other HTML files:
+The wrapper function returns a data frame that contains the lowest and the highest adjusted-p values for each enriched pathway, as well as the numbers of times each pathway is encountered over all iterations. The first two rows of the example output of the patfindr-enrichment workflow (performed on the rheumatoid arthritis data `RA_input`) is shown below:
+
+```{r}
+data("RA_output")
+knitr::kable(head(RA_output,2))
+```
+
+The function also creates an HTML report `results.html` that can be found in the current working directory. This report contains links to two other HTML files:
 
 ## 1. all_pathways.html
 This document contains a table of the active subnetwork-aided pathway enrichment results. Each enriched pathway names is linked to the visualization of that pathway. This table contains the same information as the returned data frame. Columns are:

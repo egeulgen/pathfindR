@@ -1,9 +1,3 @@
-.onAttach <- function(libname, pkgname) {
-  packageStartupMessage("##############################################################################
-                            Welcome to pathfindr
-##############################################################################")
-}
-
 #' Wrapper Function for pathfindr Workflow
 #'
 #' \code{run_pathfindr} is the wrapper function for the pathfindr workflow
@@ -82,8 +76,10 @@ run_pathfindr <- function(input, p_val_threshold = 5e-2,
   ## Process input
   cat("## Processing input. Converting gene symbols, if necessary\n\n")
   input_processed <- input_processing(input, p_val_threshold, pin_path)
+
+  dir.create("jActive")
   write.table(input_processed[, c("GENE", "SPOTPvalue")],
-              "./input_for_jactive.txt", row.names = F, quote = F, sep = "\t")
+              "./jActive/input_for_jactive.txt", row.names = F, quote = F, sep = "\t")
 
   ## get current KEGG pathways and kegg id, pathway names
   cat("## Retreiving most current KEGG pathway genes\n\n")
@@ -100,7 +96,6 @@ run_pathfindr <- function(input, p_val_threshold = 5e-2,
   cl <- snow::makeCluster(n_processes)
   doSNOW::registerDoSNOW(cl)
 
-  dir.create("jActive")
   dirs <- rep("", iterations)
   for (i in 1:iterations) {
     dir.create(paste0("./jActive/jActive", i))
@@ -114,7 +109,7 @@ run_pathfindr <- function(input, p_val_threshold = 5e-2,
     # running jactivemodules
     system(paste0("java -jar ", jactive_path,
                   " -N ", pin_path,
-                  " -m ../../input_for_jactive.txt",
+                  " -m ../input_for_jactive.txt",
                   " -so ./jActive.txt -np ", n_snw,
                   " -ot ", overlap_threshold))
 

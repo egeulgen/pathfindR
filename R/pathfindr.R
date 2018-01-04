@@ -1,3 +1,9 @@
+.onAttach <- function(libname, pkgname) {
+  packageStartupMessage("##############################################################################
+                        Welcome to pathfindr
+##############################################################################")
+}
+
 #' pathfindr: A package for Pathway Enrichment Analysis Utilizing Active
 #' Subnetworks
 #'
