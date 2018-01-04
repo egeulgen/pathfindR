@@ -28,8 +28,8 @@ parsejActive <- function(jactive_output, signif_genes) {
   # keep snws with score > 3
   subnetworks <- subnetworks[scores > 3]
   # select subnetworks with at least 2 significant genes
-  subnetworks <- subnetworks[sapply(subnetworks,
-                                    function(x) sum(x %in% signif_genes)) >= 2]
+  # subnetworks <- subnetworks[sapply(subnetworks,
+  #                                   function(x) sum(x %in% signif_genes)) >= 2]
 
   return(subnetworks)
 }
