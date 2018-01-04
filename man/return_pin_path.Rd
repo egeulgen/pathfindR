@@ -8,7 +8,7 @@ return_pin_path(pin_name = "KEGG")
 }
 \arguments{
 \item{pin_name}{Name of the chosen PIN. Must be one of c("Biogrid", "STRING",
-"GeneMania", "BioPlex", "HitPredict", "IntAct", "KEGG"). Defaults to "KEGG".}
+"GeneMania", "HitPredict", "IntAct", "KEGG"). Defaults to "KEGG".}
 }
 \value{
 A character value that contains the path to chosen PIN.

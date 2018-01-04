@@ -17,7 +17,6 @@ For the active subnetwork search component to work, the user must have [JAVA](ht
 ### Resources
 The protein interaction networks (PINs) were gathered from various resources:
 - [Biogrid](https://downloads.thebiogrid.org/BioGRID)
-- [BioPlex 2.0](http://bioplex.hms.harvard.edu/downloadInteractions.php)
 - [GeneMania](http://genemania.org/data/): only interactions with weights >= 0.0006 were kept
 - [STRING](https://string-db.org/cgi/download.pl?UserId=eCoJ8Fv0OZg6&sessionId=H23WzOsHidKz&species_text=Homo+sapiens): only interactions with combined_score >= 800 were kept.
 - [IntAct](https://www.ebi.ac.uk/intact/)
