@@ -1,7 +1,7 @@
 Package: pathfindr
 Type: Package
 Title: Pathway Enrichment Analysis Utilizing Active Subnetworks
-Version: 0.0.0.9006
+Version: 0.0.0.9007
 Authors@R: as.person(c(
     "Ege Ulgen <egeulgen@gmail.com> [aut, cre]", 
     "Ozan Ozisik <ozanytu@gmail.com> [aut]"
@@ -18,16 +18,17 @@ BugReports: https://github.com/egeulgen/pathfindr/issues
 Encoding: UTF-8
 LazyData: true
 SystemRequirements: Java JVM 1.8
+setRepositories(ind=1:2)
 Imports: doSNOW,
-    biocViews:AnnotationDbi,
+    AnnotationDbi,
     DBI,
     snow,
     foreach,
     knitr,
     rmarkdown,
     shiny,
-    biocViews:KEGGREST,
-    biocViews:org.Hs.eg.db
+    KEGGREST,
+    org.Hs.eg.db
 Depends: pathview
 RoxygenNote: 6.0.1
 VignetteBuilder: knitr
