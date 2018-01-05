@@ -177,8 +177,7 @@ run_pathfindr <- function(input, p_val_threshold = 5e-2,
   rmarkdown::render(system.file("rmd/genes_table.Rmd", package = "pathfindr"),
                     params = list(df = input_processed), output_dir = ".")
 
-  cat("Pathway enrichment results and converted genes
-can be found in \"results.html\"\n\n")
+  cat("Pathway enrichment results and converted genes can be found in \"results.html\"\n\n")
   cat("Run choose_clusters() for clustering pathways\n\n")
 
   return(final_res)
