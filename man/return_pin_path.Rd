@@ -4,20 +4,27 @@
 \alias{return_pin_path}
 \title{Return The Path to Given Protein Interaction Network (PIN)}
 \usage{
-return_pin_path(pin_name = "KEGG")
+return_pin_path(pin_name_path = "KEGG")
 }
 \arguments{
-\item{pin_name}{Name of the chosen PIN. Must be one of c("Biogrid", "STRING",
-"GeneMania", "HitPredict", "IntAct", "KEGG"). Defaults to "KEGG".}
+\item{pin_name_path}{Name of the chosen PIN or path/to/PIN.sif. If PIN name,
+must be one of c("Biogrid", "GeneMania", "IntAct", "KEGG"). If
+path/to/PIN.sif, the file must comply with the PIN specifications. Defaults
+to "KEGG".}
 }
 \value{
 A character value that contains the path to chosen PIN.
 }
 \description{
-Return The Path to Given Protein Interaction Network (PIN)
+This function returns the path/to/PIN.sif. While the default PINs are
+Biogrid, GeneMania, IntAct and KEGG, the user can choose to use any other PIN
+by specifying the path/to/PPI.sif. All PINs to be used in this workflow must
+have 3 columns with no header and be tab-separated. Columns 1 and 3 must be
+interactor proteins' HGNC gene symbols, column 2 must be a column with all
+rows consisting of "pp".
 }
 \examples{
-pin_path <- return_pin_path("Biogrid")
+pin_path <- return_pin_path("KEGG")
 }
 \seealso{
 See \code{\link{run_pathfindr}} for the wrapper function of the

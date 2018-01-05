@@ -19,7 +19,9 @@ A list of genes in every active subnetwork that has a score > 0 and
 Parse jActive Output File
 }
 \examples{
+\dontrun{
 parsejActive(output, significant_genes)
+}
 }
 \seealso{
 See \code{\link{run_pathfindr}} for the wrapper function of the

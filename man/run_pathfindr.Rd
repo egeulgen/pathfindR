@@ -7,7 +7,7 @@
 run_pathfindr(input, p_val_threshold = 0.05, enrichment_threshold = 1e-04,
   adj_method = "bonferroni", iterations = 10, n_processes = NULL,
   n_snw = 5, overlap_threshold = 0.8, kegg_update = F,
-  pin_name = "KEGG")
+  pin_name_path = "KEGG")
 }
 \arguments{
 \item{input}{the input data that pathfindr uses. The input must be a data
@@ -39,8 +39,10 @@ thresholds when running jActive modules. (Default = 0.8)}
 \item{kegg_update}{boolean value indicating whether or not to update KEGG
 pathway genes (default = FALSE)}
 
-\item{pin_name}{Name of the chosen PIN. Must be one of c("Biogrid", "STRING",
-"GeneMania", "HitPredict", "IntAct", "KEGG"). Defaults to "KEGG".}
+\item{pin_name_path}{Name of the chosen PIN or path/to/PIN.sif. If PIN name,
+must be one of c("Biogrid", "GeneMania", "IntAct", "KEGG"). If
+path/to/PIN.sif, the file must comply with the PIN specifications. Defaults
+to "KEGG".}
 }
 \value{
 Data frame of pathview enrichment results. Columns are: "ID",
@@ -76,7 +78,9 @@ of occurences are reported for each enriched pathway.
 }
 
 \examples{
-run_pathfindr(input_data_frame)
+\dontrun{
+run_pathfindr(RA_input)
+}
 }
 \seealso{
 \code{\link{input_testing}} for input testing,

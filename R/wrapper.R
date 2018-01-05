@@ -57,17 +57,19 @@
 #'   clustering the resulting enriched pathways.
 #'
 #' @examples
-#' run_pathfindr(input_data_frame)
+#' \dontrun{
+#' run_pathfindr(RA_input)
+#' }
 run_pathfindr <- function(input, p_val_threshold = 5e-2,
                       enrichment_threshold = 1e-4,
                       adj_method = "bonferroni",
                       iterations = 10, n_processes = NULL,
                       n_snw = 5, overlap_threshold = 0.8,
-                      kegg_update = F, pin_name = "KEGG") {
+                      kegg_update = F, pin_name_path = "KEGG") {
   ## absolute paths for cytoscape and pin
   jactive_path <- normalizePath(system.file("java/myCytoscape.jar",
                                             package = "pathfindr"))
-  pin_path <- return_pin_path(pin_name)
+  pin_path <- return_pin_path(pin_name_path)
 
   ## Check input
   cat("## Testing input\n\n")
@@ -78,7 +80,7 @@ run_pathfindr <- function(input, p_val_threshold = 5e-2,
   input_processed <- input_processing(input, p_val_threshold, pin_path)
 
   dir.create("jActive")
-  write.table(input_processed[, c("GENE", "SPOTPvalue")],
+  utils::write.table(input_processed[, c("GENE", "SPOTPvalue")],
               "./jActive/input_for_jactive.txt", row.names = F, quote = F, sep = "\t")
 
   ## get current KEGG pathways and kegg id, pathway names
@@ -114,7 +116,7 @@ run_pathfindr <- function(input, p_val_threshold = 5e-2,
                   " -ot ", overlap_threshold))
 
     # parse
-    jactive_output <- read.table("jActive.txt", stringsAsFactors = F)
+    jactive_output <- utils::read.table("jActive.txt", stringsAsFactors = F)
     snws <- pathfindr::parsejActive(jactive_output, input_processed$GENE)
 
     cat(paste0("Found ", length(snws), " active subnetworks\n\n"))
@@ -191,7 +193,7 @@ run_pathfindr <- function(input, p_val_threshold = 5e-2,
 #' pathway clustering.
 #'
 #' @param result_df resulting data frame of the pathfindr main workflow.
-#' @inheritParams cluster_pathways
+#' @param ... optional arguments for \code{cluster_pathways}
 #'
 #' @return This function first calculates the pairwise distances between the
 #'   pathways in the \code{result_df} data frame. Via a shiny HTML document, the
@@ -204,8 +206,13 @@ run_pathfindr <- function(input, p_val_threshold = 5e-2,
 #'
 #' @export
 #'
+#' @seealso See \code{\link{cluster_pathways}} for calculation of pairwise distances
+#' between enriched pathways.
+#'
 #' @examples
-#' choose_clusters(result_df)
+#' \dontrun{
+#' choose_clusters(RA_output)
+#' }
 choose_clusters <- function(result_df, ...) {
   cat("Calculating pairwise distances between pathways\n\n")
   PWD_mat <- cluster_pathways(result_df$ID, ...)
@@ -218,8 +225,17 @@ choose_clusters <- function(result_df, ...) {
 
 #' Return The Path to Given Protein Interaction Network (PIN)
 #'
-#' @param pin_name Name of the chosen PIN. Must be one of c("Biogrid", "STRING",
-#'   "GeneMania", "HitPredict", "IntAct", "KEGG"). Defaults to "KEGG".
+#' This function returns the path/to/PIN.sif. While the default PINs are
+#' Biogrid, GeneMania, IntAct and KEGG, the user can choose to use any other PIN
+#' by specifying the path/to/PPI.sif. All PINs to be used in this workflow must
+#' have 3 columns with no header and be tab-separated. Columns 1 and 3 must be
+#' interactor proteins' HGNC gene symbols, column 2 must be a column with all
+#' rows consisting of "pp".
+#'
+#' @param pin_name_path Name of the chosen PIN or path/to/PIN.sif. If PIN name,
+#'   must be one of c("Biogrid", "GeneMania", "IntAct", "KEGG"). If
+#'   path/to/PIN.sif, the file must comply with the PIN specifications. Defaults
+#'   to "KEGG".
 #'
 #' @return A character value that contains the path to chosen PIN.
 #'
@@ -227,15 +243,25 @@ choose_clusters <- function(result_df, ...) {
 #' @seealso See \code{\link{run_pathfindr}} for the wrapper function of the
 #'   pathfindr workflow
 #' @examples
-#' pin_path <- return_pin_path("Biogrid")
+#' pin_path <- return_pin_path("KEGG")
 
-return_pin_path <- function(pin_name = "KEGG") {
-  if (!pin_name %in% c("Biogrid", "STRING", "GeneMania",
-                       "HitPredict", "IntAct", "KEGG"))
+return_pin_path <- function(pin_name_path = "KEGG") {
+  if (pin_name_path %in% c("Biogrid", "GeneMania",
+                           "IntAct", "KEGG"))
+    path <- normalizePath(system.file(paste0("extdata/", pin_name_path, ".sif"),
+                                      package = "pathfindr"))
+  else if (file.exists(pin_name_path)) {
+    path <- normalizePath(pin_name_path)
+    pin <- utils::read.delim(file = path, header = F, stringsAsFactors = F)
+    if (ncol(pin) != 3)
+      stop("The PIN file must have 3 columns and be tab-separated")
+    if (any(pin[,2] != "pp"))
+      stop("The second column of the PIN file must all be \"pp\" ")
+  }
+
+  else
     stop(paste0("The chosen PIN must be one of:\n",
-                "Biogrid, STRING, GeneMania, HitPredict, IntAct or KEGG"))
+                "Biogrid, GeneMania, IntAct or KEGG"))
 
-  path <- normalizePath(system.file(paste0("data/", pin_name, ".sif"),
-                                    package = "pathfindr"))
   return(path)
 }

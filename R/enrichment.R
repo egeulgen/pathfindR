@@ -10,6 +10,8 @@
 #' @param adj_method correction method to be used for adjusting p-values.
 #' @param enrichment_threshold adjusted p value threshold used when filtering
 #'   pathway enrichment result
+#' @param pin_path path to the Protein Interaction Network (PIN) file used in
+#'   the analysis
 #'
 #' @return A data frame that contains enrichment results.
 #' @export
@@ -17,7 +19,9 @@
 #'   \code{\link{run_pathfindr}} for the wrapper function of the pathfindr
 #'   workflow
 #' @examples
+#' \dontrun{
 #' enrichment(genes_by_pathway, genes_of_interest, pathways_list)
+#' }
 enrichment <- function(genes_by_pathway, genes_of_interest,
                        pathways_list, adj_method = "bonferroni",
                        enrichment_threshold = 1e-4, pin_path) {
@@ -28,11 +32,11 @@ enrichment <- function(genes_by_pathway, genes_of_interest,
     non_pw_genes_in_pool <- tot_genes_in_pool - pw_genes_in_pool
     num_selected_genes <- length(chosen_genes)
 
-    phyper(pw_genes_selected - 1, pw_genes_in_pool,
-           non_pw_genes_in_pool, num_selected_genes, lower.tail = F)
+    stats::phyper(pw_genes_selected - 1, pw_genes_in_pool,
+                  non_pw_genes_in_pool, num_selected_genes, lower.tail = F)
   }
 
-  pin <- read.delim(file = pin_path, header = F, stringsAsFactors = F)
+  pin <- utils::read.delim(file = pin_path, header = F, stringsAsFactors = F)
   all_genes <- unique(c(pin$V1, pin$V2))
 
   enrichment_res <- sapply(genes_by_pathway, hyperg_test,
@@ -41,7 +45,7 @@ enrichment <- function(genes_by_pathway, genes_of_interest,
   colnames(enrichment_res) <- "p_value"
 
   enrichment_res <- enrichment_res[order(enrichment_res$p_value), , drop = F]
-  enrichment_res$adj_p <- p.adjust(enrichment_res$p, method = adj_method)
+  enrichment_res$adj_p <- stats::p.adjust(enrichment_res$p, method = adj_method)
 
   if (all(enrichment_res$adj_p > enrichment_threshold))
     return(NULL)

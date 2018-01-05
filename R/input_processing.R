@@ -14,7 +14,7 @@
 #' @seealso See \code{\link{run_pathfindr}} for the wrapper function of the
 #'   pathfindr workflow
 #' @examples
-#' input_testing(input_df, p_val_threshold)
+#' input_testing(RA_input, 0.05)
 input_testing <- function(input, p_val_threshold){
   if (!is.data.frame(input))
     stop("the input is not a data frame")
@@ -59,7 +59,9 @@ input_testing <- function(input, p_val_threshold){
 #'   pathfindr workflow
 #'
 #' @examples
+#' \dontrun{
 #' input_processing(input, p_val_threshold = 0.05, "path/to/pin")
+#' }
 input_processing <- function(input, p_val_threshold, pin_path) {
   colnames(input) <- c("GENE", "CHANGE", "P_VALUE")
 
@@ -67,7 +69,7 @@ input_processing <- function(input, p_val_threshold, pin_path) {
   input <- input[input$P_VALUE <= p_val_threshold, ]
 
   ## load and prep pin
-  pin <- read.delim(file = pin_path, header = F, stringsAsFactors = F)
+  pin <- utils::read.delim(file = pin_path, header = F, stringsAsFactors = F)
   pin$V2 <- NULL
 
   ## Genes not in pin

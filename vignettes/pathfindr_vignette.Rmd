@@ -35,7 +35,7 @@ The overview of the enrichment workflow is presented in the figure below:
 For this workflow, the wrapper function `run_pathfindr()` is used. This function takes in a data frame consisting of Gene Symbol, log-fold-change and adjusted-p values. The first 6 rows of an example input dataset (of rheumatoid arthritis differential-expression) can be found below:
 
 ```{r}
-library(pathfindr)
+suppressPackageStartupMessages(library(pathfindr))
 data("RA_input")
 knitr::kable(head(RA_input))
 ```
@@ -49,6 +49,8 @@ The user may want to change certain arguments of the function:
 ```{r eval=FALSE}
 # to change the PIN (default = KEGG)
 result <- run_pathfindr(RA_input, pin_name = "Biogrid")
+result <- run_pathfindr(RA_input, pin_name = "/path/to/myPIN.sif")
+
 # to change the number of iterations (default = 10)
 result <- run_pathfindr(RA_input, iterations = 5) 
 # to manually specify the number processes used during parallel loop by foreach

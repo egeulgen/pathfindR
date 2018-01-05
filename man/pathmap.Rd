@@ -23,7 +23,9 @@ Data frame of enrichment results with genes involved in each pathway
 Annotate Involved Genes In Pathways and Visualize Pathways
 }
 \examples{
+\dontrun{
 pathmap(pathway_table, change_data)
+}
 }
 \seealso{
 \code{\link[pathview]{pathview}} for pathway based data integration

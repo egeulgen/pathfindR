@@ -19,6 +19,9 @@ Encoding: UTF-8
 LazyData: true
 SystemRequirements: Java JVM 1.8
 Imports: doSNOW,
+    AnnotationDbi,
+    DBI,
+    snow,
     foreach,
     knitr,
     rmarkdown,

@@ -11,7 +11,9 @@
 #'   pathfindr workflow
 #'
 #' @examples
+#' \dontrun{
 #' parsejActive(output, significant_genes)
+#' }
 parsejActive <- function(jactive_output, signif_genes) {
   ends <- grep("SPOTPvaluesig", jactive_output$V1)
   starts <- c(1, ends + 1)

@@ -17,7 +17,9 @@
 #' @export
 #'
 #' @examples
-#' cluster_pathways(pathway_genes)
+#' \dontrun{
+#' cluster_pathways(pathway_ids)
+#' }
 cluster_pathways <- function(pathway_ids, agg_method = "average",
                              plot_heatmap = T, kegg_update = F) {
   ## Get genes for selected pathways
@@ -49,7 +51,7 @@ cluster_pathways <- function(pathway_ids, agg_method = "average",
   }
 
   # Calculate Pairwise Distances and Cluster -------------------------------
-  cor_mat <- cor(overlap_mat)
+  cor_mat <- stats::cor(overlap_mat)
   PWD_mat <- 1 - cor_mat
 
   pw_names <- names(pathway_genes)
@@ -57,8 +59,8 @@ cluster_pathways <- function(pathway_ids, agg_method = "average",
 
   ### Heatmap
   if (plot_heatmap)
-    heatmap(PWD_mat, symm = T, distfun = function(x) as.dist(x),
-            hclustfun = function(x) hclust(x, method = agg_method))
+    stats::heatmap(PWD_mat, symm = T, distfun = function(x) stats::as.dist(x),
+            hclustfun = function(x) stats::hclust(x, method = agg_method))
 
   return(PWD_mat)
 }
