@@ -1,4 +1,7 @@
 # pathfindr : An R Package for Pathway Enrichment Analysis Utilizing Active Subnetworks
+
+[![Travis-CI Build Status](https://travis-ci.org/egeulgen/pathfindr.svg?branch=master)](https://travis-ci.org/egeulgen/pathfindr)
+
 pathfindr is a tool for pathway enrichment analysis via active subnetworks. The package also offers the option to cluster the resulting the enriched pathway and choose representative pathways.
 
 ## Overview of the Enrichment Workflow
@@ -18,7 +21,7 @@ For the active subnetwork search component to work, the user must have [JAVA](ht
 The protein interaction networks (PINs) were gathered from various resources:
 - [Biogrid](https://downloads.thebiogrid.org/BioGRID)
 - [GeneMania](http://genemania.org/data/): only interactions with weights >= 0.0006 were kept
-- [STRING](https://string-db.org/cgi/download.pl?UserId=eCoJ8Fv0OZg6&sessionId=H23WzOsHidKz&species_text=Homo+sapiens): only interactions with combined_score >= 800 were kept.
 - [IntAct](https://www.ebi.ac.uk/intact/)
-- [HitPredict](http://hintdb.hgc.jp/htp/download.html)
 - KEGG PIN - created via an in-house script
+
+
