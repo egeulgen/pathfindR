@@ -19,15 +19,15 @@ Encoding: UTF-8
 LazyData: true
 SystemRequirements: Java JVM 1.8
 Imports: doSNOW,
-    bioc:AnnotationDbi,
+    AnnotationDbi,
     DBI,
     snow,
     foreach,
     knitr,
     rmarkdown,
     shiny,
-    bioc:KEGGREST,
-    bioc:org.Hs.eg.db
-Depends: biocViews:pathview
+    KEGGREST,
+    org.Hs.eg.db
+Depends: pathview
 RoxygenNote: 6.0.1
 VignetteBuilder: knitr
