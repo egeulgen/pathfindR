@@ -16,7 +16,6 @@
 #' @examples
 #' pathmap(pathway_table, change_data)
 pathmap <- function(pw_table, gene_data) {
-  suppressPackageStartupMessages(library(pathview)) ## cannot find work-around
 
   pw_table$Up_regulated <- ""
   pw_table$Down_regulated <- ""

@@ -24,7 +24,7 @@ Imports: doSNOW,
     rmarkdown,
     shiny,
     KEGGREST,
-    org.Hs.eg.db,
-    pathview
+    org.Hs.eg.db
+Depends: pathview
 RoxygenNote: 6.0.1
 VignetteBuilder: knitr
