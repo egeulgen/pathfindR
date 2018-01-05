@@ -18,17 +18,16 @@ BugReports: https://github.com/egeulgen/pathfindr/issues
 Encoding: UTF-8
 LazyData: true
 SystemRequirements: Java JVM 1.8
-setRepositories(ind=1:2)
 Imports: doSNOW,
-    AnnotationDbi,
+    biocViews:AnnotationDbi,
     DBI,
     snow,
     foreach,
     knitr,
     rmarkdown,
     shiny,
-    KEGGREST,
-    org.Hs.eg.db
-Depends: pathview
+    biocViews:KEGGREST,
+    biocViews:org.Hs.eg.db
+Depends: biocViews:pathview
 RoxygenNote: 6.0.1
 VignetteBuilder: knitr
