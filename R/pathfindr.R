@@ -2,7 +2,6 @@
   packageStartupMessage("##############################################################################
                         Welcome to pathfindr
 ##############################################################################")
-  setRepositories(ind=1:2)
 }
 
 #' pathfindr: A package for Pathway Enrichment Analysis Utilizing Active
