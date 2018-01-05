@@ -18,7 +18,9 @@ list containing genes for each pathway. The names of the list are
 Get Current KEGG Pathway Genes
 }
 \examples{
+\dontrun{
 current_KEGG()
+}
 }
 \seealso{
 \code{\link{enrichment}} for pathway enrichment analysis. See

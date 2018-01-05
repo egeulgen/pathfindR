@@ -27,7 +27,9 @@ This function first filters the input so that all p values are less
 Process Input
 }
 \examples{
+\dontrun{
 input_processing(input, p_val_threshold = 0.05, "path/to/pin")
+}
 }
 \seealso{
 See \code{\link{run_pathfindr}} for the wrapper function of the

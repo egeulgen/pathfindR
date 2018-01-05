@@ -23,7 +23,7 @@ Only checks if the input and the threshold follows the required
 Input Tesing
 }
 \examples{
-input_testing(input_df, p_val_threshold)
+input_testing(RA_input, 0.05)
 }
 \seealso{
 See \code{\link{run_pathfindr}} for the wrapper function of the

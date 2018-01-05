@@ -10,11 +10,14 @@
 #'   "highest_p","Involved_genes". The function also creates visualizations of
 #'   the pathways with the package "pathview".
 #' @export
+#' @import pathview
 #' @seealso \code{\link[pathview]{pathview}} for pathway based data integration
 #'   and visualization. See \code{\link{run_pathfindr}} for the wrapper function
 #'   of the pathfindr workflow
 #' @examples
+#' \dontrun{
 #' pathmap(pathway_table, change_data)
+#' }
 pathmap <- function(pw_table, gene_data) {
 
   pw_table$Up_regulated <- ""
@@ -30,7 +33,7 @@ pathmap <- function(pw_table, gene_data) {
   setwd("pathway_maps")
 
   for (i in 1:nrow(pw_table)) {
-    tmp <- pathview(gene.data = gene_data,
+    tmp <- pathview::pathview(gene.data = gene_data,
                               gene.idtype = "SYMBOL",
                               pathway.id = pw_table$ID[i],
                               species = "hsa",
@@ -44,7 +47,7 @@ pathmap <- function(pw_table, gene_data) {
      tmp <- unlist(strsplit(tmp, split = ","))
      tmp <- unique(tmp)
      if (any(tmp != ""))
-       tmp <- AnnotationDbi::select(org.Hs.eg.db:::org.Hs.eg.db, tmp,
+       tmp <- AnnotationDbi::select(org.Hs.eg.db::org.Hs.eg.db, tmp,
                                     "SYMBOL", "ENTREZID")[, 2]
 
      pw_table$Up_regulated[i] <- paste(tmp[tmp %in% upreg], collapse = ", ")

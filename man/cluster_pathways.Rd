@@ -30,7 +30,9 @@ Pairwise distance matrix. See "Chen, Y. A. et al. Integrated pathway
 Calculate Pairwise Distances Between Given Pathways
 }
 \examples{
-cluster_pathways(pathway_genes)
+\dontrun{
+cluster_pathways(pathway_ids)
+}
 }
 \seealso{
 \code{\link[stats]{hclust}} for hierchical clustering,

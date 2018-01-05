@@ -22,6 +22,9 @@ IDs. Names of this list are the KEGG IDs.}
 
 \item{enrichment_threshold}{adjusted p value threshold used when filtering
 pathway enrichment result}
+
+\item{pin_path}{path to the Protein Interaction Network (PIN) file used in
+the analysis}
 }
 \value{
 A data frame that contains enrichment results.
@@ -30,7 +33,9 @@ A data frame that contains enrichment results.
 Perform Enrichment Analysis
 }
 \examples{
+\dontrun{
 enrichment(genes_by_pathway, genes_of_interest, pathways_list)
+}
 }
 \seealso{
 \code{\link[stats]{p.adjust}} for adjustment of p values. See

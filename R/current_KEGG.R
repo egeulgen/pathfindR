@@ -10,7 +10,9 @@
 #'   \code{\link{run_pathfindr}} for the wrapper function of the pathfindr
 #'   workflow
 #' @examples
+#' \dontrun{
 #' current_KEGG()
+#' }
 current_KEGG <- function(kegg_update = F) {
   if (!file.exists("KEGG_pws.Rdata") | kegg_update) {
     # created named list, eg:  path:map00010: "Glycolysis / Gluconeogenesis"

@@ -8,6 +8,8 @@ choose_clusters(result_df, ...)
 }
 \arguments{
 \item{result_df}{resulting data frame of the pathfindr main workflow.}
+
+\item{...}{optional arguments for \code{cluster_pathways}}
 }
 \value{
 This function first calculates the pairwise distances between the
@@ -26,5 +28,11 @@ doi:10.1371/journal.pone.0099030 (2014)." for details on the method of
 pathway clustering.
 }
 \examples{
-choose_clusters(result_df)
+\dontrun{
+choose_clusters(RA_output)
+}
+}
+\seealso{
+See \code{\link{cluster_pathways}} for calculation of pairwise distances
+between enriched pathways.
 }
