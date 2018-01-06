@@ -1,11 +1,8 @@
 Package: pathfindr
 Type: Package
 Title: Pathway Enrichment Analysis Utilizing Active Subnetworks
-Version: 0.1.0.9000
-Authors@R: as.person(c(
-    "Ege Ulgen <egeulgen@gmail.com> [aut, cre]", 
-    "Ozan Ozisik <ozanytu@gmail.com> [aut]"
-  ))
+Version: 0.1.0
+Author: Ege Ulgen, Ozan Ozisik
 Maintainer: Ege Ulgen <egeulgen@gmail.com>
 Description: Implementation of a workflow used for pathway enrichment
     utilizing active subnetworks. The input genes are mapped onto a PPI

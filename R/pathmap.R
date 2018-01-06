@@ -38,8 +38,8 @@ pathmap <- function(pw_table, gene_data) {
                               pathway.id = pw_table$ID[i],
                               species = "hsa",
                               out.suffix = pw_table$Pathway[i],
-                              keys.align = "y", kegg.native = T,
-                              key.pos = "topright", same.layer = F)
+                              keys.align = "y", kegg.native = TRUE,
+                              key.pos = "topright", same.layer = FALSE)
 
    if (length(tmp) != 1) {
      tmp <- tmp$plot.data.gene$all.mapped

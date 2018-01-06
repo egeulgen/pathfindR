@@ -6,7 +6,7 @@
 \usage{
 run_pathfindr(input, p_val_threshold = 0.05, enrichment_threshold = 1e-04,
   adj_method = "bonferroni", iterations = 10, n_processes = NULL,
-  n_snw = 5, overlap_threshold = 0.8, kegg_update = F,
+  n_snw = 5, overlap_threshold = 0.8, kegg_update = FALSE,
   pin_name_path = "KEGG")
 }
 \arguments{

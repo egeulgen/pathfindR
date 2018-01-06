@@ -69,7 +69,8 @@ input_processing <- function(input, p_val_threshold, pin_path) {
   input <- input[input$P_VALUE <= p_val_threshold, ]
 
   ## load and prep pin
-  pin <- utils::read.delim(file = pin_path, header = F, stringsAsFactors = F)
+  pin <- utils::read.delim(file = pin_path,
+                           header = FALSE, stringsAsFactors = FALSE)
   pin$V2 <- NULL
 
   ## Genes not in pin
@@ -87,8 +88,8 @@ input_processing <- function(input, p_val_threshold, pin_path) {
   select_alias <- function(result, converted, idx) {
     if (idx == 0)
       return("NOT_FOUND")
-    else if (result[idx] %in% converted[,2])
-      return(result[idx-1])
+    else if (result[idx] %in% converted[, 2])
+      return(result[idx - 1])
     else
       return(result[idx])
   }

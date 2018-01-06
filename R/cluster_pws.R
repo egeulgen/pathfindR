@@ -21,14 +21,14 @@
 #' cluster_pathways(pathway_ids)
 #' }
 cluster_pathways <- function(pathway_ids, agg_method = "average",
-                             plot_heatmap = T, kegg_update = F) {
+                             plot_heatmap = TRUE, kegg_update = FALSE) {
   ## Get genes for selected pathways
   all_pw_genes <- current_KEGG(kegg_update)
   pathway_genes <- all_pw_genes[pathway_ids]
 
   ## Sort according to number of genes
   num_genes <- sapply(pathway_genes, length)
-  pathway_genes <- pathway_genes[order(num_genes, decreasing = T)]
+  pathway_genes <- pathway_genes[order(num_genes, decreasing = TRUE)]
 
   # calculate overlap matrix ------------------------------------------------
   N <- length(pathway_genes)
@@ -59,7 +59,7 @@ cluster_pathways <- function(pathway_ids, agg_method = "average",
 
   ### Heatmap
   if (plot_heatmap)
-    stats::heatmap(PWD_mat, symm = T, distfun = function(x) stats::as.dist(x),
+    stats::heatmap(PWD_mat, symm = TRUE, distfun = function(x) stats::as.dist(x),
             hclustfun = function(x) stats::hclust(x, method = agg_method))
 
   return(PWD_mat)

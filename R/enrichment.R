@@ -33,10 +33,12 @@ enrichment <- function(genes_by_pathway, genes_of_interest,
     num_selected_genes <- length(chosen_genes)
 
     stats::phyper(pw_genes_selected - 1, pw_genes_in_pool,
-                  non_pw_genes_in_pool, num_selected_genes, lower.tail = F)
+                  non_pw_genes_in_pool, num_selected_genes,
+                  lower.tail = FALSE)
   }
 
-  pin <- utils::read.delim(file = pin_path, header = F, stringsAsFactors = F)
+  pin <- utils::read.delim(file = pin_path, header = FALSE,
+                           stringsAsFactors = FALSE)
   all_genes <- unique(c(pin$V1, pin$V2))
 
   enrichment_res <- sapply(genes_by_pathway, hyperg_test,
@@ -44,13 +46,15 @@ enrichment <- function(genes_by_pathway, genes_of_interest,
   enrichment_res <- as.data.frame(enrichment_res)
   colnames(enrichment_res) <- "p_value"
 
-  enrichment_res <- enrichment_res[order(enrichment_res$p_value), , drop = F]
+  idx <- order(enrichment_res$p_value)
+  enrichment_res <- enrichment_res[idx, , drop = FALSE]
   enrichment_res$adj_p <- stats::p.adjust(enrichment_res$p, method = adj_method)
 
   if (all(enrichment_res$adj_p > enrichment_threshold))
     return(NULL)
   else {
-    enrichment_res <- enrichment_res[enrichment_res$adj_p <= enrichment_threshold,]
+    cond <- enrichment_res$adj_p <= enrichment_threshold
+    enrichment_res <- enrichment_res[cond, ]
 
     ## pathway IDs
     enrichment_res$ID <- rownames(enrichment_res)

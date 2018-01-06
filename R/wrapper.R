@@ -65,7 +65,7 @@ run_pathfindr <- function(input, p_val_threshold = 5e-2,
                       adj_method = "bonferroni",
                       iterations = 10, n_processes = NULL,
                       n_snw = 5, overlap_threshold = 0.8,
-                      kegg_update = F, pin_name_path = "KEGG") {
+                      kegg_update = FALSE, pin_name_path = "KEGG") {
   ## absolute paths for cytoscape and pin
   jactive_path <- normalizePath(system.file("java/myCytoscape.jar",
                                             package = "pathfindr"))
@@ -81,7 +81,8 @@ run_pathfindr <- function(input, p_val_threshold = 5e-2,
 
   dir.create("jActive")
   utils::write.table(input_processed[, c("GENE", "SPOTPvalue")],
-              "./jActive/input_for_jactive.txt", row.names = F, quote = F, sep = "\t")
+              "./jActive/input_for_jactive.txt",
+              row.names = FALSE, quote = FALSE, sep = "\t")
 
   ## get current KEGG pathways and kegg id, pathway names
   cat("## Retreiving most current KEGG pathway genes\n\n")
@@ -116,17 +117,19 @@ run_pathfindr <- function(input, p_val_threshold = 5e-2,
                   " -ot ", overlap_threshold))
 
     # parse
-    jactive_output <- utils::read.table("jActive.txt", stringsAsFactors = F)
+    jactive_output <- utils::read.table("jActive.txt",
+                                        stringsAsFactors = FALSE)
     snws <- pathfindr::parsejActive(jactive_output, input_processed$GENE)
 
     cat(paste0("Found ", length(snws), " active subnetworks\n\n"))
 
     ## enrichment per subnetwork
     enrichment_res <- lapply(snws, function(x)
-        pathfindr::enrichment(pw_genes, x, pathways_list, adj_method, enrichment_threshold, pin_path))
+        pathfindr::enrichment(pw_genes, x, pathways_list,
+                              adj_method, enrichment_threshold, pin_path))
     enrichment_res <- Reduce(rbind, enrichment_res)
 
-    if(nrow(enrichment_res) == 0)
+    if (nrow(enrichment_res) == 0)
       enrichment_res <- NULL
     else {
       ## keep lowest p for each pathway
@@ -166,7 +169,7 @@ run_pathfindr <- function(input, p_val_threshold = 5e-2,
   ## Annotate involved genes and generate pathway maps
   genes_df <- input_processed[, c("GENE", "CHANGE")]
   rownames(genes_df) <- genes_df$GENE
-  genes_df <- genes_df[, -1, drop = F]
+  genes_df <- genes_df[, -1, drop = FALSE]
   final_res <- pathmap(final_res, genes_df)
 
   cat("## Creating HTML report\n\n")
@@ -179,7 +182,8 @@ run_pathfindr <- function(input, p_val_threshold = 5e-2,
   rmarkdown::render(system.file("rmd/genes_table.Rmd", package = "pathfindr"),
                     params = list(df = input_processed), output_dir = ".")
 
-  cat("Pathway enrichment results and converted genes can be found in \"results.html\"\n\n")
+  cat("Pathway enrichment results and converted genes ")
+  cat("can be found in \"results.html\"\n\n")
   cat("Run choose_clusters() for clustering pathways\n\n")
 
   return(final_res)
@@ -252,10 +256,11 @@ return_pin_path <- function(pin_name_path = "KEGG") {
                                       package = "pathfindr"))
   else if (file.exists(pin_name_path)) {
     path <- normalizePath(pin_name_path)
-    pin <- utils::read.delim(file = path, header = F, stringsAsFactors = F)
+    pin <- utils::read.delim(file = path,
+                             header = FALSE, stringsAsFactors = FALSE)
     if (ncol(pin) != 3)
       stop("The PIN file must have 3 columns and be tab-separated")
-    if (any(pin[,2] != "pp"))
+    if (any(pin[, 2] != "pp"))
       stop("The second column of the PIN file must all be \"pp\" ")
   }
 

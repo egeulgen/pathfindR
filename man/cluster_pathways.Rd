@@ -4,8 +4,8 @@
 \alias{cluster_pathways}
 \title{Calculate Pairwise Distances Between Given Pathways}
 \usage{
-cluster_pathways(pathway_ids, agg_method = "average", plot_heatmap = T,
-  kegg_update = F)
+cluster_pathways(pathway_ids, agg_method = "average", plot_heatmap = TRUE,
+  kegg_update = FALSE)
 }
 \arguments{
 \item{pathway_ids}{List that contains genes for selected pathways that are to

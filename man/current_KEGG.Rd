@@ -4,7 +4,7 @@
 \alias{current_KEGG}
 \title{Get Current KEGG Pathway Genes}
 \usage{
-current_KEGG(kegg_update = F)
+current_KEGG(kegg_update = FALSE)
 }
 \arguments{
 \item{kegg_update}{boolean value indicating whether or not to update KEGG

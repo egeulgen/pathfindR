@@ -13,7 +13,7 @@
 #' \dontrun{
 #' current_KEGG()
 #' }
-current_KEGG <- function(kegg_update = F) {
+current_KEGG <- function(kegg_update = FALSE) {
   if (!file.exists("KEGG_pws.Rdata") | kegg_update) {
     # created named list, eg:  path:map00010: "Glycolysis / Gluconeogenesis"
     pathways_list <- KEGGREST::keggList("pathway", "hsa")
@@ -24,7 +24,7 @@ current_KEGG <- function(kegg_update = F) {
     # parse pathway genes
     genes_by_pathway <- sapply(pathway_codes, function(pwid){
       pw <- KEGGREST::keggGet(pwid)
-      pw <- pw[[1]]$GENE[c(F, T)] ## get gene symbol
+      pw <- pw[[1]]$GENE[c(FALSE, TRUE)] ## get gene symbols
       pw <- sub(";.+", "", pw)
       pw <- pw[grepl("^[a-zA-Z0-9_-]*$", pw)] ## remove mistaken lines
       pw
