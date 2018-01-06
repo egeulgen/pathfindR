@@ -20,9 +20,9 @@ knitr::opts_chunk$set(
 
 Our motivation to develop this package was that direct pathway enrichment analysis of differential rna/protein expression or methylation results may not provide the researcher with the full picture. That is to say; pathway enrichment of only the list of significant genes may not be informative enough to explain the underlying disease mechanisms. 
 
-An active subnetwork is defined as a group of interconnected genes in a protein-protein interaction network that contains most of the significant genes. Therefore, these active subnetworks define disease-associated sets of genes, whether discovered through differential expression analysis or discovered because of having interactions with a significant genes.
+An active subnetwork is defined as a group of interconnected genes in a protein-protein interaction network that contains most of the significant genes. Therefore, these active subnetworks define disease-associated sets of genes, whether discovered through differential expression analysis or discovered because of having interactions with a significant gene.
 
-We hence propose to leverage information from a protein-protein interaction network to find active subnetworks and then perform pathway enrichment analyses on these subnetworks. Briefly, this workflow first maps the input differential expression results onto a protein-protein interaction network and finds active subnetworks. Next, pathway enrichment analysis is performed with each gene set of active subnetworks. Finally, these enrichment results are summarized and returned as a data frame. This workflow is implemented as the function `run_pathfindr()` and further described in the "Enrichment Worklow" section of this vignette.
+We hence propose to leverage information from a protein-protein interaction network to find active subnetworks and then perform pathway enrichment analyses on these subnetworks. Briefly, this workflow first maps the significant genes onto a protein-protein interaction network and finds active subnetworks. Next, pathway enrichment analysis is performed with each gene set of active subnetworks. Finally, these enrichment results are summarized and returned as a data frame. This workflow is implemented as the function `run_pathfindr()` and further described in the "Enrichment Worklow" section of this vignette.
 
 This process usually yields a great number of enrichment pathways. We therefore implemented a pairwise distance metric (as proposed by Chen et al.) between pathways and eventual hierarchical clustering of the pathways through a shiny app, allowing dynamic partioning of the dendrogram into relevant clusters. Details are discussed in the "Pathway Clustering" section of this vignette.
 
@@ -49,10 +49,12 @@ The user may want to change certain arguments of the function:
 ```{r eval=FALSE}
 # to change the PIN (default = KEGG)
 result <- run_pathfindr(RA_input, pin_name = "Biogrid")
+# to use any PIN of user's choice
 result <- run_pathfindr(RA_input, pin_name = "/path/to/myPIN.sif")
 
 # to change the number of iterations (default = 10)
 result <- run_pathfindr(RA_input, iterations = 5) 
+
 # to manually specify the number processes used during parallel loop by foreach
 result <- run_pathfindr(RA_input, n_processes = 2) 
 ```
@@ -66,7 +68,7 @@ After input testing, any gene symbols that are not in the protein-interaction ne
 - [jActiveModules](https://www.ncbi.nlm.nih.gov/pubmed/12169552) - Simulated annealing algorithm and 
 - [Active Subnetwork GA](http://www.eurekaselect.com/142543/article) - Genetic algorithm
 
-Next, pathway enrichment analyses are performed using the genes in each of the active subnetworks. For this, up-to-date information on genes contained in each KEGG pathway are retrieved with the help of the R package `KEGGREST`. This information is saved to the current directory but can be updated during future runs by setting the argument `kegg_update` to TRUE (default = FALSE) in the wrapper function `run_pathfindr()` or the stand-alone function that gets the current KEGG pathway genes `current_KEGG()`.
+Next, pathway enrichment analyses are performed using the genes in each of the active subnetworks. For this, up-to-date information on genes contained in each KEGG pathway are retrieved with the help of the R package `KEGGREST`. This information is saved to the current directory for later use but can be updated during future runs by setting the argument `kegg_update` to TRUE (default = FALSE) in the wrapper function `run_pathfindr()` or in the stand-alone function that gets the current KEGG pathway genes `current_KEGG()`.
 
 During enrichment analyses, pathways with adjusted-p values larger than the `enrichment_threshold` (an argument of `run_pathfindr()`) are discarded. The results of enrichment analyses over all active subnetworks are combined by keeping only the lowest adjusted-p value for each pathway. 
 
