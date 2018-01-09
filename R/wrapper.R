@@ -30,6 +30,8 @@
 #' @inheritParams current_KEGG
 #' @inheritParams return_pin_path
 #'
+#' @import knitr
+#'
 #' @return Data frame of pathview enrichment results. Columns are: "ID",
 #'   "Pathway", "occurence", "lowest_p", "highest_p". "ID" is the KEGG ID for a
 #'   given pathway and "Pathway" is the name. "occurence" indicates the number
@@ -207,6 +209,8 @@ run_pathfindr <- function(input, p_val_threshold = 5e-2,
 #'   file.
 #'
 #' @export
+#' @import knitr
+#' @import shiny
 #'
 #' @seealso See \code{\link{cluster_pathways}} for calculation of pairwise distances
 #' between enriched pathways.

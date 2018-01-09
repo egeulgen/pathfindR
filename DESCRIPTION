@@ -20,12 +20,12 @@ Imports: doSNOW,
     DBI,
     snow,
     foreach,
-    knitr,
     rmarkdown,
-    shiny,
     KEGGREST,
     org.Hs.eg.db
-Depends: R (>= 3.0.0),
-    pathview
+Depends: R (>= 3.4),
+    pathview,
+    knitr,
+    shiny
 RoxygenNote: 6.0.1
 VignetteBuilder: knitr

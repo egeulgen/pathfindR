@@ -78,7 +78,7 @@ The wrapper function returns a data frame that contains the lowest and the highe
 
 ```{r}
 data("RA_output")
-knitr::kable(head(RA_output,2))
+knitr::kable(head(RA_output, 2))
 ```
 
 The function also creates an HTML report `results.html` that can be found in the current working directory. This report contains links to two other HTML files:
