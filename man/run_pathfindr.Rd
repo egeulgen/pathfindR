@@ -6,8 +6,8 @@
 \usage{
 run_pathfindr(input, p_val_threshold = 0.05, enrichment_threshold = 1e-04,
   adj_method = "bonferroni", iterations = 10, n_processes = NULL,
-  n_snw = 5, overlap_threshold = 0.8, kegg_update = FALSE,
-  pin_name_path = "KEGG")
+  n_snw = 1000, overlap_threshold = 0.5, kegg_update = FALSE,
+  pin_name_path = "GeneMania")
 }
 \arguments{
 \item{input}{the input data that pathfindr uses. The input must be a data
@@ -31,10 +31,10 @@ enrichment analyses}
 used by foreach. The function determines this automatically}
 
 \item{n_snw}{optional argument for specifying the number of active
-subnetworks when running jActive modules. (Default = 5)}
+subnetworks when running jActive modules. (Default = 1000)}
 
 \item{overlap_threshold}{optional argument for specifying the overlap
-thresholds when running jActive modules. (Default = 0.8)}
+thresholds when running jActive modules. (Default = 0.5)}
 
 \item{kegg_update}{boolean value indicating whether or not to update KEGG
 pathway genes (default = FALSE)}
@@ -42,7 +42,7 @@ pathway genes (default = FALSE)}
 \item{pin_name_path}{Name of the chosen PIN or path/to/PIN.sif. If PIN name,
 must be one of c("Biogrid", "GeneMania", "IntAct", "KEGG"). If
 path/to/PIN.sif, the file must comply with the PIN specifications. Defaults
-to "KEGG".}
+to "GeneMania".}
 }
 \value{
 Data frame of pathview enrichment results. Columns are: "ID",

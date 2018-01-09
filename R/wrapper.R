@@ -24,9 +24,9 @@
 #' @param n_processes optional argument for specifying the number of processes
 #'   used by foreach. The function determines this automatically
 #' @param n_snw optional argument for specifying the number of active
-#'   subnetworks when running jActive modules. (Default = 5)
+#'   subnetworks when running jActive modules. (Default = 1000)
 #' @param overlap_threshold optional argument for specifying the overlap
-#'   thresholds when running jActive modules. (Default = 0.8)
+#'   thresholds when running jActive modules. (Default = 0.5)
 #' @inheritParams current_KEGG
 #' @inheritParams return_pin_path
 #'
@@ -64,8 +64,8 @@ run_pathfindr <- function(input, p_val_threshold = 5e-2,
                       enrichment_threshold = 1e-4,
                       adj_method = "bonferroni",
                       iterations = 10, n_processes = NULL,
-                      n_snw = 5, overlap_threshold = 0.8,
-                      kegg_update = FALSE, pin_name_path = "KEGG") {
+                      n_snw = 1000, overlap_threshold = 0.5,
+                      kegg_update = FALSE, pin_name_path = "GeneMania") {
   ## absolute paths for cytoscape and pin
   jactive_path <- normalizePath(system.file("java/myCytoscape.jar",
                                             package = "pathfindr"))
@@ -129,9 +129,7 @@ run_pathfindr <- function(input, p_val_threshold = 5e-2,
                               adj_method, enrichment_threshold, pin_path))
     enrichment_res <- Reduce(rbind, enrichment_res)
 
-    if (nrow(enrichment_res) == 0)
-      enrichment_res <- NULL
-    else {
+    if (!is.null(enrichment_res)) {
       ## keep lowest p for each pathway
       idx <- order(enrichment_res$adj_p)
       enrichment_res <- enrichment_res[idx, ]
@@ -239,7 +237,7 @@ choose_clusters <- function(result_df, ...) {
 #' @param pin_name_path Name of the chosen PIN or path/to/PIN.sif. If PIN name,
 #'   must be one of c("Biogrid", "GeneMania", "IntAct", "KEGG"). If
 #'   path/to/PIN.sif, the file must comply with the PIN specifications. Defaults
-#'   to "KEGG".
+#'   to "GeneMania".
 #'
 #' @return A character value that contains the path to chosen PIN.
 #'
@@ -249,12 +247,12 @@ choose_clusters <- function(result_df, ...) {
 #' @examples
 #' pin_path <- return_pin_path("KEGG")
 
-return_pin_path <- function(pin_name_path = "KEGG") {
+return_pin_path <- function(pin_name_path = "GeneMania") {
   if (pin_name_path %in% c("Biogrid", "GeneMania",
                            "IntAct", "KEGG"))
     path <- normalizePath(system.file(paste0("extdata/", pin_name_path, ".sif"),
                                       package = "pathfindr"))
-  else if (file.exists(pin_name_path)) {
+  else if (file.exists(normalizePath(pin_name_path))) {
     path <- normalizePath(pin_name_path)
     pin <- utils::read.delim(file = path,
                              header = FALSE, stringsAsFactors = FALSE)

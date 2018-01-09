@@ -3,10 +3,10 @@
 #' A dataset containing differentially-expressed genes along with the associated
 #' log2-fold-changes and adjusted p-values for the GEO data set GSE15573. This dataset
 #' aimed to characterize gene expression profiles in the peripheral blood mononuclear cells
-#' of rheumatoid arthritis (RA) patients versus healthy subjects. Differentially-expressed
-#' genes with |logFC| >= 1 and adj.P.Val <= 0.05 are presented in this dataset.
+#' of 18 rheumatoid arthritis (RA) patients versus 15 healthy subjects. Differentially-expressed
+#' genes with adj.P.Val <= 0.05 are presented in this dataset.
 #'
-#' @format A data frame with 857 rows and 3 variables:
+#' @format A data frame with 571 rows and 3 variables:
 #' \describe{
 #'   \item{Gene.symbol}{HGNC gene symbols of the differentially-expressed genes}
 #'   \item{logFC}{log2-fold-change values}
@@ -22,7 +22,7 @@
 #' pathway enrichment workflow performed on the rheumatoid arthritis
 #' differential-expression dataset \code{RA_input}.
 #'
-#' @format A data frame with 72 rows and 7 columns:
+#' @format A data frame with 186 rows and 7 columns:
 #' \describe{
 #'   \item{ID}{KEGG ID of the enriched pathway}
 #'   \item{Pathway}{Description of the enriched pathway}

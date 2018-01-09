@@ -8,5 +8,10 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-1. [All pathways that were found to be enriched](./all_pathways.html)
-2. [Table of genes with converted gene symbols](./genes_table.html)
+pathfindr-enrichment results are presented below:
+
+## [All pathways that were found to be enriched](./all_pathways.html)
+A table that lists all the pathways that were found to be enriched as well as lists of up- or down-regulated genes in a given pathway. The KEGG names are also linked to visualizations of these pathways with differentially-expressed genes colored according to log-fold-change values.
+
+## [Table of genes with converted gene symbols](./genes_table.html)
+A table listing the genes whose symbols (Old Symbol) were converted to aliases (Converted Symbol) that were present in the ppi.

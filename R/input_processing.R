@@ -117,7 +117,7 @@ input_processing <- function(input, p_val_threshold, pin_path) {
                " (", round(perc, 2), "%) genes in the PIN\n\n"))
 
   ## Convert to appropriate symbol
-  converted <- converted[converted[, 2] != "NOT_FOUND", ]
+  converted <- converted[converted[, 2] != "NOT_FOUND", , drop = F]
   input$new_gene <- input$GENE
   input$new_gene[match(converted[, 1], input$new_gene)] <- converted[, 2]
 
