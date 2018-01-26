@@ -122,9 +122,9 @@ input_processing <- function(input, p_val_threshold, pin_path) {
   input$new_gene[match(converted[, 1], input$new_gene)] <- converted[, 2]
 
   input <- input[, c(1, 4, 2, 3)]
-  colnames(input) <- c("old_GENE", "GENE", "CHANGE", "SPOTPvalue")
+  colnames(input) <- c("old_GENE", "GENE", "CHANGE", "P_VALUE")
 
-  input <- input[order(input$SPOTPvalue), ]
+  input <- input[order(input$P_VALUE), ]
   input <- input[!duplicated(input$GENE), ]
 
   return(input)

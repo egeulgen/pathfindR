@@ -1,76 +1,109 @@
-#' Wrapper Function for pathfindr Workflow
+#'Wrapper Function for pathfindr Workflow
 #'
-#' \code{run_pathfindr} is the wrapper function for the pathfindr workflow
+#'\code{run_pathfindr} is the wrapper function for the pathfindr workflow
 #'
-#' This function takes in a data frame consisting of Gene Symbol,
-#' log-fold-change and adjusted-p values. After input testing, any gene symbols
-#' that are not in the PIN are converted to alias symbols if the alias is in the
-#' PIN. Next, active subnetwork search is performed. Pathway enrichment analysis
-#' is performed using the genes in each of the active subnetworks. Pathways with
-#' adjusted-p values lower than \code{enrichment_threshold} are discarded. The
-#' lowest adjusted-p value (over all subnetworks) for each pathway is kept. This
-#' process of active subnetwork search and enrichment is repeated  for a
-#' selected number of \code{iterations}, which is done in parallel. Over all
-#' iterations, the lowest and the highest adjusted-p values, as well as number
-#' of occurences are reported for each enriched pathway.
+#'This function takes in a data frame consisting of Gene Symbol, log-fold-change
+#'and adjusted-p values. After input testing, any gene symbols that are not in
+#'the PIN are converted to alias symbols if the alias is in the PIN. Next,
+#'active subnetwork search is performed. Pathway enrichment analysis is
+#'performed using the genes in each of the active subnetworks. Pathways with
+#'adjusted-p values lower than \code{enrichment_threshold} are discarded. The
+#'lowest adjusted-p value (over all subnetworks) for each pathway is kept. This
+#'process of active subnetwork search and enrichment is repeated  for a selected
+#'number of \code{iterations}, which is done in parallel. Over all iterations,
+#'the lowest and the highest adjusted-p values, as well as number of occurences
+#'are reported for each enriched pathway.
 #'
-#' @inheritParams input_testing
-#' @param enrichment_threshold threshold used when filtering individual pathway
-#'   enrichment results
-#' @param adj_method correction method to be used for adjusting p-values of
-#'   pathway enrichment results
-#' @param iterations number of iterations for active subnetwork search and
-#'   enrichment analyses
-#' @param n_processes optional argument for specifying the number of processes
-#'   used by foreach. The function determines this automatically
-#' @param n_snw optional argument for specifying the number of active
-#'   subnetworks when running jActive modules. (Default = 1000)
-#' @param overlap_threshold optional argument for specifying the overlap
-#'   thresholds when running jActive modules. (Default = 0.5)
-#' @inheritParams current_KEGG
-#' @inheritParams return_pin_path
+#'@inheritParams input_testing
+#'@param enrichment_threshold threshold used when filtering individual pathway
+#'  enrichment results
+#'@param adj_method correction method to be used for adjusting p-values of
+#'  pathway enrichment results (Default: 'bonferroni')
+#'@param search_method algorithm to use when performing active subnetwork
+#'  search. Options are greedy search (GR), simulated annealing (SA) or genetic
+#'  algorithm (GA) for the search (Default:GR. Can be one of c("GR", "SA",
+#'  "GA"))
+#'@param use_all_positives if TRUE in GA, adds an individual with all positive
+#'  nodes. In SA, initializes candidate solution with all positive nodes.
+#'  (Default = FALSE)
+#'@param saTemp0 initial temperature for SA (Default: 1.0)
+#'@param saTemp1 final temperature for SA (Default: 0.01)
+#'@param saIter iteration number for SA (Default: 2500)
+#'@param gaPop population size for GA (Default: 200)
+#'@param gaIter iteration number for GA (Default: 1000)
+#'@param gaThread number of threads to be used in GA (Default: 5)
+#'@param gaMut the mutation ratea for GA (Default: 0)
+#'@param grMaxDepth sets max depth in greedy search, 0 for no limit (Default: 1)
+#'@param grSearchDepth sets search depth in greedy search (Default: 1)
+#'@param grOverlap sets overlap threshold for results of greedy search (Default:
+#'  0.5)
+#'@param grSubNum sets number of subnetworks to be presented in the results
+#'  (Default: 1000)
+#'@param iterations number of iterations for active subnetwork search and
+#'  enrichment analyses (Default = 10. Gets set to 1 for Genetic Algorithm)
+#'@param n_processes optional argument for specifying the number of processes
+#'  used by foreach. If not specified, the function determines this
+#'  automatically (Default == NULL. Gets set to 1 for Genetic Algorithm)
+#'@inheritParams current_KEGG
+#'@inheritParams return_pin_path
 #'
-#' @import knitr
+#'@import knitr
 #'
-#' @return Data frame of pathview enrichment results. Columns are: "ID",
-#'   "Pathway", "occurence", "lowest_p", "highest_p". "ID" is the KEGG ID for a
-#'   given pathway and "Pathway" is the name. "occurence" indicates the number
-#'   of times the given pathway is encountered over all iterations. "lowest_p"
-#'   and "highest_p" indicate the lowest and highest adjusted p values over all
-#'   iterations. The function also creates an HTML report with the pathview
-#'   enrichment results linked to the visualizations of the pathways in addition
-#'   to the table of converted gene symbols. This report can be found in
-#'   "results.html".
+#'@return Data frame of pathview enrichment results. Columns are: "ID",
+#'  "Pathway", "occurence", "lowest_p", "highest_p". "ID" is the KEGG ID for a
+#'  given pathway and "Pathway" is the name. "occurence" indicates the number of
+#'  times the given pathway is encountered over all iterations. "lowest_p" and
+#'  "highest_p" indicate the lowest and highest adjusted p values over all
+#'  iterations. The function also creates an HTML report with the pathview
+#'  enrichment results linked to the visualizations of the pathways in addition
+#'  to the table of converted gene symbols. This report can be found in
+#'  "results.html".
 #'
-#' @export
+#'@export
 #'
-#' @section Warning: Depending on the protein interaction network of your
-#'   choice, active subnetwork finding component of pathfindr may take a very
-#'   long time to finish. Therefore, overnight runs are recommended.
+#'@section Warning: Depending on the protein interaction network of your choice,
+#'  active subnetwork finding component of pathfindr may take a very long time
+#'  to finish. Therefore, overnight runs are recommended.
 #'
-#' @seealso \code{\link{input_testing}} for input testing,
-#'   \code{\link{input_processing}} for input processing,
-#'   \code{\link{current_KEGG}} for KEGG pathway genes retrieval,
-#'   \code{\link{parsejActive}} for parsing a jActive modules output,
-#'   \code{\link{enrichment}} for pathway enrichment analysis and
-#'   \code{\link{pathmap}} for annotation of involved genes and visualization of
-#'   pathways. See \code{\link[foreach]{foreach}} for details on parallel
-#'   execution of looping constructs. See \code{\link{choose_clusters}} for
-#'   clustering the resulting enriched pathways.
+#'@seealso \code{\link{input_testing}} for input testing,
+#'  \code{\link{input_processing}} for input processing,
+#'  \code{\link{current_KEGG}} for KEGG pathway genes retrieval,
+#'  \code{\link{parsejActive}} for parsing a jActive modules output,
+#'  \code{\link{enrichment}} for pathway enrichment analysis and
+#'  \code{\link{pathmap}} for annotation of involved genes and visualization of
+#'  pathways. See \code{\link[foreach]{foreach}} for details on parallel
+#'  execution of looping constructs. See \code{\link{choose_clusters}} for
+#'  clustering the resulting enriched pathways.
 #'
 #' @examples
 #' \dontrun{
 #' run_pathfindr(RA_input)
 #' }
 run_pathfindr <- function(input, p_val_threshold = 5e-2,
-                      enrichment_threshold = 1e-4,
-                      adj_method = "bonferroni",
-                      iterations = 10, n_processes = NULL,
-                      n_snw = 1000, overlap_threshold = 0.5,
-                      kegg_update = FALSE, pin_name_path = "GeneMania") {
+                          enrichment_threshold = 1e-4,
+                          adj_method = "bonferroni",
+                          search_method = "GR",
+                          use_all_positives = FALSE,
+                          saTemp0 = 1, saTemp1 = 0.01, saIter = 2500,
+                          gaPop = 200, gaIter = 1000, gaThread = 5, gaMut = 0,
+                          grMaxDepth = 1, grSearchDepth = 1,
+                          grOverlap = 0.5, grSubNum = 1000,
+                          iterations = 10, n_processes = NULL,
+                          kegg_update = FALSE, pin_name_path = "Biogrid") {
+
+  if (!search_method %in% c("GR", "SA", "GA"))
+    stop("search_method must be one of \"GR\", \"SA\", \"GA\"")
+  if (!is.logical(use_all_positives))
+    stop("search_method must be logical")
+
+  if (search_method == "GA")
+    iterations <- n_processes <- 1
+
+  use_all_positives <- ifelse(use_all_positives, "true", "false")
+
   ## absolute paths for cytoscape and pin
-  jactive_path <- normalizePath(system.file("java/myCytoscape.jar",
-                                            package = "pathfindr"))
+  active_search_path <- normalizePath(system.file("java/ActiveSubnetworkSearch.jar",
+                                                  package = "pathfindr"))
   pin_path <- return_pin_path(pin_name_path)
 
   ## Check input
@@ -81,10 +114,10 @@ run_pathfindr <- function(input, p_val_threshold = 5e-2,
   cat("## Processing input. Converting gene symbols, if necessary\n\n")
   input_processed <- input_processing(input, p_val_threshold, pin_path)
 
-  dir.create("jActive")
-  utils::write.table(input_processed[, c("GENE", "SPOTPvalue")],
-              "./jActive/input_for_jactive.txt",
-              row.names = FALSE, quote = FALSE, sep = "\t")
+  dir.create("active_snw_search")
+  utils::write.table(input_processed[, c("GENE", "P_VALUE")],
+                     "./active_snw_search/input_for_search.txt",
+                     row.names = FALSE, quote = FALSE, sep = "\t")
 
   ## get current KEGG pathways and kegg id, pathway names
   cat("## Retreiving most current KEGG pathway genes\n\n")
@@ -92,9 +125,7 @@ run_pathfindr <- function(input, p_val_threshold = 5e-2,
   pathways_list <- KEGGREST::keggList("pathway", "hsa")
 
   ## Prep for parallel run
-  cat("## Running jActive modules and enrichment\n")
-  cat("Any java window that opens will close once the task is finished\n")
-  cat("DO NOT close the java window(s)!\n\n")
+  cat("## Performing Active Subnetwork Search and Enrichment\n")
 
   if (is.null(n_processes))
     n_processes <- parallel::detectCores()
@@ -103,8 +134,8 @@ run_pathfindr <- function(input, p_val_threshold = 5e-2,
 
   dirs <- rep("", iterations)
   for (i in 1:iterations) {
-    dir.create(paste0("./jActive/jActive", i))
-    dirs[i] <- normalizePath(paste0("./jActive/jActive", i))
+    dir.create(paste0("./active_snw_search/search", i))
+    dirs[i] <- normalizePath(paste0("./active_snw_search/search", i))
   }
 
   `%dopar%` <- foreach::`%dopar%`
@@ -112,23 +143,32 @@ run_pathfindr <- function(input, p_val_threshold = 5e-2,
     setwd(dirs[i])
 
     # running jactivemodules
-    system(paste0("java -jar ", jactive_path,
-                  " -N ", pin_path,
-                  " -m ../input_for_jactive.txt",
-                  " -so ./jActive.txt -np ", n_snw,
-                  " -ot ", overlap_threshold))
+    system(paste0("java -Xss4m -jar ", active_search_path,
+                  " -sif=", pin_path,
+                  " -sig=../input_for_search.txt",
+                  " -method=", search_method,
+                  " -useAllPositives=", use_all_positives,
+                  " -saTemp0=", saTemp0,
+                  " -saTemp1=", saTemp1,
+                  " -saIter=", saIter,
+                  " -gaPop=", gaPop,
+                  " -gaIter=", gaIter,
+                  " -gaThread=", gaThread,
+                  " -gaMut=", gaMut,
+                  " -grMaxDepth=", grMaxDepth,
+                  " -grSearchDepth=", grSearchDepth,
+                  " -grOverlap=", grOverlap,
+                  " -grSubNum=", grSubNum))
 
     # parse
-    jactive_output <- utils::read.table("jActive.txt",
-                                        stringsAsFactors = FALSE)
-    snws <- pathfindr::parsejActive(jactive_output, input_processed$GENE)
+    snws <- pathfindr::parseActiveSnwSearch("resultActiveSubnetworkSearch.txt", input_processed$GENE)
 
     cat(paste0("Found ", length(snws), " active subnetworks\n\n"))
 
     ## enrichment per subnetwork
     enrichment_res <- lapply(snws, function(x)
-        pathfindr::enrichment(pw_genes, x, pathways_list,
-                              adj_method, enrichment_threshold, pin_path))
+      pathfindr::enrichment(pw_genes, x, pathways_list,
+                            adj_method, enrichment_threshold, pin_path))
     enrichment_res <- Reduce(rbind, enrichment_res)
 
     if (!is.null(enrichment_res)) {
@@ -241,7 +281,7 @@ choose_clusters <- function(result_df, ...) {
 #' @param pin_name_path Name of the chosen PIN or path/to/PIN.sif. If PIN name,
 #'   must be one of c("Biogrid", "GeneMania", "IntAct", "KEGG"). If
 #'   path/to/PIN.sif, the file must comply with the PIN specifications. Defaults
-#'   to "GeneMania".
+#'   to "Biogrid".
 #'
 #' @return A character value that contains the path to chosen PIN.
 #'
@@ -251,7 +291,7 @@ choose_clusters <- function(result_df, ...) {
 #' @examples
 #' pin_path <- return_pin_path("KEGG")
 
-return_pin_path <- function(pin_name_path = "GeneMania") {
+return_pin_path <- function(pin_name_path = "Biogrid") {
   if (pin_name_path %in% c("Biogrid", "GeneMania",
                            "IntAct", "KEGG"))
     path <- normalizePath(system.file(paste0("extdata/", pin_name_path, ".sif"),
