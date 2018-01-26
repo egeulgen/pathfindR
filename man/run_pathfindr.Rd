@@ -5,9 +5,11 @@
 \title{Wrapper Function for pathfindr Workflow}
 \usage{
 run_pathfindr(input, p_val_threshold = 0.05, enrichment_threshold = 1e-04,
-  adj_method = "bonferroni", iterations = 10, n_processes = NULL,
-  n_snw = 1000, overlap_threshold = 0.5, kegg_update = FALSE,
-  pin_name_path = "GeneMania")
+  adj_method = "bonferroni", search_method = "GR",
+  use_all_positives = FALSE, saTemp0 = 1, saTemp1 = 0.01, saIter = 2500,
+  gaPop = 200, gaIter = 1000, gaThread = 5, gaMut = 0, grMaxDepth = 1,
+  grSearchDepth = 1, grOverlap = 0.5, grSubNum = 1000, iterations = 10,
+  n_processes = NULL, kegg_update = FALSE, pin_name_path = "Biogrid")
 }
 \arguments{
 \item{input}{the input data that pathfindr uses. The input must be a data
@@ -22,19 +24,47 @@ the input data frame. Must a numeric value between 0 and 1.}
 enrichment results}
 
 \item{adj_method}{correction method to be used for adjusting p-values of
-pathway enrichment results}
+pathway enrichment results (Default: 'bonferroni')}
+
+\item{search_method}{algorithm to use when performing active subnetwork
+search. Options are greedy search (GR), simulated annealing (SA) or genetic
+algorithm (GA) for the search (Default:GR. Can be one of c("GR", "SA",
+"GA"))}
+
+\item{use_all_positives}{if TRUE in GA, adds an individual with all positive
+nodes. In SA, initializes candidate solution with all positive nodes.
+(Default = FALSE)}
+
+\item{saTemp0}{initial temperature for SA (Default: 1.0)}
+
+\item{saTemp1}{final temperature for SA (Default: 0.01)}
+
+\item{saIter}{iteration number for SA (Default: 2500)}
+
+\item{gaPop}{population size for GA (Default: 200)}
+
+\item{gaIter}{iteration number for GA (Default: 1000)}
+
+\item{gaThread}{number of threads to be used in GA (Default: 5)}
+
+\item{gaMut}{the mutation ratea for GA (Default: 0)}
+
+\item{grMaxDepth}{sets max depth in greedy search, 0 for no limit (Default: 1)}
+
+\item{grSearchDepth}{sets search depth in greedy search (Default: 1)}
+
+\item{grOverlap}{sets overlap threshold for results of greedy search (Default:
+0.5)}
+
+\item{grSubNum}{sets number of subnetworks to be presented in the results
+(Default: 1000)}
 
 \item{iterations}{number of iterations for active subnetwork search and
-enrichment analyses}
+enrichment analyses (Default = 10. Gets set to 1 for Genetic Algorithm)}
 
 \item{n_processes}{optional argument for specifying the number of processes
-used by foreach. The function determines this automatically}
-
-\item{n_snw}{optional argument for specifying the number of active
-subnetworks when running jActive modules. (Default = 1000)}
-
-\item{overlap_threshold}{optional argument for specifying the overlap
-thresholds when running jActive modules. (Default = 0.5)}
+used by foreach. If not specified, the function determines this
+automatically (Default == NULL. Gets set to 1 for Genetic Algorithm)}
 
 \item{kegg_update}{boolean value indicating whether or not to update KEGG
 pathway genes (default = FALSE)}
@@ -42,39 +72,39 @@ pathway genes (default = FALSE)}
 \item{pin_name_path}{Name of the chosen PIN or path/to/PIN.sif. If PIN name,
 must be one of c("Biogrid", "GeneMania", "IntAct", "KEGG"). If
 path/to/PIN.sif, the file must comply with the PIN specifications. Defaults
-to "GeneMania".}
+to "Biogrid".}
 }
 \value{
 Data frame of pathview enrichment results. Columns are: "ID",
-  "Pathway", "occurence", "lowest_p", "highest_p". "ID" is the KEGG ID for a
-  given pathway and "Pathway" is the name. "occurence" indicates the number
-  of times the given pathway is encountered over all iterations. "lowest_p"
-  and "highest_p" indicate the lowest and highest adjusted p values over all
-  iterations. The function also creates an HTML report with the pathview
-  enrichment results linked to the visualizations of the pathways in addition
-  to the table of converted gene symbols. This report can be found in
-  "results.html".
+ "Pathway", "occurence", "lowest_p", "highest_p". "ID" is the KEGG ID for a
+ given pathway and "Pathway" is the name. "occurence" indicates the number of
+ times the given pathway is encountered over all iterations. "lowest_p" and
+ "highest_p" indicate the lowest and highest adjusted p values over all
+ iterations. The function also creates an HTML report with the pathview
+ enrichment results linked to the visualizations of the pathways in addition
+ to the table of converted gene symbols. This report can be found in
+ "results.html".
 }
 \description{
 \code{run_pathfindr} is the wrapper function for the pathfindr workflow
 }
 \details{
-This function takes in a data frame consisting of Gene Symbol,
-log-fold-change and adjusted-p values. After input testing, any gene symbols
-that are not in the PIN are converted to alias symbols if the alias is in the
-PIN. Next, active subnetwork search is performed. Pathway enrichment analysis
-is performed using the genes in each of the active subnetworks. Pathways with
+This function takes in a data frame consisting of Gene Symbol, log-fold-change
+and adjusted-p values. After input testing, any gene symbols that are not in
+the PIN are converted to alias symbols if the alias is in the PIN. Next,
+active subnetwork search is performed. Pathway enrichment analysis is
+performed using the genes in each of the active subnetworks. Pathways with
 adjusted-p values lower than \code{enrichment_threshold} are discarded. The
 lowest adjusted-p value (over all subnetworks) for each pathway is kept. This
-process of active subnetwork search and enrichment is repeated  for a
-selected number of \code{iterations}, which is done in parallel. Over all
-iterations, the lowest and the highest adjusted-p values, as well as number
-of occurences are reported for each enriched pathway.
+process of active subnetwork search and enrichment is repeated  for a selected
+number of \code{iterations}, which is done in parallel. Over all iterations,
+the lowest and the highest adjusted-p values, as well as number of occurences
+are reported for each enriched pathway.
 }
 \section{Warning}{
- Depending on the protein interaction network of your
-  choice, active subnetwork finding component of pathfindr may take a very
-  long time to finish. Therefore, overnight runs are recommended.
+ Depending on the protein interaction network of your choice,
+ active subnetwork finding component of pathfindr may take a very long time
+ to finish. Therefore, overnight runs are recommended.
 }
 
 \examples{
@@ -84,12 +114,12 @@ run_pathfindr(RA_input)
 }
 \seealso{
 \code{\link{input_testing}} for input testing,
-  \code{\link{input_processing}} for input processing,
-  \code{\link{current_KEGG}} for KEGG pathway genes retrieval,
-  \code{\link{parsejActive}} for parsing a jActive modules output,
-  \code{\link{enrichment}} for pathway enrichment analysis and
-  \code{\link{pathmap}} for annotation of involved genes and visualization of
-  pathways. See \code{\link[foreach]{foreach}} for details on parallel
-  execution of looping constructs. See \code{\link{choose_clusters}} for
-  clustering the resulting enriched pathways.
+ \code{\link{input_processing}} for input processing,
+ \code{\link{current_KEGG}} for KEGG pathway genes retrieval,
+ \code{\link{parseActiveSnwSearch}} for parsing a jActive modules output,
+ \code{\link{enrichment}} for pathway enrichment analysis and
+ \code{\link{pathmap}} for annotation of involved genes and visualization of
+ pathways. See \code{\link[foreach]{foreach}} for details on parallel
+ execution of looping constructs. See \code{\link{choose_clusters}} for
+ clustering the resulting enriched pathways.
 }

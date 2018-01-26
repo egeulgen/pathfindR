@@ -68,7 +68,7 @@
 #'@seealso \code{\link{input_testing}} for input testing,
 #'  \code{\link{input_processing}} for input processing,
 #'  \code{\link{current_KEGG}} for KEGG pathway genes retrieval,
-#'  \code{\link{parsejActive}} for parsing a jActive modules output,
+#'  \code{\link{parseActiveSnwSearch}} for parsing a jActive modules output,
 #'  \code{\link{enrichment}} for pathway enrichment analysis and
 #'  \code{\link{pathmap}} for annotation of involved genes and visualization of
 #'  pathways. See \code{\link[foreach]{foreach}} for details on parallel
