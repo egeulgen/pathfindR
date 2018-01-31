@@ -3,7 +3,7 @@
 \docType{data}
 \name{RA_input}
 \alias{RA_input}
-\title{Example Input for the pathfindr Enrichment Workflow - Rheumatoid Arthritis}
+\title{Example Input for the pathfindR Enrichment Workflow - Rheumatoid Arthritis}
 \format{A data frame with 571 rows and 3 variables:
 \describe{
   \item{Gene.symbol}{HGNC gene symbols of the differentially-expressed genes}

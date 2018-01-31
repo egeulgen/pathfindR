@@ -20,14 +20,17 @@ of pathway clustering}
 pathway genes (default = FALSE)}
 }
 \value{
-Pairwise distance matrix. See "Chen, Y. A. et al. Integrated pathway
-  clusters with coherent biological themes for target prioritisation. PLoS
-  One 9, e99030, doi:10.1371/journal.pone.0099030 (2014)." for details on the
-  method of pathway clustering. Optionally plots a heat map of pathway
+Pairwise distance matrix. Optionally plots a heat map of pathway
   clustering.
 }
 \description{
 Calculate Pairwise Distances Between Given Pathways
+}
+\details{
+See "Chen, Y. A. et al. Integrated pathway
+  clusters with coherent biological themes for target prioritisation. PLoS
+  One 9, e99030, doi:10.1371/journal.pone.0099030 (2014)." for details on the
+  method of pathway clustering.
 }
 \examples{
 \dontrun{

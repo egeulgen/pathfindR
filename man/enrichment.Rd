@@ -39,6 +39,6 @@ enrichment(genes_by_pathway, genes_of_interest, pathways_list)
 }
 \seealso{
 \code{\link[stats]{p.adjust}} for adjustment of p values. See
-  \code{\link{run_pathfindr}} for the wrapper function of the pathfindr
+  \code{\link{run_pathfindR}} for the wrapper function of the pathfindR
   workflow
 }

@@ -1,17 +1,17 @@
 .onAttach <- function(libname, pkgname) {
   packageStartupMessage(
 "##############################################################################
-                        Welcome to pathfindr
+                        Welcome to pathfindR
 ##############################################################################")
 }
 
-#' pathfindr: A package for Pathway Enrichment Analysis Utilizing Active
+#' pathfindR: A package for Pathway Enrichment Analysis Utilizing Active
 #' Subnetworks
 #'
-#' The pathfindr package provides two important functions: \code{pathfindr} and
+#' The pathfindR package provides two important functions: \code{run_pathfindR} and
 #' \code{choose_clusters}.
 #'
-#' @section pathfindr: This function is the wrapper function for the pathfindr
+#' @section run_pathfindR: This function is the wrapper function for the pathfindR
 #'   workflow. It takes in a data frame consisting of Gene Symbol,
 #'   log-fold-change and adjusted-p values. After input testing, any gene
 #'   symbols that are not in the PIN are converted to alias symbols if the alias
@@ -33,9 +33,9 @@
 #'   value) are presented as a table and pathways with cluster assignments are
 #'   saved as a csv file to the current directory.
 #'
-#' @seealso See \code{\link{run_pathfindr}} and \code{\link{choose_clusters}}
+#' @seealso See \code{\link{run_pathfindR}} and \code{\link{choose_clusters}}
 #'   for more details.
 #'
 #' @docType package
-#' @name pathfindr
+#' @name pathfindR
 NULL

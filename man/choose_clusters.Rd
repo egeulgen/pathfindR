@@ -7,7 +7,7 @@
 choose_clusters(result_df, ...)
 }
 \arguments{
-\item{result_df}{resulting data frame of the pathfindr main workflow.}
+\item{result_df}{resulting data frame of the pathfindR main workflow.}
 
 \item{...}{optional arguments for \code{cluster_pathways}}
 }

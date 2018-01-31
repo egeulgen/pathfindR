@@ -27,6 +27,6 @@ rows consisting of "pp".
 pin_path <- return_pin_path("KEGG")
 }
 \seealso{
-See \code{\link{run_pathfindr}} for the wrapper function of the
-  pathfindr workflow
+See \code{\link{run_pathfindR}} for the wrapper function of the
+  pathfindR workflow
 }

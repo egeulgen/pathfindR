@@ -1,5 +1,5 @@
 ---
-title: "pathfindr - Seperate Pathways into Clusters"
+title: "pathfindR - Seperate Pathways into Clusters"
 runtime: shiny
 output: html_document
 params:

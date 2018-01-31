@@ -29,6 +29,6 @@ pathmap(pathway_table, change_data)
 }
 \seealso{
 \code{\link[pathview]{pathview}} for pathway based data integration
-  and visualization. See \code{\link{run_pathfindr}} for the wrapper function
-  of the pathfindr workflow
+  and visualization. See \code{\link{run_pathfindR}} for the wrapper function
+  of the pathfindR workflow
 }

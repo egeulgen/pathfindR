@@ -1,5 +1,5 @@
 ---
-title: "pathfindr - All Pathways"
+title: "pathfindR - All Pathways"
 output: html_document
 params:
   df: ""

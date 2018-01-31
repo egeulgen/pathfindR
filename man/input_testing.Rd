@@ -7,7 +7,7 @@
 input_testing(input, p_val_threshold)
 }
 \arguments{
-\item{input}{the input data that pathfindr uses. The input must be a data
+\item{input}{the input data that pathfindR uses. The input must be a data
 frame with three columns: \enumerate{ \item Gene Symbol (HGNC Gene
 Symbol) \item Change value, e.g. log(fold change) \item adjusted p value
 associated with test, e.g. differential expression/methylation }}
@@ -26,6 +26,6 @@ Input Tesing
 input_testing(RA_input, 0.05)
 }
 \seealso{
-See \code{\link{run_pathfindr}} for the wrapper function of the
-  pathfindr workflow
+See \code{\link{run_pathfindR}} for the wrapper function of the
+  pathfindR workflow
 }

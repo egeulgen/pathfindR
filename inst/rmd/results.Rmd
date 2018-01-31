@@ -1,5 +1,5 @@
 ---
-title: "pathfindr - Results"
+title: "pathfindR - Results"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: html_document
 ---
@@ -8,7 +8,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-pathfindr-enrichment results are presented below:
+pathfindR-Enrichment results are presented below:
 
 ## [All pathways that were found to be enriched](./all_pathways.html)
 A table that lists all the pathways that were found to be enriched as well as lists of up- or down-regulated genes in a given pathway. The KEGG names are also linked to visualizations of these pathways with differentially-expressed genes colored according to log-fold-change values.

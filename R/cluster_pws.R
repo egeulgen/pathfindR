@@ -7,10 +7,12 @@
 #'   of pathway clustering
 #' @inheritParams current_KEGG
 #'
-#' @return Pairwise distance matrix. See "Chen, Y. A. et al. Integrated pathway
+#' @details See "Chen, Y. A. et al. Integrated pathway
 #'   clusters with coherent biological themes for target prioritisation. PLoS
 #'   One 9, e99030, doi:10.1371/journal.pone.0099030 (2014)." for details on the
-#'   method of pathway clustering. Optionally plots a heat map of pathway
+#'   method of pathway clustering.
+#'
+#' @return Pairwise distance matrix. Optionally plots a heat map of pathway
 #'   clustering.
 #' @seealso \code{\link[stats]{hclust}} for hierchical clustering,
 #'   \code{\link[stats]{heatmap}} for drawing a heatmap.

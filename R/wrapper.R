@@ -1,6 +1,6 @@
-#'Wrapper Function for pathfindr Workflow
+#'Wrapper Function for pathfindR Workflow
 #'
-#'\code{run_pathfindr} is the wrapper function for the pathfindr workflow
+#'\code{run_pathfindR} is the wrapper function for the pathfindR workflow
 #'
 #'This function takes in a data frame consisting of Gene Symbol, log-fold-change
 #'and adjusted-p values. After input testing, any gene symbols that are not in
@@ -62,7 +62,7 @@
 #'@export
 #'
 #'@section Warning: Depending on the protein interaction network of your choice,
-#'  active subnetwork finding component of pathfindr may take a very long time
+#'  active subnetwork finding component of pathfindR may take a very long time
 #'  to finish. Therefore, overnight runs are recommended.
 #'
 #'@seealso \code{\link{input_testing}} for input testing,
@@ -77,9 +77,9 @@
 #'
 #' @examples
 #' \dontrun{
-#' run_pathfindr(RA_input)
+#' run_pathfindR(RA_input)
 #' }
-run_pathfindr <- function(input, p_val_threshold = 5e-2,
+run_pathfindR <- function(input, p_val_threshold = 5e-2,
                           enrichment_threshold = 1e-4,
                           adj_method = "bonferroni",
                           search_method = "GR",
@@ -96,15 +96,15 @@ run_pathfindr <- function(input, p_val_threshold = 5e-2,
   if (!is.logical(use_all_positives))
     stop("search_method must be logical")
 
-  if (search_method == "GA")
+  if (search_method != "GR")
     iterations <- n_processes <- 1
 
-  use_all_positives <- ifelse(use_all_positives, "true", "false")
+  use_all_positives <- ifelse(use_all_positives, " -useAllPositives", "")
 
   ## absolute paths for cytoscape and pin
   active_search_path <- normalizePath(
     system.file("java/ActiveSubnetworkSearch.jar",
-                package = "pathfindr"))
+                package = "pathfindR"))
   pin_path <- return_pin_path(pin_name_path)
 
   ## Check input
@@ -148,7 +148,7 @@ run_pathfindr <- function(input, p_val_threshold = 5e-2,
                   " -sif=", pin_path,
                   " -sig=../input_for_search.txt",
                   " -method=", search_method,
-                  " -useAllPositives=", use_all_positives,
+                  use_all_positives,
                   " -saTemp0=", saTemp0,
                   " -saTemp1=", saTemp1,
                   " -saIter=", format(saIter, scientific = F),
@@ -162,14 +162,14 @@ run_pathfindr <- function(input, p_val_threshold = 5e-2,
                   " -grSubNum=", grSubNum))
 
     # parse
-    snws <- pathfindr::parseActiveSnwSearch(
+    snws <- pathfindR::parseActiveSnwSearch(
       "resultActiveSubnetworkSearch.txt", input_processed$GENE)
 
     cat(paste0("Found ", length(snws), " active subnetworks\n\n"))
 
     ## enrichment per subnetwork
     enrichment_res <- lapply(snws, function(x)
-      pathfindr::enrichment(pw_genes, x, pathways_list,
+      pathfindR::enrichment(pw_genes, x, pathways_list,
                             adj_method, enrichment_threshold, pin_path))
     enrichment_res <- Reduce(rbind, enrichment_res)
 
@@ -219,12 +219,12 @@ run_pathfindr <- function(input, p_val_threshold = 5e-2,
 
   cat("## Creating HTML report\n\n")
   ## Create report
-  rmarkdown::render(system.file("rmd/results.Rmd", package = "pathfindr"),
+  rmarkdown::render(system.file("rmd/results.Rmd", package = "pathfindR"),
                     output_dir = ".")
-  rmarkdown::render(system.file("rmd/all_pathways.Rmd", package = "pathfindr"),
+  rmarkdown::render(system.file("rmd/all_pathways.Rmd", package = "pathfindR"),
                     params = list(df = final_res), output_dir = ".")
 
-  rmarkdown::render(system.file("rmd/genes_table.Rmd", package = "pathfindr"),
+  rmarkdown::render(system.file("rmd/genes_table.Rmd", package = "pathfindR"),
                     params = list(df = input_processed), output_dir = ".")
 
   cat("Pathway enrichment results and converted genes ")
@@ -241,7 +241,7 @@ run_pathfindr <- function(input, p_val_threshold = 5e-2,
 #' doi:10.1371/journal.pone.0099030 (2014)." for details on the method of
 #' pathway clustering.
 #'
-#' @param result_df resulting data frame of the pathfindr main workflow.
+#' @param result_df resulting data frame of the pathfindR main workflow.
 #' @param ... optional arguments for \code{cluster_pathways}
 #'
 #' @return This function first calculates the pairwise distances between the
@@ -270,7 +270,7 @@ choose_clusters <- function(result_df, ...) {
 
   cat("Creating shiny app\n\n")
   parameters <- list(df = result_df, mat = PWD_mat)
-  rmarkdown::run(system.file("rmd/clustering.Rmd", package = "pathfindr"),
+  rmarkdown::run(system.file("rmd/clustering.Rmd", package = "pathfindR"),
                  render_args = list(output_dir = ".", params = parameters))
 }
 
@@ -291,8 +291,8 @@ choose_clusters <- function(result_df, ...) {
 #' @return A character value that contains the path to chosen PIN.
 #'
 #' @export
-#' @seealso See \code{\link{run_pathfindr}} for the wrapper function of the
-#'   pathfindr workflow
+#' @seealso See \code{\link{run_pathfindR}} for the wrapper function of the
+#'   pathfindR workflow
 #' @examples
 #' pin_path <- return_pin_path("KEGG")
 
@@ -300,7 +300,7 @@ return_pin_path <- function(pin_name_path = "GeneMania") {
   if (pin_name_path %in% c("Biogrid", "GeneMania",
                            "IntAct", "KEGG"))
     path <- normalizePath(system.file(paste0("extdata/", pin_name_path, ".sif"),
-                                      package = "pathfindr"))
+                                      package = "pathfindR"))
   else if (file.exists(normalizePath(pin_name_path))) {
     path <- normalizePath(pin_name_path)
     pin <- utils::read.delim(file = path,

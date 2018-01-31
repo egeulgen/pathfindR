@@ -24,6 +24,6 @@ parseActiveSnwSearch(output, significant_genes)
 }
 }
 \seealso{
-See \code{\link{run_pathfindr}} for the wrapper function of the
-  pathfindr workflow
+See \code{\link{run_pathfindR}} for the wrapper function of the
+  pathfindR workflow
 }

@@ -1,4 +1,4 @@
-Package: pathfindr
+Package: pathfindR
 Type: Package
 Title: Pathway Enrichment Analysis Utilizing Active Subnetworks
 Version: 1.0.0

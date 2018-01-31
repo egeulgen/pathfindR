@@ -1,6 +1,6 @@
 #' Input Tesing
 #'
-#' @param input the input data that pathfindr uses. The input must be a data
+#' @param input the input data that pathfindR uses. The input must be a data
 #'   frame with three columns: \enumerate{ \item Gene Symbol (HGNC Gene
 #'   Symbol) \item Change value, e.g. log(fold change) \item adjusted p value
 #'   associated with test, e.g. differential expression/methylation }
@@ -11,8 +11,8 @@
 #' @return Only checks if the input and the threshold follows the required
 #'   specifications
 #' @export
-#' @seealso See \code{\link{run_pathfindr}} for the wrapper function of the
-#'   pathfindr workflow
+#' @seealso See \code{\link{run_pathfindR}} for the wrapper function of the
+#'   pathfindR workflow
 #' @examples
 #' input_testing(RA_input, 0.05)
 input_testing <- function(input, p_val_threshold){
@@ -41,7 +41,7 @@ input_testing <- function(input, p_val_threshold){
 
 #' Process Input
 #'
-#' @param input the input data that pathfindr uses
+#' @param input the input data that pathfindR uses
 #' @param p_val_threshold the adjusted-p value threshold to use when filtering
 #'   the input data frame
 #' @param pin_path path to the Protein Interaction Network (PIN) file used in
@@ -55,8 +55,8 @@ input_testing <- function(input, p_val_threshold){
 #'   symbols, change values and p values is then returned.
 #' @export
 #'
-#' @seealso See \code{\link{run_pathfindr}} for the wrapper function of the
-#'   pathfindr workflow
+#' @seealso See \code{\link{run_pathfindR}} for the wrapper function of the
+#'   pathfindR workflow
 #'
 #' @examples
 #' \dontrun{

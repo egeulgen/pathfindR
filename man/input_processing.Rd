@@ -7,7 +7,7 @@
 input_processing(input, p_val_threshold, pin_path)
 }
 \arguments{
-\item{input}{the input data that pathfindr uses}
+\item{input}{the input data that pathfindR uses}
 
 \item{p_val_threshold}{the adjusted-p value threshold to use when filtering
 the input data frame}
@@ -32,6 +32,6 @@ input_processing(input, p_val_threshold = 0.05, "path/to/pin")
 }
 }
 \seealso{
-See \code{\link{run_pathfindr}} for the wrapper function of the
-  pathfindr workflow
+See \code{\link{run_pathfindR}} for the wrapper function of the
+  pathfindR workflow
 }

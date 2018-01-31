@@ -7,8 +7,8 @@
 #'   that has at least 2 significant genes.
 #' @export
 #'
-#' @seealso See \code{\link{run_pathfindr}} for the wrapper function of the
-#'   pathfindr workflow
+#' @seealso See \code{\link{run_pathfindR}} for the wrapper function of the
+#'   pathfindR workflow
 #'
 #' @examples
 #' \dontrun{

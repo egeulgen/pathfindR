@@ -1,4 +1,4 @@
-#' Example Input for the pathfindr Enrichment Workflow - Rheumatoid Arthritis
+#' Example Input for the pathfindR Enrichment Workflow - Rheumatoid Arthritis
 #'
 #' A dataset containing differentially-expressed genes along with the associated
 #' log2-fold-changes and adjusted p-values for the GEO data set GSE15573. This dataset
@@ -16,9 +16,9 @@
 #' @seealso \code{\link{RA_output}} for example output.
 "RA_input"
 
-#' Example Output for the pathfindr Enrichment Workflow - Rheumatoid Arthritis
+#' Example Output for the pathfindR Enrichment Workflow - Rheumatoid Arthritis
 #'
-#' A dataset containing the results of pathfindr's active subnetwork search and
+#' A dataset containing the results of pathfindR's active subnetwork search and
 #' pathway enrichment workflow performed on the rheumatoid arthritis
 #' differential-expression dataset \code{RA_input}.
 #'

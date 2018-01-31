@@ -1,5 +1,5 @@
 ---
-title: "pathfindr - Converted Genes"
+title: "pathfindR - Converted Genes"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: html_document
 params:

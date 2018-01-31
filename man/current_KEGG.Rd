@@ -24,6 +24,6 @@ current_KEGG()
 }
 \seealso{
 \code{\link{enrichment}} for pathway enrichment analysis. See
-  \code{\link{run_pathfindr}} for the wrapper function of the pathfindr
+  \code{\link{run_pathfindR}} for the wrapper function of the pathfindR
   workflow
 }
