@@ -1,12 +1,12 @@
-# pathfindr : An R Package for Pathway Enrichment Analysis Utilizing Active Subnetworks
+# pathfindR : An R Package for Pathway Enrichment Analysis Utilizing Active Subnetworks
 
 [![Travis-CI Build Status](https://travis-ci.org/egeulgen/pathfindr.svg?branch=master)](https://travis-ci.org/egeulgen/pathfindr)
 
-pathfindr is a tool for pathway enrichment analysis via active subnetworks. The package also offers the option to cluster the resulting the enriched pathway and choose representative pathways.
+pathfindR is a tool for pathway enrichment analysis via active subnetworks. The package also offers the option to cluster the resulting the enriched pathway and choose representative pathways.
 
 ## Overview of the Enrichment Workflow
 
-![pathfindr Enrichment Workflow](./vignettes/pathfindr.png?raw=true "pathfindr Enrichment Workflow")
+![pathfindR Enrichment Workflow](./vignettes/pathfindr.png?raw=true "pathfindr Enrichment Workflow")
 This workflow takes in a data frame consisting of Gene Symbol, log-fold-change and adjusted-p values. After input testing, any gene symbols that are not in the PIN are converted to alias symbols if the alias is in the PIN. Next, active subnetwork search is performed. Pathway enrichment analyses are performed using the genes in each of the active subnetworks. Pathways with adjusted-p values larger than enrichment_threshold are discarded. The lowest adjusted-p value (over all subnetworks) for each pathway is kept. This process of active subnetwork search and enrichment analyses is repeated for a selected number of iterations, which is done in parallel. Over all iterations, the lowest and the highest adjusted-p values, as well as number of occurences are reported for each enriched pathway.
 
 ## Overview of the Clustering Workflow
