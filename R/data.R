@@ -22,7 +22,7 @@
 #' pathway enrichment workflow performed on the rheumatoid arthritis
 #' differential-expression dataset \code{RA_input}.
 #'
-#' @format A data frame with 186 rows and 7 columns:
+#' @format A data frame with 21 rows and 7 columns:
 #' \describe{
 #'   \item{ID}{KEGG ID of the enriched pathway}
 #'   \item{Pathway}{Description of the enriched pathway}
@@ -33,4 +33,4 @@
 #'   \item{Down_regulated}{the downregulated genes in the input involved in the given pathway, comma-separated}
 #' }
 #' @seealso \code{\link{RA_input}} for example input.
-#"RA_output"
+"RA_output"
