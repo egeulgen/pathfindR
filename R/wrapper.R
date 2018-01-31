@@ -28,12 +28,12 @@
 #'  (Default = FALSE)
 #'@param saTemp0 initial temperature for SA (Default: 1.0)
 #'@param saTemp1 final temperature for SA (Default: 0.01)
-#'@param saIter iteration number for SA (Default: 2500)
-#'@param gaPop population size for GA (Default: 200)
-#'@param gaIter iteration number for GA (Default: 1000)
+#'@param saIter iteration number for SA (Default: 10000)
+#'@param gaPop population size for GA (Default: 400)
+#'@param gaIter iteration number for GA (Default: 10000)
 #'@param gaThread number of threads to be used in GA (Default: 5)
-#'@param gaMut the mutation ratea for GA (Default: 0)
-#'@param grMaxDepth sets max depth in greedy search, 0 for no limit (Default: 1)
+#'@param gaMut the mutation rate for GA (Default: 0)
+#'@param grMaxDepth sets max depth in greedy search, 0 for no limit (Default: 2)
 #'@param grSearchDepth sets search depth in greedy search (Default: 1)
 #'@param grOverlap sets overlap threshold for results of greedy search (Default:
 #'  0.5)
@@ -84,12 +84,12 @@ run_pathfindr <- function(input, p_val_threshold = 5e-2,
                           adj_method = "bonferroni",
                           search_method = "GR",
                           use_all_positives = FALSE,
-                          saTemp0 = 1, saTemp1 = 0.01, saIter = 2500,
-                          gaPop = 200, gaIter = 1000, gaThread = 5, gaMut = 0,
-                          grMaxDepth = 1, grSearchDepth = 1,
+                          saTemp0 = 1, saTemp1 = 0.01, saIter = 10000,
+                          gaPop = 400, gaIter = 10000, gaThread = 5, gaMut = 0,
+                          grMaxDepth = 2, grSearchDepth = 1,
                           grOverlap = 0.5, grSubNum = 1000,
                           iterations = 10, n_processes = NULL,
-                          kegg_update = FALSE, pin_name_path = "Biogrid") {
+                          kegg_update = FALSE, pin_name_path = "GeneMania") {
 
   if (!search_method %in% c("GR", "SA", "GA"))
     stop("search_method must be one of \"GR\", \"SA\", \"GA\"")
@@ -102,8 +102,9 @@ run_pathfindr <- function(input, p_val_threshold = 5e-2,
   use_all_positives <- ifelse(use_all_positives, "true", "false")
 
   ## absolute paths for cytoscape and pin
-  active_search_path <- normalizePath(system.file("java/ActiveSubnetworkSearch.jar",
-                                                  package = "pathfindr"))
+  active_search_path <- normalizePath(
+    system.file("java/ActiveSubnetworkSearch.jar",
+                package = "pathfindr"))
   pin_path <- return_pin_path(pin_name_path)
 
   ## Check input
@@ -150,7 +151,7 @@ run_pathfindr <- function(input, p_val_threshold = 5e-2,
                   " -useAllPositives=", use_all_positives,
                   " -saTemp0=", saTemp0,
                   " -saTemp1=", saTemp1,
-                  " -saIter=", saIter,
+                  " -saIter=", format(saIter, scientific = F),
                   " -gaPop=", gaPop,
                   " -gaIter=", gaIter,
                   " -gaThread=", gaThread,
@@ -161,7 +162,8 @@ run_pathfindr <- function(input, p_val_threshold = 5e-2,
                   " -grSubNum=", grSubNum))
 
     # parse
-    snws <- pathfindr::parseActiveSnwSearch("resultActiveSubnetworkSearch.txt", input_processed$GENE)
+    snws <- pathfindr::parseActiveSnwSearch(
+      "resultActiveSubnetworkSearch.txt", input_processed$GENE)
 
     cat(paste0("Found ", length(snws), " active subnetworks\n\n"))
 
@@ -181,6 +183,9 @@ run_pathfindr <- function(input, p_val_threshold = 5e-2,
     enrichment_res
   }
   snow::stopCluster(cl)
+
+  if (is.null(final_res))
+    stop("Did not find any enriched pathways!")
 
   ## Annotate lowest p, highest p and occurence
   cat("## Processing the enrichment results over all iterations \n\n")
@@ -281,7 +286,7 @@ choose_clusters <- function(result_df, ...) {
 #' @param pin_name_path Name of the chosen PIN or path/to/PIN.sif. If PIN name,
 #'   must be one of c("Biogrid", "GeneMania", "IntAct", "KEGG"). If
 #'   path/to/PIN.sif, the file must comply with the PIN specifications. Defaults
-#'   to "Biogrid".
+#'   to "GeneMania".
 #'
 #' @return A character value that contains the path to chosen PIN.
 #'
@@ -291,7 +296,7 @@ choose_clusters <- function(result_df, ...) {
 #' @examples
 #' pin_path <- return_pin_path("KEGG")
 
-return_pin_path <- function(pin_name_path = "Biogrid") {
+return_pin_path <- function(pin_name_path = "GeneMania") {
   if (pin_name_path %in% c("Biogrid", "GeneMania",
                            "IntAct", "KEGG"))
     path <- normalizePath(system.file(paste0("extdata/", pin_name_path, ".sif"),

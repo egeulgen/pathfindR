@@ -33,4 +33,4 @@
 #'   \item{Down_regulated}{the downregulated genes in the input involved in the given pathway, comma-separated}
 #' }
 #' @seealso \code{\link{RA_input}} for example input.
-"RA_output"
+#"RA_output"

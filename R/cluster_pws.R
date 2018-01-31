@@ -59,7 +59,8 @@ cluster_pathways <- function(pathway_ids, agg_method = "average",
 
   ### Heatmap
   if (plot_heatmap)
-    stats::heatmap(PWD_mat, symm = TRUE, distfun = function(x) stats::as.dist(x),
+    stats::heatmap(PWD_mat, symm = TRUE,
+                   distfun = function(x) stats::as.dist(x),
             hclustfun = function(x) stats::hclust(x, method = agg_method))
 
   return(PWD_mat)

@@ -6,10 +6,11 @@
 \usage{
 run_pathfindr(input, p_val_threshold = 0.05, enrichment_threshold = 1e-04,
   adj_method = "bonferroni", search_method = "GR",
-  use_all_positives = FALSE, saTemp0 = 1, saTemp1 = 0.01, saIter = 2500,
-  gaPop = 200, gaIter = 1000, gaThread = 5, gaMut = 0, grMaxDepth = 1,
-  grSearchDepth = 1, grOverlap = 0.5, grSubNum = 1000, iterations = 10,
-  n_processes = NULL, kegg_update = FALSE, pin_name_path = "Biogrid")
+  use_all_positives = FALSE, saTemp0 = 1, saTemp1 = 0.01,
+  saIter = 10000, gaPop = 400, gaIter = 10000, gaThread = 5,
+  gaMut = 0, grMaxDepth = 2, grSearchDepth = 1, grOverlap = 0.5,
+  grSubNum = 1000, iterations = 10, n_processes = NULL,
+  kegg_update = FALSE, pin_name_path = "GeneMania")
 }
 \arguments{
 \item{input}{the input data that pathfindr uses. The input must be a data
@@ -39,17 +40,17 @@ nodes. In SA, initializes candidate solution with all positive nodes.
 
 \item{saTemp1}{final temperature for SA (Default: 0.01)}
 
-\item{saIter}{iteration number for SA (Default: 2500)}
+\item{saIter}{iteration number for SA (Default: 10000)}
 
-\item{gaPop}{population size for GA (Default: 200)}
+\item{gaPop}{population size for GA (Default: 400)}
 
-\item{gaIter}{iteration number for GA (Default: 1000)}
+\item{gaIter}{iteration number for GA (Default: 10000)}
 
 \item{gaThread}{number of threads to be used in GA (Default: 5)}
 
-\item{gaMut}{the mutation ratea for GA (Default: 0)}
+\item{gaMut}{the mutation rate for GA (Default: 0)}
 
-\item{grMaxDepth}{sets max depth in greedy search, 0 for no limit (Default: 1)}
+\item{grMaxDepth}{sets max depth in greedy search, 0 for no limit (Default: 2)}
 
 \item{grSearchDepth}{sets search depth in greedy search (Default: 1)}
 
@@ -72,7 +73,7 @@ pathway genes (default = FALSE)}
 \item{pin_name_path}{Name of the chosen PIN or path/to/PIN.sif. If PIN name,
 must be one of c("Biogrid", "GeneMania", "IntAct", "KEGG"). If
 path/to/PIN.sif, the file must comply with the PIN specifications. Defaults
-to "Biogrid".}
+to "GeneMania".}
 }
 \value{
 Data frame of pathview enrichment results. Columns are: "ID",
