@@ -1,6 +1,6 @@
 # pathfindR : An R Package for Pathway Enrichment Analysis Utilizing Active Subnetworks
 
-[![Travis-CI Build Status](https://travis-ci.org/egeulgen/pathfindr.svg?branch=master)](https://travis-ci.org/egeulgen/pathfindr)
+[![Travis-CI Build Status](https://travis-ci.org/egeulgen/pathfindR.svg?branch=master)](https://travis-ci.org/egeulgen/pathfindR)
 
 pathfindR is a tool for pathway enrichment analysis via active subnetworks. The package also offers the option to cluster the resulting the enriched pathway and choose representative pathways.
 
