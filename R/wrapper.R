@@ -96,7 +96,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   if (!is.logical(use_all_positives))
     stop("search_method must be logical")
 
-  if (search_method != "GR")
+  if (search_method == "GA")
     iterations <- n_processes <- 1
 
   use_all_positives <- ifelse(use_all_positives, " -useAllPositives", "")
