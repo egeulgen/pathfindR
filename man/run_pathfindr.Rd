@@ -8,9 +8,9 @@ run_pathfindR(input, p_val_threshold = 0.05, enrichment_threshold = 1e-04,
   adj_method = "bonferroni", search_method = "GR",
   use_all_positives = FALSE, saTemp0 = 1, saTemp1 = 0.01,
   saIter = 10000, gaPop = 400, gaIter = 10000, gaThread = 5,
-  gaMut = 0, grMaxDepth = 2, grSearchDepth = 1, grOverlap = 0.5,
+  gaMut = 0, grMaxDepth = 1, grSearchDepth = 1, grOverlap = 0.5,
   grSubNum = 1000, iterations = 10, n_processes = NULL,
-  kegg_update = FALSE, pin_name_path = "GeneMania")
+  kegg_update = FALSE, pin_name_path = "Biogrid")
 }
 \arguments{
 \item{input}{the input data that pathfindR uses. The input must be a data
@@ -73,7 +73,7 @@ pathway genes (default = FALSE)}
 \item{pin_name_path}{Name of the chosen PIN or path/to/PIN.sif. If PIN name,
 must be one of c("Biogrid", "GeneMania", "IntAct", "KEGG"). If
 path/to/PIN.sif, the file must comply with the PIN specifications. Defaults
-to "GeneMania".}
+to "Biogrid".}
 }
 \value{
 Data frame of pathview enrichment results. Columns are: "ID",

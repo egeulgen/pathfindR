@@ -80,16 +80,16 @@
 #' run_pathfindR(RA_input)
 #' }
 run_pathfindR <- function(input, p_val_threshold = 5e-2,
-                          enrichment_threshold = 1e-4,
+                          enrichment_threshold = 0.05,
                           adj_method = "bonferroni",
                           search_method = "GR",
                           use_all_positives = FALSE,
                           saTemp0 = 1, saTemp1 = 0.01, saIter = 10000,
                           gaPop = 400, gaIter = 10000, gaThread = 5, gaMut = 0,
-                          grMaxDepth = 2, grSearchDepth = 1,
+                          grMaxDepth = 1, grSearchDepth = 1,
                           grOverlap = 0.5, grSubNum = 1000,
                           iterations = 10, n_processes = NULL,
-                          kegg_update = FALSE, pin_name_path = "GeneMania") {
+                          kegg_update = FALSE, pin_name_path = "Biogrid") {
 
   if (!search_method %in% c("GR", "SA", "GA"))
     stop("search_method must be one of \"GR\", \"SA\", \"GA\"")
@@ -286,7 +286,7 @@ choose_clusters <- function(result_df, ...) {
 #' @param pin_name_path Name of the chosen PIN or path/to/PIN.sif. If PIN name,
 #'   must be one of c("Biogrid", "GeneMania", "IntAct", "KEGG"). If
 #'   path/to/PIN.sif, the file must comply with the PIN specifications. Defaults
-#'   to "GeneMania".
+#'   to "Biogrid".
 #'
 #' @return A character value that contains the path to chosen PIN.
 #'
@@ -296,7 +296,7 @@ choose_clusters <- function(result_df, ...) {
 #' @examples
 #' pin_path <- return_pin_path("KEGG")
 
-return_pin_path <- function(pin_name_path = "GeneMania") {
+return_pin_path <- function(pin_name_path = "Biogrid") {
   if (pin_name_path %in% c("Biogrid", "GeneMania",
                            "IntAct", "KEGG"))
     path <- normalizePath(system.file(paste0("extdata/", pin_name_path, ".sif"),
