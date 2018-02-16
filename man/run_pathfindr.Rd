@@ -4,7 +4,7 @@
 \alias{run_pathfindR}
 \title{Wrapper Function for pathfindR Workflow}
 \usage{
-run_pathfindR(input, p_val_threshold = 0.05, enrichment_threshold = 1e-04,
+run_pathfindR(input, p_val_threshold = 0.05, enrichment_threshold = 0.05,
   adj_method = "bonferroni", search_method = "GR",
   use_all_positives = FALSE, saTemp0 = 1, saTemp1 = 0.01,
   saIter = 10000, gaPop = 400, gaIter = 10000, gaThread = 5,

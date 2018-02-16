@@ -139,6 +139,8 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
     dirs[i] <- normalizePath(paste0("./active_snw_search/search", i))
   }
 
+  saInitProbs <- seq(from = 0.01, to = 0.2, length.out = iterations)
+
   `%dopar%` <- foreach::`%dopar%`
   final_res <- foreach::foreach(i = 1:iterations, .combine = rbind) %dopar% {
     setwd(dirs[i])
@@ -152,6 +154,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
                   " -saTemp0=", saTemp0,
                   " -saTemp1=", saTemp1,
                   " -saIter=", format(saIter, scientific = F),
+                  " -saInitProb=", saInitProbs[i],
                   " -gaPop=", gaPop,
                   " -gaIter=", gaIter,
                   " -gaThread=", gaThread,
