@@ -70,7 +70,7 @@ After input testing, any gene symbols that are not in the protein-interaction ne
 
 Next, pathway enrichment analyses are performed using the genes in each of the active subnetworks. For this, up-to-date information on genes contained in each KEGG pathway are retrieved with the help of the R package `KEGGREST`. This information is saved to the current directory for later use but can be updated during future runs by setting the argument `kegg_update` to TRUE (default = FALSE) in the wrapper function `run_pathfindR()` or in the stand-alone function that gets the current KEGG pathway genes `current_KEGG()`.
 
-During enrichment analyses, pathways with adjusted-p values larger than the `enrichment_threshold` (an argument of `run_pathfindR()`) are discarded. The results of enrichment analyses over all active subnetworks are combined by keeping only the lowest adjusted-p value for each pathway. 
+During enrichment analyses, pathways with adjusted-p values larger than the `enrichment_threshold` (an argument of `run_pathfindR()`, defaults to 0.05) are discarded. The results of enrichment analyses over all active subnetworks are combined by keeping only the lowest adjusted-p value for each pathway. 
 
 This process of active subnetwork search and enrichment analyses is repeated for a selected number of iterations (assigned by the `iterations` argument of `run_pathfindR()`), which is performed done in parallel. 
 

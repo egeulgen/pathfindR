@@ -20,9 +20,10 @@
 #'
 #' A dataset containing the results of pathfindR's active subnetwork search and
 #' pathway enrichment workflow performed on the rheumatoid arthritis
-#' differential-expression dataset \code{RA_input}.
+#' differential-expression dataset \code{RA_input}. Active subnetwork search
+#' was performed with Greedy Algorithm using the Biogrid PIN.
 #'
-#' @format A data frame with 21 rows and 7 columns:
+#' @format A data frame with 36 rows and 7 columns:
 #' \describe{
 #'   \item{ID}{KEGG ID of the enriched pathway}
 #'   \item{Pathway}{Description of the enriched pathway}
