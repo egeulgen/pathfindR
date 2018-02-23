@@ -15,10 +15,8 @@ BugReports: https://github.com/egeulgen/pathfindR/issues
 Encoding: UTF-8
 LazyData: true
 SystemRequirements: Java JVM 1.8
-Imports: doSNOW,
-    AnnotationDbi,
+Imports: AnnotationDbi,
     DBI,
-    snow,
     foreach,
     rmarkdown,
     KEGGREST,

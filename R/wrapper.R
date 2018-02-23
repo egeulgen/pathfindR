@@ -128,10 +128,11 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   ## Prep for parallel run
   cat("## Performing Active Subnetwork Search and Enrichment\n")
 
+  # calculate the number of cores, if necessary
   if (is.null(n_processes))
-    n_processes <- parallel::detectCores()
-  cl <- snow::makeCluster(n_processes)
-  doSNOW::registerDoSNOW(cl)
+    n_processes <- parallel::detectCores() - 1
+  # Initiate the cluster
+  cl <- parallel::makeCluster(n_processes)
 
   dirs <- rep("", iterations)
   for (i in 1:iterations) {
@@ -140,6 +141,8 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   }
 
   saInitProbs <- seq(from = 0.01, to = 0.2, length.out = iterations)
+
+  org_dir <- getwd()
 
   `%dopar%` <- foreach::`%dopar%`
   final_res <- foreach::foreach(i = 1:iterations, .combine = rbind) %dopar% {
@@ -185,7 +188,9 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
 
     enrichment_res
   }
-  snow::stopCluster(cl)
+  parallel::stopCluster(cl)
+
+  setwd(org_dir)
 
   if (is.null(final_res))
     stop("Did not find any enriched pathways!")
