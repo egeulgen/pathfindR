@@ -8,11 +8,11 @@
 \describe{
   \item{ID}{KEGG ID of the enriched pathway}
   \item{Pathway}{Description of the enriched pathway}
-  \item{occurence}{the number of iterations that the given pathway was found to enriched over all iterations}
+  \item{occurrence}{the number of iterations that the given pathway was found to enriched over all iterations}
   \item{lowest_p}{the lowest adjusted-p value of the given pathway over all iterations}
   \item{highest_p}{the highest adjusted-p value of the given pathway over all iterations}
-  \item{Up_regulated}{the upregulated genes in the input involved in the given pathway, comma-separated}
-  \item{Down_regulated}{the downregulated genes in the input involved in the given pathway, comma-separated}
+  \item{Up_regulated}{the up-regulated genes in the input involved in the given pathway, comma-separated}
+  \item{Down_regulated}{the down-regulated genes in the input involved in the given pathway, comma-separated}
 }}
 \usage{
 RA_output

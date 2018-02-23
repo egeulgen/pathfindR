@@ -8,14 +8,14 @@ pathmap(pw_table, gene_data)
 }
 \arguments{
 \item{pw_table}{Data frame of enrichment results. Columns are: "ID",
-"Pathway", "occurence", "lowest_p", "highest_p".}
+"Pathway", "occurrence", "lowest_p", "highest_p".}
 
 \item{gene_data}{Single column data frame containing change values (e.g.
 log(fold change) values) for significant genes.}
 }
 \value{
 Data frame of enrichment results with genes involved in each pathway
-  presented. Columns are: "ID", "Pathway", "occurence", "lowest_p",
+  presented. Columns are: "ID", "Pathway", "occurrence", "lowest_p",
   "highest_p","Involved_genes". The function also creates visualizations of
   the pathways with the package "pathview".
 }

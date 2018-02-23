@@ -2,7 +2,7 @@
 % Please edit documentation in R/input_processing.R
 \name{input_testing}
 \alias{input_testing}
-\title{Input Tesing}
+\title{Input Testing}
 \usage{
 input_testing(input, p_val_threshold)
 }
@@ -20,7 +20,7 @@ Only checks if the input and the threshold follows the required
   specifications
 }
 \description{
-Input Tesing
+Input Testing
 }
 \examples{
 input_testing(RA_input, 0.05)

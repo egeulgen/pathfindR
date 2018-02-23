@@ -18,9 +18,9 @@ A character value that contains the path to chosen PIN.
 \description{
 This function returns the path/to/PIN.sif. While the default PINs are
 Biogrid, GeneMania, IntAct and KEGG, the user can choose to use any other PIN
-by specifying the path/to/PPI.sif. All PINs to be used in this workflow must
+by specifying the path/to/PIN.sif. All PINs to be used in this workflow must
 have 3 columns with no header and be tab-separated. Columns 1 and 3 must be
-interactor proteins' HGNC gene symbols, column 2 must be a column with all
+interacting proteins' HGNC gene symbols, column 2 must be a column with all
 rows consisting of "pp".
 }
 \examples{

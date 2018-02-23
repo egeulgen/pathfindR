@@ -38,6 +38,6 @@ cluster_pathways(pathway_ids)
 }
 }
 \seealso{
-\code{\link[stats]{hclust}} for hierchical clustering,
+\code{\link[stats]{hclust}} for hierarchical clustering,
   \code{\link[stats]{heatmap}} for drawing a heatmap.
 }

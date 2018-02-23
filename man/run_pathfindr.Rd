@@ -77,8 +77,8 @@ to "Biogrid".}
 }
 \value{
 Data frame of pathview enrichment results. Columns are: "ID",
- "Pathway", "occurence", "lowest_p", "highest_p". "ID" is the KEGG ID for a
- given pathway and "Pathway" is the name. "occurence" indicates the number of
+ "Pathway", "occurrence", "lowest_p", "highest_p". "ID" is the KEGG ID for a
+ given pathway and "Pathway" is the name. "occurrence" indicates the number of
  times the given pathway is encountered over all iterations. "lowest_p" and
  "highest_p" indicate the lowest and highest adjusted p values over all
  iterations. The function also creates an HTML report with the pathview
@@ -99,7 +99,7 @@ adjusted-p values lower than \code{enrichment_threshold} are discarded. The
 lowest adjusted-p value (over all subnetworks) for each pathway is kept. This
 process of active subnetwork search and enrichment is repeated  for a selected
 number of \code{iterations}, which is done in parallel. Over all iterations,
-the lowest and the highest adjusted-p values, as well as number of occurences
+the lowest and the highest adjusted-p values, as well as number of occurrences
 are reported for each enriched pathway.
 }
 \section{Warning}{
@@ -117,7 +117,7 @@ run_pathfindR(RA_input)
 \code{\link{input_testing}} for input testing,
  \code{\link{input_processing}} for input processing,
  \code{\link{current_KEGG}} for KEGG pathway genes retrieval,
- \code{\link{parseActiveSnwSearch}} for parsing a jActive modules output,
+ \code{\link{parseActiveSnwSearch}} for parsing an active subnetwork search output,
  \code{\link{enrichment}} for pathway enrichment analysis and
  \code{\link{pathmap}} for annotation of involved genes and visualization of
  pathways. See \code{\link[foreach]{foreach}} for details on parallel
