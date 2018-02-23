@@ -1,4 +1,4 @@
-#' Input Tesing
+#' Input Testing
 #'
 #' @param input the input data that pathfindR uses. The input must be a data
 #'   frame with three columns: \enumerate{ \item Gene Symbol (HGNC Gene
