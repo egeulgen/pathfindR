@@ -63,7 +63,7 @@
 #'
 #'@section Warning: Depending on the protein interaction network of your choice,
 #'  active subnetwork finding component of pathfindR may take a very long time
-#'  to finish. Therefore, overnight runs are recommended.
+#'  to finish.
 #'
 #'@seealso \code{\link{input_testing}} for input testing,
 #'  \code{\link{input_processing}} for input processing,
@@ -271,13 +271,13 @@ choose_clusters <- function(result_df, ...) {
   cat("Calculating pairwise distances between pathways\n\n")
   PWD_mat <- cluster_pathways(result_df$ID, ...)
 
-  cat("Creating shiny app\n\n")
+  cat("Creating the shiny app\n\n")
   parameters <- list(df = result_df, mat = PWD_mat)
   rmarkdown::run(system.file("rmd/clustering.Rmd", package = "pathfindR"),
                  render_args = list(output_dir = ".", params = parameters))
 }
 
-#' Return The Path to Given Protein Interaction Network (PIN)
+#' Return The Path to Given Protein-Protein Interaction Network (PIN)
 #'
 #' This function returns the path/to/PIN.sif. While the default PINs are
 #' Biogrid, GeneMania, IntAct and KEGG, the user can choose to use any other PIN

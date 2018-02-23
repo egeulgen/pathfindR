@@ -2,20 +2,21 @@
 % Please edit documentation in R/current_KEGG.R
 \name{current_KEGG}
 \alias{current_KEGG}
-\title{Get Current KEGG Pathway Genes}
+\title{Get The Current KEGG Pathway Genes}
 \usage{
 current_KEGG(kegg_update = FALSE)
 }
 \arguments{
-\item{kegg_update}{boolean value indicating whether or not to update KEGG
-pathway genes (default = FALSE)}
+\item{kegg_update}{boolean value indicating whether or not to update the KEGG
+pathway genes RData file "KEGG_pws.RData" (default = FALSE)}
 }
 \value{
 list containing genes for each pathway. The names of the list are
-  KEGG IDs.
+  KEGG IDs. The function also saves this list as "KEGG_pws.RData" under the
+  current working directory
 }
 \description{
-Get Current KEGG Pathway Genes
+Get The Current KEGG Pathway Genes
 }
 \examples{
 \dontrun{
@@ -25,5 +26,5 @@ current_KEGG()
 \seealso{
 \code{\link{enrichment}} for pathway enrichment analysis. See
   \code{\link{run_pathfindR}} for the wrapper function of the pathfindR
-  workflow
+  workflow.
 }

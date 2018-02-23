@@ -16,11 +16,11 @@ be clustered.}
 \item{plot_heatmap}{boolean value indicating whether or not to plot the heat map
 of pathway clustering}
 
-\item{kegg_update}{boolean value indicating whether or not to update KEGG
-pathway genes (default = FALSE)}
+\item{kegg_update}{boolean value indicating whether or not to update the KEGG
+pathway genes RData file "KEGG_pws.RData" (default = FALSE)}
 }
 \value{
-Pairwise distance matrix. Optionally plots a heat map of pathway
+Pairwise distance matrix. Optionally plots a heatmap of pathway
   clustering.
 }
 \description{

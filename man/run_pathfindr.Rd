@@ -67,8 +67,8 @@ enrichment analyses (Default = 10. Gets set to 1 for Genetic Algorithm)}
 used by foreach. If not specified, the function determines this
 automatically (Default == NULL. Gets set to 1 for Genetic Algorithm)}
 
-\item{kegg_update}{boolean value indicating whether or not to update KEGG
-pathway genes (default = FALSE)}
+\item{kegg_update}{boolean value indicating whether or not to update the KEGG
+pathway genes RData file "KEGG_pws.RData" (default = FALSE)}
 
 \item{pin_name_path}{Name of the chosen PIN or path/to/PIN.sif. If PIN name,
 must be one of c("Biogrid", "GeneMania", "IntAct", "KEGG"). If
@@ -105,7 +105,7 @@ are reported for each enriched pathway.
 \section{Warning}{
  Depending on the protein interaction network of your choice,
  active subnetwork finding component of pathfindR may take a very long time
- to finish. Therefore, overnight runs are recommended.
+ to finish.
 }
 
 \examples{

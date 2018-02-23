@@ -2,7 +2,7 @@
 % Please edit documentation in R/wrapper.R
 \name{return_pin_path}
 \alias{return_pin_path}
-\title{Return The Path to Given Protein Interaction Network (PIN)}
+\title{Return The Path to Given Protein-Protein Interaction Network (PIN)}
 \usage{
 return_pin_path(pin_name_path = "Biogrid")
 }

@@ -23,7 +23,7 @@ IDs. Names of this list are the KEGG IDs.}
 \item{enrichment_threshold}{adjusted p value threshold used when filtering
 pathway enrichment result}
 
-\item{pin_path}{path to the Protein Interaction Network (PIN) file used in
+\item{pin_path}{path to the Protein-Protein Interaction Network (PIN) file used in
 the analysis}
 }
 \value{

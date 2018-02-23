@@ -12,7 +12,7 @@
 #'   One 9, e99030, doi:10.1371/journal.pone.0099030 (2014)." for details on the
 #'   method of pathway clustering.
 #'
-#' @return Pairwise distance matrix. Optionally plots a heat map of pathway
+#' @return Pairwise distance matrix. Optionally plots a heatmap of pathway
 #'   clustering.
 #' @seealso \code{\link[stats]{hclust}} for hierchical clustering,
 #'   \code{\link[stats]{heatmap}} for drawing a heatmap.

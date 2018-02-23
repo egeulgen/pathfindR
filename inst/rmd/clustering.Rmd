@@ -11,7 +11,7 @@ This shiny app allows the user to dynamically select a cut-off value for seperat
 
 The plot displays the hierarchical clustering dendrogram and the chosen cut-off, i.e. the height at which the tree is cut.
 
-The table displays the representative pathways chosen for each cluster, based on smallest `lowest p value`s. A csv file containing all the pathways with their cluster memberships is also saved in the current directory.
+The table displays the representative pathways chosen for each cluster, based on smallest `lowest p value`s. In addition, information on all the pathways with their cluster memberships can be saved as a csv file by clicking the "Get Patways w\ Cluster Info" button.
 
 ```{r hclust, echo=F}
 res_df <- params$df

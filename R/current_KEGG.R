@@ -1,14 +1,15 @@
-#' Get Current KEGG Pathway Genes
+#' Get The Current KEGG Pathway Genes
 #'
-#' @param kegg_update boolean value indicating whether or not to update KEGG
-#'   pathway genes (default = FALSE)
+#' @param kegg_update boolean value indicating whether or not to update the KEGG
+#'   pathway genes RData file "KEGG_pws.RData" (default = FALSE)
 #'
 #' @return list containing genes for each pathway. The names of the list are
-#'   KEGG IDs.
+#'   KEGG IDs. The function also saves this list as "KEGG_pws.RData" under the
+#'   current working directory
 #' @export
 #' @seealso \code{\link{enrichment}} for pathway enrichment analysis. See
 #'   \code{\link{run_pathfindR}} for the wrapper function of the pathfindR
-#'   workflow
+#'   workflow.
 #' @examples
 #' \dontrun{
 #' current_KEGG()
@@ -25,7 +26,7 @@ current_KEGG <- function(kegg_update = FALSE) {
     genes_by_pathway <- sapply(pathway_codes, function(pwid){
       pw <- KEGGREST::keggGet(pwid)
       pw <- pw[[1]]$GENE[c(FALSE, TRUE)] ## get gene symbols
-      pw <- sub(";.+", "", pw)
+      pw <- sub(";.+", "", pw) ## discard any description
       pw <- pw[grepl("^[a-zA-Z0-9_-]*$", pw)] ## remove mistaken lines
       pw
     })

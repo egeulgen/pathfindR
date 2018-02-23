@@ -10,7 +10,7 @@
 #' @param adj_method correction method to be used for adjusting p-values.
 #' @param enrichment_threshold adjusted p value threshold used when filtering
 #'   pathway enrichment result
-#' @param pin_path path to the Protein Interaction Network (PIN) file used in
+#' @param pin_path path to the Protein-Protein Interaction Network (PIN) file used in
 #'   the analysis
 #'
 #' @return A data frame that contains enrichment results.
