@@ -14,7 +14,7 @@
 #'
 #' @return Pairwise distance matrix. Optionally plots a heatmap of pathway
 #'   clustering.
-#' @seealso \code{\link[stats]{hclust}} for hierchical clustering,
+#' @seealso \code{\link[stats]{hclust}} for hierarchical clustering,
 #'   \code{\link[stats]{heatmap}} for drawing a heatmap.
 #' @export
 #'

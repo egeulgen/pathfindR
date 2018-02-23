@@ -11,7 +11,7 @@
 #'lowest adjusted-p value (over all subnetworks) for each pathway is kept. This
 #'process of active subnetwork search and enrichment is repeated  for a selected
 #'number of \code{iterations}, which is done in parallel. Over all iterations,
-#'the lowest and the highest adjusted-p values, as well as number of occurences
+#'the lowest and the highest adjusted-p values, as well as number of occurrences
 #'are reported for each enriched pathway.
 #'
 #'@inheritParams input_testing
@@ -50,8 +50,8 @@
 #'@import knitr
 #'
 #'@return Data frame of pathview enrichment results. Columns are: "ID",
-#'  "Pathway", "occurence", "lowest_p", "highest_p". "ID" is the KEGG ID for a
-#'  given pathway and "Pathway" is the name. "occurence" indicates the number of
+#'  "Pathway", "occurrence", "lowest_p", "highest_p". "ID" is the KEGG ID for a
+#'  given pathway and "Pathway" is the name. "occurrence" indicates the number of
 #'  times the given pathway is encountered over all iterations. "lowest_p" and
 #'  "highest_p" indicate the lowest and highest adjusted p values over all
 #'  iterations. The function also creates an HTML report with the pathview
@@ -68,7 +68,7 @@
 #'@seealso \code{\link{input_testing}} for input testing,
 #'  \code{\link{input_processing}} for input processing,
 #'  \code{\link{current_KEGG}} for KEGG pathway genes retrieval,
-#'  \code{\link{parseActiveSnwSearch}} for parsing a jActive modules output,
+#'  \code{\link{parseActiveSnwSearch}} for parsing an active subnetwork search output,
 #'  \code{\link{enrichment}} for pathway enrichment analysis and
 #'  \code{\link{pathmap}} for annotation of involved genes and visualization of
 #'  pathways. See \code{\link[foreach]{foreach}} for details on parallel
@@ -148,7 +148,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   final_res <- foreach::foreach(i = 1:iterations, .combine = rbind) %dopar% {
     setwd(dirs[i])
 
-    # running jactivemodules
+    # running Active Subnetwork Search
     system(paste0("java -Xss4m -jar ", active_search_path,
                   " -sif=", pin_path,
                   " -sig=../input_for_search.txt",
@@ -195,12 +195,12 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   if (is.null(final_res))
     stop("Did not find any enriched pathways!")
 
-  ## Annotate lowest p, highest p and occurence
+  ## Annotate lowest p, highest p and occurrence
   cat("## Processing the enrichment results over all iterations \n\n")
 
   lowest_p <- tapply(final_res$adj_p, final_res$ID, min)
   highest_p <- tapply(final_res$adj_p, final_res$ID, max)
-  occurence <- tapply(final_res$adj_p, final_res$ID, length)
+  occurrence <- tapply(final_res$adj_p, final_res$ID, length)
 
   idx <- match(final_res$ID, names(lowest_p))
   final_res$lowest_p <- as.numeric(lowest_p[idx])
@@ -208,11 +208,11 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   idx <- match(final_res$ID, names(highest_p))
   final_res$highest_p <- as.numeric(highest_p[idx])
 
-  idx <- match(final_res$ID, names(occurence))
-  final_res$occurence <- as.numeric(occurence[idx])
+  idx <- match(final_res$ID, names(occurrence))
+  final_res$occurrence <- as.numeric(occurrence[idx])
 
   ## reformat data frame
-  keep <- c("ID", "Pathway", "occurence", "lowest_p", "highest_p")
+  keep <- c("ID", "Pathway", "occurrence", "lowest_p", "highest_p")
   final_res <- final_res[, keep]
   final_res <- final_res[order(final_res$lowest_p), ]
   final_res <- final_res[!duplicated(final_res$ID), ]
@@ -288,7 +288,7 @@ choose_clusters <- function(result_df, ...) {
 #' Biogrid, GeneMania, IntAct and KEGG, the user can choose to use any other PIN
 #' by specifying the path/to/PPI.sif. All PINs to be used in this workflow must
 #' have 3 columns with no header and be tab-separated. Columns 1 and 3 must be
-#' interactor proteins' HGNC gene symbols, column 2 must be a column with all
+#' interacting proteins' HGNC gene symbols, column 2 must be a column with all
 #' rows consisting of "pp".
 #'
 #' @param pin_name_path Name of the chosen PIN or path/to/PIN.sif. If PIN name,

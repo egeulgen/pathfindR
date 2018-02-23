@@ -22,7 +22,7 @@
 #'   (over all subnetworks) for each pathway is kept. This process of active
 #'   subnetwork search and enrichment is repeated  for a selected number of
 #'   \code{iterations}, which is done in parallel. Over all iterations, the
-#'   lowest and the highest adjusted-p values, as well as number of occurences
+#'   lowest and the highest adjusted-p values, as well as number of occurrences
 #'   are reported for each enriched pathway.
 #'
 #' @section choose_clusters: This function first calculates the pairwise
