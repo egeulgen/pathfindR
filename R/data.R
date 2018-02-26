@@ -36,3 +36,23 @@
 #' }
 #' @seealso \code{\link{RA_input}} for example input.
 "RA_output"
+
+#' Genes by KEGG Pathway
+#'
+#' A list contatining the genes involved in each human KEGG pathway. Each
+#' element is a vector of gene symbols located in the given pathway. Names
+#' corresponds to the KEGG ID of the pathway. This data was retrieved on Feb 26,
+#' 2018.
+#'
+#' @format list containing 325 vectors of gene symbols. Each vector corresponds
+#'   to a pathway.
+"genes_by_pathway"
+
+#' KEGG Pathway Descriptions
+#'
+#' A list containing the descriptions for each human KEGG pathway. Names of the
+#' list corresponds to the KEGG ID of the pathway. This data was retrieved on
+#' Feb 26, 2018.
+#'
+#' @format list containing 325 character values.
+"pathways_list"

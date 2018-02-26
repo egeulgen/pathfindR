@@ -24,6 +24,7 @@ interacting proteins' HGNC gene symbols, column 2 must be a column with all
 rows consisting of "pp".
 }
 \examples{
+pin_path <- return_pin_path("Biogrid")
 pin_path <- return_pin_path("KEGG")
 }
 \seealso{

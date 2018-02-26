@@ -5,7 +5,7 @@
 \title{Perform Enrichment Analysis}
 \usage{
 enrichment(genes_by_pathway, genes_of_interest, pathways_list,
-  adj_method = "bonferroni", enrichment_threshold = 1e-04, pin_path)
+  adj_method = "bonferroni", enrichment_threshold, pin_path)
 }
 \arguments{
 \item{genes_by_pathway}{List that contains genes for each pathway. Names of
@@ -33,8 +33,9 @@ A data frame that contains enrichment results.
 Perform Enrichment Analysis
 }
 \examples{
-\dontrun{
-enrichment(genes_by_pathway, genes_of_interest, pathways_list)
+\dontshow{
+enrichment(pathfindR::genes_by_pathway, c("PER1", "PER2", "CRY1", "CREB1"),
+pathfindR::pathways_list, "bonferroni", 0.05, return_pin_path("KEGG"))
 }
 }
 \seealso{

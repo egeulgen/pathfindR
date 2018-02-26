@@ -27,6 +27,9 @@ This function first filters the input so that all p values are less
 Process Input
 }
 \examples{
+\dontshow{
+input_processing(RA_input[1,], 0.05, return_pin_path("KEGG"))
+}
 \dontrun{
 input_processing(input, p_val_threshold = 0.05, "path/to/pin")
 }

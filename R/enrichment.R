@@ -19,12 +19,13 @@
 #'   \code{\link{run_pathfindR}} for the wrapper function of the pathfindR
 #'   workflow
 #' @examples
-#' \dontrun{
-#' enrichment(genes_by_pathway, genes_of_interest, pathways_list)
+#' \dontshow{
+#' enrichment(pathfindR::genes_by_pathway, c("PER1", "PER2", "CRY1", "CREB1"),
+#' pathfindR::pathways_list, "bonferroni", 0.05, return_pin_path("KEGG"))
 #' }
 enrichment <- function(genes_by_pathway, genes_of_interest,
                        pathways_list, adj_method = "bonferroni",
-                       enrichment_threshold = 1e-4, pin_path) {
+                       enrichment_threshold, pin_path) {
   hyperg_test <- function(pw_genes, chosen_genes, all_genes) {
     pw_genes_selected <- length(intersect(chosen_genes, pw_genes))
     pw_genes_in_pool <- length(pw_genes)

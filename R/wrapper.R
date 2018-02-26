@@ -44,7 +44,6 @@
 #'@param n_processes optional argument for specifying the number of processes
 #'  used by foreach. If not specified, the function determines this
 #'  automatically (Default == NULL. Gets set to 1 for Genetic Algorithm)
-#'@inheritParams current_KEGG
 #'@inheritParams return_pin_path
 #'
 #'@import knitr
@@ -67,7 +66,6 @@
 #'
 #'@seealso \code{\link{input_testing}} for input testing,
 #'  \code{\link{input_processing}} for input processing,
-#'  \code{\link{current_KEGG}} for KEGG pathway genes retrieval,
 #'  \code{\link{parseActiveSnwSearch}} for parsing an active subnetwork search output,
 #'  \code{\link{enrichment}} for pathway enrichment analysis and
 #'  \code{\link{pathmap}} for annotation of involved genes and visualization of
@@ -89,7 +87,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
                           grMaxDepth = 1, grSearchDepth = 1,
                           grOverlap = 0.5, grSubNum = 1000,
                           iterations = 10, n_processes = NULL,
-                          kegg_update = FALSE, pin_name_path = "Biogrid") {
+                          pin_name_path = "Biogrid") {
 
   if (!search_method %in% c("GR", "SA", "GA"))
     stop("search_method must be one of \"GR\", \"SA\", \"GA\"")
@@ -120,10 +118,8 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
                      "./active_snw_search/input_for_search.txt",
                      row.names = FALSE, quote = FALSE, sep = "\t")
 
-  ## get current KEGG pathways and kegg id, pathway names
-  cat("## Retreiving most current KEGG pathway genes\n\n")
-  pw_genes <- current_KEGG(kegg_update)
-  pathways_list <- KEGGREST::keggList("pathway", "hsa")
+  data("genes_by_pathway", package = "pathfindR")
+  data("pathways_list", package = "pathfindR")
 
   ## Prep for parallel run
   cat("## Performing Active Subnetwork Search and Enrichment\n")
@@ -175,7 +171,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
 
     ## enrichment per subnetwork
     enrichment_res <- lapply(snws, function(x)
-      pathfindR::enrichment(pw_genes, x, pathways_list,
+      pathfindR::enrichment(genes_by_pathway, x, pathways_list,
                             adj_method, enrichment_threshold, pin_path))
     enrichment_res <- Reduce(rbind, enrichment_res)
 
@@ -269,9 +265,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
 #' between enriched pathways.
 #'
 #' @examples
-#' \dontrun{
 #' choose_clusters(RA_output)
-#' }
 choose_clusters <- function(result_df, ...) {
   cat("Calculating pairwise distances between pathways\n\n")
   PWD_mat <- cluster_pathways(result_df$ID, ...)
@@ -302,6 +296,7 @@ choose_clusters <- function(result_df, ...) {
 #' @seealso See \code{\link{run_pathfindR}} for the wrapper function of the
 #'   pathfindR workflow
 #' @examples
+#' pin_path <- return_pin_path("Biogrid")
 #' pin_path <- return_pin_path("KEGG")
 
 return_pin_path <- function(pin_name_path = "Biogrid") {

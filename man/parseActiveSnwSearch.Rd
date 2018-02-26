@@ -19,8 +19,12 @@ A list of genes in every active subnetwork that has a score > 3 and
 Parse Active Subnetwork Search Output File
 }
 \examples{
+\dontshow{
+parseActiveSnwSearch(normalizePath(system.file("extdata/resultActiveSubnetworkSearch.txt",
+package = "pathfindR")), RA_input$Gene.symbol)
+}
 \dontrun{
-parseActiveSnwSearch(output, significant_genes)
+parseActiveSnwSearch("path/to/output", significant_genes)
 }
 }
 \seealso{

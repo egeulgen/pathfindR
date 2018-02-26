@@ -11,12 +11,16 @@
 #'   pathfindR workflow
 #'
 #' @examples
+#' \dontshow{
+#' parseActiveSnwSearch(normalizePath(system.file("extdata/resultActiveSubnetworkSearch.txt",
+#' package = "pathfindR")), RA_input$Gene.symbol)
+#' }
 #' \dontrun{
-#' parseActiveSnwSearch(output, significant_genes)
+#' parseActiveSnwSearch("path/to/output", significant_genes)
 #' }
 parseActiveSnwSearch <- function(output_path, signif_genes) {
 
-  output <- readLines("resultActiveSubnetworkSearch.txt")
+  output <- readLines(output_path)
 
   score <- c()
   subnetworks <- list()

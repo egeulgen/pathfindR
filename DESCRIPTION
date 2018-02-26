@@ -9,7 +9,7 @@ Description: Implementation of a work flow used for pathway enrichment
     protein-protein interaction network and active sub-networks are 
     identified. These sub-networks are next used for pathway enrichment 
     analysis. Finally, the results are presented in an HTML report.
-License: file LICENSE
+License: MIT + file LICENSE
 URL: https://github.com/egeulgen/pathfindR
 BugReports: https://github.com/egeulgen/pathfindR/issues
 Encoding: UTF-8
@@ -19,7 +19,6 @@ Imports: AnnotationDbi,
     DBI,
     foreach,
     rmarkdown,
-    KEGGREST,
     org.Hs.eg.db
 Depends: R (>= 3.4),
     pathview,

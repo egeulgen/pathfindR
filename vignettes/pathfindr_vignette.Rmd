@@ -73,7 +73,7 @@ After input testing, the program attempts to convert any gene symbol that is not
 - Simulated Annealing Algorithm (based on Ideker et al. [2]) and 
 - Genetic Algorithm (based on Ozisik et al. [3]).
 
-Next, pathway enrichment analyses are performed using the genes in each of the active subnetworks. For this, up-to-date information on genes contained in each KEGG pathway are retrieved with the help of the R package `KEGGREST`. This information is saved to the current directory for later use but can be updated during future runs by setting the argument `kegg_update` to TRUE (default = FALSE) in the wrapper function `run_pathfindR()` or in the stand-alone function that gets the current KEGG pathway genes `current_KEGG()`.
+Next, pathway enrichment analyses are performed using the genes in each of the active subnetworks. For this, up-to-date information on genes contained in each human KEGG pathway was retrieved with the help of the R package `KEGGREST` on Feb 26, 2018. These data are available in `genes_by_pathway` and `pathways_list`.
 
 During enrichment analyses, pathways with adjusted-p values larger than the `enrichment_threshold` (an argument of `run_pathfindR()`, defaults to 0.05) are discarded. The results of enrichment analyses over all active subnetworks are combined by keeping only the lowest adjusted-p value for each pathway. 
 
@@ -111,7 +111,7 @@ This document contains a table of converted gene symbols. Columns are:
 
 <img src="./pw_clustering.png" width="650" height="163.34" />
 
-This function first calculates the pairwise distances between the pathways in the input data frame. This step uses the distance metric described by Chen et al. [1]. Via a shiny app, presented as an HTML document, the hierarchical clustering dendrogram is visualized. In this HTML document, the user can select the agglomeration method and the distance value at which to cut the tree. The dendrogram with the cut-off value marked with a red line is dynamically visualized and the resulting cluster assignments of the pathways along with annotation of representative pathways (chosen by smallest lowest p value) are presented as a table. This table can be saved as a csv file by pressing the button `Get Pathways w\ Cluster Info`.
+For this workflow, the wrapper function `choose_clusters()` is used. This function first calculates the pairwise distances between the pathways in the input data frame. This step uses the distance metric described by Chen et al. [1]. Via a shiny app, presented as an HTML document, the hierarchical clustering dendrogram is visualized. In this HTML document, the user can select the agglomeration method and the distance value at which to cut the tree. The dendrogram with the cut-off value marked with a red line is dynamically visualized and the resulting cluster assignments of the pathways along with annotation of representative pathways (chosen by smallest lowest p value) are presented as a table. This table can be saved as a csv file by pressing the button `Get Pathways w\ Cluster Info`.
 
 [1] *Chen YA, Tripathi LP, Dessailly BH, Nyström-persson J, Ahmad S, Mizuguchi K. Integrated pathway clusters with coherent biological themes for target prioritisation. PLoS ONE. 2014;9(6):e99030. \doi 10.1371/journal.pone.0099030 *
 

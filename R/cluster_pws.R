@@ -1,16 +1,15 @@
 #' Calculate Pairwise Distances Between Given Pathways
 #'
-#' @param pathway_ids List that contains genes for selected pathways that are to
-#'   be clustered.
-#' @param agg_method the agglomeration method to be used.
-#' @param plot_heatmap boolean value indicating whether or not to plot the heat map
-#'   of pathway clustering
-#' @inheritParams current_KEGG
+#' @param pathway_ids Vector of IDs of pathways selected to be clustered.
+#' @param agg_method the agglomeration method to be used if plotting heatmap
+#'   (see next argument, default: average).
+#' @param plot_heatmap boolean value indicating whether or not to plot the heat
+#'   map of pathway clustering (default: FALSE).
 #'
-#' @details See "Chen, Y. A. et al. Integrated pathway
-#'   clusters with coherent biological themes for target prioritisation. PLoS
-#'   One 9, e99030, doi:10.1371/journal.pone.0099030 (2014)." for details on the
-#'   method of pathway clustering.
+#' @details See "Chen, Y. A. et al. Integrated pathway clusters with coherent
+#'   biological themes for target prioritisation. PLoS One 9, e99030,
+#'   doi:10.1371/journal.pone.0099030 (2014)." for details on the method of
+#'   pathway clustering.
 #'
 #' @return Pairwise distance matrix. Optionally plots a heatmap of pathway
 #'   clustering.
@@ -19,14 +18,12 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#' cluster_pathways(pathway_ids)
-#' }
+#' cluster_pathways(RA_output$ID)
 cluster_pathways <- function(pathway_ids, agg_method = "average",
-                             plot_heatmap = TRUE, kegg_update = FALSE) {
+                             plot_heatmap = FALSE) {
   ## Get genes for selected pathways
-  all_pw_genes <- current_KEGG(kegg_update)
-  pathway_genes <- all_pw_genes[pathway_ids]
+  data("genes_by_pathway", package = "pathfindR")
+  pathway_genes <- genes_by_pathway[pathway_ids]
 
   ## Sort according to number of genes
   num_genes <- sapply(pathway_genes, length)

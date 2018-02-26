@@ -2,7 +2,6 @@
 
 export(choose_clusters)
 export(cluster_pathways)
-export(current_KEGG)
 export(enrichment)
 export(input_processing)
 export(input_testing)

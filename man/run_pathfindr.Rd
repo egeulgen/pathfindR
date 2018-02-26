@@ -10,7 +10,7 @@ run_pathfindR(input, p_val_threshold = 0.05, enrichment_threshold = 0.05,
   saIter = 10000, gaPop = 400, gaIter = 10000, gaThread = 5,
   gaMut = 0, grMaxDepth = 1, grSearchDepth = 1, grOverlap = 0.5,
   grSubNum = 1000, iterations = 10, n_processes = NULL,
-  kegg_update = FALSE, pin_name_path = "Biogrid")
+  pin_name_path = "Biogrid")
 }
 \arguments{
 \item{input}{the input data that pathfindR uses. The input must be a data
@@ -67,9 +67,6 @@ enrichment analyses (Default = 10. Gets set to 1 for Genetic Algorithm)}
 used by foreach. If not specified, the function determines this
 automatically (Default == NULL. Gets set to 1 for Genetic Algorithm)}
 
-\item{kegg_update}{boolean value indicating whether or not to update the KEGG
-pathway genes RData file "KEGG_pws.RData" (default = FALSE)}
-
 \item{pin_name_path}{Name of the chosen PIN or path/to/PIN.sif. If PIN name,
 must be one of c("Biogrid", "GeneMania", "IntAct", "KEGG"). If
 path/to/PIN.sif, the file must comply with the PIN specifications. Defaults
@@ -116,7 +113,6 @@ run_pathfindR(RA_input)
 \seealso{
 \code{\link{input_testing}} for input testing,
  \code{\link{input_processing}} for input processing,
- \code{\link{current_KEGG}} for KEGG pathway genes retrieval,
  \code{\link{parseActiveSnwSearch}} for parsing an active subnetwork search output,
  \code{\link{enrichment}} for pathway enrichment analysis and
  \code{\link{pathmap}} for annotation of involved genes and visualization of
