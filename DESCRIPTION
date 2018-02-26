@@ -17,6 +17,7 @@ LazyData: true
 SystemRequirements: Java JVM 1.8
 Imports: AnnotationDbi,
     DBI,
+    doParallel,
     foreach,
     rmarkdown,
     org.Hs.eg.db

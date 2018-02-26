@@ -24,7 +24,7 @@
 #' differential-expression dataset \code{RA_input}. Active subnetwork search
 #' was performed with Greedy Algorithm using the Biogrid PIN.
 #'
-#' @format A data frame with 51 rows and 7 columns:
+#' @format A data frame with 34 rows and 7 columns:
 #' \describe{
 #'   \item{ID}{KEGG ID of the enriched pathway}
 #'   \item{Pathway}{Description of the enriched pathway}

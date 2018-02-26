@@ -127,8 +127,9 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   # calculate the number of cores, if necessary
   if (is.null(n_processes))
     n_processes <- parallel::detectCores() - 1
-  # Initiate the cluster
+  # Initiate the clusters
   cl <- parallel::makeCluster(n_processes)
+  doParallel::registerDoParallel(cl)
 
   dirs <- rep("", iterations)
   for (i in 1:iterations) {
@@ -265,7 +266,9 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
 #' between enriched pathways.
 #'
 #' @examples
+#' \dontrun{
 #' choose_clusters(RA_output)
+#' }
 choose_clusters <- function(result_df, ...) {
   cat("Calculating pairwise distances between pathways\n\n")
   PWD_mat <- cluster_pathways(result_df$ID, ...)

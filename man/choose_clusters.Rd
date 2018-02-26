@@ -28,7 +28,9 @@ doi:10.1371/journal.pone.0099030 (2014)." for details on the method of
 pathway clustering.
 }
 \examples{
+\dontrun{
 choose_clusters(RA_output)
+}
 }
 \seealso{
 See \code{\link{cluster_pathways}} for calculation of pairwise distances
