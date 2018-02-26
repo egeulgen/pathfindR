@@ -118,9 +118,6 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
                      "./active_snw_search/input_for_search.txt",
                      row.names = FALSE, quote = FALSE, sep = "\t")
 
-  data("genes_by_pathway", package = "pathfindR")
-  data("pathways_list", package = "pathfindR")
-
   ## Prep for parallel run
   cat("## Performing Active Subnetwork Search and Enrichment\n")
 
@@ -172,7 +169,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
 
     ## enrichment per subnetwork
     enrichment_res <- lapply(snws, function(x)
-      pathfindR::enrichment(genes_by_pathway, x, pathways_list,
+      pathfindR::enrichment(pathfindR::genes_by_pathway, x, pathfindR::pathways_list,
                             adj_method, enrichment_threshold, pin_path))
     enrichment_res <- Reduce(rbind, enrichment_res)
 

@@ -22,8 +22,7 @@
 cluster_pathways <- function(pathway_ids, agg_method = "average",
                              plot_heatmap = FALSE) {
   ## Get genes for selected pathways
-  data("genes_by_pathway", package = "pathfindR")
-  pathway_genes <- genes_by_pathway[pathway_ids]
+  pathway_genes <- pathfindR::genes_by_pathway[pathway_ids]
 
   ## Sort according to number of genes
   num_genes <- sapply(pathway_genes, length)
