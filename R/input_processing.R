@@ -1,15 +1,16 @@
 #' Input Testing
 #'
 #' @param input the input data that pathfindR uses. The input must be a data
-#'   frame with three columns: \enumerate{ \item Gene Symbol (HGNC Gene
-#'   Symbol) \item Change value, e.g. log(fold change) \item adjusted p value
-#'   associated with test, e.g. differential expression/methylation }
-#'
+#'   frame with three columns: \enumerate{
+#'   \item Gene Symbol (HGNC Gene Symbol)
+#'   \item Change value, e.g. log(fold change)
+#'   \item adjusted p value associated with test, e.g. differential expression/methylation
+#' }
 #' @param p_val_threshold the adjusted-p value threshold to use when filtering
 #'   the input data frame. Must a numeric value between 0 and 1.
 #'
 #' @return Only checks if the input and the threshold follows the required
-#'   specifications
+#'   specifications.
 #' @export
 #' @seealso See \code{\link{run_pathfindR}} for the wrapper function of the
 #'   pathfindR workflow
@@ -41,7 +42,12 @@ input_testing <- function(input, p_val_threshold){
 
 #' Process Input
 #'
-#' @param input the input data that pathfindR uses
+#' @param input the input data that pathfindR uses. The input must be a data
+#'   frame with three columns: \enumerate{
+#'   \item Gene Symbol (HGNC Gene Symbol)
+#'   \item Change value, e.g. log(fold change)
+#'   \item adjusted p value associated with test, e.g. differential expression/methylation
+#' }
 #' @param p_val_threshold the adjusted-p value threshold to use when filtering
 #'   the input data frame
 #' @param pin_path path to the Protein Interaction Network (PIN) file used in

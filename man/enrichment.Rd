@@ -9,19 +9,19 @@ enrichment(genes_by_pathway, genes_of_interest, pathways_list,
 }
 \arguments{
 \item{genes_by_pathway}{List that contains genes for each pathway. Names of
-this list are the KEGG IDs.}
+this list are KEGG IDs.}
 
 \item{genes_of_interest}{The set of gene symbols to be used for enrichment
 analysis. In the scope of this package, these are genes that were
-identified for a subnetwork.}
+identified for an active subnetwork.}
 
 \item{pathways_list}{List that contains pathway descriptions for KEGG pathway
-IDs. Names of this list are the KEGG IDs.}
+IDs. Names of this list are KEGG IDs.}
 
 \item{adj_method}{correction method to be used for adjusting p-values.}
 
-\item{enrichment_threshold}{adjusted p value threshold used when filtering
-pathway enrichment result}
+\item{enrichment_threshold}{adjusted-p value threshold used when filtering
+pathway enrichment results}
 
 \item{pin_path}{path to the Protein-Protein Interaction Network (PIN) file used in
 the analysis}
@@ -41,5 +41,5 @@ pathfindR::pathways_list, "bonferroni", 0.05, return_pin_path("KEGG"))
 \seealso{
 \code{\link[stats]{p.adjust}} for adjustment of p values. See
   \code{\link{run_pathfindR}} for the wrapper function of the pathfindR
-  workflow
+  workflow.
 }

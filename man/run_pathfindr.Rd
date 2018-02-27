@@ -14,9 +14,11 @@ run_pathfindR(input, p_val_threshold = 0.05, enrichment_threshold = 0.05,
 }
 \arguments{
 \item{input}{the input data that pathfindR uses. The input must be a data
-frame with three columns: \enumerate{ \item Gene Symbol (HGNC Gene
-Symbol) \item Change value, e.g. log(fold change) \item adjusted p value
-associated with test, e.g. differential expression/methylation }}
+  frame with three columns: \enumerate{
+  \item Gene Symbol (HGNC Gene Symbol)
+  \item Change value, e.g. log(fold change)
+  \item adjusted p value associated with test, e.g. differential expression/methylation
+}}
 
 \item{p_val_threshold}{the adjusted-p value threshold to use when filtering
 the input data frame. Must a numeric value between 0 and 1.}

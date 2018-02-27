@@ -1,15 +1,15 @@
 #' Perform Enrichment Analysis
 #'
 #' @param genes_by_pathway List that contains genes for each pathway. Names of
-#'   this list are the KEGG IDs.
+#'   this list are KEGG IDs.
 #' @param genes_of_interest The set of gene symbols to be used for enrichment
 #'   analysis. In the scope of this package, these are genes that were
-#'   identified for a subnetwork.
+#'   identified for an active subnetwork.
 #' @param pathways_list List that contains pathway descriptions for KEGG pathway
-#'   IDs. Names of this list are the KEGG IDs.
+#'   IDs. Names of this list are KEGG IDs.
 #' @param adj_method correction method to be used for adjusting p-values.
-#' @param enrichment_threshold adjusted p value threshold used when filtering
-#'   pathway enrichment result
+#' @param enrichment_threshold adjusted-p value threshold used when filtering
+#'   pathway enrichment results
 #' @param pin_path path to the Protein-Protein Interaction Network (PIN) file used in
 #'   the analysis
 #'
@@ -17,7 +17,7 @@
 #' @export
 #' @seealso \code{\link[stats]{p.adjust}} for adjustment of p values. See
 #'   \code{\link{run_pathfindR}} for the wrapper function of the pathfindR
-#'   workflow
+#'   workflow.
 #' @examples
 #' \dontshow{
 #' enrichment(pathfindR::genes_by_pathway, c("PER1", "PER2", "CRY1", "CREB1"),

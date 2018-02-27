@@ -17,7 +17,8 @@ log(fold change) values) for significant genes.}
 Data frame of enrichment results with genes involved in each pathway
   presented. Columns are: "ID", "Pathway", "occurrence", "lowest_p",
   "highest_p","Involved_genes". The function also creates visualizations of
-  the pathways with the package "pathview".
+  the pathways with the package \code{pathview} and saves them in the folder
+  "pathway_maps" under the current working directory.
 }
 \description{
 Annotate Involved Genes In Pathways and Visualize Pathways

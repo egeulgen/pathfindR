@@ -4,13 +4,14 @@
 \name{pathways_list}
 \alias{pathways_list}
 \title{KEGG Pathway Descriptions}
-\format{list containing 325 character values.}
+\format{list containing 325 character values, the decriptions for the given
+  pathways.}
 \usage{
 pathways_list
 }
 \description{
 A list containing the descriptions for each human KEGG pathway. Names of the
-list corresponds to the KEGG ID of the pathway. This data was retrieved on
-Feb 26, 2018.
+list correspond to the KEGG ID of the pathway. This data was retrieved on Feb
+26, 2018.
 }
 \keyword{datasets}

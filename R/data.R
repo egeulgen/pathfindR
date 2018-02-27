@@ -1,14 +1,13 @@
 #' Example Input for the pathfindR Enrichment Workflow - Rheumatoid Arthritis
 #'
-#' A dataset containing differentially-expressed genes along with the associated
-#' log2-fold-change values and adjusted p-values for the GEO data set GSE15573.
-#' This dataset aimed to characterize gene expression profiles in the peripheral
-#' blood mononuclear cells of 18 rheumatoid arthritis (RA) patients versus 15
-#' healthy subjects. Differentially-expressed genes with adj.P.Val <= 0.05 are
-#' presented in this dataset.
+#' A dataset containing the differentially-expressed genes along with the
+#' associated log2-fold-change values and adjusted p-values for the GEO dataset
+#' GSE15573. This dataset aimed to characterize gene expression profiles in the
+#' peripheral blood mononuclear cells of 18 rheumatoid arthritis (RA) patients
+#' versus 15 healthy subjects. Differentially-expressed genes with adj.P.Val <=
+#' 0.05 are presented in this dataset.
 #'
-#' @format A data frame with 571 rows and 3 variables:
-#' \describe{
+#' @format A data frame with 571 rows and 3 variables: \describe{
 #'   \item{Gene.symbol}{HGNC gene symbols of the differentially-expressed genes}
 #'   \item{logFC}{log2-fold-change values}
 #'   \item{adj.P.Val}{adjusted p values, via the Benjamini & Hochberg (1995) method}
@@ -41,7 +40,7 @@
 #'
 #' A list contatining the genes involved in each human KEGG pathway. Each
 #' element is a vector of gene symbols located in the given pathway. Names
-#' corresponds to the KEGG ID of the pathway. This data was retrieved on Feb 26,
+#' correspond to the KEGG ID of the pathway. This data was retrieved on Feb 26,
 #' 2018.
 #'
 #' @format list containing 325 vectors of gene symbols. Each vector corresponds
@@ -51,8 +50,9 @@
 #' KEGG Pathway Descriptions
 #'
 #' A list containing the descriptions for each human KEGG pathway. Names of the
-#' list corresponds to the KEGG ID of the pathway. This data was retrieved on
-#' Feb 26, 2018.
+#' list correspond to the KEGG ID of the pathway. This data was retrieved on Feb
+#' 26, 2018.
 #'
-#' @format list containing 325 character values.
+#' @format list containing 325 character values, the decriptions for the given
+#'   pathways.
 "pathways_list"
