@@ -7,7 +7,16 @@
 choose_clusters(result_df, ...)
 }
 \arguments{
-\item{result_df}{resulting data frame of the pathfindR main workflow.}
+\item{result_df}{resulting data frame of encriched pathways from the wrapper
+  function \code{run_pathfindR}. Columns are: \enumerate{
+  \item{ID: }{KEGG ID of the enriched pathway}
+  \item{Pathway: }{Description of the enriched pathway}
+  \item{occurrence: }{the number of iterations that the given pathway was found to enriched over all iterations}
+  \item{lowest_p: }{the lowest adjusted-p value of the given pathway over all iterations}
+  \item{highest_p: }{the highest adjusted-p value of the given pathway over all iterations}
+  \item{Up_regulated: }{the up-regulated genes in the input involved in the given pathway, comma-separated}
+  \item{Down_regulated: }{the down-regulated genes in the input involved in the given pathway, comma-separated}
+}}
 
 \item{...}{optional arguments for \code{cluster_pathways}}
 }
@@ -28,11 +37,12 @@ doi:10.1371/journal.pone.0099030 (2014)." for details on the method of
 pathway clustering.
 }
 \examples{
-\dontrun{
+\donttest{
 choose_clusters(RA_output)
 }
 }
 \seealso{
-See \code{\link{cluster_pathways}} for calculation of pairwise distances
-between enriched pathways.
+See \code{\link{cluster_pathways}} for calculation of pairwise
+  distances between enriched pathways. See \code{\link{run_pathfindR}}
+  for the wrapper function of the pathfindR enrichment workflow.
 }

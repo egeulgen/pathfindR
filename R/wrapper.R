@@ -23,7 +23,7 @@
 #'  search. Options are greedy search (GR), simulated annealing (SA) or genetic
 #'  algorithm (GA) for the search (Default:GR. Can be one of c("GR", "SA",
 #'  "GA"))
-#'@param use_all_positives if TRUE in GA, adds an individual with all positive
+#'@param use_all_positives if TRUE: in GA, adds an individual with all positive
 #'  nodes. In SA, initializes candidate solution with all positive nodes.
 #'  (Default = FALSE)
 #'@param saTemp0 initial temperature for SA (Default: 1.0)
@@ -33,7 +33,8 @@
 #'@param gaIter iteration number for GA (Default: 10000)
 #'@param gaThread number of threads to be used in GA (Default: 5)
 #'@param gaMut the mutation rate for GA (Default: 0)
-#'@param grMaxDepth sets max depth in greedy search, 0 for no limit (Default: 2)
+#'@param grMaxDepth sets max depth in greedy search. set to 0 for no limit
+#'  (Default: 1)
 #'@param grSearchDepth sets search depth in greedy search (Default: 1)
 #'@param grOverlap sets overlap threshold for results of greedy search (Default:
 #'  0.5)
@@ -48,14 +49,18 @@
 #'
 #'@import knitr
 #'
-#'@return Data frame of pathview enrichment results. Columns are: "ID",
-#'  "Pathway", "occurrence", "lowest_p", "highest_p". "ID" is the KEGG ID for a
-#'  given pathway and "Pathway" is the name. "occurrence" indicates the number of
-#'  times the given pathway is encountered over all iterations. "lowest_p" and
-#'  "highest_p" indicate the lowest and highest adjusted p values over all
-#'  iterations. The function also creates an HTML report with the pathview
-#'  enrichment results linked to the visualizations of the pathways in addition
-#'  to the table of converted gene symbols. This report can be found in
+#'@return Data frame of pathview enrichment results. Columns are: \describe{
+#'   \item{ID}{KEGG ID of the enriched pathway}
+#'   \item{Pathway}{Description of the enriched pathway}
+#'   \item{occurrence}{the number of iterations that the given pathway was found to enriched over all iterations}
+#'   \item{lowest_p}{the lowest adjusted-p value of the given pathway over all iterations}
+#'   \item{highest_p}{the highest adjusted-p value of the given pathway over all iterations}
+#'   \item{Up_regulated}{the up-regulated genes in the input involved in the given pathway, comma-separated}
+#'   \item{Down_regulated}{the down-regulated genes in the input involved in the given pathway, comma-separated}
+#' }
+#'  The function also creates an HTML report with the pathview enrichment
+#'  results linked to the visualizations of the pathways in addition to
+#'  the table of converted gene symbols. This report can be found in
 #'  "results.html".
 #'
 #'@export
@@ -66,15 +71,15 @@
 #'
 #'@seealso \code{\link{input_testing}} for input testing,
 #'  \code{\link{input_processing}} for input processing,
-#'  \code{\link{parseActiveSnwSearch}} for parsing an active subnetwork search output,
-#'  \code{\link{enrichment}} for pathway enrichment analysis and
+#'  \code{\link{parseActiveSnwSearch}} for parsing an active subnetwork search
+#'  output, \code{\link{enrichment}} for pathway enrichment analysis and
 #'  \code{\link{pathmap}} for annotation of involved genes and visualization of
 #'  pathways. See \code{\link[foreach]{foreach}} for details on parallel
 #'  execution of looping constructs. See \code{\link{choose_clusters}} for
 #'  clustering the resulting enriched pathways.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' run_pathfindR(RA_input)
 #' }
 run_pathfindR <- function(input, p_val_threshold = 5e-2,
@@ -92,7 +97,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   if (!search_method %in% c("GR", "SA", "GA"))
     stop("search_method must be one of \"GR\", \"SA\", \"GA\"")
   if (!is.logical(use_all_positives))
-    stop("search_method must be logical")
+    stop("use_all_positives must be logical")
 
   if (search_method == "GA")
     iterations <- n_processes <- 1
@@ -107,7 +112,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
 
   ## Check input
   cat("## Testing input\n\n")
-  input_testing(input, p_val_threshold) # perform input testing
+  input_testing(input, p_val_threshold)
 
   ## Process input
   cat("## Processing input. Converting gene symbols, if necessary\n\n")
@@ -183,7 +188,6 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
     enrichment_res
   }
   parallel::stopCluster(cl)
-
   setwd(org_dir)
 
   if (is.null(final_res))
@@ -225,7 +229,6 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
                     output_dir = ".")
   rmarkdown::render(system.file("rmd/all_pathways.Rmd", package = "pathfindR"),
                     params = list(df = final_res), output_dir = ".")
-
   rmarkdown::render(system.file("rmd/genes_table.Rmd", package = "pathfindR"),
                     params = list(df = input_processed), output_dir = ".")
 
@@ -243,7 +246,16 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
 #' doi:10.1371/journal.pone.0099030 (2014)." for details on the method of
 #' pathway clustering.
 #'
-#' @param result_df resulting data frame of the pathfindR main workflow.
+#' @param result_df resulting data frame of encriched pathways from the wrapper
+#'   function \code{run_pathfindR}. Columns are: \enumerate{
+#'   \item{ID: }{KEGG ID of the enriched pathway}
+#'   \item{Pathway: }{Description of the enriched pathway}
+#'   \item{occurrence: }{the number of iterations that the given pathway was found to enriched over all iterations}
+#'   \item{lowest_p: }{the lowest adjusted-p value of the given pathway over all iterations}
+#'   \item{highest_p: }{the highest adjusted-p value of the given pathway over all iterations}
+#'   \item{Up_regulated: }{the up-regulated genes in the input involved in the given pathway, comma-separated}
+#'   \item{Down_regulated: }{the down-regulated genes in the input involved in the given pathway, comma-separated}
+#' }
 #' @param ... optional arguments for \code{cluster_pathways}
 #'
 #' @return This function first calculates the pairwise distances between the
@@ -259,11 +271,12 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
 #' @import knitr
 #' @import shiny
 #'
-#' @seealso See \code{\link{cluster_pathways}} for calculation of pairwise distances
-#' between enriched pathways.
+#' @seealso See \code{\link{cluster_pathways}} for calculation of pairwise
+#'   distances between enriched pathways. See \code{\link{run_pathfindR}}
+#'   for the wrapper function of the pathfindR enrichment workflow.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' choose_clusters(RA_output)
 #' }
 choose_clusters <- function(result_df, ...) {

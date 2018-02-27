@@ -33,10 +33,9 @@ A data frame that contains enrichment results.
 Perform Enrichment Analysis
 }
 \examples{
-\dontshow{
-enrichment(pathfindR::genes_by_pathway, c("PER1", "PER2", "CRY1", "CREB1"),
-pathfindR::pathways_list, "bonferroni", 0.05, return_pin_path("KEGG"))
-}
+pin_path <- return_pin_path("KEGG")
+enrichment(genes_by_pathway, c("PER1", "PER2", "CRY1", "CREB1"), pathways_list,
+           "bonferroni", 0.05, pin_path)
 }
 \seealso{
 \code{\link[stats]{p.adjust}} for adjustment of p values. See

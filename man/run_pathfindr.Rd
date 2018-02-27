@@ -34,7 +34,7 @@ search. Options are greedy search (GR), simulated annealing (SA) or genetic
 algorithm (GA) for the search (Default:GR. Can be one of c("GR", "SA",
 "GA"))}
 
-\item{use_all_positives}{if TRUE in GA, adds an individual with all positive
+\item{use_all_positives}{if TRUE: in GA, adds an individual with all positive
 nodes. In SA, initializes candidate solution with all positive nodes.
 (Default = FALSE)}
 
@@ -52,7 +52,8 @@ nodes. In SA, initializes candidate solution with all positive nodes.
 
 \item{gaMut}{the mutation rate for GA (Default: 0)}
 
-\item{grMaxDepth}{sets max depth in greedy search, 0 for no limit (Default: 2)}
+\item{grMaxDepth}{sets max depth in greedy search. set to 0 for no limit
+(Default: 1)}
 
 \item{grSearchDepth}{sets search depth in greedy search (Default: 1)}
 
@@ -75,14 +76,18 @@ path/to/PIN.sif, the file must comply with the PIN specifications. Defaults
 to "Biogrid".}
 }
 \value{
-Data frame of pathview enrichment results. Columns are: "ID",
- "Pathway", "occurrence", "lowest_p", "highest_p". "ID" is the KEGG ID for a
- given pathway and "Pathway" is the name. "occurrence" indicates the number of
- times the given pathway is encountered over all iterations. "lowest_p" and
- "highest_p" indicate the lowest and highest adjusted p values over all
- iterations. The function also creates an HTML report with the pathview
- enrichment results linked to the visualizations of the pathways in addition
- to the table of converted gene symbols. This report can be found in
+Data frame of pathview enrichment results. Columns are: \describe{
+  \item{ID}{KEGG ID of the enriched pathway}
+  \item{Pathway}{Description of the enriched pathway}
+  \item{occurrence}{the number of iterations that the given pathway was found to enriched over all iterations}
+  \item{lowest_p}{the lowest adjusted-p value of the given pathway over all iterations}
+  \item{highest_p}{the highest adjusted-p value of the given pathway over all iterations}
+  \item{Up_regulated}{the up-regulated genes in the input involved in the given pathway, comma-separated}
+  \item{Down_regulated}{the down-regulated genes in the input involved in the given pathway, comma-separated}
+}
+ The function also creates an HTML report with the pathview enrichment
+ results linked to the visualizations of the pathways in addition to
+ the table of converted gene symbols. This report can be found in
  "results.html".
 }
 \description{
@@ -108,15 +113,15 @@ are reported for each enriched pathway.
 }
 
 \examples{
-\dontrun{
+\donttest{
 run_pathfindR(RA_input)
 }
 }
 \seealso{
 \code{\link{input_testing}} for input testing,
  \code{\link{input_processing}} for input processing,
- \code{\link{parseActiveSnwSearch}} for parsing an active subnetwork search output,
- \code{\link{enrichment}} for pathway enrichment analysis and
+ \code{\link{parseActiveSnwSearch}} for parsing an active subnetwork search
+ output, \code{\link{enrichment}} for pathway enrichment analysis and
  \code{\link{pathmap}} for annotation of involved genes and visualization of
  pathways. See \code{\link[foreach]{foreach}} for details on parallel
  execution of looping constructs. See \code{\link{choose_clusters}} for

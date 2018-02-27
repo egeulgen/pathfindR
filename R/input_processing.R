@@ -68,8 +68,8 @@ input_testing <- function(input, p_val_threshold){
 #' \dontshow{
 #' input_processing(RA_input[1,], 0.05, return_pin_path("KEGG"))
 #' }
-#' \dontrun{
-#' input_processing(input, p_val_threshold = 0.05, "path/to/pin")
+#' \donttest{
+#' input_processing(RA_input, 0.05, return_pin_path("KEGG"))
 #' }
 input_processing <- function(input, p_val_threshold, pin_path) {
   colnames(input) <- c("GENE", "CHANGE", "P_VALUE")
