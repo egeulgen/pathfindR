@@ -85,7 +85,7 @@ Data frame of pathview enrichment results. Columns are: \describe{
   \item{Up_regulated}{the up-regulated genes in the input involved in the given pathway, comma-separated}
   \item{Down_regulated}{the down-regulated genes in the input involved in the given pathway, comma-separated}
 }
- The function also creates an HTML report with the pathview enrichment
+ The function also creates an HTML report with the pathfindR enrichment
  results linked to the visualizations of the pathways in addition to
  the table of converted gene symbols. This report can be found in
  "results.html".
