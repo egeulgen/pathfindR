@@ -92,7 +92,7 @@ Data frame of pathview enrichment results. Columns are: \describe{
  The function also creates an HTML report with the pathfindR enrichment
  results linked to the visualizations of the pathways in addition to
  the table of converted gene symbols. This report can be found in
- "results.html".
+ "pathfindr_Results/results.html" under the current working directory.
 }
 \description{
 \code{run_pathfindR} is the wrapper function for the pathfindR workflow
