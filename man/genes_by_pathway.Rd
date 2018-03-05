@@ -10,7 +10,7 @@
 genes_by_pathway
 }
 \description{
-A list contatining the genes involved in each human KEGG pathway. Each
+A list containing the genes involved in each human KEGG pathway. Each
 element is a vector of gene symbols located in the given pathway. Names
 correspond to the KEGG ID of the pathway. This data was retrieved on Feb 26,
 2018.

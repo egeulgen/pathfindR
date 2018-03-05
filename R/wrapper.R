@@ -246,11 +246,11 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
 #' doi:10.1371/journal.pone.0099030 (2014)." for details on the method of
 #' pathway clustering.
 #'
-#' @param result_df resulting data frame of encriched pathways from the wrapper
+#' @param result_df resulting data frame of enriched pathways from the wrapper
 #'   function \code{run_pathfindR}. Columns are: \enumerate{
 #'   \item{ID: }{KEGG ID of the enriched pathway}
 #'   \item{Pathway: }{Description of the enriched pathway}
-#'   \item{occurrence: }{the number of iterations that the given pathway was found to enriched over all iterations}
+#'   \item{occurrence: }{the number of iterations that the given pathway was found to be enriched over all iterations}
 #'   \item{lowest_p: }{the lowest adjusted-p value of the given pathway over all iterations}
 #'   \item{highest_p: }{the highest adjusted-p value of the given pathway over all iterations}
 #'   \item{Up_regulated: }{the up-regulated genes in the input involved in the given pathway, comma-separated}

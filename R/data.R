@@ -38,7 +38,7 @@
 
 #' Genes by KEGG Pathway
 #'
-#' A list contatining the genes involved in each human KEGG pathway. Each
+#' A list containing the genes involved in each human KEGG pathway. Each
 #' element is a vector of gene symbols located in the given pathway. Names
 #' correspond to the KEGG ID of the pathway. This data was retrieved on Feb 26,
 #' 2018.
@@ -53,6 +53,6 @@
 #' list correspond to the KEGG ID of the pathway. This data was retrieved on Feb
 #' 26, 2018.
 #'
-#' @format list containing 325 character values, the decriptions for the given
+#' @format list containing 325 character values, the descriptions for the given
 #'   pathways.
 "pathways_list"

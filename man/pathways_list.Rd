@@ -4,7 +4,7 @@
 \name{pathways_list}
 \alias{pathways_list}
 \title{KEGG Pathway Descriptions}
-\format{list containing 325 character values, the decriptions for the given
+\format{list containing 325 character values, the descriptions for the given
   pathways.}
 \usage{
 pathways_list
