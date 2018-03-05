@@ -97,6 +97,9 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
                           pin_name_path = "Biogrid",
                           score_thr = 3, sig_gene_thr = 2) {
 
+  dir.create("pathfindr_Results")
+  setwd("pathfindr_Results")
+
   if (!search_method %in% c("GR", "SA", "GA"))
     stop("search_method must be one of \"GR\", \"SA\", \"GA\"")
   if (!is.logical(use_all_positives))
