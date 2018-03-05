@@ -81,7 +81,7 @@
 #'  clustering the resulting enriched pathways.
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' run_pathfindR(RA_input)
 #' }
 run_pathfindR <- function(input, p_val_threshold = 5e-2,

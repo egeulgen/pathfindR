@@ -117,7 +117,7 @@ are reported for each enriched pathway.
 }
 
 \examples{
-\donttest{
+\dontrun{
 run_pathfindR(RA_input)
 }
 }
