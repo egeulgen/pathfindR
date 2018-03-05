@@ -4,6 +4,12 @@
 
 pathfindR is a tool for pathway enrichment analysis via active subnetworks. The package also offers the option to cluster the resulting the enriched pathways and choose representative pathways.
 
+## Installation
+```r
+install.packages("devtools") # if you have not installed "devtools" package
+devtools::install_github("egeulgen/pathfindR")
+```
+
 ## Overview of the Enrichment Workflow
 
 ![pathfindR Enrichment Workflow](./vignettes/pathfindr.png?raw=true "pathfindr Enrichment Workflow")
