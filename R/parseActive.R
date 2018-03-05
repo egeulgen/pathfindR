@@ -2,6 +2,8 @@
 #'
 #' @param output_path path to the output of an Active Subnetwork Search.
 #' @param signif_genes the vector of significant genes.
+#' @param score_thr active subnetwork score threshold (Default = 3)
+#' @param sig_gene_thr threshold for minimum number of significant genes (Default = 2)
 #'
 #' @return A list of genes in every active subnetwork that has a score > 3 and
 #'   that has at least 2 significant genes.
@@ -18,7 +20,8 @@
 #' \dontrun{
 #' parseActiveSnwSearch("path/to/output", significant_genes)
 #' }
-parseActiveSnwSearch <- function(output_path, signif_genes) {
+parseActiveSnwSearch <- function(output_path, signif_genes,
+                                 score_thr = 3, sig_gene_thr = 2) {
 
   output <- readLines(output_path)
 
@@ -33,10 +36,10 @@ parseActiveSnwSearch <- function(output_path, signif_genes) {
     subnetworks[[i]] <- snw[-1]
   }
 
-  # keep subnetworks with score > 3
-  subnetworks <- subnetworks[score > 3]
-  # select subnetworks with at least 2 significant genes
-  cond <- sapply(subnetworks, function(x) sum(x %in% signif_genes)) >= 2
+  # keep subnetworks with score > score_thr
+  subnetworks <- subnetworks[score > score_thr]
+  # select subnetworks with at least sig_gene_thr significant genes
+  cond <- sapply(subnetworks, function(x) sum(x %in% signif_genes)) >= sig_gene_thr
   subnetworks <- subnetworks[cond]
 
   return(subnetworks)

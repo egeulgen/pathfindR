@@ -10,7 +10,7 @@ run_pathfindR(input, p_val_threshold = 0.05, enrichment_threshold = 0.05,
   saIter = 10000, gaPop = 400, gaIter = 10000, gaThread = 5,
   gaMut = 0, grMaxDepth = 1, grSearchDepth = 1, grOverlap = 0.5,
   grSubNum = 1000, iterations = 10, n_processes = NULL,
-  pin_name_path = "Biogrid")
+  pin_name_path = "Biogrid", score_thr = 3, sig_gene_thr = 2)
 }
 \arguments{
 \item{input}{the input data that pathfindR uses. The input must be a data
@@ -74,6 +74,10 @@ automatically (Default == NULL. Gets set to 1 for Genetic Algorithm)}
 must be one of c("Biogrid", "GeneMania", "IntAct", "KEGG"). If
 path/to/PIN.sif, the file must comply with the PIN specifications. Defaults
 to "Biogrid".}
+
+\item{score_thr}{active subnetwork score threshold (Default = 3)}
+
+\item{sig_gene_thr}{threshold for minimum number of significant genes (Default = 2)}
 }
 \value{
 Data frame of pathview enrichment results. Columns are: \describe{

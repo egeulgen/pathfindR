@@ -46,6 +46,8 @@
 #'  used by foreach. If not specified, the function determines this
 #'  automatically (Default == NULL. Gets set to 1 for Genetic Algorithm)
 #'@inheritParams return_pin_path
+#'@param score_thr active subnetwork score threshold (Default = 3)
+#'@param sig_gene_thr threshold for minimum number of significant genes (Default = 2)
 #'
 #'@import knitr
 #'
@@ -92,7 +94,8 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
                           grMaxDepth = 1, grSearchDepth = 1,
                           grOverlap = 0.5, grSubNum = 1000,
                           iterations = 10, n_processes = NULL,
-                          pin_name_path = "Biogrid") {
+                          pin_name_path = "Biogrid",
+                          score_thr = 3, sig_gene_thr = 2) {
 
   if (!search_method %in% c("GR", "SA", "GA"))
     stop("search_method must be one of \"GR\", \"SA\", \"GA\"")
