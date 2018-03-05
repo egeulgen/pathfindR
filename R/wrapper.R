@@ -276,7 +276,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
 #'   for the wrapper function of the pathfindR enrichment workflow.
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' choose_clusters(RA_output)
 #' }
 choose_clusters <- function(result_df, ...) {

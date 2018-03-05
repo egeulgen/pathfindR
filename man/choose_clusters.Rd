@@ -37,7 +37,7 @@ doi:10.1371/journal.pone.0099030 (2014)." for details on the method of
 pathway clustering.
 }
 \examples{
-\donttest{
+\dontrun{
 choose_clusters(RA_output)
 }
 }
