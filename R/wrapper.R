@@ -63,7 +63,7 @@
 #'  The function also creates an HTML report with the pathfindR enrichment
 #'  results linked to the visualizations of the pathways in addition to
 #'  the table of converted gene symbols. This report can be found in
-#'  "results.html".
+#'  "pathfindr_Results/results.html" under the current working directory.
 #'
 #'@export
 #'
@@ -239,7 +239,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
                     params = list(df = input_processed), output_dir = ".")
 
   cat("Pathway enrichment results and converted genes ")
-  cat("can be found in \"results.html\"\n\n")
+  cat("can be found in \"results.html\" in the folder \"pathfindr_Results\"\n\n")
   cat("Run choose_clusters() for clustering pathways\n\n")
 
   return(final_res)

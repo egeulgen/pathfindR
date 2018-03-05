@@ -86,7 +86,7 @@ data("RA_output")
 knitr::kable(head(RA_output, 2))
 ```
 
-The function also creates an HTML report `results.html` that is saved in the current working directory. This report contains links to two other HTML files:
+The function also creates an HTML report `results.html` that is saved in a directory named `pathfindr_Results` in the current working directory. This report contains links to two other HTML files:
 
 ## 1. all_pathways.html
 This document contains a table of the active subnetwork-oriented pathway enrichment results. Each enriched pathway name is linked to the visualization of that pathway, with the gene nodes colored according to their log-fold-change values. This table contains the same information as the returned data frame. Columns are:
