@@ -151,8 +151,8 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
     setwd(dirs[i])
 
     # running Active Subnetwork Search
-    system(paste0("java -Xss4m -jar ", active_search_path,
-                  " -sif=", pin_path,
+    system(paste0("java -Xss4m -jar \"", active_search_path, "\"",
+                  " -sif=\"", pin_path,"\"",
                   " -sig=../input_for_search.txt",
                   " -method=", search_method,
                   use_all_positives,
