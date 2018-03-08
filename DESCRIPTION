@@ -8,7 +8,10 @@ Description: Implementation of a work flow used for pathway enrichment
     utilizing active sub-networks. The input genes are mapped onto a 
     protein-protein interaction network and active sub-networks are 
     identified. These sub-networks are next used for pathway enrichment 
-    analysis. Finally, the results are presented in an HTML report.
+    analysis. Finally, the results are presented in an HTML report. 
+    The method is described in detail in Ulgen E, Ozisik O, Sezerman OU. 2018. 
+    pathfindR: An R Package for Pathway Enrichment Analysis Utilizing 
+    Active Subnetworks. bioRxiv. <doi:https://doi.org/10.1101/272450>
 License: MIT + file LICENSE
 URL: https://github.com/egeulgen/pathfindR
 BugReports: https://github.com/egeulgen/pathfindR/issues

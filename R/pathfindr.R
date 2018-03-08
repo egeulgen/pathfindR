@@ -21,7 +21,7 @@
 #'   \code{enrichment_threshold} are discarded. The lowest adjusted-p value
 #'   (over all subnetworks) for each pathway is kept. This process of active
 #'   subnetwork search and enrichment is repeated  for a selected number of
-#'   \code{iterations}, which is done in parallel. Over all iterations, the
+#'   \code{iterations}, which is executed in parallel. Over all iterations, the
 #'   lowest and the highest adjusted-p values, as well as number of occurrences
 #'   are reported for each enriched pathway.
 #'
@@ -31,7 +31,7 @@
 #'   In this HTML document, the user can select the value at which to cut the
 #'   tree and the resulting representative pathways (chosen by smallest lowest p
 #'   value) are presented as a table and pathways with cluster assignments can be
-#'   saved as a csv file to the current directory.
+#'   saved as a csv file.
 #'
 #' @seealso See \code{\link{run_pathfindR}} and \code{\link{choose_clusters}}
 #'   for more details.

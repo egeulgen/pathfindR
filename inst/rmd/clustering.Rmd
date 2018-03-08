@@ -7,7 +7,7 @@ params:
   df: ""
 ---
 
-This shiny app allows the user to dynamically select a cut-off value for seperating the pathways into clusters via partitioning of the dendrogram. 
+This shiny application allows the user to dynamically select a cut-off value for seperating the pathways into clusters via partitioning of the dendrogram. 
 
 The plot displays the hierarchical clustering dendrogram and the chosen cut-off, i.e. the height at which the tree is cut.
 

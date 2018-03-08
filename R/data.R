@@ -2,7 +2,7 @@
 #'
 #' A dataset containing the differentially-expressed genes along with the
 #' associated log2-fold-change values and adjusted p-values for the GEO dataset
-#' GSE15573. This dataset aimed to characterize gene expression profiles in the
+#' GSE15573. The microarray dataset aimed to characterize gene expression profiles in the
 #' peripheral blood mononuclear cells of 18 rheumatoid arthritis (RA) patients
 #' versus 15 healthy subjects. Differentially-expressed genes with adj.P.Val <=
 #' 0.05 are presented in this dataset.
