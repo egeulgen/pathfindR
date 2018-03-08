@@ -53,19 +53,20 @@ Found the following (possibly) invalid URLs:
     Message: Not Found
 
 Found the following (possibly) invalid DOIs:
-  DOI: https://doi.org/10.1101/272450
+  DOI: 10.1101/272450
     From: DESCRIPTION
-    Message: Invalid DOI
+    Status: Not Found
+    Message: 404
 
 * checking installed package size ... NOTE
-  installed size is 10.1Mb
+  installed size is 10.2Mb
   sub-directories of 1Mb or more:
     extdata   9.5Mb
 
 * checking DESCRIPTION meta-information ... NOTE
 Malformed Description field: should contain one or more complete sentences.
 
- This is our first submission. The DOI was provided by bioRxiv and will likely take a while to be up. The data in the directory "extdata" are protein-protein interaction networks, needed to run the active subnetwork search and other functions so we could not eliminate those over-sized files. The NOTE states "should contain one or more complete sentences" but there are 5 complete sentences in the Description field.
+ This is our first submission. The DOI was provided by bioRxiv and the link will likely take a while to be up (see https://www.biorxiv.org/content/early/2018/03/07/272450). The data in the directory "extdata" are protein-protein interaction networks, needed to run the active subnetwork search and other functions so we could not eliminate those over-sized files. The final NOTE states "should contain one or more complete sentences" but there are 5 complete sentences in the Description field.
 
 ## Downstream dependencies
 There are currently no downstream dependencies for this package.
