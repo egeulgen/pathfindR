@@ -35,7 +35,7 @@ Process Input
 \dontshow{
 input_processing(RA_input[1,], 0.05, return_pin_path("KEGG"))
 }
-\donttest{
+\dontrun{
 input_processing(RA_input, 0.05, return_pin_path("KEGG"))
 }
 }
