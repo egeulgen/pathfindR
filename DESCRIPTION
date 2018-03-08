@@ -4,14 +4,15 @@ Title: Pathway Enrichment Analysis Utilizing Active Subnetworks
 Version: 1.0.0
 Author: Ege Ulgen, Ozan Ozisik
 Maintainer: Ege Ulgen <egeulgen@gmail.com>
-Description: pathfindR is a package that can be used for pathway enrichment
-    analysis utilizing active sub-networks. The input genes are mapped onto a 
-    protein-protein interaction network and active sub-networks are 
-    identified. These sub-networks are next used for pathway enrichment 
-    analysis. Finally, the results are presented in an HTML report. 
-    The method is described in detail in Ulgen E, Ozisik O, Sezerman OU. 2018. 
-    pathfindR: An R Package for Pathway Enrichment Analysis Utilizing 
-    Active Subnetworks. bioRxiv. <doi:10.1101/272450>
+Description: Pathway enrichment analysis enables researchers to uncover mechanisms 
+    underlying the phenotype. pathfindR is a tool for pathway enrichment analysis 
+    utilizing active subnetworks. It identifies active subnetworks in a 
+    protein-protein interaction network using user-provided a list of genes. 
+    It performs pathway enrichment analyses on the identified subnetworks. 
+    pathfindR also offers functionality to cluster enriched pathways and identify 
+    representative pathways. The method is described in detail in 
+    Ulgen E, Ozisik O, Sezerman OU. 2018. pathfindR: An R Package for Pathway 
+    Enrichment Analysis Utilizing Active Subnetworks. bioRxiv. <doi:10.1101/272450>.
 License: MIT + file LICENSE
 URL: https://github.com/egeulgen/pathfindR
 BugReports: https://github.com/egeulgen/pathfindR/issues
