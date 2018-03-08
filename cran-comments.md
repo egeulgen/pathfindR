@@ -6,7 +6,7 @@
 ## R CMD check results
 There were no ERRORs or WARNINGs. 
 
-There were 2 NOTEs:
+There were 3 NOTEs:
 * checking CRAN incoming feasibility ... NOTE
 Maintainer: 'Ege Ulgen <egeulgen@gmail.com>'
 
@@ -38,14 +38,34 @@ File 'LICENSE':
   SOFTWARE.
 
 Possibly mis-spelled words in DESCRIPTION:
-  Subnetworks (3:53)
+  OU (12:70)
+  Ozisik (12:51)
+  Sezerman (12:61)
+  Subnetworks (3:53, 14:12)
+  Ulgen (12:42)
+  bioRxiv (14:25)
+  pathfindR (7:14, 13:5)
+
+Found the following (possibly) invalid URLs:
+  URL: https://doi.org/10.1101/272450
+    From: inst/doc/pathfindr_vignette.html
+    Status: 404
+    Message: Not Found
+
+Found the following (possibly) invalid DOIs:
+  DOI: https://doi.org/10.1101/272450
+    From: DESCRIPTION
+    Message: Invalid DOI
 
 * checking installed package size ... NOTE
-  installed size is 10.2Mb
+  installed size is 10.1Mb
   sub-directories of 1Mb or more:
     extdata   9.5Mb
 
- This is our first submission. The data in this directory are protein-protein interaction networks, needed to run the active subnetwork search and other functions so we could not eliminate those over-sized files. 
+* checking DESCRIPTION meta-information ... NOTE
+Malformed Description field: should contain one or more complete sentences.
+
+ This is our first submission. The DOI was provided by bioRxiv and will likely take a while to be up. The data in the directory "extdata" are protein-protein interaction networks, needed to run the active subnetwork search and other functions so we could not eliminate those over-sized files. The NOTE states "should contain one or more complete sentences" but there are 5 complete sentences in the Description field.
 
 ## Downstream dependencies
 There are currently no downstream dependencies for this package.
