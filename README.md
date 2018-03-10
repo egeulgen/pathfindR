@@ -5,6 +5,13 @@
 `pathfindR` is a tool for pathway enrichment analysis via active subnetworks. The package also offers the option to cluster the enriched pathways and choose representative pathways. The method is described in detail in _Ulgen E, Ozisik O, Sezerman OU. 2018. pathfindR: An R Package for Pathway Enrichment Analysis Utilizing Active Subnetworks. bioRxiv. [https://doi.org/10.1101/272450](https://doi.org/10.1101/272450)_
 
 ## Installation
+
+From CRAN (release):
+```r
+install.packages("pathfindR")
+```
+
+From GitHub (devel):
 ```r
 install.packages("devtools") # if you have not installed "devtools" package
 devtools::install_github("egeulgen/pathfindR")
