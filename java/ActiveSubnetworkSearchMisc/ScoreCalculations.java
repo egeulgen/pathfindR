@@ -47,6 +47,11 @@ public class ScoreCalculations {
             Node node = new Node(entry.getKey());
             if (networkNodeList.contains(node)) {
                 double pValue = entry.getValue();
+                if(pValue<MIN_SIG){
+                    pValue=MIN_SIG;
+                }else if(pValue>MAX_SIG){
+                    pValue=MAX_SIG;
+                }
                 double existingPValue=nodeToPValueMap.get(node) == null ? 1 : nodeToPValueMap.get(node);
                 if (pValue < existingPValue) {
                     nodeToPValueMap.put(node, pValue);
