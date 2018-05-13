@@ -3,21 +3,23 @@ title: "pathfindR - All Pathways"
 output: html_document
 params:
   df: ""
+  gset: ""
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Pathway visualizations were performed via the R Biocondutor package __pathview__ [1].
+KEGG pathway visualizations were performed via the R Biocondutor package __pathview__ [1].
 
 ```{r, table, echo = F, comment=NA}
 result_df <- params$df
 result_df$lowest_p <- format(result_df$lowest_p, digits = 2)
 result_df$highest_p <- format(result_df$highest_p, digits = 2)
 
-for(i in 1:nrow(result_df))
-  result_df[i, 2] <- paste0("[", result_df[i, 2], "]", "(./pathway_maps/", result_df[i, 1],".", result_df[i, 2],".png)")
+if (params$gset == "KEGG")
+  for(i in 1:nrow(result_df))
+    result_df[i, 2] <- paste0("[", result_df[i, 2], "]", "(./pathway_maps/", result_df[i, 1],".", result_df[i, 2],".png)")
 
 knitr::kable(result_df, align = "c",table.caption.prefix ="")
 ```

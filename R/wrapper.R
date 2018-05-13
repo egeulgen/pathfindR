@@ -48,6 +48,7 @@
 #'@inheritParams return_pin_path
 #'@param score_thr active subnetwork score threshold (Default = 3)
 #'@param sig_gene_thr threshold for minimum number of significant genes (Default = 2)
+#'@param gene_sets the gene sets to be used for enrichment analysis (Default = "KEGG")
 #'
 #'@import knitr
 #'
@@ -85,7 +86,7 @@
 #' run_pathfindR(RA_input)
 #' }
 run_pathfindR <- function(input, p_val_threshold = 5e-2,
-                          enrichment_threshold = 0.05,
+                          enrichment_threshold = 5e-2,
                           adj_method = "bonferroni",
                           search_method = "GR",
                           use_all_positives = FALSE,
@@ -95,15 +96,25 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
                           grOverlap = 0.5, grSubNum = 1000,
                           iterations = 10, n_processes = NULL,
                           pin_name_path = "Biogrid",
-                          score_thr = 3, sig_gene_thr = 2) {
-
+                          score_thr = 3, sig_gene_thr = 2,
+                          gene_sets = "KEGG") {
   dir.create("pathfindr_Results")
   setwd("pathfindr_Results")
 
-  if (!search_method %in% c("GR", "SA", "GA"))
+  if (!search_method %in% c("GR", "SA", "GA")) {
+    setwd("..")
     stop("search_method must be one of \"GR\", \"SA\", \"GA\"")
-  if (!is.logical(use_all_positives))
+  }
+
+  if (!gene_sets %in% c("KEGG", "Reactome", "BioCarta")) {
+    setwd("..")
+    stop("gene_sets must be one of KEGG, Reactome or BioCarta")
+  }
+
+  if (!is.logical(use_all_positives)) {
+    setwd("..")
     stop("use_all_positives must be logical")
+  }
 
   if (search_method == "GA")
     iterations <- n_processes <- 1
@@ -131,7 +142,6 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
 
   ## Prep for parallel run
   cat("## Performing Active Subnetwork Search and Enrichment\n")
-
   # calculate the number of cores, if necessary
   if (is.null(n_processes))
     n_processes <- parallel::detectCores() - 1
@@ -178,9 +188,20 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
 
     cat(paste0("Found ", length(snws), " active subnetworks\n\n"))
 
+    if (gene_sets == "KEGG") {
+      genes_by_pathway <- pathfindR::kegg_genes
+      pathways_list <- pathfindR::kegg_pathways
+    } else if (gene_sets == "Reactome") {
+      genes_by_pathway <- pathfindR::reactome_genes
+      pathways_list <- pathfindR::reactome_pathways
+    } else if (gene_sets == "BioCarta") {
+      genes_by_pathway <- pathfindR::biocarta_genes
+      pathways_list <- pathfindR::biocarta_pathways
+    }
+
     ## enrichment per subnetwork
     enrichment_res <- lapply(snws, function(x)
-      pathfindR::enrichment(pathfindR::genes_by_pathway, x, pathfindR::pathways_list,
+      pathfindR::enrichment(genes_by_pathway, x, pathways_list,
                             adj_method, enrichment_threshold, pin_path))
     enrichment_res <- Reduce(rbind, enrichment_res)
 
@@ -196,8 +217,10 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   parallel::stopCluster(cl)
   setwd(org_dir)
 
-  if (is.null(final_res))
+  if (is.null(final_res)) {
+    setwd("..")
     stop("Did not find any enriched pathways!")
+  }
 
   ## Annotate lowest p, highest p and occurrence
   cat("## Processing the enrichment results over all iterations \n\n")
@@ -223,18 +246,38 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   rownames(final_res) <- NULL
 
   cat("## Annotating involved genes and visualizing pathways\n\n")
-  ## Annotate involved genes and generate pathway maps
-  genes_df <- input_processed[, c("GENE", "CHANGE")]
-  rownames(genes_df) <- genes_df$GENE
-  genes_df <- genes_df[, -1, drop = FALSE]
-  final_res <- pathmap(final_res, genes_df)
+  if (gene_sets == "KEGG") {
+    ## Annotate involved genes and generate pathway maps
+    genes_df <- input_processed[, c("GENE", "CHANGE")]
+    rownames(genes_df) <- genes_df$GENE
+    genes_df <- genes_df[, -1, drop = FALSE]
+    final_res <- pathmap(final_res, genes_df)
+  } else {
+    upreg <- input_processed$GENE[input_processed$CHANGE >= 0]
+    downreg <- input_processed$GENE[input_processed$CHANGE < 0]
+
+    final_res$Down_regulated <- final_res$Up_regulated <- NA
+
+    if (gene_sets == "Reactome")
+      gsets <- pathfindR::reactome_genes
+    if (gene_sets == "BioCarta")
+      gsets <- pathfindR::biocarta_genes
+
+    for (i in 1:nrow(final_res)) {
+      idx <- which(names(gsets) == final_res$ID[i])
+      temp <- gsets[[idx]]
+      final_res$Up_regulated[i] <- paste(temp[temp %in% upreg], collapse = ", ")
+      final_res$Down_regulated[i] <- paste(temp[temp %in% downreg], collapse = ", ")
+    }
+
+  }
 
   cat("## Creating HTML report\n\n")
   ## Create report
   rmarkdown::render(system.file("rmd/results.Rmd", package = "pathfindR"),
                     output_dir = ".")
   rmarkdown::render(system.file("rmd/all_pathways.Rmd", package = "pathfindR"),
-                    params = list(df = final_res), output_dir = ".")
+                    params = list(df = final_res, gset = gene_sets), output_dir = ".")
   rmarkdown::render(system.file("rmd/genes_table.Rmd", package = "pathfindR"),
                     params = list(df = input_processed), output_dir = ".")
 
@@ -242,6 +285,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   cat("can be found in \"results.html\" in the folder \"pathfindr_Results\"\n\n")
   cat("Run choose_clusters() for clustering pathways\n\n")
 
+  setwd("..")
   return(final_res)
 }
 
@@ -327,15 +371,20 @@ return_pin_path <- function(pin_name_path = "Biogrid") {
     path <- normalizePath(pin_name_path)
     pin <- utils::read.delim(file = path,
                              header = FALSE, stringsAsFactors = FALSE)
-    if (ncol(pin) != 3)
+    if (ncol(pin) != 3) {
+      setwd("..")
       stop("The PIN file must have 3 columns and be tab-separated")
-    if (any(pin[, 2] != "pp"))
+    }
+
+    if (any(pin[, 2] != "pp")) {
+      setwd("..")
       stop("The second column of the PIN file must all be \"pp\" ")
-  }
-
-  else
+    }
+  } else {
+    setwd("..")
     stop(paste0("The chosen PIN must be one of:\n",
-                "Biogrid, GeneMania, IntAct or KEGG"))
+                "Biogrid, GeneMania, IntAct, KEGG or a valid /path/to/SIF"))
 
+  }
   return(path)
 }

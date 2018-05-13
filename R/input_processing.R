@@ -17,25 +17,35 @@
 #' @examples
 #' input_testing(RA_input, 0.05)
 input_testing <- function(input, p_val_threshold){
-  if (!is.data.frame(input))
+  if (!is.data.frame(input)) {
+    setwd("..")
     stop("the input is not a data frame")
-  if (ncol(input) > 3)
-    stop("there are more than 3 columns in the input data frame")
-  if (ncol(input) < 3)
-    stop("there are less than 3 columns in the input data frame")
+  }
 
-  if (!is.numeric(p_val_threshold))
+  if (ncol(input) != 3){
+    setwd("..")
+    stop("There must be exactly 3 columns in the input data frame")
+  }
+
+  if (!is.numeric(p_val_threshold)){
+    setwd("..")
     stop("p_val_threshold must be a numeric value between 0 and 1")
-  if (p_val_threshold > 1 | p_val_threshold < 0)
+  }
+
+  if (p_val_threshold > 1 | p_val_threshold < 0){
+    setwd("..")
     stop("p_val_threshold must be between 0 and 1")
+  }
 
-  if (!all(is.numeric(input[, 3])))
+  if (!all(is.numeric(input[, 3]))) {
+    setwd("..")
     stop("p values, provided in the third column, must all be numeric")
-  if (any(input[, 3] > 1 | input[, 3] < 0))
-    stop("p values, provided in the third column, must all be between 0 and 1")
+  }
 
-  if (anyDuplicated(input[, 1]))
-    stop("Duplicated genes found!!")
+  if (any(input[, 3] > 1 | input[, 3] < 0)) {
+    setwd("..")
+    stop("p values, provided in the third column, must all be between 0 and 1")
+  }
 
   cat("The input looks OK\n\n")
 }
@@ -76,6 +86,19 @@ input_processing <- function(input, p_val_threshold, pin_path) {
 
   ## Discard larger than p-value threshold
   input <- input[input$P_VALUE <= p_val_threshold, ]
+
+  ## Choose lowest p for each gene
+  if (anyDuplicated(input$GENE)) {
+    warning("Duplicated genes found!\nChoosing the lowest p value for each gene")
+    input <- input[order(input$P_VALUE, decreasing = FALSE), ]
+    input <- input[!duplicated(input$GENE), ]
+  }
+
+  ## Fix p < 1e-13
+  if (any(input$P_VALUE < 1e-3)) {
+    warning("pathfindR cannot handle p values < 1e-13\nThese were changed to 1e-13")
+    input$P_VALUE <- ifelse(input$P_VALUE < 1e-13, 1e-13, input$P_VALUE)
+  }
 
   ## load and prep pin
   pin <- utils::read.delim(file = pin_path,
@@ -132,6 +155,13 @@ input_processing <- function(input, p_val_threshold, pin_path) {
 
   input <- input[, c(1, 4, 2, 3)]
   colnames(input) <- c("old_GENE", "GENE", "CHANGE", "P_VALUE")
+
+  input <- input[input$GENE != "NOT_FOUND", ]
+
+  if (nrow(input) == 0) {
+    setwd("..")
+    stop("None of the genes were in the PIN\nPlease check your gene symbols")
+  }
 
   input <- input[order(input$P_VALUE), ]
   input <- input[!duplicated(input$GENE), ]

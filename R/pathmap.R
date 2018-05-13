@@ -29,7 +29,7 @@ pathmap <- function(pw_table, gene_data) {
   ## fix KEGG names such as "Glycolysis / Gluconeogenesis"
   pw_table$Pathway <- gsub("\\/", "-", pw_table$Pathway)
 
-  upreg <- rownames(gene_data)[gene_data > 0] ## need log2 ratio
+  upreg <- rownames(gene_data)[gene_data >= 0] ## need log2 ratio
   downreg <- rownames(gene_data)[gene_data < 0]
 
   dir.create("pathway_maps")

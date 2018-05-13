@@ -22,7 +22,12 @@
 cluster_pathways <- function(pathway_ids, agg_method = "average",
                              plot_heatmap = FALSE) {
   ## Get genes for selected pathways
-  pathway_genes <- pathfindR::genes_by_pathway[pathway_ids]
+  if (grepl("^hsa", pathway_ids[1]))
+    pathway_genes <- pathfindR::kegg_genes[pathway_ids]
+  if (grepl("^R-HSA-", pathway_ids[1]))
+    pathway_genes <- pathfindR::reactome_genes[pathway_ids]
+  if (grepl("^BIOCARTA_", pathway_ids[1]))
+    pathway_genes <- pathfindR::biocarta_genes[pathway_ids]
 
   ## Sort according to number of genes
   num_genes <- sapply(pathway_genes, length)

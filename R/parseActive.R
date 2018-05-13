@@ -25,6 +25,9 @@ parseActiveSnwSearch <- function(output_path, signif_genes,
 
   output <- readLines(output_path)
 
+  if (length(output) == 0)
+    return(NULL)
+
   score <- c()
   subnetworks <- list()
   for (i in 1:length(output)) {
