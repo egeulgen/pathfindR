@@ -1,7 +1,7 @@
 # pathfindR 1.1
 
 ## Major changes
--Added the option to chose between different gene sets. Available gene sets are KEGG, Reactome and BioCarta.
+- Added the option to chose between different gene sets. Available gene sets are KEGG, Reactome and BioCarta.
 
 ## Minor changes and bug fixes
 - Fixed issue regarding p values < 1e-13. No active subnetworks were found when there were p values < 1e-13. These are now changed to 1e-13.
