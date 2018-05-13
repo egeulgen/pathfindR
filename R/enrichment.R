@@ -20,7 +20,7 @@
 #'   workflow.
 #' @examples
 #' pin_path <- return_pin_path("KEGG")
-#' enrichment(genes_by_pathway, c("PER1", "PER2", "CRY1", "CREB1"), pathways_list,
+#' enrichment(kegg_genes, c("PER1", "PER2", "CRY1", "CREB1"), kegg_pathways,
 #'            "bonferroni", 0.05, pin_path)
 enrichment <- function(genes_by_pathway, genes_of_interest,
                        pathways_list, adj_method = "bonferroni",
