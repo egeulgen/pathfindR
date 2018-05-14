@@ -2,6 +2,7 @@
 
 ## Major changes
 - Added the `gene_sets` option in `run_pathfindR` to chose between different gene sets. Available gene sets are `KEGG`, `Reactome`, `BioCarta` and Gene Ontology gene sets (`GO-BP`, `GO-CC` and `GO-MF`).
+- `cluster_pathways` automatically recognizes the ID type and chooses the gene sets accordingly.
 
 ## Minor changes and bug fixes
 - Fixed issue regarding p values < 1e-13. No active subnetworks were found when there were p values < 1e-13. These are now changed to 1e-13 in the function `input_processing`.
