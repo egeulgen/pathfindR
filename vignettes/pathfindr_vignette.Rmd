@@ -18,13 +18,13 @@ knitr::opts_chunk$set(
 
 `pathfindR` is an R package for pathway enrichment analysis of gene-level differential expression/methylation data utilizing active subnetworks. The package also enables hierarchical clustering of the enriched pathways. The method is described in detail in Ulgen E, Ozisik O, Sezerman OU. 2018. pathfindR: An R Package for Pathway Enrichment Analysis Utilizing Active Subnetworks. bioRxiv. [https://doi.org/10.1101/272450](https://doi.org/10.1101/272450)
 
-Our motivation to develop this package was that direct pathway enrichment analysis of differential rna/protein expression or dna methylation results may not provide the researcher with the full picture. That is to say; pathway enrichment of only the list of significant genes may not be informative enough to explain the underlying disease mechanisms. 
+Our motivation to develop this package was that direct pathway enrichment analysis of differential RNA/protein expression or DNA methylation results may not provide the researcher with the full picture. That is to say; pathway enrichment of only the list of significant genes may not be informative enough to explain the underlying disease mechanisms. 
 
 An active subnetwork is defined as a group of interconnected genes in a protein-protein interaction network (PIN) that contains most of the significant genes. Therefore, these active subnetworks define distinct disease-associated sets of genes, whether discovered through differential expression analysis or discovered because of being in interaction with a significant gene.
 
-Therefore, we propose to leverage information from a PIN to identify distinct active subnetworks and then perform pathway enrichment analyses on these subnetworks. Briefly, this workflow first maps the significant genes onto a PIN and finds active subnetworks. Next, pathway enrichment analyses are performed using each gene set of the identified active subnetworks. Finally, these enrichment results are summarized and returned as a data frame. This workflow is implemented as the function `run_pathfindR()` and further described in the "Enrichment Worklow" section of this vignette.
+Therefore, we propose to leverage information from a PIN to identify distinct active subnetworks and then perform pathway enrichment analyses on these subnetworks. Briefly, this workflow first maps the significant genes onto a PIN and finds active subnetworks. Next, pathway enrichment analyses are performed using each gene set of the identified active subnetworks. Finally, these enrichment results are summarized and returned as a data frame. This workflow is implemented as the function `run_pathfindR()` and further described in the "Enrichment Workflow" section of this vignette.
 
-This process usually yields a great number of enriched pathways with related biological functions. We therefore implemented a pairwise distance metric (as proposed by Chen et al. [1]) between pathways and based on this distance metric, also implemented hierarchical clustering of the pathways through a shiny app, allowing dynamic partioning of the dendrogram into relevant clusters. Details of clustering and partioning of pathways are presented in the "Pathway Clustering" section of this vignette.
+This process usually yields a great number of enriched pathways with related biological functions. We therefore implemented a pairwise distance metric (as proposed by Chen et al. [1]) between pathways and based on this distance metric, also implemented hierarchical clustering of the pathways through a shiny app, allowing dynamic partitioning of the dendrogram into relevant clusters. Details of clustering and partitioning of pathways are presented in the "Pathway Clustering" section of this vignette.
 
 # Enrichment Workflow
 
@@ -84,7 +84,7 @@ During enrichment analyses, pathways with adjusted-p values larger than the `enr
 
 This process of active subnetwork search and enrichment analyses is repeated for a selected number of iterations (indicated by the `iterations` argument of `run_pathfindR()`), which is performed in parallel via the R package `foreach`. 
 
-The wrapper function returns a data frame that contains the lowest and the highest adjusted-p values for each enriched pathway, as well as the numbers of times each pathway is encountered over all iterations. The first two rows of the example output of the patfindr-enrichment workflow (performed on the rheumatoid arthritis data `RA_output`) is shown below:
+The wrapper function returns a data frame that contains the lowest and the highest adjusted-p values for each enriched pathway, as well as the numbers of times each pathway is encountered over all iterations. The first two rows of the example output of the pathfindR-enrichment workflow (performed on the rheumatoid arthritis data `RA_output`) is shown below:
 
 ```{r}
 data("RA_output")
@@ -98,7 +98,7 @@ This document contains a table of the active subnetwork-oriented pathway enrichm
 
 - ID: KEGG ID of enriched pathway
 - Pathway: Description the pathway
-- Occurence: The number of times the pathway was found to be enriched over all iterations
+- occurrence: The number of times the pathway was found to be enriched over all iterations
 - lowest_p: the lowest adjusted-p value of the pathway over all iterations
 - higher_p: the highest adjusted-p value of the pathway over all iterations
 - Up_regulated: the up-regulated genes involved in the pathway
@@ -108,7 +108,7 @@ This document contains a table of the active subnetwork-oriented pathway enrichm
 This document contains a table of converted gene symbols. Columns are:
 
 - Old Symbol: the original gene symbol
-- Coverted Symbol: the alias symbol that was found in the PIN
+- Converted Symbol: the alias symbol that was found in the PIN
 - Change: the provided change value
 - p-value: the provided adjusted p value
 
