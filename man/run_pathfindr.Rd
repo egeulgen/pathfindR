@@ -80,7 +80,8 @@ to "Biogrid".}
 
 \item{sig_gene_thr}{threshold for minimum number of significant genes (Default = 2)}
 
-\item{gene_sets}{the gene sets to be used for enrichment analysis (Default = "KEGG")}
+\item{gene_sets}{the gene sets to be used for enrichment analysis. Available gene sets
+are KEGG, Reactome, BioCarta, GO-BP, GO-CC and GO-MF(Default = "KEGG")}
 }
 \value{
 Data frame of pathview enrichment results. Columns are: \describe{

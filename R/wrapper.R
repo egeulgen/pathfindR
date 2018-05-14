@@ -48,7 +48,8 @@
 #'@inheritParams return_pin_path
 #'@param score_thr active subnetwork score threshold (Default = 3)
 #'@param sig_gene_thr threshold for minimum number of significant genes (Default = 2)
-#'@param gene_sets the gene sets to be used for enrichment analysis (Default = "KEGG")
+#'@param gene_sets the gene sets to be used for enrichment analysis. Available gene sets
+#'  are KEGG, Reactome, BioCarta, GO-BP, GO-CC and GO-MF(Default = "KEGG")
 #'
 #'@import knitr
 #'
