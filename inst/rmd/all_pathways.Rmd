@@ -1,5 +1,5 @@
 ---
-title: "pathfindR - All Pathways"
+title: "pathfindR - All Pathways - `r params$gset`"
 output: html_document
 params:
   df: ""

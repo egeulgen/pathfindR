@@ -66,4 +66,4 @@ The gene sets for enrichment analyses were gathered from:
 - KEGG - created using the R package KEGGREST (_Dan Tenenbaum (2018). KEGGREST: Client-side REST access to KEGG. R package version 1.18.1._)
 - [Reactome](https://reactome.org/download-data)
 - [BioCarta](http://software.broadinstitute.org/gsea/msigdb/genesets.jsp?collection=CP:BIOCARTA)
-- [Gene Ontology gene sets](http://www.go2msig.org/cgi-bin/prebuilt.cgi?taxid=9606)
+- [Gene Ontology gene sets](http://www.go2msig.org/cgi-bin/prebuilt.cgi?taxid=9606) - High quality GO annotations only

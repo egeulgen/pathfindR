@@ -22,12 +22,24 @@
 cluster_pathways <- function(pathway_ids, agg_method = "average",
                              plot_heatmap = FALSE) {
   ## Get genes for selected pathways
-  if (grepl("^hsa", pathway_ids[1]))
+  if (grepl("^hsa", pathway_ids[1])) {
     pathway_genes <- pathfindR::kegg_genes[pathway_ids]
-  if (grepl("^R-HSA-", pathway_ids[1]))
+  } else if (grepl("^R-HSA-", pathway_ids[1])) {
     pathway_genes <- pathfindR::reactome_genes[pathway_ids]
-  if (grepl("^BIOCARTA_", pathway_ids[1]))
+  } else if (grepl("^BIOCARTA_", pathway_ids[1])) {
     pathway_genes <- pathfindR::biocarta_genes[pathway_ids]
+  } else {
+    if (all(pathway_ids %in% names(pathfindR::go_bp_genes))) {
+      pathway_genes <- pathfindR::go_bp_genes[pathway_ids]
+    } else if (all(pathway_ids %in% names(pathfindR::go_cc_genes))) {
+      pathway_genes <- pathfindR::go_cc_genes[pathway_ids]
+    } else if (all(pathway_ids %in% names(pathfindR::go_mf_genes))) {
+      pathway_genes <- pathfindR::go_mf_genes[pathway_ids]
+    } else {
+      stop ("Could not recognize IDs.\nIDs must belong to one of: KEGG, Reactome, BioCarta, GO-BP, GO-CC or GO-MF")
+    }
+
+  }
 
   ## Sort according to number of genes
   num_genes <- sapply(pathway_genes, length)
