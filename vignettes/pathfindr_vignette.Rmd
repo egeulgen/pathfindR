@@ -52,6 +52,11 @@ result <- run_pathfindR(RA_input, pin_name = "IntAct")
 # to use an external PIN of user's choice
 result <- run_pathfindR(RA_input, pin_name = "/path/to/myPIN.sif")
 
+# available gene sets are KEGG, Reactome, BioCarta, GO-BP, GO-CC and GO-MF
+# default is KEGG
+# to change the gene sets used for enrichment analysis
+result <- run_pathfindR(RA_input, gene_sets = "BioCarta")
+
 # to change the active subnetwork search algorithm (default = "GR", i.e. greedy algorithm)
 # for simulated annealing:
 result <- run_pathfindR(RA_input, search_method = "SA")
@@ -111,7 +116,20 @@ This document contains a table of converted gene symbols. Columns are:
 
 <img src="./pw_clustering.png" width="650" height="163.34" />
 
-For this workflow, the wrapper function `choose_clusters()` is used. This function first calculates the pairwise distances between the pathways in the input data frame. This step uses the distance metric described by Chen et al. [1]. Via a shiny app, presented as an HTML document, the hierarchical clustering dendrogram is visualized. In this HTML document, the user can select the agglomeration method and the distance value at which to cut the tree. The dendrogram with the cut-off value marked with a red line is dynamically visualized and the resulting cluster assignments of the pathways along with annotation of representative pathways (chosen by smallest lowest p value) are presented as a table. This table can be saved as a csv file by pressing the button `Get Pathways w\ Cluster Info`.
+For this workflow, the wrapper function `choose_clusters()` is used. This function first calculates the pairwise distances between the pathways in the input data frame, automatically determining the gene sets used for analysis. This step uses the distance metric described by Chen et al. [1]. Via a shiny app, presented as an HTML document, the hierarchical clustering dendrogram is visualized. In this HTML document, the user can select the agglomeration method and the distance value at which to cut the tree. The dendrogram with the cut-off value marked with a red line is dynamically visualized and the resulting cluster assignments of the pathways along with annotation of representative pathways (chosen by smallest lowest p value) are presented as a table. This table can be saved as a csv file by pressing the button `Get Pathways w\ Cluster Info`.
+
+```{r eval=FALSE}
+# example run
+choose_clusters(RA_output)
+
+# to display the heatmap of pathway clustering
+choose_clusters(RA_output, plot_heatmap = TRUE)
+
+# to display the heatmap of pathway clustering 
+# and change agglomeration method (default = "average")
+choose_clusters(RA_output, agg_method = "complete", plot_heatmap = TRUE)
+
+```
 
 [1] *Chen YA, Tripathi LP, Dessailly BH, Nyström-persson J, Ahmad S, Mizuguchi K. Integrated pathway clusters with coherent biological themes for target prioritisation. PLoS ONE. 2014;9(6):e99030. \doi 10.1371/journal.pone.0099030 *
 
