@@ -106,9 +106,10 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
     stop("search_method must be one of \"GR\", \"SA\", \"GA\"")
   }
 
-  if (!gene_sets %in% c("KEGG", "Reactome", "BioCarta")) {
+  if (!gene_sets %in% c("KEGG", "Reactome", "BioCarta",
+                        "GO-BP", "GO-CC", "GO-MF")) {
     setwd("..")
-    stop("gene_sets must be one of KEGG, Reactome or BioCarta")
+    stop("gene_sets must be one of KEGG, Reactome, BioCarta, GO-BP, GO-CC or GO-MF")
   }
 
   if (!is.logical(use_all_positives)) {
@@ -197,6 +198,15 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
     } else if (gene_sets == "BioCarta") {
       genes_by_pathway <- pathfindR::biocarta_genes
       pathways_list <- pathfindR::biocarta_pathways
+    } else if (gene_sets == "GO-BP") {
+      genes_by_pathway <- pathfindR::go_bp_genes
+      pathways_list <- pathfindR::go_bp_pathways
+    } else if (gene_sets == "GO-CC") {
+      genes_by_pathway <- pathfindR::go_cc_genes
+      pathways_list <- pathfindR::go_cc_pathways
+    } else if (gene_sets == "GO-MF") {
+      genes_by_pathway <- pathfindR::go_mf_genes
+      pathways_list <- pathfindR::go_mf_pathways
     }
 
     ## enrichment per subnetwork
@@ -258,10 +268,17 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
 
     final_res$Down_regulated <- final_res$Up_regulated <- NA
 
-    if (gene_sets == "Reactome")
+    if (gene_sets == "Reactome") {
       gsets <- pathfindR::reactome_genes
-    if (gene_sets == "BioCarta")
+    } else if (gene_sets == "BioCarta") {
       gsets <- pathfindR::biocarta_genes
+    } else if (gene_sets == "GO-BP") {
+      gsets <- pathfindR::go_bp_genes
+    } else if (gene_sets == "GO-CC") {
+      gsets <- pathfindR::go_cc_genes
+    } else if (gene_sets == "GO-MF") {
+      gsets <- pathfindR::go_mf_genes
+    }
 
     for (i in 1:nrow(final_res)) {
       idx <- which(names(gsets) == final_res$ID[i])

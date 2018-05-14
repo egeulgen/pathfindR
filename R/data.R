@@ -96,3 +96,60 @@
 #' @format list containing 217 character values, the descriptions for the given
 #'   pathways.
 "biocarta_pathways"
+
+#' Gene Ontology - Biological Process Ontology Gene Sets
+#'
+#' A list containing the genes involved in each GO Biological Process. Each
+#' element is a vector of gene symbols located in the given gene set. This data
+#' was retrieved on May 13, 2018.
+#'
+#' @format list containing 3941 vectors of gene symbols. Each vector corresponds
+#'   to a gene set.
+"go_bp_genes"
+
+#' Gene Ontology - Biological Process Ontology Descriptions
+#'
+#' A list containing the descriptions for each human GO Biological Process. This
+#' data was retrieved on May 13, 2018.
+#'
+#' @format list containing 3941 character values, the descriptions for the given
+#'   pathways.
+"go_bp_pathways"
+
+#' Gene Ontology - Cellular Component Ontology Gene Sets
+#'
+#' A list containing the genes involved in each GO Cellular Component. Each
+#' element is a vector of gene symbols located in the given gene set. This data
+#' was retrieved on May 13, 2018.
+#'
+#' @format list containing 470 vectors of gene symbols. Each vector corresponds
+#'   to a gene set.
+"go_cc_genes"
+
+#' Gene Ontology - Cellular Component Ontology Descriptions
+#'
+#' A list containing the descriptions for each human GO Cellular Component. This
+#' data was retrieved on May 13, 2018.
+#'
+#' @format list containing 470 character values, the descriptions for the given
+#'   pathways.
+"go_cc_pathways"
+
+#' Gene Ontology - Molecular Function Ontology Gene Sets
+#'
+#' A list containing the genes involved in each GO Molecular Function. Each
+#' element is a vector of gene symbols located in the given gene set. This data
+#' was retrieved on May 13, 2018.
+#'
+#' @format list containing 713 vectors of gene symbols. Each vector corresponds
+#'   to a gene set.
+"go_mf_genes"
+
+#' Gene Ontology - Molecular Function Ontology Descriptions
+#'
+#' A list containing the descriptions for each human GO Molecular Function. This
+#' data was retrieved on May 13, 2018.
+#'
+#' @format list containing 713 character values, the descriptions for the given
+#'   pathways.
+"go_mf_pathways"
