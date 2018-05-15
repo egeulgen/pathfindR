@@ -11,11 +11,14 @@ From CRAN (release):
 install.packages("pathfindR")
 ```
 
-From GitHub (devel):
+From GitHub (development):
 ```r
 install.packages("devtools") # if you have not installed "devtools" package
 devtools::install_github("egeulgen/pathfindR")
 ```
+
+## Wiki
+See [the pathfindR wiki](https://github.com/egeulgen/pathfindR/wiki) for documentation.
 
 ## Overview of the Enrichment Workflow
 
