@@ -4,6 +4,9 @@
 
 `pathfindR` is a tool for pathway enrichment analysis via active subnetworks. The package also offers the option to cluster the enriched pathways and choose representative pathways. The method is described in detail in _Ulgen E, Ozisik O, Sezerman OU. 2018. pathfindR: An R Package for Pathway Enrichment Analysis Utilizing Active Subnetworks. bioRxiv. [https://doi.org/10.1101/272450](https://doi.org/10.1101/272450)_
 
+## Wiki
+See [the pathfindR wiki](https://github.com/egeulgen/pathfindR/wiki) for detailed documentation.
+
 ## Installation
 
 From CRAN (release):
@@ -17,8 +20,7 @@ install.packages("devtools") # if you have not installed "devtools" package
 devtools::install_github("egeulgen/pathfindR")
 ```
 
-## Wiki
-See [the pathfindR wiki](https://github.com/egeulgen/pathfindR/wiki) for documentation.
+See the [wiki page](https://github.com/egeulgen/pathfindR/wiki/Installation) for more details.
 
 ## Overview of the Enrichment Workflow
 
@@ -47,6 +49,7 @@ result <- run_pathfindR(RA_input, iterations = 5)
 result <- run_pathfindR(RA_input, n_processes = 2) 
 ```
 
+See the [wiki page](https://github.com/egeulgen/pathfindR/wiki/Enrichment%20Documentation) for more details.
 
 ## Overview of the Clustering Workflow
 
@@ -54,6 +57,8 @@ result <- run_pathfindR(RA_input, n_processes = 2)
 This workflow first calculates the pairwise distances between the pathways in the resulting data frame. Via a shiny app, presented as an HTML document, the hierarchical clustering dendrogram is visualized. In this HTML document, the user can select the agglomeration method and the distance value at which to cut the tree. The dendrogram with the cut-off value marked with a red line is dynamically visualized and the resulting cluster assignments of the pathways along with annotation of representative pathways (chosen by smallest lowest p value) are presented as a table. This table can be saved as a csv file via pressing the button `Get Pathways w\ Cluster Info`.
 
 The wrapper function for this workflow is `choose_clusters()`.
+
+See the [wiki page](https://github.com/egeulgen/pathfindR/wiki/Clustering%20Documentation) for more details.
 
 ## Dependencies
 For the active subnetwork search component to work, the user must have [JAVA](https://www.java.com/en/download/manual.jsp) installed and path/to/java must be in the PATH environment variable.
