@@ -63,7 +63,7 @@ See the [wiki page](https://github.com/egeulgen/pathfindR/wiki/Clustering%20Docu
 ## Dependencies
 For the active subnetwork search component to work, the user must have [JAVA](https://www.java.com/en/download/manual.jsp) installed and path/to/java must be in the PATH environment variable.
 
-### Resources
+## Resources
 The PINs were gathered from various resources:
 - [Biogrid](https://downloads.thebiogrid.org/BioGRID)
 - [GeneMania](http://genemania.org/data/): only interactions with weights >= 0.0006 were kept.
