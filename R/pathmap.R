@@ -1,7 +1,7 @@
 #' Annotate Involved Genes In Pathways and Visualize Pathways
 #'
 #' @param pw_table Data frame of enrichment results. Columns are: "ID",
-#'   "Pathway", "occurrence", "lowest_p", "highest_p".
+#'   "Pathway", "Fold_Enrichment", "occurrence", "lowest_p", "highest_p".
 #' @param gene_data Single column data frame containing change values (e.g.
 #'   log(fold change) values) for significant genes.
 #'

@@ -8,7 +8,7 @@ pathmap(pw_table, gene_data)
 }
 \arguments{
 \item{pw_table}{Data frame of enrichment results. Columns are: "ID",
-"Pathway", "occurrence", "lowest_p", "highest_p".}
+"Pathway", "Fold_Enrichment", "occurrence", "lowest_p", "highest_p".}
 
 \item{gene_data}{Single column data frame containing change values (e.g.
 log(fold change) values) for significant genes.}

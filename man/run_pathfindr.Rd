@@ -87,6 +87,7 @@ are KEGG, Reactome, BioCarta, GO-BP, GO-CC and GO-MF(Default = "KEGG")}
 Data frame of pathview enrichment results. Columns are: \describe{
   \item{ID}{KEGG ID of the enriched pathway}
   \item{Pathway}{Description of the enriched pathway}
+  \item{Fold_Enrichment}{Fold enrichment value for the enriched pathway}
   \item{occurrence}{the number of iterations that the given pathway was found to enriched over all iterations}
   \item{lowest_p}{the lowest adjusted-p value of the given pathway over all iterations}
   \item{highest_p}{the highest adjusted-p value of the given pathway over all iterations}

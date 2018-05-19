@@ -41,10 +41,20 @@ enrichment <- function(genes_by_pathway, genes_of_interest,
                            stringsAsFactors = FALSE)
   all_genes <- unique(c(pin$V1, pin$V2))
 
+  ## Hypergeometric test for p value
   enrichment_res <- sapply(genes_by_pathway, hyperg_test,
                              genes_of_interest, all_genes)
   enrichment_res <- as.data.frame(enrichment_res)
   colnames(enrichment_res) <- "p_value"
+
+  ## Fold enrinchment
+  fe_calc <- function(x) {
+    A <- sum(genes_of_interest %in% x) / length(genes_of_interest)
+    B <- sum(all_genes %in% x) / length(all_genes)
+    return(A / B)
+  }
+  enrichment_res$Fold_Enrichment <- sapply(genes_by_pathway, fe_calc)
+
 
   idx <- order(enrichment_res$p_value)
   enrichment_res <- enrichment_res[idx, , drop = FALSE]
@@ -64,8 +74,8 @@ enrichment <- function(genes_by_pathway, genes_of_interest,
     enrichment_res$Pathway <- pathways_list[idx]
 
     ## reorder columns
-    remaining <- setdiff(colnames(enrichment_res), c("ID", "Pathway"))
-    enrichment_res <- enrichment_res[, c("ID", "Pathway", remaining)]
+    to_order <- c("ID", "Pathway", "Fold_Enrichment", "p_value", "adj_p")
+    enrichment_res <- enrichment_res[, to_order]
 
     return(enrichment_res)
   }

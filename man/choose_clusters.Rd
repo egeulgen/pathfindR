@@ -9,13 +9,14 @@ choose_clusters(result_df, ...)
 \arguments{
 \item{result_df}{resulting data frame of enriched pathways from the wrapper
   function \code{run_pathfindR}. Columns are: \enumerate{
-  \item{ID: }{KEGG ID of the enriched pathway}
-  \item{Pathway: }{Description of the enriched pathway}
-  \item{occurrence: }{the number of iterations that the given pathway was found to be enriched over all iterations}
-  \item{lowest_p: }{the lowest adjusted-p value of the given pathway over all iterations}
-  \item{highest_p: }{the highest adjusted-p value of the given pathway over all iterations}
-  \item{Up_regulated: }{the up-regulated genes in the input involved in the given pathway, comma-separated}
-  \item{Down_regulated: }{the down-regulated genes in the input involved in the given pathway, comma-separated}
+  \item{ID}{KEGG ID of the enriched pathway}
+  \item{Pathway}{Description of the enriched pathway}
+  \item{Fold_Enrichment}{Fold enrichment value for the enriched pathway}
+  \item{occurrence}{the number of iterations that the given pathway was found to enriched over all iterations}
+  \item{lowest_p}{the lowest adjusted-p value of the given pathway over all iterations}
+  \item{highest_p}{the highest adjusted-p value of the given pathway over all iterations}
+  \item{Up_regulated}{the up-regulated genes in the input involved in the given pathway, comma-separated}
+  \item{Down_regulated}{the down-regulated genes in the input involved in the given pathway, comma-separated}
 }}
 
 \item{...}{optional arguments for \code{cluster_pathways}}
