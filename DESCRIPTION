@@ -24,7 +24,8 @@ Imports: AnnotationDbi,
     doParallel,
     foreach,
     rmarkdown,
-    org.Hs.eg.db
+    org.Hs.eg.db,
+    ggplot2
 Depends: R (>= 3.4),
     pathview,
     knitr,
