@@ -11,7 +11,7 @@ run_pathfindR(input, p_val_threshold = 0.05, enrichment_threshold = 0.05,
   gaMut = 0, grMaxDepth = 1, grSearchDepth = 1, grOverlap = 0.5,
   grSubNum = 1000, iterations = 10, n_processes = NULL,
   pin_name_path = "Biogrid", score_thr = 3, sig_gene_thr = 2,
-  gene_sets = "KEGG")
+  gene_sets = "KEGG", bubble = TRUE)
 }
 \arguments{
 \item{input}{the input data that pathfindR uses. The input must be a data
@@ -81,7 +81,9 @@ to "Biogrid".}
 \item{sig_gene_thr}{threshold for minimum number of significant genes (Default = 2)}
 
 \item{gene_sets}{the gene sets to be used for enrichment analysis. Available gene sets
-are KEGG, Reactome, BioCarta, GO-BP, GO-CC and GO-MF(Default = "KEGG")}
+are KEGG, Reactome, BioCarta, GO-BP, GO-CC and GO-MF (Default = "KEGG")}
+
+\item{bubble}{boolean value. If TRUE, a bubble chart displaying the enrichment results is plotted. (default = TRUE)}
 }
 \value{
 Data frame of pathview enrichment results. Columns are: \describe{
@@ -98,6 +100,12 @@ Data frame of pathview enrichment results. Columns are: \describe{
  results linked to the visualizations of the pathways in addition to
  the table of converted gene symbols. This report can be found in
  "pathfindR_Results/results.html" under the current working directory.
+
+ Optionally, a bubble chart of enrichment results are plotted. The x-axis
+ corresponds to fold enrichment values while the y-axis indicates the enriched
+ pathways. Size of the bubble indicates the number of DEGs in the given pathway.
+ Color indicates the -log10(lowest-p) value; the more red it gets, the more significant
+ the pathway is.
 }
 \description{
 \code{run_pathfindR} is the wrapper function for the pathfindR workflow

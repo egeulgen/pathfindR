@@ -49,7 +49,8 @@
 #'@param score_thr active subnetwork score threshold (Default = 3)
 #'@param sig_gene_thr threshold for minimum number of significant genes (Default = 2)
 #'@param gene_sets the gene sets to be used for enrichment analysis. Available gene sets
-#'  are KEGG, Reactome, BioCarta, GO-BP, GO-CC and GO-MF(Default = "KEGG")
+#'  are KEGG, Reactome, BioCarta, GO-BP, GO-CC and GO-MF (Default = "KEGG")
+#'@param bubble boolean value. If TRUE, a bubble chart displaying the enrichment results is plotted. (default = TRUE)
 #'
 #'@import knitr
 #'
@@ -67,6 +68,12 @@
 #'  results linked to the visualizations of the pathways in addition to
 #'  the table of converted gene symbols. This report can be found in
 #'  "pathfindR_Results/results.html" under the current working directory.
+#'
+#'  Optionally, a bubble chart of enrichment results are plotted. The x-axis
+#'  corresponds to fold enrichment values while the y-axis indicates the enriched
+#'  pathways. Size of the bubble indicates the number of DEGs in the given pathway.
+#'  Color indicates the -log10(lowest-p) value; the more red it gets, the more significant
+#'  the pathway is.
 #'
 #'@export
 #'
@@ -99,7 +106,8 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
                           iterations = 10, n_processes = NULL,
                           pin_name_path = "Biogrid",
                           score_thr = 3, sig_gene_thr = 2,
-                          gene_sets = "KEGG") {
+                          gene_sets = "KEGG",
+                          bubble = TRUE) {
   if (dir.exists("pathfindR_Results"))
     stop("There already is a directoy named \"pathfindR_Results\".\nRename it not to overwrite the previous results.")
 
@@ -308,6 +316,27 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   cat("Run choose_clusters() for clustering pathways\n\n")
 
   setwd("..")
+
+  ## Bubble Chart
+  if (bubble == TRUE) {
+    n <- sapply(final_res$Up_regulated, function(x) length(unlist(strsplit(x, ", "))))
+    n <- n + sapply(final_res$Down_regulated, function(x) length(unlist(strsplit(x, ", "))))
+
+    final_res$Pathway <- factor(final_res$Pathway, levels = rev(final_res$Pathway))
+
+    g <- ggplot2::ggplot(final_res, ggplot2::aes(x = Fold_Enrichment, y = Pathway))
+    g <- g + ggplot2::geom_point(ggplot2::aes(color = -log10(final_res$lowest_p),
+                                              size = n), na.rm = TRUE)
+    g <- g + ggplot2::theme_bw()
+    g <- g + ggplot2::theme(axis.text.x = ggplot2::element_text(size = 10),
+                            axis.text.y = ggplot2::element_text(size = 10),
+                            plot.title = ggplot2::element_blank())
+    g <- g + ggplot2::xlab("Fold Enrichment") + ggplot2::ylab('')
+    g <- g + ggplot2::labs(size = "# of DEGs", color = "-log10(lowest-p)")
+    g <- g + ggplot2::scale_color_continuous(low = "#f5efef", high = "red")
+    g
+  }
+
   return(final_res)
 }
 
