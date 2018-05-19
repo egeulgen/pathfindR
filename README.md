@@ -1,8 +1,11 @@
 # pathfindR : An R Package for Pathway Enrichment Analysis Utilizing Active Subnetworks
 
-[![Travis-CI Build Status](https://travis-ci.org/egeulgen/pathfindR.svg?branch=master)](https://travis-ci.org/egeulgen/pathfindR) [![CRAN version](http://www.r-pkg.org/badges/version-ago/pathfindR)](https://cran.r-project.org/package=pathfindR) [![CRAN downloads](https://cranlogs.r-pkg.org/badges/grand-total/pathfindR)](https://cran.r-project.org/package=pathfindR)
+[![Travis-CI Build Status](https://travis-ci.org/egeulgen/pathfindR.svg?branch=master)](https://travis-ci.org/egeulgen/pathfindR) [![CRAN version](http://www.r-pkg.org/badges/version-ago/pathfindR)](https://cran.r-project.org/package=pathfindR) [![CRAN downloads](https://cranlogs.r-pkg.org/badges/grand-total/pathfindR)](https://cran.r-project.org/package=pathfindR) [![Rdoc](http://www.rdocumentation.org/badges/version/pathfindR)](http://www.rdocumentation.org/packages/pathfindR)
 
 `pathfindR` is a tool for pathway enrichment analysis via active subnetworks. The package also offers the option to cluster the enriched pathways and choose representative pathways. The method is described in detail in _Ulgen E, Ozisik O, Sezerman OU. 2018. pathfindR: An R Package for Pathway Enrichment Analysis Utilizing Active Subnetworks. bioRxiv. [https://doi.org/10.1101/272450](https://doi.org/10.1101/272450)_
+
+## Wiki
+See [the pathfindR wiki](https://github.com/egeulgen/pathfindR/wiki) for detailed documentation.
 
 ## Installation
 
@@ -17,8 +20,7 @@ install.packages("devtools") # if you have not installed "devtools" package
 devtools::install_github("egeulgen/pathfindR")
 ```
 
-## Wiki
-See [the pathfindR wiki](https://github.com/egeulgen/pathfindR/wiki) for documentation.
+See the [wiki page](https://github.com/egeulgen/pathfindR/wiki/Installation) for more details.
 
 ## Overview of the Enrichment Workflow
 
@@ -47,6 +49,7 @@ result <- run_pathfindR(RA_input, iterations = 5)
 result <- run_pathfindR(RA_input, n_processes = 2) 
 ```
 
+See the [wiki page](https://github.com/egeulgen/pathfindR/wiki/Enrichment%20Documentation) for more details.
 
 ## Overview of the Clustering Workflow
 
@@ -55,10 +58,12 @@ This workflow first calculates the pairwise distances between the pathways in th
 
 The wrapper function for this workflow is `choose_clusters()`.
 
+See the [wiki page](https://github.com/egeulgen/pathfindR/wiki/Clustering%20Documentation) for more details.
+
 ## Dependencies
 For the active subnetwork search component to work, the user must have [JAVA](https://www.java.com/en/download/manual.jsp) installed and path/to/java must be in the PATH environment variable.
 
-### Resources
+## Resources
 The PINs were gathered from various resources:
 - [Biogrid](https://downloads.thebiogrid.org/BioGRID)
 - [GeneMania](http://genemania.org/data/): only interactions with weights >= 0.0006 were kept.
