@@ -13,5 +13,6 @@ pathfindR-Enrichment results are presented below:
 ## [All pathways found to be enriched](./all_pathways.html)
 A table that lists all pathways found to be enriched as well as lists of up- or down-regulated genes. The KEGG descriptions are linked to visualizations of these pathways with differentially-expressed genes colored according to log-fold-change values.
 
-## [Table of genes with converted gene symbols](./genes_table.html)
-A table listing the genes whose symbols (Old Symbol) were converted to aliases (Converted Symbol) that were in the protein-protein interaction network.
+## [Tables of genes with converted gene symbols and genes without interactions](./genes_table.html)
+- A table listing the genes whose symbols (Old Symbol) were converted to aliases (Converted Symbol) that were in the protein-protein interaction network.
+- A table listing the input genes for which there were no interactions in the PIN (after the aliases were also checked).

@@ -99,6 +99,9 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
                           pin_name_path = "Biogrid",
                           score_thr = 3, sig_gene_thr = 2,
                           gene_sets = "KEGG") {
+  if (dir.exists("pathfindR_Results"))
+    stop("There already is a directoy named \"pathfindR_Results\".\nRename it not to overwrite the previous results.")
+
   dir.create("pathfindR_Results")
   setwd("pathfindR_Results")
 
@@ -297,7 +300,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   rmarkdown::render(system.file("rmd/all_pathways.Rmd", package = "pathfindR"),
                     params = list(df = final_res, gset = gene_sets), output_dir = ".")
   rmarkdown::render(system.file("rmd/genes_table.Rmd", package = "pathfindR"),
-                    params = list(df = input_processed), output_dir = ".")
+                    params = list(df = input_processed, original_df = input), output_dir = ".")
 
   cat("Pathway enrichment results and converted genes ")
   cat("can be found in \"results.html\" in the folder \"pathfindR_Results\"\n\n")
