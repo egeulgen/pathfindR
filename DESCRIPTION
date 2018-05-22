@@ -1,7 +1,7 @@
 Package: pathfindR
 Type: Package
 Title: Pathway Enrichment Analysis Utilizing Active Subnetworks
-Version: 1.2.0.9002
+Version: 1.2.0.9003
 Author: Ege Ulgen, Ozan Ozisik
 Maintainer: Ege Ulgen <egeulgen@gmail.com>
 Description: Pathway enrichment analysis enables researchers to uncover mechanisms 
@@ -25,7 +25,8 @@ Imports: AnnotationDbi,
     foreach,
     rmarkdown,
     org.Hs.eg.db,
-    ggplot2
+    ggplot2,
+    fpc
 Depends: R (>= 3.4),
     pathview,
     knitr,

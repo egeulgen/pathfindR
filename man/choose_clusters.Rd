@@ -2,7 +2,7 @@
 % Please edit documentation in R/wrapper.R
 \name{choose_clusters}
 \alias{choose_clusters}
-\title{Cluster Pathways and Dynamically Cut the Dendrogram}
+\title{Cluster Pathways and Manually Cut the Dendrogram}
 \usage{
 choose_clusters(result_df, ...)
 }
@@ -19,7 +19,7 @@ choose_clusters(result_df, ...)
   \item{Down_regulated}{the down-regulated genes in the input involved in the given pathway, comma-separated}
 }}
 
-\item{...}{optional arguments for \code{cluster_pathways}}
+\item{...}{optional arguments for \code{calculate_pwd}}
 }
 \value{
 This function first calculates the pairwise distances between the
@@ -43,7 +43,8 @@ choose_clusters(RA_output)
 }
 }
 \seealso{
-See \code{\link{cluster_pathways}} for calculation of pairwise
+Use \code{\link{auto_choose_clusters}} for automatic selection of clusters.
+  See \code{\link{calculate_pwd}} for calculation of pairwise
   distances between enriched pathways. See \code{\link{run_pathfindR}}
   for the wrapper function of the pathfindR enrichment workflow.
 }

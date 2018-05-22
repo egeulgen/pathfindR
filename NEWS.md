@@ -1,3 +1,14 @@
+# pathdindR 1.2
+
+## Major Changes
+- Added the new function `auto_choose_clusters`, which calculates the pairwise distance values, hierarchically clusters the pathways using these distances and chooses the optimal number of clusters `k` automatically as the value which maximizes the average silhouette width. The function returns a data frame with the cluster assignments and the representative/member statuses of each pathway. `auto_choose_clusters` is an alternative to `choose_clusters`, which needs manual selection of the number of clusters.
+
+- Added the `Fold_Enrichment` column to the resulting data frame of `enrichment`, and as a corollary to the resulting data frame of `run_pathfindR`.
+
+- Added the option to plot a bubble chart displaying the enrichment results in `run_pathfindR`. The x-axis corresponds to fold enrichment values while the y-axis indicates the enriched pathways. Size of the bubble indicates the number of DEGs in the given pathway. Color indicates the -log10(lowest-p) value.
+
+## Minor changes and bug fixes
+
 # pathfindR 1.1
 
 ## Major changes

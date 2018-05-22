@@ -18,8 +18,8 @@
 #' @export
 #'
 #' @examples
-#' cluster_pathways(RA_output$ID)
-cluster_pathways <- function(pathway_ids, agg_method = "average",
+#' calculate_pwd(RA_output$ID)
+calculate_pwd <- function(pathway_ids, agg_method = "average",
                              plot_heatmap = FALSE) {
   ## Get genes for selected pathways
   if (grepl("^hsa", pathway_ids[1])) {
