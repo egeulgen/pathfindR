@@ -50,8 +50,10 @@
 #'@param sig_gene_thr threshold for minimum number of significant genes (Default = 2)
 #'@param gene_sets the gene sets to be used for enrichment analysis. Available gene sets
 #'  are KEGG, Reactome, BioCarta, GO-BP, GO-CC and GO-MF (Default = "KEGG")
-#'@param bubble boolean value. If TRUE, a bubble chart displaying the enrichment results is plotted. (default = TRUE)
-#'
+#'@param bubble boolean value. If TRUE, a bubble chart displaying the enrichment
+#' results is plotted. (default = TRUE)
+#'@param output_dir the directory to be created under the current working
+#' directory where the output and intermediate files are saved (default: "pathfindR_Results")
 #'
 #'@return Data frame of pathfindR enrichment results. Columns are: \describe{
 #'   \item{ID}{KEGG ID of the enriched pathway}
@@ -66,7 +68,7 @@
 #'  The function also creates an HTML report with the pathfindR enrichment
 #'  results linked to the visualizations of the pathways in addition to
 #'  the table of converted gene symbols. This report can be found in
-#'  "pathfindR_Results/results.html" under the current working directory.
+#'  "`output_dir`/results.html" under the current working directory.
 #'
 #'  Optionally, a bubble chart of enrichment results are plotted. The x-axis
 #'  corresponds to fold enrichment values while the y-axis indicates the enriched
@@ -112,7 +114,8 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
                           pin_name_path = "Biogrid",
                           score_thr = 3, sig_gene_thr = 2,
                           gene_sets = "KEGG",
-                          bubble = TRUE) {
+                          bubble = TRUE,
+                          output_dir = "pathfindR_Results") {
   ## Argument checks
   if (!search_method %in% c("GR", "SA", "GA"))
     stop("`search_method` must be one of \"GR\", \"SA\", \"GA\"")
@@ -128,11 +131,12 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
     stop("the argument `bubble` must be either TRUE or FALSE")
 
   ## create output dir
-  if (dir.exists("pathfindR_Results"))
-    stop("There already is a directoy named \"pathfindR_Results\".\nRename it not to overwrite the previous results.")
+  if (dir.exists(output_dir))
+    stop(paste0("There already is a directoy named \"", output_dir,
+                "\".\nRename it not to overwrite the previous results."))
 
-  dir.create("pathfindR_Results")
-  setwd("pathfindR_Results")
+  dir.create(output_dir)
+  setwd(output_dir)
 
   ## If search_method is GA, set iterations as 1
   if (search_method == "GA")
@@ -317,7 +321,8 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
                     params = list(df = input_processed, original_df = input), output_dir = ".")
 
   cat("Pathway enrichment results and converted genes ")
-  cat("can be found in \"results.html\" in the folder \"pathfindR_Results\"\n\n")
+  cat("can be found in \"results.html\"")
+  cat(paste0("in the folder \"", output_dir, "\"\n\n"))
   cat("Run choose_clusters() for clustering pathways\n\n")
 
   setwd("..")

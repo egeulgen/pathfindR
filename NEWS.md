@@ -1,4 +1,6 @@
-# pathfindR 1.2
+# pathfindR 1.1.0.9004
+
+to be released as pathfindR 1.2.0
 
 ## Major Changes
 - Added the `auto` parameter to `choose_clusters`. When `auto == TRUE`, the function chooses the optimal number of clusters `k` automatically, as the value which maximizes the average silhouette width. It then returns a data frame with the cluster assignments and the representative/member statuses of each pathway.
@@ -7,8 +9,12 @@
 
 - Added the option `bubble` to plot a bubble chart displaying the enrichment results in `run_pathfindR` using the helper function `enrichment_chart`. To plot the bubble chart set `bubble = TRUE` in `run_pathfindR` or use `enrichment_chart(your_result)`. 
 
+- In the function, `run_pathfindR` added the option to specify the argument `output_dir` which specifies the directory to be created under the current working directory for storing the result HTML files. `output_dir` is "pathfindR_Results" by default.
+
+- Added the data `RA_clustered`, which is the example output of the clustering workflow.
+
 ## Minor changes and bug fixes
-- `run_pathfindR` now checks whether the output directory already exists and if it exists, stops and displays an error message. This was implemented to prevent writing over existing results.
+- `run_pathfindR` now checks whether the output directory `output_dir` already exists and if it exists, stops and displays an error message. This was implemented to prevent writing over existing results.
 
 - `genes_table.html` now contains a second table displaying the input gene symbols for which there were no interactions in the PIN.
 

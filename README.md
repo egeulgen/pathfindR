@@ -34,6 +34,9 @@ This workflow can be run using the function `run_pathfindR`:
 ```r
 RA_output <- run_pathfindR(RA_input)
 
+# to change the output directory
+RA_output <- run_pathfindR(RA_input, output = "new_directory")
+
 # to change the PIN (default = Biogrid)
 RA_output <- run_pathfindR(RA_input, pin_name = "IntAct")
 # to use an external PIN of user's choice
