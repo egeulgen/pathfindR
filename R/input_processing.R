@@ -29,12 +29,12 @@ input_testing <- function(input, p_val_threshold){
 
   if (!is.numeric(p_val_threshold)){
     setwd("..")
-    stop("p_val_threshold must be a numeric value between 0 and 1")
+    stop("`p_val_threshold` must be a numeric value between 0 and 1")
   }
 
   if (p_val_threshold > 1 | p_val_threshold < 0){
     setwd("..")
-    stop("p_val_threshold must be between 0 and 1")
+    stop("`p_val_threshold` must be between 0 and 1")
   }
 
   if (!all(is.numeric(input[, 3]))) {

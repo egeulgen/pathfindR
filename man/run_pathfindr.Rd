@@ -86,7 +86,7 @@ are KEGG, Reactome, BioCarta, GO-BP, GO-CC and GO-MF (Default = "KEGG")}
 \item{bubble}{boolean value. If TRUE, a bubble chart displaying the enrichment results is plotted. (default = TRUE)}
 }
 \value{
-Data frame of pathview enrichment results. Columns are: \describe{
+Data frame of pathfindR enrichment results. Columns are: \describe{
   \item{ID}{KEGG ID of the enriched pathway}
   \item{Pathway}{Description of the enriched pathway}
   \item{Fold_Enrichment}{Fold enrichment value for the enriched pathway}

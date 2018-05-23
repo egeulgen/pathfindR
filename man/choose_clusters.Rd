@@ -23,14 +23,14 @@ choose_clusters(result_df, auto = TRUE, agg_method = "average",
 automatically. If FALSE, a shiny application is displayed, where the user can manually
 partition the clustering dendrogram (default: TRUE).}
 
-\item{agg_method}{the agglomeration method to be used if plotting heatmap
-(see next argument, default: average).}
+\item{agg_method}{the agglomeration method to be used if plotting heatmap. Must be one of "ward.D", "ward.D2",
+"single", "complete", "average", "mcquitty", "median" or "centroid" (default: average).}
 
 \item{plot_heatmap}{boolean value indicating whether or not to plot the heat
 map of pathway clustering (default: FALSE).}
 
 \item{plot_dend}{boolean value indicating whether or not to plot the dendrogram
-partitioned into the optimal number of clusters, shown by rectangles (default: FALSE)}
+partitioned into the optimal number of clusters, shown by red rectangles (default: FALSE)}
 }
 \value{
 If 'auto' is FALSE, manual partitioning can be performed. Via a shiny HTML document, the
@@ -74,6 +74,7 @@ choose_clusters(RA_output)
 }
 \seealso{
 See \code{\link{calculate_pwd}} for calculation of pairwise
-  distances between enriched pathways. See \code{\link{run_pathfindR}}
+  distances between enriched pathways. See \code{\link[stats]{hclust}}
+  for more information on hierarchical clustering. See \code{\link{run_pathfindR}}
   for the wrapper function of the pathfindR enrichment workflow.
 }

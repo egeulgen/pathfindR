@@ -53,7 +53,7 @@
 #'@param bubble boolean value. If TRUE, a bubble chart displaying the enrichment results is plotted. (default = TRUE)
 #'
 #'
-#'@return Data frame of pathview enrichment results. Columns are: \describe{
+#'@return Data frame of pathfindR enrichment results. Columns are: \describe{
 #'   \item{ID}{KEGG ID of the enriched pathway}
 #'   \item{Pathway}{Description of the enriched pathway}
 #'   \item{Fold_Enrichment}{Fold enrichment value for the enriched pathway}
@@ -115,17 +115,17 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
                           bubble = TRUE) {
   ## Argument checks
   if (!search_method %in% c("GR", "SA", "GA"))
-    stop("search_method must be one of \"GR\", \"SA\", \"GA\"")
+    stop("`search_method` must be one of \"GR\", \"SA\", \"GA\"")
 
   if (!gene_sets %in% c("KEGG", "Reactome", "BioCarta",
                         "GO-BP", "GO-CC", "GO-MF"))
-    stop("gene_sets must be one of KEGG, Reactome, BioCarta, GO-BP, GO-CC or GO-MF")
+    stop("`gene_sets` must be one of KEGG, Reactome, BioCarta, GO-BP, GO-CC or GO-MF")
 
   if (!is.logical(use_all_positives))
-    stop("the argument use_all_positives must be logical")
+    stop("the argument `use_all_positives` must be either TRUE or FALSE")
 
   if (!is.logical(bubble))
-    stop("the argument bubble must be logical")
+    stop("the argument `bubble` must be either TRUE or FALSE")
 
   ## create output dir
   if (dir.exists("pathfindR_Results"))
@@ -422,12 +422,12 @@ enrichment_chart <- function(result_df, plot_by_cluster = FALSE) {
 #' @param auto boolean value indicating whether to select the optimal number of clusters
 #' automatically. If FALSE, a shiny application is displayed, where the user can manually
 #' partition the clustering dendrogram (default: TRUE).
-#' @param agg_method the agglomeration method to be used if plotting heatmap
-#'   (see next argument, default: average).
+#' @param agg_method the agglomeration method to be used if plotting heatmap. Must be one of "ward.D", "ward.D2",
+#' "single", "complete", "average", "mcquitty", "median" or "centroid" (default: average).
 #' @param plot_heatmap boolean value indicating whether or not to plot the heat
 #'   map of pathway clustering (default: FALSE).
 #' @param plot_dend boolean value indicating whether or not to plot the dendrogram
-#'   partitioned into the optimal number of clusters, shown by rectangles (default: FALSE)
+#'   partitioned into the optimal number of clusters, shown by red rectangles (default: FALSE)
 #'
 #' @return  If 'auto' is FALSE, manual partitioning can be performed. Via a shiny HTML document, the
 #'   hierarchical clustering dendrogram is visualized. In this HTML document,
@@ -457,13 +457,29 @@ enrichment_chart <- function(result_df, plot_by_cluster = FALSE) {
 #' @import stats
 #' @export
 #' @seealso See \code{\link{calculate_pwd}} for calculation of pairwise
-#'   distances between enriched pathways. See \code{\link{run_pathfindR}}
+#'   distances between enriched pathways. See \code{\link[stats]{hclust}}
+#'   for more information on hierarchical clustering. See \code{\link{run_pathfindR}}
 #'   for the wrapper function of the pathfindR enrichment workflow.
 #'
 #' @examples
 #' choose_clusters(RA_output)
 choose_clusters <- function(result_df, auto = TRUE, agg_method = "average",
                             plot_heatmap = FALSE, plot_dend = FALSE) {
+  ## argument checks
+  if (!is.logical(auto))
+    stop("The argument `auto` must be either TRUE or FALSE!")
+
+  if (!is.logical(plot_heatmap))
+    stop("The argument `plot_heatmap` must be either TRUE or FALSE!")
+
+  valid <- c("ward.D", "ward.D2", "single", "complete", "average", "mcquitty", "median", "centroid")
+  if (!agg_method %in% valid)
+    stop("`agg_method` must be one of ward.D, ward.D2, single, complete, average, mcquitty, median or centroid!")
+
+  if (!is.logical(plot_heatmap))
+    stop("The argument `plot_dend` must be either TRUE or FALSE!")
+
+  ## Create PWD matrix
   cat("Calculating pairwise distances between pathways\n\n")
   PWD_mat <- pathfindR::calculate_pwd(result_df$ID,
                                       agg_method = agg_method,
