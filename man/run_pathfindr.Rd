@@ -11,7 +11,7 @@ run_pathfindR(input, p_val_threshold = 0.05, enrichment_threshold = 0.05,
   gaMut = 0, grMaxDepth = 1, grSearchDepth = 1, grOverlap = 0.5,
   grSubNum = 1000, iterations = 10, n_processes = NULL,
   pin_name_path = "Biogrid", score_thr = 3, sig_gene_thr = 2,
-  gene_sets = "KEGG", bubble = TRUE)
+  gene_sets = "KEGG", bubble = TRUE, output_dir = "pathfindR_Results")
 }
 \arguments{
 \item{input}{the input data that pathfindR uses. The input must be a data
@@ -83,7 +83,11 @@ to "Biogrid".}
 \item{gene_sets}{the gene sets to be used for enrichment analysis. Available gene sets
 are KEGG, Reactome, BioCarta, GO-BP, GO-CC and GO-MF (Default = "KEGG")}
 
-\item{bubble}{boolean value. If TRUE, a bubble chart displaying the enrichment results is plotted. (default = TRUE)}
+\item{bubble}{boolean value. If TRUE, a bubble chart displaying the enrichment
+results is plotted. (default = TRUE)}
+
+\item{output_dir}{the directory to be created under the current working
+directory where the output and intermediate files are saved (default: "pathfindR_Results")}
 }
 \value{
 Data frame of pathfindR enrichment results. Columns are: \describe{
@@ -99,7 +103,7 @@ Data frame of pathfindR enrichment results. Columns are: \describe{
  The function also creates an HTML report with the pathfindR enrichment
  results linked to the visualizations of the pathways in addition to
  the table of converted gene symbols. This report can be found in
- "pathfindR_Results/results.html" under the current working directory.
+ "`output_dir`/results.html" under the current working directory.
 
  Optionally, a bubble chart of enrichment results are plotted. The x-axis
  corresponds to fold enrichment values while the y-axis indicates the enriched
