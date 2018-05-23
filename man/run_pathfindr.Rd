@@ -142,5 +142,6 @@ run_pathfindR(RA_input)
  \code{\link{pathmap}} for annotation of involved genes and visualization of
  pathways. See \code{\link[foreach]{foreach}} for details on parallel
  execution of looping constructs. See \code{\link{choose_clusters}} for
- clustering the resulting enriched pathways.
+ clustering the resulting enriched pathways and partitioning into
+ clusters.
 }

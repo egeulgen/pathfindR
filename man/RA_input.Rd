@@ -24,6 +24,7 @@ versus 15 healthy subjects. Differentially-expressed genes with adj.P.Val <=
 0.05 are presented in this dataset.
 }
 \seealso{
-\code{\link{RA_output}} for example output.
+\code{\link{RA_output}} for example output of the enrichment workflow.
+\code{\link{RA_clustered}} for example output of the clustering workflow.
 }
 \keyword{datasets}

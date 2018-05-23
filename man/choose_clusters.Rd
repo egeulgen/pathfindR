@@ -2,13 +2,46 @@
 % Please edit documentation in R/wrapper.R
 \name{choose_clusters}
 \alias{choose_clusters}
-\title{Cluster Pathways and Manually Cut the Dendrogram}
+\title{Cluster Pathways and Partition the Dendrogram}
 \usage{
-choose_clusters(result_df, ...)
+choose_clusters(result_df, auto = TRUE, agg_method = "average",
+  plot_heatmap = FALSE, plot_dend = FALSE)
 }
 \arguments{
-\item{result_df}{resulting data frame of enriched pathways from the wrapper
-  function \code{run_pathfindR}. Columns are: \enumerate{
+\item{result_df}{resulting data frame of enriched pathways from the wrapper function
+\code{run_pathfindR}. Columns are: \enumerate{
+ \item{ID}{KEGG ID of the enriched pathway}
+ \item{Pathway}{Description of the enriched pathway}
+ \item{Fold_Enrichment}{Fold enrichment value for the enriched pathway}
+ \item{occurrence}{the number of iterations that the given pathway was found to enriched over all iterations}
+ \item{lowest_p}{the lowest adjusted-p value of the given pathway over all iterations}
+ \item{highest_p}{the highest adjusted-p value of the given pathway over all iterations}
+ \item{Up_regulated}{the up-regulated genes in the input involved in the given pathway, comma-separated}
+ \item{Down_regulated}{the down-regulated genes in the input involved in the given pathway, comma-separated}}}
+
+\item{auto}{boolean value indicating whether to select the optimal number of clusters
+automatically. If FALSE, a shiny application is displayed, where the user can manually
+partition the clustering dendrogram (default: TRUE).}
+
+\item{agg_method}{the agglomeration method to be used if plotting heatmap
+(see next argument, default: average).}
+
+\item{plot_heatmap}{boolean value indicating whether or not to plot the heat
+map of pathway clustering (default: FALSE).}
+
+\item{plot_dend}{boolean value indicating whether or not to plot the dendrogram
+partitioned into the optimal number of clusters, shown by rectangles (default: FALSE)}
+}
+\value{
+If 'auto' is FALSE, manual partitioning can be performed. Via a shiny HTML document, the
+  hierarchical clustering dendrogram is visualized. In this HTML document,
+  the user can select the agglomeration method and the distance value at
+  which to cut the tree. The resulting cluster assignments of the pathways
+  along with annotation of representative pathways (chosen by smallest lowest
+  p value) are presented as a table and this table can be saved as a csv
+  file.
+  If 'auto' is TRUE, automatic partitioning of clusters is perfomed.The function
+ returns a data frame consisting of 10 columns: \describe{
   \item{ID}{KEGG ID of the enriched pathway}
   \item{Pathway}{Description of the enriched pathway}
   \item{Fold_Enrichment}{Fold enrichment value for the enriched pathway}
@@ -17,34 +50,30 @@ choose_clusters(result_df, ...)
   \item{highest_p}{the highest adjusted-p value of the given pathway over all iterations}
   \item{Up_regulated}{the up-regulated genes in the input involved in the given pathway, comma-separated}
   \item{Down_regulated}{the down-regulated genes in the input involved in the given pathway, comma-separated}
-}}
-
-\item{...}{optional arguments for \code{calculate_pwd}}
+  \item{Cluster}{the cluster to which the pathway is assigned}
+  \item{Status}{whether the pathway is the "Representative" pathway in its cluster or only a "Member"}
 }
-\value{
-This function first calculates the pairwise distances between the
-  pathways in the \code{result_df} data frame. Via a shiny HTML document, the
-  hierarchical clustering dendrogram is visualized. In this HTML document,
-  the user can select the agglomeration method and the distance value at
-  which to cut the tree. The resulting cluster assignments of the pathways
-  along with annotation of representative pathways (chosen by smallest lowest
-  p value) are presented as a table and this table can be saved as a csv
-  file.
 }
 \description{
+This function first calculates the pairwise distances between the
+pathways in the \code{result_df} data frame. Next, using this distance
+matrix, the pathways are clustered via hierarchical clustering. By default,
+the average silhouette width for each possible number of clusters is
+calculated. The optimal number of clusters is selected as the one with the
+highest average silhouette width. The dendrogram is cut into this optimal
+number of clusters, and the pathways with the lowest p value within each
+cluster are chosen as representative pathways. If 'auto == FALSE", the user
+can manually select at which height to cut the dendrogram via a shiny application.
 See "Chen, Y. A. et al. Integrated pathway clusters with coherent biological
 themes for target prioritisation. PLoS One 9, e99030,
 doi:10.1371/journal.pone.0099030 (2014)." for details on the method of
 pathway clustering.
 }
 \examples{
-\dontrun{
 choose_clusters(RA_output)
 }
-}
 \seealso{
-Use \code{\link{auto_choose_clusters}} for automatic selection of clusters.
-  See \code{\link{calculate_pwd}} for calculation of pairwise
+See \code{\link{calculate_pwd}} for calculation of pairwise
   distances between enriched pathways. See \code{\link{run_pathfindR}}
   for the wrapper function of the pathfindR enrichment workflow.
 }

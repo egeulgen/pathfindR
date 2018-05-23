@@ -1,7 +1,7 @@
 # pathdindR 1.2
 
 ## Major Changes
-- Added the new function `auto_choose_clusters`, which calculates the pairwise distance values, hierarchically clusters the pathways using these distances and chooses the optimal number of clusters `k` automatically as the value which maximizes the average silhouette width. The function returns a data frame with the cluster assignments and the representative/member statuses of each pathway. `auto_choose_clusters` is an alternative to `choose_clusters`, which needs manual selection of the number of clusters.
+- Added the `auto` parameter to `choose_clusters`. When `auto == TRUE`, the function chooses the optimal number of clusters `k` automatically,s as the value which maximizes the average silhouette width. It then returns a data frame with the cluster assignments and the representative/member statuses of each pathway.
 
 - Added the `Fold_Enrichment` column to the resulting data frame of `enrichment`, and as a corollary to the resulting data frame of `run_pathfindR`.
 

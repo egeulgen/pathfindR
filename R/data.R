@@ -13,7 +13,8 @@
 #'   \item{adj.P.Val}{adjusted p values, via the Benjamini & Hochberg (1995) method}
 #' }
 #' @source \url{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE15573}
-#' @seealso \code{\link{RA_output}} for example output.
+#' @seealso \code{\link{RA_output}} for example output of the enrichment workflow.
+#' \code{\link{RA_clustered}} for example output of the clustering workflow.
 "RA_input"
 
 #' Example Output for the pathfindR Enrichment Workflow - Rheumatoid Arthritis
@@ -23,7 +24,7 @@
 #' differential-expression dataset \code{RA_input}. Active subnetwork search
 #' was performed with Greedy Algorithm using the Biogrid PIN.
 #'
-#' @format A data frame with 36 rows and 8 columns:
+#' @format A data frame with 42 rows and 8 columns:
 #' \describe{
 #'   \item{ID}{KEGG ID of the enriched pathway}
 #'   \item{Pathway}{Description of the enriched pathway}
@@ -34,8 +35,33 @@
 #'   \item{Up_regulated}{the up-regulated genes in the input involved in the given pathway, comma-separated}
 #'   \item{Down_regulated}{the down-regulated genes in the input involved in the given pathway, comma-separated}
 #' }
-#' @seealso \code{\link{RA_input}} for example input.
+#' @seealso \code{\link{RA_input}} for example input of the enrichment workflow.
+#' \code{\link{RA_clustered}} for example output of the clustering workflow.
 "RA_output"
+
+#' Example Output for the pathfindR Clustering Workflow - Rheumatoid Arthritis
+#'
+#' A dataset containing the results of pathfindR's pathway clustering and
+#' partitioning  workflow performed on the rheumatoid arthritis
+#' enrichment results \code{RA_output}. The number of clusters were detected
+#' automatically and the agglomeration method was "average".
+#'
+#' @format A data frame with 42 rows and 8 columns:
+#' \describe{
+#'   \item{ID}{KEGG ID of the enriched pathway}
+#'   \item{Pathway}{Description of the enriched pathway}
+#'   \item{Fold_Enrichment}{Fold enrichment value for the enriched pathway}
+#'   \item{occurrence}{the number of iterations that the given pathway was found to enriched over all iterations}
+#'   \item{lowest_p}{the lowest adjusted-p value of the given pathway over all iterations}
+#'   \item{highest_p}{the highest adjusted-p value of the given pathway over all iterations}
+#'   \item{Up_regulated}{the up-regulated genes in the input involved in the given pathway, comma-separated}
+#'   \item{Down_regulated}{the down-regulated genes in the input involved in the given pathway, comma-separated}
+#'   \item{Cluster}{the cluster to which the pathway is assigned}
+#'   \item{Status}{whether the pathway is the "Representative" pathway in its cluster or only a "Member"}
+#' }
+#' @seealso \code{\link{RA_input}} for example input of the enrichment workflow.
+#' \code{\link{RA_output}} for example output of the enrichment workflow.
+"RA_clustered"
 
 #' KEGG Gene Sets
 #'

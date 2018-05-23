@@ -93,7 +93,8 @@
 #'  \code{\link{pathmap}} for annotation of involved genes and visualization of
 #'  pathways. See \code{\link[foreach]{foreach}} for details on parallel
 #'  execution of looping constructs. See \code{\link{choose_clusters}} for
-#'  clustering the resulting enriched pathways.
+#'  clustering the resulting enriched pathways and partitioning into
+#'  clusters.
 #'
 #' @examples
 #' \dontrun{
@@ -345,68 +346,19 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   return(final_res)
 }
 
-#' Cluster Pathways and Manually Cut the Dendrogram
-#'
-#' See "Chen, Y. A. et al. Integrated pathway clusters with coherent biological
-#' themes for target prioritisation. PLoS One 9, e99030,
-#' doi:10.1371/journal.pone.0099030 (2014)." for details on the method of
-#' pathway clustering.
-#'
-#' @param result_df resulting data frame of enriched pathways from the wrapper
-#'   function \code{run_pathfindR}. Columns are: \enumerate{
-#'   \item{ID}{KEGG ID of the enriched pathway}
-#'   \item{Pathway}{Description of the enriched pathway}
-#'   \item{Fold_Enrichment}{Fold enrichment value for the enriched pathway}
-#'   \item{occurrence}{the number of iterations that the given pathway was found to enriched over all iterations}
-#'   \item{lowest_p}{the lowest adjusted-p value of the given pathway over all iterations}
-#'   \item{highest_p}{the highest adjusted-p value of the given pathway over all iterations}
-#'   \item{Up_regulated}{the up-regulated genes in the input involved in the given pathway, comma-separated}
-#'   \item{Down_regulated}{the down-regulated genes in the input involved in the given pathway, comma-separated}
-#' }
-#' @param ... optional arguments for \code{calculate_pwd}
-#'
-#' @return This function first calculates the pairwise distances between the
-#'   pathways in the \code{result_df} data frame. Via a shiny HTML document, the
-#'   hierarchical clustering dendrogram is visualized. In this HTML document,
-#'   the user can select the agglomeration method and the distance value at
-#'   which to cut the tree. The resulting cluster assignments of the pathways
-#'   along with annotation of representative pathways (chosen by smallest lowest
-#'   p value) are presented as a table and this table can be saved as a csv
-#'   file.
-#'
-#' @export
-#' @import knitr
-#' @import shiny
-#' @import rmarkdown
-#'
-#' @seealso Use \code{\link{auto_choose_clusters}} for automatic selection of clusters.
-#'   See \code{\link{calculate_pwd}} for calculation of pairwise
-#'   distances between enriched pathways. See \code{\link{run_pathfindR}}
-#'   for the wrapper function of the pathfindR enrichment workflow.
-#'
-#' @examples
-#' \dontrun{
-#' choose_clusters(RA_output)
-#' }
-choose_clusters <- function(result_df, ...) {
-  cat("Calculating pairwise distances between pathways\n\n")
-  PWD_mat <- pathfindR::calculate_pwd(result_df$ID, ...)
 
-  cat("Creating the shiny app\n\n")
-  parameters <- list(df = result_df, mat = PWD_mat)
-  rmarkdown::run(system.file("rmd/clustering.Rmd", package = "pathfindR"),
-                 render_args = list(output_dir = ".", params = parameters))
-}
-
-#' Cluster Pathways and Automatically Cut the Dendrogram
+#' Cluster Pathways and Partition the Dendrogram
 #'
 #' This function first calculates the pairwise distances between the
-#' pathways in the \code{result_df} data frame. Next, the average silhouette
-#' width for each possible number of clusters are calculated. The optimal number
-#' of clusters is selected as the one with the highest average silhouette width.
-#' The dendrogram is cut into this number of clusters, and the pathways with the
-#' lowest p value within each cluster are chosen as representative pathways. See
-#' "Chen, Y. A. et al. Integrated pathway clusters with coherent biological
+#' pathways in the \code{result_df} data frame. Next, using this distance
+#' matrix, the pathways are clustered via hierarchical clustering. By default,
+#' the average silhouette width for each possible number of clusters is
+#' calculated. The optimal number of clusters is selected as the one with the
+#' highest average silhouette width. The dendrogram is cut into this optimal
+#' number of clusters, and the pathways with the lowest p value within each
+#' cluster are chosen as representative pathways. If 'auto == FALSE", the user
+#' can manually select at which height to cut the dendrogram via a shiny application.
+#' See "Chen, Y. A. et al. Integrated pathway clusters with coherent biological
 #' themes for target prioritisation. PLoS One 9, e99030,
 #' doi:10.1371/journal.pone.0099030 (2014)." for details on the method of
 #' pathway clustering.
@@ -421,6 +373,9 @@ choose_clusters <- function(result_df, ...) {
 #'   \item{highest_p}{the highest adjusted-p value of the given pathway over all iterations}
 #'   \item{Up_regulated}{the up-regulated genes in the input involved in the given pathway, comma-separated}
 #'   \item{Down_regulated}{the down-regulated genes in the input involved in the given pathway, comma-separated}}
+#' @param auto boolean value indicating whether to select the optimal number of clusters
+#' automatically. If FALSE, a shiny application is displayed, where the user can manually
+#' partition the clustering dendrogram (default: TRUE).
 #' @param agg_method the agglomeration method to be used if plotting heatmap
 #'   (see next argument, default: average).
 #' @param plot_heatmap boolean value indicating whether or not to plot the heat
@@ -428,7 +383,15 @@ choose_clusters <- function(result_df, ...) {
 #' @param plot_dend boolean value indicating whether or not to plot the dendrogram
 #'   partitioned into the optimal number of clusters, shown by rectangles (default: FALSE)
 #'
-#' @return  The function returns a data frame consisting of 10 columns: \describe{
+#' @return  If 'auto' is FALSE, manual partitioning can be performed. Via a shiny HTML document, the
+#'   hierarchical clustering dendrogram is visualized. In this HTML document,
+#'   the user can select the agglomeration method and the distance value at
+#'   which to cut the tree. The resulting cluster assignments of the pathways
+#'   along with annotation of representative pathways (chosen by smallest lowest
+#'   p value) are presented as a table and this table can be saved as a csv
+#'   file.
+#'   If 'auto' is TRUE, automatic partitioning of clusters is perfomed.The function
+#'  returns a data frame consisting of 10 columns: \describe{
 #'   \item{ID}{KEGG ID of the enriched pathway}
 #'   \item{Pathway}{Description of the enriched pathway}
 #'   \item{Fold_Enrichment}{Fold enrichment value for the enriched pathway}
@@ -442,55 +405,63 @@ choose_clusters <- function(result_df, ...) {
 #' }
 #'
 #' @import fpc
+#' @import knitr
+#' @import shiny
+#' @import rmarkdown
 #' @export
-#' @seealso Use \code{\link{choose_clusters}} for manual selection of clusters.
-#'   See \code{\link{calculate_pwd}} for calculation of pairwise
+#' @seealso See \code{\link{calculate_pwd}} for calculation of pairwise
 #'   distances between enriched pathways. See \code{\link{run_pathfindR}}
 #'   for the wrapper function of the pathfindR enrichment workflow.
 #'
 #' @examples
-#' auto_choose_clusters(RA_output)
-auto_choose_clusters <- function(result_df, agg_method = "average", plot_heatmap = FALSE, plot_dend = FALSE) {
-  ### Calculate PWDs and Cluster
+#' choose_clusters(RA_output)
+choose_clusters <- function(result_df, auto = TRUE, agg_method = "average",
+                            plot_heatmap = FALSE, plot_dend = FALSE) {
   cat("Calculating pairwise distances between pathways\n\n")
   PWD_mat <- pathfindR::calculate_pwd(result_df$ID,
                                       agg_method = agg_method,
                                       plot_heatmap = plot_heatmap)
+  if (!auto) {
+    cat("Creating the shiny app\n\n")
+    parameters <- list(df = result_df, mat = PWD_mat)
+    rmarkdown::run(system.file("rmd/clustering.Rmd", package = "pathfindR"),
+                   render_args = list(output_dir = ".", params = parameters))
+  } else {### Calculate PWDs and Cluster
+    cat("Clustering pathways\n\n")
+    hclu <- stats::hclust(as.dist(PWD_mat), method = agg_method)
 
-  cat("Clustering pathways\n\n")
-  hclu <- stats::hclust(as.dist(PWD_mat), method = agg_method)
+    ### Optimal k
+    cat("Calculating the optimal number of clusters (based on average silhouette width)\n\n")
+    kmax <- nrow(PWD_mat) - 1
+    avg_sils <- c()
+    for (i in 2:kmax)
+      avg_sils <- c(avg_sils, fpc::cluster.stats(stats::as.dist(PWD_mat),
+                                                 stats::cutree(hclu, k = i),
+                                                 silhouette = TRUE)$avg.silwidth)
 
-  ### Optimal k
-  cat("Calculating the optimal number of clusters (based on average silhouette width)\n\n")
-  kmax <- nrow(PWD_mat) - 1
-  avg_sils <- c()
-  for (i in 2:kmax)
-    avg_sils <- c(avg_sils, fpc::cluster.stats(stats::as.dist(PWD_mat),
-                                               stats::cutree(hclu, k = i),
-                                               silhouette = TRUE)$avg.silwidth)
+    k <- (2:kmax)[which.max(avg_sils)]
+    if (plot_dend) {
+      graphics::plot(hclu, hang = -1)
+      stats::rect.hclust(hclu, k = k)
+    }
+    cat(paste("The maximum average silhouette width was", round(max(avg_sils), 2),
+              "for k =", k, "\n\n"))
 
-  k <- (2:kmax)[which.max(avg_sils)]
-  if (plot_dend) {
-    graphics::plot(hclu, hang = -1)
-    stats::rect.hclust(hclu, k = k)
-  }
-  cat(paste("The maximum average silhouette width was", round(max(avg_sils), 2),
-            "for k =", k, "\n\n"))
+    ### Return Optimal Clusters
+    clusters <- cutree(hclu, k = k)
 
-  ### Return Optimal Clusters
-  clusters <- cutree(hclu, k = k)
+    result_df$Cluster <- clusters[match(result_df$ID, names(clusters))]
+    tmp <- result_df$lowest_p
+    names(tmp) <- result_df$ID
+    tmp <- tapply(tmp, result_df$Cluster, function(x) names(x)[which.min(x)])
+    result_df$Status <- ifelse(result_df$ID %in% tmp, "Representative", "Member")
 
-  result_df$Cluster <- clusters[match(result_df$ID, names(clusters))]
-  tmp <- result_df$lowest_p
-  names(tmp) <- result_df$ID
-  tmp <- tapply(tmp, result_df$Cluster, function(x) names(x)[which.min(x)])
-  result_df$Status <- ifelse(result_df$ID %in% tmp, "Representative", "Member")
+    result_df <- result_df[order(result_df$Status, decreasing = TRUE), ]
+    result_df <- result_df[order(result_df$Cluster), ]
 
-  result_df <- result_df[order(result_df$Status, decreasing = TRUE), ]
-  result_df <- result_df[order(result_df$Cluster), ]
-
-  cat("Returning the resulting data frame\n\n")
-  return(result_df)
+    cat("Returning the resulting data frame\n\n")
+    return(result_df)
+    }
 }
 
 #' Return The Path to Given Protein-Protein Interaction Network (PIN)

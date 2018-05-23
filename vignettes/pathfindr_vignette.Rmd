@@ -119,19 +119,27 @@ The document contains a second table of genes for which no interactions were ide
 
 <img src="./pw_clustering.png" width="650" height="163.34" />
 
-For this workflow, the wrapper function `choose_clusters()` is used. This function first calculates the pairwise distances between the pathways in the input data frame, automatically determining the gene sets used for analysis. This step uses the distance metric described by Chen et al. [1]. Via a shiny app, presented as an HTML document, the hierarchical clustering dendrogram is visualized. In this HTML document, the user can select the agglomeration method and the distance value at which to cut the tree. The dendrogram with the cut-off value marked with a red line is dynamically visualized and the resulting cluster assignments of the pathways along with annotation of representative pathways (chosen by smallest lowest p value) are presented as a table. This table can be saved as a csv file by pressing the button `Get Pathways w\ Cluster Info`.
+For this workflow, the wrapper function `choose_clusters()` is used. This function first calculates the pairwise distances between the pathways in the input data frame, automatically determining the gene sets used for analysis. This step uses the distance metric described by Chen et al. [1]. AUTO DESCRIPTION
 
-```{r eval=FALSE}
-# example run
-choose_clusters(RA_output)
+```{r, fig.height=4, fig.width=8}
+data("RA_output")
+RA_clustered <- choose_clusters(RA_output)
+## First 2 rows of clustered pathways data frame
+knitr::kable(head(RA_clustered, 2))
+## The 16 representative pathways
+knitr::kable(RA_clustered[RA_clustered$Status == "Representative", ])
 
 # to display the heatmap of pathway clustering
-choose_clusters(RA_output, plot_heatmap = TRUE)
+RA_clustered <- choose_clusters(RA_output, plot_heatmap = TRUE)
 
-# to display the heatmap of pathway clustering 
-# and change agglomeration method (default = "average")
-choose_clusters(RA_output, agg_method = "complete", plot_heatmap = TRUE)
+# to display the dendrogram and clusters
+RA_clustered <- choose_clusters(RA_output, plot_dend = TRUE)
+
+# to change agglomeration method (default = "average")
+RA_clustered <- choose_clusters(RA_output, agg_method = "centroid", plot_dend = TRUE)
 ```
+
+Alternatively, manual selection of the height at which to cut the dendrogram can be performed. For this, the user should set the `auto` parameter to `FALSE`. Via a shiny app, presented as an HTML document, the hierarchical clustering dendrogram is visualized. In this HTML document, the user can select the agglomeration method and the distance value at which to cut the tree. The dendrogram with the cut-off value marked with a red line is dynamically visualized and the resulting cluster assignments of the pathways along with annotation of representative pathways (chosen by smallest lowest p value) are presented as a table. This table can be saved as a csv file by pressing the button `Get Pathways w\ Cluster Info`.
 
 [1] *Chen YA, Tripathi LP, Dessailly BH, Nyström-persson J, Ahmad S, Mizuguchi K. Integrated pathway clusters with coherent biological themes for target prioritisation. PLoS ONE. 2014;9(6):e99030. \doi 10.1371/journal.pone.0099030 *
 
