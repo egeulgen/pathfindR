@@ -10,6 +10,8 @@
 ## Minor changes and bug fixes
 - `run_pathfindR` now checks whether the output directory already exists and if it exists, stops and displays an error message. This was implemented to prevent writing over existing results.
 
+- `genes_table.html` now contains a second table displaying the input gene symbols for which there were no interactions in the PIN.
+
 # pathfindR 1.1
 
 ## Major changes

@@ -113,27 +113,25 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
                           score_thr = 3, sig_gene_thr = 2,
                           gene_sets = "KEGG",
                           bubble = TRUE) {
+
+  if (!search_method %in% c("GR", "SA", "GA"))
+    stop("search_method must be one of \"GR\", \"SA\", \"GA\"")
+
+  if (!gene_sets %in% c("KEGG", "Reactome", "BioCarta",
+                        "GO-BP", "GO-CC", "GO-MF"))
+    stop("gene_sets must be one of KEGG, Reactome, BioCarta, GO-BP, GO-CC or GO-MF")
+
+  if (!is.logical(use_all_positives))
+    stop("the argument use_all_positives must be logical")
+
+  if (!is.logical(bubble))
+    stop("the argument bubble must be logical")
+
   if (dir.exists("pathfindR_Results"))
     stop("There already is a directoy named \"pathfindR_Results\".\nRename it not to overwrite the previous results.")
 
   dir.create("pathfindR_Results")
   setwd("pathfindR_Results")
-
-  if (!search_method %in% c("GR", "SA", "GA")) {
-    setwd("..")
-    stop("search_method must be one of \"GR\", \"SA\", \"GA\"")
-  }
-
-  if (!gene_sets %in% c("KEGG", "Reactome", "BioCarta",
-                        "GO-BP", "GO-CC", "GO-MF")) {
-    setwd("..")
-    stop("gene_sets must be one of KEGG, Reactome, BioCarta, GO-BP, GO-CC or GO-MF")
-  }
-
-  if (!is.logical(use_all_positives)) {
-    setwd("..")
-    stop("use_all_positives must be logical")
-  }
 
   if (search_method == "GA")
     iterations <- n_processes <- 1
@@ -323,7 +321,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   setwd("..")
 
   ## Bubble Chart
-  if (bubble == TRUE)
+  if (bubble)
     enrichment_chart(final_res)
 
   return(final_res)
