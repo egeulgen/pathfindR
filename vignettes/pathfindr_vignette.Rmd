@@ -48,25 +48,25 @@ RA_output <- run_pathfindR(RA_input)
 The user may want to change certain arguments of the function:
 ```{r eval=FALSE}
 # to change the PIN (default = Biogrid)
-result <- run_pathfindR(RA_input, pin_name = "IntAct")
+RA_output <- run_pathfindR(RA_input, pin_name = "IntAct")
 # to use an external PIN of user's choice
-result <- run_pathfindR(RA_input, pin_name = "/path/to/myPIN.sif")
+RA_output <- run_pathfindR(RA_input, pin_name = "/path/to/myPIN.sif")
 
 # available gene sets are KEGG, Reactome, BioCarta, GO-BP, GO-CC and GO-MF
 # default is KEGG
 # to change the gene sets used for enrichment analysis
-result <- run_pathfindR(RA_input, gene_sets = "BioCarta")
+RA_output <- run_pathfindR(RA_input, gene_sets = "BioCarta")
 
 # to change the active subnetwork search algorithm (default = "GR", i.e. greedy algorithm)
 # for simulated annealing:
-result <- run_pathfindR(RA_input, search_method = "SA")
+RA_output <- run_pathfindR(RA_input, search_method = "SA")
 
 # to change the number of iterations (default = 10)
-result <- run_pathfindR(RA_input, iterations = 5) 
+RA_output <- run_pathfindR(RA_input, iterations = 5) 
 
 # to manually specify the number processes used during parallel loop by foreach
 # defaults to the number of detected cores 
-result <- run_pathfindR(RA_input, n_processes = 2) 
+RA_output <- run_pathfindR(RA_input, n_processes = 2) 
 ```
 For a full list of arguments, see `?run_pathfindR`.
 
@@ -119,7 +119,7 @@ The document contains a second table of genes for which no interactions were ide
 
 <img src="./pw_clustering.png" width="650" height="163.34" />
 
-For this workflow, the wrapper function `choose_clusters()` is used. This function first calculates the pairwise distances between the pathways in the input data frame, automatically determining the gene sets used for analysis. This step uses the distance metric described by Chen et al. [1]. AUTO DESCRIPTION
+For this workflow, the wrapper function `choose_clusters()` is used. This function first calculates the pairwise distances between the pathways in the input data frame, automatically determining the gene sets used for analysis. This step uses the distance metric described by Chen et al. [1]. By default, the function automatically determines the optimal number of clusters, by maximizing the average silhouette width and returns a data frame with cluster assignments:
 
 ```{r, fig.height=4, fig.width=8}
 data("RA_output")
@@ -139,7 +139,11 @@ RA_clustered <- choose_clusters(RA_output, plot_dend = TRUE)
 RA_clustered <- choose_clusters(RA_output, agg_method = "centroid", plot_dend = TRUE)
 ```
 
-Alternatively, manual selection of the height at which to cut the dendrogram can be performed. For this, the user should set the `auto` parameter to `FALSE`. Via a shiny app, presented as an HTML document, the hierarchical clustering dendrogram is visualized. In this HTML document, the user can select the agglomeration method and the distance value at which to cut the tree. The dendrogram with the cut-off value marked with a red line is dynamically visualized and the resulting cluster assignments of the pathways along with annotation of representative pathways (chosen by smallest lowest p value) are presented as a table. This table can be saved as a csv file by pressing the button `Get Pathways w\ Cluster Info`.
+Alternatively, manual selection of the height at which to cut the dendrogram can be performed. For this, the user should set the `auto` parameter to `FALSE`. Via a shiny app, presented as an HTML document, the hierarchical clustering dendrogram is visualized. In this HTML document, the user can select the agglomeration method and the distance value at which to cut the tree. The dendrogram with the cut-off value marked with a red line is dynamically visualized and the resulting cluster assignments of the pathways along with annotation of representative pathways (chosen by smallest lowest p value) are presented as a table. This table can be saved as a csv file by pressing the button `Get Pathways w\ Cluster Info`. Example usage:
+
+```{r eval=FALSE}
+choose_clusters(RA_output, auto = FALSE)
+```
 
 [1] *Chen YA, Tripathi LP, Dessailly BH, Nyström-persson J, Ahmad S, Mizuguchi K. Integrated pathway clusters with coherent biological themes for target prioritisation. PLoS ONE. 2014;9(6):e99030. \doi 10.1371/journal.pone.0099030 *
 

@@ -32,23 +32,23 @@ This workflow takes in a data frame consisting of Gene Symbol, log-fold-change a
 This workflow can be run using the function `run_pathfindR`:
 
 ```r
-result <- run_pathfindR(RA_input)
+RA_output <- run_pathfindR(RA_input)
 
 # to change the PIN (default = Biogrid)
-result <- run_pathfindR(RA_input, pin_name = "IntAct")
+RA_output <- run_pathfindR(RA_input, pin_name = "IntAct")
 # to use an external PIN of user's choice
-result <- run_pathfindR(RA_input, pin_name = "/path/to/myPIN.sif")
+RA_output <- run_pathfindR(RA_input, pin_name = "/path/to/myPIN.sif")
 
 # to change the active subnetwork search algorithm (default = "GR", i.e. greedy algorithm)
 # for simulated annealing:
-result <- run_pathfindR(RA_input, search_method = "SA")
+RA_output <- run_pathfindR(RA_input, search_method = "SA")
 
 # to change the number of iterations (default = 10)
-result <- run_pathfindR(RA_input, iterations = 5) 
+RA_output <- run_pathfindR(RA_input, iterations = 5) 
 
 # to manually specify the number processes used during parallel loop by foreach
 # defaults to the number of detected cores 
-result <- run_pathfindR(RA_input, n_processes = 2) 
+RA_output <- run_pathfindR(RA_input, n_processes = 2) 
 ```
 
 See the [wiki page](https://github.com/egeulgen/pathfindR/wiki/Enrichment%20Documentation) for more details.
@@ -56,9 +56,32 @@ See the [wiki page](https://github.com/egeulgen/pathfindR/wiki/Enrichment%20Docu
 ## Overview of the Clustering Workflow
 
 ![Pathway Clustering Workflow](./vignettes/pw_clustering.png?raw=true "Pathway Clustering Workflow")
-This workflow first calculates the pairwise distances between the pathways in the resulting data frame. Via a shiny app, presented as an HTML document, the hierarchical clustering dendrogram is visualized. In this HTML document, the user can select the agglomeration method and the distance value at which to cut the tree. The dendrogram with the cut-off value marked with a red line is dynamically visualized and the resulting cluster assignments of the pathways along with annotation of representative pathways (chosen by smallest lowest p value) are presented as a table. This table can be saved as a csv file via pressing the button `Get Pathways w\ Cluster Info`.
-
 The wrapper function for this workflow is `choose_clusters()`.
+
+This workflow first calculates the pairwise distances between the pathways in the resulting data frame. By default, the function automatically determines the optimal number of clusters, by maximizing the average silhouette width and returns a data frame with cluster assignments.
+
+```r
+RA_clustered <- choose_clusters(RA_output)
+## First 2 rows of clustered pathways data frame
+knitr::kable(head(RA_clustered, 2))
+## The 16 representative pathways
+knitr::kable(RA_clustered[RA_clustered$Status == "Representative", ])
+
+# to display the heatmap of pathway clustering
+RA_clustered <- choose_clusters(RA_output, plot_heatmap = TRUE)
+
+# to display the dendrogram and clusters
+RA_clustered <- choose_clusters(RA_output, plot_dend = TRUE)
+
+# to change agglomeration method (default = "average")
+RA_clustered <- choose_clusters(RA_output, agg_method = "centroid", plot_dend = TRUE)
+```
+
+Alternatively, manual selection of the height at which to cut the dendrogram can be performed. For this, the user should set the `auto` parameter to `FALSE`. Via a shiny app, presented as an HTML document, the hierarchical clustering dendrogram is visualized. In this HTML document, the user can select the agglomeration method and the distance value at which to cut the tree. The dendrogram with the cut-off value marked with a red line is dynamically visualized and the resulting cluster assignments of the pathways along with annotation of representative pathways (chosen by smallest lowest p value) are presented as a table. This table can be saved as a csv file via pressing the button `Get Pathways w\ Cluster Info`. Example usage:
+
+```r
+choose_clusters(RA_output, auto = FALSE)
+```
 
 See the [wiki page](https://github.com/egeulgen/pathfindR/wiki/Clustering%20Documentation) for more details.
 
