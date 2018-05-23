@@ -358,6 +358,13 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
 #' @examples
 #' g <- enrichment_chart(RA_output)
 enrichment_chart <- function(result_df, plot_by_cluster = FALSE) {
+  necessary <- c("Pathway", "Fold_Enrichment", "lowest_p", "Up_regulated", "Down_regulated")
+  if (!all(necessary %in% colnames(result_df)))
+    stop("The input data frame must have the columns: Pathway, Fold_Enrichment, lowest_p, Up_regulated, Down_regulated")
+
+  if (!is.logical(plot_by_cluster))
+    stop("plot_by_cluster must be either TRUE or FALSE")
+
   # sort by lowest adj.p
   result_df <- result_df[order(result_df$lowest_p), ]
 
