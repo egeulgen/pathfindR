@@ -362,7 +362,7 @@ enrichment_chart <- function(result_df) {
 
   result_df$Pathway <- factor(result_df$Pathway, levels = rev(result_df$Pathway))
 
-  g <- ggplot2::ggplot(result_df, ggplot2::aes(x = Fold_Enrichment, y = Pathway))
+  g <- ggplot2::ggplot(result_df, ggplot2::aes_(x = ~Fold_Enrichment, y = ~Pathway))
   g <- g + ggplot2::geom_point(ggplot2::aes(color = -log10(result_df$lowest_p),
                                             size = n), na.rm = TRUE)
   g <- g + ggplot2::theme_bw()
@@ -436,6 +436,7 @@ enrichment_chart <- function(result_df) {
 #' @import knitr
 #' @import shiny
 #' @import rmarkdown
+#' @import stats
 #' @export
 #' @seealso See \code{\link{calculate_pwd}} for calculation of pairwise
 #'   distances between enriched pathways. See \code{\link{run_pathfindR}}
