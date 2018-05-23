@@ -113,7 +113,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
                           score_thr = 3, sig_gene_thr = 2,
                           gene_sets = "KEGG",
                           bubble = TRUE) {
-
+  ## Argument checks
   if (!search_method %in% c("GR", "SA", "GA"))
     stop("search_method must be one of \"GR\", \"SA\", \"GA\"")
 
@@ -127,12 +127,14 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   if (!is.logical(bubble))
     stop("the argument bubble must be logical")
 
+  ## create output dir
   if (dir.exists("pathfindR_Results"))
     stop("There already is a directoy named \"pathfindR_Results\".\nRename it not to overwrite the previous results.")
 
   dir.create("pathfindR_Results")
   setwd("pathfindR_Results")
 
+  ## If search_method is GA, set iterations as 1
   if (search_method == "GA")
     iterations <- n_processes <- 1
 

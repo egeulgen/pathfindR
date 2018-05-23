@@ -61,11 +61,8 @@ The wrapper function for this workflow is `choose_clusters()`.
 This workflow first calculates the pairwise distances between the pathways in the resulting data frame. By default, the function automatically determines the optimal number of clusters, by maximizing the average silhouette width and returns a data frame with cluster assignments.
 
 ```r
+# default settings
 RA_clustered <- choose_clusters(RA_output)
-## First 2 rows of clustered pathways data frame
-knitr::kable(head(RA_clustered, 2))
-## The 16 representative pathways
-knitr::kable(RA_clustered[RA_clustered$Status == "Representative", ])
 
 # to display the heatmap of pathway clustering
 RA_clustered <- choose_clusters(RA_output, plot_heatmap = TRUE)
