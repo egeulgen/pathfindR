@@ -1,13 +1,14 @@
-# pathdindR 1.2
+# pathfindR 1.2
 
 ## Major Changes
-- Added the `auto` parameter to `choose_clusters`. When `auto == TRUE`, the function chooses the optimal number of clusters `k` automatically,s as the value which maximizes the average silhouette width. It then returns a data frame with the cluster assignments and the representative/member statuses of each pathway.
+- Added the `auto` parameter to `choose_clusters`. When `auto == TRUE`, the function chooses the optimal number of clusters `k` automatically, as the value which maximizes the average silhouette width. It then returns a data frame with the cluster assignments and the representative/member statuses of each pathway.
 
 - Added the `Fold_Enrichment` column to the resulting data frame of `enrichment`, and as a corollary to the resulting data frame of `run_pathfindR`.
 
-- Added the option to plot a bubble chart displaying the enrichment results in `run_pathfindR`. The x-axis corresponds to fold enrichment values while the y-axis indicates the enriched pathways. Size of the bubble indicates the number of DEGs in the given pathway. Color indicates the -log10(lowest-p) value.
+- Added the option `bubble` to plot a bubble chart displaying the enrichment results in `run_pathfindR` using the helper function `enrichment_chart`. To plot the bubble chart set `bubble = TRUE` in `run_pathfindR` or use `enrichment_chart(your_result)`. 
 
 ## Minor changes and bug fixes
+- `run_pathfindR` now checks whether the output directory already exists and if it exists, stops and displays an error message. This was implemented to prevent writing over existing results.
 
 # pathfindR 1.1
 

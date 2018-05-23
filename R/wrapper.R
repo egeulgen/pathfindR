@@ -52,7 +52,6 @@
 #'  are KEGG, Reactome, BioCarta, GO-BP, GO-CC and GO-MF (Default = "KEGG")
 #'@param bubble boolean value. If TRUE, a bubble chart displaying the enrichment results is plotted. (default = TRUE)
 #'
-#'@import knitr
 #'
 #'@return Data frame of pathview enrichment results. Columns are: \describe{
 #'   \item{ID}{KEGG ID of the enriched pathway}
@@ -75,7 +74,7 @@
 #'  Color indicates the -log10(lowest-p) value; the more red it gets, the more significant
 #'  the pathway is.
 #'
-#'@import ggplot2
+#'@import knitr
 #'@import rmarkdown
 #'@import parallel
 #'@import doParallel
@@ -324,28 +323,57 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   setwd("..")
 
   ## Bubble Chart
-  if (bubble == TRUE) {
-    n <- sapply(final_res$Up_regulated, function(x) length(unlist(strsplit(x, ", "))))
-    n <- n + sapply(final_res$Down_regulated, function(x) length(unlist(strsplit(x, ", "))))
-
-    final_res$Pathway <- factor(final_res$Pathway, levels = rev(final_res$Pathway))
-
-    g <- ggplot2::ggplot(final_res, ggplot2::aes(x = Fold_Enrichment, y = Pathway))
-    g <- g + ggplot2::geom_point(ggplot2::aes(color = -log10(final_res$lowest_p),
-                                              size = n), na.rm = TRUE)
-    g <- g + ggplot2::theme_bw()
-    g <- g + ggplot2::theme(axis.text.x = ggplot2::element_text(size = 10),
-                            axis.text.y = ggplot2::element_text(size = 10),
-                            plot.title = ggplot2::element_blank())
-    g <- g + ggplot2::xlab("Fold Enrichment") + ggplot2::ylab('')
-    g <- g + ggplot2::labs(size = "# of DEGs", color = "-log10(lowest-p)")
-    g <- g + ggplot2::scale_color_continuous(low = "#f5efef", high = "red")
-    g
-  }
+  if (bubble == TRUE)
+    enrichment_chart(final_res)
 
   return(final_res)
 }
 
+#' Plot the Bubble Chart of Enrichment Results
+#'
+#' This function is used to plot a bubble chart displaying the enrichment
+#' results.
+#'
+#' @param result_df a data frame consisting of at least 5 columns:\describe{
+#'   \item{Pathway}{Description of the enriched pathway}
+#'   \item{Fold_Enrichment}{Fold enrichment value for the enriched pathway}
+#'   \item{lowest_p}{the lowest adjusted-p value of the given pathway over all iterations}
+#'   \item{Up_regulated}{the up-regulated genes in the input involved in the given pathway, comma-separated}
+#'   \item{Down_regulated}{the down-regulated genes in the input involved in the given pathway, comma-separated}
+#' }
+#'
+#' @return a `ggplot2` object containing the bubble chart. The x-axis corresponds to
+#' fold enrichment values while the y-axis indicates the enriched pathways. Size of
+#' the bubble indicates the number of DEGs in the given pathway. Color indicates
+#' the -log10(lowest-p) value. The closer the color is to red, the more significant
+#' the enrichment is.
+#'
+#' @import ggplot2
+#' @export
+#'
+#' @examples
+#' g <- enrichment_chart(RA_output)
+enrichment_chart <- function(result_df) {
+  # sort by lowest adj.p
+  result_df <- result_df[order(result_df$lowest_p), ]
+
+  n <- sapply(result_df$Up_regulated, function(x) length(unlist(strsplit(x, ", "))))
+  n <- n + sapply(result_df$Down_regulated, function(x) length(unlist(strsplit(x, ", "))))
+
+  result_df$Pathway <- factor(result_df$Pathway, levels = rev(result_df$Pathway))
+
+  g <- ggplot2::ggplot(result_df, ggplot2::aes(x = Fold_Enrichment, y = Pathway))
+  g <- g + ggplot2::geom_point(ggplot2::aes(color = -log10(result_df$lowest_p),
+                                            size = n), na.rm = TRUE)
+  g <- g + ggplot2::theme_bw()
+  g <- g + ggplot2::theme(axis.text.x = ggplot2::element_text(size = 10),
+                          axis.text.y = ggplot2::element_text(size = 10),
+                          plot.title = ggplot2::element_blank())
+  g <- g + ggplot2::xlab("Fold Enrichment") + ggplot2::ylab('')
+  g <- g + ggplot2::labs(size = "# of DEGs", color = "-log10(lowest-p)")
+  g <- g + ggplot2::scale_color_continuous(low = "#f5efef", high = "red")
+  return(g)
+}
 
 #' Cluster Pathways and Partition the Dendrogram
 #'

@@ -3,6 +3,7 @@
 export(calculate_pwd)
 export(choose_clusters)
 export(enrichment)
+export(enrichment_chart)
 export(input_processing)
 export(input_testing)
 export(parseActiveSnwSearch)
