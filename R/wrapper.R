@@ -81,6 +81,8 @@
 #'@import parallel
 #'@import doParallel
 #'@import foreach
+#'@import graphics
+#'
 #'@export
 #'
 #'@section Warning: Depending on the protein interaction network of your choice,
@@ -330,7 +332,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   ## Bubble Chart
   if (bubble) {
     cat("Plotting the enrichment bubble chart\n\n")
-    plot(enrichment_chart(final_res))
+    graphics::plot(enrichment_chart(final_res))
   }
 
   cat("Pathway enrichment results and converted genes ")
