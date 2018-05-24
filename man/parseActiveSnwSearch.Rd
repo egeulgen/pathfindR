@@ -4,11 +4,11 @@
 \alias{parseActiveSnwSearch}
 \title{Parse Active Subnetwork Search Output File}
 \usage{
-parseActiveSnwSearch(output_path, signif_genes, score_thr = 3,
+parseActiveSnwSearch(active_snw_path, signif_genes, score_thr = 3,
   sig_gene_thr = 2)
 }
 \arguments{
-\item{output_path}{path to the output of an Active Subnetwork Search.}
+\item{active_snw_path}{path to the output of an Active Subnetwork Search.}
 
 \item{signif_genes}{the vector of significant genes.}
 

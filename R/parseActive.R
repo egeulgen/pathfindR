@@ -1,6 +1,6 @@
 #' Parse Active Subnetwork Search Output File
 #'
-#' @param output_path path to the output of an Active Subnetwork Search.
+#' @param active_snw_path path to the output of an Active Subnetwork Search.
 #' @param signif_genes the vector of significant genes.
 #' @param score_thr active subnetwork score threshold (Default = 3)
 #' @param sig_gene_thr threshold for minimum number of significant genes (Default = 2)
@@ -20,10 +20,10 @@
 #' \dontrun{
 #' parseActiveSnwSearch("path/to/output", significant_genes)
 #' }
-parseActiveSnwSearch <- function(output_path, signif_genes,
+parseActiveSnwSearch <- function(active_snw_path, signif_genes,
                                  score_thr = 3, sig_gene_thr = 2) {
 
-  output <- readLines(output_path)
+  output <- readLines(active_snw_path)
 
   if (length(output) == 0)
     return(NULL)
