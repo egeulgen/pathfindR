@@ -3,6 +3,7 @@
 .RData
 .Ruserdata
 .DS_Store
+pathfindR.Rproj
 R/.DS_Store
 data/.DS_Store
 inst/.DS_Store
