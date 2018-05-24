@@ -8,16 +8,11 @@ choose_clusters(result_df, auto = TRUE, agg_method = "average",
   plot_heatmap = FALSE, plot_dend = FALSE)
 }
 \arguments{
-\item{result_df}{resulting data frame of enriched pathways from the wrapper function
-\code{run_pathfindR}. Columns are: \enumerate{
- \item{ID}{KEGG ID of the enriched pathway}
- \item{Pathway}{Description of the enriched pathway}
- \item{Fold_Enrichment}{Fold enrichment value for the enriched pathway}
- \item{occurrence}{the number of iterations that the given pathway was found to enriched over all iterations}
- \item{lowest_p}{the lowest adjusted-p value of the given pathway over all iterations}
- \item{highest_p}{the highest adjusted-p value of the given pathway over all iterations}
- \item{Up_regulated}{the up-regulated genes in the input involved in the given pathway, comma-separated}
- \item{Down_regulated}{the down-regulated genes in the input involved in the given pathway, comma-separated}}}
+\item{result_df}{data frame of enriched pathways. Must-have columns are: \enumerate{
+\item{ID}{KEGG ID of the enriched pathway}
+\item{lowest_p}{the lowest adjusted-p value of the given pathway over all iterations}
+\item{highest_p}{the highest adjusted-p value of the given pathway over all iterations}
+}}
 
 \item{auto}{boolean value indicating whether to select the optimal number of clusters
 automatically. If FALSE, a shiny application is displayed, where the user can manually
@@ -40,16 +35,8 @@ If 'auto' is FALSE, manual partitioning can be performed. Via a shiny HTML docum
   along with annotation of representative pathways (chosen by smallest lowest
   p value) are presented as a table and this table can be saved as a csv
   file.
-  If 'auto' is TRUE, automatic partitioning of clusters is perfomed.The function
- returns a data frame consisting of 10 columns: \describe{
-  \item{ID}{KEGG ID of the enriched pathway}
-  \item{Pathway}{Description of the enriched pathway}
-  \item{Fold_Enrichment}{Fold enrichment value for the enriched pathway}
-  \item{occurrence}{the number of iterations that the given pathway was found to enriched over all iterations}
-  \item{lowest_p}{the lowest adjusted-p value of the given pathway over all iterations}
-  \item{highest_p}{the highest adjusted-p value of the given pathway over all iterations}
-  \item{Up_regulated}{the up-regulated genes in the input involved in the given pathway, comma-separated}
-  \item{Down_regulated}{the down-regulated genes in the input involved in the given pathway, comma-separated}
+  If 'auto' is TRUE, automatic partitioning of clusters is perfomed. The function
+  adds 2 additional columns to the input data frame and returns it: \describe{
   \item{Cluster}{the cluster to which the pathway is assigned}
   \item{Status}{whether the pathway is the "Representative" pathway in its cluster or only a "Member"}
 }

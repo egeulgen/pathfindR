@@ -1,15 +1,15 @@
 #' Annotate Involved Genes In Pathways and Visualize Pathways
 #'
-#' @param pw_table Data frame of enrichment results. Columns are: "ID",
-#'   "Pathway", "Fold_Enrichment", "occurrence", "lowest_p", "highest_p".
+#' @param pw_table Data frame of enrichment results. Must-have columns are: "ID" and
+#'   "Pathway".
 #' @param gene_data Single column data frame containing change values (e.g.
-#'   log(fold change) values) for significant genes.
+#'   log(fold change) values) for significant genes. Row names are gene symbols.
 #'
-#' @return Data frame of enrichment results with genes involved in each pathway
-#'   presented. Columns are: "ID", "Pathway", "occurrence", "lowest_p",
-#'   "highest_p","Involved_genes". The function also creates visualizations of
-#'   the pathways with the package \code{pathview} and saves them in the folder
-#'   "pathway_maps" under the current working directory.
+#' @return The function returns the input data frame with genes involved in each pathway.
+#'   Added columns are: "Up_regulated" and "Down_regulated", the up- and down-regulated genes,
+#'   respectively. The function also creates visualizations of the pathways with
+#'   the package \code{pathview} and saves them in the folder "pathway_maps"
+#'   under the current working directory.
 #'
 #' @export
 #' @import pathview
