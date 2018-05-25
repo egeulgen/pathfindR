@@ -22,7 +22,7 @@
 #' @examples
 #' pin_path <- return_pin_path("KEGG")
 #' enrichment(kegg_genes, c("PER1", "PER2", "CRY1", "CREB1"), kegg_pathways,
-#'            "bonferroni", 0.05, pin_path)
+#'            "bonferroni", 0.05, pin_path, c("PER1"))
 enrichment <- function(genes_by_pathway, genes_of_interest,
                        pathways_list, adj_method = "bonferroni",
                        enrichment_threshold, pin_path, DEG_vec) {

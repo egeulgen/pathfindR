@@ -37,7 +37,7 @@ Perform Enrichment Analysis
 \examples{
 pin_path <- return_pin_path("KEGG")
 enrichment(kegg_genes, c("PER1", "PER2", "CRY1", "CREB1"), kegg_pathways,
-           "bonferroni", 0.05, pin_path)
+           "bonferroni", 0.05, pin_path, c("PER1"))
 }
 \seealso{
 \code{\link[stats]{p.adjust}} for adjustment of p values. See
