@@ -51,7 +51,10 @@ RA_output <- run_pathfindR(RA_input, iterations = 5)
 
 # to manually specify the number processes used during parallel loop by foreach
 # defaults to the number of detected cores 
-RA_output <- run_pathfindR(RA_input, n_processes = 2) 
+RA_output <- run_pathfindR(RA_input, n_processes = 2)
+
+# to report the non-DEG active subnetwork genes
+RA_output <- run_pathfindR(RA_input, list_active_snw_genes = TRUE)
 ```
 
 See the [wiki page](https://github.com/egeulgen/pathfindR/wiki/Enrichment%20Documentation) for more details.

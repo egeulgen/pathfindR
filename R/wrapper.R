@@ -54,6 +54,9 @@
 #' results is plotted. (default = TRUE)
 #'@param output_dir the directory to be created under the current working
 #' directory where the output and intermediate files are saved (default: "pathfindR_Results")
+#'@param list_active_snw_genes boolean value indicating whether or not to report
+#' the non-DEG active subnetwork genes for the active subnetwork which was enriched for
+#' the given pathway with the lowest p value
 #'
 #'@return Data frame of pathfindR enrichment results. Columns are: \describe{
 #'   \item{ID}{KEGG ID of the enriched pathway}
@@ -62,6 +65,7 @@
 #'   \item{occurrence}{the number of iterations that the given pathway was found to enriched over all iterations}
 #'   \item{lowest_p}{the lowest adjusted-p value of the given pathway over all iterations}
 #'   \item{highest_p}{the highest adjusted-p value of the given pathway over all iterations}
+#'   \item{non_DEG_Active_Snw_Genes (OPTIONAL)}{the non-DEG active subnetwork genes, comma-seperated}
 #'   \item{Up_regulated}{the up-regulated genes in the input involved in the given pathway, comma-separated}
 #'   \item{Down_regulated}{the down-regulated genes in the input involved in the given pathway, comma-separated}
 #' }
@@ -117,7 +121,8 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
                           score_thr = 3, sig_gene_thr = 2,
                           gene_sets = "KEGG",
                           bubble = TRUE,
-                          output_dir = "pathfindR_Results") {
+                          output_dir = "pathfindR_Results",
+                          list_active_snw_genes = FALSE) {
   ## Argument checks
   if (!search_method %in% c("GR", "SA", "GA"))
     stop("`search_method` must be one of \"GR\", \"SA\", \"GA\"")
@@ -185,7 +190,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
     dirs[i] <- normalizePath(paste0("./active_snw_search/search", i))
   }
 
-  saInitProbs <- seq(from = 0.01, to = 0.2, length.out = iterations)
+  geneInitProbs <- seq(from = 0.01, to = 0.2, length.out = iterations)
 
   org_dir <- getwd()
 
@@ -202,7 +207,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
                   " -saTemp0=", saTemp0,
                   " -saTemp1=", saTemp1,
                   " -saIter=", format(saIter, scientific = F),
-                  " -saInitProb=", saInitProbs[i],
+                  " -geneInitProb=", geneInitProbs[i],
                   " -gaPop=", gaPop,
                   " -gaIter=", gaIter,
                   " -gaThread=", gaThread,
@@ -241,8 +246,13 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
     ## enrichment per subnetwork
     enrichment_res <- lapply(snws, function(x)
       pathfindR::enrichment(genes_by_pathway, x, pathways_list,
-                            adj_method, enrichment_threshold, pin_path))
+                            adj_method, enrichment_threshold, pin_path,
+                            DEG_vec = input_processed$GENE))
     enrichment_res <- Reduce(rbind, enrichment_res)
+
+    ## delete non_DEG_Active_Snw_Genes if list_active_snw_genes == FALSE
+    if (!list_active_snw_genes)
+      enrichment_res$non_DEG_Active_Snw_Genes <- NULL
 
     if (!is.null(enrichment_res)) {
       ## keep lowest p for each pathway
@@ -279,6 +289,9 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
 
   ## reformat data frame
   keep <- c("ID", "Pathway", "Fold_Enrichment", "occurrence", "lowest_p", "highest_p")
+  if (list_active_snw_genes)
+    keep <- c(keep, "non_DEG_Active_Snw_Genes")
+
   final_res <- final_res[, keep]
   final_res <- final_res[order(final_res$lowest_p), ]
   final_res <- final_res[!duplicated(final_res$ID), ]

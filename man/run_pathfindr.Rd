@@ -11,7 +11,8 @@ run_pathfindR(input, p_val_threshold = 0.05, enrichment_threshold = 0.05,
   gaMut = 0, grMaxDepth = 1, grSearchDepth = 1, grOverlap = 0.5,
   grSubNum = 1000, iterations = 10, n_processes = NULL,
   pin_name_path = "Biogrid", score_thr = 3, sig_gene_thr = 2,
-  gene_sets = "KEGG", bubble = TRUE, output_dir = "pathfindR_Results")
+  gene_sets = "KEGG", bubble = TRUE, output_dir = "pathfindR_Results",
+  list_active_snw_genes = FALSE)
 }
 \arguments{
 \item{input}{the input data that pathfindR uses. The input must be a data
@@ -88,6 +89,10 @@ results is plotted. (default = TRUE)}
 
 \item{output_dir}{the directory to be created under the current working
 directory where the output and intermediate files are saved (default: "pathfindR_Results")}
+
+\item{list_active_snw_genes}{boolean value indicating whether or not to report
+the non-DEG active subnetwork genes for the active subnetwork which was enriched for
+the given pathway with the lowest p value}
 }
 \value{
 Data frame of pathfindR enrichment results. Columns are: \describe{
@@ -97,6 +102,7 @@ Data frame of pathfindR enrichment results. Columns are: \describe{
   \item{occurrence}{the number of iterations that the given pathway was found to enriched over all iterations}
   \item{lowest_p}{the lowest adjusted-p value of the given pathway over all iterations}
   \item{highest_p}{the highest adjusted-p value of the given pathway over all iterations}
+  \item{non_DEG_Active_Snw_Genes (OPTIONAL)}{the non-DEG active subnetwork genes, comma-seperated}
   \item{Up_regulated}{the up-regulated genes in the input involved in the given pathway, comma-separated}
   \item{Down_regulated}{the down-regulated genes in the input involved in the given pathway, comma-separated}
 }

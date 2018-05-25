@@ -5,7 +5,7 @@
 \title{Perform Enrichment Analysis}
 \usage{
 enrichment(genes_by_pathway, genes_of_interest, pathways_list,
-  adj_method = "bonferroni", enrichment_threshold, pin_path)
+  adj_method = "bonferroni", enrichment_threshold, pin_path, DEG_vec)
 }
 \arguments{
 \item{genes_by_pathway}{List that contains genes for each pathway. Names of
@@ -25,6 +25,8 @@ pathway enrichment results}
 
 \item{pin_path}{path to the Protein-Protein Interaction Network (PIN) file used in
 the analysis}
+
+\item{DEG_vec}{vector of differentially-expressed gene symbols}
 }
 \value{
 A data frame that contains enrichment results.
