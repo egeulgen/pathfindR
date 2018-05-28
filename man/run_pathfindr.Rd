@@ -12,7 +12,7 @@ run_pathfindR(input, p_val_threshold = 0.05, enrichment_threshold = 0.05,
   grSubNum = 1000, iterations = 10, n_processes = NULL,
   pin_name_path = "Biogrid", score_thr = 3, sig_gene_thr = 2,
   gene_sets = "KEGG", bubble = TRUE, output_dir = "pathfindR_Results",
-  list_active_snw_genes = FALSE)
+  list_active_snw_genes = FALSE, silent_option = TRUE)
 }
 \arguments{
 \item{input}{the input data that pathfindR uses. The input must be a data
@@ -92,7 +92,10 @@ directory where the output and intermediate files are saved (default: "pathfindR
 
 \item{list_active_snw_genes}{boolean value indicating whether or not to report
 the non-DEG active subnetwork genes for the active subnetwork which was enriched for
-the given pathway with the lowest p value}
+the given pathway with the lowest p value (default = FALSE)}
+
+\item{silent_option}{boolean value indicationg whether or not to print to the console (FALSE)
+or print to a file (TRUE) during active subnetwork search (default = TRUE)}
 }
 \value{
 Data frame of pathfindR enrichment results. Columns are: \describe{

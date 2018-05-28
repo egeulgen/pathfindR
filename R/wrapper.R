@@ -56,7 +56,9 @@
 #' directory where the output and intermediate files are saved (default: "pathfindR_Results")
 #'@param list_active_snw_genes boolean value indicating whether or not to report
 #' the non-DEG active subnetwork genes for the active subnetwork which was enriched for
-#' the given pathway with the lowest p value
+#' the given pathway with the lowest p value (default = FALSE)
+#'@param silent_option boolean value indicationg whether or not to print to the console (FALSE)
+#'or print to a file (TRUE) during active subnetwork search (default = TRUE)
 #'
 #'@return Data frame of pathfindR enrichment results. Columns are: \describe{
 #'   \item{ID}{KEGG ID of the enriched pathway}
@@ -122,7 +124,8 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
                           gene_sets = "KEGG",
                           bubble = TRUE,
                           output_dir = "pathfindR_Results",
-                          list_active_snw_genes = FALSE) {
+                          list_active_snw_genes = FALSE,
+                          silent_option = TRUE) {
   ## Argument checks
   if (!search_method %in% c("GR", "SA", "GA"))
     stop("`search_method` must be one of \"GR\", \"SA\", \"GA\"")
@@ -137,6 +140,9 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   if (!is.logical(bubble))
     stop("the argument `bubble` must be either TRUE or FALSE")
 
+  if (!is.logical(silent_option))
+    stop("the argument `silent_option` must be either TRUE or FALSE")
+
   ## create output dir
   if (dir.exists(output_dir))
     stop(paste0("There already is a directoy named \"", output_dir,
@@ -144,6 +150,9 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
 
   dir.create(output_dir)
   setwd(output_dir)
+
+  ## turn silent_option into an argument
+  silent_option <- ifelse(silent_option, " > console_out.txt", "")
 
   ## If search_method is GA, set iterations as 1
   if (search_method == "GA")
@@ -215,7 +224,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
                   " -grMaxDepth=", grMaxDepth,
                   " -grSearchDepth=", grSearchDepth,
                   " -grOverlap=", grOverlap,
-                  " -grSubNum=", grSubNum))
+                  " -grSubNum=", grSubNum, silent_option))
 
     # parse
     snws <- pathfindR::parseActiveSnwSearch(
