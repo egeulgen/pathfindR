@@ -76,6 +76,16 @@ public class GAIndividual implements Comparable<Object>{
             }
         }
         
+        if(!decision){
+            //Gives advantage to the individual with more subnetworks
+            //when one individual's subnetwork set is a subset of other's
+            if(ownIt.hasNext()){
+                result=1;
+            }else if(otherIt.hasNext()){
+                result=-1;
+            }
+        }
+        
         return result;
     }
 
