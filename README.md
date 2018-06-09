@@ -101,6 +101,8 @@ For a set of pathways <a href="https://www.codecogs.com/eqnedit.php?latex=\inlin
 _GS_ is the gene score per sample matrix and is defined as:
 <a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;GS_{g,s}&space;=&space;(EM_{g,s}&space;-&space;\bar{x}_g)&space;/&space;sd_g" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\inline&space;GS_{g,s}&space;=&space;(EM_{g,s}&space;-&space;\bar{x}_g)&space;/&space;sd_g" title="GS_{g,s} = (EM_{g,s} - \bar{x}_g) / sd_g" /></a> where _EM_ is the expression matrix (columns are samples, rows are genes), <a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;\bar{x}_g" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\inline&space;\bar{x}_g" title="\bar{x}_g" /></a> is the mean expression value of the gene and <a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;sd_g" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\inline&space;sd_g" title="sd_g" /></a> is the standard deviaton of the expression values for the gene.
 
+See the [wiki page](https://github.com/egeulgen/pathfindR/wiki/Pathway-Scoring) for more details.
+
 ## Dependencies
 For the active subnetwork search component to work, the user must have [JAVA](https://www.java.com/en/download/manual.jsp) installed and path/to/java must be in the PATH environment variable.
 
