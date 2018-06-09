@@ -123,7 +123,7 @@ The document contains a second table of genes for which no interactions were ide
 
 # Pathway Clustering
 
-<img src="./pw_clustering.png" width="650" height="163.34" />
+<img src="./pw_clustering.png" width="650" height="221.464" />
 
 For this workflow, the wrapper function `choose_clusters()` is used. This function first calculates the pairwise distances between the pathways in the input data frame, automatically determining the gene sets used for analysis. This step uses the distance metric described by Chen et al. [1]. By default, the function clusters the pathways using this distance matrix, automatically determines the optimal number of clusters by maximizing the average silhouette width and returns a data frame with cluster assignments:
 
