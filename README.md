@@ -94,12 +94,12 @@ See the [wiki page](https://github.com/egeulgen/pathfindR/wiki/Clustering%20Docu
  
 The function `calculate_pw_scores` can be used to calculate the pathway scores per sample. This allows the user to individually examine the scores and infer whether a pathway is activated or repressed in a given sample.
 
-For a set of pathways $P = \{P_1, P_2, ... , P_k\}$, where each $P_i$ contains a set of genes, i.e. $P_i = \{g_1, g_2, ...\}$, the pathway score matrix $PS$ is defined as:
+For a set of pathways <a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;P&space;=&space;\{P_1,&space;P_2,&space;...&space;,&space;P_k\}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\inline&space;P&space;=&space;\{P_1,&space;P_2,&space;...&space;,&space;P_k\}" title="P = \{P_1, P_2, ... , P_k\}" /></a>, where each $P_i$ contains a set of genes, i.e. $P_i = \{g_1, g_2, ...\}$, the pathway score matrix _PS_ is defined as:
 
-$PS_{p,s} = \frac{1}{k} \sum_{g \in P_p} GS_{g,s}$ for each pathway $p$ and for each sample $s$.
+<a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;PS_{p,s}&space;=&space;\frac{1}{k}&space;\sum_{g&space;\in&space;P_p}&space;GS_{g,s}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\inline&space;PS_{p,s}&space;=&space;\frac{1}{k}&space;\sum_{g&space;\in&space;P_p}&space;GS_{g,s}" title="PS_{p,s} = \frac{1}{k} \sum_{g \in P_p} GS_{g,s}" /></a> for each pathway _p_ and for each sample _s_.
 
-$GS$ is the gene score per sample matrix and is defined as:
-$GS_{g,s} = (EM_{g,s} - \bar{x}_g) / sd_g$ where $EM$ is the expression matrix (columns are samples, rows are genes), $\bar{x}_g$ is the mean expression value of the gene and $sd_g$ is the standard deviaton of the expression values for the gene.
+_GS_ is the gene score per sample matrix and is defined as:
+<a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;GS_{g,s}&space;=&space;(EM_{g,s}&space;-&space;\bar{x}_g)&space;/&space;sd_g" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\inline&space;GS_{g,s}&space;=&space;(EM_{g,s}&space;-&space;\bar{x}_g)&space;/&space;sd_g" title="GS_{g,s} = (EM_{g,s} - \bar{x}_g) / sd_g" /></a> where _EM_ is the expression matrix (columns are samples, rows are genes), <a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;\bar{x}_g" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\inline&space;\bar{x}_g" title="\bar{x}_g" /></a> is the mean expression value of the gene and _sd_g_ is the standard deviaton of the expression values for the gene.
 
 ## Dependencies
 For the active subnetwork search component to work, the user must have [JAVA](https://www.java.com/en/download/manual.jsp) installed and path/to/java must be in the PATH environment variable.
