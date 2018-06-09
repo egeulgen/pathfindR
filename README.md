@@ -88,6 +88,19 @@ choose_clusters(RA_output, auto = FALSE)
 
 See the [wiki page](https://github.com/egeulgen/pathfindR/wiki/Clustering%20Documentation) for more details.
 
+## Overview of the Pathway Scoring Functionality
+
+![Pathway Scoring per Sample](./vignettes/pw_score_hmap.png?raw=true "Pathway Scoring per Sample")
+ 
+The function `calculate_pw_scores` can be used to calculate the pathway scores per sample. This allows the user to individually examine the scores and infer whether a pathway is activated or repressed in a given sample.
+
+For a set of pathways $P = \{P_1, P_2, ... , P_k\}$, where each $P_i$ contains a set of genes, i.e. $P_i = \{g_1, g_2, ...\}$, the pathway score matrix $PS$ is defined as:
+
+$PS_{p,s} = \frac{1}{k} \sum_{g \in P_p} GS_{g,s}$ for each pathway $p$ and for each sample $s$.
+
+$GS$ is the gene score per sample matrix and is defined as:
+$GS_{g,s} = (EM_{g,s} - \bar{x}_g) / sd_g$ where $EM$ is the expression matrix (columns are samples, rows are genes), $\bar{x}_g$ is the mean expression value of the gene and $sd_g$ is the standard deviaton of the expression values for the gene.
+
 ## Dependencies
 For the active subnetwork search component to work, the user must have [JAVA](https://www.java.com/en/download/manual.jsp) installed and path/to/java must be in the PATH environment variable.
 

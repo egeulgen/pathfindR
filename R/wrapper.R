@@ -340,6 +340,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
 
   }
 
+
   cat("## Creating HTML report\n\n")
   ## Create report
   rmarkdown::render(system.file("rmd/results.Rmd", package = "pathfindR"),
@@ -370,7 +371,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
 #' This function is used to plot a bubble chart displaying the enrichment
 #' results.
 #'
-#' @param result_df a data frame consisting of at least 5 columns:\describe{
+#' @param result_df a data frame that must contain the following columns:\describe{
 #'   \item{Pathway}{Description of the enriched pathway}
 #'   \item{Fold_Enrichment}{Fold enrichment value for the enriched pathway}
 #'   \item{lowest_p}{the lowest adjusted-p value of the given pathway over all iterations}

@@ -7,7 +7,7 @@
 enrichment_chart(result_df, plot_by_cluster = FALSE)
 }
 \arguments{
-\item{result_df}{a data frame consisting of at least 5 columns:\describe{
+\item{result_df}{a data frame that must contain the following columns:\describe{
   \item{Pathway}{Description of the enriched pathway}
   \item{Fold_Enrichment}{Fold enrichment value for the enriched pathway}
   \item{lowest_p}{the lowest adjusted-p value of the given pathway over all iterations}

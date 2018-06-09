@@ -1,8 +1,10 @@
-# pathfindR 1.1.0.9004
+# pathfindR 1.1.0.9005
 
 to be released as pathfindR 1.2.0
 
 ## Major Changes
+- Implemented the (per subject) pathway scoring function `calculate_pw_scores` and the function to plot the heatmap of pathway scores per subject `plot_scores`.
+
 - Added the `auto` parameter to `choose_clusters`. When `auto == TRUE` (default), the function chooses the optimal number of clusters `k` automatically, as the value which maximizes the average silhouette width. It then returns a data frame with the cluster assignments and the representative/member statuses of each pathway.
 
 - Added the `Fold_Enrichment` column to the resulting data frame of `enrichment`, and as a corollary to the resulting data frame of `run_pathfindR`.

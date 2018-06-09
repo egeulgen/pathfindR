@@ -63,6 +63,18 @@
 #' \code{\link{RA_output}} for example output of the enrichment workflow.
 "RA_clustered"
 
+#' Example Input for pathfindR - pathway z-scores
+#'
+#' A matrix containing the log2-normalized expression values of the differentially-expressed genes
+#' for 18 rheumatoid arthritis (RA) patients and 15 healthy subjects. Expression values of
+#' differentially-expressed genes with adj.P.Val <= 0.05 are presented in this dataset.
+#'
+#' @format A matrix with 571 rows and 33 columns.
+#' @source \url{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE15573}
+"RA_exp_mat"
+
+
+
 #' KEGG Gene Sets
 #'
 #' A list containing the genes involved in each human KEGG pathway. Each element
