@@ -94,7 +94,7 @@ See the [wiki page](https://github.com/egeulgen/pathfindR/wiki/Clustering%20Docu
  
 The function `calculate_pw_scores` can be used to calculate the pathway scores per sample. This allows the user to individually examine the scores and infer whether a pathway is activated or repressed in a given sample.
 
-For a set of pathways <img src="https://latex.codecogs.com/gif.latex?\inline&space;P&space;=&space;\{P_1,&space;P_2,&space;...&space;,&space;P_n\}" title="P = \{P_1, P_2, ... , P_n\}" />, where each <img src="https://latex.codecogs.com/gif.latex?\inline&space;P_i" title="P_i" /> contains a set of genes, i.e. <img src="https://latex.codecogs.com/gif.latex?\inline&space;P_i&space;=&space;\{g_1,&space;g_2,&space;...,&spaceg_k\}" title="P_i = \{g_1, g_2, ..., g_k\}" />, the pathway score matrix _PS_ is defined as:
+For a set of pathways <img src="https://latex.codecogs.com/gif.latex?\inline&space;P&space;=&space;\{P_1,&space;P_2,&space;...&space;,&space;P_n\}" title="P = \{P_1, P_2, ... , P_n\}" />, where each <img src="https://latex.codecogs.com/gif.latex?\inline&space;P_i" title="P_i" /> contains a set of genes, i.e. <img src="https://latex.codecogs.com/gif.latex?\inline&space;P_i&space;=&space;\{g_1,&space;g_2,&space;...,&space;g_k\}" title="P_i = \{g_1, g_2, ..., g_k\}" />, the pathway score matrix _PS_ is defined as:
 
 <img src="https://latex.codecogs.com/gif.latex?\inline&space;PS_{p,s}&space;=&space;\frac{1}{k}&space;\sum_{g&space;\in&space;P_p}&space;GS_{g,s}" title="PS_{p,s} = \frac{1}{k} \sum_{g \in P_p} GS_{g,s}" /> for each pathway _p_ and for each sample _s_.
 
