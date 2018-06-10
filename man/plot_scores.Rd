@@ -24,5 +24,5 @@ Plot the Heatmap of Pathway Scores
 }
 \examples{
 score_mat <- calculate_pw_scores(RA_output, RA_exp_mat, plot_hmap = FALSE)
-heatmap <- plot_scores(score_mat)
+hmap <- plot_scores(score_mat)
 }
