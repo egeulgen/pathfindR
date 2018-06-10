@@ -35,7 +35,7 @@ If 'auto' is FALSE, manual partitioning can be performed. Via a shiny HTML docum
   along with annotation of representative pathways (chosen by smallest lowest
   p value) are presented as a table and this table can be saved as a csv
   file.
-  If 'auto' is TRUE, automatic partitioning of clusters is perfomed. The function
+  If 'auto' is TRUE, automatic partitioning of clusters is performed. The function
   adds 2 additional columns to the input data frame and returns it: \describe{
   \item{Cluster}{the cluster to which the pathway is assigned}
   \item{Status}{whether the pathway is the "Representative" pathway in its cluster or only a "Member"}

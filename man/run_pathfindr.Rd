@@ -94,7 +94,7 @@ directory where the output and intermediate files are saved (default: "pathfindR
 the non-DEG active subnetwork genes for the active subnetwork which was enriched for
 the given pathway with the lowest p value (default = FALSE)}
 
-\item{silent_option}{boolean value indicationg whether or not to print to the console (FALSE)
+\item{silent_option}{boolean value indicating whether or not to print to the console (FALSE)
 or print to a file (TRUE) during active subnetwork search (default = TRUE)}
 }
 \value{
@@ -105,7 +105,7 @@ Data frame of pathfindR enrichment results. Columns are: \describe{
   \item{occurrence}{the number of iterations that the given pathway was found to enriched over all iterations}
   \item{lowest_p}{the lowest adjusted-p value of the given pathway over all iterations}
   \item{highest_p}{the highest adjusted-p value of the given pathway over all iterations}
-  \item{non_DEG_Active_Snw_Genes (OPTIONAL)}{the non-DEG active subnetwork genes, comma-seperated}
+  \item{non_DEG_Active_Snw_Genes (OPTIONAL)}{the non-DEG active subnetwork genes, comma-separated}
   \item{Up_regulated}{the up-regulated genes in the input involved in the given pathway, comma-separated}
   \item{Down_regulated}{the down-regulated genes in the input involved in the given pathway, comma-separated}
 }

@@ -57,7 +57,7 @@
 #'@param list_active_snw_genes boolean value indicating whether or not to report
 #' the non-DEG active subnetwork genes for the active subnetwork which was enriched for
 #' the given pathway with the lowest p value (default = FALSE)
-#'@param silent_option boolean value indicationg whether or not to print to the console (FALSE)
+#'@param silent_option boolean value indicating whether or not to print to the console (FALSE)
 #'or print to a file (TRUE) during active subnetwork search (default = TRUE)
 #'
 #'@return Data frame of pathfindR enrichment results. Columns are: \describe{
@@ -67,7 +67,7 @@
 #'   \item{occurrence}{the number of iterations that the given pathway was found to enriched over all iterations}
 #'   \item{lowest_p}{the lowest adjusted-p value of the given pathway over all iterations}
 #'   \item{highest_p}{the highest adjusted-p value of the given pathway over all iterations}
-#'   \item{non_DEG_Active_Snw_Genes (OPTIONAL)}{the non-DEG active subnetwork genes, comma-seperated}
+#'   \item{non_DEG_Active_Snw_Genes (OPTIONAL)}{the non-DEG active subnetwork genes, comma-separated}
 #'   \item{Up_regulated}{the up-regulated genes in the input involved in the given pathway, comma-separated}
 #'   \item{Down_regulated}{the down-regulated genes in the input involved in the given pathway, comma-separated}
 #' }
@@ -468,7 +468,7 @@ enrichment_chart <- function(result_df, plot_by_cluster = FALSE) {
 #'   along with annotation of representative pathways (chosen by smallest lowest
 #'   p value) are presented as a table and this table can be saved as a csv
 #'   file.
-#'   If 'auto' is TRUE, automatic partitioning of clusters is perfomed. The function
+#'   If 'auto' is TRUE, automatic partitioning of clusters is performed. The function
 #'   adds 2 additional columns to the input data frame and returns it: \describe{
 #'   \item{Cluster}{the cluster to which the pathway is assigned}
 #'   \item{Status}{whether the pathway is the "Representative" pathway in its cluster or only a "Member"}
