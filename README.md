@@ -94,12 +94,12 @@ See the [wiki page](https://github.com/egeulgen/pathfindR/wiki/Clustering%20Docu
  
 The function `calculate_pw_scores` can be used to calculate the pathway scores per sample. This allows the user to individually examine the scores and infer whether a pathway is activated or repressed in a given sample.
 
-For a set of pathways <img src="https://latex.codecogs.com/gif.latex?\inline&space;P&space;=&space;\{P_1,&space;P_2,&space;...&space;,&space;P_k\}" title="P = \{P_1, P_2, ... , P_k\}" />, where each <img src="https://latex.codecogs.com/gif.latex?\inline&space;P_i" title="P_i" /> contains a set of genes, i.e. <img src="https://latex.codecogs.com/gif.latex?\inline&space;P_i&space;=&space;\{g_1,&space;g_2,&space;...\}" title="P_i = \{g_1, g_2, ...\}" />, the pathway score matrix _PS_ is defined as:
+For a set of pathways <img src="https://latex.codecogs.com/gif.latex?\inline&space;P&space;=&space;\{P_1,&space;P_2,&space;...&space;,&space;P_n\}" title="P = \{P_1, P_2, ... , P_n\}" />, where each <img src="https://latex.codecogs.com/gif.latex?\inline&space;P_i" title="P_i" /> contains a set of genes, i.e. <img src="https://latex.codecogs.com/gif.latex?\inline&space;P_i&space;=&space;\{g_1,&space;g_2,&space;...,&spaceg_k\}" title="P_i = \{g_1, g_2, ..., g_k\}" />, the pathway score matrix _PS_ is defined as:
 
 <img src="https://latex.codecogs.com/gif.latex?\inline&space;PS_{p,s}&space;=&space;\frac{1}{k}&space;\sum_{g&space;\in&space;P_p}&space;GS_{g,s}" title="PS_{p,s} = \frac{1}{k} \sum_{g \in P_p} GS_{g,s}" /> for each pathway _p_ and for each sample _s_.
 
 _GS_ is the gene score per sample matrix and is defined as:
-<img src="https://latex.codecogs.com/gif.latex?\inline&space;GS_{g,s}&space;=&space;(EM_{g,s}&space;-&space;\bar{x}_g)&space;/&space;sd_g" title="GS_{g,s} = (EM_{g,s} - \bar{x}_g) / sd_g" /> where _EM_ is the expression matrix (columns are samples, rows are genes), <img src="https://latex.codecogs.com/gif.latex?\inline&space;\bar{x}_g" title="\bar{x}_g" /> is the mean expression value of the gene and <img src="https://latex.codecogs.com/gif.latex?\inline&space;sd_g" title="sd_g" /> is the standard deviaton of the expression values for the gene.
+<img src="https://latex.codecogs.com/gif.latex?\inline&space;GS_{g,s}&space;=&space;(EM_{g,s}&space;-&space;\bar{x}_g)&space;/&space;s_g" title="GS_{g,s} = (EM_{g,s} - \bar{x}_g) / s_g" /> where _EM_ is the expression matrix (columns are samples, rows are genes), <img src="https://latex.codecogs.com/gif.latex?\inline&space;\bar{x}_g" title="\bar{x}_g" /> is the mean expression value of the gene and <img src="https://latex.codecogs.com/gif.latex?\inline&space;s_g" title="s_g" /> is the standard deviaton of the expression values for the gene.
 
 See the [wiki page](https://github.com/egeulgen/pathfindR/wiki/Pathway-Scoring) for more details.
 
