@@ -535,7 +535,7 @@ choose_clusters <- function(result_df, auto = TRUE, agg_method = "average",
               "for k =", k_opt, "\n\n"))
 
     ### Return Optimal Clusters
-    clusters <- cutree(hclu, k = k)
+    clusters <- cutree(hclu, k = k_opt)
 
     result_df$Cluster <- clusters[match(result_df$ID, names(clusters))]
     tmp <- result_df$lowest_p
