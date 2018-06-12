@@ -1,3 +1,12 @@
+# pathfindR 1.2.9000
+To be released as 2.2.1
+
+## Major Changes
+## Minor changes and bug fixes
+- fixed minor bug in `calculate_pw_scores` where if there was one DEG, subseting the experiment matrix failed
+- added if condition to check if there were DEGs in `calculate_pw_scores`. If there is none, the pathway is skipped.
+- in `calculate_pw_scores`, if `cases` are provided, the pathways are reordered before plotting the heat map and returning the matrix according to their activity in `cases`. This way, "up" pathways are grouped together, same for "down" pathways.
+
 # pathfindR 1.2
 
 ## Major Changes
