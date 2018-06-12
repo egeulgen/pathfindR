@@ -100,6 +100,13 @@ plot_scores <- function(score_matrix, cases = NULL) {
   if (any(!cases %in% colnames(score_matrix)) & !is.null(cases))
     stop("Missing cases in the score matrix!")
 
+  ## sort according to activity
+
+  if (!is.null(cases)) {
+    tmp <- rowMeans(score_matrix[, cases])
+    score_matrix <- score_matrix[c(which(tmp >= 0), which(tmp < 0)),]
+  }
+
   ## transform the matrix
   var_names <- list()
   var_names[["Pathway"]] <- factor(rownames(score_matrix), levels = rev(rownames(score_matrix)))
