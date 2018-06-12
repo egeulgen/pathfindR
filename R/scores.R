@@ -38,25 +38,27 @@ calculate_pw_scores <- function(pw_table, exp_mat,
     # some genes may not be in exp. matrix
     genes <- genes[genes %in% rownames(exp_mat)]
 
-    # subset exp. matrix to include only DEGs
-    sub_mat <- exp_mat[rownames(exp_mat) %in% genes, ]
+    if (length(genes) != 0) {
+      # subset exp. matrix to include only DEGs
+      sub_mat <- exp_mat[rownames(exp_mat) %in% genes, , drop = FALSE]
 
-    pw_score_matrix <- c()
-    for (gene in genes) {
-      gene_vec <- sub_mat[rownames(sub_mat) == gene, ]
+      pw_score_matrix <- c()
+      for (gene in genes) {
+        gene_vec <- sub_mat[rownames(sub_mat) == gene, ]
 
-      # calculate mean and sd across samples
-      gene_mean <- mean(gene_vec)
-      gene_sd <- sd(gene_vec)
+        # calculate mean and sd across samples
+        gene_mean <- mean(gene_vec)
+        gene_sd <- sd(gene_vec)
 
-      gene_scores <- sapply(gene_vec, function(x) (x - gene_mean)/gene_sd)
-      pw_score_matrix <- rbind(pw_score_matrix, gene_scores)
-      rownames(pw_score_matrix)[nrow(pw_score_matrix)] <- gene
+        gene_scores <- sapply(gene_vec, function(x) (x - gene_mean)/gene_sd)
+        pw_score_matrix <- rbind(pw_score_matrix, gene_scores)
+        rownames(pw_score_matrix)[nrow(pw_score_matrix)] <- gene
+      }
+
+      pw_scores <- apply(pw_score_matrix, 2, mean)
+      all_pws_scores <- rbind(all_pws_scores, pw_scores)
+      rownames(all_pws_scores)[nrow(all_pws_scores)] <- pw_table$Pathway[i]
     }
-
-    pw_scores <- apply(pw_score_matrix, 2, mean)
-    all_pws_scores <- rbind(all_pws_scores, pw_scores)
-    rownames(all_pws_scores)[nrow(all_pws_scores)] <- pw_table$Pathway[i]
   }
 
   if (!is.null(cases)) {
