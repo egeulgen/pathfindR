@@ -422,7 +422,7 @@ enrichment_chart <- function(result_df, plot_by_cluster = FALSE) {
   g <- g + ggplot2::scale_color_continuous(low = "#f5efef", high = "red")
 
   if (plot_by_cluster & "Cluster" %in% colnames(result_df)) {
-    g <- g + ggplot2::facet_grid(result_df$Cluster~., scales = "free_y", drop = TRUE)
+    g <- g + ggplot2::facet_grid(result_df$Cluster~., scales = "free_y", space = "free", drop = TRUE)
   } else if (plot_by_cluster) {
     warning("For plotting by cluster, there must a column named `Cluster` in the input data frame!")
   }
@@ -526,13 +526,13 @@ choose_clusters <- function(result_df, auto = TRUE, agg_method = "average",
                                                  stats::cutree(hclu, k = i),
                                                  silhouette = TRUE)$avg.silwidth)
 
-    k <- (2:kmax)[which.max(avg_sils)]
+    k_opt <- (2:kmax)[which.max(avg_sils)]
     if (plot_dend) {
       graphics::plot(hclu, hang = -1)
-      stats::rect.hclust(hclu, k = k)
+      stats::rect.hclust(hclu, k = k_opt)
     }
     cat(paste("The maximum average silhouette width was", round(max(avg_sils), 2),
-              "for k =", k, "\n\n"))
+              "for k =", k_opt, "\n\n"))
 
     ### Return Optimal Clusters
     clusters <- cutree(hclu, k = k)
