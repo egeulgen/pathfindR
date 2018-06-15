@@ -129,7 +129,7 @@ plot_scores <- function(score_matrix, cases = NULL) {
                           legend.text = ggplot2::element_text(size = 12))
   g <- g + ggplot2::labs(fill = "Pathway\nscore")
   if (!is.null(cases)) {
-    g <- g + ggplot2::facet_wrap(~ Type, scales = "free_x")
+    g <- g + ggplot2::facet_grid(~ Type, scales = "free_x", space = "free")
     g <- g + ggplot2::theme(strip.text.x = ggplot2::element_text(size=12, face="bold"))
   }
   return(g)
