@@ -4,10 +4,10 @@
 #' associated log2-fold-change values and adjusted p-values for the GEO dataset
 #' GSE15573. The microarray dataset aimed to characterize gene expression profiles in the
 #' peripheral blood mononuclear cells of 18 rheumatoid arthritis (RA) patients
-#' versus 15 healthy subjects. Differentially-expressed genes with adj.P.Val <=
+#' versus 15 healthy subjects. Differentially-expressed genes with adj.P.Val <
 #' 0.05 are presented in this dataset.
 #'
-#' @format A data frame with 571 rows and 3 variables: \describe{
+#' @format A data frame with 572 rows and 3 variables: \describe{
 #'   \item{Gene.symbol}{HGNC gene symbols of the differentially-expressed genes}
 #'   \item{logFC}{log2-fold-change values}
 #'   \item{adj.P.Val}{adjusted p values, via the Benjamini & Hochberg (1995) method}
@@ -24,7 +24,7 @@
 #' differential-expression dataset \code{RA_input}. Active subnetwork search
 #' was performed with Greedy Algorithm using the Biogrid PIN.
 #'
-#' @format A data frame with 42 rows and 8 columns:
+#' @format A data frame with 33 rows and 8 columns:
 #' \describe{
 #'   \item{ID}{KEGG ID of the enriched pathway}
 #'   \item{Pathway}{Description of the enriched pathway}
@@ -44,9 +44,9 @@
 #' A dataset containing the results of pathfindR's pathway clustering and
 #' partitioning  workflow performed on the rheumatoid arthritis
 #' enrichment results \code{RA_output}. The number of clusters were detected
-#' automatically and the agglomeration method was "average".
+#' automatically as 11 and the agglomeration method was "average".
 #'
-#' @format A data frame with 42 rows and 8 columns:
+#' @format A data frame with 33 rows and 8 columns:
 #' \describe{
 #'   \item{ID}{KEGG ID of the enriched pathway}
 #'   \item{Pathway}{Description of the enriched pathway}
@@ -69,7 +69,7 @@
 #' for 18 rheumatoid arthritis (RA) patients and 15 healthy subjects. Expression values of
 #' differentially-expressed genes with adj.P.Val <= 0.05 are presented in this dataset.
 #'
-#' @format A matrix with 571 rows and 33 columns.
+#' @format A matrix with 572 rows and 33 columns.
 #' @source \url{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE15573}
 "RA_exp_mat"
 
