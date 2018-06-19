@@ -95,7 +95,7 @@ input_processing <- function(input, p_val_threshold, pin_path) {
   }
 
   ## Fix p < 1e-13
-  if (any(input$P_VALUE < 1e-3)) {
+  if (any(input$P_VALUE < 1e-13)) {
     warning("pathfindR cannot handle p values < 1e-13\nThese were changed to 1e-13")
     input$P_VALUE <- ifelse(input$P_VALUE < 1e-13, 1e-13, input$P_VALUE)
   }
@@ -108,62 +108,67 @@ input_processing <- function(input, p_val_threshold, pin_path) {
   ## Genes not in pin
   missing <- input$GENE[!input$GENE %in% c(pin[, 1], pin[, 2])]
 
-  ## use sql to get alias table and gene_info table (contains the symbols)
-  ## first open the database connection
-  db_con <- org.Hs.eg.db::org.Hs.eg_dbconn()
-  ## write the SQL query
-  sql_query <-
-    "SELECT * FROM alias, gene_info WHERE alias._id == gene_info._id;"
-  ## execute the query on the database
-  alias_symbol <- DBI::dbGetQuery(db_con, sql_query)
+  if (length(missing) != 0) {
+    ## use sql to get alias table and gene_info table (contains the symbols)
+    ## first open the database connection
+    db_con <- org.Hs.eg.db::org.Hs.eg_dbconn()
+    ## write the SQL query
+    sql_query <-
+      "SELECT * FROM alias, gene_info WHERE alias._id == gene_info._id;"
+    ## execute the query on the database
+    alias_symbol <- DBI::dbGetQuery(db_con, sql_query)
 
-  select_alias <- function(result, converted, idx) {
-    if (idx == 0)
-      return("NOT_FOUND")
-    else if (result[idx] %in% converted[, 2])
-      return(result[idx - 1])
-    else
-      return(result[idx])
+    select_alias <- function(result, converted, idx) {
+      if (idx == 0)
+        return("NOT_FOUND")
+      else if (result[idx] %in% converted[, 2])
+        return(result[idx - 1])
+      else
+        return(result[idx])
+    }
+
+    ## loop for getting all symbols
+    converted <- c()
+    for (i in 1:length(missing)) {
+      result <- alias_symbol[alias_symbol$alias_symbol == missing[i],
+                             c("alias_symbol", "symbol")]
+      result <- alias_symbol[alias_symbol$symbol %in% result$symbol,
+                             c("alias_symbol", "symbol")]
+      result <- result$alias_symbol[result$alias_symbol %in%
+                                      c(pin[, 1], pin[, 2])]
+      ## avoid duplicate entries
+      to_add <- select_alias(result, converted, length(result))
+      converted <- rbind(converted, c(missing[i], to_add))
+    }
+
+    ## Give out warning indicating the number of still missing
+    n <- sum(converted[, 2] == "NOT_FOUND")
+    perc <- n / nrow(input) * 100
+    if (sum(converted[, 2] == "NOT_FOUND") != 0)
+      cat(paste0("Could not find any interactions for ",
+                 n,
+                 " (", round(perc, 2), "%) genes in the PIN\n\n"))
+
+    ## Convert to appropriate symbol
+    input$new_gene <- input$GENE
+    input$new_gene[match(converted[, 1], input$new_gene)] <- converted[, 2]
+
+    input <- input[, c(1, 4, 2, 3)]
+    colnames(input) <- c("old_GENE", "GENE", "CHANGE", "P_VALUE")
+
+    input <- input[input$GENE != "NOT_FOUND", ]
+
+    if (nrow(input) == 0) {
+      setwd("..")
+      stop("None of the genes were in the PIN\nPlease check your gene symbols")
+    }
+
+    input <- input[order(input$P_VALUE), ]
+    input <- input[!duplicated(input$GENE), ]
+  } else {
+    cat(paste0("Found interactions for all genes in the PIN\n\n"))
+    input$old_GENE <- input$GENE
+    input <- input[, c(4, 1, 2, 3)]
   }
-
-  ## loop for getting all symbols
-  converted <- c()
-  for (i in 1:length(missing)) {
-    result <- alias_symbol[alias_symbol$alias_symbol == missing[i],
-                           c("alias_symbol", "symbol")]
-    result <- alias_symbol[alias_symbol$symbol %in% result$symbol,
-                           c("alias_symbol", "symbol")]
-    result <- result$alias_symbol[result$alias_symbol %in%
-                                    c(pin[, 1], pin[, 2])]
-    ## avoid duplicate entries
-    to_add <- select_alias(result, converted, length(result))
-    converted <- rbind(converted, c(missing[i], to_add))
-  }
-
-  ## Give out warning indicating the number of still missing
-  n <- sum(converted[, 2] == "NOT_FOUND")
-  perc <- n / nrow(input) * 100
-  if (sum(converted[, 2] == "NOT_FOUND") != 0)
-    cat(paste0("Could not find any interactions for ",
-               n,
-               " (", round(perc, 2), "%) genes in the PIN\n\n"))
-
-  ## Convert to appropriate symbol
-  input$new_gene <- input$GENE
-  input$new_gene[match(converted[, 1], input$new_gene)] <- converted[, 2]
-
-  input <- input[, c(1, 4, 2, 3)]
-  colnames(input) <- c("old_GENE", "GENE", "CHANGE", "P_VALUE")
-
-  input <- input[input$GENE != "NOT_FOUND", ]
-
-  if (nrow(input) == 0) {
-    setwd("..")
-    stop("None of the genes were in the PIN\nPlease check your gene symbols")
-  }
-
-  input <- input[order(input$P_VALUE), ]
-  input <- input[!duplicated(input$GENE), ]
-
   return(input)
 }
