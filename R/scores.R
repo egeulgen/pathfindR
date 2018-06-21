@@ -45,6 +45,7 @@ calculate_pw_scores <- function(pw_table, exp_mat,
       pw_score_matrix <- c()
       for (gene in genes) {
         gene_vec <- sub_mat[rownames(sub_mat) == gene, ]
+        gene_vec <- as.numeric(gene_vec)
 
         # calculate mean and sd across samples
         gene_mean <- mean(gene_vec)
