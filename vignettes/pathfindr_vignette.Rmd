@@ -107,7 +107,7 @@ This document contains a table of the active subnetwork-oriented pathway enrichm
 - Fold_Enrichment: Fold enrichment value for the pathway.
 - occurrence: The number of times the pathway was found to be enriched over all iterations
 - lowest_p: the lowest adjusted-p value of the pathway over all iterations
-- higher_p: the highest adjusted-p value of the pathway over all iterations
+- highest_p: the highest adjusted-p value of the pathway over all iterations
 - Up_regulated: the up-regulated genes involved in the pathway
 - Down_regulated: the down-regulated genes involved in the pathway
 
