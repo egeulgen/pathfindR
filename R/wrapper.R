@@ -503,6 +503,16 @@ choose_clusters <- function(result_df, auto = TRUE, agg_method = "average",
   if (!is.logical(plot_heatmap))
     stop("The argument `plot_dend` must be either TRUE or FALSE!")
 
+  ## Check if clustering should be performed
+
+  if (nrow(result_df) < 3)
+  {
+    warning("There are less than 3 pathways in result_df so clustering is not performed!")
+    result_df$Cluster <- 1:nrow(result_df)
+    result_df$Status <- "Representative"
+    return(result_df)
+  }
+
   ## Create PWD matrix
   cat("Calculating pairwise distances between pathways\n\n")
   PWD_mat <- pathfindR::calculate_pwd(result_df$ID,

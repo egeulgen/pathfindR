@@ -67,6 +67,7 @@ calculate_pwd <- function(pathway_ids, agg_method = "average",
 
   # Calculate Pairwise Distances and Cluster -------------------------------
   cor_mat <- stats::cor(overlap_mat)
+  cor_mat[is.na(cor_mat)] <- 1
   PWD_mat <- 1 - cor_mat
 
   pw_names <- names(pathway_genes)
