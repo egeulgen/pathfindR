@@ -4,7 +4,7 @@
 \name{RA_input}
 \alias{RA_input}
 \title{Example Input for the pathfindR Enrichment Workflow - Rheumatoid Arthritis}
-\format{A data frame with 571 rows and 3 variables: \describe{
+\format{A data frame with 572 rows and 3 variables: \describe{
   \item{Gene.symbol}{HGNC gene symbols of the differentially-expressed genes}
   \item{logFC}{log2-fold-change values}
   \item{adj.P.Val}{adjusted p values, via the Benjamini & Hochberg (1995) method}
@@ -20,7 +20,7 @@ A dataset containing the differentially-expressed genes along with the
 associated log2-fold-change values and adjusted p-values for the GEO dataset
 GSE15573. The microarray dataset aimed to characterize gene expression profiles in the
 peripheral blood mononuclear cells of 18 rheumatoid arthritis (RA) patients
-versus 15 healthy subjects. Differentially-expressed genes with adj.P.Val <=
+versus 15 healthy subjects. Differentially-expressed genes with adj.P.Val <
 0.05 are presented in this dataset.
 }
 \seealso{

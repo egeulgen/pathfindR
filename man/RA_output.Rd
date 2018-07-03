@@ -4,7 +4,7 @@
 \name{RA_output}
 \alias{RA_output}
 \title{Example Output for the pathfindR Enrichment Workflow - Rheumatoid Arthritis}
-\format{A data frame with 42 rows and 8 columns:
+\format{A data frame with 33 rows and 8 columns:
 \describe{
   \item{ID}{KEGG ID of the enriched pathway}
   \item{Pathway}{Description of the enriched pathway}
