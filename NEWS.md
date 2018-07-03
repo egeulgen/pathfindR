@@ -1,11 +1,15 @@
 # pathfindR 1.2.9000
-To be released as 2.2.1
+To be released as 1.2.1
 
 ## Major Changes
+- Added the option to specify a custom gene set when using `run_pathfindR`. For this, the `gene_sets` argument should be set to "Custom" and `custom_genes` and `custom_pathways` should be provided.
+
 ## Minor changes and bug fixes
 - fixed minor bug in `calculate_pw_scores` where if there was one DEG, subseting the experiment matrix failed
 - added if condition to check if there were DEGs in `calculate_pw_scores`. If there is none, the pathway is skipped.
 - in `calculate_pw_scores`, if `cases` are provided, the pathways are reordered before plotting the heat map and returning the matrix according to their activity in `cases`. This way, "up" pathways are grouped together, same for "down" pathways.
+- in `calculate_pwd`, if a pathway has perfect overlap with other pathways, change the correlation value with 1 instead of NA.
+- in `choose_clusters`, if `result_df` has less than 3 pathways, do not perform clustering.
 
 # pathfindR 1.2
 

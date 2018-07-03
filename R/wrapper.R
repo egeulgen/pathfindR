@@ -49,7 +49,13 @@
 #'@param score_thr active subnetwork score threshold (Default = 3)
 #'@param sig_gene_thr threshold for minimum number of significant genes (Default = 2)
 #'@param gene_sets the gene sets to be used for enrichment analysis. Available gene sets
-#'  are KEGG, Reactome, BioCarta, GO-BP, GO-CC and GO-MF (Default = "KEGG")
+#'  are KEGG, Reactome, BioCarta, GO-BP, GO-CC, GO-MF or Custom. If "Custom", the arguments
+#'  custom_genes and custom pathways must be specified. (Default = "KEGG")
+#'@param custom_genes a list containing the genes involved in each custom pathway. Each element
+#' is a vector of gene symbols located in the given pathway. Names correspond to
+#' the ID of the pathway.
+#'@param custom_pathways A list containing the descriptions for each custom pathway. Names of the
+#' list correspond to the ID of the pathway.
 #'@param bubble boolean value. If TRUE, a bubble chart displaying the enrichment
 #' results is plotted. (default = TRUE)
 #'@param output_dir the directory to be created under the current working
@@ -122,6 +128,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
                           pin_name_path = "Biogrid",
                           score_thr = 3, sig_gene_thr = 2,
                           gene_sets = "KEGG",
+                          custom_genes = NULL, custom_pathways = NULL,
                           bubble = TRUE,
                           output_dir = "pathfindR_Results",
                           list_active_snw_genes = FALSE,
@@ -131,8 +138,11 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
     stop("`search_method` must be one of \"GR\", \"SA\", \"GA\"")
 
   if (!gene_sets %in% c("KEGG", "Reactome", "BioCarta",
-                        "GO-BP", "GO-CC", "GO-MF"))
-    stop("`gene_sets` must be one of KEGG, Reactome, BioCarta, GO-BP, GO-CC or GO-MF")
+                        "GO-BP", "GO-CC", "GO-MF", "Custom"))
+    stop("`gene_sets` must be one of KEGG, Reactome, BioCarta, GO-BP, GO-CC, GO-MF or Custom")
+
+  if (gene_sets == "Custom" & (is.null(custom_genes) | is.null(custom_pathways)))
+    stop("You must provide both `custom_genes` and `custom_pathways` if `gene_sets` is `Custom`!")
 
   if (!is.logical(use_all_positives))
     stop("the argument `use_all_positives` must be either TRUE or FALSE")
@@ -250,6 +260,9 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
     } else if (gene_sets == "GO-MF") {
       genes_by_pathway <- pathfindR::go_mf_genes
       pathways_list <- pathfindR::go_mf_pathways
+    } else if (gene_sets == "Custom") {
+      genes_by_pathway <- custom_genes
+      pathways_list <- custom_pathways
     }
 
     ## enrichment per subnetwork
@@ -319,21 +332,9 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
 
     final_res$Down_regulated <- final_res$Up_regulated <- NA
 
-    if (gene_sets == "Reactome") {
-      gsets <- pathfindR::reactome_genes
-    } else if (gene_sets == "BioCarta") {
-      gsets <- pathfindR::biocarta_genes
-    } else if (gene_sets == "GO-BP") {
-      gsets <- pathfindR::go_bp_genes
-    } else if (gene_sets == "GO-CC") {
-      gsets <- pathfindR::go_cc_genes
-    } else if (gene_sets == "GO-MF") {
-      gsets <- pathfindR::go_mf_genes
-    }
-
     for (i in 1:nrow(final_res)) {
-      idx <- which(names(gsets) == final_res$ID[i])
-      temp <- gsets[[idx]]
+      idx <- which(names(genes_by_pathway) == final_res$ID[i])
+      temp <- genes_by_pathway[[idx]]
       final_res$Up_regulated[i] <- paste(temp[temp %in% upreg], collapse = ", ")
       final_res$Down_regulated[i] <- paste(temp[temp %in% downreg], collapse = ", ")
     }
