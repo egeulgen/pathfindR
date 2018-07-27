@@ -85,8 +85,10 @@ input_processing <- function(input, p_val_threshold, pin_path) {
   colnames(input) <- c("GENE", "CHANGE", "P_VALUE")
 
   ## Turn GENE into character
-  input$GENE <- as.character(input$GENE)
-
+  if (is.factor(input$GENE)) {
+    warning("The gene column was turned into character from factor.")
+    input$GENE <- as.character(input$GENE)
+  }
   ## Discard larger than p-value threshold
   input <- input[input$P_VALUE <= p_val_threshold, ]
 
