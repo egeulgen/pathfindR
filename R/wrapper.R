@@ -327,6 +327,21 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
     genes_df <- genes_df[, -1, drop = FALSE]
     final_res <- pathmap(final_res, genes_df)
   } else {
+
+    if (gene_sets == "Reactome") {
+      genes_by_pathway <- pathfindR::reactome_genes
+    } else if (gene_sets == "BioCarta") {
+      genes_by_pathway <- pathfindR::biocarta_genes
+    } else if (gene_sets == "GO-BP") {
+      genes_by_pathway <- pathfindR::go_bp_genes
+    } else if (gene_sets == "GO-CC") {
+      genes_by_pathway <- pathfindR::go_cc_genes
+    } else if (gene_sets == "GO-MF") {
+      genes_by_pathway <- pathfindR::go_mf_genes
+    } else if (gene_sets == "Custom") {
+      genes_by_pathway <- custom_genes
+    }
+
     upreg <- input_processed$GENE[input_processed$CHANGE >= 0]
     downreg <- input_processed$GENE[input_processed$CHANGE < 0]
 
