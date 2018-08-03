@@ -47,7 +47,7 @@ input_testing <- function(input, p_val_threshold){
     stop("p values, provided in the third column, must all be between 0 and 1")
   }
 
-  cat("The input looks OK\n\n")
+  message("The input looks OK\n\n")
 }
 
 #' Process Input
@@ -150,9 +150,9 @@ input_processing <- function(input, p_val_threshold, pin_path) {
     n <- sum(converted[, 2] == "NOT_FOUND")
     perc <- n / nrow(input) * 100
     if (sum(converted[, 2] == "NOT_FOUND") != 0)
-      cat(paste0("Could not find any interactions for ",
-                 n,
-                 " (", round(perc, 2), "%) genes in the PIN\n\n"))
+      message(paste0("Could not find any interactions for ",
+                     n,
+                     " (", round(perc, 2), "%) genes in the PIN\n\n"))
 
     ## Convert to appropriate symbol
     input$new_gene <- input$GENE
@@ -171,7 +171,7 @@ input_processing <- function(input, p_val_threshold, pin_path) {
     input <- input[order(input$P_VALUE), ]
     input <- input[!duplicated(input$GENE), ]
   } else {
-    cat(paste0("Found interactions for all genes in the PIN\n\n"))
+    message(paste0("Found interactions for all genes in the PIN\n\n"))
     input$old_GENE <- input$GENE
     input <- input[, c(4, 1, 2, 3)]
   }

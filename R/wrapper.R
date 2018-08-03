@@ -154,11 +154,13 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
     stop("the argument `silent_option` must be either TRUE or FALSE")
 
   ## create output dir
-  if (dir.exists(output_dir))
-    stop(paste0("There already is a directoy named \"", output_dir,
-                "\". Change `output_dir` not to overwrite the previous results."))
+  if (dir.exists(output_dir)) {
+    warning(paste0("There already is a directoy named \"", output_dir,
+                   "\". Changing to \"", output_dir, "(1)\" not to overwrite the previous results."))
+    output_dir <- paste0(output_dir, "(1)")
+  }
 
-  dir.create(output_dir)
+  dir.create(output_dir, recursive = TRUE)
   setwd(output_dir)
 
   ## turn silent_option into an argument
@@ -182,11 +184,11 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   pin_path <- return_pin_path(pin_name_path)
 
   ## Check input
-  cat("## Testing input\n\n")
+  message("## Testing input\n\n")
   input_testing(input, p_val_threshold)
 
   ## Process input
-  cat("## Processing input. Converting gene symbols, if necessary\n\n")
+  message("## Processing input. Converting gene symbols, if necessary\n\n")
   input_processed <- input_processing(input, p_val_threshold, pin_path)
 
   dir.create("active_snw_search")
@@ -195,7 +197,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
                      row.names = FALSE, quote = FALSE, sep = "\t")
 
   ## Prep for parallel run
-  cat("## Performing Active Subnetwork Search and Enrichment\n")
+  message("## Performing Active Subnetwork Search and Enrichment\n")
   # calculate the number of cores, if necessary
   if (is.null(n_processes))
     n_processes <- parallel::detectCores() - 1
@@ -240,7 +242,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
     snws <- pathfindR::parseActiveSnwSearch(
       "resultActiveSubnetworkSearch.txt", input_processed$GENE)
 
-    cat(paste0("Found ", length(snws), " active subnetworks\n\n"))
+    message(paste0("Found ", length(snws), " active subnetworks\n\n"))
 
     if (gene_sets == "KEGG") {
       genes_by_pathway <- pathfindR::kegg_genes
@@ -290,11 +292,12 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
 
   if (is.null(final_res)) {
     setwd("..")
-    stop("Did not find any enriched pathways!")
+    warning("Did not find any enriched pathways!")
+    return(data.frame())
   }
 
   ## Annotate lowest p, highest p and occurrence
-  cat("## Processing the enrichment results over all iterations \n\n")
+  message("## Processing the enrichment results over all iterations \n\n")
 
   lowest_p <- tapply(final_res$adj_p, final_res$ID, min)
   highest_p <- tapply(final_res$adj_p, final_res$ID, max)
@@ -319,7 +322,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   final_res <- final_res[!duplicated(final_res$ID), ]
   rownames(final_res) <- NULL
 
-  cat("## Annotating involved genes and visualizing pathways\n\n")
+  message("## Annotating involved genes and visualizing pathways\n\n")
   if (gene_sets == "KEGG") {
     ## Annotate involved genes and generate pathway maps
     genes_df <- input_processed[, c("GENE", "CHANGE")]
@@ -357,7 +360,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   }
 
 
-  cat("## Creating HTML report\n\n")
+  message("## Creating HTML report\n\n")
   ## Create report
   rmarkdown::render(system.file("rmd/results.Rmd", package = "pathfindR"),
                     output_dir = ".")
@@ -370,14 +373,14 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
 
   ## Bubble Chart
   if (bubble) {
-    cat("Plotting the enrichment bubble chart\n\n")
+    message("Plotting the enrichment bubble chart\n\n")
     graphics::plot(enrichment_chart(final_res))
   }
 
-  cat("Pathway enrichment results and converted genes ")
-  cat("can be found in \"results.html\" ")
-  cat(paste0("in the folder \"", output_dir, "\"\n\n"))
-  cat("Run choose_clusters() for clustering pathways\n\n")
+  message("Pathway enrichment results and converted genes ")
+  message("can be found in \"results.html\" ")
+  message(paste0("in the folder \"", output_dir, "\"\n\n"))
+  message("Run choose_clusters() for clustering pathways\n\n")
 
   return(final_res)
 }
@@ -530,21 +533,21 @@ choose_clusters <- function(result_df, auto = TRUE, agg_method = "average",
   }
 
   ## Create PWD matrix
-  cat("Calculating pairwise distances between pathways\n\n")
+  message("Calculating pairwise distances between pathways\n\n")
   PWD_mat <- pathfindR::calculate_pwd(result_df$ID,
                                       agg_method = agg_method,
                                       plot_heatmap = plot_heatmap)
   if (!auto) {
-    cat("Creating the shiny app\n\n")
+    message("Creating the shiny app\n\n")
     parameters <- list(df = result_df, mat = PWD_mat)
     rmarkdown::run(system.file("rmd/clustering.Rmd", package = "pathfindR"),
                    render_args = list(output_dir = ".", params = parameters))
   } else {### Calculate PWDs and Cluster
-    cat("Clustering pathways\n\n")
+    message("Clustering pathways\n\n")
     hclu <- stats::hclust(as.dist(PWD_mat), method = agg_method)
 
     ### Optimal k
-    cat("Calculating the optimal number of clusters (based on average silhouette width)\n\n")
+    message("Calculating the optimal number of clusters (based on average silhouette width)\n\n")
     kmax <- nrow(PWD_mat) - 1
     avg_sils <- c()
     for (i in 2:kmax)
@@ -557,7 +560,7 @@ choose_clusters <- function(result_df, auto = TRUE, agg_method = "average",
       graphics::plot(hclu, hang = -1)
       stats::rect.hclust(hclu, k = k_opt)
     }
-    cat(paste("The maximum average silhouette width was", round(max(avg_sils), 2),
+    message(paste("The maximum average silhouette width was", round(max(avg_sils), 2),
               "for k =", k_opt, "\n\n"))
 
     ### Return Optimal Clusters
@@ -572,7 +575,7 @@ choose_clusters <- function(result_df, auto = TRUE, agg_method = "average",
     result_df <- result_df[order(result_df$Status, decreasing = TRUE), ]
     result_df <- result_df[order(result_df$Cluster), ]
 
-    cat("Returning the resulting data frame\n\n")
+    message("Returning the resulting data frame\n\n")
     return(result_df)
     }
 }
