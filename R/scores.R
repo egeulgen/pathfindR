@@ -105,7 +105,7 @@ plot_scores <- function(score_matrix, cases = NULL) {
   ## sort according to activity
 
   if (!is.null(cases)) {
-    tmp <- rowMeans(score_matrix[, cases])
+    tmp <- rowMeans(score_matrix[, cases, drop = FALSE])
     score_matrix <- score_matrix[c(which(tmp >= 0), which(tmp < 0)),]
   }
 
