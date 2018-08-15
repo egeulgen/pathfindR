@@ -192,3 +192,10 @@
 #' @format list containing 713 character values, the descriptions for the given
 #'   pathways.
 "go_mf_pathways"
+
+#' Custom Gene Set Enrichment Results
+#'
+#' A data frame constisting of pathfindR enrichment results on the example TF target data.
+#'
+#' @format data frame containing 2 rows and 8 columns. Each row is a gene set (the TF target gene sets).
+"custom_result"

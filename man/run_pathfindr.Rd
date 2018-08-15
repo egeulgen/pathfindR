@@ -4,16 +4,17 @@
 \alias{run_pathfindR}
 \title{Wrapper Function for pathfindR Workflow}
 \usage{
-run_pathfindR(input, p_val_threshold = 0.05, enrichment_threshold = 0.05,
-  adj_method = "bonferroni", search_method = "GR",
-  use_all_positives = FALSE, saTemp0 = 1, saTemp1 = 0.01,
-  saIter = 10000, gaPop = 400, gaIter = 10000, gaThread = 5,
-  gaMut = 0, grMaxDepth = 1, grSearchDepth = 1, grOverlap = 0.5,
-  grSubNum = 1000, iterations = 10, n_processes = NULL,
-  pin_name_path = "Biogrid", score_thr = 3, sig_gene_thr = 2,
-  gene_sets = "KEGG", custom_genes = NULL, custom_pathways = NULL,
-  bubble = TRUE, output_dir = "pathfindR_Results",
-  list_active_snw_genes = FALSE, silent_option = TRUE)
+run_pathfindR(input, p_val_threshold = 0.05,
+  enrichment_threshold = 0.05, adj_method = "bonferroni",
+  search_method = "GR", use_all_positives = FALSE, saTemp0 = 1,
+  saTemp1 = 0.01, saIter = 10000, gaPop = 400, gaIter = 10000,
+  gaThread = 5, gaMut = 0, grMaxDepth = 1, grSearchDepth = 1,
+  grOverlap = 0.5, grSubNum = 1000, iterations = 10,
+  n_processes = NULL, pin_name_path = "Biogrid", score_thr = 3,
+  sig_gene_thr = 2, gene_sets = "KEGG", custom_genes = NULL,
+  custom_pathways = NULL, bubble = TRUE,
+  output_dir = "pathfindR_Results", list_active_snw_genes = FALSE,
+  silent_option = TRUE)
 }
 \arguments{
 \item{input}{the input data that pathfindR uses. The input must be a data

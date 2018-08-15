@@ -4,7 +4,8 @@
 \alias{calculate_pwd}
 \title{Calculate Pairwise Distances Between Given Pathways}
 \usage{
-calculate_pwd(pathway_ids, agg_method = "average", plot_heatmap = FALSE)
+calculate_pwd(pathway_ids, agg_method = "average",
+  plot_heatmap = FALSE)
 }
 \arguments{
 \item{pathway_ids}{Vector of IDs of pathways selected to be clustered.}
