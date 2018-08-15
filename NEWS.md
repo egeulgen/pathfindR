@@ -1,5 +1,4 @@
-# pathfindR 1.2.9002
-To be released as 1.2.1
+# pathfindR 1.2.1
 
 ## Major Changes
 - Added the option to specify a custom gene set when using `run_pathfindR`. For this, the `gene_sets` argument should be set to "Custom" and `custom_genes` and `custom_pathways` should be provided.
