@@ -9,6 +9,6 @@
 custom_result
 }
 \description{
-A data frame constisting of pathfindR enrichment results on the example TF target data.
+A data frame consisting of pathfindR enrichment results on the example TF target data.
 }
 \keyword{datasets}
