@@ -27,9 +27,9 @@ Imports: AnnotationDbi,
     rmarkdown,
     org.Hs.eg.db,
     ggplot2,
-    fpc
+    fpc,
+    pathview
 Depends: R (>= 3.4),
-    pathview,
     knitr,
     shiny
 RoxygenNote: 6.1.0

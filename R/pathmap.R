@@ -12,7 +12,6 @@
 #'   under the current working directory.
 #'
 #' @export
-#' @import pathview
 #' @seealso \code{\link[pathview]{pathview}} for pathway-based data integration
 #'   and visualization. See \code{\link{run_pathfindR}} for the wrapper function
 #'   of the pathfindR workflow
