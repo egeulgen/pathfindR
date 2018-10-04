@@ -1,3 +1,10 @@
+# pathfindR 1.2.2
+
+## Major Changes
+- fixed issue related to the package `pathview`.
+## Minor changes and bug fixes
+- in the function `choose_clusters`, added option to use pathway names instead of pathway ids when visualizing the clustering dendrogram and heatmap.
+
 # pathfindR 1.2.1
 
 ## Major Changes
