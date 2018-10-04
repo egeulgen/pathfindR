@@ -5,6 +5,7 @@ output: html_document
 params:
   mat: ""
   df: ""
+  use_names: FALSE
 ---
 
 This shiny application allows the user to dynamically select a cut-off value for seperating the pathways into clusters via partitioning of the dendrogram. 
@@ -16,6 +17,9 @@ The table displays the representative pathways chosen for each cluster, based on
 ```{r hclust, echo=F}
 res_df <- params$df
 PWD <- params$mat
+
+if (params$use_names)
+  rownames(PWD) <- colnames(PWD) <- res_df$Pathway[match(rownames(PWD), res_df$ID)]
 
 dend_for_h <- hclust(as.dist(PWD), method = "average")
 
@@ -45,15 +49,21 @@ shiny::renderPlot({
   abline(h = cut_off(), col = "red")
 })
 
+if (params$use_names) {
+  to_match <- res_df$Pathway
+}else {
+  to_match <- res_df$ID
+}
+
 shiny::renderTable({
   clusters <- cutree(dend(), h = cut_off())
 
   final_df <- res_df
-  final_df$Cluster <- clusters[match(final_df$ID, names(clusters))]
+  final_df$Cluster <- clusters[match(to_match, names(clusters))]
   tmp <- final_df$lowest_p
-  names(tmp) <- final_df$ID
+  names(tmp) <- to_match
   tmp <- tapply(tmp, final_df$Cluster, function(x) names(x)[which.min(x)])
-  final_df$Status <- ifelse(final_df$ID %in% tmp, "Representative", "Member")
+  final_df$Status <- ifelse(to_match %in% tmp, "Representative", "Member")
   
   output$downloadData <- downloadHandler(
     filename = function() {

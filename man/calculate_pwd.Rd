@@ -4,17 +4,26 @@
 \alias{calculate_pwd}
 \title{Calculate Pairwise Distances Between Given Pathways}
 \usage{
-calculate_pwd(pathway_ids, agg_method = "average",
-  plot_heatmap = FALSE)
+calculate_pwd(pathway_ids, pathway_names, agg_method = "average",
+  plot_heatmap = FALSE, use_names = FALSE, custom_genes = NULL)
 }
 \arguments{
-\item{pathway_ids}{Vector of IDs of pathways selected to be clustered.}
+\item{pathway_ids}{Vector of IDs of pathways to be used for calculation of pairwise distances.}
+
+\item{pathway_names}{Vector of names of pathways to be used for calculation of pairwise distances.}
 
 \item{agg_method}{the agglomeration method to be used if plotting heatmap
 (see next argument, default: average).}
 
 \item{plot_heatmap}{boolean value indicating whether or not to plot the heat
 map of pathway clustering (default: FALSE).}
+
+\item{use_names}{boolean value indicating whether to use gene set names instead of gene set ids (default: FALSE)}
+
+\item{custom_genes}{a list containing the genes involved in each custom pathway. Each element
+is a vector of gene symbols located in the given pathway. Names correspond to
+the ID of the pathway. Must be provided if pathways were obtained using custom
+gene sets.}
 }
 \value{
 Pairwise distance matrix. Optionally plots a heatmap of pathway

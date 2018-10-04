@@ -5,7 +5,8 @@
 \title{Cluster Pathways and Partition the Dendrogram}
 \usage{
 choose_clusters(result_df, auto = TRUE, agg_method = "average",
-  plot_heatmap = FALSE, plot_dend = FALSE)
+  plot_heatmap = FALSE, plot_dend = FALSE, use_names = FALSE,
+  custom_genes = NULL)
 }
 \arguments{
 \item{result_df}{data frame of enriched pathways. Must-have columns are: \enumerate{
@@ -19,13 +20,20 @@ automatically. If FALSE, a shiny application is displayed, where the user can ma
 partition the clustering dendrogram (default: TRUE).}
 
 \item{agg_method}{the agglomeration method to be used if plotting heatmap. Must be one of "ward.D", "ward.D2",
-"single", "complete", "average", "mcquitty", "median" or "centroid" (default: average).}
+"single", "complete", "average", "mcquitty", "median" or "centroid" (default: "average").}
 
 \item{plot_heatmap}{boolean value indicating whether or not to plot the heat
 map of pathway clustering (default: FALSE).}
 
 \item{plot_dend}{boolean value indicating whether or not to plot the dendrogram
 partitioned into the optimal number of clusters, shown by red rectangles (default: FALSE)}
+
+\item{use_names}{boolean value indicating whether to use gene set names instead of gene set ids (default: FALSE)}
+
+\item{custom_genes}{a list containing the genes involved in each custom pathway. Each element
+is a vector of gene symbols located in the given pathway. Names correspond to
+the ID of the pathway. Must be provided if `result_df` was generated using custom
+gene sets.}
 }
 \value{
 If 'auto' is FALSE, manual partitioning can be performed. Via a shiny HTML document, the

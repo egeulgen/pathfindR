@@ -474,11 +474,16 @@ enrichment_chart <- function(result_df, plot_by_cluster = FALSE) {
 #' automatically. If FALSE, a shiny application is displayed, where the user can manually
 #' partition the clustering dendrogram (default: TRUE).
 #' @param agg_method the agglomeration method to be used if plotting heatmap. Must be one of "ward.D", "ward.D2",
-#' "single", "complete", "average", "mcquitty", "median" or "centroid" (default: average).
+#' "single", "complete", "average", "mcquitty", "median" or "centroid" (default: "average").
 #' @param plot_heatmap boolean value indicating whether or not to plot the heat
 #'   map of pathway clustering (default: FALSE).
 #' @param plot_dend boolean value indicating whether or not to plot the dendrogram
 #'   partitioned into the optimal number of clusters, shown by red rectangles (default: FALSE)
+#' @param use_names boolean value indicating whether to use gene set names instead of gene set ids (default: FALSE)
+#' @param custom_genes a list containing the genes involved in each custom pathway. Each element
+#' is a vector of gene symbols located in the given pathway. Names correspond to
+#' the ID of the pathway. Must be provided if `result_df` was generated using custom
+#' gene sets.
 #'
 #' @return  If 'auto' is FALSE, manual partitioning can be performed. Via a shiny HTML document, the
 #'   hierarchical clustering dendrogram is visualized. In this HTML document,
@@ -507,7 +512,7 @@ enrichment_chart <- function(result_df, plot_by_cluster = FALSE) {
 #' @examples
 #' choose_clusters(RA_output)
 choose_clusters <- function(result_df, auto = TRUE, agg_method = "average",
-                            plot_heatmap = FALSE, plot_dend = FALSE) {
+                            plot_heatmap = FALSE, plot_dend = FALSE, use_names = FALSE, custom_genes = NULL) {
   ## argument checks
   if (!is.logical(auto))
     stop("The argument `auto` must be either TRUE or FALSE!")
@@ -534,15 +539,18 @@ choose_clusters <- function(result_df, auto = TRUE, agg_method = "average",
 
   ## Create PWD matrix
   message("Calculating pairwise distances between pathways\n\n")
-  PWD_mat <- pathfindR::calculate_pwd(result_df$ID,
+  PWD_mat <- pathfindR::calculate_pwd(result_df$ID, result_df$Pathway,
                                       agg_method = agg_method,
-                                      plot_heatmap = plot_heatmap)
+                                      plot_heatmap = plot_heatmap,
+                                      use_names,
+                                      custom_genes)
   if (!auto) {
     message("Creating the shiny app\n\n")
-    parameters <- list(df = result_df, mat = PWD_mat)
+    parameters <- list(df = result_df, mat = PWD_mat, use_names = use_names)
     rmarkdown::run(system.file("rmd/clustering.Rmd", package = "pathfindR"),
                    render_args = list(output_dir = ".", params = parameters))
-  } else {### Calculate PWDs and Cluster
+  } else {
+    ### Calculate PWDs and Cluster
     message("Clustering pathways\n\n")
     hclu <- stats::hclust(as.dist(PWD_mat), method = agg_method)
 
@@ -557,8 +565,11 @@ choose_clusters <- function(result_df, auto = TRUE, agg_method = "average",
 
     k_opt <- (2:kmax)[which.max(avg_sils)]
     if (plot_dend) {
-      graphics::plot(hclu, hang = -1)
-      stats::rect.hclust(hclu, k = k_opt)
+      to_plot <- hclu
+      if (use_names)
+        to_plot$labels <- result_df$Pathway[match(to_plot$labels, result_df$ID)]
+      graphics::plot(to_plot, hang = -1)
+      stats::rect.hclust(to_plot, k = k_opt)
     }
     message(paste("The maximum average silhouette width was", round(max(avg_sils), 2),
               "for k =", k_opt, "\n\n"))
