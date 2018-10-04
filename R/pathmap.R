@@ -11,6 +11,7 @@
 #'   the package \code{pathview} and saves them in the folder "pathway_maps"
 #'   under the current working directory.
 #'
+#' @import pathview
 #' @export
 #' @seealso \code{\link[pathview]{pathview}} for pathway-based data integration
 #'   and visualization. See \code{\link{run_pathfindR}} for the wrapper function
