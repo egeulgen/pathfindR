@@ -4,7 +4,8 @@
 \alias{calculate_pw_scores}
 \title{Calculate Pathway Scores for Each Subject}
 \usage{
-calculate_pw_scores(pw_table, exp_mat, cases = NULL, plot_hmap = TRUE)
+calculate_pw_scores(pw_table, exp_mat, cases = NULL, plot_hmap = TRUE,
+  ...)
 }
 \arguments{
 \item{pw_table}{a data frame that must contain the 3 columns below:\describe{
@@ -22,6 +23,8 @@ case/control experiment.}
 
 \item{plot_hmap}{Boolean value to indicate whether or not to draw the
 heatmap plot of the scores. (default = TRUE)}
+
+\item{...}{Addtional arguments for `plot_scores` for aesthetics of the heatmap plot}
 }
 \value{
 Matrix of pathway scores per sample. Columns are samples, rows are

@@ -1,3 +1,11 @@
+# pathfindR 1.2.3.9000
+# to be released as pathfindR 1.2.3
+## Major Changes
+-
+## Minor changes and bug fixes
+- in the funtion `plot_scores`, added the argument `label_cases` to indicate whether or not to label the cases in the pathway scoring heatmap plot. Also added the argument `case_control_titles` which allows the user to change the default ‘Case’ and ‘Control’ headers. Also added the arguments `low` and `high` used to change the low and high end colors of the scoring color gradient.
+- in the funtion `calculate_pw_scores`, reversed the color gradient to match the coloring scheme used by pathview (i.e. red for positive values, green for negative values)
+
 # pathfindR 1.2.2
 
 ## Major Changes

@@ -4,7 +4,9 @@
 \alias{plot_scores}
 \title{Plot the Heatmap of Pathway Scores}
 \usage{
-plot_scores(score_matrix, cases = NULL)
+plot_scores(score_matrix, cases = NULL, label_cases = TRUE,
+  case_control_titles = c("Case", "Control"), low = "green",
+  high = "red")
 }
 \arguments{
 \item{score_matrix}{Matrix of pathway scores per sample. Columns are
@@ -12,12 +14,22 @@ samples, rows are pathways.}
 
 \item{cases}{(Optional) A vector of sample names that are cases in the
 case/control experiment.}
+
+\item{label_cases}{Boolean value to indicate whether or not to label the
+cases in the heatmap plot}
+
+\item{case_control_titles}{A vector of length two for naming of the 'Case'
+and 'Control' groups (in order) (default = c('Case', 'Control'))}
+
+\item{low}{a string indicating the color of 'low' values in the score coloring gradient (default = 'green')}
+
+\item{high}{a string indicating the color of 'high' values in the score coloring gradient (default = 'red')}
 }
 \value{
 A `ggplot2` object containing the heatmap plot. x-axis indicates
 the samples. y-axis indicates the pathways. "Pathway Score" indicates the
 pathway score of a sample. If `cases` are provided, the plot is divided
-into 2 facets: "Case" and "Control".
+into 2 facets, named by the `case_control_titles`.
 }
 \description{
 Plot the Heatmap of Pathway Scores

@@ -12,6 +12,7 @@
 #' case/control experiment.
 #' @param plot_hmap Boolean value to indicate whether or not to draw the
 #' heatmap plot of the scores. (default = TRUE)
+#' @param ... Addtional arguments for `plot_scores` for aesthetics of the heatmap plot
 #'
 #' @return Matrix of pathway scores per sample. Columns are samples, rows are
 #' pathways. Optionally, displays a heatmap of this matrix.
@@ -21,7 +22,7 @@
 #' @examples
 #' score_matrix <- calculate_pw_scores(RA_output, RA_exp_mat, plot_hmap = FALSE)
 calculate_pw_scores <- function(pw_table, exp_mat,
-                                cases = NULL, plot_hmap = TRUE) {
+                                cases = NULL, plot_hmap = TRUE, ...) {
   if (any(!cases %in% colnames(exp_mat)) & !is.null(cases))
     stop("Missing cases in the expression matrix!")
 
@@ -69,11 +70,11 @@ calculate_pw_scores <- function(pw_table, exp_mat,
     match2 <- setdiff(1:ncol(all_pws_scores), match1)
     all_pws_scores <- all_pws_scores[, c(match1, match2)]
     if (plot_hmap) {
-      heatmap <- plot_scores(all_pws_scores, cases)
+      heatmap <- plot_scores(score_matrix = all_pws_scores, cases = cases, ...)
       graphics::plot(heatmap)
     }
   } else if (plot_hmap) {
-    heatmap <- plot_scores(all_pws_scores)
+    heatmap <- plot_scores(score_matrix = all_pws_scores, ...)
     graphics::plot(heatmap)
   }
 
@@ -86,11 +87,17 @@ calculate_pw_scores <- function(pw_table, exp_mat,
 #' samples, rows are pathways.
 #' @param cases (Optional) A vector of sample names that are cases in the
 #' case/control experiment.
+#' @param label_cases Boolean value to indicate whether or not to label the
+#' cases in the heatmap plot
+#' @param case_control_titles A vector of length two for naming of the 'Case'
+#' and 'Control' groups (in order) (default = c('Case', 'Control'))
+#' @param low a string indicating the color of 'low' values in the score coloring gradient (default = 'green')
+#' @param high a string indicating the color of 'high' values in the score coloring gradient (default = 'red')
 #'
 #' @return A `ggplot2` object containing the heatmap plot. x-axis indicates
 #' the samples. y-axis indicates the pathways. "Pathway Score" indicates the
 #' pathway score of a sample. If `cases` are provided, the plot is divided
-#' into 2 facets: "Case" and "Control".
+#' into 2 facets, named by the `case_control_titles`.
 #'
 #' @import ggplot2
 #' @export
@@ -98,12 +105,14 @@ calculate_pw_scores <- function(pw_table, exp_mat,
 #' @examples
 #' score_mat <- calculate_pw_scores(RA_output, RA_exp_mat, plot_hmap = FALSE)
 #' hmap <- plot_scores(score_mat)
-plot_scores <- function(score_matrix, cases = NULL) {
+plot_scores <- function(score_matrix, cases = NULL, label_cases = TRUE,
+                        case_control_titles = c('Case', 'Control'), low = 'green', high = 'red') {
+  if (length(case_control_titles) != 2)
+    stop("'case_control_titles' must contain two elements!")
   if (any(!cases %in% colnames(score_matrix)) & !is.null(cases))
     stop("Missing cases in the score matrix!")
 
   ## sort according to activity
-
   if (!is.null(cases)) {
     tmp <- rowMeans(score_matrix[, cases, drop = FALSE])
     score_matrix <- score_matrix[c(which(tmp >= 0), which(tmp < 0)),]
@@ -119,11 +128,11 @@ plot_scores <- function(score_matrix, cases = NULL) {
   scores <- data.frame(scores)
   score_df <- cbind(score_df, scores)
   if (!is.null(cases))
-    score_df$Type <- ifelse(score_df$Sample %in% cases, "Case", "Control")
+    score_df$Type <- factor(ifelse(score_df$Sample %in% cases, case_control_titles[1], case_control_titles[2]), levels = case_control_titles)
 
   g <- ggplot2::ggplot(score_df, ggplot2::aes_(x = ~Sample, y = ~Pathway))
   g <- g + ggplot2::geom_tile(ggplot2::aes_(fill = ~scores), color = "white")
-  g <- g + ggplot2::scale_fill_gradient2(low = "red", mid = "black", high = "green")
+  g <- g + ggplot2::scale_fill_gradient2(low = low, mid = "black", high = high)
   g <- g + ggplot2::theme(axis.title.x=ggplot2::element_blank(),
                           axis.title.y=ggplot2::element_blank(),
                           axis.text.x = ggplot2::element_text(angle = 45, hjust = 1),
@@ -133,6 +142,10 @@ plot_scores <- function(score_matrix, cases = NULL) {
   if (!is.null(cases)) {
     g <- g + ggplot2::facet_grid(~ Type, scales = "free_x", space = "free")
     g <- g + ggplot2::theme(strip.text.x = ggplot2::element_text(size=12, face="bold"))
+  }
+  if (!label_cases) {
+    g <- g + ggplot2::theme(axis.text.x = ggplot2::element_blank(),
+                            axis.ticks.x = ggplot2::element_blank())
   }
   return(g)
 }
