@@ -41,7 +41,7 @@ calculate_pw_scores <- function(pw_table, exp_mat,
 
     if (length(genes) != 0) {
       # subset exp. matrix to include only DEGs
-      sub_mat <- exp_mat[rownames(exp_mat) %in% genes, , drop = FALSE]
+      sub_mat <- exp_mat[rownames(exp_mat) %in% genes,, drop = FALSE]
 
       pw_score_matrix <- c()
       for (gene in genes) {
@@ -53,7 +53,7 @@ calculate_pw_scores <- function(pw_table, exp_mat,
         gene_mean <- mean(gene_vec)
         gene_sd <- sd(gene_vec)
 
-        gene_scores <- sapply(gene_vec, function(x) (x - gene_mean)/gene_sd)
+        gene_scores <- sapply(gene_vec, function(x) (x - gene_mean) / gene_sd)
         pw_score_matrix <- rbind(pw_score_matrix, gene_scores)
         rownames(pw_score_matrix)[nrow(pw_score_matrix)] <- gene
       }
@@ -106,16 +106,16 @@ calculate_pw_scores <- function(pw_table, exp_mat,
 #' score_mat <- calculate_pw_scores(RA_output, RA_exp_mat, plot_hmap = FALSE)
 #' hmap <- plot_scores(score_mat)
 plot_scores <- function(score_matrix, cases = NULL, label_cases = TRUE,
-                        case_control_titles = c('Case', 'Control'), low = 'green', high = 'red') {
+                        case_control_titles = c("Case", "Control"), low = "green", high = "red") {
   if (length(case_control_titles) != 2)
-    stop("'case_control_titles' must contain two elements!")
+    stop("\"case_control_titles\" must contain two elements!")
   if (any(!cases %in% colnames(score_matrix)) & !is.null(cases))
     stop("Missing cases in the score matrix!")
 
   ## sort according to activity
   if (!is.null(cases)) {
     tmp <- rowMeans(score_matrix[, cases, drop = FALSE])
-    score_matrix <- score_matrix[c(which(tmp >= 0), which(tmp < 0)),]
+    score_matrix <- score_matrix[c(which(tmp >= 0), which(tmp < 0)), ]
   }
 
   ## transform the matrix
@@ -133,15 +133,15 @@ plot_scores <- function(score_matrix, cases = NULL, label_cases = TRUE,
   g <- ggplot2::ggplot(score_df, ggplot2::aes_(x = ~Sample, y = ~Pathway))
   g <- g + ggplot2::geom_tile(ggplot2::aes_(fill = ~scores), color = "white")
   g <- g + ggplot2::scale_fill_gradient2(low = low, mid = "black", high = high)
-  g <- g + ggplot2::theme(axis.title.x=ggplot2::element_blank(),
-                          axis.title.y=ggplot2::element_blank(),
+  g <- g + ggplot2::theme(axis.title.x = ggplot2::element_blank(),
+                          axis.title.y = ggplot2::element_blank(),
                           axis.text.x = ggplot2::element_text(angle = 45, hjust = 1),
                           legend.title = ggplot2::element_text(size = 10),
                           legend.text = ggplot2::element_text(size = 12))
   g <- g + ggplot2::labs(fill = "Pathway\nscore")
   if (!is.null(cases)) {
     g <- g + ggplot2::facet_grid(~ Type, scales = "free_x", space = "free")
-    g <- g + ggplot2::theme(strip.text.x = ggplot2::element_text(size=12, face="bold"))
+    g <- g + ggplot2::theme(strip.text.x = ggplot2::element_text(size = 12, face="bold"))
   }
   if (!label_cases) {
     g <- g + ggplot2::theme(axis.text.x = ggplot2::element_blank(),

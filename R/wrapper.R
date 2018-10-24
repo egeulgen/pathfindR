@@ -436,7 +436,7 @@ enrichment_chart <- function(result_df, plot_by_cluster = FALSE) {
   g <- g + ggplot2::theme(axis.text.x = ggplot2::element_text(size = 10),
                           axis.text.y = ggplot2::element_text(size = 10),
                           plot.title = ggplot2::element_blank())
-  g <- g + ggplot2::xlab("Fold Enrichment") + ggplot2::ylab('')
+  g <- g + ggplot2::xlab("Fold Enrichment") + ggplot2::ylab("")
   g <- g + ggplot2::labs(size = "# of DEGs", color = "-log10(lowest-p)")
   g <- g + ggplot2::scale_color_continuous(low = "#f5efef", high = "red")
 
@@ -529,8 +529,7 @@ choose_clusters <- function(result_df, auto = TRUE, agg_method = "average",
 
   ## Check if clustering should be performed
 
-  if (nrow(result_df) < 3)
-  {
+  if (nrow(result_df) < 3) {
     warning("There are less than 3 pathways in result_df so clustering is not performed!")
     result_df$Cluster <- 1:nrow(result_df)
     result_df$Status <- "Representative"

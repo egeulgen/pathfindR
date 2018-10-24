@@ -58,7 +58,7 @@ enrichment <- function(genes_by_pathway, genes_of_interest,
 
 
   idx <- order(enrichment_res$p_value)
-  enrichment_res <- enrichment_res[idx, , drop = FALSE]
+  enrichment_res <- enrichment_res[idx,, drop = FALSE]
   enrichment_res$adj_p <- stats::p.adjust(enrichment_res$p, method = adj_method)
 
   if (all(enrichment_res$adj_p > enrichment_threshold))

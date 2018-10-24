@@ -4,21 +4,21 @@
 \alias{parseActiveSnwSearch}
 \title{Parse Active Subnetwork Search Output File}
 \usage{
-parseActiveSnwSearch(active_snw_path, signif_genes, score_thr = 3,
-  sig_gene_thr = 2)
+parseActiveSnwSearch(active_snw_path, signif_genes, score_thr = 15,
+  sig_gene_thr = 5)
 }
 \arguments{
 \item{active_snw_path}{path to the output of an Active Subnetwork Search.}
 
 \item{signif_genes}{the vector of significant genes.}
 
-\item{score_thr}{active subnetwork score threshold (Default = 3)}
+\item{score_thr}{active subnetwork score threshold (Default = 15)}
 
-\item{sig_gene_thr}{threshold for minimum number of significant genes (Default = 2)}
+\item{sig_gene_thr}{threshold for minimum number of significant genes (Default = 5)}
 }
 \value{
-A list of genes in every active subnetwork that has a score > 3 and
-  that has at least 2 significant genes.
+A list of genes in every active subnetwork that has a score > `score_thr` and
+  that has at least `sig_gene_thr` significant genes.
 }
 \description{
 Parse Active Subnetwork Search Output File
@@ -26,7 +26,7 @@ Parse Active Subnetwork Search Output File
 \examples{
 \dontshow{
 parseActiveSnwSearch(normalizePath(system.file("extdata/resultActiveSubnetworkSearch.txt",
-package = "pathfindR")), RA_input$Gene.symbol)
+package = "pathfindR")), pathfindR::RA_input$Gene.symbol)
 }
 \dontrun{
 parseActiveSnwSearch("path/to/output", significant_genes)
