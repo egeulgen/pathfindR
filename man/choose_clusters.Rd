@@ -4,9 +4,9 @@
 \alias{choose_clusters}
 \title{Cluster Pathways and Partition the Dendrogram}
 \usage{
-choose_clusters(result_df, auto = TRUE, agg_method = "average",
-  plot_heatmap = FALSE, plot_dend = FALSE, use_names = FALSE,
-  custom_genes = NULL)
+choose_clusters(result_df, p_val_threshold = 0.05, auto = TRUE,
+  agg_method = "average", plot_heatmap = FALSE, plot_dend = FALSE,
+  use_names = FALSE, custom_genes = NULL)
 }
 \arguments{
 \item{result_df}{data frame of enriched pathways. Must-have columns are: \enumerate{
@@ -14,6 +14,8 @@ choose_clusters(result_df, auto = TRUE, agg_method = "average",
 \item{lowest_p}{the lowest adjusted-p value of the given pathway over all iterations}
 \item{highest_p}{the highest adjusted-p value of the given pathway over all iterations}
 }}
+
+\item{p_val_threshold}{p value threshold for filtering the pathways prior to clustering (default: 0.05)}
 
 \item{auto}{boolean value indicating whether to select the optimal number of clusters
 automatically. If FALSE, a shiny application is displayed, where the user can manually

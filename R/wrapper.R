@@ -470,6 +470,7 @@ enrichment_chart <- function(result_df, plot_by_cluster = FALSE) {
 #'   \item{lowest_p}{the lowest adjusted-p value of the given pathway over all iterations}
 #'   \item{highest_p}{the highest adjusted-p value of the given pathway over all iterations}
 #'   }
+#' @param p_val_threshold p value threshold for filtering the pathways prior to clustering (default: 0.05)
 #' @param auto boolean value indicating whether to select the optimal number of clusters
 #' automatically. If FALSE, a shiny application is displayed, where the user can manually
 #' partition the clustering dendrogram (default: TRUE).
@@ -511,7 +512,7 @@ enrichment_chart <- function(result_df, plot_by_cluster = FALSE) {
 #'
 #' @examples
 #' choose_clusters(RA_output)
-choose_clusters <- function(result_df, auto = TRUE, agg_method = "average",
+choose_clusters <- function(result_df, p_val_threshold = 0.05, auto = TRUE, agg_method = "average",
                             plot_heatmap = FALSE, plot_dend = FALSE, use_names = FALSE, custom_genes = NULL) {
   ## argument checks
   if (!is.logical(auto))
@@ -527,6 +528,13 @@ choose_clusters <- function(result_df, auto = TRUE, agg_method = "average",
   if (!is.logical(plot_heatmap))
     stop("The argument `plot_dend` must be either TRUE or FALSE!")
 
+  if (!is.numeric(p_val_threshold))
+    stop("`p_val_threshold` must be a numeric value between 0 and 1")
+
+  if (p_val_threshold > 1 | p_val_threshold < 0)
+    stop("`p_val_threshold` must be between 0 and 1")
+
+
   ## Check if clustering should be performed
 
   if (nrow(result_df) < 3) {
@@ -535,6 +543,9 @@ choose_clusters <- function(result_df, auto = TRUE, agg_method = "average",
     result_df$Status <- "Representative"
     return(result_df)
   }
+
+  ## Filter for p value
+  result_df <- result_df[result_df$highest_p <= p_val_threshold, ]
 
   ## Create PWD matrix
   message("Calculating pairwise distances between pathways\n\n")
