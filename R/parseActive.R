@@ -40,7 +40,7 @@ parseActiveSnwSearch <- function(active_snw_path, signif_genes,
   }
 
   # keep subnetworks with score over the "score_quan_thr"th quantile
-  score_thr <- quantile(score_vec, score_quan_thr)
+  score_thr <- stats::quantile(score_vec, score_quan_thr)
   subnetworks <- subnetworks[as.numeric(score_vec) > as.numeric(score_thr)]
   # select subnetworks with at least sig_gene_thr significant genes
   snw_sig_counts <- sapply(subnetworks, function(snw) sum(snw %in% signif_genes))
