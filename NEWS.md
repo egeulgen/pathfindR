@@ -1,4 +1,4 @@
-# pathfindR 1.2.3.9000
+# pathfindR 1.2.3
 ## Major Changes
 -
 ## Minor changes and bug fixes
