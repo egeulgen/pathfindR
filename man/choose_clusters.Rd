@@ -67,7 +67,8 @@ doi:10.1371/journal.pone.0099030 (2014)." for details on the method of
 pathway clustering.
 }
 \examples{
-choose_clusters(RA_output)
+## Cluster pathways with p <= 0.01
+choose_clusters(RA_output, p_val_threshold = 0.01)
 }
 \seealso{
 See \code{\link{calculate_pwd}} for calculation of pairwise

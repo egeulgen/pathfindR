@@ -511,7 +511,8 @@ enrichment_chart <- function(result_df, plot_by_cluster = FALSE) {
 #'   for the wrapper function of the pathfindR enrichment workflow.
 #'
 #' @examples
-#' choose_clusters(RA_output)
+#' ## Cluster pathways with p <= 0.01
+#' choose_clusters(RA_output, p_val_threshold = 0.01)
 choose_clusters <- function(result_df, p_val_threshold = 0.05, auto = TRUE, agg_method = "average",
                             plot_heatmap = FALSE, plot_dend = FALSE, use_names = FALSE, custom_genes = NULL) {
   ## argument checks
