@@ -10,9 +10,9 @@ run_pathfindR(input, p_val_threshold = 0.05,
   saTemp1 = 0.01, saIter = 10000, gaPop = 400, gaIter = 10000,
   gaThread = 5, gaMut = 0, grMaxDepth = 1, grSearchDepth = 1,
   grOverlap = 0.5, grSubNum = 1000, iterations = 10,
-  n_processes = NULL, pin_name_path = "Biogrid", score_thr = 3,
-  sig_gene_thr = 2, gene_sets = "KEGG", custom_genes = NULL,
-  custom_pathways = NULL, bubble = TRUE,
+  n_processes = NULL, pin_name_path = "Biogrid",
+  score_quan_thr = 0.8, sig_gene_thr = 10, gene_sets = "KEGG",
+  custom_genes = NULL, custom_pathways = NULL, bubble = TRUE,
   output_dir = "pathfindR_Results", list_active_snw_genes = FALSE,
   silent_option = TRUE)
 }
@@ -79,9 +79,9 @@ must be one of c("Biogrid", "GeneMania", "IntAct", "KEGG"). If
 path/to/PIN.sif, the file must comply with the PIN specifications. Defaults
 to "Biogrid".}
 
-\item{score_thr}{active subnetwork score threshold (Default = 3)}
+\item{score_quan_thr}{active subnetwork score quantile threshold (Default = 0.80)}
 
-\item{sig_gene_thr}{threshold for minimum number of significant genes (Default = 2)}
+\item{sig_gene_thr}{threshold for minimum number of significant genes (Default = 10)}
 
 \item{gene_sets}{the gene sets to be used for enrichment analysis. Available gene sets
 are KEGG, Reactome, BioCarta, GO-BP, GO-CC, GO-MF or Custom. If "Custom", the arguments
