@@ -1,6 +1,15 @@
-# pathfindR 1.2.3
+# pathfindR 1.2.4.9000
+
+## _To be released as pathfindR 1.2.4_
+
 ## Major Changes
--
+- None
+
+## Minor changes and bug fixes
+- the arguments `score_quan_thr` and `sig_gene_thr` for `run_pathfindR` were not being utilized. Fixed this bug.
+- in `run_pathfindR`, added message at the end of run, reporting the number enriched pathways.
+
+# pathfindR 1.2.3
 ## Minor changes and bug fixes
 - in the funtion `plot_scores`, added the argument `label_cases` to indicate whether or not to label the cases in the pathway scoring heatmap plot. Also added the argument `case_control_titles` which allows the user to change the default ‘Case’ and ‘Control’ headers. Also added the arguments `low` and `high` used to change the low and high end colors of the scoring color gradient.
 - in the funtion `plot_scores`, reversed the color gradient to match the coloring scheme used by pathview (i.e. red for positive values, green for negative values)

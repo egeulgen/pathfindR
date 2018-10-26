@@ -46,8 +46,8 @@
 #'  used by foreach. If not specified, the function determines this
 #'  automatically (Default == NULL. Gets set to 1 for Genetic Algorithm)
 #'@inheritParams return_pin_path
-#'@param score_thr active subnetwork score threshold (Default = 3)
-#'@param sig_gene_thr threshold for minimum number of significant genes (Default = 2)
+#'@param score_quan_thr active subnetwork score quantile threshold (Default = 0.80)
+#'@param sig_gene_thr threshold for minimum number of significant genes (Default = 10)
 #'@param gene_sets the gene sets to be used for enrichment analysis. Available gene sets
 #'  are KEGG, Reactome, BioCarta, GO-BP, GO-CC, GO-MF or Custom. If "Custom", the arguments
 #'  custom_genes and custom pathways must be specified. (Default = "KEGG")
@@ -126,7 +126,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
                           grOverlap = 0.5, grSubNum = 1000,
                           iterations = 10, n_processes = NULL,
                           pin_name_path = "Biogrid",
-                          score_thr = 3, sig_gene_thr = 2,
+                          score_quan_thr = 0.80, sig_gene_thr = 10,
                           gene_sets = "KEGG",
                           custom_genes = NULL, custom_pathways = NULL,
                           bubble = TRUE,
@@ -240,7 +240,10 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
 
     # parse
     snws <- pathfindR::parseActiveSnwSearch(
-      "resultActiveSubnetworkSearch.txt", input_processed$GENE)
+      "resultActiveSubnetworkSearch.txt",
+      signif_genes = input_processed$GENE,
+      score_quan_thr = score_quan_thr,
+      sig_gene_thr = sig_gene_thr)
 
     message(paste0("Found ", length(snws), " active subnetworks\n\n"))
 
@@ -376,6 +379,8 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
     message("Plotting the enrichment bubble chart\n\n")
     graphics::plot(enrichment_chart(final_res))
   }
+
+  message(paste0("Found ", nrow(final_res), " enriched pathways\n\n"))
 
   message("Pathway enrichment results and converted genes ")
   message("can be found in \"results.html\" ")
