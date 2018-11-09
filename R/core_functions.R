@@ -179,6 +179,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   org_dir <- getwd()
   dir.create(output_dir, recursive = TRUE)
   setwd(output_dir)
+  output_dir <- getwd()
 
   ## turn silent_option into an argument
   silent_option <- ifelse(silent_option, " > console_out.txt", "")
@@ -229,8 +230,6 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   }
 
   geneInitProbs <- seq(from = 0.01, to = 0.2, length.out = iterations)
-
-  org_dir <- getwd()
 
   `%dopar%` <- foreach::`%dopar%`
   final_res <- foreach::foreach(i = 1:iterations, .combine = rbind) %dopar% {
@@ -311,7 +310,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
     enrichment_res
   }
   parallel::stopCluster(cl)
-  setwd(org_dir)
+  setwd(output_dir)
 
   if (is.null(final_res)) {
     setwd(org_dir)
