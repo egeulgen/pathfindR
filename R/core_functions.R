@@ -135,9 +135,17 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
                           list_active_snw_genes = FALSE,
                           silent_option = TRUE) {
   ## Argument checks
+  # Active Subnetwork Search
   if (!search_method %in% c("GR", "SA", "GA"))
     stop("`search_method` must be one of \"GR\", \"SA\", \"GA\"")
 
+  if (!is.logical(use_all_positives))
+    stop("the argument `use_all_positives` must be either TRUE or FALSE")
+
+  if (!is.logical(silent_option))
+    stop("the argument `silent_option` must be either TRUE or FALSE")
+
+  # Gene Sets
   if (!gene_sets %in% c("KEGG", "Reactome", "BioCarta",
                         "GO-All", "GO-BP", "GO-CC", "GO-MF", "Custom"))
     stop("`gene_sets` must be one of KEGG, Reactome, BioCarta, GO-All, GO-BP, GO-CC, GO-MF or Custom")
@@ -145,20 +153,27 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   if (gene_sets == "Custom" & (is.null(custom_genes) | is.null(custom_pathways)))
     stop("You must provide both `custom_genes` and `custom_pathways` if `gene_sets` is `Custom`!")
 
-  if (!is.logical(use_all_positives))
-    stop("the argument `use_all_positives` must be either TRUE or FALSE")
-
+  # Enrichment chart option
   if (!is.logical(bubble))
     stop("the argument `bubble` must be either TRUE or FALSE")
 
-  if (!is.logical(silent_option))
-    stop("the argument `silent_option` must be either TRUE or FALSE")
-
   ## create output dir
-  if (dir.exists(output_dir)) {
-    warning(paste0("There already is a directoy named \"", output_dir,
-                   "\". Changing to \"", output_dir, "(1)\" not to overwrite the previous results."))
-    output_dir <- paste0(output_dir, "(1)")
+  dir_changed <- FALSE
+  output_dir_init <- output_dir
+  while(dir.exists(output_dir)) {
+    if (grepl("\\(\\d+\\)$" , output_dir)) {
+      output_dir <- unlist(strsplit(output_dir, "\\(" ))
+      suffix <- as.numeric(sub("\\)", "", output_dir[2])) + 1
+      output_dir <- paste0(output_dir[1], "(", suffix, ")")
+    } else {
+      output_dir <- paste0(output_dir, "(1)")
+    }
+    dir_changed <- TRUE
+  }
+
+  if (dir_changed) {
+    warning(paste0("There is already a directory named \"", output_dir_init,
+                   "\". Changing the name to \"", output_dir, " not to overwrite the previous results."))
   }
 
   org_dir <- getwd()
