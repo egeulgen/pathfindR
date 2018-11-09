@@ -27,7 +27,7 @@ run_pathfindR(input, p_val_threshold = 0.05,
 \item{p_val_threshold}{the adjusted-p value threshold to use when filtering
 the input data frame. Must a numeric value between 0 and 1.}
 
-\item{enrichment_threshold}{threshold used when filtering individual pathway
+\item{enrichment_threshold}{threshold used when filtering individual iterations' pathway
 enrichment results}
 
 \item{adj_method}{correction method to be used for adjusting p-values of

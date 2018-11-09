@@ -4,7 +4,7 @@
 \alias{input_testing}
 \title{Input Testing}
 \usage{
-input_testing(input, p_val_threshold)
+input_testing(input, p_val_threshold, org_dir = NULL)
 }
 \arguments{
 \item{input}{the input data that pathfindR uses. The input must be a data
@@ -16,6 +16,8 @@ input_testing(input, p_val_threshold)
 
 \item{p_val_threshold}{the adjusted-p value threshold to use when filtering
 the input data frame. Must a numeric value between 0 and 1.}
+
+\item{org_dir}{path/to/original/directory, supplied by run_pathfindR (default = NULL)}
 }
 \value{
 Only checks if the input and the threshold follows the required

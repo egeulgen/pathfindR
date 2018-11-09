@@ -15,7 +15,7 @@
 #'are reported for each enriched pathway.
 #'
 #'@inheritParams input_testing
-#'@param enrichment_threshold threshold used when filtering individual pathway
+#'@param enrichment_threshold threshold used when filtering individual iterations' pathway
 #'  enrichment results
 #'@param adj_method correction method to be used for adjusting p-values of
 #'  pathway enrichment results (Default: 'bonferroni')
@@ -160,6 +160,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
     output_dir <- paste0(output_dir, "(1)")
   }
 
+  org_dir <- getwd()
   dir.create(output_dir, recursive = TRUE)
   setwd(output_dir)
 
@@ -185,11 +186,11 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
 
   ## Check input
   message("## Testing input\n\n")
-  input_testing(input, p_val_threshold)
+  input_testing(input, p_val_threshold, org_dir)
 
   ## Process input
   message("## Processing input. Converting gene symbols, if necessary\n\n")
-  input_processed <- input_processing(input, p_val_threshold, pin_path)
+  input_processed <- input_processing(input, p_val_threshold, pin_path, org_dir)
 
   dir.create("active_snw_search")
   utils::write.table(input_processed[, c("GENE", "P_VALUE")],
@@ -294,7 +295,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   setwd(org_dir)
 
   if (is.null(final_res)) {
-    setwd("..")
+    setwd(org_dir)
     warning("Did not find any enriched pathways!")
     return(data.frame())
   }
@@ -372,7 +373,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   rmarkdown::render(system.file("rmd/genes_table.Rmd", package = "pathfindR"),
                     params = list(df = input_processed, original_df = input), output_dir = ".")
 
-  setwd("..")
+  setwd(org_dir)
 
   ## Bubble Chart
   if (bubble) {
@@ -620,6 +621,7 @@ choose_clusters <- function(result_df, p_val_threshold = 0.05, auto = TRUE, agg_
 #'   must be one of c("Biogrid", "GeneMania", "IntAct", "KEGG"). If
 #'   path/to/PIN.sif, the file must comply with the PIN specifications. Defaults
 #'   to "Biogrid".
+#' @param org_dir path/to/original/directory, supplied by run_pathfindR (default = NULL)
 #'
 #' @return A character value that contains the path to chosen PIN.
 #'
@@ -630,7 +632,10 @@ choose_clusters <- function(result_df, p_val_threshold = 0.05, auto = TRUE, agg_
 #' pin_path <- return_pin_path("Biogrid")
 #' pin_path <- return_pin_path("KEGG")
 
-return_pin_path <- function(pin_name_path = "Biogrid") {
+return_pin_path <- function(pin_name_path = "Biogrid", org_dir = NULL) {
+  if (is.null(org_dir))
+    org_dir <- getwd()
+
   if (pin_name_path %in% c("Biogrid", "GeneMania",
                            "IntAct", "KEGG"))
     path <- normalizePath(system.file(paste0("extdata/", pin_name_path, ".sif"),
@@ -640,16 +645,16 @@ return_pin_path <- function(pin_name_path = "Biogrid") {
     pin <- utils::read.delim(file = path,
                              header = FALSE, stringsAsFactors = FALSE)
     if (ncol(pin) != 3) {
-      setwd("..")
+      setwd(org_dir)
       stop("The PIN file must have 3 columns and be tab-separated")
     }
 
     if (any(pin[, 2] != "pp")) {
-      setwd("..")
+      setwd(org_dir)
       stop("The second column of the PIN file must all be \"pp\" ")
     }
   } else {
-    setwd("..")
+    setwd(org_dir)
     stop(paste0("The chosen PIN must be one of:\n",
                 "Biogrid, GeneMania, IntAct, KEGG or a valid /path/to/SIF"))
 

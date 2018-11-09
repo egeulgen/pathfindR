@@ -8,6 +8,7 @@
 #' }
 #' @param p_val_threshold the adjusted-p value threshold to use when filtering
 #'   the input data frame. Must a numeric value between 0 and 1.
+#' @param org_dir path/to/original/directory, supplied by run_pathfindR (default = NULL)
 #'
 #' @return Only checks if the input and the threshold follows the required
 #'   specifications.
@@ -16,34 +17,37 @@
 #'   pathfindR workflow
 #' @examples
 #' input_testing(RA_input, 0.05)
-input_testing <- function(input, p_val_threshold){
+input_testing <- function(input, p_val_threshold, org_dir = NULL){
+  if (is.null(org_dir))
+    org_dir <- getwd()
+
   if (!is.data.frame(input)) {
-    setwd("..")
+    setwd(org_dir)
     stop("the input is not a data frame")
   }
 
   if (ncol(input) != 3){
-    setwd("..")
+    setwd(org_dir)
     stop("There must be exactly 3 columns in the input data frame")
   }
 
   if (!is.numeric(p_val_threshold)){
-    setwd("..")
+    setwd(org_dir)
     stop("`p_val_threshold` must be a numeric value between 0 and 1")
   }
 
   if (p_val_threshold > 1 | p_val_threshold < 0){
-    setwd("..")
+    setwd(org_dir)
     stop("`p_val_threshold` must be between 0 and 1")
   }
 
   if (!all(is.numeric(input[, 3]))) {
-    setwd("..")
+    setwd(org_dir)
     stop("p values, provided in the third column, must all be numeric")
   }
 
   if (any(input[, 3] > 1 | input[, 3] < 0)) {
-    setwd("..")
+    setwd(org_dir)
     stop("p values, provided in the third column, must all be between 0 and 1")
   }
 
@@ -62,6 +66,7 @@ input_testing <- function(input, p_val_threshold){
 #'   the input data frame
 #' @param pin_path path to the Protein Interaction Network (PIN) file used in
 #'   the analysis
+#' @param org_dir path/to/original/directory, supplied by run_pathfindR (default = NULL)
 #'
 #' @return This function first filters the input so that all p values are less
 #'   than or equal to the threshold. Next, gene symbols that are not found in
@@ -81,7 +86,10 @@ input_testing <- function(input, p_val_threshold){
 #' \dontrun{
 #' input_processing(RA_input, 0.05, return_pin_path("KEGG"))
 #' }
-input_processing <- function(input, p_val_threshold, pin_path) {
+input_processing <- function(input, p_val_threshold, pin_path, org_dir = NULL) {
+  if (is.null(org_dir))
+    org_dir <- getwd()
+
   colnames(input) <- c("GENE", "CHANGE", "P_VALUE")
 
   ## Turn GENE into character
@@ -164,7 +172,7 @@ input_processing <- function(input, p_val_threshold, pin_path) {
     input <- input[input$GENE != "NOT_FOUND", ]
 
     if (nrow(input) == 0) {
-      setwd("..")
+      setwd(org_dir)
       stop("None of the genes were in the PIN\nPlease check your gene symbols")
     }
 

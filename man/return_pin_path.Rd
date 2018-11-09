@@ -4,13 +4,15 @@
 \alias{return_pin_path}
 \title{Return The Path to Given Protein-Protein Interaction Network (PIN)}
 \usage{
-return_pin_path(pin_name_path = "Biogrid")
+return_pin_path(pin_name_path = "Biogrid", org_dir = NULL)
 }
 \arguments{
 \item{pin_name_path}{Name of the chosen PIN or path/to/PIN.sif. If PIN name,
 must be one of c("Biogrid", "GeneMania", "IntAct", "KEGG"). If
 path/to/PIN.sif, the file must comply with the PIN specifications. Defaults
 to "Biogrid".}
+
+\item{org_dir}{path/to/original/directory, supplied by run_pathfindR (default = NULL)}
 }
 \value{
 A character value that contains the path to chosen PIN.

@@ -4,7 +4,7 @@
 \alias{input_processing}
 \title{Process Input}
 \usage{
-input_processing(input, p_val_threshold, pin_path)
+input_processing(input, p_val_threshold, pin_path, org_dir = NULL)
 }
 \arguments{
 \item{input}{the input data that pathfindR uses. The input must be a data
@@ -19,6 +19,8 @@ the input data frame}
 
 \item{pin_path}{path to the Protein Interaction Network (PIN) file used in
 the analysis}
+
+\item{org_dir}{path/to/original/directory, supplied by run_pathfindR (default = NULL)}
 }
 \value{
 This function first filters the input so that all p values are less
