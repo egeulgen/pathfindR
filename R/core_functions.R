@@ -49,7 +49,7 @@
 #'@param score_quan_thr active subnetwork score quantile threshold (Default = 0.80)
 #'@param sig_gene_thr threshold for minimum number of significant genes (Default = 10)
 #'@param gene_sets the gene sets to be used for enrichment analysis. Available gene sets
-#'  are KEGG, Reactome, BioCarta, GO-BP, GO-CC, GO-MF or Custom. If "Custom", the arguments
+#'  are KEGG, Reactome, BioCarta, GO-All, GO-BP, GO-CC, GO-MF or Custom. If "Custom", the arguments
 #'  custom_genes and custom pathways must be specified. (Default = "KEGG")
 #'@param custom_genes a list containing the genes involved in each custom pathway. Each element
 #' is a vector of gene symbols located in the given pathway. Names correspond to
@@ -138,8 +138,8 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
     stop("`search_method` must be one of \"GR\", \"SA\", \"GA\"")
 
   if (!gene_sets %in% c("KEGG", "Reactome", "BioCarta",
-                        "GO-BP", "GO-CC", "GO-MF", "Custom"))
-    stop("`gene_sets` must be one of KEGG, Reactome, BioCarta, GO-BP, GO-CC, GO-MF or Custom")
+                        "GO-All", "GO-BP", "GO-CC", "GO-MF", "Custom"))
+    stop("`gene_sets` must be one of KEGG, Reactome, BioCarta, GO-All, GO-BP, GO-CC, GO-MF or Custom")
 
   if (gene_sets == "Custom" & (is.null(custom_genes) | is.null(custom_pathways)))
     stop("You must provide both `custom_genes` and `custom_pathways` if `gene_sets` is `Custom`!")
@@ -257,6 +257,9 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
     } else if (gene_sets == "BioCarta") {
       genes_by_pathway <- pathfindR::biocarta_genes
       pathways_list <- pathfindR::biocarta_pathways
+    } else if (gene_sets == "GO-All") {
+      genes_by_pathway <- pathfindR::go_all_genes
+      pathways_list <- pathfindR::go_all_pathways
     } else if (gene_sets == "GO-BP") {
       genes_by_pathway <- pathfindR::go_bp_genes
       pathways_list <- pathfindR::go_bp_pathways
@@ -339,6 +342,8 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
       genes_by_pathway <- pathfindR::reactome_genes
     } else if (gene_sets == "BioCarta") {
       genes_by_pathway <- pathfindR::biocarta_genes
+    } else if (gene_sets == "GO-All") {
+      genes_by_pathway <- pathfindR::go_all_genes
     } else if (gene_sets == "GO-BP") {
       genes_by_pathway <- pathfindR::go_bp_genes
     } else if (gene_sets == "GO-CC") {
@@ -389,223 +394,6 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   message("Run choose_clusters() for clustering pathways\n\n")
 
   return(final_res)
-}
-
-#' Plot the Bubble Chart of Enrichment Results
-#'
-#' This function is used to plot a bubble chart displaying the enrichment
-#' results.
-#'
-#' @param result_df a data frame that must contain the following columns:\describe{
-#'   \item{Pathway}{Description of the enriched pathway}
-#'   \item{Fold_Enrichment}{Fold enrichment value for the enriched pathway}
-#'   \item{lowest_p}{the lowest adjusted-p value of the given pathway over all iterations}
-#'   \item{Up_regulated}{the up-regulated genes in the input involved in the given pathway, comma-separated}
-#'   \item{Down_regulated}{the down-regulated genes in the input involved in the given pathway, comma-separated}
-#'   \item{Cluster(OPTIONAL)}{the cluster to which the pathway is assigned}
-#' }
-#' @param plot_by_cluster boolean value indicating whether or not to group the
-#' pathways by cluster (works if "Cluster" is a column of `result_df`).
-#'
-#' @return a `ggplot2` object containing the bubble chart. The x-axis corresponds to
-#' fold enrichment values while the y-axis indicates the enriched pathways. Size of
-#' the bubble indicates the number of DEGs in the given pathway. Color indicates
-#' the -log10(lowest-p) value. The closer the color is to red, the more significant
-#' the enrichment is. Optionally, if "Cluster" is a column of `result_df` and
-#' plot_by_cluster == TRUE, the pathways are grouped by clusters.
-#'
-#' @import ggplot2
-#' @export
-#'
-#' @examples
-#' g <- enrichment_chart(RA_output)
-enrichment_chart <- function(result_df, plot_by_cluster = FALSE) {
-  necessary <- c("Pathway", "Fold_Enrichment", "lowest_p", "Up_regulated", "Down_regulated")
-  if (!all(necessary %in% colnames(result_df)))
-    stop("The input data frame must have the columns: Pathway, Fold_Enrichment, lowest_p, Up_regulated, Down_regulated")
-
-  if (!is.logical(plot_by_cluster))
-    stop("plot_by_cluster must be either TRUE or FALSE")
-
-  # sort by lowest adj.p
-  result_df <- result_df[order(result_df$lowest_p), ]
-
-  n <- sapply(result_df$Up_regulated, function(x) length(unlist(strsplit(x, ", "))))
-  n <- n + sapply(result_df$Down_regulated, function(x) length(unlist(strsplit(x, ", "))))
-
-  result_df$Pathway <- factor(result_df$Pathway, levels = rev(result_df$Pathway))
-
-  g <- ggplot2::ggplot(result_df, ggplot2::aes_(x = ~Fold_Enrichment, y = ~Pathway))
-  g <- g + ggplot2::geom_point(ggplot2::aes(color = -log10(result_df$lowest_p),
-                                            size = n), na.rm = TRUE)
-  g <- g + ggplot2::theme_bw()
-  g <- g + ggplot2::theme(axis.text.x = ggplot2::element_text(size = 10),
-                          axis.text.y = ggplot2::element_text(size = 10),
-                          plot.title = ggplot2::element_blank())
-  g <- g + ggplot2::xlab("Fold Enrichment") + ggplot2::ylab("")
-  g <- g + ggplot2::labs(size = "# of DEGs", color = "-log10(lowest-p)")
-  g <- g + ggplot2::scale_color_continuous(low = "#f5efef", high = "red")
-
-  if (plot_by_cluster & "Cluster" %in% colnames(result_df)) {
-    g <- g + ggplot2::facet_grid(result_df$Cluster~., scales = "free_y", space = "free", drop = TRUE)
-  } else if (plot_by_cluster) {
-    warning("For plotting by cluster, there must a column named `Cluster` in the input data frame!")
-  }
-
-  return(g)
-}
-
-#' Cluster Pathways and Partition the Dendrogram
-#'
-#' This function first calculates the pairwise distances between the
-#' pathways in the \code{result_df} data frame. Next, using this distance
-#' matrix, the pathways are clustered via hierarchical clustering. By default,
-#' the average silhouette width for each possible number of clusters is
-#' calculated. The optimal number of clusters is selected as the one with the
-#' highest average silhouette width. The dendrogram is cut into this optimal
-#' number of clusters, and the pathways with the lowest p value within each
-#' cluster are chosen as representative pathways. If 'auto == FALSE", the user
-#' can manually select at which height to cut the dendrogram via a shiny application.
-#' See "Chen, Y. A. et al. Integrated pathway clusters with coherent biological
-#' themes for target prioritisation. PLoS One 9, e99030,
-#' doi:10.1371/journal.pone.0099030 (2014)." for details on the method of
-#' pathway clustering.
-#'
-#' @param result_df data frame of enriched pathways. Must-have columns are: \enumerate{
-#'   \item{ID}{KEGG ID of the enriched pathway}
-#'   \item{lowest_p}{the lowest adjusted-p value of the given pathway over all iterations}
-#'   \item{highest_p}{the highest adjusted-p value of the given pathway over all iterations}
-#'   }
-#' @param p_val_threshold p value threshold for filtering the pathways prior to clustering (default: 0.05)
-#' @param auto boolean value indicating whether to select the optimal number of clusters
-#' automatically. If FALSE, a shiny application is displayed, where the user can manually
-#' partition the clustering dendrogram (default: TRUE).
-#' @param agg_method the agglomeration method to be used if plotting heatmap. Must be one of "ward.D", "ward.D2",
-#' "single", "complete", "average", "mcquitty", "median" or "centroid" (default: "average").
-#' @param plot_heatmap boolean value indicating whether or not to plot the heat
-#'   map of pathway clustering (default: FALSE).
-#' @param plot_dend boolean value indicating whether or not to plot the dendrogram
-#'   partitioned into the optimal number of clusters, shown by red rectangles (default: FALSE)
-#' @param use_names boolean value indicating whether to use gene set names instead of gene set ids (default: FALSE)
-#' @param custom_genes a list containing the genes involved in each custom pathway. Each element
-#' is a vector of gene symbols located in the given pathway. Names correspond to
-#' the ID of the pathway. Must be provided if `result_df` was generated using custom
-#' gene sets.
-#'
-#' @return  If 'auto' is FALSE, manual partitioning can be performed. Via a shiny HTML document, the
-#'   hierarchical clustering dendrogram is visualized. In this HTML document,
-#'   the user can select the agglomeration method and the distance value at
-#'   which to cut the tree. The resulting cluster assignments of the pathways
-#'   along with annotation of representative pathways (chosen by smallest lowest
-#'   p value) are presented as a table and this table can be saved as a csv
-#'   file.
-#'   If 'auto' is TRUE, automatic partitioning of clusters is performed. The function
-#'   adds 2 additional columns to the input data frame and returns it: \describe{
-#'   \item{Cluster}{the cluster to which the pathway is assigned}
-#'   \item{Status}{whether the pathway is the "Representative" pathway in its cluster or only a "Member"}
-#' }
-#'
-#' @import fpc
-#' @import knitr
-#' @import shiny
-#' @import rmarkdown
-#' @import stats
-#' @export
-#' @seealso See \code{\link{calculate_pwd}} for calculation of pairwise
-#'   distances between enriched pathways. See \code{\link[stats]{hclust}}
-#'   for more information on hierarchical clustering. See \code{\link{run_pathfindR}}
-#'   for the wrapper function of the pathfindR enrichment workflow.
-#'
-#' @examples
-#' ## Cluster pathways with p <= 0.01
-#' choose_clusters(RA_output, p_val_threshold = 0.01)
-choose_clusters <- function(result_df, p_val_threshold = 0.05, auto = TRUE, agg_method = "average",
-                            plot_heatmap = FALSE, plot_dend = FALSE, use_names = FALSE, custom_genes = NULL) {
-  ## argument checks
-  if (!is.logical(auto))
-    stop("The argument `auto` must be either TRUE or FALSE!")
-
-  if (!is.logical(plot_heatmap))
-    stop("The argument `plot_heatmap` must be either TRUE or FALSE!")
-
-  valid <- c("ward.D", "ward.D2", "single", "complete", "average", "mcquitty", "median", "centroid")
-  if (!agg_method %in% valid)
-    stop("`agg_method` must be one of ward.D, ward.D2, single, complete, average, mcquitty, median or centroid!")
-
-  if (!is.logical(plot_heatmap))
-    stop("The argument `plot_dend` must be either TRUE or FALSE!")
-
-  if (!is.numeric(p_val_threshold))
-    stop("`p_val_threshold` must be a numeric value between 0 and 1")
-
-  if (p_val_threshold > 1 | p_val_threshold < 0)
-    stop("`p_val_threshold` must be between 0 and 1")
-
-
-  ## Check if clustering should be performed
-
-  if (nrow(result_df) < 3) {
-    warning("There are less than 3 pathways in result_df so clustering is not performed!")
-    result_df$Cluster <- 1:nrow(result_df)
-    result_df$Status <- "Representative"
-    return(result_df)
-  }
-
-  ## Filter for p value
-  result_df <- result_df[result_df$highest_p <= p_val_threshold, ]
-
-  ## Create PWD matrix
-  message("Calculating pairwise distances between pathways\n\n")
-  PWD_mat <- pathfindR::calculate_pwd(result_df$ID, result_df$Pathway,
-                                      agg_method = agg_method,
-                                      plot_heatmap = plot_heatmap,
-                                      use_names,
-                                      custom_genes)
-  if (!auto) {
-    message("Creating the shiny app\n\n")
-    parameters <- list(df = result_df, mat = PWD_mat, use_names = use_names)
-    rmarkdown::run(system.file("rmd/clustering.Rmd", package = "pathfindR"),
-                   render_args = list(output_dir = ".", params = parameters))
-  } else {
-    ### Calculate PWDs and Cluster
-    message("Clustering pathways\n\n")
-    hclu <- stats::hclust(as.dist(PWD_mat), method = agg_method)
-
-    ### Optimal k
-    message("Calculating the optimal number of clusters (based on average silhouette width)\n\n")
-    kmax <- nrow(PWD_mat) - 1
-    avg_sils <- c()
-    for (i in 2:kmax)
-      avg_sils <- c(avg_sils, fpc::cluster.stats(stats::as.dist(PWD_mat),
-                                                 stats::cutree(hclu, k = i),
-                                                 silhouette = TRUE)$avg.silwidth)
-
-    k_opt <- (2:kmax)[which.max(avg_sils)]
-    if (plot_dend) {
-      to_plot <- hclu
-      if (use_names)
-        to_plot$labels <- result_df$Pathway[match(to_plot$labels, result_df$ID)]
-      graphics::plot(to_plot, hang = -1)
-      stats::rect.hclust(to_plot, k = k_opt)
-    }
-    message(paste("The maximum average silhouette width was", round(max(avg_sils), 2),
-              "for k =", k_opt, "\n\n"))
-
-    ### Return Optimal Clusters
-    clusters <- cutree(hclu, k = k_opt)
-
-    result_df$Cluster <- clusters[match(result_df$ID, names(clusters))]
-    tmp <- result_df$lowest_p
-    names(tmp) <- result_df$ID
-    tmp <- tapply(tmp, result_df$Cluster, function(x) names(x)[which.min(x)])
-    result_df$Status <- ifelse(result_df$ID %in% tmp, "Representative", "Member")
-
-    result_df <- result_df[order(result_df$Status, decreasing = TRUE), ]
-    result_df <- result_df[order(result_df$Cluster), ]
-
-    message("Returning the resulting data frame\n\n")
-    return(result_df)
-    }
 }
 
 #' Return The Path to Given Protein-Protein Interaction Network (PIN)
@@ -660,4 +448,192 @@ return_pin_path <- function(pin_name_path = "Biogrid", org_dir = NULL) {
 
   }
   return(path)
+}
+
+#' Input Testing
+#'
+#' @param input the input data that pathfindR uses. The input must be a data
+#'   frame with three columns: \enumerate{
+#'   \item Gene Symbol (HGNC Gene Symbol)
+#'   \item Change value, e.g. log(fold change)
+#'   \item adjusted p value associated with test, e.g. differential expression/methylation
+#' }
+#' @param p_val_threshold the adjusted-p value threshold to use when filtering
+#'   the input data frame. Must a numeric value between 0 and 1.
+#' @param org_dir path/to/original/directory, supplied by run_pathfindR (default = NULL)
+#'
+#' @return Only checks if the input and the threshold follows the required
+#'   specifications.
+#' @export
+#' @seealso See \code{\link{run_pathfindR}} for the wrapper function of the
+#'   pathfindR workflow
+#' @examples
+#' input_testing(RA_input, 0.05)
+input_testing <- function(input, p_val_threshold, org_dir = NULL){
+  if (is.null(org_dir))
+    org_dir <- getwd()
+
+  if (!is.data.frame(input)) {
+    setwd(org_dir)
+    stop("the input is not a data frame")
+  }
+
+  if (ncol(input) != 3){
+    setwd(org_dir)
+    stop("There must be exactly 3 columns in the input data frame")
+  }
+
+  if (!is.numeric(p_val_threshold)){
+    setwd(org_dir)
+    stop("`p_val_threshold` must be a numeric value between 0 and 1")
+  }
+
+  if (p_val_threshold > 1 | p_val_threshold < 0){
+    setwd(org_dir)
+    stop("`p_val_threshold` must be between 0 and 1")
+  }
+
+  if (!all(is.numeric(input[, 3]))) {
+    setwd(org_dir)
+    stop("p values, provided in the third column, must all be numeric")
+  }
+
+  if (any(input[, 3] > 1 | input[, 3] < 0)) {
+    setwd(org_dir)
+    stop("p values, provided in the third column, must all be between 0 and 1")
+  }
+
+  message("The input looks OK\n\n")
+}
+
+#' Process Input
+#'
+#' @param input the input data that pathfindR uses. The input must be a data
+#'   frame with three columns: \enumerate{
+#'   \item Gene Symbol (HGNC Gene Symbol)
+#'   \item Change value, e.g. log(fold change)
+#'   \item adjusted p value associated with test, e.g. differential expression/methylation
+#' }
+#' @param p_val_threshold the adjusted-p value threshold to use when filtering
+#'   the input data frame
+#' @param pin_path path to the Protein Interaction Network (PIN) file used in
+#'   the analysis
+#' @param org_dir path/to/original/directory, supplied by run_pathfindR (default = NULL)
+#'
+#' @return This function first filters the input so that all p values are less
+#'   than or equal to the threshold. Next, gene symbols that are not found in
+#'   the PIN are identified. If aliases of these gene symbols are found in the
+#'   PIN, the symbols are converted to the corresponding aliases. The
+#'   resulting data frame containing the original gene symbols, the updated
+#'   symbols, change values and p values is then returned.
+#' @export
+#'
+#' @seealso See \code{\link{run_pathfindR}} for the wrapper function of the
+#'   pathfindR workflow
+#'
+#' @examples
+#' \dontshow{
+#' input_processing(RA_input[1,], 0.05, return_pin_path("KEGG"))
+#' }
+#' \dontrun{
+#' input_processing(RA_input, 0.05, return_pin_path("KEGG"))
+#' }
+input_processing <- function(input, p_val_threshold, pin_path, org_dir = NULL) {
+  if (is.null(org_dir))
+    org_dir <- getwd()
+
+  colnames(input) <- c("GENE", "CHANGE", "P_VALUE")
+
+  ## Turn GENE into character
+  if (is.factor(input$GENE)) {
+    warning("The gene column was turned into character from factor.")
+    input$GENE <- as.character(input$GENE)
+  }
+  ## Discard larger than p-value threshold
+  input <- input[input$P_VALUE <= p_val_threshold, ]
+
+  ## Choose lowest p for each gene
+  if (anyDuplicated(input$GENE)) {
+    warning("Duplicated genes found!\nChoosing the lowest p value for each gene")
+    input <- input[order(input$P_VALUE, decreasing = FALSE), ]
+    input <- input[!duplicated(input$GENE), ]
+  }
+
+  ## Fix p < 1e-13
+  if (any(input$P_VALUE < 1e-13)) {
+    warning("pathfindR cannot handle p values < 1e-13\nThese were changed to 1e-13")
+    input$P_VALUE <- ifelse(input$P_VALUE < 1e-13, 1e-13, input$P_VALUE)
+  }
+
+  ## load and prep pin
+  pin <- utils::read.delim(file = pin_path,
+                           header = FALSE, stringsAsFactors = FALSE)
+  pin$V2 <- NULL
+
+  ## Genes not in pin
+  missing <- input$GENE[!input$GENE %in% c(pin[, 1], pin[, 2])]
+
+  if (length(missing) != 0) {
+    ## use sql to get alias table and gene_info table (contains the symbols)
+    ## first open the database connection
+    db_con <- org.Hs.eg.db::org.Hs.eg_dbconn()
+    ## write the SQL query
+    sql_query <-
+      "SELECT * FROM alias, gene_info WHERE alias._id == gene_info._id;"
+    ## execute the query on the database
+    alias_symbol <- DBI::dbGetQuery(db_con, sql_query)
+
+    select_alias <- function(result, converted, idx) {
+      if (idx == 0)
+        return("NOT_FOUND")
+      else if (result[idx] %in% converted[, 2])
+        return(result[idx - 1])
+      else
+        return(result[idx])
+    }
+
+    ## loop for getting all symbols
+    converted <- c()
+    for (i in 1:length(missing)) {
+      result <- alias_symbol[alias_symbol$alias_symbol == missing[i],
+                             c("alias_symbol", "symbol")]
+      result <- alias_symbol[alias_symbol$symbol %in% result$symbol,
+                             c("alias_symbol", "symbol")]
+      result <- result$alias_symbol[result$alias_symbol %in%
+                                      c(pin[, 1], pin[, 2])]
+      ## avoid duplicate entries
+      to_add <- select_alias(result, converted, length(result))
+      converted <- rbind(converted, c(missing[i], to_add))
+    }
+
+    ## Give out warning indicating the number of still missing
+    n <- sum(converted[, 2] == "NOT_FOUND")
+    perc <- n / nrow(input) * 100
+    if (sum(converted[, 2] == "NOT_FOUND") != 0)
+      message(paste0("Could not find any interactions for ",
+                     n,
+                     " (", round(perc, 2), "%) genes in the PIN\n\n"))
+
+    ## Convert to appropriate symbol
+    input$new_gene <- input$GENE
+    input$new_gene[match(converted[, 1], input$new_gene)] <- converted[, 2]
+
+    input <- input[, c(1, 4, 2, 3)]
+    colnames(input) <- c("old_GENE", "GENE", "CHANGE", "P_VALUE")
+
+    input <- input[input$GENE != "NOT_FOUND", ]
+
+    if (nrow(input) == 0) {
+      setwd(org_dir)
+      stop("None of the genes were in the PIN\nPlease check your gene symbols")
+    }
+
+    input <- input[order(input$P_VALUE), ]
+    input <- input[!duplicated(input$GENE), ]
+  } else {
+    message(paste0("Found interactions for all genes in the PIN\n\n"))
+    input$old_GENE <- input$GENE
+    input <- input[, c(4, 1, 2, 3)]
+  }
+  return(input)
 }

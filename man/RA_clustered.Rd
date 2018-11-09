@@ -4,7 +4,7 @@
 \name{RA_clustered}
 \alias{RA_clustered}
 \title{Example Output for the pathfindR Clustering Workflow - Rheumatoid Arthritis}
-\format{A data frame with 33 rows and 8 columns:
+\format{A data frame with 79 rows and 10 columns:
 \describe{
   \item{ID}{KEGG ID of the enriched pathway}
   \item{Pathway}{Description of the enriched pathway}
@@ -24,7 +24,7 @@ RA_clustered
 A dataset containing the results of pathfindR's pathway clustering and
 partitioning  workflow performed on the rheumatoid arthritis
 enrichment results \code{RA_output}. The number of clusters were detected
-automatically as 11 and the agglomeration method was "average".
+automatically as 8 and the agglomeration method was "average".
 }
 \seealso{
 \code{\link{RA_input}} for example input of the enrichment workflow.

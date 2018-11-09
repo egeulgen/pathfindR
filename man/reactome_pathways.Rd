@@ -4,14 +4,14 @@
 \name{reactome_pathways}
 \alias{reactome_pathways}
 \title{Reactome Pathway Descriptions}
-\format{list containing 2022 character values, the descriptions for the given
+\format{list containing 2051 character values, the descriptions for the given
   pathways.}
 \usage{
 reactome_pathways
 }
 \description{
 A list containing the descriptions for each human Reactome pathway. Names of the
-list correspond to the Reactome ID of the pathway. This data was retrieved on May
-13, 2018.
+list correspond to the Reactome ID of the pathway. This data was retrieved on
+Nov 9, 2018.
 }
 \keyword{datasets}

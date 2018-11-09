@@ -21,10 +21,10 @@
 #'
 #' A dataset containing the results of pathfindR's active-subnetwork-oriented
 #' pathway enrichment workflow performed on the rheumatoid arthritis
-#' differential-expression dataset \code{RA_input}. Active subnetwork search
-#' was performed with Greedy Algorithm using the Biogrid PIN.
+#' differential-expression result dataset \code{RA_input}. Active subnetwork
+#' search was performed with Greedy Algorithm using the Biogrid PIN.
 #'
-#' @format A data frame with 33 rows and 8 columns:
+#' @format A data frame with 79 rows and 8 columns:
 #' \describe{
 #'   \item{ID}{KEGG ID of the enriched pathway}
 #'   \item{Pathway}{Description of the enriched pathway}
@@ -44,9 +44,9 @@
 #' A dataset containing the results of pathfindR's pathway clustering and
 #' partitioning  workflow performed on the rheumatoid arthritis
 #' enrichment results \code{RA_output}. The number of clusters were detected
-#' automatically as 11 and the agglomeration method was "average".
+#' automatically as 8 and the agglomeration method was "average".
 #'
-#' @format A data frame with 33 rows and 8 columns:
+#' @format A data frame with 79 rows and 10 columns:
 #' \describe{
 #'   \item{ID}{KEGG ID of the enriched pathway}
 #'   \item{Pathway}{Description of the enriched pathway}
@@ -80,9 +80,9 @@
 #' A list containing the genes involved in each human KEGG pathway. Each element
 #' is a vector of gene symbols located in the given pathway. Names correspond to
 #' the KEGG ID of the pathway. Pathways that did not contain any genes were
-#' discarded. This data was retrieved on May 13, 2018.
+#' discarded. This data was retrieved on Nov 9, 2018.
 #'
-#' @format list containing 319 vectors of gene symbols. Each vector corresponds
+#' @format list containing 321 vectors of gene symbols. Each vector corresponds
 #'   to a pathway.
 "kegg_genes"
 
@@ -90,9 +90,9 @@
 #'
 #' A list containing the descriptions for each human KEGG pathway. Names of the
 #' list correspond to the KEGG ID of the pathway. Pathways that did not contain
-#' any genes were discarded. This data was retrieved on May 13, 2018.
+#' any genes were discarded. This data was retrieved on Nov 9, 2018.
 #'
-#' @format list containing 319 character values, the descriptions for the given
+#' @format vector containing 321 character values, the descriptions for the given
 #'   pathways.
 "kegg_pathways"
 
@@ -100,20 +100,20 @@
 #'
 #' A list containing the genes involved in each human Reactome pathway. Each
 #' element is a vector of gene symbols located in the given pathway. Names
-#' correspond to the Reactome ID of the pathway. This data was retrieved on May 13,
+#' correspond to the Reactome ID of the pathway. This data was retrieved on Nov 9,
 #' 2018.
 #'
-#' @format list containing 2022 vectors of gene symbols. Each vector corresponds
+#' @format list containing 2051 vectors of gene symbols. Each vector corresponds
 #'   to a pathway.
 "reactome_genes"
 
 #' Reactome Pathway Descriptions
 #'
 #' A list containing the descriptions for each human Reactome pathway. Names of the
-#' list correspond to the Reactome ID of the pathway. This data was retrieved on May
-#' 13, 2018.
+#' list correspond to the Reactome ID of the pathway. This data was retrieved on
+#' Nov 9, 2018.
 #'
-#' @format list containing 2022 character values, the descriptions for the given
+#' @format list containing 2051 character values, the descriptions for the given
 #'   pathways.
 "reactome_pathways"
 
@@ -135,6 +135,25 @@
 #' @format list containing 217 character values, the descriptions for the given
 #'   pathways.
 "biocarta_pathways"
+
+#' Gene Ontology - All Ontology Gene Sets
+#'
+#' A list containing the genes involved in each GO ontology category. Each
+#' element is a vector of gene symbols located in the given gene set. This data
+#' was retrieved on Nov 9, 2018.
+#'
+#' @format list containing 5123 vectors of gene symbols. Each vector corresponds
+#'   to a gene set.
+"go_all_genes"
+
+#' Gene Ontology - All Ontology Descriptions
+#'
+#' A list containing the descriptions for each human GO ontology category. This
+#' data was retrieved on Nov 9, 2018.
+#'
+#' @format list containing 5123 character values, the descriptions for the given
+#' pathways.
+"go_all_pathways"
 
 #' Gene Ontology - Biological Process Ontology Gene Sets
 #'
@@ -192,6 +211,9 @@
 #' @format list containing 713 character values, the descriptions for the given
 #'   pathways.
 "go_mf_pathways"
+
+
+
 
 #' Custom Gene Set Enrichment Results
 #'
