@@ -94,6 +94,8 @@ the ID of the pathway.}
 \item{custom_pathways}{A list containing the descriptions for each custom pathway. Names of the
 list correspond to the ID of the pathway.}
 
+\item{human_genes}{boolean to indicate whether the input genes are human gene symbols or not (default = TRUE)}
+
 \item{bubble}{boolean value. If TRUE, a bubble chart displaying the enrichment
 results is plotted. (default = TRUE)}
 

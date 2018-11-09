@@ -56,6 +56,7 @@
 #' the ID of the pathway.
 #'@param custom_pathways A list containing the descriptions for each custom pathway. Names of the
 #' list correspond to the ID of the pathway.
+#'@param human_genes boolean to indicate whether the input genes are human gene symbols or not (default = TRUE)
 #'@param bubble boolean value. If TRUE, a bubble chart displaying the enrichment
 #' results is plotted. (default = TRUE)
 #'@param output_dir the directory to be created under the current working
