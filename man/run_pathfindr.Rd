@@ -12,9 +12,9 @@ run_pathfindR(input, p_val_threshold = 0.05,
   grOverlap = 0.5, grSubNum = 1000, iterations = 10,
   n_processes = NULL, pin_name_path = "Biogrid",
   score_quan_thr = 0.8, sig_gene_thr = 10, gene_sets = "KEGG",
-  custom_genes = NULL, custom_pathways = NULL, bubble = TRUE,
-  output_dir = "pathfindR_Results", list_active_snw_genes = FALSE,
-  silent_option = TRUE)
+  custom_genes = NULL, custom_pathways = NULL, human_genes = TRUE,
+  bubble = TRUE, output_dir = "pathfindR_Results",
+  list_active_snw_genes = FALSE, silent_option = TRUE)
 }
 \arguments{
 \item{input}{the input data that pathfindR uses. The input must be a data

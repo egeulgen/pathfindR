@@ -128,7 +128,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
                           pin_name_path = "Biogrid",
                           score_quan_thr = 0.80, sig_gene_thr = 10,
                           gene_sets = "KEGG",
-                          custom_genes = NULL, custom_pathways = NULL,
+                          custom_genes = NULL, custom_pathways = NULL, human_genes = TRUE,
                           bubble = TRUE,
                           output_dir = "pathfindR_Results",
                           list_active_snw_genes = FALSE,
@@ -190,7 +190,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
 
   ## Process input
   message("## Processing input. Converting gene symbols, if necessary\n\n")
-  input_processed <- input_processing(input, p_val_threshold, pin_path, org_dir)
+  input_processed <- input_processing(input, p_val_threshold, pin_path, org_dir, human_genes)
 
   dir.create("active_snw_search")
   utils::write.table(input_processed[, c("GENE", "P_VALUE")],
@@ -519,6 +519,7 @@ input_testing <- function(input, p_val_threshold, org_dir = NULL){
 #' @param pin_path path to the Protein Interaction Network (PIN) file used in
 #'   the analysis
 #' @param org_dir path/to/original/directory, supplied by run_pathfindR (default = NULL)
+#' @param human_genes boolean to indicate whether the input genes are human gene symbols or not (default = TRUE)
 #'
 #' @return This function first filters the input so that all p values are less
 #'   than or equal to the threshold. Next, gene symbols that are not found in
@@ -534,11 +535,13 @@ input_testing <- function(input, p_val_threshold, org_dir = NULL){
 #' @examples
 #' \dontshow{
 #' input_processing(RA_input[1,], 0.05, return_pin_path("KEGG"))
+#' input_processing(RA_input[1,], 0.05, return_pin_path("KEGG"), human_genes = FALSE)
 #' }
 #' \dontrun{
 #' input_processing(RA_input, 0.05, return_pin_path("KEGG"))
 #' }
-input_processing <- function(input, p_val_threshold, pin_path, org_dir = NULL) {
+#'
+input_processing <- function(input, p_val_threshold, pin_path, org_dir = NULL, human_genes = TRUE) {
   if (is.null(org_dir))
     org_dir <- getwd()
 
@@ -549,6 +552,7 @@ input_processing <- function(input, p_val_threshold, pin_path, org_dir = NULL) {
     warning("The gene column was turned into character from factor.")
     input$GENE <- as.character(input$GENE)
   }
+
   ## Discard larger than p-value threshold
   input <- input[input$P_VALUE <= p_val_threshold, ]
 
@@ -573,7 +577,7 @@ input_processing <- function(input, p_val_threshold, pin_path, org_dir = NULL) {
   ## Genes not in pin
   missing <- input$GENE[!input$GENE %in% c(pin[, 1], pin[, 2])]
 
-  if (length(missing) != 0) {
+  if (human_genes & length(missing) != 0) {
     ## use sql to get alias table and gene_info table (contains the symbols)
     ## first open the database connection
     db_con <- org.Hs.eg.db::org.Hs.eg_dbconn()
@@ -606,34 +610,40 @@ input_processing <- function(input, p_val_threshold, pin_path, org_dir = NULL) {
       converted <- rbind(converted, c(missing[i], to_add))
     }
 
-    ## Give out warning indicating the number of still missing
-    n <- sum(converted[, 2] == "NOT_FOUND")
-    perc <- n / nrow(input) * 100
-    if (sum(converted[, 2] == "NOT_FOUND") != 0)
-      message(paste0("Could not find any interactions for ",
-                     n,
-                     " (", round(perc, 2), "%) genes in the PIN\n\n"))
-
     ## Convert to appropriate symbol
     input$new_gene <- input$GENE
     input$new_gene[match(converted[, 1], input$new_gene)] <- converted[, 2]
+  } else {
+    input$new_gene <- ifelse(input$GENE %in% missing, "NOT_FOUND", input$GENE)
+  }
 
-    input <- input[, c(1, 4, 2, 3)]
-    colnames(input) <- c("old_GENE", "GENE", "CHANGE", "P_VALUE")
+  ## number and percent still missing
+  n <- sum(input$new_gene == "NOT_FOUND")
+  perc <- n / nrow(input) * 100
 
-    input <- input[input$GENE != "NOT_FOUND", ]
+  if (n == nrow(input)) {
+    setwd(org_dir)
+    stop("None of the genes were in the PIN\nPlease check your gene symbols")
+  }
 
-    if (nrow(input) == 0) {
-      setwd(org_dir)
-      stop("None of the genes were in the PIN\nPlease check your gene symbols")
-    }
-
-    input <- input[order(input$P_VALUE), ]
-    input <- input[!duplicated(input$GENE), ]
+  ## Give out warning indicating the number of still missing
+  if (n != 0) {
+    message(paste0("Could not find any interactions for ",
+                   n,
+                   " (", round(perc, 2), "%) genes in the PIN\n\n"))
   } else {
     message(paste0("Found interactions for all genes in the PIN\n\n"))
-    input$old_GENE <- input$GENE
-    input <- input[, c(4, 1, 2, 3)]
   }
+
+  ## reorder columns
+  input <- input[, c(1, 4, 2, 3)]
+  colnames(input) <- c("old_GENE", "GENE", "CHANGE", "P_VALUE")
+
+  input <- input[input$GENE != "NOT_FOUND", ]
+
+  ## Keep lowest p value for duplicated genes
+  input <- input[order(input$P_VALUE), ]
+  input <- input[!duplicated(input$GENE), ]
+
   return(input)
 }

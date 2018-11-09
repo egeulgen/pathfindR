@@ -1,4 +1,4 @@
-# pathfindR 1.2.4.9000
+# pathfindR 1.3.0.9003
 
 ## _To be released as pathfindR 1.2.4_
 
@@ -9,6 +9,7 @@
 - the arguments `score_quan_thr` and `sig_gene_thr` for `run_pathfindR` were not being utilized. Fixed this bug.
 - in `run_pathfindR`, added message at the end of run, reporting the number enriched pathways.
 - the function `run_pathfindR` now creates a variable `org_dir` that is the "path/to/original/working/directory". `org_dir` is used in multiple funtions to return to the original working directory if anything fails. This changes the previous behavior where if a function stopped with an error the directory was changed to "..", i.e. the parent directory. This change was adapted so that the user is returned to the original working directory if they supply a recursive output folder (`output_dir`, e.g. "./ALL_RESULTS/RESULT_A"). 
+- in `input_processing`, added the argument `human_genes` to only perform alias symbol conversion when human gene symbols are provided. 
 
 # pathfindR 1.2.3
 ## Minor changes and bug fixes
