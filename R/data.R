@@ -221,3 +221,10 @@
 #'
 #' @format data frame containing 2 rows and 8 columns. Each row is a gene set (the TF target gene sets).
 "custom_result"
+
+#' Example Active Subnetworks
+#'
+#' A list of vectors containing genes for each active subnetwork that passed the filtering step.
+#'
+#' @format list containing 166 vectors. Each vector is the set of genes for an active subnetwork.
+"example_active_snws"

@@ -493,9 +493,9 @@ input_testing <- function(input, p_val_threshold, org_dir = NULL){
     stop("the input is not a data frame")
   }
 
-  if (ncol(input) != 3){
+  if (ncol(input) < 2){
     setwd(org_dir)
-    stop("There must be exactly 3 columns in the input data frame")
+    stop("There must be >=2 columns in the input data frame")
   }
 
   if (!is.numeric(p_val_threshold)){
@@ -508,12 +508,13 @@ input_testing <- function(input, p_val_threshold, org_dir = NULL){
     stop("`p_val_threshold` must be between 0 and 1")
   }
 
-  if (!all(is.numeric(input[, 3]))) {
+  p_column <- ifelse(ncol(input) == 3, 3, 2)
+  if (!all(is.numeric(input[, p_column]))) {
     setwd(org_dir)
     stop("p values, provided in the third column, must all be numeric")
   }
 
-  if (any(input[, 3] > 1 | input[, 3] < 0)) {
+  if (any(input[, p_column] > 1 | input[, p_column] < 0)) {
     setwd(org_dir)
     stop("p values, provided in the third column, must all be between 0 and 1")
   }
@@ -559,6 +560,12 @@ input_testing <- function(input, p_val_threshold, org_dir = NULL){
 input_processing <- function(input, p_val_threshold, pin_path, org_dir = NULL, human_genes = TRUE) {
   if (is.null(org_dir))
     org_dir <- getwd()
+
+  input <- as.data.frame(input)
+  if (ncol(input) == 2)
+    input <- data.frame(GENE = input[, 1],
+                        CHANGE = rep(100, nrow(input)),
+                        P_VALUE = input[, 1])
 
   colnames(input) <- c("GENE", "CHANGE", "P_VALUE")
 
