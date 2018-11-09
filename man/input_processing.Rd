@@ -38,8 +38,8 @@ Process Input
 }
 \examples{
 \dontshow{
-input_processing(RA_input[1,], 0.05, return_pin_path("KEGG"))
-input_processing(RA_input[1,], 0.05, return_pin_path("KEGG"), human_genes = FALSE)
+input_processing(RA_input[1:20,], 0.05, return_pin_path("KEGG"))
+input_processing(RA_input[1:20,], 0.05, return_pin_path("KEGG"), human_genes = FALSE)
 }
 \dontrun{
 input_processing(RA_input, 0.05, return_pin_path("KEGG"))
