@@ -495,7 +495,7 @@ input_testing <- function(input, p_val_threshold, org_dir = NULL){
 
   if (ncol(input) < 2){
     setwd(org_dir)
-    stop("There must be >=2 columns in the input data frame")
+    stop("There must be at least 2 columns in the input data frame")
   }
 
   if (!is.numeric(p_val_threshold)){
@@ -565,7 +565,7 @@ input_processing <- function(input, p_val_threshold, pin_path, org_dir = NULL, h
   if (ncol(input) == 2)
     input <- data.frame(GENE = input[, 1],
                         CHANGE = rep(100, nrow(input)),
-                        P_VALUE = input[, 1])
+                        P_VALUE = input[, 2])
 
   colnames(input) <- c("GENE", "CHANGE", "P_VALUE")
 
