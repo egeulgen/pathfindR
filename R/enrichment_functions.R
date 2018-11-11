@@ -202,3 +202,63 @@ enrichment_analyses <- function(snws, input_genes,
   }
   return(enrichment_res)
 }
+
+
+#' Summarize Enrichment Results
+#'
+#' @param enrichment_res a dataframe of combined enrichment results. Columns are: \describe{
+#'   \item{ID}{KEGG ID of the enriched pathway}
+#'   \item{Pathway}{Description of the enriched pathway}
+#'   \item{Fold_Enrichment}{Fold enrichment value for the enriched pathway}
+#'   \item{p_value}{p value of enrichment}
+#'   \item{adj_p}{adjusted p value of enrichment}
+#'   \item{non_DEG_Active_Snw_Genes (OPTIONAL)}{the non-DEG active subnetwork genes, comma-separated}
+#' }
+#' @param list_active_snw_genes boolean value indicating whether or not to report
+#' the non-DEG active subnetwork genes for the active subnetwork which was enriched for
+#' the given pathway with the lowest p value (default = FALSE)
+#'
+#' @return a dataframe of summarized enrichment results (over multiple iterations). Columns are: \describe{
+#'   \item{ID}{KEGG ID of the enriched pathway}
+#'   \item{Pathway}{Description of the enriched pathway}
+#'   \item{Fold_Enrichment}{Fold enrichment value for the enriched pathway}
+#'   \item{occurrence}{the number of iterations that the given pathway was found to enriched over all iterations}
+#'   \item{lowest_p}{the lowest adjusted-p value of the given pathway over all iterations}
+#'   \item{highest_p}{the highest adjusted-p value of the given pathway over all iterations}
+#'   \item{non_DEG_Active_Snw_Genes (OPTIONAL)}{the non-DEG active subnetwork genes, comma-separated}
+#' }
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' summarize_enrichment_results(enrichment_res)
+#' }
+summarize_enrichment_results <- function(enrichment_res, list_active_snw_genes = FALSE) {
+  ## Annotate lowest p, highest p and occurrence
+  final_res <- enrichment_res
+  lowest_p <- tapply(enrichment_res$adj_p, enrichment_res$ID, min)
+  highest_p <- tapply(enrichment_res$adj_p, enrichment_res$ID, max)
+  occurrence <- tapply(enrichment_res$adj_p, enrichment_res$ID, length)
+
+  matched_idx <- match(final_res$ID, names(lowest_p))
+  final_res$lowest_p <- as.numeric(lowest_p[matched_idx])
+
+  matched_idx <- match(final_res$ID, names(highest_p))
+  final_res$highest_p <- as.numeric(highest_p[matched_idx])
+
+  matched_idx <- match(final_res$ID, names(occurrence))
+  final_res$occurrence <- as.numeric(occurrence[matched_idx])
+
+  ## reorder columns
+  keep <- c("ID", "Pathway", "Fold_Enrichment", "occurrence", "lowest_p", "highest_p")
+  if (list_active_snw_genes)
+    keep <- c(keep, "non_DEG_Active_Snw_Genes")
+  final_res <- final_res[, keep]
+
+  ## keep data with lowest p-value over all iterations
+  final_res <- final_res[order(final_res$lowest_p), ]
+  final_res <- final_res[!duplicated(final_res$ID), ]
+  rownames(final_res) <- NULL
+
+  return(final_res)
+}
