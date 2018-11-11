@@ -42,5 +42,6 @@ enrichment(kegg_genes, c("PER1", "PER2", "CRY1", "CREB1"), kegg_pathways,
 \seealso{
 \code{\link[stats]{p.adjust}} for adjustment of p values. See
   \code{\link{run_pathfindR}} for the wrapper function of the pathfindR
-  workflow.
+  workflow. \code{\link{hyperg_test}} for the details on hypergeometric
+  distribution-based hypothesis testing.
 }

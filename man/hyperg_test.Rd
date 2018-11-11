@@ -19,6 +19,12 @@ the p-value as determined using the hypergeometric distribution.
 \description{
 Hypergeometic Distribution-based Hypothesis Testing
 }
+\details{
+To determine whether the `chosen genes` are enriched
+(compared to a background pool of genes) in the `pw_genes`, the
+hypergeometric distribution is assumed and the appropriate p value
+(the value under the right tail) is calculated and returned.
+}
 \examples{
 hyperg_test(letters[1:5], letters[2:5], letters)
 hyperg_test(letters[1:5], letters[2:10], letters)
