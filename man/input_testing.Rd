@@ -10,7 +10,7 @@ input_testing(input, p_val_threshold, org_dir = NULL)
 \item{input}{the input data that pathfindR uses. The input must be a data
   frame with three columns: \enumerate{
   \item Gene Symbol (HGNC Gene Symbol)
-  \item Change value, e.g. log(fold change)
+  \item Change value, e.g. log(fold change) (Not obligatory)
   \item adjusted p value associated with test, e.g. differential expression/methylation
 }}
 
