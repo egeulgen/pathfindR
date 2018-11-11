@@ -53,7 +53,7 @@ Perform Enrichment Analyses on the Input Subnetworks
 }
 \examples{
 \dontrun{
-enrichment_analyses(snws, input_genes = my_input$GENE, gene_sets = "KEGG", pin_path = "path/to/PIN")
+enr_res <- enrichment_analyses(snws, input_genes = my_input$GENE, gene_sets = "KEGG", pin_path = "path/to/PIN")
 }
 
 }
