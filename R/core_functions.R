@@ -669,3 +669,62 @@ input_processing <- function(input, p_val_threshold, pin_path, org_dir = NULL, h
 
   return(input)
 }
+
+#' Annotate the Affected Genes in the Provided Pathways
+#'
+#' @param result_df data frame of enrichment results. The only must-have column is "ID".
+#' @param input_processed input data processed via `input_processing`
+#' @param gene_sets the gene sets used for enrichment analysis. Possible gene sets
+#'  are KEGG, Reactome, BioCarta, GO-All, GO-BP, GO-CC, GO-MF or Custom (Default = "KEGG"). If "Custom", the
+#'  custom_genes argument must be specified.
+#' @param custom_genes a list containing the genes involved in each custom gene set. Each element
+#' is a vector of gene symbols located in the given pathway. Names correspond to
+#' the ID of the pathway.
+#'
+#' @return The original data frame with two additional columns:  \describe{
+#'   \item{Up_regulated}{Up-regulated input genes in the given pathway}
+#'   \item{Down_regulated}{Down-regulated input genes in the given pathway}
+#' }
+#' @export
+#'
+#' @examples
+#' example_gene_data <- RA_input
+#' colnames(example_gene_data) <- c("GENE", "CHANGE", "P_VALUE")
+#'
+#' annotated_result <- annotate_pathway_DEGs(RA_output, example_gene_data)
+#'
+annotate_pathway_DEGs <- function(result_df, input_processed, gene_sets = "KEGG", custom_genes = NULL) {
+  ############ Load Gene Set Data
+  gene_sets_df <- data.frame("Gene Set Name" = c("KEGG", "Reactome", "BioCarta",
+                                                 "GO-All", "GO-BP", "GO-CC", "GO-MF"),
+                             "genes_by_pathway" = c("kegg_genes", "reactome_genes", "biocarta_genes",
+                                                    "go_all_genes", "go_bp_genes", "go_cc_genes", "go_mf_genes"),
+                             "pathways_list" = c("kegg_pathways", "reactome_pathways", "biocarta_pathways",
+                                                 "go_all_pathways", "go_bp_pathways", "go_cc_pathways", "go_mf_pathways"))
+
+  if (gene_sets %in% gene_sets_df$Gene.Set.Name) {
+    idx <- which(gene_sets_df$Gene.Set.Name == gene_sets)
+    genes_name <- gene_sets_df$genes_by_pathway[idx]
+    genes_by_pathway <- base::eval(parse(text = paste0("pathfindR::", genes_name)))
+  } else if (gene_sets == "Custom") {
+    genes_by_pathway <- custom_genes
+  }
+
+  ############ Annotate up/down-regulated pathway genes
+
+  ## Up/Down-regulated genes
+  upreg <- input_processed$GENE[input_processed$CHANGE >= 0]
+  downreg <- input_processed$GENE[input_processed$CHANGE < 0]
+
+  ## Annotation
+  annotated_df <- result_df
+  annotated_df$Down_regulated <- annotated_df$Up_regulated <- NA
+  for (i in 1:nrow(annotated_df)) {
+    idx <- which(names(genes_by_pathway) == annotated_df$ID[i])
+    temp <- genes_by_pathway[[idx]]
+    annotated_df$Up_regulated[i] <- paste(temp[temp %in% upreg], collapse = ", ")
+    annotated_df$Down_regulated[i] <- paste(temp[temp %in% downreg], collapse = ", ")
+  }
+
+  return(annotated_df)
+}
