@@ -20,8 +20,8 @@
 #' \dontrun{
 #' parseActiveSnwSearch("path/to/output", significant_genes)
 #' }
-parseActiveSnwSearch <- function(active_snw_path, signif_genes,
-                                 score_quan_thr = 0.80, sig_gene_thr = 10) {
+filterActiveSnws <- function(active_snw_path, signif_genes,
+                             score_quan_thr = 0.80, sig_gene_thr = 10) {
 
   output <- readLines(active_snw_path)
 
@@ -161,7 +161,7 @@ active_snw_search <- function(input_for_search, pin_path,
   file.rename("resultActiveSubnetworkSearch.txt", paste0(snws_file, ".txt"))
 
   ############ Parse and filter active subnetworks
-  snws <- pathfindR::parseActiveSnwSearch(
+  snws <- pathfindR::filterActiveSnws(
     active_snw_path = snws_file,
     signif_genes = input_for_search$GENE,
     score_quan_thr = score_quan_thr,

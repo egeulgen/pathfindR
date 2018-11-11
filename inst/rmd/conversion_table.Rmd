@@ -12,15 +12,15 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Table of Converted Gene Symbols
-```{r, table1, echo = F, comment=NA}
+```{r, table1, echo = FALSE, comment=NA}
 genes_df <- params$df
-colnames(genes_df) <- c("Old Symbol", "Converted Symbol", "Change", "p-value")
+colnames(genes_df) <- c("Old Symbol", "New Symbol", "Change", "p-value")
 genes_df <- genes_df[genes_df[, 1] != genes_df[, 2], ]
 knitr::kable(genes_df, align = "c", table.caption.prefix ="")
 ```
 
-## Table of Genes without Interactions
-```{r, table2, echo = F, comment=NA}
+## Table of Genes without Interactions (not found in the PIN)
+```{r, table2, echo = FALSE, comment=NA}
 org_df <- params$original_df
 missing_df <- org_df[!org_df[, 1] %in% params$df[, 1], ]
 knitr::kable(missing_df, align = "c", table.caption.prefix ="")

@@ -4,15 +4,15 @@
 \alias{run_pathfindR}
 \title{Wrapper Function for pathfindR Workflow}
 \usage{
-run_pathfindR(input, p_val_threshold = 0.05,
-  enrichment_threshold = 0.05, adj_method = "bonferroni",
-  search_method = "GR", use_all_positives = FALSE, saTemp0 = 1,
-  saTemp1 = 0.01, saIter = 10000, gaPop = 400, gaIter = 10000,
-  gaThread = 5, gaMut = 0, grMaxDepth = 1, grSearchDepth = 1,
-  grOverlap = 0.5, grSubNum = 1000, iterations = 10,
-  n_processes = NULL, pin_name_path = "Biogrid",
-  score_quan_thr = 0.8, sig_gene_thr = 10, gene_sets = "KEGG",
-  custom_genes = NULL, custom_pathways = NULL, human_genes = TRUE,
+run_pathfindR(input, p_val_threshold = 0.05, visualize_pathways = TRUE,
+  human_genes = TRUE, enrichment_threshold = 0.05,
+  adj_method = "bonferroni", search_method = "GR",
+  use_all_positives = FALSE, saTemp0 = 1, saTemp1 = 0.01,
+  saIter = 10000, gaPop = 400, gaIter = 200, gaThread = 5,
+  gaMut = 0, grMaxDepth = 1, grSearchDepth = 1, grOverlap = 0.5,
+  grSubNum = 1000, iterations = 10, n_processes = NULL,
+  pin_name_path = "Biogrid", score_quan_thr = 0.8, sig_gene_thr = 10,
+  gene_sets = "KEGG", custom_genes = NULL, custom_pathways = NULL,
   bubble = TRUE, output_dir = "pathfindR_Results",
   list_active_snw_genes = FALSE, silent_option = TRUE)
 }
@@ -27,11 +27,16 @@ run_pathfindR(input, p_val_threshold = 0.05,
 \item{p_val_threshold}{the adjusted-p value threshold to use when filtering
 the input data frame. Must a numeric value between 0 and 1.}
 
+\item{visualize_pathways}{Boolean value to indicate whether or not to create pathway diagrams.}
+
+\item{human_genes}{boolean to indicate whether the input genes are
+human gene symbols or not (default = TRUE)}
+
 \item{enrichment_threshold}{threshold used when filtering individual iterations' pathway
 enrichment results}
 
 \item{adj_method}{correction method to be used for adjusting p-values of
-pathway enrichment results (Default: 'bonferroni')}
+pathway enrichment results (Default: 'bonferroni', see ?p.adjust)}
 
 \item{search_method}{algorithm to use when performing active subnetwork
 search. Options are greedy search (GR), simulated annealing (SA) or genetic
@@ -42,30 +47,27 @@ algorithm (GA) for the search (Default:GR. Can be one of c("GR", "SA",
 nodes. In SA, initializes candidate solution with all positive nodes.
 (Default = FALSE)}
 
-\item{saTemp0}{initial temperature for SA (Default: 1.0)}
+\item{saTemp0}{Initial temperature for SA (Default = 1.0)}
 
-\item{saTemp1}{final temperature for SA (Default: 0.01)}
+\item{saTemp1}{Final temperature for SA (Default = 0.01)}
 
-\item{saIter}{iteration number for SA (Default: 10000)}
+\item{saIter}{Iteration number for SA (Default = 10000)}
 
-\item{gaPop}{population size for GA (Default: 400)}
+\item{gaPop}{Population size for GA (Default = 400)}
 
-\item{gaIter}{iteration number for GA (Default: 10000)}
+\item{gaIter}{Iteration number for GA (Default = 200)}
 
-\item{gaThread}{number of threads to be used in GA (Default: 5)}
+\item{gaThread}{Number of threads to be used in GA (Default = 5)}
 
-\item{gaMut}{the mutation rate for GA (Default: 0)}
+\item{gaMut}{For GA, pplies mutation with given mutation rate (Default = 0, i.e. mutation off)}
 
-\item{grMaxDepth}{sets max depth in greedy search. set to 0 for no limit
-(Default: 1)}
+\item{grMaxDepth}{Sets max depth in greedy search, 0 for no limit (Default = 1)}
 
-\item{grSearchDepth}{sets search depth in greedy search (Default: 1)}
+\item{grSearchDepth}{Search depth in greedy search (Default = 1)}
 
-\item{grOverlap}{sets overlap threshold for results of greedy search (Default:
-0.5)}
+\item{grOverlap}{Overlap threshold for results of greedy search (Default = 0.5)}
 
-\item{grSubNum}{sets number of subnetworks to be presented in the results
-(Default: 1000)}
+\item{grSubNum}{Number of subnetworks to be presented in the results (Default = 1000)}
 
 \item{iterations}{number of iterations for active subnetwork search and
 enrichment analyses (Default = 10. Gets set to 1 for Genetic Algorithm)}
@@ -94,8 +96,6 @@ the ID of the pathway.}
 \item{custom_pathways}{A list containing the descriptions for each custom pathway. Names of the
 list correspond to the ID of the pathway.}
 
-\item{human_genes}{boolean to indicate whether the input genes are human gene symbols or not (default = TRUE)}
-
 \item{bubble}{boolean value. If TRUE, a bubble chart displaying the enrichment
 results is plotted. (default = TRUE)}
 
@@ -106,8 +106,9 @@ directory where the output and intermediate files are saved (default: "pathfindR
 the non-DEG active subnetwork genes for the active subnetwork which was enriched for
 the given pathway with the lowest p value (default = FALSE)}
 
-\item{silent_option}{boolean value indicating whether or not to print to the console (FALSE)
-or print to a file (TRUE) during active subnetwork search (default = TRUE)}
+\item{silent_option}{boolean value indicating whether to print the messages to the console (FALSE)
+or print to a file (TRUE) during active subnetwork search (default = TRUE). This option was added
+because during parallel runs, the console messages get mixed up.}
 }
 \value{
 Data frame of pathfindR enrichment results. Columns are: \describe{
@@ -149,9 +150,9 @@ the lowest and the highest adjusted-p values, as well as number of occurrences
 are reported for each enriched pathway.
 }
 \section{Warning}{
- Depending on the protein interaction network of your choice,
- active subnetwork finding component of pathfindR may take a very long time
- to finish.
+ Especially depending on the protein interaction network,
+ the algorithm and the number of iterations you choose, active subnetwork
+ search component of pathfindR may take a very long time to finish.
 }
 
 \examples{
