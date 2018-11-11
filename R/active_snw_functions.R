@@ -60,6 +60,8 @@ filterActiveSnws <- function(active_snw_path, signif_genes,
 #' @param pin_path path to the Protein Interaction Network (PIN) file used in
 #'   the analysis
 #' @param snws_file name for active subnetwork search output data
+#' @param dir_for_parallel_run directory for parallel run iteration.
+#' Only used in the wrapper function (see ?run_pathfindR) (Default = NULL)
 #' @param score_quan_thr active subnetwork score quantile threshold (Default = 0.80)
 #' @param sig_gene_thr threshold for minimum number of significant genes (Default = 10)
 #' @param search_method algorithm to use when performing active subnetwork
@@ -94,7 +96,8 @@ filterActiveSnws <- function(active_snw_path, signif_genes,
 #' active_snw_search(input_for_search, pin_path = "path/to/PIN", search_method = "SA", saTemp0 = 2, saTemp1 = 0.05)
 #' }
 active_snw_search <- function(input_for_search, pin_path,
-                              snws_file = "active_snws.txt",
+                              snws_file = "active_snws",
+                              dir_for_parallel_run = NULL,
                               score_quan_thr = 0.80, sig_gene_thr = 10,
                               search_method = "GR",
                               silent_option = TRUE,
@@ -115,8 +118,12 @@ active_snw_search <- function(input_for_search, pin_path,
     stop("the argument `silent_option` must be either TRUE or FALSE")
 
   ############ Initial Steps
+  ## If dir_for_parallel_run is provided, change working dir to dir_for_parallel_run
+  if(!is.null(dir_for_parallel_run))
+    setwd(dir_for_parallel_run)
+
   ## turn silent_option into argument
-  silent_option <- ifelse(silent_option, " > console_out.txt", "")
+  silent_option <- ifelse(silent_option, paste0(" > ./active_snw_search/console_out_", snws_file, ".txt"), "")
 
   ## turn use_all_positives into the java argument
   use_all_positives <- ifelse(use_all_positives, " -useAllPositives", "")
@@ -129,18 +136,22 @@ active_snw_search <- function(input_for_search, pin_path,
   ## create directory for active subnetworks
   if (!dir.exists("active_snw_search"))
     dir.create("active_snw_search")
-  setwd("active_snw_search")
-  utils::write.table(input_for_search[, c("GENE", "P_VALUE")],
-                     "input_for_search",
-                     col.names = FALSE,
-                     row.names = FALSE,
-                     quote = FALSE, sep = "\t")
+
+  if(!file.exists("active_snw_search/input_for_search.txt")) {
+    utils::write.table(input_for_search[, c("GENE", "P_VALUE")],
+                       "active_snw_search/input_for_search.txt",
+                       col.names = FALSE,
+                       row.names = FALSE,
+                       quote = FALSE, sep = "\t")
+  }
+
+  input_path <- normalizePath("active_snw_search/input_for_search.txt")
 
   ############ Run active Subnetwork Search
   # running Active Subnetwork Search
   system(paste0("java -Xss4m -jar \"", active_search_path, "\"",
                 " -sif=\"", pin_path,"\"",
-                " -sig=input_for_search.txt",
+                " -sig=\"", input_path, "\"",
                 " -method=", search_method,
                 use_all_positives,
                 " -saTemp0=", saTemp0,
@@ -156,9 +167,9 @@ active_snw_search <- function(input_for_search, pin_path,
                 " -grOverlap=", grOverlap,
                 " -grSubNum=", grSubNum, silent_option))
 
-  # Remove input txt and rename output
-  unlink("input_for_search.txt", force = TRUE)
-  file.rename("resultActiveSubnetworkSearch.txt", paste0(snws_file, ".txt"))
+  snws_file <- paste0("active_snw_search/", snws_file, ".txt")
+  file.rename(from = "resultActiveSubnetworkSearch.txt",
+              to = snws_file)
 
   ############ Parse and filter active subnetworks
   snws <- pathfindR::filterActiveSnws(
@@ -169,6 +180,8 @@ active_snw_search <- function(input_for_search, pin_path,
 
   message(paste0("Found ", length(snws), " active subnetworks\n\n"))
 
-  setwd("..")
+  ## If dir_for_parallel_run is provided, change working dir back to analysis output dir
+  if(!is.null(dir_for_parallel_run))
+    setwd("../..")
   return(snws)
 }

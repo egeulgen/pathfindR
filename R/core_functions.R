@@ -218,12 +218,21 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   cl <- parallel::makeCluster(n_processes)
   doParallel::registerDoParallel(cl)
 
+  dirs <- c()
+  for(i in 1:iterations) {
+    dir_i <- paste0("active_snw_searches/Iteration_", i)
+    dir.create(dir_i, recursive = TRUE)
+    dirs <- c(dirs, dir_i)
+  }
+
+
   `%dopar%` <- foreach::`%dopar%`
   combined_res <- foreach::foreach(i = 1:iterations, .combine = rbind) %dopar% {
 
     ## Active Subnetwork Search
-    snws <- pathfindr::active_snw_search(input_processed, pin_path,
+    snws <- pathfindR::active_snw_search(input_processed, pin_path,
                                          snws_file = paste0("active_snws_", i),
+                                         dir_for_parallel_run = dirs[i],
                                          score_quan_thr, sig_gene_thr,
                                          search_method,
                                          silent_option,
@@ -234,7 +243,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
                                          grMaxDepth, grSearchDepth,
                                          grOverlap, grSubNum)
 
-    enrichment_res <- pathfindr::enrichment_analyses(snws = snws,
+    enrichment_res <- pathfindR::enrichment_analyses(snws = snws,
                                                      input_genes = input_processed$GENE,
                                                      gene_sets = gene_sets,
                                                      custom_genes = custom_genes,
