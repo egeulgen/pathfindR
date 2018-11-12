@@ -106,9 +106,6 @@ visualize_pw_interactions <- function(result_df, pin_name_path) {
   for (i in 1:nrow(result_df)) {
     current_row <- result_df[i, ]
 
-    cat(paste0("Visualizing: ", current_row$Pathway,
-               paste(rep(" ", 200), collapse = ""), "\r"))
-
     up_genes <- unlist(strsplit(current_row$Up_regulated, ", "))
     down_genes <- unlist(strsplit(current_row$Down_regulated, ", "))
     current_genes <- c(down_genes, up_genes)
@@ -121,49 +118,56 @@ visualize_pw_interactions <- function(result_df, pin_name_path) {
       snw_genes <- NULL
     }
 
-    ## Find genes without direct interaction
-    direct_interactions <- pin[pin$V1 %in% current_genes & pin$V3 %in% current_genes, ]
-    missing_genes <- current_genes[! current_genes %in% c(direct_interactions$V1, direct_interactions$V3)]
+    if (length(current_genes) < 2)
+      message(paste0("<2 genes, skipping visualization of ", current_row$Pathway))
+    else {
+      cat(paste0("Visualizing: ", current_row$Pathway,
+                 paste(rep(" ", 200), collapse = ""), "\r"))
 
-    ## Find shortest path between genes without direct interaction and other current_genes
-    s_path_genes <- c()
-    for (gene in missing_genes) {
-      tmp <- suppressWarnings(igraph::shortest_paths(pin_g,
-                                                     from = which(names(igraph::V(pin_g)) == gene),
-                                                     to = which(names(igraph::V(pin_g)) %in% current_genes),
-                                                     output = "vpath"))
-      tmp <- unique(unlist(sapply(tmp$vpath, function(x) names(x))))
-      s_path_genes <- unique(c(s_path_genes, tmp))
+      ## Find genes without direct interaction
+      direct_interactions <- pin[pin$V1 %in% current_genes & pin$V3 %in% current_genes, ]
+      missing_genes <- current_genes[! current_genes %in% c(direct_interactions$V1, direct_interactions$V3)]
+
+      ## Find shortest path between genes without direct interaction and other current_genes
+      s_path_genes <- c()
+      for (gene in missing_genes) {
+        tmp <- suppressWarnings(igraph::shortest_paths(pin_g,
+                                                       from = which(names(igraph::V(pin_g)) == gene),
+                                                       to = which(names(igraph::V(pin_g)) %in% current_genes),
+                                                       output = "vpath"))
+        tmp <- unique(unlist(sapply(tmp$vpath, function(x) names(x))))
+        s_path_genes <- unique(c(s_path_genes, tmp))
+      }
+      final_genes <- unique(c(current_genes, s_path_genes))
+      final_interactions <- pin[pin$V1 %in% final_genes & pin$V3 %in% final_genes, ]
+      g <- igraph::graph_from_data_frame(final_interactions, directed = FALSE)
+
+      igraph::V(g)$color <- ifelse(names(igraph::V(g)) %in% up_genes, "red",
+                                   ifelse(names(igraph::V(g)) %in% down_genes, "green",
+                                          ifelse(names(igraph::V(g)) %in% snw_genes, "blue", "gray60")))
+
+      png(paste0("pathway_visualizations/", current_row$Pathway, ".png"), width = 1039, height = 831)
+      #Plot the tree object
+      igraph::plot.igraph(
+        g,
+        layout=igraph::layout.fruchterman.reingold,
+        edge.curved=FALSE,
+        vertex.size=10,
+        vertex.label.dist=0,
+        vertex.label.color="black",
+        asp=FALSE,
+        vertex.label.cex=0.8,
+        edge.width=1.2,
+        edge.arrow.mode=0,
+        main=paste(current_row$Pathway, "\n Involved Gene Interactions in", pin_name_path)
+      )
+
+      graphics::legend("topleft", legend = c("Non-input Active Snw. Genes",
+                                             "Upregulated Input Genes",
+                                             "Downregulated Input Genes",
+                                             "Other"), col = c("blue", "red", "green", "gray60"), pch = 19, cex = 1.5, bty = "n")
+      dev.off()
     }
-    final_genes <- unique(c(current_genes, s_path_genes))
-    final_interactions <- pin[pin$V1 %in% final_genes & pin$V3 %in% final_genes, ]
-    g <- igraph::graph_from_data_frame(final_interactions, directed = FALSE)
-
-    igraph::V(g)$color <- ifelse(names(igraph::V(g)) %in% up_genes, "red",
-                                 ifelse(names(igraph::V(g)) %in% down_genes, "green",
-                                        ifelse(names(igraph::V(g)) %in% snw_genes, "blue", "gray60")))
-
-    png(paste0("pathway_visualizations/", current_row$Pathway, ".png"), width = 1039, height = 831)
-    #Plot the tree object
-    igraph::plot.igraph(
-      g,
-      layout=igraph::layout.fruchterman.reingold,
-      edge.curved=FALSE,
-      vertex.size=10,
-      vertex.label.dist=0,
-      vertex.label.color="black",
-      asp=FALSE,
-      vertex.label.cex=0.8,
-      edge.width=1.2,
-      edge.arrow.mode=0,
-      main=paste(current_row$Pathway, "\n Involved Gene Interactions in", pin_name_path)
-    )
-
-    graphics::legend("topleft", legend = c("Non-input Active Snw. Genes",
-                                      "Upregulated Input Genes",
-                                      "Downregulated Input Genes",
-                                      "Other"), col = c("blue", "red", "green", "gray60"), pch = 19, cex = 1.5, bty = "n")
-    dev.off()
   }
 }
 
