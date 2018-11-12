@@ -46,7 +46,7 @@ knitr::kable(result_df, align = "c",table.caption.prefix ="")
 ```
 
 
-```{r pathview, echo=FALSE, comment=NA}
+```{r pathview_ref, echo=FALSE, comment=NA}
 if (params$gset == "KEGG" & params$vis_cond)
   cat("[1] Luo W, Brouwer C. Pathview: an R/Biocondutor package for pathway-based data integration and visualization. Bioinformatics, 2013, 29(14):1830-1831, doi: 10.1093/bioinformatics/btt285")
 ```
