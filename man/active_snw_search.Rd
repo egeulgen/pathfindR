@@ -4,8 +4,8 @@
 \alias{active_snw_search}
 \title{Perform Active Subnetwork Search}
 \usage{
-active_snw_search(input_for_search, pin_path,
-  snws_file = "active_snws.txt", score_quan_thr = 0.8,
+active_snw_search(input_for_search, pin_path, snws_file = "active_snws",
+  dir_for_parallel_run = NULL, score_quan_thr = 0.8,
   sig_gene_thr = 10, search_method = "GR", silent_option = TRUE,
   use_all_positives = FALSE, geneInitProbs = 0.1, saTemp0 = 1,
   saTemp1 = 0.01, saIter = 10000, gaPop = 400, gaIter = 10000,
@@ -23,6 +23,9 @@ must be a data frame containin at least these three columns: \describe{
 the analysis}
 
 \item{snws_file}{name for active subnetwork search output data}
+
+\item{dir_for_parallel_run}{directory for parallel run iteration.
+Only used in the wrapper function (see ?run_pathfindR) (Default = NULL)}
 
 \item{score_quan_thr}{active subnetwork score quantile threshold (Default = 0.80)}
 

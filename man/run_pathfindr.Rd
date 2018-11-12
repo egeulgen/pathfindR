@@ -161,13 +161,18 @@ run_pathfindR(RA_input)
 }
 }
 \seealso{
-\code{\link{input_testing}} for input testing,
- \code{\link{input_processing}} for input processing,
- \code{\link{parseActiveSnwSearch}} for parsing an active subnetwork search
- output, \code{\link{enrichment}} for pathway enrichment analysis and
- \code{\link{pathmap}} for annotation of involved genes and visualization of
- pathways. See \code{\link[foreach]{foreach}} for details on parallel
- execution of looping constructs. See \code{\link{choose_clusters}} for
- clustering the resulting enriched pathways and partitioning into
- clusters.
+\enumerate {
+\item \code{\link{input_testing}} for input testing
+\item \code{\link{input_processing}} for input processing
+\item \code{\link{active_snw_search}} for active subnetwork search and subnetwork filtering
+\item \code{\link{enrichment_analyses}} for enrichment analsyses (using the active subnetworks)
+\item \code{\link{summarize_enrichment_results}} for summarizing the active-subnetwork-oriented
+enrichment results
+\item \code{\link{annotate_pathway_DEGs}} for annotation of affected genes in the given gene sets
+\item \code{\link{visualize_pws}} for visualization of pathway diagrams
+\item \code{\link{enrichment_chart}} for a visual summary of the pathfindR enrichment result
+\item \code{\link[foreach]{foreach}} for details on parallel execution of looping constructs
+\item \code{\link{choose_clusters}} for clustering the resulting enriched pathways and
+ partitioning into clusters.
+}
 }
