@@ -31,7 +31,8 @@ if (params$vis_cond) {
   } else {
     ## If interactions of pw genes visualizations
     for(i in 1:nrow(result_df))
-      result_df[i, 2] <- paste0("[", result_df[i, 2], "]", "(./pathway_visualizations/", result_df[i, 2],".png)")
+      if (file.exists(paste0("./pathway_visualizations/", result_df[i, 2],".png")))
+        result_df[i, 2] <- paste0("[", result_df[i, 2], "]", "(./pathway_visualizations/", result_df[i, 2],".png)")
   }
 }
 
