@@ -8,12 +8,12 @@
 #' pathfindR: A package for Pathway Enrichment Analysis Utilizing Active
 #' Subnetworks
 #'
-#' The pathfindR package provides two important functions: \code{run_pathfindR} and
+#' The pathfindR package provides two important main functions: \code{run_pathfindR} and
 #' \code{choose_clusters}.
 #'
 #' @section run_pathfindR: This function is the wrapper function for the pathfindR
 #'   workflow. It takes in a data frame consisting of Gene Symbol,
-#'   log-fold-change and adjusted-p values. After input testing, any gene
+#'   log-fold-change (optional) and adjusted-p values. After input testing, any gene
 #'   symbols that are not in the PIN are converted to alias symbols if the alias
 #'   is in the PIN. Next, active subnetwork search is performed. Pathway
 #'   enrichment analysis is performed using the genes in each of the active

@@ -102,15 +102,21 @@
 #'  the algorithm and the number of iterations you choose, active subnetwork
 #'  search component of pathfindR may take a very long time to finish.
 #'
-#'@seealso \code{\link{input_testing}} for input testing,
-#'  \code{\link{input_processing}} for input processing,
-#'  \code{\link{parseActiveSnwSearch}} for parsing an active subnetwork search
-#'  output, \code{\link{enrichment}} for pathway enrichment analysis and
-#'  \code{\link{pathmap}} for annotation of involved genes and visualization of
-#'  pathways. See \code{\link[foreach]{foreach}} for details on parallel
-#'  execution of looping constructs. See \code{\link{choose_clusters}} for
-#'  clustering the resulting enriched pathways and partitioning into
-#'  clusters.
+#'@seealso \enumerate {
+#' \item \code{\link{input_testing}} for input testing
+#' \item \code{\link{input_processing}} for input processing
+#' \item \code{\link{active_snw_search}} for active subnetwork search and subnetwork filtering
+#' \item \code{\link{enrichment_analyses}} for enrichment analsyses (using the active subnetworks)
+#' \item \code{\link{summarize_enrichment_results}} for summarizing the active-subnetwork-oriented
+#' enrichment results
+#' \item \code{\link{annotate_pathway_DEGs}} for annotation of affected genes in the given gene sets
+#' \item \code{\link{visualize_pws}} for visualization of pathway diagrams
+#' \item \code{\link{enrichment_chart}} for a visual summary of the pathfindR enrichment result
+#' \item \code{\link[foreach]{foreach}} for details on parallel execution of looping constructs
+#' \item \code{\link{choose_clusters}} for clustering the resulting enriched pathways and
+#'  partitioning into clusters.
+#' }
+
 #'
 #' @examples
 #' \dontrun{
@@ -185,6 +191,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
 
   org_dir <- getwd()
   dir.create(output_dir, recursive = TRUE)
+  output_dir <- normalizePath(output_dir)
   setwd(output_dir)
   output_dir <- getwd()
 
@@ -202,11 +209,11 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   ############ Input testing and Processing
   ## Check input
   message("## Testing input\n\n")
-  input_testing(input, p_val_threshold, org_dir)
+  pathfindR::input_testing(input, p_val_threshold, org_dir)
 
   ## Process input
   message("## Processing input. Converting gene symbols, if necessary (and if human gene symbols provied)\n\n")
-  input_processed <- input_processing(input, p_val_threshold, pin_path, org_dir, human_genes)
+  input_processed <- pathfindR::input_processing(input, p_val_threshold, pin_path, org_dir, human_genes)
 
   ############ Active Subnetwork Search and Enrichment
   ## Prep for parallel run
@@ -285,7 +292,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   rmarkdown::render(system.file("rmd/results.Rmd", package = "pathfindR"),
                     output_dir = ".")
   rmarkdown::render(system.file("rmd/enriched_pathways.Rmd", package = "pathfindR"),
-                    params = list(df = final_res, gset = gene_sets, vis_cond = visualize_pathways), output_dir = ".")
+                    params = list(df = final_res, gset = gene_sets, vis_cond = visualize_pathways, out_dir = output_dir), output_dir = ".")
   rmarkdown::render(system.file("rmd/conversion_table.Rmd", package = "pathfindR"),
                     params = list(df = input_processed, original_df = input), output_dir = ".")
 
@@ -294,7 +301,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   ############ Bubble Chart
   if (bubble) {
     message("Plotting the enrichment bubble chart\n\n")
-    graphics::plot(enrichment_chart(final_res))
+    graphics::plot(pathfindR::enrichment_chart(final_res))
   }
 
   message(paste0("Found ", nrow(final_res), " enriched pathways\n\n"))
