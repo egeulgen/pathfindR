@@ -151,7 +151,8 @@ enrichment <- function(genes_by_pathway, genes_of_interest,
 #'
 #' @examples
 #' \dontrun{
-#' enr_res <- enrichment_analyses(snws, input_genes = my_input$GENE, gene_sets = "KEGG", pin_path = "path/to/PIN")
+#' enr_res <- enrichment_analyses(snws, input_genes = my_input$GENE,
+#' gene_sets = "KEGG", pin_path = "path/to/PIN")
 #' }
 #'
 enrichment_analyses <- function(snws, input_genes,

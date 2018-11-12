@@ -146,7 +146,7 @@ visualize_pw_interactions <- function(result_df, pin_name_path) {
                                    ifelse(names(igraph::V(g)) %in% down_genes, "green",
                                           ifelse(names(igraph::V(g)) %in% snw_genes, "blue", "gray60")))
 
-      png(paste0("pathway_visualizations/", current_row$Pathway, ".png"), width = 1039, height = 831)
+      grDevices::png(paste0("pathway_visualizations/", current_row$Pathway, ".png"), width = 1039, height = 831)
       #Plot the tree object
       igraph::plot.igraph(
         g,
@@ -166,7 +166,7 @@ visualize_pw_interactions <- function(result_df, pin_name_path) {
                                              "Upregulated Input Genes",
                                              "Downregulated Input Genes",
                                              "Other"), col = c("blue", "red", "green", "gray60"), pch = 19, cex = 1.5, bty = "n")
-      dev.off()
+      grDevices::dev.off()
     }
   }
 }

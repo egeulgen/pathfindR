@@ -27,7 +27,9 @@ Imports: AnnotationDbi,
     rmarkdown,
     org.Hs.eg.db,
     ggplot2,
-    fpc
+    fpc,
+    grDevices,
+    igraph
 Depends: R (>= 3.4),
     knitr,
     shiny,

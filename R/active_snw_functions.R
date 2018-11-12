@@ -14,11 +14,11 @@
 #'
 #' @examples
 #' \dontshow{
-#' parseActiveSnwSearch(normalizePath(system.file("extdata/resultActiveSubnetworkSearch.txt",
+#' filterActiveSnws(normalizePath(system.file("extdata/resultActiveSubnetworkSearch.txt",
 #' package = "pathfindR")), pathfindR::RA_input$Gene.symbol)
 #' }
 #' \dontrun{
-#' parseActiveSnwSearch("path/to/output", significant_genes)
+#' filterActiveSnws("path/to/output", significant_genes)
 #' }
 filterActiveSnws <- function(active_snw_path, signif_genes,
                              score_quan_thr = 0.80, sig_gene_thr = 10) {
@@ -93,7 +93,8 @@ filterActiveSnws <- function(active_snw_path, signif_genes,
 #' @examples
 #' \dontrun{
 #' active_snw_search(input_for_search, pin_path = "path/to/PIN", search_method = "GR")
-#' active_snw_search(input_for_search, pin_path = "path/to/PIN", search_method = "SA", saTemp0 = 2, saTemp1 = 0.05)
+#' active_snw_search(input_for_search, pin_path = "path/to/PIN",
+#' search_method = "SA", saTemp0 = 2, saTemp1 = 0.05)
 #' }
 active_snw_search <- function(input_for_search, pin_path,
                               snws_file = "active_snws",
