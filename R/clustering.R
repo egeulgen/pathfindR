@@ -43,6 +43,8 @@ calculate_pwd <- function(pathway_ids, pathway_names, agg_method = "average",
       pathway_genes <- pathfindR::go_cc_genes[pathway_ids]
     } else if (all(pathway_ids %in% names(pathfindR::go_mf_genes))) {
       pathway_genes <- pathfindR::go_mf_genes[pathway_ids]
+    } else if (all(pathway_ids %in% names(pathfindR::go_all_genes)) {
+      pathway_genes <- pathfindR::go_all_genes[pathway_ids]
     } else {
       warning("Could not recognize IDs.\nAssuming the user is using custom gene sets")
       if (is.null(custom_genes))
