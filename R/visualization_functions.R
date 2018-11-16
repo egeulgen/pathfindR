@@ -91,6 +91,9 @@ visualize_pws <- function(result_df, input_processed = NULL, gene_sets = "KEGG",
 #' }
 visualize_pw_interactions <- function(result_df, pin_name_path) {
   ############ Initial Steps
+  ## fix pathway naming issue
+  result_df$Pathway <- gsub("\\/", "-", result_df$Pathway)
+
   ## load PIN
   pin_path <- return_pin_path(pin_name_path)
   pin <- utils::read.delim(file = pin_path,
