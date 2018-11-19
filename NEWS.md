@@ -1,12 +1,13 @@
 # pathfindR 1.3.0.9005
 
-## _To be released as pathfindR 1.2.4_
+## _To be released as pathfindR 1.3_
 
 ## Major Changes
 - Separated the steps of the function `run_pathfindR` into individual functions: `active_snw_search`, `enrichment_analyses`, `summarize_enrichment_results`, `annotate_pathway_DEGs`, `visualize_pws`.
 - renamed the function `pathmap` as `visualize_hsa_KEGG`, updated the function to produce different visualizations for inputs with binary change values (ordered) and no change values (the `input_processing` function, assigns a change value of 100 to all).
 - Created new the visualization function `visualize_pw_interactions`, which creates PNG files visualizing the interactions (in the selected PIN) of genes involved in the given pathways.
 - Added new vignette, describing the step-by-step execution of the pathfindR workflow
+- Changed clustering metric to kappa statistic, 
 
 ## Minor changes and bug fixes
 - the arguments `score_quan_thr` and `sig_gene_thr` for `run_pathfindR` were not being utilized. Fixed this bug.

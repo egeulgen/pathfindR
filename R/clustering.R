@@ -1,252 +1,471 @@
-#' Calculate Pairwise Distances Between Given Pathways
+#' Create Kappa Statistics Matrix
 #'
-#' @param pathway_ids Vector of IDs of pathways to be used for calculation of pairwise distances.
-#' @param pathway_names Vector of names of pathways to be used for calculation of pairwise distances.
-#' @param agg_method the agglomeration method to be used if plotting heatmap
-#'   (see next argument, default: average).
-#' @param plot_heatmap boolean value indicating whether or not to plot the heat
-#'   map of pathway clustering (default: FALSE).
-#' @param use_names boolean value indicating whether to use gene set names instead of gene set ids (default: FALSE)
-#' @param custom_genes a list containing the genes involved in each custom pathway. Each element
-#' is a vector of gene symbols located in the given pathway. Names correspond to
-#' the ID of the pathway. Must be provided if pathways were obtained using custom
-#' gene sets.
+#' @param enrichment_res data frame of pathway enrichment results. Must-have
+#' columns are "Pathway" or "ID", "Down_regulated", and "Up_regulated". If
+#' `use_active_snw_genes = TRUE`, "non_DEG_Active_Snw_Genes" must also be provided.
+#' @param use_names boolean to indicate whether to use pathway names instead of IDs (default = FALSE, i.e. use IDs)
+#' @param use_active_snw_genes boolean to indicate whether or not to use non-input active subnetwork genes
+#' in the calculation of kappa statistics (default = FALSE, i.e. use only affected genes)
 #'
-#' @details See "Chen, Y. A. et al. Integrated pathway clusters with coherent
-#'   biological themes for target prioritisation. PLoS One 9, e99030,
-#'   doi:10.1371/journal.pone.0099030 (2014)." for details on the method of
-#'   pathway clustering.
+#' @return a matrix of kappa statistics between each term in the enrichment results.
 #'
-#' @return Pairwise distance matrix. Optionally plots a heatmap of pathway
-#'   clustering.
-#' @seealso \code{\link[stats]{hclust}} for hierarchical clustering,
-#'   \code{\link[stats]{heatmap}} for drawing a heatmap.
 #' @export
 #'
 #' @examples
-#' calculate_pwd(RA_output$ID)
-calculate_pwd <- function(pathway_ids, pathway_names, agg_method = "average",
-                          plot_heatmap = FALSE,
-                          use_names = FALSE,
-                          custom_genes = NULL) {
-  ## Get genes for selected pathways
-  if (grepl("^hsa", pathway_ids[1])) {
-    pathway_genes <- pathfindR::kegg_genes[pathway_ids]
-  } else if (grepl("^R-HSA-", pathway_ids[1])) {
-    pathway_genes <- pathfindR::reactome_genes[pathway_ids]
-  } else if (grepl("^BIOCARTA_", pathway_ids[1])) {
-    pathway_genes <- pathfindR::biocarta_genes[pathway_ids]
+#' sub_df <- RA_output[1:3,]
+#' create_kappa_matrix(sub_df)
+create_kappa_matrix <- function(enrichment_res, use_names = FALSE, use_active_snw_genes = FALSE) {
+
+  ### Initial steps
+  # Column to use for gene set names
+  pw_id <- ifelse(use_names,
+                  which(colnames(enrichment_res) == "Pathway"),
+                  which(colnames(enrichment_res) == "ID"))
+
+  # list of genes
+  down_idx <- which(colnames(enrichment_res) == "Down_regulated")
+  up_idx <- which(colnames(enrichment_res) == "Up_regulated")
+  active_idx <- which(colnames(enrichment_res) == "non_DEG_Active_Snw_Genes")
+
+  if (use_active_snw_genes & length(active_idx) == 0)
+    stop("No column named `non_DEG_Active_Snw_Genes`, please execute `run_pathfindR` with `list_active_snw_genes = TRUE`!")
+
+  if (use_active_snw_genes) {
+    enrichment_res$GenesList <- apply(enrichment_res, 1, function(x) c(unlist(strsplit(x[up_idx], ", ")),
+                                                                       unlist(strsplit(x[down_idx], ", ")),
+                                                                       unlist(strsplit(x[active_idx], ", "))))
   } else {
-    if (all(pathway_ids %in% names(pathfindR::go_bp_genes))) {
-      pathway_genes <- pathfindR::go_bp_genes[pathway_ids]
-    } else if (all(pathway_ids %in% names(pathfindR::go_cc_genes))) {
-      pathway_genes <- pathfindR::go_cc_genes[pathway_ids]
-    } else if (all(pathway_ids %in% names(pathfindR::go_mf_genes))) {
-      pathway_genes <- pathfindR::go_mf_genes[pathway_ids]
-    } else if (all(pathway_ids %in% names(pathfindR::go_all_genes))) {
-      pathway_genes <- pathfindR::go_all_genes[pathway_ids]
-    } else {
-      warning("Could not recognize IDs.\nAssuming the user is using custom gene sets")
-      if (is.null(custom_genes))
-        stop("`custom_genes` must be provided when using custom gene sets")
-      pathway_genes <- custom_genes[pathway_ids]
+    enrichment_res$GenesList <- apply(enrichment_res, 1, function(x) c(unlist(strsplit(x[up_idx], ", ")),
+                                                                       unlist(strsplit(x[down_idx], ", "))))
+  }
+
+  # Exclude zero-length gene sets
+  enrichment_res <- enrichment_res[sapply(enrichment_res$GenesList, length) != 0, ]
+
+  ### Create binary matrix
+  all_genes <- unlist(enrichment_res$GenesList)
+  binary_mat <- matrix(0, nrow = nrow(enrichment_res), ncol = length(all_genes),
+                       dimnames = list(enrichment_res[, pw_id], all_genes))
+
+  for (i in 1:nrow(enrichment_res)) {
+    current_genes <- enrichment_res$GenesList[[i]]
+    binary_mat[i, colnames(binary_mat) %in% current_genes] <- 1
+  }
+
+  ### Create Kappa Matrix
+  kappa_mat <- matrix(0, nrow = nrow(binary_mat), ncol = nrow(binary_mat),
+                      dimnames = list(rownames(binary_mat), rownames(binary_mat)))
+  diag(kappa_mat) <- 1
+
+  for (i in 1:(nrow(binary_mat) - 1)) {
+    for (j in (i+1):nrow(binary_mat)) {
+      gene_vec_i <- binary_mat[i, ]
+      gene_vec_j <- binary_mat[j, ]
+      cross_tbl <- table(gene_vec_i, gene_vec_j)
+
+      observed<- (cross_tbl[1, 1] + cross_tbl[2, 2]) / sum(cross_tbl)
+      chance <- (sum(cross_tbl[1, ]) * sum(cross_tbl[, 1]) + sum(cross_tbl[2, ]) * sum(cross_tbl[, 2])) / (sum(cross_tbl)^2)
+      kappa_mat[j, i] <- kappa_mat[i, j] <- (observed - chance) / (1 - chance)
     }
   }
 
-  ## Sort according to number of genes
-  num_genes <- sapply(pathway_genes, length)
-  pathway_genes <- pathway_genes[order(num_genes, decreasing = TRUE)]
-
-  # calculate overlap matrix ------------------------------------------------
-  N <- length(pathway_genes)
-
-  overlap_mat <- matrix(NA, nrow = N, ncol = N)
-  diag(overlap_mat) <- 1
-  for (i in 1:(N - 1)) {
-    pw1 <- pathway_genes[[i]]
-    for (j in (i + 1):N) {
-      pw2 <- pathway_genes[[j]]
-      tmp <- length(intersect(pw1, pw2))
-
-      if (length(pw1) > length(pw2))
-        tmp <- tmp / length(pw2)
-      else
-        tmp <- tmp / length(pw1)
-
-      overlap_mat[i, j] <- overlap_mat[j, i] <- tmp
-    }
-  }
-
-  # Calculate Pairwise Distances and Cluster -------------------------------
-  cor_mat <- stats::cor(overlap_mat)
-  cor_mat[is.na(cor_mat)] <- 1
-  PWD_mat <- 1 - cor_mat
-
-  pw_ids <- names(pathway_genes)
-  rownames(PWD_mat) <- colnames(PWD_mat) <- pw_ids
-
-  ### Heatmap
-  if (plot_heatmap) {
-    message("Plotting the heatmap\n\n")
-    to_plot <- PWD_mat
-    if (use_names)
-      rownames(to_plot) <- colnames(to_plot) <- pathway_names[match(colnames(to_plot), pathway_ids)]
-    stats::heatmap(to_plot, symm = TRUE,
-                   distfun = function(x) stats::as.dist(x),
-                   hclustfun = function(x) stats::hclust(x, method = agg_method))
-  }
-
-  return(PWD_mat)
+  return(kappa_mat)
 }
 
-#' Cluster Pathways and Partition the Dendrogram
+
+#' Hierarchical Clustering of Pathways
 #'
-#' This function first calculates the pairwise distances between the
-#' pathways in the \code{result_df} data frame. Next, using this distance
-#' matrix, the pathways are clustered via hierarchical clustering. By default,
-#' the average silhouette width for each possible number of clusters is
-#' calculated. The optimal number of clusters is selected as the one with the
-#' highest average silhouette width. The dendrogram is cut into this optimal
-#' number of clusters, and the pathways with the lowest p value within each
-#' cluster are chosen as representative pathways. If 'auto == FALSE", the user
-#' can manually select at which height to cut the dendrogram via a shiny application.
-#' See "Chen, Y. A. et al. Integrated pathway clusters with coherent biological
-#' themes for target prioritisation. PLoS One 9, e99030,
-#' doi:10.1371/journal.pone.0099030 (2014)." for details on the method of
-#' pathway clustering.
+#' @param kappa_mat matrix of kappa statistics (output of `create_kappa_matrix`)
+#' @param enrichment_res data frame of pathway enrichment results
+#' @param use_names boolean to indicate whether to use pathway names instead of IDs (default = FALSE, i.e. use IDs)
+#' @param clu_method the agglomeration method to be used (default = "average", see `?hclust`)
+#' @param plot_hmap boolean to indicate whether to plot the kappa statistics
+#' heatmap or not (default = FALSE)
+#' @param plot_dend boolean to indicate whether to plot the clustering dendrogram
+#' partitioned into the optimal number of clusters (default = TRUE)
 #'
-#' @param result_df data frame of enriched pathways. Must-have columns are: \enumerate{
-#'   \item{ID}{KEGG ID of the enriched pathway}
-#'   \item{lowest_p}{the lowest adjusted-p value of the given pathway over all iterations}
-#'   \item{highest_p}{the highest adjusted-p value of the given pathway over all iterations}
-#'   }
-#' @param p_val_threshold p value threshold for filtering the pathways prior to clustering (default: 0.05)
-#' @param auto boolean value indicating whether to select the optimal number of clusters
-#' automatically. If FALSE, a shiny application is displayed, where the user can manually
-#' partition the clustering dendrogram (default: TRUE).
-#' @param agg_method the agglomeration method to be used if plotting heatmap. Must be one of "ward.D", "ward.D2",
-#' "single", "complete", "average", "mcquitty", "median" or "centroid" (default: "average").
-#' @param plot_heatmap boolean value indicating whether or not to plot the heat
-#'   map of pathway clustering (default: FALSE).
-#' @param plot_dend boolean value indicating whether or not to plot the dendrogram
-#'   partitioned into the optimal number of clusters, shown by red rectangles (default: FALSE)
-#' @param use_names boolean value indicating whether to use gene set names instead of gene set ids (default: FALSE)
-#' @param custom_genes a list containing the genes involved in each custom pathway. Each element
-#' is a vector of gene symbols located in the given pathway. Names correspond to
-#' the ID of the pathway. Must be provided if `result_df` was generated using custom
-#' gene sets.
+#' @details The function initially performs hierarchical clustering
+#' of the terms in `enrichment_res` using the kappa statistics. Next,
+#' the clustering dendrogram is cut into k = 2, 3, ..., n - 1 clusters (where
+#' n is the number of terms). The optimal number of clusters is determined as the
+#' k value which yields the highest average silhouette width.
 #'
-#' @return  If 'auto' is FALSE, manual partitioning can be performed. Via a shiny HTML document, the
-#'   hierarchical clustering dendrogram is visualized. In this HTML document,
-#'   the user can select the agglomeration method and the distance value at
-#'   which to cut the tree. The resulting cluster assignments of the pathways
-#'   along with annotation of representative pathways (chosen by smallest lowest
-#'   p value) are presented as a table and this table can be saved as a csv
-#'   file.
-#'   If 'auto' is TRUE, automatic partitioning of clusters is performed. The function
-#'   adds 2 additional columns to the input data frame and returns it: \describe{
-#'   \item{Cluster}{the cluster to which the pathway is assigned}
-#'   \item{Status}{whether the pathway is the "Representative" pathway in its cluster or only a "Member"}
-#' }
-#'
-#' @import fpc
-#' @import knitr
-#' @import shiny
-#' @import rmarkdown
-#' @import stats
+#' @return a vector of clusters for each term in the enrichment results.
 #' @export
-#' @seealso See \code{\link{calculate_pwd}} for calculation of pairwise
-#'   distances between enriched pathways. See \code{\link[stats]{hclust}}
-#'   for more information on hierarchical clustering. See \code{\link{run_pathfindR}}
-#'   for the wrapper function of the pathfindR enrichment workflow.
 #'
 #' @examples
-#' ## Cluster pathways with p <= 0.01
-#' choose_clusters(RA_output, p_val_threshold = 0.01)
-choose_clusters <- function(result_df, p_val_threshold = 0.05, auto = TRUE, agg_method = "average",
-                            plot_heatmap = FALSE, plot_dend = FALSE, use_names = FALSE, custom_genes = NULL) {
-  ## argument checks
-  if (!is.logical(auto))
-    stop("The argument `auto` must be either TRUE or FALSE!")
+#' \dontrun{
+#'hierarchical_pw_clustering(kappa_mat, enrichment_res)
+#'hierarchical_pw_clustering(kappa_mat, enrichment_res, method = "complete")
+#' }
+hierarchical_pw_clustering <- function(kappa_mat, enrichment_res,
+                                       use_names = FALSE,
+                                       clu_method = "average",
+                                       plot_hmap = FALSE, plot_dend = TRUE) {
+  ### Set ID/Name index
+  pw_id <- ifelse(use_names,
+                  which(colnames(enrichment_res) == "Pathway"),
+                  which(colnames(enrichment_res) == "ID"))
 
-  if (!is.logical(plot_heatmap))
-    stop("The argument `plot_heatmap` must be either TRUE or FALSE!")
+  ### Add excluded (zero-length) genes
+  kappa_mat2 <- kappa_mat
+  outliers <- enrichment_res[!enrichment_res[, pw_id] %in% rownames(kappa_mat2), pw_id]
+  outliers_mat <- matrix(-1, nrow = nrow(kappa_mat2), ncol = length(outliers),
+                         dimnames = list(rownames(kappa_mat2), outliers))
+  kappa_mat2 <- cbind(kappa_mat2, outliers_mat)
+  outliers_mat <- matrix(-1, nrow = length(outliers), ncol = ncol(kappa_mat2),
+                         dimnames = list(outliers, colnames(kappa_mat2)))
+  kappa_mat2 <- rbind(kappa_mat2, outliers_mat)
 
-  valid <- c("ward.D", "ward.D2", "single", "complete", "average", "mcquitty", "median", "centroid")
-  if (!agg_method %in% valid)
-    stop("`agg_method` must be one of ward.D, ward.D2, single, complete, average, mcquitty, median or centroid!")
+  ### Hierarchical clustering
+  clu <- hclust(as.dist(-kappa_mat2), method = clu_method)
 
-  if (!is.logical(plot_heatmap))
-    stop("The argument `plot_dend` must be either TRUE or FALSE!")
-
-  if (!is.numeric(p_val_threshold))
-    stop("`p_val_threshold` must be a numeric value between 0 and 1")
-
-  if (p_val_threshold > 1 | p_val_threshold < 0)
-    stop("`p_val_threshold` must be between 0 and 1")
-
-
-  ## Check if clustering should be performed
-  if (nrow(result_df) < 3) {
-    warning("There are less than 3 pathways in result_df so clustering is not performed!")
-    result_df$Cluster <- 1:nrow(result_df)
-    result_df$Status <- "Representative"
-    return(result_df)
+  if (plot_hmap) {
+    stats::heatmap(kappa_mat2,
+                   distfun = function(x) as.dist(-x),
+                   hclustfun = function(x) hclust(x, method = clu_method))
   }
 
-  ## Filter for p value
-  result_df <- result_df[result_df$highest_p <= p_val_threshold, ]
+  ### Choose optimal k
+  kmax <- nrow(kappa_mat2) - 1
+  avg_sils <- c()
+  for (i in 2:kmax)
+    avg_sils <- c(avg_sils, fpc::cluster.stats(stats::as.dist(-kappa_mat2),
+                                               stats::cutree(clu, k = i),
+                                               silhouette = TRUE)$avg.silwidth)
 
-  ## Create PWD matrix
-  message("Calculating pairwise distances between pathways\n\n")
-  PWD_mat <- pathfindR::calculate_pwd(result_df$ID, result_df$Pathway,
-                                      agg_method = agg_method,
-                                      plot_heatmap = plot_heatmap,
-                                      use_names,
-                                      custom_genes)
-  if (!auto) {
-    message("Creating the shiny app\n\n")
-    parameters <- list(df = result_df, mat = PWD_mat, use_names = use_names)
-    rmarkdown::run(system.file("rmd/clustering.Rmd", package = "pathfindR"),
-                   render_args = list(output_dir = ".", params = parameters))
-  } else {
-    ### Calculate PWDs and Cluster
-    message("Clustering pathways\n\n")
-    hclu <- stats::hclust(as.dist(PWD_mat), method = agg_method)
+  k_opt <- (2:kmax)[which.max(avg_sils)]
 
-    ### Optimal k
-    message("Calculating the optimal number of clusters (based on average silhouette width)\n\n")
-    kmax <- nrow(PWD_mat) - 1
-    avg_sils <- c()
-    for (i in 2:kmax)
-      avg_sils <- c(avg_sils, fpc::cluster.stats(stats::as.dist(PWD_mat),
-                                                 stats::cutree(hclu, k = i),
-                                                 silhouette = TRUE)$avg.silwidth)
+  message(paste("The maximum average silhouette width was", round(max(avg_sils), 2),
+                "for k =", k_opt, "\n\n"))
 
-    k_opt <- (2:kmax)[which.max(avg_sils)]
-    if (plot_dend) {
-      to_plot <- hclu
-      if (use_names)
-        to_plot$labels <- result_df$Pathway[match(to_plot$labels, result_df$ID)]
-      graphics::plot(to_plot, hang = -1)
-      stats::rect.hclust(to_plot, k = k_opt)
+  if (plot_dend) {
+    plot(clu, hang = -1)
+    stats::rect.hclust(clu, k = k_opt)
+  }
+
+  ### Return clusters
+  clusters <- cutree(clu, k = k_opt)
+
+  return(clusters)
+}
+
+#' Heuristic Fuzzy Multiple-linkage Partitioning of Pathways
+#'
+#' @param kappa_mat matrix of kappa statistics (output of `create_kappa_matrix`)
+#' @param enrichment_res data frame of pathway enrichment results
+#' @param kappa_threshold threshold for kappa statistics, defining strong relation (default = 0.35)
+#' @param use_names boolean to indicate whether to use pathway names instead of IDs (default = FALSE, i.e. use IDs)
+#'
+#' @details The fuzzy clustering algorithm was implemented based on:
+#' Huang DW, Sherman BT, Tan Q, et al. The DAVID Gene Functional
+#' Classification Tool: a novel biological module-centric algorithm to
+#' functionally analyze large gene lists. Genome Biol. 2007;8(9):R183.
+#'
+#' @return a boolean matrix of cluster assignments. Each row corresponds to a term,
+#' each column corresponds to a cluster.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' fuzzy_pw_clustering(kappa_mat, enrichment_res)
+#' fuzzy_pw_clustering(kappa_mat, enrichment_res, kappa_threshold = 0.45)
+#' }
+fuzzy_pw_clustering <- function(kappa_mat, enrichment_res, kappa_threshold = 0.35, use_names = FALSE) {
+
+  ### Set ID/Name index
+  pw_id <- ifelse(use_names,
+                  which(colnames(enrichment_res) == "Pathway"),
+                  which(colnames(enrichment_res) == "ID"))
+
+  ### Find Qualified Seeds
+  qualified_seeds <- list()
+  j <- 1
+  for (i in 1:nrow(kappa_mat)) {
+    current_term <- rownames(kappa_mat)[i]
+    current_term_kappa <- kappa_mat[i, ]
+
+    init_membership_cond <- sum(current_term_kappa >= kappa_threshold) > 3
+    if (init_membership_cond) {
+      related_terms <- names(current_term_kappa)[current_term_kappa >= kappa_threshold]
+      related_kappa <- kappa_mat[rownames(kappa_mat) %in% c(current_term, related_terms),
+                                 colnames(kappa_mat) %in% c(current_term, related_terms)]
+      diag(related_kappa) <- 0
+      tight_relationship_cond <- sum(related_kappa >= kappa_threshold) /
+        (nrow(related_kappa)^2) >= 0.5
+
+      if (tight_relationship_cond) {
+        qualified_seeds[[j]] <- related_terms
+        names(qualified_seeds)[j] <- current_term
+        j <- j + 1
+      }
     }
-    message(paste("The maximum average silhouette width was", round(max(avg_sils), 2),
-                  "for k =", k_opt, "\n\n"))
-
-    ### Return Optimal Clusters
-    clusters <- cutree(hclu, k = k_opt)
-
-    result_df$Cluster <- clusters[match(result_df$ID, names(clusters))]
-    tmp <- result_df$lowest_p
-    names(tmp) <- result_df$ID
-    tmp <- tapply(tmp, result_df$Cluster, function(x) names(x)[which.min(x)])
-    result_df$Status <- ifelse(result_df$ID %in% tmp, "Representative", "Member")
-
-    result_df <- result_df[order(result_df$Status, decreasing = TRUE), ]
-    result_df <- result_df[order(result_df$Cluster), ]
-
-    message("Returning the resulting data frame\n\n")
-    return(result_df)
   }
+
+  ### Fuzzy Clustering
+  clusters <- unique(qualified_seeds)
+  i <- 1
+  j <- i + 1
+  while (i < length(clusters)) {
+    common_terms <- intersect(clusters[[i]], clusters[[j]])
+    all_terms <- union(clusters[[i]], clusters[[j]])
+
+    if (length(common_terms) / length(all_terms) > 0.5 & i != j) {
+      clusters[[i]] <- all_terms
+      clusters[[j]] <- NULL
+      i <- 1
+      j <- i + 1
+    } else if (j < length(clusters)) {
+      j <- j + 1
+    } else {
+      i <- i + 1
+      j <- 1
+    }
+  }
+
+  ### Find Outliers
+  outliers <- enrichment_res[!enrichment_res[, pw_id] %in% c(names(clusters), unlist(clusters)), pw_id]
+  for (outlier in outliers) {
+    clusters[[outlier]] <- outlier
+  }
+  ### Return Cluster Matrix
+  names(clusters) <- 1:length(clusters)
+
+  cluster_mat <- matrix(FALSE, nrow = nrow(enrichment_res), ncol = length(clusters),
+                        dimnames =list(enrichment_res[, pw_id], names(clusters)))
+  for(clu in names(clusters)) {
+    clu_terms <- clusters[[clu]]
+    cluster_mat[clu_terms, clu] <- TRUE
+  }
+
+  return(cluster_mat)
+}
+
+
+#' Graph Visualization of Pathway Clustering
+#'
+#' @param clu_obj clustering result (either a matrix obtained via
+#' `fuzzy_pw_clustering` or a vector obtained via `hierarchical_pw_clustering`)
+#' @param kappa_mat matrix of kappa statistics (output of `create_kappa_matrix`)
+#' @param enrichment_res data frame of pathway enrichment results
+#' @param kappa_threshold threshold for kappa statistics, defining strong relation (default = 0.35)
+#' @param use_names boolean to indicate whether to use pathway names instead of IDs (default = FALSE, i.e. use IDs)
+#'
+#' @return Plots a graph diagram of clustering results. Each node is a term from `enrichment_res`.
+#' Size of node corresponds to -log(lowest_p). Thickness of the edges between nodes correspond to the
+#' kappa statistic between the two terms. Color of each node corresponds to distinct clusters. For fuzzy
+#' clustering, if a term is in multiple clusters, multiple colors are utilized.
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' cluster_graph_vis(clu_obj, kappa_mat, enrichment_res)
+#' }
+cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res, kappa_threshold = 0.35, use_names = FALSE) {
+  ### Set ID/Name index
+  pw_id <- ifelse(use_names,
+                  which(colnames(enrichment_res) == "Pathway"),
+                  which(colnames(enrichment_res) == "ID"))
+
+  ### For coloring nodes
+  all_cols <- c("#E41A1C", "#377EB8", "#4DAF4A", "#984EA3", "#FF7F00", "#FFFF33", "#A65628", "#F781BF", "#999999",
+                "#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F", "#E5C494", "#B3B3B3",
+                "#8DD3C7", "#FFFFB3", "#BEBADA", "#FB8072", "#80B1D3", "#FDB462", "#B3DE69", "#FCCDE5",
+                "#D9D9D9", "#BC80BD", "#CCEBC5", "#FFED6F",
+                "#A6CEE3", "#1F78B4", "#B2DF8A", "#33A02C", "#FB9A99", "#E31A1C", "#FDBF6F", "#FF7F00", "#CAB2D6", "#6A3D9A", "#FFFF99", "#B15928")
+
+  if (class(clu_obj) == "matrix") {
+    ### Prep data
+    # Remove weak links
+    kappa_mat2 <- kappa_mat
+    diag(kappa_mat2) <- 0
+    kappa_mat2 <- ifelse(kappa_mat2 < kappa_threshold, 0, kappa_mat2)
+
+    # Add missing pathways
+    missing <- rownames(clu_obj)[!rownames(clu_obj) %in% colnames(kappa_mat2)]
+    missing_mat <- matrix(0, nrow = nrow(kappa_mat2), ncol = length(missing),
+                          dimnames = list(rownames(kappa_mat2), missing))
+    kappa_mat2 <- cbind(kappa_mat2, missing_mat)
+    missing <- rownames(clu_obj)[!rownames(clu_obj) %in% rownames(kappa_mat2)]
+    missing_mat <- matrix(0, nrow = length(missing), ncol = ncol(kappa_mat2),
+                          dimnames = list(missing, colnames(kappa_mat2)))
+    kappa_mat2 <- rbind(kappa_mat2, missing_mat)
+
+    ### Create Graph, Set Color, Size and Percentages
+    values <- apply(clu_obj, 1, function(x) which(x))
+    percs <- list()
+    for (i in 1:length(values)) {
+      percs[[i]] <- rep(1/length(values[[i]]), length(values[[i]]))
+    }
+
+    g <- igraph::graph_from_adjacency_matrix(kappa_mat2, weighted = TRUE)
+
+    if (length(all_cols) < max(as.integer(colnames(clu_obj)))) {
+      all_cols <- c(all_cols, grDevices::rainbow(max(as.integer(colnames(clu_obj))) - length(all_cols)))
+    }
+    cols <- lapply(values, function(x) all_cols[x])
+    igraph::V(g)$shape <- ifelse(sapply(percs, length) > 1, "pie", "circle")
+    igraph::V(g)$color <- sapply(cols, function(x) x[1])
+    igraph::V(g)$size <- -log10(enrichment_res$lowest_p[match(names(igraph::V(g)), enrichment_res[, pw_id])]) * 2.5
+    ### Plot Graph
+    igraph::plot.igraph(g,
+                        vertex.pie = percs,
+                        vertex.pie.color = cols,
+                        layout = igraph::layout_nicely(g),
+                        edge.curved = FALSE,
+                        vertex.label.dist = 0,
+                        vertex.label.color = "black",
+                        asp = 0,
+                        vertex.label.cex = 0.7,
+                        edge.width = igraph::E(g)$weight,
+                        edge.arrow.mode = 0)
+
+  } else if (class(clu_obj) == "integer") {
+    ### Prep data
+    # Remove weak links
+    kappa_mat2 <- kappa_mat
+    diag(kappa_mat2) <- 0
+    kappa_mat2 <- ifelse(kappa_mat2 > kappa_threshold, kappa_mat2, 0)
+
+    # Add missing pathways
+    missing <- names(clu_obj)[!names(clu_obj) %in% colnames(kappa_mat2)]
+    missing_mat <- matrix(0, nrow = nrow(kappa_mat2), ncol = length(missing),
+                          dimnames = list(rownames(kappa_mat2), missing))
+    kappa_mat2 <- cbind(kappa_mat2, missing_mat)
+    missing <- names(clu_obj)[!names(clu_obj) %in% rownames(kappa_mat2)]
+    missing_mat <- matrix(0, nrow = length(missing), ncol = ncol(kappa_mat2),
+                          dimnames = list(missing, colnames(kappa_mat2)))
+    kappa_mat2 <- rbind(kappa_mat2, missing_mat)
+
+    ### Create Graph, Set Colors and Sizes
+    g <- igraph::graph_from_adjacency_matrix(kappa_mat2, weighted = TRUE)
+
+    igraph::V(g)$Clu <- clu_obj[match(igraph::V(g)$name, names(clu_obj))]
+
+    if (length(all_cols) < max(as.integer(igraph::V(g)$Clu))) {
+      all_cols <- c(all_cols, grDevices::rainbow(max(as.integer(colnames(clu_obj))) - length(all_cols)))
+    }
+
+    igraph::V(g)$color <- all_cols[as.integer(igraph::V(g)$Clu)]
+
+    igraph::V(g)$size <- -log10(enrichment_res$lowest_p[match(names(igraph::V(g)), enrichment_res[, pw_id])]) * 1.5
+
+    ### Plot graph
+    igraph::plot.igraph(g,
+                        layout = igraph::layout_nicely(g),
+                        edge.curved = FALSE,
+                        vertex.label.dist = 0,
+                        vertex.label.color = "black",
+                        asp = FALSE,
+                        vertex.label.cex = 0.8,
+                        edge.width = igraph::E(g)$weight,
+                        edge.arrow.mode= 0,
+                        main = "Clustered Pathways")
+
+  } else {
+    stop("Invalid format for `clu_obj`!")
+  }
+}
+
+#' Cluster Pathways
+#'
+#' @param enrichment_res data frame of pathway enrichment results (result of `run_pathfindR`)
+#' @param method Either "hierarchical" or "fuzzy". Details of clustering are
+#' provided in the corresponding functions.
+#' @param kappa_threshold threshold for kappa statistics, defining strong relation (default = 0.35)
+#' @param plot_clusters_graph boolean value indicate whether or not to plot the graph
+#' diagram of clustering results (default = TRUE)
+#' @param use_names boolean to indicate whether to use pathway names instead of IDs (default = FALSE, i.e. use IDs)
+#' @param use_active_snw_genes boolean to indicate whether or not to use non-input active subnetwork genes
+#' in the calculation of kappa statistics (default = FALSE, i.e. use only affected genes)
+#' @param hclu_method the agglomeration method to be used (default = "average", see `?hclust`)
+#' @param plot_hmap boolean to indicate whether to plot the kappa statistics
+#' heatmap or not (default = FALSE)
+#' @param plot_dend boolean to indicate whether to plot the clustering dendrogram
+#' partitioned into the optimal number of clusters (default = TRUE)
+#'
+#' @return a data frame of clustering results. For "hierarchical", the cluster assignments
+#' (Cluster) and whether the term is representative of its cluster (Status) is added as columns.
+#' For "fuzzy", terms that are in multiple clusters are provided for each cluster. The cluster
+#' assignments (Cluster) and whether the term is representative of its cluster (Status) is
+#' added as columns.
+#'
+#' @export
+#'
+#' @examples
+#' example_clustered <- cluster_pathways(RA_output[1:3,], plot_clusters_graph = FALSE)
+#' example_clustered <- cluster_pathways(RA_output[1:3,], method = "fuzzy", plot_clusters_graph = FALSE)
+cluster_pathways <- function(enrichment_res, method = "hierarchical", kappa_threshold = 0.35,
+                             plot_clusters_graph = TRUE,
+                             use_names = FALSE, use_active_snw_genes = FALSE,
+                             hclu_method = "average", plot_hmap = FALSE, plot_dend = FALSE) {
+  ### Argument Check
+  if (!method %in% c("hierarchical", "fuzzy"))
+    stop("the clustering `method` must either be \"hierarchical\" or \"fuzzy\"!")
+
+  ### Create Kappa Matrix
+  kappa_mat <- create_kappa_matrix(enrichment_res = enrichment_res,
+                                   use_names = use_names,
+                                   use_active_snw_genes = use_active_snw_genes)
+
+  ### Cluster Pathways
+  if (method == "hierarchical") {
+    clu_obj <- hierarchical_pw_clustering(kappa_mat = kappa_mat,
+                                          enrichment_res = enrichment_res,
+                                          use_names = use_names,
+                                          clu_method = hclu_method,
+                                          plot_hmap = plot_hmap,
+                                          plot_dend = plot_dend)
+
+  } else {
+    clu_obj <- fuzzy_pw_clustering(kappa_mat = kappa_mat,
+                                   enrichment_res = enrichment_res,
+                                   kappa_threshold = kappa_threshold,
+                                   use_names = use_names)
+  }
+
+  ### Graph Visualization of Clusters
+  if (plot_clusters_graph)
+    cluster_graph_vis(clu_obj = clu_obj, kappa_mat = kappa_mat, enrichment_res = enrichment_res,
+                      kappa_threshold = kappa_threshold, use_names = use_names)
+
+  ### Returned Data Frame with Cluster Information
+  clustered_df <- enrichment_res
+
+  ### Set ID/Name index
+  pw_id <- ifelse(use_names,
+                  which(colnames(enrichment_res) == "Pathway"),
+                  which(colnames(enrichment_res) == "ID"))
+
+  if (method == "hierarchical") {
+    ### Assign Clusters
+    clustered_df$Cluster <- clu_obj[match(clustered_df[, pw_id], names(clu_obj))]
+    clustered_df <- clustered_df[order(clustered_df$Cluster, clustered_df$lowest_p, decreasing = FALSE), ]
+    clustered_df$Status <- ifelse(clustered_df$Pathway %in% tapply(clustered_df$Pathway, clustered_df$Cluster, function(x) x[1]),
+                                  "Representative", "Member")
+  } else {
+
+    pws_list <- list()
+    for (pw in rownames(clu_obj)) {
+      pws_list[[pw]] <- which(clu_obj[pw, ])
+    }
+    ### Assign Clusters
+    clustered_df2 <- c()
+    for (i in 1:nrow(clustered_df)) {
+      current_row <- clustered_df[i, ]
+      current_clusters <- pws_list[[current_row[, pw_id]]]
+      for (clu in current_clusters) {
+        clustered_df2 <- rbind(clustered_df2,
+                               data.frame(current_row, Cluster = clu))
+      }
+    }
+
+    clustered_df <- clustered_df2
+    clustered_df <- clustered_df[order(clustered_df$Cluster, clustered_df$lowest_p, decreasing = FALSE), ]
+    clustered_df$Status <- ifelse(clustered_df$Pathway %in% tapply(clustered_df$Pathway, clustered_df$Cluster, function(x) x[1]),
+                                  "Representative", "Member")
+  }
+
+  return(clustered_df)
 }
