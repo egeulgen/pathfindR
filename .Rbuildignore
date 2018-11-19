@@ -3,8 +3,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^data-raw$
-^EXAMPLE$
-^EXAMPLE_win$
+^misc_data$
 ^README.md$
 ^\.travis\.yml$
 ^cran-comments.md$
