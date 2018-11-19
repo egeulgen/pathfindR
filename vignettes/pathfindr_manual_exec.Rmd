@@ -4,7 +4,7 @@ author: "Ege Ulgen"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{pathfindR - Step-by-Step (Manual) Execution of the pathfindR Workflo}
+  %\VignetteIndexEntry{pathfindR - Step-by-Step (Manual) Execution of the pathfindR Workflow}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
