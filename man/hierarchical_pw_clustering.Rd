@@ -30,7 +30,8 @@ Hierarchical Clustering of Pathways
 }
 \details{
 The function initially performs hierarchical clustering
-of the terms in `enrichment_res` using the kappa statistics. Next,
+of the terms in `enrichment_res` using the kappa statistics
+(defining the distance as `-kappa_statistic`). Next,
 the clustering dendrogram is cut into k = 2, 3, ..., n - 1 clusters (where
 n is the number of terms). The optimal number of clusters is determined as the
 k value which yields the highest average silhouette width.

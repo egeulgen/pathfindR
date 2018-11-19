@@ -85,7 +85,8 @@ create_kappa_matrix <- function(enrichment_res, use_names = FALSE, use_active_sn
 #' partitioned into the optimal number of clusters (default = TRUE)
 #'
 #' @details The function initially performs hierarchical clustering
-#' of the terms in `enrichment_res` using the kappa statistics. Next,
+#' of the terms in `enrichment_res` using the kappa statistics
+#' (defining the distance as `-kappa_statistic`). Next,
 #' the clustering dendrogram is cut into k = 2, 3, ..., n - 1 clusters (where
 #' n is the number of terms). The optimal number of clusters is determined as the
 #' k value which yields the highest average silhouette width.
@@ -397,6 +398,9 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res, kappa_threshol
 #' example_clustered <- cluster_pathways(RA_output[1:3,], plot_clusters_graph = FALSE)
 #' example_clustered <- cluster_pathways(RA_output[1:3,],
 #' method = "fuzzy", plot_clusters_graph = FALSE)
+#'
+#' @seealso See \code{\link{hierarchical_pw_clustering}} for hierarchical clustering of enriched terms.
+#' See \code{\link{fuzzy_pw_clustering}} for fuzzy clustering of enriched terms.
 cluster_pathways <- function(enrichment_res, method = "hierarchical", kappa_threshold = 0.35,
                              plot_clusters_graph = TRUE,
                              use_names = FALSE, use_active_snw_genes = FALSE,

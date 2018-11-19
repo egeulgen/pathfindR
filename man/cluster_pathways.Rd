@@ -47,4 +47,9 @@ Cluster Pathways
 example_clustered <- cluster_pathways(RA_output[1:3,], plot_clusters_graph = FALSE)
 example_clustered <- cluster_pathways(RA_output[1:3,],
 method = "fuzzy", plot_clusters_graph = FALSE)
+
+}
+\seealso{
+See \code{\link{hierarchical_pw_clustering}} for hierarchical clustering of enriched terms.
+See \code{\link{fuzzy_pw_clustering}} for fuzzy clustering of enriched terms.
 }
