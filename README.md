@@ -62,28 +62,28 @@ See the [wiki page](https://github.com/egeulgen/pathfindR/wiki/Enrichment%20Docu
 ## Overview of the Clustering Workflow
 
 ![Pathway Clustering Workflow](./vignettes/pw_clustering.png?raw=true "Pathway Clustering Workflow")
-The wrapper function for this workflow is `choose_clusters()`.
+The wrapper function for this workflow is `cluster_pathways()`.
 
-This workflow first calculates the pairwise distances between the pathways in the resulting data frame. By default, the function automatically determines the optimal number of clusters, by maximizing the average silhouette width and returns a data frame with cluster assignments.
+This workflow first calculates the pairwise kappa statistics between the terms in the resulting data frame. By default, the function performs hierarchical clustering, automatically determines the optimal number of clusters by maximizing the average silhouette width and returns a data frame with cluster assignments.
 
 ```r
 # default settings
-RA_clustered <- choose_clusters(RA_output)
+RA_clustered <- cluster_pathways(RA_output)
 
 # to display the heatmap of pathway clustering
-RA_clustered <- choose_clusters(RA_output, plot_heatmap = TRUE)
+RA_clustered <- cluster_pathways(RA_output, plot_hmap = TRUE)
 
 # to display the dendrogram and clusters
 RA_clustered <- choose_clusters(RA_output, plot_dend = TRUE)
 
 # to change agglomeration method (default = "average")
-RA_clustered <- choose_clusters(RA_output, agg_method = "centroid", plot_dend = TRUE)
+RA_clustered <- choose_clusters(RA_output, hclu_method = "centroid")
 ```
 
-Alternatively, manual selection of the height at which to cut the dendrogram can be performed. For this, the user should set the `auto` parameter to `FALSE`. Via a shiny app, presented as an HTML document, the hierarchical clustering dendrogram is visualized. In this HTML document, the user can select the agglomeration method and the distance value at which to cut the tree. The dendrogram with the cut-off value marked with a red line is dynamically visualized and the resulting cluster assignments of the pathways along with annotation of representative pathways (chosen by smallest lowest p value) are presented as a table. This table can be saved as a csv file via pressing the button `Get Pathways w\ Cluster Info`. Example usage:
+Alternatively, the `fuzzy` clustering method (as described in Huang DW, Sherman BT, Tan Q, et al. The DAVID Gene Functional Classification Tool: a novel biological module-centric algorithm to functionally analyze large gene lists. Genome Biol. 2007;8(9):R183.) can be used:
 
 ```r
-choose_clusters(RA_output, auto = FALSE)
+RA_clustered <- cluster_pathways(RA_output, method = "fuzzy")
 ```
 
 See the [wiki page](https://github.com/egeulgen/pathfindR/wiki/Clustering%20Documentation) for more details.
@@ -107,7 +107,7 @@ where _EM_ is the expression matrix (columns are samples, rows are genes), <img 
 See the [wiki page](https://github.com/egeulgen/pathfindR/wiki/Pathway-Scoring) for more details.
 
 ## Dependencies
-For the active subnetwork search component to work, the user must have [JAVA](https://www.java.com/en/download/manual.jsp) installed and path/to/java must be in the PATH environment variable.
+For the active subnetwork search component to work, the user must have [Java](https://www.java.com/en/download/manual.jsp) installed and path/to/java must be in the PATH environment variable.
 
 ## Resources
 The PINs were gathered from various resources:
