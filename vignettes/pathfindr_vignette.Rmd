@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-`pathfindR` is an R package for pathway enrichment analysis of gene-level differential expression/methylation data utilizing active subnetworks. The package also enables hierarchical clustering of the enriched pathways. The method is described in detail in Ulgen E, Ozisik O, Sezerman OU. 2018. pathfindR: An R Package for Pathway Enrichment Analysis Utilizing Active Subnetworks. bioRxiv. [https://doi.org/10.1101/272450](https://doi.org/10.1101/272450)
+`pathfindR` is an R package for pathway enrichment analysis of gene-level omics data utilizing active subnetworks. The package also enables hierarchical clustering of the enriched pathways. The method is described in detail in Ulgen E, Ozisik O, Sezerman OU. 2018. pathfindR: An R Package for Pathway Enrichment Analysis Utilizing Active Subnetworks. bioRxiv. [https://doi.org/10.1101/272450](https://doi.org/10.1101/272450)
 
 Our motivation to develop this package was that direct pathway enrichment analysis of differential RNA/protein expression or DNA methylation results may not provide the researcher with the full picture. That is to say; pathway enrichment of only the list of significant genes may not be informative enough to explain the underlying disease mechanisms. 
 
@@ -24,7 +24,7 @@ An active subnetwork is defined as a group of interconnected genes in a protein-
 
 Therefore, we propose to leverage information from a PIN to identify distinct active subnetworks and then perform pathway enrichment analyses on these subnetworks. Briefly, this workflow first maps the significant genes onto a PIN and finds active subnetworks. Next, pathway enrichment analyses are performed using each gene set of the identified active subnetworks. Finally, these enrichment results are summarized and returned as a data frame. This workflow is implemented as the function `run_pathfindR()` and further described in the "Enrichment Workflow" section of this vignette.
 
-This process usually yields a great number of enriched pathways with related biological functions. We therefore implemented a pairwise distance metric (as proposed by Chen et al. [1]) between pathways and based on this distance metric, also implemented hierarchical clustering of the pathways through a shiny app, allowing dynamic partitioning of the dendrogram into relevant clusters. Details of clustering and partitioning of pathways are presented in the "Pathway Clustering" section of this vignette.
+This process usually yields a great number of enriched pathways with related biological functions. We therefore implemented a pairwise distance metric based on kappa statistics (as proposed by Huang et al. [^1]) between terms and based on this distance metric, also implemented hierarchical clustering ands fuzzy clustering [^1] of the pathways. Details of clustering and partitioning of pathways are presented in the "Pathway Clustering" section of this vignette.
 
 # Enrichment Workflow
 
@@ -80,9 +80,9 @@ The workflow consists of the following steps :
 
 After input testing, the program attempts to convert any gene symbol that is not in the PIN to an alias symbol that is in the PIN. Next, active subnetwork search is performed via the selected algorithm. The available algorithms for active subnetwork search are: 
 
-- Greedy Algorithm (based on Ideker et al. [2]),
-- Simulated Annealing Algorithm (based on Ideker et al. [2]) and 
-- Genetic Algorithm (based on Ozisik et al. [3]).
+- Greedy Algorithm (based on Ideker et al. [^2]),
+- Simulated Annealing Algorithm (based on Ideker et al. [^2]) and 
+- Genetic Algorithm (based on Ozisik et al. [^3]).
 
 Next, pathway enrichment analyses are performed using the genes in each of the active subnetworks. For this, up-to-date information on human gene sets from KEGG, Reactome, BioCarta and Gene Ontology were retrieved and is available for use within the package. The user may specify custom gene sets, including gene sets for non-human organisms, as described in the section "pathfindR Analysis with Custom Gene Sets".
 
@@ -125,30 +125,30 @@ The document contains a second table of genes for which no interactions were ide
 
 <img src="./pw_clustering.png" width="650" height="221.464" />
 
-For this workflow, the wrapper function `choose_clusters()` is used. This function first calculates the pairwise distances between the pathways in the input data frame, automatically determining the gene sets used for analysis. This step uses the distance metric described by Chen et al. [1]. By default, the function clusters the pathways using this distance matrix, automatically determines the optimal number of clusters by maximizing the average silhouette width and returns a data frame with cluster assignments:
+For this workflow, the wrapper function `cluster_pathways()` is used. This function first calculates the pairwise kappa statistics between the terms in the input data frame. By default, the function performs hierarchical clustering of the terms using this kappa matrix, automatically determines the optimal number of clusters by maximizing the average silhouette width and returns a data frame with cluster assignments:
 
-```{r, fig.height=4, fig.width=8}
+```{r hierarchical, fig.height=4, fig.width=8}
 data("RA_output")
-RA_clustered <- choose_clusters(RA_output)
-## First 2 rows of clustered pathways data frame
+RA_clustered <- cluster_pathways(RA_output)
+## First 2 rows of clustered terms data frame
 knitr::kable(head(RA_clustered, 2))
-## The 16 representative pathways
+## The 8 representative terms
 knitr::kable(RA_clustered[RA_clustered$Status == "Representative", ])
 
-# to display the heatmap of pathway clustering
-RA_clustered <- choose_clusters(RA_output, plot_heatmap = TRUE)
+# to display the heatmap of kappa statistics
+RA_clustered <- cluster_pathways(RA_output, plot_hmap = TRUE, plot_clusters_graph = FALSE)
 
-# to display the dendrogram and clusters
-RA_clustered <- choose_clusters(RA_output, plot_dend = TRUE)
+# to display the dendrogram and optimal clusters
+RA_clustered <- cluster_pathways(RA_output, plot_dend = TRUE, plot_clusters_graph = FALSE)
 
 # to change agglomeration method (default = "average")
-RA_clustered <- choose_clusters(RA_output, agg_method = "centroid")
+RA_clustered <- cluster_pathways(RA_output, hclu_method = "centroid")
 ```
 
-Alternatively, manual selection of the height at which to cut the dendrogram can be performed. For this, the user should set the `auto` parameter to `FALSE`. Via a shiny app, presented as an HTML document, the hierarchical clustering dendrogram is visualized. In this HTML document, the user can select the agglomeration method and the distance value at which to cut the tree. The dendrogram with the cut-off value marked with a red line is dynamically visualized and the resulting cluster assignments of the pathways along with annotation of representative pathways (chosen by smallest lowest p value) are presented as a table. This table can be saved as a csv file by pressing the button `Get Pathways w\ Cluster Info`. Example usage:
+Alternatively, the `fuzzy` clustering method (as described by Huang et al.[^1]) can be used:
 
-```{r eval=FALSE}
-choose_clusters(RA_output, auto = FALSE)
+```{r fuzzy, fig.height=4, fig.width=8}
+RA_clustered <- cluster_pathways(RA_output, method = "fuzzy")
 ```
 
 # Pathway Scores per Sample
@@ -246,8 +246,8 @@ The most significantly enriched gene set is, unsurprisingly, "MYC target genes".
 **It is also possible to perform pathfindR analysis using non-human organism annotation. For this, custom gene sets and a custom PIN belonging to the species-of-interest must be specified.**
 
 
-[1] *Chen YA, Tripathi LP, Dessailly BH, Nyström-persson J, Ahmad S, Mizuguchi K. Integrated pathway clusters with coherent biological themes for target prioritisation. PLoS ONE. 2014;9(6):e99030. \doi 10.1371/journal.pone.0099030 *
+[^1]: Huang DW, Sherman BT, Tan Q, et al. The DAVID Gene Functional Classification Tool: a novel biological module-centric algorithm to functionally analyze large gene lists. Genome Biol. 2007;8(9):R183.
 
-[2] *Ideker T, Ozier O, Schwikowski B, Siegel AF. Discovering regulatory and signalling circuits in molecular interaction networks. Bioinformatics. 2002;18 Suppl 1:S233-40.*
+[^2]: Ideker T, Ozier O, Schwikowski B, Siegel AF. Discovering regulatory and signalling circuits in molecular interaction networks. Bioinformatics. 2002;18 Suppl 1:S233-40.
 
-[3] *Ozisik O, Bakir-Gungor B, Diri B, Sezerman OU. Active Subnetwork GA: A Two Stage Genetic Algorithm Approach to Active Subnetwork Search. Current Bioinformatics. 2017; 12(4):320-8. \doi 10.2174/1574893611666160527100444 *
+[^3]: Ozisik O, Bakir-Gungor B, Diri B, Sezerman OU. Active Subnetwork GA: A Two Stage Genetic Algorithm Approach to Active Subnetwork Search. Current Bioinformatics. 2017; 12(4):320-8. \doi 10.2174/1574893611666160527100444
