@@ -26,17 +26,15 @@ The pathfindR package provides two important main functions: \code{run_pathfindR
   are reported for each enriched pathway.
 }
 
-\section{choose_clusters}{
+\section{cluster_pathways}{
  This function first calculates the pairwise
-  distances between the pathways in the \code{result_df} data frame. Via a
-  shiny HTML document, the hierarchical clustering dendrogram is visualized.
-  In this HTML document, the user can select the value at which to cut the
-  tree and the resulting representative pathways (chosen by smallest lowest p
-  value) are presented as a table and pathways with cluster assignments can be
-  saved as a csv file.
+  kappa statistics between the terms in the \code{result_df} data frame. By default,
+  hierarchical clustering is performed and the optimal number of clusters is chosen.
+  Optionally, a fuzzy partitioning algorithm can also be used. The function returns
+  a data frame with cluster assignments.
 }
 
 \seealso{
-See \code{\link{run_pathfindR}} and \code{\link{choose_clusters}}
+See \code{\link{run_pathfindR}} and \code{\link{cluster_pathways}}
   for more details.
 }

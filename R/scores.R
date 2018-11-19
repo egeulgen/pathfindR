@@ -50,15 +50,15 @@ calculate_pw_scores <- function(pw_table, exp_mat,
         names(gene_vec) <- colnames(sub_mat)
 
         # calculate mean and sd across samples
-        gene_mean <- mean(gene_vec)
-        gene_sd <- sd(gene_vec)
+        gene_mean <- base::mean(gene_vec)
+        gene_sd <- stats::sd(gene_vec)
 
         gene_scores <- sapply(gene_vec, function(x) (x - gene_mean) / gene_sd)
         pw_score_matrix <- rbind(pw_score_matrix, gene_scores)
         rownames(pw_score_matrix)[nrow(pw_score_matrix)] <- gene
       }
 
-      pw_scores <- apply(pw_score_matrix, 2, mean)
+      pw_scores <- apply(pw_score_matrix, 2, base::mean)
       all_pws_scores <- rbind(all_pws_scores, pw_scores)
       rownames(all_pws_scores)[nrow(all_pws_scores)] <- pw_table$Pathway[i]
     }

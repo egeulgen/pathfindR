@@ -118,12 +118,12 @@ hierarchical_pw_clustering <- function(kappa_mat, enrichment_res,
   kappa_mat2 <- rbind(kappa_mat2, outliers_mat)
 
   ### Hierarchical clustering
-  clu <- hclust(as.dist(-kappa_mat2), method = clu_method)
+  clu <- stats::hclust(stats::as.dist(-kappa_mat2), method = clu_method)
 
   if (plot_hmap) {
     stats::heatmap(kappa_mat2,
-                   distfun = function(x) as.dist(-x),
-                   hclustfun = function(x) hclust(x, method = clu_method))
+                   distfun = function(x) stats::as.dist(-x),
+                   hclustfun = function(x) stats::hclust(x, method = clu_method))
   }
 
   ### Choose optimal k
@@ -145,7 +145,7 @@ hierarchical_pw_clustering <- function(kappa_mat, enrichment_res,
   }
 
   ### Return clusters
-  clusters <- cutree(clu, k = k_opt)
+  clusters <- stats::cutree(clu, k = k_opt)
 
   return(clusters)
 }
@@ -395,7 +395,8 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res, kappa_threshol
 #'
 #' @examples
 #' example_clustered <- cluster_pathways(RA_output[1:3,], plot_clusters_graph = FALSE)
-#' example_clustered <- cluster_pathways(RA_output[1:3,], method = "fuzzy", plot_clusters_graph = FALSE)
+#' example_clustered <- cluster_pathways(RA_output[1:3,],
+#' method = "fuzzy", plot_clusters_graph = FALSE)
 cluster_pathways <- function(enrichment_res, method = "hierarchical", kappa_threshold = 0.35,
                              plot_clusters_graph = TRUE,
                              use_names = FALSE, use_active_snw_genes = FALSE,

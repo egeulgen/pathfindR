@@ -45,5 +45,6 @@ Cluster Pathways
 }
 \examples{
 example_clustered <- cluster_pathways(RA_output[1:3,], plot_clusters_graph = FALSE)
-example_clustered <- cluster_pathways(RA_output[1:3,], method = "fuzzy", plot_clusters_graph = FALSE)
+example_clustered <- cluster_pathways(RA_output[1:3,],
+method = "fuzzy", plot_clusters_graph = FALSE)
 }

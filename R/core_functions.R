@@ -111,7 +111,7 @@
 #' \code{\link{visualize_pws}} for visualization of pathway diagrams,
 #' \code{\link{enrichment_chart}} for a visual summary of the pathfindR enrichment result,
 #' \code{\link[foreach]{foreach}} for details on parallel execution of looping constructs,
-#' \code{\link{choose_clusters}} for clustering the resulting enriched pathways and partitioning into clusters.
+#' \code{\link{cluster_pathways}} for clustering the resulting enriched pathways and partitioning into clusters.
 #'
 #' @examples
 #' \dontrun{

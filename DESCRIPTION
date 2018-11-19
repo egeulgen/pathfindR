@@ -32,7 +32,6 @@ Imports: AnnotationDbi,
     igraph
 Depends: R (>= 3.4),
     knitr,
-    shiny,
     pathview
 RoxygenNote: 6.1.0
 VignetteBuilder: knitr
