@@ -1,6 +1,4 @@
-# pathfindR 1.3.0.9005
-
-## _To be released as pathfindR 1.3_
+# pathfindR 1.3.0
 
 ## Major Changes
 - Separated the steps of the function `run_pathfindR` into individual functions: `active_snw_search`, `enrichment_analyses`, `summarize_enrichment_results`, `annotate_pathway_DEGs`, `visualize_pws`.
