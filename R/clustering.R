@@ -141,7 +141,7 @@ hierarchical_pw_clustering <- function(kappa_mat, enrichment_res,
                 "for k =", k_opt, "\n\n"))
 
   if (plot_dend) {
-    plot(clu, hang = -1)
+    plot(clu)
     stats::rect.hclust(clu, k = k_opt)
   }
 
