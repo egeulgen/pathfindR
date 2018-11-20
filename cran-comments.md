@@ -2,6 +2,7 @@
 * local OS X 10.14.1, R 3.5.1
 * Ubuntu 14.04.5 LTS (on travis-ci), R 3.5.1
 * win-builder (devel and release)
+* R-hub (Windows Server 2008 R2 SP1, R-devel, 32/64 bit)
 
 ## R CMD check results
 There were no ERRORs or WARNINGs. 
