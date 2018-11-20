@@ -59,7 +59,7 @@ nodes. In SA, initializes candidate solution with all positive nodes.
 
 \item{gaThread}{Number of threads to be used in GA (Default = 5)}
 
-\item{gaMut}{For GA, pplies mutation with given mutation rate (Default = 0, i.e. mutation off)}
+\item{gaMut}{For GA, applies mutation with given mutation rate (Default = 0, i.e. mutation off)}
 
 \item{grMaxDepth}{Sets max depth in greedy search, 0 for no limit (Default = 1)}
 
@@ -163,7 +163,7 @@ run_pathfindR(RA_input)
 \seealso{
 \code{\link{input_testing}} for input testing, \code{\link{input_processing}} for input processing,
 \code{\link{active_snw_search}} for active subnetwork search and subnetwork filtering,
-\code{\link{enrichment_analyses}} for enrichment analsyses (using the active subnetworks),
+\code{\link{enrichment_analyses}} for enrichment analysis (using the active subnetworks),
 \code{\link{summarize_enrichment_results}} for summarizing the active-subnetwork-oriented enrichment results,
 \code{\link{annotate_pathway_DEGs}} for annotation of affected genes in the given gene sets,
 \code{\link{visualize_pws}} for visualization of pathway diagrams,

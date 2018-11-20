@@ -14,7 +14,7 @@ active_snw_search(input_for_search, pin_path, snws_file = "active_snws",
 }
 \arguments{
 \item{input_for_search}{input the input data that active subnetwork search uses. The input
-must be a data frame containin at least these three columns: \describe{
+must be a data frame containing at least these three columns: \describe{
   \item{describe}{HGNC Gene Symbol}
   \item{P_VALUE}{p value obtained through a test, e.g. differential expression/methylation}
 }}
@@ -42,7 +42,7 @@ because during parallel runs, the console messages get mixed up.}
 \item{use_all_positives}{if TRUE: in GA, adds an individual with all positive
 nodes. In SA, initializes candidate solution with all positive nodes. (Default = FALSE)}
 
-\item{geneInitProbs}{For SA and GA, probability of adding a gene in inital solution (Default = 0.1)}
+\item{geneInitProbs}{For SA and GA, probability of adding a gene in initial solution (Default = 0.1)}
 
 \item{saTemp0}{Initial temperature for SA (Default = 1.0)}
 
@@ -56,7 +56,7 @@ nodes. In SA, initializes candidate solution with all positive nodes. (Default =
 
 \item{gaThread}{Number of threads to be used in GA (Default = 5)}
 
-\item{gaMut}{For GA, pplies mutation with given mutation rate (Default = 0, i.e. mutation off)}
+\item{gaMut}{For GA, applies mutation with given mutation rate (Default = 0, i.e. mutation off)}
 
 \item{grMaxDepth}{Sets max depth in greedy search, 0 for no limit (Default = 1)}
 

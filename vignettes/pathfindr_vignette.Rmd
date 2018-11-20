@@ -24,7 +24,7 @@ An active subnetwork is defined as a group of interconnected genes in a protein-
 
 Therefore, we propose to leverage information from a PIN to identify distinct active subnetworks and then perform pathway enrichment analyses on these subnetworks. Briefly, this workflow first maps the significant genes onto a PIN and finds active subnetworks. Next, pathway enrichment analyses are performed using each gene set of the identified active subnetworks. Finally, these enrichment results are summarized and returned as a data frame. This workflow is implemented as the function `run_pathfindR()` and further described in the "Enrichment Workflow" section of this vignette.
 
-This process usually yields a great number of enriched pathways with related biological functions. We therefore implemented a pairwise distance metric based on kappa statistics (as proposed by Huang et al. [^1]) between terms and based on this distance metric, also implemented hierarchical clustering ands fuzzy clustering [^1] of the pathways. Details of clustering and partitioning of pathways are presented in the "Pathway Clustering" section of this vignette.
+This process usually yields a great number of enriched pathways with related biological functions. We therefore implemented a pairwise distance metric based on kappa statistics (as proposed by Huang et al. [^1]) between terms and based on this distance metric, also implemented hierarchical clustering and fuzzy clustering [^1] of the pathways. Details of clustering and partitioning of pathways are presented in the "Pathway Clustering" section of this vignette.
 
 # Enrichment Workflow
 
@@ -160,7 +160,7 @@ For a set of pathways $P = \{P_1, P_2, ... , P_k\}$, where each $P_i$ contains a
 $PS_{p,s} = \frac{1}{k} \sum_{g \in P_p} GS_{g,s}$ for each pathway $p$ and for each sample $s$.
 
 $GS$ is the gene score per sample matrix and is defined as:
-$GS_{g,s} = (EM_{g,s} - \bar{x}_g) / sd_g$ where $EM$ is the expression matrix (columns are samples, rows are genes), $\bar{x}_g$ is the mean expression value of the gene and $sd_g$ is the standard deviaton of the expression values for the gene.
+$GS_{g,s} = (EM_{g,s} - \bar{x}_g) / sd_g$ where $EM$ is the expression matrix (columns are samples, rows are genes), $\bar{x}_g$ is the mean expression value of the gene and $sd_g$ is the standard deviation of the expression values for the gene.
 
 An example application is provided below:
 

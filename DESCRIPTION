@@ -33,5 +33,5 @@ Imports: AnnotationDbi,
 Depends: R (>= 3.4),
     knitr,
     pathview
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
 VignetteBuilder: knitr

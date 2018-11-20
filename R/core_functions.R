@@ -35,7 +35,7 @@
 #' @param gaPop Population size for GA (Default = 400)
 #' @param gaIter Iteration number for GA (Default = 200)
 #' @param gaThread Number of threads to be used in GA (Default = 5)
-#' @param gaMut For GA, pplies mutation with given mutation rate (Default = 0, i.e. mutation off)
+#' @param gaMut For GA, applies mutation with given mutation rate (Default = 0, i.e. mutation off)
 #' @param grMaxDepth Sets max depth in greedy search, 0 for no limit (Default = 1)
 #' @param grSearchDepth Search depth in greedy search (Default = 1)
 #' @param grOverlap Overlap threshold for results of greedy search (Default = 0.5)
@@ -105,7 +105,7 @@
 #'@seealso
 #' \code{\link{input_testing}} for input testing, \code{\link{input_processing}} for input processing,
 #' \code{\link{active_snw_search}} for active subnetwork search and subnetwork filtering,
-#' \code{\link{enrichment_analyses}} for enrichment analsyses (using the active subnetworks),
+#' \code{\link{enrichment_analyses}} for enrichment analysis (using the active subnetworks),
 #' \code{\link{summarize_enrichment_results}} for summarizing the active-subnetwork-oriented enrichment results,
 #' \code{\link{annotate_pathway_DEGs}} for annotation of affected genes in the given gene sets,
 #' \code{\link{visualize_pws}} for visualization of pathway diagrams,

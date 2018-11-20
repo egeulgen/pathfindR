@@ -18,7 +18,7 @@ to Biogrid.}
 \value{
 Creates PNG files visualizing the interactions of genes involved
 in the given pathways (annotated in the `result_df`) in the PIN used for enrichment
-analyis (specified by `pin_name_path`). The PNG files are saved in the folder
+analysis (specified by `pin_name_path`). The PNG files are saved in the folder
 "pathway_visualizations" under the current working directory.
 }
 \description{
@@ -29,7 +29,7 @@ The following steps are performed for the visualization of interactions
 of genes involved in the given pathways: \enumerate{
   \item shortest paths between all affected genes are determined (via `igraph`)
   \item the nodes of all shortest pathways are merged
-  \item the PIN is sub-setted using the merged nodes (genes)
+  \item the PIN is subsetted using the merged nodes (genes)
   \item using the PIN subset, the graph showing the interactions is generated
   \item the final graph is visualized using `igraph`, colored by changed status and saved as a PNG file.
 }
@@ -41,6 +41,6 @@ visualize_pw_interactions(result_df, pin_name_path = "IntAct")
 }
 \seealso{
 See \code{\link{visualize_pws}} for the wrapper function
-  for creaating pathway diagrams. See \code{\link{run_pathfindR}} for the
+  for creating pathway diagrams. See \code{\link{run_pathfindR}} for the
   wrapper function of the pathfindR workflow.
 }

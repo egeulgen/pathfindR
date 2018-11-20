@@ -12,7 +12,7 @@
 #' case/control experiment.
 #' @param plot_hmap Boolean value to indicate whether or not to draw the
 #' heatmap plot of the scores. (default = TRUE)
-#' @param ... Addtional arguments for `plot_scores` for aesthetics of the heatmap plot
+#' @param ... Additional arguments for `plot_scores` for aesthetics of the heatmap plot
 #'
 #' @return Matrix of pathway scores per sample. Columns are samples, rows are
 #' pathways. Optionally, displays a heatmap of this matrix.

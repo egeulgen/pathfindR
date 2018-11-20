@@ -24,7 +24,7 @@ case/control experiment.}
 \item{plot_hmap}{Boolean value to indicate whether or not to draw the
 heatmap plot of the scores. (default = TRUE)}
 
-\item{...}{Addtional arguments for `plot_scores` for aesthetics of the heatmap plot}
+\item{...}{Additional arguments for `plot_scores` for aesthetics of the heatmap plot}
 }
 \value{
 Matrix of pathway scores per sample. Columns are samples, rows are

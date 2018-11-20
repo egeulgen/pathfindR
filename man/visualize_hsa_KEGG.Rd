@@ -28,6 +28,6 @@ visualize_hsa_KEGG(pathway_table, gene_data)
 \seealso{
 \code{\link[pathview]{pathview}} for KEGG pathway-based data integration
   and visualization. See \code{\link{visualize_pws}} for the wrapper function
-  for creaating pathway diagrams. See \code{\link{run_pathfindR}} for the
+  for creating pathway diagrams. See \code{\link{run_pathfindR}} for the
   wrapper function of the pathfindR workflow.
 }
