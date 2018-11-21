@@ -110,13 +110,13 @@ See the [wiki page](https://github.com/egeulgen/pathfindR/wiki/Pathway-Scoring) 
 For the active subnetwork search component to work, the user must have [Java](https://www.java.com/en/download/manual.jsp) installed and path/to/java must be in the PATH environment variable.
 
 ## Resources
-The PINs were gathered from various resources:
+The default (homo sapiens) PINs were gathered from various resources:
 - [Biogrid](https://downloads.thebiogrid.org/BioGRID)
 - [GeneMania](http://genemania.org/data/): only interactions with weights >= 0.0006 were kept.
 - [IntAct](https://www.ebi.ac.uk/intact/)
 - KEGG PIN - created via an in-house script.
 
-The gene sets for enrichment analyses were gathered from:
+The default (homo sapiens) gene sets for enrichment analyses were gathered from:
 - KEGG - created using the R package KEGGREST (_Dan Tenenbaum (2018). KEGGREST: Client-side REST access to KEGG. R package version 1.18.1._)
 - [Reactome](https://reactome.org/download-data)
 - [BioCarta](http://software.broadinstitute.org/gsea/msigdb/genesets.jsp?collection=CP:BIOCARTA)

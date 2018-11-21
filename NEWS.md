@@ -1,3 +1,8 @@
+# pathfindR 1.3.1.9000
+## To be released as 1.3.1
+## Major Changes
+## Minor changes and bug fixes
+
 # pathfindR 1.3.0
 
 ## Major Changes
