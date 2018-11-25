@@ -2,6 +2,7 @@
 ## To be released as 1.3.1
 ## Major Changes
 ## Minor changes and bug fixes
+- In `hierarchical_pw_clustering`, redefined the distance measure as `1 - kappa statistic`
 
 # pathfindR 1.3.0
 

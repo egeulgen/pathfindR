@@ -86,7 +86,7 @@ create_kappa_matrix <- function(enrichment_res, use_names = FALSE, use_active_sn
 #'
 #' @details The function initially performs hierarchical clustering
 #' of the terms in `enrichment_res` using the kappa statistics
-#' (defining the distance as `-kappa_statistic`). Next,
+#' (defining the distance as `1 - kappa_statistic`). Next,
 #' the clustering dendrogram is cut into k = 2, 3, ..., n - 1 clusters (where
 #' n is the number of terms). The optimal number of clusters is determined as the
 #' k value which yields the highest average silhouette width.
@@ -119,11 +119,11 @@ hierarchical_pw_clustering <- function(kappa_mat, enrichment_res,
   kappa_mat2 <- rbind(kappa_mat2, outliers_mat)
 
   ### Hierarchical clustering
-  clu <- stats::hclust(stats::as.dist(-kappa_mat2), method = clu_method)
+  clu <- stats::hclust(stats::as.dist(1 - kappa_mat2), method = clu_method)
 
   if (plot_hmap) {
     stats::heatmap(kappa_mat2,
-                   distfun = function(x) stats::as.dist(-x),
+                   distfun = function(x) stats::as.dist(1 - x),
                    hclustfun = function(x) stats::hclust(x, method = clu_method))
   }
 
@@ -131,7 +131,7 @@ hierarchical_pw_clustering <- function(kappa_mat, enrichment_res,
   kmax <- nrow(kappa_mat2) - 1
   avg_sils <- c()
   for (i in 2:kmax)
-    avg_sils <- c(avg_sils, fpc::cluster.stats(stats::as.dist(-kappa_mat2),
+    avg_sils <- c(avg_sils, fpc::cluster.stats(stats::as.dist(1 - kappa_mat2),
                                                stats::cutree(clu, k = i),
                                                silhouette = TRUE)$avg.silwidth)
 
