@@ -71,12 +71,12 @@ enrichment <- function(genes_by_pathway, genes_of_interest,
   colnames(enrichment_res) <- "p_value"
 
   ## Fold enrinchment
-  fe_calc <- function(x) {
-    A <- sum(genes_of_interest %in% x) / length(genes_of_interest)
-    B <- sum(all_genes %in% x) / length(all_genes)
+  fe_calc <- function(x, genes_vec, all_genes) {
+    A <- sum(x %in% genes_vec) / length(genes_vec)
+    B <- sum(x %in% all_genes) / length(all_genes)
     return(A / B)
   }
-  enrichment_res$Fold_Enrichment <- sapply(genes_by_pathway, fe_calc)
+  enrichment_res$Fold_Enrichment <- sapply(genes_by_pathway, fe_calc, DEG_vec, all_genes)
 
 
   idx <- order(enrichment_res$p_value)
