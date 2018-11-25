@@ -31,12 +31,12 @@ create_kappa_matrix <- function(enrichment_res, use_names = FALSE, use_active_sn
     stop("No column named `non_DEG_Active_Snw_Genes`, please execute `run_pathfindR` with `list_active_snw_genes = TRUE`!")
 
   if (use_active_snw_genes) {
-    enrichment_res$GenesList <- apply(enrichment_res, 1, function(x) c(unlist(strsplit(x[up_idx], ", ")),
-                                                                       unlist(strsplit(x[down_idx], ", ")),
-                                                                       unlist(strsplit(x[active_idx], ", "))))
+    enrichment_res$GenesList <- apply(enrichment_res, 1, function(x) c(unlist(strsplit(as.character(x[up_idx]), ", ")),
+                                                                       unlist(strsplit(as.character(x[down_idx]), ", ")),
+                                                                       unlist(strsplit(as.character(x[active_idx]), ", "))))
   } else {
-    enrichment_res$GenesList <- apply(enrichment_res, 1, function(x) c(unlist(strsplit(x[up_idx], ", ")),
-                                                                       unlist(strsplit(x[down_idx], ", "))))
+    enrichment_res$GenesList <- apply(enrichment_res, 1, function(x) c(unlist(strsplit(as.character(x[up_idx]), ", ")),
+                                                                       unlist(strsplit(as.character(x[down_idx]), ", "))))
   }
 
   # Exclude zero-length gene sets
