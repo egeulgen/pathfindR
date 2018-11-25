@@ -345,7 +345,7 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res, kappa_threshol
     igraph::V(g)$Clu <- clu_obj[match(igraph::V(g)$name, names(clu_obj))]
 
     if (length(all_cols) < max(as.integer(igraph::V(g)$Clu))) {
-      all_cols <- c(all_cols, grDevices::rainbow(max(as.integer(colnames(clu_obj))) - length(all_cols)))
+      all_cols <- c(all_cols, grDevices::rainbow(max(clu_obj) - length(all_cols)))
     }
 
     igraph::V(g)$color <- all_cols[as.integer(igraph::V(g)$Clu)]

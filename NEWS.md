@@ -3,6 +3,7 @@
 ## Major Changes
 ## Minor changes and bug fixes
 - In `hierarchical_pw_clustering`, redefined the distance measure as `1 - kappa statistic`
+- Fixed minor issue in `cluster_graph_vis` (during the calculations for additional node colors)
 
 # pathfindR 1.3.0
 
