@@ -358,11 +358,10 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res, kappa_threshol
                         edge.curved = FALSE,
                         vertex.label.dist = 0,
                         vertex.label.color = "black",
-                        asp = FALSE,
-                        vertex.label.cex = 0.8,
+                        asp = 0,
+                        vertex.label.cex = 0.7,
                         edge.width = igraph::E(g)$weight,
-                        edge.arrow.mode= 0,
-                        main = "Clustered Pathways")
+                        edge.arrow.mode= 0)
 
   } else {
     stop("Invalid format for `clu_obj`!")
