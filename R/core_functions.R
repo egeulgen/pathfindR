@@ -407,14 +407,20 @@ input_testing <- function(input, p_val_threshold, org_dir = NULL){
   }
 
   p_column <- ifelse(ncol(input) == 3, 3, 2)
+
+  if (any(is.na(input[, p_column]))) {
+    setwd(org_dir)
+    stop("p values cannot contain NA values")
+  }
+
   if (!all(is.numeric(input[, p_column]))) {
     setwd(org_dir)
-    stop("p values, provided in the third column, must all be numeric")
+    stop("p values must all be numeric")
   }
 
   if (any(input[, p_column] > 1 | input[, p_column] < 0)) {
     setwd(org_dir)
-    stop("p values, provided in the third column, must all be between 0 and 1")
+    stop("p values must all be between 0 and 1")
   }
 
   message("The input looks OK\n\n")
