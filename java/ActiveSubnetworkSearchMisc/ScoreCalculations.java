@@ -60,7 +60,9 @@ public class ScoreCalculations {
                 geneFromExperimentNotExisingInNetwork++;
             }
         }
-        Logger.getLogger(ScoreCalculations.class.getName()).log(Level.WARNING, "{0} genes in experiment file does not exist in the network", geneFromExperimentNotExisingInNetwork);
+        if(geneFromExperimentNotExisingInNetwork!=0){
+            Logger.getLogger(ScoreCalculations.class.getName()).log(Level.WARNING, "{0} genes in experiment file does not exist in the network", geneFromExperimentNotExisingInNetwork);
+        }
         
         //Assign p-value to genes that do not exist in the experiment file.
         for (Node node : networkNodeList) {
