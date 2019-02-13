@@ -5,7 +5,7 @@
 - In `hierarchical_pw_clustering`, redefined the distance measure as `1 - kappa statistic`
 - Fixed minor issue in `cluster_graph_vis` (during the calculations for additional node colors)
 - Removed title from graph visualization of hierarchical clustering in `cluster_graph_vis`
-- Unneccessary warnings during active subnetwork search were removed
+- In `active_snw_search`, unneccessary warnings during active subnetwork search were removed
 
 # pathfindR 1.3.0
 
