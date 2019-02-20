@@ -30,7 +30,7 @@ Imports: AnnotationDbi,
     fpc,
     grDevices,
     igraph
-Depends: R (>= 3.4),
+Depends: R (>= 3.5),
     knitr,
     pathview
 RoxygenNote: 6.1.1
