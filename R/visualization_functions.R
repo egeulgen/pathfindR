@@ -282,6 +282,7 @@ visualize_hsa_KEGG <- function(pw_table, gene_data) {
 #' @examples
 #' g <- enrichment_chart(RA_output)
 enrichment_chart <- function(result_df, plot_by_cluster = FALSE) {
+
   necessary <- c("Pathway", "Fold_Enrichment", "lowest_p", "Up_regulated", "Down_regulated")
   if (!all(necessary %in% colnames(result_df)))
     stop("The input data frame must have the columns: Pathway, Fold_Enrichment, lowest_p, Up_regulated, Down_regulated")
@@ -295,7 +296,7 @@ enrichment_chart <- function(result_df, plot_by_cluster = FALSE) {
   n <- sapply(result_df$Up_regulated, function(x) length(unlist(strsplit(x, ", "))))
   n <- n + sapply(result_df$Down_regulated, function(x) length(unlist(strsplit(x, ", "))))
 
-  result_df$Pathway <- factor(result_df$Pathway, levels = rev(result_df$Pathway))
+  result_df$Pathway <- factor(result_df$Pathway, levels = rev(unique(result_df$Pathway)))
 
   g <- ggplot2::ggplot(result_df, ggplot2::aes_(x = ~Fold_Enrichment, y = ~Pathway))
   g <- g + ggplot2::geom_point(ggplot2::aes(color = -log10(result_df$lowest_p),
