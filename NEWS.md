@@ -6,6 +6,7 @@
 - Fixed minor issue in `cluster_graph_vis` (during the calculations for additional node colors)
 - Removed title from graph visualization of hierarchical clustering in `cluster_graph_vis`
 - In `active_snw_search`, unneccessary warnings during active subnetwork search were removed
+- Fixed minor issue in `enrichment_chart`, supplying fuzzy clustered results no longer raises an error
 
 # pathfindR 1.3.0
 
