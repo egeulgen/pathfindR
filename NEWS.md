@@ -1,6 +1,9 @@
-# pathfindR 1.3.1.9000
+# pathfindR 1.3.1.9001
 ## To be released as 1.3.1
+
 ## Major Changes
+- Added the visualization fuction `term_gene_graph`, which creates a graph of enriched terms - involved genes
+
 ## Minor changes and bug fixes
 - In `hierarchical_pw_clustering`, redefined the distance measure as `1 - kappa statistic`
 - Fixed minor issue in `cluster_graph_vis` (during the calculations for additional node colors)

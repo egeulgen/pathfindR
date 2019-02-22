@@ -317,3 +317,133 @@ enrichment_chart <- function(result_df, plot_by_cluster = FALSE) {
 
   return(g)
 }
+
+
+#' Plot Term-Gene Graph
+#'
+#' @param result_df A dataframe of pathfindR results that must contain the following columns:\describe{
+#'   \item{Pathway}{Description of the enriched pathway (necessary if `use_names` is TRUE)}
+#'   \item{ID}{ID of the enriched pathway (necessary if `use_names` is FALSE)}
+#'   \item{lowest_p}{the lowest adjusted-p value of the given pathway over all iterations}
+#'   \item{Up_regulated}{the up-regulated genes in the input involved in the given pathway, comma-separated}
+#'   \item{Down_regulated}{the down-regulated genes in the input involved in the given pathway, comma-separated}
+#' }
+#' @param num_terms Number of top terms to use while creating the graph. Set to `NULL` to use
+#' all terms (default = 10, i.e. top 10 terms)
+#' @param layout The type of layout to create (see \code{\link[ggraph]{ggraph}} for details. Default = "auto")
+#' @param use_names Boolean argument to indicate whether term descriptions (in the Pathway column) should be used. (default = `FALSE`)
+#' @param node_size Argument to indicate whether to use number of DEGs ("num_DEGS")
+#' or the -log10(lowest p value) ("p_val") for adjusting the node sizes (default = "num_DEGS")
+#'
+#' @return a `ggplot` object containing the term-gene graph. Each node corresponds to
+#' an enriched term (beige), an up-regulated gene (green) or a down-regulated gene (red).
+#' An edge between a term and a gene indicates that the given term involves the gene. Size
+#' of a term node is proportional to either the number of genes (if `node_size`= "num_DEGs")
+#' or the -log10(lowest p value) (if `node_size`= "p_val").
+#'
+#' @details this plotting function was created based on the Gene-Concept network visualization
+#' by the R package `enrichplot`.
+#'
+#' @import ggraph
+#' @export
+#'
+#' @examples
+#' p <- term_gene_graph(RA_output)
+#' p <- term_gene_graph(RA_output, num_terms = 5)
+#' p <- term_gene_graph(RA_output, node_size = "p_val")
+term_gene_graph <- function(result_df, num_terms = 10,
+                            layout = "auto", use_names = FALSE, node_size = "num_DEGs") {
+
+  ############ Argument Checks
+  ### Set column for term labels
+  ID_column <- ifelse(use_names, "Pathway", "ID")
+
+  ### Check num_terms is NULL or numeric
+  if (!is.numeric(num_terms) & !is.null(num_terms))
+    stop("`num_terms` must either be numeric or NULL!")
+
+  ### Check use_names is boolean
+  if (!is.logical(use_names))
+    stop("`use_names` must either be TRUE or FALSE!")
+
+  ### Check node_size
+  if (node_size != "num_DEGs" & node_size != "p_val")
+    stop("`node_size` must either be num_DEGs or p_val!")
+
+  ### Check necessary columnns
+  necessary_cols <- c("Up_regulated", "Down_regulated", "lowest_p", ID_column)
+
+  if (!all(necessary_cols %in% colnames(result_df)))
+    stop(paste(c("All of", paste(necessary_cols, collapse = ", "),
+                 "must be present in `results_df`!"), collapse = " "))
+
+  ############ Initial steps
+  ### Order and filter for top N genes
+  df_for_vis <- result_df[order(result_df$lowest_p, decreasing = FALSE), ]
+  if (!is.null(num_terms))
+    df_for_vis <- df_for_vis[1:num_terms, ]
+
+  ### Prep data frame for graph
+  for_graph <- data.frame()
+  for (i in 1:nrow(df_for_vis)) {
+    up_genes <- unlist(strsplit(df_for_vis$Up_regulated[i], ", "))
+    down_genes <- unlist(strsplit(df_for_vis$Down_regulated[i], ", "))
+    genes <- c(up_genes, down_genes)
+
+    for (gene in genes) {
+      for_graph <- rbind(for_graph,
+                         data.frame(Pathway = df_for_vis[i, ID_column],
+                                    Gene = gene))
+    }
+  }
+
+  up_genes <- unlist(sapply(df_for_vis$Up_regulated, function(x) unlist(strsplit(x, ", "))))
+
+  ############ Create graph and plot
+
+  ### create igraph object
+  g <- igraph::graph_from_data_frame(for_graph)
+  igraph::V(g)$type <- ifelse(names(igraph::V(g)) %in% df_for_vis[, ID_column], "pathway",
+                              ifelse(names(igraph::V(g)) %in% up_genes, "up", "down"))
+  # Adjust node sizes
+  if (node_size == "num_DEGs") {
+    sizes <- igraph::degree(g)
+    sizes <- ifelse(igraph::V(g)$type == "pathway", sizes, 2)
+    size_label <- "# DEGs"
+  } else {
+    sizes <- -log10(df_for_vis$lowest_p[match(names(igraph::V(g)), df_for_vis[, ID_column])])
+    sizes[is.na(sizes)] <- 2
+    size_label <- "-log10(p)"
+  }
+  igraph::V(g)$size <- sizes
+  igraph::V(g)$label.cex <- 0.5
+  igraph::V(g)$frame.color <-  "gray"
+  igraph::V(g)$color <- ifelse(igraph::V(g)$type == "pathway", "#E5D7BF",
+                               ifelse(igraph::V(g)$type == "up", "green", "red"))
+
+  ### Create graph
+  p <- ggraph::ggraph(g, layout = layout)
+  p <- p + ggraph::geom_edge_link(alpha=.8, colour='darkgrey')
+  p <- p + ggraph::geom_node_point(ggplot2::aes_(color=~I(color), size=~size))
+  p <- p + ggplot2::scale_size(range=c(5, 10),
+                               breaks=round(seq(round(min(igraph::V(g)$size)),
+                                                round(max(igraph::V(g)$size)),
+                                                length.out = 4)), name = size_label)
+  p <- p + ggplot2::theme_void()
+  p <- p + ggraph::geom_node_text(ggplot2::aes_(label=~name), nudge_y = .2)
+  p <- p + ggplot2::scale_colour_manual(values = unique(igraph::V(g)$color),
+                                        name = NULL,
+                                        labels = c("enriched term", "up-regulated gene", "down-regulated gene"))
+  if (is.null(num_terms)) {
+    p <- p + ggplot2::ggtitle("Term-Gene Graph")
+  } else {
+    p <- p + ggplot2::ggtitle("Term-Gene Graph",
+                              subtitle = paste(c("Top", num_terms, "terms"), collapse = " "))
+  }
+
+  p <- p + ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5),
+                          plot.subtitle = ggplot2::element_text(hjust = 0.5))
+
+  return(p)
+
+}
