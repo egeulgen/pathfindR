@@ -63,7 +63,7 @@ create_kappa_matrix <- function(enrichment_res, use_names = FALSE, use_active_sn
       gene_vec_j <- binary_mat[j, ]
       cross_tbl <- table(gene_vec_i, gene_vec_j)
 
-      observed<- (cross_tbl[1, 1] + cross_tbl[2, 2]) / sum(cross_tbl)
+      observed <- (cross_tbl[1, 1] + cross_tbl[2, 2]) / sum(cross_tbl)
       chance <- (sum(cross_tbl[1, ]) * sum(cross_tbl[, 1]) + sum(cross_tbl[2, ]) * sum(cross_tbl[, 2])) / (sum(cross_tbl)^2)
       kappa_mat[j, i] <- kappa_mat[i, j] <- (observed - chance) / (1 - chance)
     }

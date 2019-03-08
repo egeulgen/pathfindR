@@ -5,7 +5,7 @@
 \title{Perform Enrichment Analysis for a Single Gene Set}
 \usage{
 enrichment(genes_by_pathway, genes_of_interest, pathways_list,
-  adj_method = "bonferroni", enrichment_threshold, pin_path, DEG_vec)
+  adj_method = "bonferroni", enrichment_threshold, DEG_vec, all_genes)
 }
 \arguments{
 \item{genes_by_pathway}{List that contains genes for each pathway. Names of
@@ -23,10 +23,9 @@ IDs. Names of this list are KEGG IDs.}
 \item{enrichment_threshold}{adjusted-p value threshold used when filtering
 pathway enrichment results}
 
-\item{pin_path}{path to the Protein-Protein Interaction Network (PIN) file used in
-the analysis}
-
 \item{DEG_vec}{vector of differentially-expressed gene symbols}
+
+\item{all_genes}{vector of background genes}
 }
 \value{
 A data frame that contains enrichment results.
@@ -35,9 +34,8 @@ A data frame that contains enrichment results.
 Perform Enrichment Analysis for a Single Gene Set
 }
 \examples{
-pin_path <- return_pin_path("KEGG")
 enrichment(kegg_genes, c("PER1", "PER2", "CRY1", "CREB1"), kegg_pathways,
-           "bonferroni", 0.05, pin_path, c("PER1"))
+           "bonferroni", 0.05, c("PER1"), unlist(kegg_genes))
 }
 \seealso{
 \code{\link[stats]{p.adjust}} for adjustment of p values. See

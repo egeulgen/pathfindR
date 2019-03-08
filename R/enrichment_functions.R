@@ -42,9 +42,8 @@ hyperg_test <- function(pw_genes, chosen_genes, all_genes) {
 #' @param adj_method correction method to be used for adjusting p-values.
 #' @param enrichment_threshold adjusted-p value threshold used when filtering
 #'   pathway enrichment results
-#' @param pin_path path to the Protein-Protein Interaction Network (PIN) file used in
-#'   the analysis
 #' @param DEG_vec vector of differentially-expressed gene symbols
+#' @param all_genes vector of background genes
 #'
 #' @return A data frame that contains enrichment results.
 #' @export
@@ -53,16 +52,11 @@ hyperg_test <- function(pw_genes, chosen_genes, all_genes) {
 #'   workflow. \code{\link{hyperg_test}} for the details on hypergeometric
 #'   distribution-based hypothesis testing.
 #' @examples
-#' pin_path <- return_pin_path("KEGG")
 #' enrichment(kegg_genes, c("PER1", "PER2", "CRY1", "CREB1"), kegg_pathways,
-#'            "bonferroni", 0.05, pin_path, c("PER1"))
+#'            "bonferroni", 0.05, c("PER1"), unlist(kegg_genes))
 enrichment <- function(genes_by_pathway, genes_of_interest,
                        pathways_list, adj_method = "bonferroni",
-                       enrichment_threshold, pin_path, DEG_vec) {
-
-  pin <- utils::read.delim(file = pin_path, header = FALSE,
-                           stringsAsFactors = FALSE)
-  all_genes <- unique(c(pin$V1, pin$V2))
+                       enrichment_threshold, DEG_vec, all_genes) {
 
   ## Hypergeometric test for p value
   enrichment_res <- sapply(genes_by_pathway, pathfindR::hyperg_test,
@@ -77,7 +71,6 @@ enrichment <- function(genes_by_pathway, genes_of_interest,
     return(A / B)
   }
   enrichment_res$Fold_Enrichment <- sapply(genes_by_pathway, fe_calc, DEG_vec, all_genes)
-
 
   idx <- order(enrichment_res$p_value)
   enrichment_res <- enrichment_res[idx,, drop = FALSE]
@@ -181,11 +174,16 @@ enrichment_analyses <- function(snws, input_genes,
     pathways_list <- custom_pathways
   }
 
+  pin <- utils::read.delim(file = pin_path, header = FALSE,
+                           stringsAsFactors = FALSE)
+  all_genes <- unique(c(pin$V1, pin$V2))
+
   ############ Enrichment per subnetwork
   enrichment_res <- lapply(snws, function(x)
     pathfindR::enrichment(genes_by_pathway, x, pathways_list,
                           adj_method, enrichment_threshold,
-                          pin_path, DEG_vec = input_genes))
+                          pin_path, DEG_vec = input_genes,
+                          all_genes))
 
   ############ Combine Enrichments Results for All Subnetworks
   enrichment_res <- Reduce(rbind, enrichment_res)
