@@ -1,4 +1,4 @@
-# pathfindR 1.3.1.9001
+# pathfindR 1.3.1.9002
 ## To be released as 1.3.1
 
 ## Major Changes
@@ -10,6 +10,7 @@
 - Removed title from graph visualization of hierarchical clustering in `cluster_graph_vis`
 - In `active_snw_search`, unneccessary warnings during active subnetwork search were removed
 - Fixed minor issue in `enrichment_chart`, supplying fuzzy clustered results no longer raises an error
+- Made changes in `enrichment` and `enrichment_analyses` to get enrichment results faster
 
 # pathfindR 1.3.0
 

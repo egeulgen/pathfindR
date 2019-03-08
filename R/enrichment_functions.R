@@ -182,7 +182,7 @@ enrichment_analyses <- function(snws, input_genes,
   enrichment_res <- lapply(snws, function(x)
     pathfindR::enrichment(genes_by_pathway, x, pathways_list,
                           adj_method, enrichment_threshold,
-                          pin_path, DEG_vec = input_genes,
+                          DEG_vec = input_genes,
                           all_genes))
 
   ############ Combine Enrichments Results for All Subnetworks
