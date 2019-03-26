@@ -105,6 +105,7 @@ visualize_pw_interactions <- function(result_df, pin_name_path) {
 
   ## Create visualization output directory
   dir.create("pathway_visualizations/")
+  setwd("pathway_visualizations")
   ############ visualize interactions by pathway
   for (i in 1:nrow(result_df)) {
     current_row <- result_df[i, ]
@@ -149,7 +150,7 @@ visualize_pw_interactions <- function(result_df, pin_name_path) {
                                    ifelse(names(igraph::V(g)) %in% down_genes, "green",
                                           ifelse(names(igraph::V(g)) %in% snw_genes, "blue", "gray60")))
 
-      grDevices::png(paste0("pathway_visualizations/", current_row$Pathway, ".png"), width = 1039, height = 831)
+      grDevices::png(paste0(current_row$Pathway, ".png"), width = 1039, height = 831)
       #Plot the tree object
       igraph::plot.igraph(
         g,
@@ -172,6 +173,7 @@ visualize_pw_interactions <- function(result_df, pin_name_path) {
       grDevices::dev.off()
     }
   }
+  setwd("..")
 }
 
 #' Visualize Human KEGG Pathways
