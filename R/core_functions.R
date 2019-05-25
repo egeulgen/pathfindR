@@ -391,6 +391,11 @@ input_testing <- function(input, p_val_threshold, org_dir = NULL){
     stop("the input is not a data frame")
   }
 
+  if (nrow(input) < 2) {
+    setwd(org_dir)
+    stop("There must be at least 2 rows (genes) in the input data frame")
+  }
+
   if (ncol(input) < 2){
     setwd(org_dir)
     stop("There must be at least 2 columns in the input data frame")
@@ -570,6 +575,11 @@ input_processing <- function(input, p_val_threshold, pin_path, org_dir = NULL, h
   ## Keep lowest p value for duplicated genes
   input <- input[order(input$P_VALUE), ]
   input <- input[!duplicated(input$GENE), ]
+
+  ## Check that at least two genes remain
+  if (nrow(input) < 2) {
+    stop("After processing, 1 gene (or no genes) could be mapped to the PIN")
+  }
 
   return(input)
 }
