@@ -11,6 +11,8 @@
 - In `active_snw_search`, unneccessary warnings during active subnetwork search were removed
 - Fixed minor issue in `enrichment_chart`, supplying fuzzy clustered results no longer raises an error
 - Made changes in `enrichment` and `enrichment_analyses` to get enrichment results faster
+- Added new checks in `input_testing` and `input_processing` to ensure that both the initial input data frame and the processed input data frame for active subnetwork search contain at least 2 genes (to fix the corner case encountered in issue #17)
+
 
 # pathfindR 1.3.0
 
