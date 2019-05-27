@@ -372,7 +372,7 @@ return_pin_path <- function(pin_name_path = "Biogrid", org_dir = NULL) {
 #'   \item adjusted p value associated with test, e.g. differential expression/methylation
 #' }
 #' @param p_val_threshold the adjusted-p value threshold to use when filtering
-#'   the input data frame. Must a numeric value between 0 and 1.
+#'   the input data frame. Must a numeric value between 0 and 1. (default = 0.05)
 #' @param org_dir path/to/original/directory, supplied by run_pathfindR (default = NULL)
 #'
 #' @return Only checks if the input and the threshold follows the required
@@ -382,7 +382,7 @@ return_pin_path <- function(pin_name_path = "Biogrid", org_dir = NULL) {
 #'   pathfindR workflow
 #' @examples
 #' input_testing(RA_input, 0.05)
-input_testing <- function(input, p_val_threshold, org_dir = NULL){
+input_testing <- function(input, p_val_threshold = 0.05, org_dir = NULL){
   if (is.null(org_dir))
     org_dir <- getwd()
 

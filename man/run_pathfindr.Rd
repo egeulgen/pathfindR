@@ -25,7 +25,7 @@ run_pathfindR(input, p_val_threshold = 0.05, visualize_pathways = TRUE,
 }}
 
 \item{p_val_threshold}{the adjusted-p value threshold to use when filtering
-the input data frame. Must a numeric value between 0 and 1.}
+the input data frame. Must a numeric value between 0 and 1. (default = 0.05)}
 
 \item{visualize_pathways}{Boolean value to indicate whether or not to create pathway diagrams.}
 
