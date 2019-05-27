@@ -54,7 +54,7 @@ combined_res <- NULL ## to store each iteration's result
 for (i in 1:n_iter) {
   ###### Active Subnetwork Search
   ## Name of output file
-  snws_file <- paste0("active_snws_", i, ".txt")
+  snws_file <- paste0("active_snws_", i)
   active_snws <- active_snw_search(RA_processed, pin_path, snws_file = snws_file, search_method = "GR")
 
   ###### Enrichment analyses
