@@ -74,10 +74,10 @@ RA_clustered <- cluster_pathways(RA_output)
 RA_clustered <- cluster_pathways(RA_output, plot_hmap = TRUE)
 
 # to display the dendrogram and clusters
-RA_clustered <- choose_clusters(RA_output, plot_dend = TRUE)
+RA_clustered <- cluster_pathways(RA_output, plot_dend = TRUE)
 
 # to change agglomeration method (default = "average")
-RA_clustered <- choose_clusters(RA_output, hclu_method = "centroid")
+RA_clustered <- cluster_pathways(RA_output, hclu_method = "centroid")
 ```
 
 Alternatively, the `fuzzy` clustering method (as described in Huang DW, Sherman BT, Tan Q, et al. The DAVID Gene Functional Classification Tool: a novel biological module-centric algorithm to functionally analyze large gene lists. Genome Biol. 2007;8(9):R183.) can be used:
