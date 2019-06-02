@@ -4,7 +4,8 @@
 \alias{enrichment_chart}
 \title{Plot the Bubble Chart of Enrichment Results}
 \usage{
-enrichment_chart(result_df, plot_by_cluster = FALSE)
+enrichment_chart(result_df, plot_by_cluster = FALSE, num_bubbles = 4,
+  even_breaks = TRUE)
 }
 \arguments{
 \item{result_df}{a data frame that must contain the following columns:\describe{
@@ -18,6 +19,13 @@ enrichment_chart(result_df, plot_by_cluster = FALSE)
 
 \item{plot_by_cluster}{boolean value indicating whether or not to group the
 pathways by cluster (works if "Cluster" is a column of `result_df`).}
+
+\item{num_bubbles}{number of sizes displayed in the legend `# of DEGs` (Default = 5).}
+
+\item{even_breaks}{whether or not to set even breaks for the number of sizes displayed
+in the legend `# of DEGs`. If `TRUE` (default), sets equal breaks and the number of
+displayed bubbles may be different than the number set by `num_bubbles`. If the exact
+number set by `num_bubbles` is required, set this argument to `FALSE`.}
 }
 \value{
 a `ggplot2` object containing the bubble chart. The x-axis corresponds to

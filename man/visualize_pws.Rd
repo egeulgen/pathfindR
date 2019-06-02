@@ -24,7 +24,7 @@ path/to/PIN.sif, the file must comply with the PIN specifications. Defaults
 to Biogrid.}
 }
 \value{
-Depending of `gene_sets`, creates visualization of interactions of genes
+Depending on `gene_sets`, creates visualization of interactions of genes
 involved in the list of pathways in `result_df` and saves them in the folder
 "pathway_visualizations" under the current working directory.
 }
@@ -34,7 +34,7 @@ Create Pathway Diagrams
 \details{
 For `gene_sets == "KEGG"`, KEGG human pathway diagrams are created,
 affected nodes colored by up/down regulation status.
-For the rest of `gene_sets`, interactions of affected genes are determined (via a shortest-path
+For other `gene_sets`, interactions of affected genes are determined (via a shortest-path
 algorithm) and are visualized (colored by change status) using igraph.
 }
 \examples{
