@@ -8,15 +8,15 @@ enrichment(genes_by_pathway, genes_of_interest, pathways_list,
   adj_method = "bonferroni", enrichment_threshold, DEG_vec, all_genes)
 }
 \arguments{
-\item{genes_by_pathway}{List that contains genes for each pathway. Names of
-this list are KEGG IDs.}
+\item{genes_by_pathway}{List that contains genes for each gene set. Names of
+this list are gene set IDs.}
 
 \item{genes_of_interest}{The set of gene symbols to be used for enrichment
 analysis. In the scope of this package, these are genes that were
 identified for an active subnetwork.}
 
-\item{pathways_list}{List that contains pathway descriptions for KEGG pathway
-IDs. Names of this list are KEGG IDs.}
+\item{pathways_list}{List that contains pathway descriptions for the gene set
+IDs. Names of this list are gene set IDs.}
 
 \item{adj_method}{correction method to be used for adjusting p-values.}
 

@@ -32,13 +32,13 @@ hyperg_test <- function(pw_genes, chosen_genes, all_genes) {
 
 #' Perform Enrichment Analysis for a Single Gene Set
 #'
-#' @param genes_by_pathway List that contains genes for each pathway. Names of
-#'   this list are KEGG IDs.
+#' @param genes_by_pathway List that contains genes for each gene set. Names of
+#'   this list are gene set IDs.
 #' @param genes_of_interest The set of gene symbols to be used for enrichment
 #'   analysis. In the scope of this package, these are genes that were
 #'   identified for an active subnetwork.
-#' @param pathways_list List that contains pathway descriptions for KEGG pathway
-#'   IDs. Names of this list are KEGG IDs.
+#' @param pathways_list List that contains pathway descriptions for the gene set
+#'   IDs. Names of this list are gene set IDs.
 #' @param adj_method correction method to be used for adjusting p-values.
 #' @param enrichment_threshold adjusted-p value threshold used when filtering
 #'   pathway enrichment results
