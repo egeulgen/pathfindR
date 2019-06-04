@@ -304,7 +304,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   message("Pathway enrichment results and table of converted genes ")
   message("can be found in \"results.html\" ")
   message(paste0("in the folder \"", output_dir, "\"\n\n"))
-  message("Run choose_clusters() for clustering pathways\n\n")
+  message("Run cluster_pathways() for clustering pathways\n\n")
 
   return(final_res)
 }
