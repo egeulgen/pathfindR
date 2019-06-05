@@ -22,6 +22,18 @@ install.packages("devtools") # if you have not installed "devtools" package
 devtools::install_github("egeulgen/pathfindR")
 ```
 
+From dockerhub:
+```bash
+# pull image for latest release
+docker pull egeulgen/pathfindr:latest
+
+# pull image for specific version (e.g. 1.3.0)
+docker pull egeulgen/pathfindr:1.3.0
+
+# pull image for development version
+docker pull egeulgen/pathfindr:dev
+```
+
 See the [wiki page](https://github.com/egeulgen/pathfindR/wiki/Installation) for more details.
 
 ## Overview of the Enrichment Workflow
