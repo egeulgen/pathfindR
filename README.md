@@ -22,7 +22,7 @@ install.packages("devtools") # if you have not installed "devtools" package
 devtools::install_github("egeulgen/pathfindR")
 ```
 
-From dockerhub:
+From Docker Hub (docker images):
 ```bash
 # pull image for latest release
 docker pull egeulgen/pathfindr:latest
