@@ -207,7 +207,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   pathfindR::input_testing(input, p_val_threshold, org_dir)
 
   ## Process input
-  message("## Processing input. Converting gene symbols, if necessary (and if human gene symbols provied)\n\n")
+  message("## Processing input. Converting gene symbols, if necessary (and if human gene symbols provided)\n\n")
   input_processed <- pathfindR::input_processing(input, p_val_threshold, pin_path, org_dir, human_genes)
 
   ############ Active Subnetwork Search and Enrichment
@@ -484,12 +484,16 @@ input_processing <- function(input, p_val_threshold, pin_path, org_dir = NULL, h
     input$GENE <- as.character(input$GENE)
   }
 
+  message("Number of genes provided in input: ", nrow(input))
   ## Discard larger than p-value threshold
+  if (sum(input$P_VALUE <= p_val_threshold) == 0)
+    stop("No input p value is lower than the provided threshold (", p_val_threshold, ")")
   input <- input[input$P_VALUE <= p_val_threshold, ]
+  message("Number of genes in input after p-value filtering: ", nrow(input))
 
   ## Choose lowest p for each gene
   if (anyDuplicated(input$GENE)) {
-    warning("Duplicated genes found!\nChoosing the lowest p value for each gene")
+    warning("Duplicated genes found!\nThe lowest p value for each gene was selected")
     input <- input[order(input$P_VALUE, decreasing = FALSE), ]
     input <- input[!duplicated(input$GENE), ]
   }
@@ -580,6 +584,8 @@ input_processing <- function(input, p_val_threshold, pin_path, org_dir = NULL, h
   if (nrow(input) < 2) {
     stop("After processing, 1 gene (or no genes) could be mapped to the PIN")
   }
+
+  message("Final number of genes in input: ", nrow(input))
 
   return(input)
 }
