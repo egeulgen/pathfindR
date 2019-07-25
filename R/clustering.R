@@ -25,46 +25,51 @@ create_kappa_matrix <- function(enrichment_res, use_names = FALSE, use_active_sn
   # list of genes
   down_idx <- which(colnames(enrichment_res) == "Down_regulated")
   up_idx <- which(colnames(enrichment_res) == "Up_regulated")
-  active_idx <- which(colnames(enrichment_res) == "non_DEG_Active_Snw_Genes")
 
-  if (use_active_snw_genes & length(active_idx) == 0)
-    stop("No column named `non_DEG_Active_Snw_Genes`, please execute `run_pathfindR` with `list_active_snw_genes = TRUE`!")
+  genes_lists <- apply(enrichment_res, 1, function(x) c(unlist(strsplit(as.character(x[up_idx]), ", ")),
+                                                        unlist(strsplit(as.character(x[down_idx]), ", "))))
 
   if (use_active_snw_genes) {
-    enrichment_res$GenesList <- apply(enrichment_res, 1, function(x) c(unlist(strsplit(as.character(x[up_idx]), ", ")),
-                                                                       unlist(strsplit(as.character(x[down_idx]), ", ")),
-                                                                       unlist(strsplit(as.character(x[active_idx]), ", "))))
-  } else {
-    enrichment_res$GenesList <- apply(enrichment_res, 1, function(x) c(unlist(strsplit(as.character(x[up_idx]), ", ")),
-                                                                       unlist(strsplit(as.character(x[down_idx]), ", "))))
+
+    if (!"non_DEG_Active_Snw_Genes" %in% colnames(enrichment_res))
+      stop("No column named `non_DEG_Active_Snw_Genes`, please execute `run_pathfindR` with `list_active_snw_genes = TRUE`!")
+
+    active_idx <- which(colnames(enrichment_res) == "non_DEG_Active_Snw_Genes")
+
+    genes_lists <- mapply(function(x, y) c(x, unlist(strsplit(as.character(y), ", "))),
+                          genes_lists, enrichment_res[, active_idx])
   }
 
   # Exclude zero-length gene sets
-  enrichment_res <- enrichment_res[sapply(enrichment_res$GenesList, length) != 0, ]
-
-  ### Create binary matrix
-  all_genes <- unlist(enrichment_res$GenesList)
-  binary_mat <- matrix(0, nrow = nrow(enrichment_res), ncol = length(all_genes),
-                       dimnames = list(enrichment_res[, pw_id], all_genes))
-
-  for (i in 1:nrow(enrichment_res)) {
-    current_genes <- enrichment_res$GenesList[[i]]
-    binary_mat[i, colnames(binary_mat) %in% current_genes] <- 1
+  excluded_idx <- which(sapply(genes_lists, length) == 0)
+  if (length(excluded_idx) != 0) {
+    genes_lists <- genes_lists[-excluded_idx]
+    enrichment_res <- enrichment_res[-excluded_idx, ]
   }
 
   ### Create Kappa Matrix
-  kappa_mat <- matrix(0, nrow = nrow(binary_mat), ncol = nrow(binary_mat),
-                      dimnames = list(rownames(binary_mat), rownames(binary_mat)))
+  all_genes <- unique(unlist(genes_lists, use.names = FALSE))
+  N <- nrow(enrichment_res)
+  pw_names <- enrichment_res[, pw_id]
+
+  kappa_mat <- matrix(0, nrow = N, ncol = N,
+                      dimnames = list(pw_names, pw_names))
   diag(kappa_mat) <- 1
 
-  for (i in 1:(nrow(binary_mat) - 1)) {
-    for (j in (i+1):nrow(binary_mat)) {
-      gene_vec_i <- binary_mat[i, ]
-      gene_vec_j <- binary_mat[j, ]
-      cross_tbl <- table(gene_vec_i, gene_vec_j)
+  for (i in 1:(N - 1)) {
+    for (j in (i+1):N) {
+      genes_i <- genes_lists[[i]]
+      genes_j <- genes_lists[[j]]
 
-      observed <- (cross_tbl[1, 1] + cross_tbl[2, 2]) / sum(cross_tbl)
-      chance <- (sum(cross_tbl[1, ]) * sum(cross_tbl[, 1]) + sum(cross_tbl[2, ]) * sum(cross_tbl[, 2])) / (sum(cross_tbl)^2)
+      C1_1 <- length(intersect(genes_i, genes_j))
+      C0_0 <- sum(!all_genes %in% genes_i & !all_genes %in% genes_j)
+      C0_1 <- sum(all_genes %in% genes_i & !all_genes %in% genes_j)
+      C1_0 <- sum(!all_genes %in% genes_i & all_genes %in% genes_j)
+
+      tot <- sum(C0_0, C0_1, C1_0, C1_1)
+
+      observed <- (C1_1 + C0_0) / tot
+      chance <- ((C1_1 + C0_1) * (C1_1 + C1_0) + (C1_0 + C0_0) * (C0_1 + C0_0)) / tot ^2
       kappa_mat[j, i] <- kappa_mat[i, j] <- (observed - chance) / (1 - chance)
     }
   }
