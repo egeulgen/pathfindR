@@ -15,14 +15,17 @@ cluster_graph_vis(clu_obj, kappa_mat, enrichment_res,
 
 \item{enrichment_res}{data frame of pathway enrichment results}
 
-\item{kappa_threshold}{threshold for kappa statistics, defining strong relation (default = 0.35)}
+\item{kappa_threshold}{threshold for kappa statistics, defining strong
+relation (default = 0.35)}
 
-\item{use_names}{boolean to indicate whether to use pathway names instead of IDs (default = FALSE, i.e. use IDs)}
+\item{use_names}{boolean to indicate whether to use pathway names instead of
+IDs (default = FALSE, i.e. use IDs)}
 }
 \value{
-Plots a graph diagram of clustering results. Each node is a term from `enrichment_res`.
-Size of node corresponds to -log(lowest_p). Thickness of the edges between nodes correspond to the
-kappa statistic between the two terms. Color of each node corresponds to distinct clusters. For fuzzy
+Plots a graph diagram of clustering results. Each node is a term
+from `enrichment_res`. Size of node corresponds to -log(lowest_p). Thickness
+of the edges between nodes correspond to the kappa statistic between the two
+terms. Color of each node corresponds to distinct clusters. For fuzzy
 clustering, if a term is in multiple clusters, multiple colors are utilized.
 }
 \description{

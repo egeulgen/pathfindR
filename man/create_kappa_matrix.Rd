@@ -10,15 +10,20 @@ create_kappa_matrix(enrichment_res, use_names = FALSE,
 \arguments{
 \item{enrichment_res}{data frame of pathway enrichment results. Must-have
 columns are "Pathway" or "ID", "Down_regulated", and "Up_regulated". If
-`use_active_snw_genes = TRUE`, "non_DEG_Active_Snw_Genes" must also be provided.}
+`use_active_snw_genes = TRUE`, "non_DEG_Active_Snw_Genes" must also be
+provided.}
 
-\item{use_names}{boolean to indicate whether to use pathway names instead of IDs (default = FALSE, i.e. use IDs)}
+\item{use_names}{boolean to indicate whether to use pathway names instead of
+IDs (default = FALSE, i.e. use IDs)}
 
-\item{use_active_snw_genes}{boolean to indicate whether or not to use non-input active subnetwork genes
-in the calculation of kappa statistics (default = FALSE, i.e. use only affected genes)}
+\item{use_active_snw_genes}{boolean to indicate whether or not to use
+non-input active subnetwork genes
+in the calculation of kappa statistics (default = FALSE,
+i.e. use only affected genes)}
 }
 \value{
-a matrix of kappa statistics between each term in the enrichment results.
+a matrix of kappa statistics between each term in the
+enrichment results.
 }
 \description{
 Create Kappa Statistics Matrix

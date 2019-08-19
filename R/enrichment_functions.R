@@ -70,7 +70,8 @@ enrichment <- function(genes_by_pathway, genes_of_interest,
     B <- sum(x %in% all_genes) / length(all_genes)
     return(A / B)
   }
-  enrichment_res$Fold_Enrichment <- sapply(genes_by_pathway, fe_calc, DEG_vec, all_genes)
+  enrichment_res$Fold_Enrichment <- sapply(genes_by_pathway, fe_calc,
+                                           DEG_vec, all_genes)
 
   idx <- order(enrichment_res$p_value)
   enrichment_res <- enrichment_res[idx,, drop = FALSE]
@@ -149,26 +150,35 @@ enrichment <- function(genes_by_pathway, genes_of_interest,
 #' }
 #'
 enrichment_analyses <- function(snws, input_genes,
-                                gene_sets = "KEGG", custom_genes = NULL, custom_pathways = NULL,
+                                gene_sets = "KEGG",
+                                custom_genes = NULL, custom_pathways = NULL,
                                 pin_path,
-                                adj_method = "bonferroni", enrichment_threshold = 5e-2,
+                                adj_method = "bonferroni",
+                                enrichment_threshold = 5e-2,
                                 list_active_snw_genes = FALSE) {
   ############ Load Gene Set Data
-  gene_sets_df <- data.frame("Gene Set Name" = c("KEGG", "Reactome", "BioCarta",
-                                                 "GO-All", "GO-BP", "GO-CC", "GO-MF"),
-                             "genes_by_pathway" = c("kegg_genes", "reactome_genes", "biocarta_genes",
-                                                    "go_all_genes", "go_bp_genes", "go_cc_genes", "go_mf_genes"),
-                             "pathways_list" = c("kegg_pathways", "reactome_pathways", "biocarta_pathways",
-                                                 "go_all_pathways", "go_bp_pathways", "go_cc_pathways", "go_mf_pathways"))
+  gset_names <- c("KEGG", "Reactome", "BioCarta",
+                  "GO-All", "GO-BP", "GO-CC", "GO-MF")
+  pw_genes <- c("kegg_genes", "reactome_genes", "biocarta_genes",
+                "go_all_genes", "go_bp_genes", "go_cc_genes", "go_mf_genes")
+  pw_lists <- c("kegg_pathways", "reactome_pathways", "biocarta_pathways",
+                "go_all_pathways",
+                "go_bp_pathways", "go_cc_pathways", "go_mf_pathways")
+
+  gene_sets_df <- data.frame("Gene Set Name" = gset_names,
+                             "genes_by_pathway" = pw_genes,
+                             "pathways_list" = pw_lists)
 
   if (gene_sets %in% gene_sets_df$Gene.Set.Name) {
     idx <- which(gene_sets_df$Gene.Set.Name == gene_sets)
+
     genes_name <- gene_sets_df$genes_by_pathway[idx]
+    genes_name <- paste0("pathfindR::", genes_name)
+    genes_by_pathway <- base::eval(parse(text = genes_name))
+
     pws_name <-  gene_sets_df$pathways_list[idx]
-
-    genes_by_pathway <- base::eval(parse(text = paste0("pathfindR::", genes_name)))
-    pathways_list <- base::eval(parse(text = paste0("pathfindR::", pws_name)))
-
+    pws_name <- paste0("pathfindR::", pws_name)
+    pathways_list <- base::eval(parse(text = pws_name))
   } else if (gene_sets == "Custom") {
     genes_by_pathway <- custom_genes
     pathways_list <- custom_pathways
@@ -232,7 +242,8 @@ enrichment_analyses <- function(snws, input_genes,
 #' \dontrun{
 #' summarize_enrichment_results(enrichment_res)
 #' }
-summarize_enrichment_results <- function(enrichment_res, list_active_snw_genes = FALSE) {
+summarize_enrichment_results <- function(enrichment_res,
+                                         list_active_snw_genes = FALSE) {
   ## Annotate lowest p, highest p and occurrence
   final_res <- enrichment_res
   lowest_p <- tapply(enrichment_res$adj_p, enrichment_res$ID, min)
@@ -249,7 +260,8 @@ summarize_enrichment_results <- function(enrichment_res, list_active_snw_genes =
   final_res$occurrence <- as.numeric(occurrence[matched_idx])
 
   ## reorder columns
-  keep <- c("ID", "Pathway", "Fold_Enrichment", "occurrence", "lowest_p", "highest_p")
+  keep <- c("ID", "Pathway", "Fold_Enrichment", "occurrence",
+            "lowest_p", "highest_p")
   if (list_active_snw_genes)
     keep <- c(keep, "non_DEG_Active_Snw_Genes")
   final_res <- final_res[, keep]

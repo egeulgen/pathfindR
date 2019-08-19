@@ -10,46 +10,54 @@ cluster_pathways(enrichment_res, method = "hierarchical",
   hclu_method = "average", plot_hmap = FALSE, plot_dend = FALSE)
 }
 \arguments{
-\item{enrichment_res}{data frame of pathway enrichment results (result of `run_pathfindR`)}
+\item{enrichment_res}{data frame of pathway enrichment results
+(result of `run_pathfindR`)}
 
 \item{method}{Either "hierarchical" or "fuzzy". Details of clustering are
 provided in the corresponding functions.}
 
-\item{kappa_threshold}{threshold for kappa statistics, defining strong relation (default = 0.35)}
+\item{kappa_threshold}{threshold for kappa statistics, defining strong
+relation (default = 0.35)}
 
-\item{plot_clusters_graph}{boolean value indicate whether or not to plot the graph
-diagram of clustering results (default = TRUE)}
+\item{plot_clusters_graph}{boolean value indicate whether or not to plot
+the graph diagram of clustering results (default = TRUE)}
 
-\item{use_names}{boolean to indicate whether to use pathway names instead of IDs (default = FALSE, i.e. use IDs)}
+\item{use_names}{boolean to indicate whether to use pathway names instead of
+IDs (default = FALSE, i.e. use IDs)}
 
-\item{use_active_snw_genes}{boolean to indicate whether or not to use non-input active subnetwork genes
-in the calculation of kappa statistics (default = FALSE, i.e. use only affected genes)}
+\item{use_active_snw_genes}{boolean to indicate whether or not to use
+non-input active subnetwork genes in the calculation of kappa statistics
+(default = FALSE, i.e. use only affected genes)}
 
-\item{hclu_method}{the agglomeration method to be used (default = "average", see `?hclust`)}
+\item{hclu_method}{the agglomeration method to be used
+(default = "average", see `?hclust`)}
 
 \item{plot_hmap}{boolean to indicate whether to plot the kappa statistics
 heatmap or not (default = FALSE)}
 
-\item{plot_dend}{boolean to indicate whether to plot the clustering dendrogram
-partitioned into the optimal number of clusters (default = TRUE)}
+\item{plot_dend}{boolean to indicate whether to plot the clustering
+dendrogram partitioned into the optimal number of clusters (default = TRUE)}
 }
 \value{
-a data frame of clustering results. For "hierarchical", the cluster assignments
-(Cluster) and whether the term is representative of its cluster (Status) is added as columns.
-For "fuzzy", terms that are in multiple clusters are provided for each cluster. The cluster
-assignments (Cluster) and whether the term is representative of its cluster (Status) is
+a data frame of clustering results. For "hierarchical", the cluster
+assignments (Cluster) and whether the term is representative of its cluster
+(Status) is added as columns. For "fuzzy", terms that are in multiple
+clusters are provided for each cluster. The cluster assignments (Cluster)
+and whether the term is representative of its cluster (Status) is
 added as columns.
 }
 \description{
 Cluster Pathways
 }
 \examples{
-example_clustered <- cluster_pathways(RA_output[1:3,], plot_clusters_graph = FALSE)
+example_clustered <- cluster_pathways(RA_output[1:3,],
+plot_clusters_graph = FALSE)
 example_clustered <- cluster_pathways(RA_output[1:3,],
 method = "fuzzy", plot_clusters_graph = FALSE)
 
 }
 \seealso{
-See \code{\link{hierarchical_pw_clustering}} for hierarchical clustering of enriched terms.
+See \code{\link{hierarchical_pw_clustering}} for hierarchical
+clustering of enriched terms.
 See \code{\link{fuzzy_pw_clustering}} for fuzzy clustering of enriched terms.
 }

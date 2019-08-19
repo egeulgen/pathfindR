@@ -1,6 +1,6 @@
 #' Calculate Pathway Scores for Each Subject
 #'
-#' @param pw_table a data frame that must contain the 3 columns below:\describe{
+#' @param pw_table a data frame that must contain the 3 columns below: \describe{
 #'   \item{Pathway}{Description of the enriched pathway}
 #'   \item{Up_regulated}{the up-regulated genes in the input involved in the given pathway, comma-separated}
 #'   \item{Down_regulated}{the down-regulated genes in the input involved in the given pathway, comma-separated}
@@ -106,7 +106,8 @@ calculate_pw_scores <- function(pw_table, exp_mat,
 #' score_mat <- calculate_pw_scores(RA_output, RA_exp_mat, plot_hmap = FALSE)
 #' hmap <- plot_scores(score_mat)
 plot_scores <- function(score_matrix, cases = NULL, label_cases = TRUE,
-                        case_control_titles = c("Case", "Control"), low = "green", high = "red") {
+                        case_control_titles = c("Case", "Control"),
+                        low = "green", high = "red") {
   if (length(case_control_titles) != 2)
     stop("\"case_control_titles\" must contain two elements!")
   if (any(!cases %in% colnames(score_matrix)) & !is.null(cases))
@@ -120,28 +121,36 @@ plot_scores <- function(score_matrix, cases = NULL, label_cases = TRUE,
 
   ## transform the matrix
   var_names <- list()
-  var_names[["Pathway"]] <- factor(rownames(score_matrix), levels = rev(rownames(score_matrix)))
-  var_names[["Sample"]] <- factor(colnames(score_matrix), levels = colnames(score_matrix))
+  var_names[["Pathway"]] <- factor(rownames(score_matrix),
+                                   levels = rev(rownames(score_matrix)))
+  var_names[["Sample"]] <- factor(colnames(score_matrix),
+                                  levels = colnames(score_matrix))
 
-  score_df <- expand.grid(var_names, KEEP.OUT.ATTRS = FALSE, stringsAsFactors = FALSE)
+  score_df <- expand.grid(var_names, KEEP.OUT.ATTRS = FALSE,
+                          stringsAsFactors = FALSE)
   scores <- as.vector(score_matrix)
   scores <- data.frame(scores)
   score_df <- cbind(score_df, scores)
   if (!is.null(cases))
-    score_df$Type <- factor(ifelse(score_df$Sample %in% cases, case_control_titles[1], case_control_titles[2]), levels = case_control_titles)
+    score_df$Type <- factor(ifelse(score_df$Sample %in% cases,
+                                   case_control_titles[1],
+                                   case_control_titles[2]),
+                            levels = case_control_titles)
 
   g <- ggplot2::ggplot(score_df, ggplot2::aes_(x = ~Sample, y = ~Pathway))
   g <- g + ggplot2::geom_tile(ggplot2::aes_(fill = ~scores), color = "white")
   g <- g + ggplot2::scale_fill_gradient2(low = low, mid = "black", high = high)
   g <- g + ggplot2::theme(axis.title.x = ggplot2::element_blank(),
                           axis.title.y = ggplot2::element_blank(),
-                          axis.text.x = ggplot2::element_text(angle = 45, hjust = 1),
+                          axis.text.x = ggplot2::element_text(angle = 45,
+                                                              hjust = 1),
                           legend.title = ggplot2::element_text(size = 10),
                           legend.text = ggplot2::element_text(size = 12))
   g <- g + ggplot2::labs(fill = "Pathway\nscore")
   if (!is.null(cases)) {
     g <- g + ggplot2::facet_grid(~ Type, scales = "free_x", space = "free")
-    g <- g + ggplot2::theme(strip.text.x = ggplot2::element_text(size = 12, face="bold"))
+    g <- g + ggplot2::theme(strip.text.x = ggplot2::element_text(size = 12,
+                                                                 face="bold"))
   }
   if (!label_cases) {
     g <- g + ggplot2::theme(axis.text.x = ggplot2::element_blank(),

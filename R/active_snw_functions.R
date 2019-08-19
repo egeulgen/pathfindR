@@ -43,7 +43,8 @@ filterActiveSnws <- function(active_snw_path, signif_genes,
   score_thr <- stats::quantile(score_vec, score_quan_thr)
   subnetworks <- subnetworks[as.numeric(score_vec) > as.numeric(score_thr)]
   # select subnetworks with at least sig_gene_thr significant genes
-  snw_sig_counts <- sapply(subnetworks, function(snw) sum(snw %in% signif_genes))
+  snw_sig_counts <- sapply(subnetworks, function(snw)
+    sum(snw %in% signif_genes))
   cond <- (snw_sig_counts >= sig_gene_thr)
   subnetworks <- subnetworks[cond]
 
@@ -105,7 +106,8 @@ active_snw_search <- function(input_for_search, pin_path,
                               use_all_positives = FALSE,
                               geneInitProbs = 0.1,
                               saTemp0 = 1, saTemp1 = 0.01, saIter = 10000,
-                              gaPop = 400, gaIter = 10000, gaThread = 5, gaMut = 0,
+                              gaPop = 400, gaIter = 10000,
+                              gaThread = 5, gaMut = 0,
                               grMaxDepth = 1, grSearchDepth = 1,
                               grOverlap = 0.5, grSubNum = 1000) {
   ############ Argument checks
@@ -119,12 +121,15 @@ active_snw_search <- function(input_for_search, pin_path,
     stop("the argument `silent_option` must be either TRUE or FALSE")
 
   ############ Initial Steps
-  ## If dir_for_parallel_run is provided, change working dir to dir_for_parallel_run
+  ## If dir_for_parallel_run is provided,
+  # change working dir to dir_for_parallel_run
   if(!is.null(dir_for_parallel_run))
     setwd(dir_for_parallel_run)
 
   ## turn silent_option into argument
-  silent_option <- ifelse(silent_option, paste0(" > ./active_snw_search/console_out_", snws_file, ".txt"), "")
+  silent_option <- ifelse(silent_option,
+                          paste0(" > ./active_snw_search/console_out_",
+                                 snws_file, ".txt"), "")
 
   ## turn use_all_positives into the java argument
   use_all_positives <- ifelse(use_all_positives, " -useAllPositives", "")
@@ -181,7 +186,8 @@ active_snw_search <- function(input_for_search, pin_path,
 
   message(paste0("Found ", length(snws), " active subnetworks\n\n"))
 
-  ## If dir_for_parallel_run is provided, change working dir back to analysis output dir
+  ## If dir_for_parallel_run is provided,
+  # change working dir back to analysis output dir
   if(!is.null(dir_for_parallel_run))
     setwd("../..")
   return(snws)

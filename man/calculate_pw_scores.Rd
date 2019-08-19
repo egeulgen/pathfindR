@@ -8,7 +8,7 @@ calculate_pw_scores(pw_table, exp_mat, cases = NULL, plot_hmap = TRUE,
   ...)
 }
 \arguments{
-\item{pw_table}{a data frame that must contain the 3 columns below:\describe{
+\item{pw_table}{a data frame that must contain the 3 columns below: \describe{
   \item{Pathway}{Description of the enriched pathway}
   \item{Up_regulated}{the up-regulated genes in the input involved in the given pathway, comma-separated}
   \item{Down_regulated}{the down-regulated genes in the input involved in the given pathway, comma-separated}

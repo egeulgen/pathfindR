@@ -12,13 +12,15 @@ fuzzy_pw_clustering(kappa_mat, enrichment_res, kappa_threshold = 0.35,
 
 \item{enrichment_res}{data frame of pathway enrichment results}
 
-\item{kappa_threshold}{threshold for kappa statistics, defining strong relation (default = 0.35)}
+\item{kappa_threshold}{threshold for kappa statistics, defining strong
+relation (default = 0.35)}
 
-\item{use_names}{boolean to indicate whether to use pathway names instead of IDs (default = FALSE, i.e. use IDs)}
+\item{use_names}{boolean to indicate whether to use pathway names instead of
+IDs (default = FALSE, i.e. use IDs)}
 }
 \value{
-a boolean matrix of cluster assignments. Each row corresponds to a term,
-each column corresponds to a cluster.
+a boolean matrix of cluster assignments. Each row corresponds to a
+term, each column corresponds to a cluster.
 }
 \description{
 Heuristic Fuzzy Multiple-linkage Partitioning of Pathways

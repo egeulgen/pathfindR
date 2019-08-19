@@ -37,7 +37,8 @@
 #' visualize_pws(result_df, input_processed)
 #' visualize_pws(result_df, gene_sets = "GO-BP", pin_name_path = "IntAct")
 #' }
-visualize_pws <- function(result_df, input_processed = NULL, gene_sets = "KEGG", pin_name_path = "Biogrid") {
+visualize_pws <- function(result_df, input_processed = NULL,
+                          gene_sets = "KEGG", pin_name_path = "Biogrid") {
   ############ Argument Check
   if (gene_sets == "KEGG" & is.null(input_processed))
     stop("`input_processed` must be specified when `gene_sets` is KEGG")
@@ -123,34 +124,48 @@ visualize_pw_interactions <- function(result_df, pin_name_path) {
     }
 
     if (length(current_genes) < 2)
-      message(paste0("<2 genes, skipping visualization of ", current_row$Pathway))
+      message(paste0("< 2 genes, skipping visualization of ",
+                     current_row$Pathway))
     else {
       cat(paste0("Visualizing: ", current_row$Pathway,
                  paste(rep(" ", 200), collapse = ""), "\r"))
 
       ## Find genes without direct interaction
-      direct_interactions <- pin[pin$V1 %in% current_genes & pin$V3 %in% current_genes, ]
-      missing_genes <- current_genes[! current_genes %in% c(direct_interactions$V1, direct_interactions$V3)]
+      cond1 <- pin$V1 %in% current_genes
+      cond2 <- pin$V3 %in% current_genes
+      direct_interactions <- pin[cond1 & cond2, ]
+      tmp <- c(direct_interactions$V1, direct_interactions$V3)
+      missing_genes <- current_genes[!current_genes %in% tmp]
 
-      ## Find shortest path between genes without direct interaction and other current_genes
+      ## Find shortest path between genes without direct interaction
+      # and other current_genes
       s_path_genes <- c()
       for (gene in missing_genes) {
-        tmp <- suppressWarnings(igraph::shortest_paths(pin_g,
-                                                       from = which(names(igraph::V(pin_g)) == gene),
-                                                       to = which(names(igraph::V(pin_g)) %in% current_genes),
-                                                       output = "vpath"))
+        tmp <- suppressWarnings(igraph::shortest_paths(
+          pin_g,
+          from = which(names(igraph::V(pin_g)) == gene),
+          to = which(names(igraph::V(pin_g)) %in% current_genes),
+          output = "vpath"))
+
         tmp <- unique(unlist(sapply(tmp$vpath, function(x) names(x))))
         s_path_genes <- unique(c(s_path_genes, tmp))
       }
+
       final_genes <- unique(c(current_genes, s_path_genes))
-      final_interactions <- pin[pin$V1 %in% final_genes & pin$V3 %in% final_genes, ]
+      cond1 <- pin$V1 %in% final_genes
+      cond2 <- pin$V3 %in% final_genes
+      final_interactions <- pin[cond1 & cond2, ]
       g <- igraph::graph_from_data_frame(final_interactions, directed = FALSE)
 
-      igraph::V(g)$color <- ifelse(names(igraph::V(g)) %in% up_genes, "red",
-                                   ifelse(names(igraph::V(g)) %in% down_genes, "green",
-                                          ifelse(names(igraph::V(g)) %in% snw_genes, "blue", "gray60")))
+      cond1 <- names(igraph::V(g)) %in% up_genes
+      cond2 <- names(igraph::V(g)) %in% down_genes
+      cond3 <- names(igraph::V(g)) %in% snw_genes
+      igraph::V(g)$color <- ifelse(cond1, "red",
+                                   ifelse(cond2, "green",
+                                          ifelse(cond3, "blue", "gray60")))
 
-      grDevices::png(paste0(current_row$Pathway, ".png"), width = 1039, height = 831)
+      grDevices::png(paste0(current_row$Pathway, ".png"),
+                     width = 1039, height = 831)
       #Plot the tree object
       igraph::plot.igraph(
         g,
@@ -163,13 +178,16 @@ visualize_pw_interactions <- function(result_df, pin_name_path) {
         vertex.label.cex=0.8,
         edge.width=1.2,
         edge.arrow.mode=0,
-        main=paste(current_row$Pathway, "\n Involved Gene Interactions in", pin_name_path)
+        main=paste(current_row$Pathway,
+                   "\n Involved Gene Interactions in", pin_name_path)
       )
 
       graphics::legend("topleft", legend = c("Non-input Active Snw. Genes",
                                              "Upregulated Input Genes",
                                              "Downregulated Input Genes",
-                                             "Other"), col = c("blue", "red", "green", "gray60"), pch = 19, cex = 1.5, bty = "n")
+                                             "Other"),
+                       col = c("blue", "red", "green", "gray60"),
+                       pch = 19, cex = 1.5, bty = "n")
       grDevices::dev.off()
     }
   }
@@ -288,11 +306,14 @@ visualize_hsa_KEGG <- function(pw_table, gene_data) {
 #'
 #' @examples
 #' g <- enrichment_chart(RA_output)
-enrichment_chart <- function(result_df, plot_by_cluster = FALSE, num_bubbles = 4, even_breaks = TRUE) {
+enrichment_chart <- function(result_df, plot_by_cluster = FALSE,
+                             num_bubbles = 4, even_breaks = TRUE) {
 
-  necessary <- c("Pathway", "Fold_Enrichment", "lowest_p", "Up_regulated", "Down_regulated")
+  necessary <- c("Pathway", "Fold_Enrichment", "lowest_p",
+                 "Up_regulated", "Down_regulated")
   if (!all(necessary %in% colnames(result_df)))
-    stop("The input data frame must have the columns: Pathway, Fold_Enrichment, lowest_p, Up_regulated, Down_regulated")
+    stop("The input data frame must have the columns:
+         Pathway, Fold_Enrichment, lowest_p, Up_regulated, Down_regulated")
 
   if (!is.logical(plot_by_cluster))
     stop("plot_by_cluster must be either TRUE or FALSE")
@@ -300,12 +321,15 @@ enrichment_chart <- function(result_df, plot_by_cluster = FALSE, num_bubbles = 4
   # sort by lowest adj.p
   result_df <- result_df[order(result_df$lowest_p), ]
 
-  n <- sapply(result_df$Up_regulated, function(x) length(unlist(strsplit(x, ", "))))
-  n <- n + sapply(result_df$Down_regulated, function(x) length(unlist(strsplit(x, ", "))))
+  n <- sapply(result_df$Up_regulated,
+              function(x) length(unlist(strsplit(x, ", "))))
+  n <- n + sapply(result_df$Down_regulated,
+                  function(x) length(unlist(strsplit(x, ", "))))
 
-  result_df$Pathway <- factor(result_df$Pathway, levels = rev(unique(result_df$Pathway)))
+  result_df$Pathway <- factor(result_df$Pathway,
+                              levels = rev(unique(result_df$Pathway)))
 
-  g <- ggplot2::ggplot(result_df, ggplot2::aes_(x = ~Fold_Enrichment, y = ~Pathway))
+  g <- ggplot2::ggplot(result_df, ggplot2::aes_(~Fold_Enrichment, ~Pathway))
   g <- g + ggplot2::geom_point(ggplot2::aes(color = -log10(result_df$lowest_p),
                                             size = n), na.rm = TRUE)
   g <- g + ggplot2::theme_bw()
@@ -319,18 +343,21 @@ enrichment_chart <- function(result_df, plot_by_cluster = FALSE, num_bubbles = 4
   if (max(n) < num_bubbles) {
     g <- g + ggplot2::scale_size_continuous(breaks = seq(0, max(n)))
   } else {
-    if (even_breaks)
-      g <- g + ggplot2::scale_size_continuous(breaks = base::seq(0, max(n), round(max(n) / (num_bubbles + 1))))
-    else
-      g <- g + ggplot2::scale_size_continuous(breaks = base::round(base::seq(0, max(n), length.out = num_bubbles + 1)))
+    tmp1 <- base::seq(0, max(n), round(max(n) / (num_bubbles + 1)))
+    tmp2 <- base::round(base::seq(0, max(n), length.out = num_bubbles + 1))
+    brks <- ifelse(even_breaks, tmp1, tmp2)
+
+    g <- g + ggplot2::scale_size_continuous(breaks = brks)
   }
 
   g <- g + ggplot2::scale_color_continuous(low = "#f5efef", high = "red")
 
   if (plot_by_cluster & "Cluster" %in% colnames(result_df)) {
-    g <- g + ggplot2::facet_grid(result_df$Cluster~., scales = "free_y", space = "free", drop = TRUE)
+    g <- g + ggplot2::facet_grid(result_df$Cluster~.,
+                                 scales = "free_y", space = "free", drop = TRUE)
   } else if (plot_by_cluster) {
-    warning("For plotting by cluster, there must a column named `Cluster` in the input data frame!")
+    message("For plotting by cluster, there must a column named `Cluster`
+            in the input data frame!")
   }
 
   return(g)
@@ -370,7 +397,8 @@ enrichment_chart <- function(result_df, plot_by_cluster = FALSE, num_bubbles = 4
 #' p <- term_gene_graph(RA_output, num_terms = 5)
 #' p <- term_gene_graph(RA_output, node_size = "p_val")
 term_gene_graph <- function(result_df, num_terms = 10,
-                            layout = "auto", use_names = FALSE, node_size = "num_DEGs") {
+                            layout = "auto", use_names = FALSE,
+                            node_size = "num_DEGs") {
 
   ############ Argument Checks
   ### Set column for term labels
@@ -415,21 +443,25 @@ term_gene_graph <- function(result_df, num_terms = 10,
     }
   }
 
-  up_genes <- unlist(sapply(df_for_vis$Up_regulated, function(x) unlist(strsplit(x, ", "))))
+  up_genes <- unlist(sapply(df_for_vis$Up_regulated,
+                            function(x) unlist(strsplit(x, ", "))))
 
   ############ Create graph and plot
 
   ### create igraph object
   g <- igraph::graph_from_data_frame(for_graph)
-  igraph::V(g)$type <- ifelse(names(igraph::V(g)) %in% df_for_vis[, ID_column], "pathway",
-                              ifelse(names(igraph::V(g)) %in% up_genes, "up", "down"))
+  cond1 <- names(igraph::V(g)) %in% df_for_vis[, ID_column]
+  cond2 <- names(igraph::V(g)) %in% up_genes
+  igraph::V(g)$type <- ifelse(cond1, "pathway",
+                              ifelse(cond2, "up", "down"))
   # Adjust node sizes
   if (node_size == "num_DEGs") {
     sizes <- igraph::degree(g)
     sizes <- ifelse(igraph::V(g)$type == "pathway", sizes, 2)
     size_label <- "# DEGs"
   } else {
-    sizes <- -log10(df_for_vis$lowest_p[match(names(igraph::V(g)), df_for_vis[, ID_column])])
+    idx <- match(names(igraph::V(g)), df_for_vis[, ID_column])
+    sizes <- -log10(df_for_vis$lowest_p[idx])
     sizes[is.na(sizes)] <- 2
     size_label <- "-log10(p)"
   }
@@ -437,7 +469,8 @@ term_gene_graph <- function(result_df, num_terms = 10,
   igraph::V(g)$label.cex <- 0.5
   igraph::V(g)$frame.color <-  "gray"
   igraph::V(g)$color <- ifelse(igraph::V(g)$type == "pathway", "#E5D7BF",
-                               ifelse(igraph::V(g)$type == "up", "green", "red"))
+                               ifelse(igraph::V(g)$type == "up", "green",
+                                      "red"))
 
   ### Create graph
   p <- ggraph::ggraph(g, layout = layout)
@@ -446,17 +479,21 @@ term_gene_graph <- function(result_df, num_terms = 10,
   p <- p + ggplot2::scale_size(range=c(5, 10),
                                breaks=round(seq(round(min(igraph::V(g)$size)),
                                                 round(max(igraph::V(g)$size)),
-                                                length.out = 4)), name = size_label)
+                                                length.out = 4)),
+                               name = size_label)
   p <- p + ggplot2::theme_void()
   p <- p + ggraph::geom_node_text(ggplot2::aes_(label=~name), nudge_y = .2)
   p <- p + ggplot2::scale_colour_manual(values = unique(igraph::V(g)$color),
                                         name = NULL,
-                                        labels = c("enriched term", "up-regulated gene", "down-regulated gene"))
+                                        labels = c("enriched term",
+                                                   "up-regulated gene",
+                                                   "down-regulated gene"))
   if (is.null(num_terms)) {
     p <- p + ggplot2::ggtitle("Term-Gene Graph")
   } else {
     p <- p + ggplot2::ggtitle("Term-Gene Graph",
-                              subtitle = paste(c("Top", num_terms, "terms"), collapse = " "))
+                              subtitle = paste(c("Top", num_terms, "terms"),
+                                               collapse = " "))
   }
 
   p <- p + ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5),

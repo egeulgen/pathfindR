@@ -12,15 +12,17 @@ hierarchical_pw_clustering(kappa_mat, enrichment_res, use_names = FALSE,
 
 \item{enrichment_res}{data frame of pathway enrichment results}
 
-\item{use_names}{boolean to indicate whether to use pathway names instead of IDs (default = FALSE, i.e. use IDs)}
+\item{use_names}{boolean to indicate whether to use pathway names instead of
+IDs (default = FALSE, i.e. use IDs)}
 
-\item{clu_method}{the agglomeration method to be used (default = "average", see `?hclust`)}
+\item{clu_method}{the agglomeration method to be used
+(default = "average", see `?hclust`)}
 
 \item{plot_hmap}{boolean to indicate whether to plot the kappa statistics
 heatmap or not (default = FALSE)}
 
-\item{plot_dend}{boolean to indicate whether to plot the clustering dendrogram
-partitioned into the optimal number of clusters (default = TRUE)}
+\item{plot_dend}{boolean to indicate whether to plot the clustering
+dendrogram partitioned into the optimal number of clusters (default = TRUE)}
 }
 \value{
 a vector of clusters for each term in the enrichment results.
@@ -32,9 +34,9 @@ Hierarchical Clustering of Pathways
 The function initially performs hierarchical clustering
 of the terms in `enrichment_res` using the kappa statistics
 (defining the distance as `1 - kappa_statistic`). Next,
-the clustering dendrogram is cut into k = 2, 3, ..., n - 1 clusters (where
-n is the number of terms). The optimal number of clusters is determined as the
-k value which yields the highest average silhouette width.
+the clustering dendrogram is cut into k = 2, 3, ..., n - 1 clusters
+(where n is the number of terms). The optimal number of clusters is
+determined as the k value which yields the highest average silhouette width.
 }
 \examples{
 \dontrun{

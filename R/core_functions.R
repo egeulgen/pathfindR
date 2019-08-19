@@ -151,10 +151,14 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   # Gene Sets
   if (!gene_sets %in% c("KEGG", "Reactome", "BioCarta",
                         "GO-All", "GO-BP", "GO-CC", "GO-MF", "Custom"))
-    stop("`gene_sets` must be one of KEGG, Reactome, BioCarta, GO-All, GO-BP, GO-CC, GO-MF or Custom")
+    stop("`gene_sets` must be one of KEGG, Reactome,
+         BioCarta, GO-All, GO-BP, GO-CC, GO-MF or Custom")
 
-  if (gene_sets == "Custom" & (is.null(custom_genes) | is.null(custom_pathways)))
-    stop("You must provide both `custom_genes` and `custom_pathways` if `gene_sets` is `Custom`!")
+  cstm_cond <- gene_sets == "Custom"
+  cstm_cond <- cstm_cond & (is.null(custom_genes) | is.null(custom_pathways))
+  if (cstm_cond)
+    stop("You must provide both `custom_genes` and `custom_pathways`
+         if `gene_sets` is `Custom`!")
 
   # Enrichment chart option
   if (!is.logical(bubble))
@@ -207,8 +211,10 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   pathfindR::input_testing(input, p_val_threshold, org_dir)
 
   ## Process input
-  message("## Processing input. Converting gene symbols, if necessary (and if human gene symbols provided)\n\n")
-  input_processed <- pathfindR::input_processing(input, p_val_threshold, pin_path, org_dir, human_genes)
+  message("## Processing input. Converting gene symbols,
+          if necessary (and if human gene symbols provided)\n\n")
+  input_processed <- pathfindR::input_processing(input, p_val_threshold,
+                                                 pin_path, org_dir, human_genes)
 
   ############ Active Subnetwork Search and Enrichment
   ## Prep for parallel run
@@ -245,15 +251,16 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
                                          grMaxDepth, grSearchDepth,
                                          grOverlap, grSubNum)
 
-    enrichment_res <- pathfindR::enrichment_analyses(snws = snws,
-                                                     input_genes = input_processed$GENE,
-                                                     gene_sets = gene_sets,
-                                                     custom_genes = custom_genes,
-                                                     custom_pathways = custom_pathways,
-                                                     pin_path = pin_path,
-                                                     adj_method = adj_method,
-                                                     enrichment_threshold = enrichment_threshold,
-                                                     list_active_snw_genes = list_active_snw_genes)
+    enrichment_res <- pathfindR::enrichment_analyses(
+      snws = snws,
+      input_genes = input_processed$GENE,
+      gene_sets = gene_sets,
+      custom_genes = custom_genes,
+      custom_pathways = custom_pathways,
+      pin_path = pin_path,
+      adj_method = adj_method,
+      enrichment_threshold = enrichment_threshold,
+      list_active_snw_genes = list_active_snw_genes)
 
     enrichment_res
   }
@@ -269,27 +276,39 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
 
   ############ Process Enrichment Results of All Iterations
   message("## Processing the enrichment results over all iterations \n\n")
-  final_res <- pathfindR::summarize_enrichment_results(combined_res, list_active_snw_genes)
+  final_res <- pathfindR::summarize_enrichment_results(combined_res,
+                                                       list_active_snw_genes)
 
   ############ Annotation of Involved DEGs and Visualization
   message("## Annotating involved genes and visualizing pathways\n\n")
 
   ##### Annotate Involved DEGs by up/down-regulation status
-  final_res <- pathfindR::annotate_pathway_DEGs(final_res, input_processed, gene_sets, custom_genes)
+  final_res <- pathfindR::annotate_pathway_DEGs(final_res, input_processed,
+                                                gene_sets, custom_genes)
 
-  ##### Visualize the Pathways (If KEGG human, KEGG diagram. Otherwise, Interactions of Genes in the PIN)
+  ##### Visualize the Pathways (If KEGG human, KEGG diagram. Otherwise,
+  # Interactions of Genes in the PIN)
   if (visualize_pathways)
-    pathfindR::visualize_pws(final_res, input_processed, gene_sets, pin_name_path)
+    pathfindR::visualize_pws(final_res, input_processed,
+                             gene_sets, pin_name_path)
 
   ############ Create HTML Report
   message("## Creating HTML report\n\n")
   ## Create report
   rmarkdown::render(system.file("rmd/results.Rmd", package = "pathfindR"),
                     output_dir = ".")
-  rmarkdown::render(system.file("rmd/enriched_pathways.Rmd", package = "pathfindR"),
-                    params = list(df = final_res, gset = gene_sets, vis_cond = visualize_pathways, out_dir = output_dir), output_dir = ".")
-  rmarkdown::render(system.file("rmd/conversion_table.Rmd", package = "pathfindR"),
-                    params = list(df = input_processed, original_df = input), output_dir = ".")
+
+  rmarkdown::render(system.file("rmd/enriched_pathways.Rmd",
+                                package = "pathfindR"),
+                    params = list(df = final_res, gset = gene_sets,
+                                  vis_cond = visualize_pathways,
+                                  out_dir = output_dir),
+                    output_dir = ".")
+
+  rmarkdown::render(system.file("rmd/conversion_table.Rmd",
+                                package = "pathfindR"),
+                    params = list(df = input_processed, original_df = input),
+                    output_dir = ".")
 
   setwd(org_dir)
 
@@ -466,7 +485,8 @@ input_testing <- function(input, p_val_threshold = 0.05, org_dir = NULL){
 #' input_processing(RA_input, 0.05, return_pin_path("KEGG"))
 #' }
 #'
-input_processing <- function(input, p_val_threshold, pin_path, org_dir = NULL, human_genes = TRUE) {
+input_processing <- function(input, p_val_threshold,
+                             pin_path, org_dir = NULL, human_genes = TRUE) {
   if (is.null(org_dir))
     org_dir <- getwd()
 
@@ -487,20 +507,24 @@ input_processing <- function(input, p_val_threshold, pin_path, org_dir = NULL, h
   message("Number of genes provided in input: ", nrow(input))
   ## Discard larger than p-value threshold
   if (sum(input$P_VALUE <= p_val_threshold) == 0)
-    stop("No input p value is lower than the provided threshold (", p_val_threshold, ")")
+    stop("No input p value is lower than the provided threshold (",
+         p_val_threshold, ")")
   input <- input[input$P_VALUE <= p_val_threshold, ]
   message("Number of genes in input after p-value filtering: ", nrow(input))
 
   ## Choose lowest p for each gene
   if (anyDuplicated(input$GENE)) {
-    warning("Duplicated genes found!\nThe lowest p value for each gene was selected")
+    warning("Duplicated genes found!
+The lowest p value for each gene was selected")
+
     input <- input[order(input$P_VALUE, decreasing = FALSE), ]
     input <- input[!duplicated(input$GENE), ]
   }
 
   ## Fix p < 1e-13
   if (any(input$P_VALUE < 1e-13)) {
-    warning("pathfindR cannot handle p values < 1e-13\nThese were changed to 1e-13")
+    warning("pathfindR cannot handle p values < 1e-13
+            These were changed to 1e-13")
     input$P_VALUE <- ifelse(input$P_VALUE < 1e-13, 1e-13, input$P_VALUE)
   }
 
@@ -613,19 +637,27 @@ input_processing <- function(input, p_val_threshold, pin_path, org_dir = NULL, h
 #'
 #' annotated_result <- annotate_pathway_DEGs(RA_output, example_gene_data)
 #'
-annotate_pathway_DEGs <- function(result_df, input_processed, gene_sets = "KEGG", custom_genes = NULL) {
+annotate_pathway_DEGs <- function(result_df, input_processed,
+                                  gene_sets = "KEGG", custom_genes = NULL) {
   ############ Load Gene Set Data
-  gene_sets_df <- data.frame("Gene Set Name" = c("KEGG", "Reactome", "BioCarta",
-                                                 "GO-All", "GO-BP", "GO-CC", "GO-MF"),
-                             "genes_by_pathway" = c("kegg_genes", "reactome_genes", "biocarta_genes",
-                                                    "go_all_genes", "go_bp_genes", "go_cc_genes", "go_mf_genes"),
-                             "pathways_list" = c("kegg_pathways", "reactome_pathways", "biocarta_pathways",
-                                                 "go_all_pathways", "go_bp_pathways", "go_cc_pathways", "go_mf_pathways"))
+  gset_names <- c("KEGG", "Reactome", "BioCarta",
+                  "GO-All", "GO-BP", "GO-CC", "GO-MF")
+  pw_genes <- c("kegg_genes", "reactome_genes", "biocarta_genes",
+                "go_all_genes", "go_bp_genes", "go_cc_genes", "go_mf_genes")
+  pw_lists <- c("kegg_pathways", "reactome_pathways", "biocarta_pathways",
+                "go_all_pathways",
+                "go_bp_pathways", "go_cc_pathways", "go_mf_pathways")
+
+  gene_sets_df <- data.frame("Gene Set Name" = gset_names,
+                             "genes_by_pathway" = pw_genes,
+                             "pathways_list" = pw_lists)
 
   if (gene_sets %in% gene_sets_df$Gene.Set.Name) {
     idx <- which(gene_sets_df$Gene.Set.Name == gene_sets)
+
     genes_name <- gene_sets_df$genes_by_pathway[idx]
-    genes_by_pathway <- base::eval(parse(text = paste0("pathfindR::", genes_name)))
+    genes_name <- paste0("pathfindR::", genes_name)
+    genes_by_pathway <- base::eval(parse(text = genes_name))
   } else if (gene_sets == "Custom") {
     genes_by_pathway <- custom_genes
   }
@@ -642,8 +674,10 @@ annotate_pathway_DEGs <- function(result_df, input_processed, gene_sets = "KEGG"
   for (i in 1:nrow(annotated_df)) {
     idx <- which(names(genes_by_pathway) == annotated_df$ID[i])
     temp <- genes_by_pathway[[idx]]
-    annotated_df$Up_regulated[i] <- paste(temp[temp %in% upreg], collapse = ", ")
-    annotated_df$Down_regulated[i] <- paste(temp[temp %in% downreg], collapse = ", ")
+    annotated_df$Up_regulated[i] <- paste(temp[temp %in% upreg],
+                                          collapse = ", ")
+    annotated_df$Down_regulated[i] <- paste(temp[temp %in% downreg],
+                                            collapse = ", ")
   }
 
   return(annotated_df)
