@@ -1,3 +1,4 @@
+^.github$
 ^Meta$
 ^doc$
 ^.*\.Rproj$

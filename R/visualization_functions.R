@@ -105,10 +105,10 @@ visualize_pw_interactions <- function(result_df, pin_name_path) {
   pin_g <- igraph::graph_from_data_frame(pin, directed = FALSE)
 
   ## Create visualization output directory
-  dir.create("pathway_visualizations/")
-  setwd("pathway_visualizations")
-  on.exit(setwd(".."))
-  ############ visualize interactions by pathway
+  if(!dir.exists("pathway_visualizations"))
+    dir.create("pathway_visualizations")
+
+    ############ visualize interactions by pathway
   for (i in base::seq_len(nrow(result_df))) {
     current_row <- result_df[i, ]
 
@@ -165,8 +165,9 @@ visualize_pw_interactions <- function(result_df, pin_name_path) {
                                    ifelse(cond2, "green",
                                           ifelse(cond3, "blue", "gray60")))
 
-      grDevices::png(paste0(current_row$Pathway, ".png"),
-                     width = 1039, height = 831)
+      path_to_png <- file.path("pathway_visualizations",
+                               paste0(current_row$Pathway, ".png"))
+      grDevices::png(path_to_png, width = 1039, height = 831)
       #Plot the tree object
       igraph::plot.igraph(
         g,

@@ -21,8 +21,7 @@ Encoding: UTF-8
 LazyData: true
 SystemRequirements: Java JVM 1.8
 biocViews:
-Imports: AnnotationDbi,
-    DBI,
+Imports: DBI,
     doParallel,
     foreach,
     rmarkdown,

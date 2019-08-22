@@ -125,8 +125,8 @@ active_snw_search <- function(input_for_search, pin_path,
   # change working dir to dir_for_parallel_run
   if(!is.null(dir_for_parallel_run)) {
     org_dir <- getwd()
-    setwd(dir_for_parallel_run)
     on.exit(setwd(org_dir))
+    setwd(dir_for_parallel_run)
   }
 
   ## turn silent_option into argument

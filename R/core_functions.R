@@ -507,10 +507,10 @@ The lowest p value for each gene was selected")
   missing <- input$GENE[!input$GENE %in% c(pin[, 1], pin[, 2])]
 
   if (human_genes & length(missing) != 0) {
-    ## use sql to get alias table and gene_info table (contains the symbols)
+    ## use SQL to get alias table and gene_info table (contains the symbols)
     ## first open the database connection
     db_con <- org.Hs.eg.db::org.Hs.eg_dbconn()
-    ## write the SQL query
+    ## the SQL query
     sql_query <-
       "SELECT * FROM alias, gene_info WHERE alias._id == gene_info._id;"
     ## execute the query on the database
