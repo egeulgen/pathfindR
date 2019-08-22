@@ -183,12 +183,16 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   }
 
   if (dir_changed) {
-    warning(paste0("There already is a directory named \"", output_dir_init,
+    message(paste0("There already is a directory named \"", output_dir_init,
                    "\".\nWriting the result to \"", output_dir,
                    "\" not to overwrite the previous results."))
   }
 
+  # on exit, set working directory back to original working directory
   org_dir <- getwd()
+  on.exit(setwd(org_dir))
+
+  # create and change into the output directory
   dir.create(output_dir, recursive = TRUE)
   output_dir <- normalizePath(output_dir)
   setwd(output_dir)
@@ -208,13 +212,13 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   ############ Input testing and Processing
   ## Check input
   message("## Testing input\n\n")
-  pathfindR::input_testing(input, p_val_threshold, org_dir)
+  pathfindR::input_testing(input, p_val_threshold)
 
   ## Process input
   message("## Processing input. Converting gene symbols,
           if necessary (and if human gene symbols provided)\n\n")
   input_processed <- pathfindR::input_processing(input, p_val_threshold,
-                                                 pin_path, org_dir, human_genes)
+                                                 pin_path, human_genes)
 
   ############ Active Subnetwork Search and Enrichment
   ## Prep for parallel run
@@ -269,7 +273,6 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
 
   ## In case no enrichment was found
   if (is.null(combined_res)) {
-    setwd(org_dir)
     warning("Did not find any enriched pathways!")
     return(data.frame())
   }
@@ -310,8 +313,6 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
                     params = list(df = input_processed, original_df = input),
                     output_dir = ".")
 
-  setwd(org_dir)
-
   ############ Bubble Chart
   if (bubble) {
     message("Plotting the enrichment bubble chart\n\n")
@@ -341,7 +342,6 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
 #'   must be one of c("Biogrid", "GeneMania", "IntAct", "KEGG"). If
 #'   path/to/PIN.sif, the file must comply with the PIN specifications. Defaults
 #'   to "Biogrid".
-#' @param org_dir path/to/original/directory, supplied by run_pathfindR (default = NULL)
 #'
 #' @return A character value that contains the path to chosen PIN.
 #'
@@ -352,10 +352,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
 #' pin_path <- return_pin_path("Biogrid")
 #' pin_path <- return_pin_path("KEGG")
 
-return_pin_path <- function(pin_name_path = "Biogrid", org_dir = NULL) {
-  if (is.null(org_dir))
-    org_dir <- getwd()
-
+return_pin_path <- function(pin_name_path = "Biogrid") {
   if (pin_name_path %in% c("Biogrid", "GeneMania",
                            "IntAct", "KEGG"))
     path <- normalizePath(system.file(paste0("extdata/", pin_name_path, ".sif"),
@@ -364,22 +361,16 @@ return_pin_path <- function(pin_name_path = "Biogrid", org_dir = NULL) {
     path <- normalizePath(pin_name_path)
     pin <- utils::read.delim(file = path,
                              header = FALSE, stringsAsFactors = FALSE)
-    if (ncol(pin) != 3) {
-      setwd(org_dir)
+    if (ncol(pin) != 3)
       stop("The PIN file must have 3 columns and be tab-separated")
-    }
 
-    if (any(pin[, 2] != "pp")) {
-      setwd(org_dir)
+    if (any(pin[, 2] != "pp"))
       stop("The second column of the PIN file must all be \"pp\" ")
-    }
-  } else {
-    setwd(org_dir)
-    stop(paste0("The chosen PIN must be one of:\n",
-                "Biogrid, GeneMania, IntAct, KEGG or a valid /path/to/SIF"))
-
+    else
+      stop(paste0("The chosen PIN must be one of:\n",
+                  "Biogrid, GeneMania, IntAct, KEGG or a valid /path/to/SIF"))
+    return(path)
   }
-  return(path)
 }
 
 #' Input Testing
@@ -392,7 +383,6 @@ return_pin_path <- function(pin_name_path = "Biogrid", org_dir = NULL) {
 #' }
 #' @param p_val_threshold the adjusted-p value threshold to use when filtering
 #'   the input data frame. Must a numeric value between 0 and 1. (default = 0.05)
-#' @param org_dir path/to/original/directory, supplied by run_pathfindR (default = NULL)
 #'
 #' @return Only checks if the input and the threshold follows the required
 #'   specifications.
@@ -401,51 +391,34 @@ return_pin_path <- function(pin_name_path = "Biogrid", org_dir = NULL) {
 #'   pathfindR workflow
 #' @examples
 #' input_testing(RA_input, 0.05)
-input_testing <- function(input, p_val_threshold = 0.05, org_dir = NULL){
-  if (is.null(org_dir))
-    org_dir <- getwd()
+input_testing <- function(input, p_val_threshold = 0.05){
 
-  if (!is.data.frame(input)) {
-    setwd(org_dir)
+  if (!is.data.frame(input))
     stop("the input is not a data frame")
-  }
 
-  if (nrow(input) < 2) {
-    setwd(org_dir)
+  if (nrow(input) < 2)
     stop("There must be at least 2 rows (genes) in the input data frame")
-  }
 
-  if (ncol(input) < 2){
-    setwd(org_dir)
+  if (ncol(input) < 2)
     stop("There must be at least 2 columns in the input data frame")
-  }
 
-  if (!is.numeric(p_val_threshold)){
-    setwd(org_dir)
+  if (!is.numeric(p_val_threshold))
     stop("`p_val_threshold` must be a numeric value between 0 and 1")
-  }
 
-  if (p_val_threshold > 1 | p_val_threshold < 0){
-    setwd(org_dir)
+  if (p_val_threshold > 1 | p_val_threshold < 0)
     stop("`p_val_threshold` must be between 0 and 1")
-  }
 
+  # if changes are provided, p vals are in col. 3, else in col. 2
   p_column <- ifelse(ncol(input) == 3, 3, 2)
 
-  if (any(is.na(input[, p_column]))) {
-    setwd(org_dir)
+  if (any(is.na(input[, p_column])))
     stop("p values cannot contain NA values")
-  }
 
-  if (!all(is.numeric(input[, p_column]))) {
-    setwd(org_dir)
+  if (!all(is.numeric(input[, p_column])))
     stop("p values must all be numeric")
-  }
 
-  if (any(input[, p_column] > 1 | input[, p_column] < 0)) {
-    setwd(org_dir)
+  if (any(input[, p_column] > 1 | input[, p_column] < 0))
     stop("p values must all be between 0 and 1")
-  }
 
   message("The input looks OK\n\n")
 }
@@ -462,7 +435,6 @@ input_testing <- function(input, p_val_threshold = 0.05, org_dir = NULL){
 #'   the input data frame
 #' @param pin_path path to the Protein Interaction Network (PIN) file used in
 #'   the analysis
-#' @param org_dir path/to/original/directory, supplied by run_pathfindR (default = NULL)
 #' @param human_genes boolean to indicate whether the input genes are human gene symbols or not (default = TRUE)
 #'
 #' @return This function first filters the input so that all p values are less
@@ -486,9 +458,7 @@ input_testing <- function(input, p_val_threshold = 0.05, org_dir = NULL){
 #' }
 #'
 input_processing <- function(input, p_val_threshold,
-                             pin_path, org_dir = NULL, human_genes = TRUE) {
-  if (is.null(org_dir))
-    org_dir <- getwd()
+                             pin_path, human_genes = TRUE) {
 
   input <- as.data.frame(input)
   if (ncol(input) == 2)
@@ -523,7 +493,7 @@ The lowest p value for each gene was selected")
 
   ## Fix p < 1e-13
   if (any(input$P_VALUE < 1e-13)) {
-    warning("pathfindR cannot handle p values < 1e-13
+    message("pathfindR cannot handle p values < 1e-13
             These were changed to 1e-13")
     input$P_VALUE <- ifelse(input$P_VALUE < 1e-13, 1e-13, input$P_VALUE)
   }
@@ -557,7 +527,7 @@ The lowest p value for each gene was selected")
 
     ## loop for getting all symbols
     converted <- c()
-    for (i in 1:length(missing)) {
+    for (i in base::seq_len(length(missing))) {
       result <- alias_symbol[alias_symbol$alias_symbol == missing[i],
                              c("alias_symbol", "symbol")]
       result <- alias_symbol[alias_symbol$symbol %in% result$symbol,
@@ -580,10 +550,8 @@ The lowest p value for each gene was selected")
   n <- sum(input$new_gene == "NOT_FOUND")
   perc <- n / nrow(input) * 100
 
-  if (n == nrow(input)) {
-    setwd(org_dir)
+  if (n == nrow(input))
     stop("None of the genes were in the PIN\nPlease check your gene symbols")
-  }
 
   ## Give out warning indicating the number of still missing
   if (n != 0) {
@@ -671,7 +639,7 @@ annotate_pathway_DEGs <- function(result_df, input_processed,
   ## Annotation
   annotated_df <- result_df
   annotated_df$Down_regulated <- annotated_df$Up_regulated <- NA
-  for (i in 1:nrow(annotated_df)) {
+  for (i in base::seq_len(nrow(annotated_df))) {
     idx <- which(names(genes_by_pathway) == annotated_df$ID[i])
     temp <- genes_by_pathway[[idx]]
     annotated_df$Up_regulated[i] <- paste(temp[temp %in% upreg],

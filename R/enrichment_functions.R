@@ -59,7 +59,7 @@ enrichment <- function(genes_by_pathway, genes_of_interest,
                        enrichment_threshold, DEG_vec, all_genes) {
 
   ## Hypergeometric test for p value
-  enrichment_res <- sapply(genes_by_pathway, pathfindR::hyperg_test,
+  enrichment_res <- vapply(genes_by_pathway, pathfindR::hyperg_test, 0.1,
                              genes_of_interest, all_genes)
   enrichment_res <- as.data.frame(enrichment_res)
   colnames(enrichment_res) <- "p_value"
@@ -70,7 +70,7 @@ enrichment <- function(genes_by_pathway, genes_of_interest,
     B <- sum(x %in% all_genes) / length(all_genes)
     return(A / B)
   }
-  enrichment_res$Fold_Enrichment <- sapply(genes_by_pathway, fe_calc,
+  enrichment_res$Fold_Enrichment <- vapply(genes_by_pathway, fe_calc, 1.5,
                                            DEG_vec, all_genes)
 
   idx <- order(enrichment_res$p_value)
@@ -93,7 +93,7 @@ enrichment <- function(genes_by_pathway, genes_of_interest,
     ## non-DEG Active Subnetwork Genes
     tmp <- genes_of_interest[!genes_of_interest %in% DEG_vec]
 
-    for (i in 1:nrow(enrichment_res)) {
+    for (i in base::seq_len(nrow(enrichment_res))) {
       tmp2 <- tmp[tmp %in% genes_by_pathway[[enrichment_res$ID[i]]]]
       enrichment_res$non_DEG_Active_Snw_Genes[i] <- paste(tmp2, collapse = ", ")
     }

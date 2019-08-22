@@ -1,4 +1,4 @@
-# pathfindR 1.3.1.9002
+# pathfindR 1.3.1.9003
 ## To be released as 1.3.1
 
 ## Major Changes
@@ -14,6 +14,7 @@
 - Added new checks in `input_testing` and `input_processing` to ensure that both the initial input data frame and the processed input data frame for active subnetwork search contain at least 2 genes (to fix the corner case encountered in issue #17)
 - Fixed minor issue in `enrichment_chart`, ensuring that bubble sizes displayed in the legend (proportional to # of DEGs) are integers
 - In `enrichment_chart`, added the arguments `num_bubbles` (default is 4) to control number of bubbles displayed in the legend and `even_breaks` (default is `TRUE`) to indicate if even increments of breaks are required
+- Fixed code formatting and style issues (thanks to `goodpractice`)
 
 # pathfindR 1.3.0
 

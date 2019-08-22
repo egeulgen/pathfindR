@@ -30,7 +30,7 @@ filterActiveSnws <- function(active_snw_path, signif_genes,
 
   score_vec <- c()
   subnetworks <- list()
-  for (i in 1:length(output)) {
+  for (i in base::seq_len(length(output))) {
     snw <- output[[i]]
 
     snw <- unlist(strsplit(snw, " "))
@@ -43,8 +43,8 @@ filterActiveSnws <- function(active_snw_path, signif_genes,
   score_thr <- stats::quantile(score_vec, score_quan_thr)
   subnetworks <- subnetworks[as.numeric(score_vec) > as.numeric(score_thr)]
   # select subnetworks with at least sig_gene_thr significant genes
-  snw_sig_counts <- sapply(subnetworks, function(snw)
-    sum(snw %in% signif_genes))
+  snw_sig_counts <- vapply(subnetworks, function(snw)
+    sum(snw %in% signif_genes), 1)
   cond <- (snw_sig_counts >= sig_gene_thr)
   subnetworks <- subnetworks[cond]
 
@@ -123,8 +123,11 @@ active_snw_search <- function(input_for_search, pin_path,
   ############ Initial Steps
   ## If dir_for_parallel_run is provided,
   # change working dir to dir_for_parallel_run
-  if(!is.null(dir_for_parallel_run))
+  if(!is.null(dir_for_parallel_run)) {
+    org_dir <- getwd()
     setwd(dir_for_parallel_run)
+    on.exit(setwd(org_dir))
+  }
 
   ## turn silent_option into argument
   silent_option <- ifelse(silent_option,
@@ -186,9 +189,5 @@ active_snw_search <- function(input_for_search, pin_path,
 
   message(paste0("Found ", length(snws), " active subnetworks\n\n"))
 
-  ## If dir_for_parallel_run is provided,
-  # change working dir back to analysis output dir
-  if(!is.null(dir_for_parallel_run))
-    setwd("../..")
   return(snws)
 }

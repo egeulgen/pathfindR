@@ -27,7 +27,7 @@ calculate_pw_scores <- function(pw_table, exp_mat,
     stop("Missing cases in the expression matrix!")
 
   all_pws_scores <- c()
-  for (i in 1:nrow(pw_table)) {
+  for (i in base::seq_len(nrow(pw_table))) {
     # Get DEGs
     up_genes <- pw_table$Up_regulated[i]
     down_genes <- pw_table$Down_regulated[i]
@@ -53,7 +53,8 @@ calculate_pw_scores <- function(pw_table, exp_mat,
         gene_mean <- base::mean(gene_vec)
         gene_sd <- stats::sd(gene_vec)
 
-        gene_scores <- sapply(gene_vec, function(x) (x - gene_mean) / gene_sd)
+        gene_scores <- vapply(gene_vec, function(x) (x - gene_mean) / gene_sd,
+                              1.2)
         pw_score_matrix <- rbind(pw_score_matrix, gene_scores)
         rownames(pw_score_matrix)[nrow(pw_score_matrix)] <- gene
       }
@@ -67,7 +68,7 @@ calculate_pw_scores <- function(pw_table, exp_mat,
   if (!is.null(cases)) {
     ## order as cases, then controls
     match1 <- match(cases, colnames(all_pws_scores))
-    match2 <- setdiff(1:ncol(all_pws_scores), match1)
+    match2 <- setdiff(base::seq_len(ncol(all_pws_scores)), match1)
     all_pws_scores <- all_pws_scores[, c(match1, match2)]
     if (plot_hmap) {
       heatmap <- plot_scores(score_matrix = all_pws_scores, cases = cases, ...)

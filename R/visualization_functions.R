@@ -107,8 +107,9 @@ visualize_pw_interactions <- function(result_df, pin_name_path) {
   ## Create visualization output directory
   dir.create("pathway_visualizations/")
   setwd("pathway_visualizations")
+  on.exit(setwd(".."))
   ############ visualize interactions by pathway
-  for (i in 1:nrow(result_df)) {
+  for (i in base::seq_len(nrow(result_df))) {
     current_row <- result_df[i, ]
 
     up_genes <- unlist(strsplit(current_row$Up_regulated, ", "))
@@ -147,7 +148,7 @@ visualize_pw_interactions <- function(result_df, pin_name_path) {
           to = which(names(igraph::V(pin_g)) %in% current_genes),
           output = "vpath"))
 
-        tmp <- unique(unlist(sapply(tmp$vpath, function(x) names(x))))
+        tmp <- unique(unlist(lapply(tmp$vpath, function(x) names(x))))
         s_path_genes <- unique(c(s_path_genes, tmp))
       }
 
@@ -191,7 +192,6 @@ visualize_pw_interactions <- function(result_df, pin_name_path) {
       grDevices::dev.off()
     }
   }
-  setwd("..")
 }
 
 #' Visualize Human KEGG Pathways
@@ -222,10 +222,9 @@ visualize_hsa_KEGG <- function(pw_table, gene_data) {
   ## Create visualization output directory
   dir.create("pathway_visualizations")
   setwd("pathway_visualizations")
+  on.exit(setwd(".."))
 
-  ## load gene.idtype.bods
-
-  for (i in 1:nrow(pw_table)) {
+  for (i in base::seq_len(nrow(pw_table))) {
     ## If all change values are 100 (if no change values supplied in input)
     if (all(gene_data[, 1] == 100)) {
       pathview::pathview(gene.data = gene_data,
@@ -269,7 +268,6 @@ visualize_hsa_KEGG <- function(pw_table, gene_data) {
                          new.signature = FALSE)
     }
   }
-  setwd("..")
 }
 
 
@@ -321,10 +319,10 @@ enrichment_chart <- function(result_df, plot_by_cluster = FALSE,
   # sort by lowest adj.p
   result_df <- result_df[order(result_df$lowest_p), ]
 
-  n <- sapply(result_df$Up_regulated,
-              function(x) length(unlist(strsplit(x, ", "))))
-  n <- n + sapply(result_df$Down_regulated,
-                  function(x) length(unlist(strsplit(x, ", "))))
+  n <- vapply(result_df$Up_regulated,
+              function(x) length(unlist(strsplit(x, ", "))), 1)
+  n <- n + vapply(result_df$Down_regulated,
+                  function(x) length(unlist(strsplit(x, ", "))), 1)
 
   result_df$Pathway <- factor(result_df$Pathway,
                               levels = rev(unique(result_df$Pathway)))
@@ -431,7 +429,7 @@ term_gene_graph <- function(result_df, num_terms = 10,
 
   ### Prep data frame for graph
   for_graph <- data.frame()
-  for (i in 1:nrow(df_for_vis)) {
+  for (i in base::seq_len(nrow(df_for_vis))) {
     up_genes <- unlist(strsplit(df_for_vis$Up_regulated[i], ", "))
     down_genes <- unlist(strsplit(df_for_vis$Down_regulated[i], ", "))
     genes <- c(up_genes, down_genes)
@@ -443,7 +441,7 @@ term_gene_graph <- function(result_df, num_terms = 10,
     }
   }
 
-  up_genes <- unlist(sapply(df_for_vis$Up_regulated,
+  up_genes <- unlist(lapply(df_for_vis$Up_regulated,
                             function(x) unlist(strsplit(x, ", "))))
 
   ############ Create graph and plot

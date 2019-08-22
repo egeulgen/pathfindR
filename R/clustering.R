@@ -52,7 +52,7 @@ create_kappa_matrix <- function(enrichment_res,
   }
 
   # Exclude zero-length gene sets
-  excluded_idx <- which(sapply(genes_lists, length) == 0)
+  excluded_idx <- which(vapply(genes_lists, length, 1) == 0)
   if (length(excluded_idx) != 0) {
     genes_lists <- genes_lists[-excluded_idx]
     enrichment_res <- enrichment_res[-excluded_idx, ]
@@ -207,7 +207,7 @@ fuzzy_pw_clustering <- function(kappa_mat, enrichment_res,
   ### Find Qualified Seeds
   qualified_seeds <- list()
   j <- 1
-  for (i in 1:nrow(kappa_mat)) {
+  for (i in base::seq_len(nrow(kappa_mat))) {
     current_term <- rownames(kappa_mat)[i]
     current_term_kappa <- kappa_mat[i, ]
 
@@ -258,7 +258,7 @@ fuzzy_pw_clustering <- function(kappa_mat, enrichment_res,
     clusters[[outlier]] <- outlier
   }
   ### Return Cluster Matrix
-  names(clusters) <- 1:length(clusters)
+  names(clusters) <- base::seq_len(length(clusters))
 
   cluster_mat <- matrix(FALSE,
                         nrow = nrow(enrichment_res),
@@ -335,7 +335,7 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res,
     ### Create Graph, Set Color, Size and Percentages
     values <- apply(clu_obj, 1, function(x) which(x))
     percs <- list()
-    for (i in 1:length(values)) {
+    for (i in base::seq_len(length(values))) {
       percs[[i]] <- rep(1/length(values[[i]]), length(values[[i]]))
     }
 
@@ -348,11 +348,11 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res,
     }
 
     # Node shapes are either circle (single cluster) or pie (multiple clusters)
-    igraph::V(g)$shape <- ifelse(sapply(percs, length) > 1, "pie", "circle")
+    igraph::V(g)$shape <- ifelse(vapply(percs, length, 1) > 1, "pie", "circle")
 
     # Node colors are cluster memberships
     cols <- lapply(values, function(x) all_cols[x])
-    igraph::V(g)$color <- sapply(cols, function(x) x[1])
+    igraph::V(g)$color <- vapply(cols, function(x) x[1], "")
 
     # Node sizes are -log(lowest_p)
     p_idx <- match(names(igraph::V(g)), enrichment_res[, pw_id])
@@ -528,7 +528,7 @@ cluster_pathways <- function(enrichment_res, method = "hierarchical",
     }
     ### Assign Clusters
     clustered_df2 <- c()
-    for (i in 1:nrow(clustered_df)) {
+    for (i in base::seq_len(nrow(clustered_df))) {
       current_row <- clustered_df[i, ]
       current_clusters <- pws_list[[current_row[, pw_id]]]
       for (clu in current_clusters) {
