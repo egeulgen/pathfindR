@@ -36,3 +36,5 @@ Depends: R (>= 3.6),
     pathview
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr
+Suggests: 
+    testthat (>= 2.1.0)
