@@ -1,6 +1,6 @@
 # <img src="https://static.wixstatic.com/media/69bf8f_73cd34c80dae469f80e34629ac91a078~mv2_d_3063_3536_s_4_2.png/v1/fill/w_536,h_616,al_c,q_80,usm_0.66_1.00_0.01/pathfindR_logo.webp" align="left" height=150/> pathfindR : An R Package for Pathway Enrichment Analysis Utilizing Active Subnetworks
 
-[![Travis-CI Build Status](https://travis-ci.org/egeulgen/pathfindR.svg?branch=master)](https://travis-ci.org/egeulgen/pathfindR) [![CRAN version](http://www.r-pkg.org/badges/version-ago/pathfindR)](https://cran.r-project.org/package=pathfindR) [![CRAN downloads](https://cranlogs.r-pkg.org/badges/grand-total/pathfindR)](https://cran.r-project.org/package=pathfindR) [![CRAN monthly](https://cranlogs.r-pkg.org/badges/last-month/pathfindR)](https://cran.r-project.org/package=pathfindR) [![Rdoc](http://www.rdocumentation.org/badges/version/pathfindR)](http://www.rdocumentation.org/packages/pathfindR)
+[![Travis-CI Build Status](https://travis-ci.org/egeulgen/pathfindR.svg?branch=master)](https://travis-ci.org/egeulgen/pathfindR) [![CRAN version](http://www.r-pkg.org/badges/version-ago/pathfindR)](https://cran.r-project.org/package=pathfindR) [![CRAN downloads](https://cranlogs.r-pkg.org/badges/grand-total/pathfindR)](https://cran.r-project.org/package=pathfindR) [![codecov](https://codecov.io/gh/egeulgen/pathfindR/branch/master/graph/badge.svg)](https://codecov.io/gh/egeulgen/pathfindR)
 
 ## Overview
 
