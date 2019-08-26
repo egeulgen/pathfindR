@@ -5,9 +5,14 @@ sudo: false
 cache: packages
 r: bioc-release
 
-codecov: true
-
 addons:
   apt:
     packages:
       - libudunits2-dev
+
+# for codecov
+r_packages:
+  - covr
+# only report coverage after build is successful
+after_success:
+  - Rscript -e 'covr::codecov()'
