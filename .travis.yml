@@ -5,6 +5,8 @@ sudo: false
 cache: packages
 r: bioc-release
 
+codecov: true
+
 addons:
   apt:
     packages:
