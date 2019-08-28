@@ -5,9 +5,7 @@
 \title{Cluster Pathways}
 \usage{
 cluster_pathways(enrichment_res, method = "hierarchical",
-  kappa_threshold = 0.35, plot_clusters_graph = TRUE,
-  use_names = FALSE, use_active_snw_genes = FALSE,
-  hclu_method = "average", plot_hmap = FALSE, plot_dend = FALSE)
+  plot_clusters_graph = TRUE, use_names = FALSE, ...)
 }
 \arguments{
 \item{enrichment_res}{data frame of pathway enrichment results
@@ -16,27 +14,15 @@ cluster_pathways(enrichment_res, method = "hierarchical",
 \item{method}{Either "hierarchical" or "fuzzy". Details of clustering are
 provided in the corresponding functions.}
 
-\item{kappa_threshold}{threshold for kappa statistics, defining strong
-relation (default = 0.35)}
-
 \item{plot_clusters_graph}{boolean value indicate whether or not to plot
 the graph diagram of clustering results (default = TRUE)}
 
 \item{use_names}{boolean to indicate whether to use pathway names instead of
 IDs (default = FALSE, i.e. use IDs)}
 
-\item{use_active_snw_genes}{boolean to indicate whether or not to use
-non-input active subnetwork genes in the calculation of kappa statistics
-(default = FALSE, i.e. use only affected genes)}
-
-\item{hclu_method}{the agglomeration method to be used
-(default = "average", see `?hclust`)}
-
-\item{plot_hmap}{boolean to indicate whether to plot the kappa statistics
-heatmap or not (default = FALSE)}
-
-\item{plot_dend}{boolean to indicate whether to plot the clustering
-dendrogram partitioned into the optimal number of clusters (default = TRUE)}
+\item{...}{additional arguments for `create_kappa_matrix`,
+`hierarchical_pw_clustering`, `fuzzy_pw_clustering` and `cluster_graph_vis`.
+See documentation of these functions for more details.}
 }
 \value{
 a data frame of clustering results. For "hierarchical", the cluster
@@ -60,4 +46,5 @@ method = "fuzzy", plot_clusters_graph = FALSE)
 See \code{\link{hierarchical_pw_clustering}} for hierarchical
 clustering of enriched terms.
 See \code{\link{fuzzy_pw_clustering}} for fuzzy clustering of enriched terms.
+See \code{\link{cluster_graph_vis}} for graph visualization of clustering.
 }

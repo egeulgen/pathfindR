@@ -22,6 +22,9 @@
 create_kappa_matrix <- function(enrichment_res,
                                 use_names = FALSE,
                                 use_active_snw_genes = FALSE) {
+  ### Argument checks
+  if (!is.logical(use_names))
+    stop("`use_names` must be logical!")
 
   ### Initial steps
   # Column to use for gene set names
@@ -40,9 +43,7 @@ create_kappa_matrix <- function(enrichment_res,
   if (use_active_snw_genes) {
 
     if (!"non_DEG_Active_Snw_Genes" %in% colnames(enrichment_res))
-      stop("No column named `non_DEG_Active_Snw_Genes`,
-           please execute `run_pathfindR` with
-           `list_active_snw_genes = TRUE`!")
+      stop("No column named `non_DEG_Active_Snw_Genes`, please execute `run_pathfindR` with `list_active_snw_genes = TRUE`!")
 
     active_idx <- which(colnames(enrichment_res) == "non_DEG_Active_Snw_Genes")
 
@@ -304,7 +305,7 @@ fuzzy_pw_clustering <- function(kappa_mat, enrichment_res,
 cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res,
                               kappa_threshold = 0.35, use_names = FALSE) {
 
-  ### Init checks
+  ### Argument checks
   if (class(kappa_mat) != "matrix")
     stop("`kappa_mat` must be a matrix!")
 
@@ -339,7 +340,7 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res,
                 "#B15928")
 
   if (class(clu_obj) == "matrix") {
-    ### Init checks
+    ### Argument checks
     if (!all(rownames(clu_obj) %in% colnames(kappa_mat)))
       stop("Not all terms in `clu_obj` present in `kappa_mat`!")
 
@@ -400,7 +401,7 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res,
                         edge.arrow.mode = 0)
 
   } else if (class(clu_obj) == "integer") {
-    ### Init checks
+    ### Argument checks
     if (!all(names(clu_obj) %in% colnames(kappa_mat)))
       stop("Not all terms in `clu_obj` present in `kappa_mat`!")
 
@@ -461,21 +462,14 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res,
 #' (result of `run_pathfindR`)
 #' @param method Either "hierarchical" or "fuzzy". Details of clustering are
 #' provided in the corresponding functions.
-#' @param kappa_threshold threshold for kappa statistics, defining strong
-#'relation (default = 0.35)
 #' @param plot_clusters_graph boolean value indicate whether or not to plot
 #' the graph diagram of clustering results (default = TRUE)
 #' @param use_names boolean to indicate whether to use pathway names instead of
 #' IDs (default = FALSE, i.e. use IDs)
-#' @param use_active_snw_genes boolean to indicate whether or not to use
-#' non-input active subnetwork genes in the calculation of kappa statistics
-#' (default = FALSE, i.e. use only affected genes)
-#' @param hclu_method the agglomeration method to be used
-#' (default = "average", see `?hclust`)
-#' @param plot_hmap boolean to indicate whether to plot the kappa statistics
-#' heatmap or not (default = FALSE)
-#' @param plot_dend boolean to indicate whether to plot the clustering
-#' dendrogram partitioned into the optimal number of clusters (default = TRUE)
+#' @param ... additional arguments for `create_kappa_matrix`,
+#' `hierarchical_pw_clustering`, `fuzzy_pw_clustering` and `cluster_graph_vis`.
+#' See documentation of these functions for more details.
+#'
 #'
 #' @return a data frame of clustering results. For "hierarchical", the cluster
 #' assignments (Cluster) and whether the term is representative of its cluster
@@ -495,42 +489,51 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res,
 #' @seealso See \code{\link{hierarchical_pw_clustering}} for hierarchical
 #' clustering of enriched terms.
 #' See \code{\link{fuzzy_pw_clustering}} for fuzzy clustering of enriched terms.
-cluster_pathways <- function(enrichment_res, method = "hierarchical",
-                             kappa_threshold = 0.35,
+#' See \code{\link{cluster_graph_vis}} for graph visualization of clustering.
+cluster_pathways <- function(enrichment_res,
+                             method = "hierarchical",
                              plot_clusters_graph = TRUE,
-                             use_names = FALSE, use_active_snw_genes = FALSE,
-                             hclu_method = "average",
-                             plot_hmap = FALSE, plot_dend = FALSE) {
-  ### Argument Check
+                             use_names = FALSE,
+                             ...) {
+  ### Argument Checks
   if (!method %in% c("hierarchical", "fuzzy"))
     stop("the clustering `method` must either be \"hierarchical\" or \"fuzzy\"")
 
+  if (!is.logical(use_names))
+    stop("`use_names` must be logical!")
+
+  if (!is.logical(plot_clusters_graph))
+    stop("`plot_clusters_graph` must be logical!")
+
   ### Create Kappa Matrix
-  kappa_mat <- create_kappa_matrix(enrichment_res = enrichment_res,
-                                   use_names = use_names,
-                                   use_active_snw_genes = use_active_snw_genes)
+  kappa_mat <- R.utils::doCall("create_kappa_matrix",
+                               enrichment_res = enrichment_res,
+                               use_names = use_names,
+                               ...)
 
   ### Cluster Pathways
   if (method == "hierarchical") {
-    clu_obj <- hierarchical_pw_clustering(kappa_mat = kappa_mat,
-                                          enrichment_res = enrichment_res,
-                                          use_names = use_names,
-                                          clu_method = hclu_method,
-                                          plot_hmap = plot_hmap,
-                                          plot_dend = plot_dend)
-
+    clu_obj <- R.utils::doCall("hierarchical_pw_clustering",
+                               kappa_mat = kappa_mat,
+                               enrichment_res = enrichment_res,
+                               use_names = use_names,
+                               ...)
   } else {
-    clu_obj <- fuzzy_pw_clustering(kappa_mat = kappa_mat,
-                                   enrichment_res = enrichment_res,
-                                   kappa_threshold = kappa_threshold,
-                                   use_names = use_names)
+    clu_obj <- R.utils::doCall("fuzzy_pw_clustering",
+                               kappa_mat = kappa_mat,
+                               enrichment_res = enrichment_res,
+                               use_names = use_names,
+                               ...)
   }
 
   ### Graph Visualization of Clusters
   if (plot_clusters_graph)
-    cluster_graph_vis(clu_obj = clu_obj, kappa_mat = kappa_mat,
-                      enrichment_res = enrichment_res,
-                      kappa_threshold = kappa_threshold, use_names = use_names)
+    R.utils::doCall("cluster_graph_vis",
+                    clu_obj = clu_obj,
+                    kappa_mat = kappa_mat,
+                    enrichment_res = enrichment_res,
+                    use_names = use_names,
+                    ...)
 
   ### Returned Data Frame with Cluster Information
   clustered_df <- enrichment_res
