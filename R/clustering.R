@@ -199,6 +199,10 @@ hierarchical_pw_clustering <- function(kappa_mat, enrichment_res,
 fuzzy_pw_clustering <- function(kappa_mat, enrichment_res,
                                 kappa_threshold = 0.35, use_names = FALSE) {
 
+  ### Check that the kappa threshold is numeric
+  if (!is.numeric(kappa_threshold))
+    stop("`kappa_threshold` must be numeric!")
+
   ### Set ID/Name index
   pw_id <- ifelse(use_names,
                   which(colnames(enrichment_res) == "Pathway"),
@@ -299,10 +303,29 @@ fuzzy_pw_clustering <- function(kappa_mat, enrichment_res,
 #' }
 cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res,
                               kappa_threshold = 0.35, use_names = FALSE) {
+
+  ### Init checks
+  if (class(kappa_mat) != "matrix")
+    stop("`kappa_mat` must be a matrix!")
+
+  if (!isSymmetric.matrix(kappa_mat))
+    stop("`kappa_mat` must be symmetric!")
+
+  if (class(enrichment_res) != "data.frame")
+    stop("`enrichment_res` must be a data.frame!")
+
+  if (nrow(kappa_mat) != nrow(enrichment_res))
+    stop("`kappa_mat` and `enrichment_res` must contain the same # of terms")
+
+
   ### Set ID/Name index
   pw_id <- ifelse(use_names,
                   which(colnames(enrichment_res) == "Pathway"),
                   which(colnames(enrichment_res) == "ID"))
+
+  ## other checks
+  if (!all(rownames(kappa_mat) %in% enrichment_res[, pw_id]))
+    stop("Not all terms in `kappa_mat` and `enrichment_res` match!")
 
   ### For coloring nodes
   all_cols <- c("#E41A1C", "#377EB8", "#4DAF4A", "#984EA3", "#FF7F00",
@@ -316,6 +339,10 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res,
                 "#B15928")
 
   if (class(clu_obj) == "matrix") {
+    ### Init checks
+    if (!all(rownames(clu_obj) %in% colnames(kappa_mat)))
+      stop("Not all terms in `clu_obj` present in `kappa_mat`!")
+
     ### Prep data
     # Remove weak links
     kappa_mat2 <- kappa_mat
@@ -373,6 +400,10 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res,
                         edge.arrow.mode = 0)
 
   } else if (class(clu_obj) == "integer") {
+    ### Init checks
+    if (!all(names(clu_obj) %in% colnames(kappa_mat)))
+      stop("Not all terms in `clu_obj` present in `kappa_mat`!")
+
     ### Prep data
     # Remove weak links
     kappa_mat2 <- kappa_mat
@@ -420,7 +451,7 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res,
                         edge.arrow.mode= 0)
 
   } else {
-    stop("Invalid format for `clu_obj`!")
+    stop("Invalid class for `clu_obj`!")
   }
 }
 
