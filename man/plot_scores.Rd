@@ -4,7 +4,7 @@
 \alias{plot_scores}
 \title{Plot the Heatmap of Pathway Scores}
 \usage{
-plot_scores(score_matrix, cases = NULL, label_cases = TRUE,
+plot_scores(score_matrix, cases = NULL, label_samples = TRUE,
   case_control_titles = c("Case", "Control"), low = "green",
   high = "red")
 }
@@ -15,8 +15,8 @@ samples, rows are pathways.}
 \item{cases}{(Optional) A vector of sample names that are cases in the
 case/control experiment.}
 
-\item{label_cases}{Boolean value to indicate whether or not to label the
-cases in the heatmap plot}
+\item{label_samples}{Boolean value to indicate whether or not to label the
+samples in the heatmap plot}
 
 \item{case_control_titles}{A vector of length two for naming of the 'Case'
 and 'Control' groups (in order) (default = c('Case', 'Control'))}
