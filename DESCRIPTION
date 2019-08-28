@@ -30,7 +30,8 @@ Imports: DBI,
     ggraph,
     fpc,
     grDevices,
-    igraph
+    igraph,
+    R.utils
 Depends: R (>= 3.6),
     knitr,
     pathview
