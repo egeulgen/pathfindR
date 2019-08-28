@@ -142,11 +142,47 @@ test_that("Check errors of clustering visualizations", {
 })
 
 # cluster_pathways --------------------------------------------------------
-test_that("Clustering returns appropriate object", {
-  tmp <- RA_output[1:3, ]
-  expect_is(create_kappa_matrix(tmp), "matrix")
-  expect_is(create_kappa_matrix(tmp, use_names = TRUE), "matrix")
+test_that("Clustering wrapper returns the input data frame
+          with the additional columns `Cluster` and `Status`", {
 
-  tmp$non_DEG_Active_Snw_Genes <- ""
-  expect_is(create_kappa_matrix(tmp, use_active_snw_genes = TRUE), "matrix")
+            ## hierarchical
+            tmp <- cluster_pathways(RA_output[1:3, ])
+            expect_is(tmp, "data.frame")
+
+            expect_equal(c("Cluster", "Status") %in% colnames(tmp),
+                         c(TRUE, TRUE))
+
+            ## fuzzy
+            tmp <- cluster_pathways(RA_output[1:3, ], method = "fuzzy")
+            expect_is(tmp, "data.frame")
+
+            expect_equal(c("Cluster", "Status") %in% colnames(tmp),
+                         c(TRUE, TRUE))
+
+            ## use_names = TRUE
+            ## hierarchical
+            tmp <- cluster_pathways(RA_output[1:3, ], use_names = TRUE)
+            expect_is(tmp, "data.frame")
+
+            expect_equal(c("Cluster", "Status") %in% colnames(tmp),
+                         c(TRUE, TRUE))
+
+            ## fuzzy
+            tmp <- cluster_pathways(RA_output[1:3, ],
+                                    method = "fuzzy", use_names = TRUE)
+            expect_is(tmp, "data.frame")
+
+            expect_equal(c("Cluster", "Status") %in% colnames(tmp),
+                         c(TRUE, TRUE))
+          })
+
+test_that("Check errors of clustering wrapper function", {
+  expect_error(cluster_pathways(RA_output[1:3, ], method = "WRONG"),
+        "the clustering `method` must either be \"hierarchical\" or \"fuzzy\"")
+
+  expect_error(cluster_pathways(RA_output[1:3, ], use_names = "WRONG"),
+               "`use_names` must be logical!")
+
+  expect_error(cluster_pathways(RA_output[1:3, ], plot_clusters_graph = "WRONG"),
+               "`plot_clusters_graph` must be logical!")
 })
