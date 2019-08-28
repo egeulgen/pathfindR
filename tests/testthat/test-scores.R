@@ -1,3 +1,12 @@
+##################################################
+## Project: pathfindR
+## Script purpose: Testthat testing script for
+## pathway scoring functions
+## Date: Aug 28, 2019
+## Author: Ege Ulgen
+##################################################
+
+# calculate_pw_scores -----------------------------------------------------
 test_that("Score matrix is returned", {
   expect_is(calculate_pw_scores(RA_output,
                                 RA_exp_mat,
@@ -23,7 +32,8 @@ test_that("If cases do not match the ones in exp_mat,
                          "Missing cases in the expression matrix!")
           })
 
-test_that("Heatmap ggplot object is created with correct labels", {
+# plot_scores -------------------------------------------------------------
+test_that("Pw score heatmap ggplot object is created with correct labels", {
   score_mat <- calculate_pw_scores(RA_output, RA_exp_mat, plot_hmap = FALSE)
 
   # default
@@ -40,10 +50,24 @@ test_that("Heatmap ggplot object is created with correct labels", {
   expect_identical(g$labels$x, "Sample")
   expect_identical(g$labels$y, "Pathway")
 
+  # default - label_samples = FALSE
+  g <- plot_scores(score_mat, label_samples = FALSE)
+  expect_is(g, "ggplot")
+  expect_identical(g$labels$fill, "Pathway\nscore")
+  expect_identical(g$labels$x, "Sample")
+  expect_identical(g$labels$y, "Pathway")
+
+  # cases provided - label_samples = FALSE
+  g <- plot_scores(score_mat, cases = colnames(score_mat)[1:3],
+                   label_samples = FALSE)
+  expect_is(g, "ggplot")
+  expect_identical(g$labels$fill, "Pathway\nscore")
+  expect_identical(g$labels$x, "Sample")
+  expect_identical(g$labels$y, "Pathway")
+
 })
 
-
-test_that("Heatmap creation errors", {
+test_that("Pw score heatmap creation errors", {
   score_mat <- calculate_pw_scores(RA_output, RA_exp_mat, plot_hmap = FALSE)
 
   expect_error(plot_scores(score_mat, case_control_titles = c("A", "B", "C")),
@@ -52,6 +76,3 @@ test_that("Heatmap creation errors", {
                            cases = c("A", "B", "C")),
                "Missing cases in the score matrix!")
 })
-
-
-
