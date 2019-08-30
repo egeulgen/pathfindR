@@ -98,18 +98,26 @@ test_that("enrichment function returns a data frame", {
             "data.frame")
 
   # list active snw genes
-  expect_is(enr_res <- enrichment_analyses(snws = example_active_snws[3:4],
-                                           input_genes = RA_input$Gene.symbol,
-                                           gene_sets = "KEGG",
-                                           pin_path = pin_path,
-                                           adj_method = "bonferroni",
-                                           enrichment_threshold = 5e-2,
-                                           list_active_snw_genes = TRUE),
+  expect_is(enrichment_analyses(snws = example_active_snws[3:4],
+                                input_genes = RA_input$Gene.symbol,
+                                gene_sets = "KEGG",
+                                pin_path = pin_path,
+                                adj_method = "bonferroni",
+                                enrichment_threshold = 5e-2,
+                                list_active_snw_genes = TRUE),
             "data.frame")
 
 })
 
 # summarize_enrichment_results --------------------------------------------
+enr_res <- enrichment_analyses(snws = example_active_snws[3:4],
+                               input_genes = RA_input$Gene.symbol,
+                               gene_sets = "KEGG",
+                               pin_path = pin_path,
+                               adj_method = "bonferroni",
+                               enrichment_threshold = 5e-2,
+                               list_active_snw_genes = TRUE)
+
 test_that("summarize_enrichment_results function returns a data frame", {
 
   # default
