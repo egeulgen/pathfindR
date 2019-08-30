@@ -12,3 +12,4 @@ data-raw
 *.Ruserdata
 *.Rproj.user
 *.Rhistory
+.Rproj.user
