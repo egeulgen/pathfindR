@@ -7,7 +7,7 @@
 ##################################################
 
 # hyperg_test -------------------------------------------------------------
-test_that("hyperg_test returns a p value"{
+test_that("hyperg_test returns a p value", {
   expect_is(tmp_p <- hyperg_test(letters[1:5], letters[2:5], letters),
             "numeric")
   expect_true(tmp_p >= 0 & tmp_p <= 1)
@@ -17,7 +17,7 @@ test_that("hyperg_test returns a p value"{
   expect_true(tmp_p >= 0 & tmp_p <= 1)
 })
 
-test_that("hyperg_test sanity checks work"{
+test_that("hyperg_test sanity checks work", {
   expect_error(hyperg_test(pw_genes = c(letters, "xx"),
                            chosen_genes = letters[1:3],
                            all_genes = letters),
@@ -34,7 +34,7 @@ tmp_gset <- kegg_genes[1:50]
 tmp_gset_names <- kegg_pathways[names(tmp_gset)]
 tmp_gset_genes <- unlist(tmp_gset)
 
-test_that("enrichment function returns a data frame"{
+test_that("enrichment function returns a data frame", {
 
   # default
   expect_is(tmp1 <- enrichment(genes_by_pathway = tmp_gset,
@@ -73,7 +73,7 @@ test_that("enrichment function returns a data frame"{
 # enrichment_analyses -----------------------------------------------------
 pin_path <- return_pin_path()
 
-test_that("enrichment function returns a data frame"{
+test_that("enrichment function returns a data frame", {
 
   # default
   expect_is(enrichment_analyses(snws = example_active_snws[1:2],
@@ -110,7 +110,7 @@ test_that("enrichment function returns a data frame"{
 })
 
 # summarize_enrichment_results --------------------------------------------
-test_that("summarize_enrichment_results function returns a data frame"{
+test_that("summarize_enrichment_results function returns a data frame", {
 
   # default
   expect_is(tmp <- summarize_enrichment_results(enr_res), "data.frame")
