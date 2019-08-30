@@ -30,7 +30,7 @@ This process usually yields a great number of enriched pathways with related bio
 
 The overview of the enrichment workflow is presented in the figure below:
 
-<img src="./pathfindr.png" width="650" height="139.81" />
+<img src="./pathfindr.png" style="max-width:100%;" />
 
 For this workflow, the wrapper function `run_pathfindR()` can be used. This function takes in a data frame consisting of `Gene Symbol`, `log-fold-change` (optional) and `adjusted-p values`. The first 6 rows of an example input dataset (of rheumatoid arthritis differential-expression) can be found below:
 
@@ -123,7 +123,7 @@ The document contains a second table of genes for which no interactions were ide
 
 # Pathway Clustering
 
-<img src="./pw_clustering.png" width="650" height="221.464" />
+<img src="./pw_clustering.png" style="max-width:100%;" />
 
 For this workflow, the wrapper function `cluster_pathways()` is used. This function first calculates the pairwise kappa statistics between the terms in the input data frame. By default, the function performs hierarchical clustering of the terms using this kappa matrix, automatically determines the optimal number of clusters by maximizing the average silhouette width and returns a data frame with cluster assignments:
 
