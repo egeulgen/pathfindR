@@ -12,6 +12,9 @@ test_that("Creates kappa matrix", {
   expect_is(create_kappa_matrix(tmp), "matrix")
   expect_is(create_kappa_matrix(tmp, use_names = TRUE), "matrix")
 
+  tmp$Down_regulated[1] <- tmp$Up_regulated[1] <- ""
+  expect_is(create_kappa_matrix(tmp), "matrix")
+
   tmp$non_DEG_Active_Snw_Genes <- ""
   expect_is(create_kappa_matrix(tmp, use_active_snw_genes = TRUE), "matrix")
 })
@@ -46,11 +49,14 @@ test_that("Hierarchical pw clustering returns integer vector", {
 
 # fuzzy_pw_clustering -----------------------------------------------------
 test_that("Fuzzy pw clustering returns matrix of cluster memberships", {
-  enrichment_res <- RA_output[1:5, ]
-  kappa_mat <- create_kappa_matrix(enrichment_res)
+  kappa_mat <- create_kappa_matrix(RA_output)
 
-  expect_is(fuzzy_pw_clustering(kappa_mat, enrichment_res), "matrix")
+  expect_is(fuzzy_pw_clustering(kappa_mat, RA_output), "matrix")
 
+  # lower kappa_threshold
+  expect_is(fuzzy_pw_clustering(kappa_mat,
+                                RA_output,
+                                kappa_threshold = -1), "matrix")
 })
 
 test_that("Error raised if kappa threshold is not numeric", {
@@ -90,12 +96,22 @@ test_that("Graph visualization of clusters works OK", {
   expect_identical(cluster_graph_vis(clu_obj, kappa_mat, enrichment_res,
                                      use_names = TRUE), NULL)
 
-  # more than 41 clusters # better test case?
-  enrichment_res <- RA_output[1:42, ]
+  ### more than 41 clusters # better test case?
+  N <- 45
+  enrichment_res <- RA_output[1:N, ]
   kappa_mat <- create_kappa_matrix(enrichment_res)
-  clu_obj <- 1:42
-  names(clu_obj) <- RA_output$ID[1:42]
-  expect_identical(cluster_graph_vis(clu_obj, kappa_mat, enrichment_res), NULL)
+
+  # hierarchical
+  clu_obj <- 1:N
+  names(clu_obj) <- RA_output$ID[1:N]
+  expect_silent(cluster_graph_vis(clu_obj, kappa_mat, enrichment_res))
+
+  # fuzzy
+  clu_obj <- matrix(FALSE,
+                    nrow = N, ncol = N,
+                    dimnames = list(RA_output$ID[1:N], 1:N))
+  diag(clu_obj) <- TRUE
+  expect_silent(cluster_graph_vis(clu_obj, kappa_mat, enrichment_res))
 })
 
 
