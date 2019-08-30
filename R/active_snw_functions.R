@@ -14,8 +14,8 @@
 #'
 #' @examples
 #' \dontshow{
-#' filterActiveSnws(normalizePath(system.file("extdata/resultActiveSubnetworkSearch.txt",
-#' package = "pathfindR")), pathfindR::RA_input$Gene.symbol)
+#' filterActiveSnws(system.file("extdata/resultActiveSubnetworkSearch.txt",
+#' package = "pathfindR"), pathfindR::RA_input$Gene.symbol)
 #' }
 #' \dontrun{
 #' filterActiveSnws("path/to/output", significant_genes)
@@ -138,9 +138,8 @@ active_snw_search <- function(input_for_search, pin_path,
   use_all_positives <- ifelse(use_all_positives, " -useAllPositives", "")
 
   ## absolute path for active snw search jar
-  active_search_path <- normalizePath(
-    system.file("java/ActiveSubnetworkSearch.jar",
-                package = "pathfindR"))
+  active_search_path <- system.file("java/ActiveSubnetworkSearch.jar",
+                                    package = "pathfindR")
 
   ## create directory for active subnetworks
   if (!dir.exists("active_snw_search"))
