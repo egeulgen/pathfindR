@@ -355,9 +355,9 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
 return_pin_path <- function(pin_name_path = "Biogrid") {
   if (pin_name_path %in% c("Biogrid", "GeneMania",
                            "IntAct", "KEGG"))
-    path <- normalizePath(system.file(paste0("extdata/", pin_name_path, ".sif"),
-                                      package = "pathfindR"))
-  else if (file.exists(normalizePath(pin_name_path))) {
+    path <- system.file(paste0("extdata/", pin_name_path, ".sif"),
+                        package = "pathfindR")
+  else if (file.exists(suppressWarnings(normalizePath(pin_name_path)))) {
     path <- normalizePath(pin_name_path)
     pin <- utils::read.delim(file = path,
                              header = FALSE, stringsAsFactors = FALSE)
@@ -366,11 +366,11 @@ return_pin_path <- function(pin_name_path = "Biogrid") {
 
     if (any(pin[, 2] != "pp"))
       stop("The second column of the PIN file must all be \"pp\" ")
-    else
-      stop(paste0("The chosen PIN must be one of:\n",
-                  "Biogrid, GeneMania, IntAct, KEGG or a valid /path/to/SIF"))
-    return(path)
+  } else {
+    stop(paste0("The chosen PIN must be one of:\n",
+                "Biogrid, GeneMania, IntAct, KEGG or a valid /path/to/SIF"))
   }
+  return(path)
 }
 
 #' Input Testing
