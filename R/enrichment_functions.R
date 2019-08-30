@@ -60,7 +60,7 @@ hyperg_test <- function(pw_genes, chosen_genes, all_genes) {
 #'   distribution-based hypothesis testing.
 #' @examples
 #' enrichment(kegg_genes, c("PER1", "PER2", "CRY1", "CREB1"), kegg_pathways,
-#'            "bonferroni", 0.05, c("PER1"), unlist(kegg_genes))
+#'            "bonferroni", 0.05, "PER1", unlist(kegg_genes))
 enrichment <- function(genes_by_pathway, genes_of_interest,
                        pathways_list, adj_method = "bonferroni",
                        enrichment_threshold, DEG_vec, all_genes) {
