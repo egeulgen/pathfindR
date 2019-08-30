@@ -13,3 +13,4 @@
 ^CRAN-RELEASE$
 ^Dockerfile_dev$
 ^codecov\.yml$
+^LICENSE\.md$
