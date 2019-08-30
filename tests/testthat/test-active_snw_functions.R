@@ -75,6 +75,13 @@ test_that("Active snw search function returns list object", {
                  "Found 0 active subnetworks")
   expect_is(snw_list, "list")
   expect_equal(length(snw_list), 0)
+
+  # dir_for_parallel_run works?
+  expect_message(snw_list <- active_snw_search(input_df2,
+                                               pin_path,
+                                               dir_for_parallel_run = "."),
+                 "Found 0 active subnetworks")
+
 })
 
 test_that("Active snw search function error messages work", {
