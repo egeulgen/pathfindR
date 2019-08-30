@@ -38,4 +38,5 @@ Depends: R (>= 3.6),
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr
 Suggests: 
-    testthat (>= 2.1.0)
+    testthat (>= 2.1.0),
+    covr
