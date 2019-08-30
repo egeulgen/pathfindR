@@ -14,11 +14,11 @@
 #'
 #' @examples
 #' \dontshow{
-#' filterActiveSnws(system.file("extdata/resultActiveSubnetworkSearch.txt",
+#' tmp <- filterActiveSnws(system.file("extdata/resultActiveSubnetworkSearch.txt",
 #' package = "pathfindR"), pathfindR::RA_input$Gene.symbol)
 #' }
 #' \dontrun{
-#' filterActiveSnws("path/to/output", significant_genes)
+#' tmp <- filterActiveSnws("path/to/output", significant_genes)
 #' }
 filterActiveSnws <- function(active_snw_path, signif_genes,
                              score_quan_thr = 0.80, sig_gene_thr = 10) {
