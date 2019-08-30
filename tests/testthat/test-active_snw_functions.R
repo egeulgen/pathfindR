@@ -26,25 +26,25 @@ test_that("Filter function arguments work OK", {
   # supplied num. of genes
   tmp_filtered1 <- filterActiveSnws(sample_path, RA_input$Gene.symbol)
   tmp_filtered2 <- filterActiveSnws(sample_path, RA_input$Gene.symbol[1:100])
-  expect_equal(length(tmp_filtered1) > length(tmp_filtered2), TRUE)
+  expect_true(length(tmp_filtered1) > length(tmp_filtered2))
 
 
   # score_quan_thr
   tmp_filtered <- filterActiveSnws(active_snw_path = sample_path,
                                     signif_genes = RA_input$Gene.symbol,
                                     score_quan_thr = 0.8) # default
-  expect_equal(length(tmp_filtered1) <= 200 , TRUE)
+  expect_true(length(tmp_filtered1) <= 200)
 
   tmp_filtered <- filterActiveSnws(active_snw_path = sample_path,
                                     signif_genes = RA_input$Gene.symbol,
                                     score_quan_thr = 0.9)
-  expect_equal(length(tmp_filtered) <= 100 , TRUE)
+  expect_true(length(tmp_filtered) <= 100)
 
   # sig_gene_thr
   tmp_filtered <- filterActiveSnws(active_snw_path = sample_path,
                                    signif_genes = RA_input$Gene.symbol,
                                    sig_gene_thr = 0)
-  expect_equal(length(tmp_filtered) == 200 , TRUE)
+  expect_true(length(tmp_filtered) == 200)
 
   tmp_filtered1 <- filterActiveSnws(active_snw_path = sample_path,
                                    signif_genes = RA_input$Gene.symbol,
@@ -54,8 +54,8 @@ test_that("Filter function arguments work OK", {
                                     signif_genes = RA_input$Gene.symbol,
                                     sig_gene_thr = 20)
 
-  expect_equal(length(tmp_filtered1) <= 200  , TRUE)
-  expect_equal(length(tmp_filtered1) > length(tmp_filtered2)  , TRUE)
+  expect_true(length(tmp_filtered1) <= 200)
+  expect_true(length(tmp_filtered1) > length(tmp_filtered2))
 })
 
 # active_snw_search -------------------------------------------------------
