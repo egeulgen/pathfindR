@@ -16,6 +16,7 @@
 - In `enrichment_chart`, added the arguments `num_bubbles` (default is 4) to control number of bubbles displayed in the legend and `even_breaks` (default is `TRUE`) to indicate if even increments of breaks are required
 - Fixed code formatting, documentation and style issues (thanks to `goodpractice`)
 - Added unit tests using `testthat`
+- Updated the logo
 
 # pathfindR 1.3.0
 
