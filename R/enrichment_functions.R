@@ -18,6 +18,13 @@
 #' hyperg_test(letters[1:5], letters[2:10], letters)
 #' hyperg_test(letters[1:5], letters[2:13], letters)
 hyperg_test <- function(pw_genes, chosen_genes, all_genes) {
+
+  # sanity checks
+  if (length(pw_genes) > length(all_genes))
+    stop("`pw_genes` cannot be larger than `all_genes`!")
+  if (length(chosen_genes) > length(all_genes))
+    stop("`chosen_genes` cannot be larger than `all_genes`!")
+
   pw_genes_selected <- length(intersect(chosen_genes, pw_genes))
   pw_genes_in_pool <- length(pw_genes)
   tot_genes_in_pool <- length(all_genes)
