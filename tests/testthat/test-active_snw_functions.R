@@ -58,6 +58,41 @@ test_that("Filter function arguments work OK", {
   expect_equal(length(tmp_filtered1) > length(tmp_filtered2)  , TRUE)
 })
 
+# active_snw_search -------------------------------------------------------
+pin_path <- return_pin_path()
+input_df1 <- suppressMessages(input_processing(RA_input[1:50, ], p_val_threshold = 0.05, pin_path))
+input_df2 <- suppressMessages(input_processing(RA_input[1:3, ], p_val_threshold = 0.05, pin_path))
+
+test_that("Active snw search function returns list object", {
+  # Expect > 0 active snws
+  expect_message(snw_list <- active_snw_search(input_df1, pin_path),
+                 "Found \\d+ active subnetworks")
+  expect_is(snw_list, "list")
+  expect_is(snw_list[[1]], "character")
+
+  # Expect no active snws
+  expect_message(snw_list <- active_snw_search(input_df2, pin_path),
+                 "Found 0 active subnetworks")
+  expect_is(snw_list, "list")
+  expect_equal(length(snw_list), 0)
+})
+
+test_that("Active snw search function error messages work", {
+  expect_error(active_snw_search(input_df2,
+                                 pin_path,
+                                 search_method = "WRONG"),
+               "`search_method` must be one of \"GR\", \"SA\", \"GA\"")
+
+  expect_error(active_snw_search(input_df2,
+                                 pin_path,
+                                 use_all_positives = "WRONG"),
+               "the argument `use_all_positives` must be either TRUE or FALSE")
+
+  expect_error(active_snw_search(input_df2,
+                                 pin_path,
+                                 silent_option = "WRONG"),
+               "the argument `silent_option` must be either TRUE or FALSE")
+})
 
 
 
