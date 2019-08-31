@@ -6,7 +6,7 @@
 #' @param input_processed input data processed via `input_processing`, not necessary for
 #' visualizations other than KEGG human pathway diagrams.
 #' @param gene_sets the gene sets used for enrichment analysis. Possible gene sets
-#'  are KEGG, Reactome, BioCarta, GO-All, GO-BP, GO-CC, GO-MF or Custom (Default = "KEGG").
+#'  are KEGG or non-KEGG (Default = "KEGG").
 #' @param pin_name_path Name of the chosen PIN or path/to/PIN.sif. If PIN name,
 #'   must be one of c("Biogrid", "GeneMania", "IntAct", "KEGG"). If
 #'   path/to/PIN.sif, the file must comply with the PIN specifications. Defaults

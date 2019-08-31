@@ -16,7 +16,7 @@ Must-have columns for the rest are: "Pathway", "Up_regulated" and "Down_regulate
 visualizations other than KEGG human pathway diagrams.}
 
 \item{gene_sets}{the gene sets used for enrichment analysis. Possible gene sets
-are KEGG, Reactome, BioCarta, GO-All, GO-BP, GO-CC, GO-MF or Custom (Default = "KEGG").}
+are KEGG or non-KEGG (Default = "KEGG").}
 
 \item{pin_name_path}{Name of the chosen PIN or path/to/PIN.sif. If PIN name,
 must be one of c("Biogrid", "GeneMania", "IntAct", "KEGG"). If
