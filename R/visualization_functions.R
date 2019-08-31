@@ -39,9 +39,12 @@
 #' }
 visualize_pws <- function(result_df, input_processed = NULL,
                           gene_sets = "KEGG", pin_name_path = "Biogrid") {
-  ############ Argument Check
+  ############ Argument Checks
   if (gene_sets == "KEGG" & is.null(input_processed))
     stop("`input_processed` must be specified when `gene_sets` is KEGG")
+
+  if (!gene_sets %in% c("KEGG", "non-KEGG"))
+    stop("`gene_sets` must either be \"KEGG\" or \"non-KEGG\"")
 
   ############ Generate pathway diagrams
   if (gene_sets == "KEGG") {

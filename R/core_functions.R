@@ -291,9 +291,12 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
 
   ##### Visualize the Pathways (If KEGG human, KEGG diagram. Otherwise,
   # Interactions of Genes in the PIN)
+  kegg_non_kegg <- ifelse(gene_sets == "KEGG", "KEGG", "non-KEGG")
   if (visualize_pathways)
-    pathfindR::visualize_pws(final_res, input_processed,
-                             gene_sets, pin_name_path)
+    pathfindR::visualize_pws(result_df = final_res,
+                             input_processed = input_processed,
+                             gene_sets = kegg_non_kegg,
+                             pin_name_path = pin_name_path)
 
   ############ Create HTML Report
   message("## Creating HTML report\n\n")
