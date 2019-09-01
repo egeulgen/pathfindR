@@ -395,7 +395,7 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res,
                         edge.curved = FALSE,
                         vertex.label.dist = 0,
                         vertex.label.color = "black",
-                        asp = 0,
+                        asp = 1,
                         vertex.label.cex = 0.7,
                         edge.width = igraph::E(g)$weight,
                         edge.arrow.mode = 0)

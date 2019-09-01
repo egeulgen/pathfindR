@@ -476,7 +476,7 @@ term_gene_graph <- function(result_df, num_terms = 10,
 
   ### Create graph
   p <- ggraph::ggraph(g, layout = layout)
-  p <- p + ggraph::geom_edge_link(alpha=.8, colour='darkgrey')
+  p <- p + ggraph::geom_edge_link(alpha=.8, colour="darkgrey")
   p <- p + ggraph::geom_node_point(ggplot2::aes_(color=~I(color), size=~size))
   p <- p + ggplot2::scale_size(range=c(5, 10),
                                breaks=round(seq(round(min(igraph::V(g)$size)),
