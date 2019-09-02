@@ -630,6 +630,8 @@ annotate_pathway_DEGs <- function(result_df, input_processed,
     genes_name <- paste0("pathfindR::", genes_name)
     genes_by_pathway <- base::eval(parse(text = genes_name))
   } else if (gene_sets == "Custom") {
+    if (is.null(custom_genes))
+      stop("`custom_genes` must be provided if `gene_sets = \"Custom\"`")
     genes_by_pathway <- custom_genes
   }
 
