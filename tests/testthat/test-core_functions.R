@@ -142,8 +142,8 @@ test_that("input_testing works", {
 })
 
 # input_processing --------------------------------------------------------
+path2pin <- return_pin_path()
 test_that("input_processing works", {
-  path2pin <- return_pin_path()
   # full df
   expect_is(input_processing(RA_input,
                              p_val_threshold = 0.05,
