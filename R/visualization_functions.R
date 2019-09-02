@@ -325,9 +325,8 @@ enrichment_chart <- function(result_df, plot_by_cluster = FALSE,
 
   num_genes <- vapply(result_df$Up_regulated,
                       function(x) length(unlist(strsplit(x, ", "))), 1)
-  num_genes <- c(num_genes,
-                 vapply(result_df$Down_regulated,
-                        function(x) length(unlist(strsplit(x, ", "))), 1))
+  num_genes <- num_genes + vapply(result_df$Down_regulated,
+                      function(x) length(unlist(strsplit(x, ", "))), 1)
 
   result_df$Pathway <- factor(result_df$Pathway,
                               levels = rev(unique(result_df$Pathway)))
