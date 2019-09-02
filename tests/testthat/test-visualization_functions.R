@@ -38,6 +38,8 @@ test_that("visualize_pws creates expected png file(s)", {
                                  gene_sets = "non-KEGG",
                                  pin_name_path = "GeneMania")) # default
   expect_true(file.exists(expected_out_file))
+
+  unlink("pathway_visualizations", recursive = TRUE)
 })
 
 test_that("visualize_pws func. arg check works", {
@@ -66,6 +68,14 @@ test_that("visualize_pw_interactions creates expected png file(s)", {
                                            pin_name_path = "KEGG"),
                  paste0("< 2 genes, skipping visualization of ",
                         tmp_res2$Pathway[2]))
+
+  # Non-empty non_DEG_Active_Snw_Genes
+  tmp_res3 <- tmp_res
+  tmp_res3$non_DEG_Active_Snw_Genes <- RA_output$Up_regulated[2]
+  expect_null(visualize_pw_interactions(tmp_res3,
+                                        pin_name_path = "Biogrid"))
+
+  unlink("pathway_visualizations", recursive = TRUE)
 })
 
 # visualize_hsa_KEGG ------------------------------------------------------
@@ -94,6 +104,8 @@ test_that("visualize_hsa_KEGG creates expected png file(s)", {
 
   expect_null(suppressMessages(visualize_hsa_KEGG(tmp_res, genes_df)))
   expect_true(file.exists(expected_out_file))
+
+  unlink("pathway_visualizations", recursive = TRUE)
 })
 
 # enrichment_chart --------------------------------------------------------
@@ -121,7 +133,7 @@ test_that("enrichment_chart produces a ggplot object with correct labels", {
 
   # change num_bubbles
   expect_is(g <- enrichment_chart(RA_clustered,
-                                  num_bubbles = 2),
+                                  num_bubbles = 30),
             "ggplot")
   expect_equal(ggplot2::quo_name(g$mapping$x), "Fold_Enrichment")
   expect_equal(ggplot2::quo_name(g$mapping$y), "Pathway")
