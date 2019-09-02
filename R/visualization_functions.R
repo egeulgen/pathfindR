@@ -6,7 +6,7 @@
 #' @param input_processed input data processed via `input_processing`, not necessary for
 #' visualizations other than KEGG human pathway diagrams.
 #' @param gene_sets the gene sets used for enrichment analysis. Possible gene sets
-#'  are KEGG, Reactome, BioCarta, GO-All, GO-BP, GO-CC, GO-MF or Custom (Default = "KEGG").
+#'  are KEGG or non-KEGG (Default = "KEGG").
 #' @param pin_name_path Name of the chosen PIN or path/to/PIN.sif. If PIN name,
 #'   must be one of c("Biogrid", "GeneMania", "IntAct", "KEGG"). If
 #'   path/to/PIN.sif, the file must comply with the PIN specifications. Defaults
@@ -39,9 +39,12 @@
 #' }
 visualize_pws <- function(result_df, input_processed = NULL,
                           gene_sets = "KEGG", pin_name_path = "Biogrid") {
-  ############ Argument Check
+  ############ Argument Checks
   if (gene_sets == "KEGG" & is.null(input_processed))
     stop("`input_processed` must be specified when `gene_sets` is KEGG")
+
+  if (!gene_sets %in% c("KEGG", "non-KEGG"))
+    stop("`gene_sets` must either be \"KEGG\" or \"non-KEGG\"")
 
   ############ Generate pathway diagrams
   if (gene_sets == "KEGG") {
@@ -311,26 +314,26 @@ enrichment_chart <- function(result_df, plot_by_cluster = FALSE,
   necessary <- c("Pathway", "Fold_Enrichment", "lowest_p",
                  "Up_regulated", "Down_regulated")
   if (!all(necessary %in% colnames(result_df)))
-    stop("The input data frame must have the columns:
-         Pathway, Fold_Enrichment, lowest_p, Up_regulated, Down_regulated")
+    stop("The input data frame must have the columns:\n",
+         paste(necessary, collapse = ", "))
 
   if (!is.logical(plot_by_cluster))
-    stop("plot_by_cluster must be either TRUE or FALSE")
+    stop("`plot_by_cluster` must be either TRUE or FALSE")
 
   # sort by lowest adj.p
   result_df <- result_df[order(result_df$lowest_p), ]
 
-  n <- vapply(result_df$Up_regulated,
-              function(x) length(unlist(strsplit(x, ", "))), 1)
-  n <- n + vapply(result_df$Down_regulated,
-                  function(x) length(unlist(strsplit(x, ", "))), 1)
+  num_genes <- vapply(result_df$Up_regulated,
+                      function(x) length(unlist(strsplit(x, ", "))), 1)
+  num_genes <- num_genes + vapply(result_df$Down_regulated,
+                      function(x) length(unlist(strsplit(x, ", "))), 1)
 
   result_df$Pathway <- factor(result_df$Pathway,
                               levels = rev(unique(result_df$Pathway)))
 
   g <- ggplot2::ggplot(result_df, ggplot2::aes_(~Fold_Enrichment, ~Pathway))
   g <- g + ggplot2::geom_point(ggplot2::aes(color = -log10(result_df$lowest_p),
-                                            size = n), na.rm = TRUE)
+                                            size = num_genes), na.rm = TRUE)
   g <- g + ggplot2::theme_bw()
   g <- g + ggplot2::theme(axis.text.x = ggplot2::element_text(size = 10),
                           axis.text.y = ggplot2::element_text(size = 10),
@@ -339,11 +342,13 @@ enrichment_chart <- function(result_df, plot_by_cluster = FALSE,
   g <- g + ggplot2::labs(size = "# of DEGs", color = "-log10(lowest-p)")
 
   ## breaks for # of DEGs
-  if (max(n) < num_bubbles) {
-    g <- g + ggplot2::scale_size_continuous(breaks = seq(0, max(n)))
+  if (max(num_genes) < num_bubbles) {
+    g <- g + ggplot2::scale_size_continuous(breaks = seq(0, max(num_genes)))
   } else {
-    tmp1 <- base::seq(0, max(n), round(max(n) / (num_bubbles + 1)))
-    tmp2 <- base::round(base::seq(0, max(n), length.out = num_bubbles + 1))
+    tmp1 <- base::seq(0, max(num_genes),
+                      round(max(num_genes) / (num_bubbles + 1)))
+    tmp2 <- base::round(base::seq(0, max(num_genes),
+                                  length.out = num_bubbles + 1))
     brks <- ifelse(even_breaks, tmp1, tmp2)
 
     g <- g + ggplot2::scale_size_continuous(breaks = brks)
@@ -355,8 +360,7 @@ enrichment_chart <- function(result_df, plot_by_cluster = FALSE,
     g <- g + ggplot2::facet_grid(result_df$Cluster~.,
                                  scales = "free_y", space = "free", drop = TRUE)
   } else if (plot_by_cluster) {
-    message("For plotting by cluster, there must a column named `Cluster`
-            in the input data frame!")
+    message("For plotting by cluster, there must a column named `Cluster` in the input data frame!")
   }
 
   return(g)
@@ -473,7 +477,7 @@ term_gene_graph <- function(result_df, num_terms = 10,
 
   ### Create graph
   p <- ggraph::ggraph(g, layout = layout)
-  p <- p + ggraph::geom_edge_link(alpha=.8, colour='darkgrey')
+  p <- p + ggraph::geom_edge_link(alpha=.8, colour="darkgrey")
   p <- p + ggraph::geom_node_point(ggplot2::aes_(color=~I(color), size=~size))
   p <- p + ggplot2::scale_size(range=c(5, 10),
                                breaks=round(seq(round(min(igraph::V(g)$size)),

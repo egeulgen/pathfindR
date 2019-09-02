@@ -8,6 +8,8 @@ params:
   out_dir: ""
 ---
 
+<img src="https://static.wixstatic.com/media/69bf8f_73cd34c80dae469f80e34629ac91a078~mv2_d_3063_3536_s_4_2.png/v1/fill/w_536,h_616,al_c,q_80,usm_0.66_1.00_0.01/pathfindR_logo.webp" alt="logo" height=150 style="position:absolute; top:0; left:0; padding:5px;"/>
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```

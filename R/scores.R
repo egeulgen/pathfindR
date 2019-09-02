@@ -88,8 +88,8 @@ calculate_pw_scores <- function(pw_table, exp_mat,
 #' samples, rows are pathways.
 #' @param cases (Optional) A vector of sample names that are cases in the
 #' case/control experiment.
-#' @param label_cases Boolean value to indicate whether or not to label the
-#' cases in the heatmap plot
+#' @param label_samples Boolean value to indicate whether or not to label the
+#' samples in the heatmap plot
 #' @param case_control_titles A vector of length two for naming of the 'Case'
 #' and 'Control' groups (in order) (default = c('Case', 'Control'))
 #' @param low a string indicating the color of 'low' values in the score coloring gradient (default = 'green')
@@ -106,7 +106,7 @@ calculate_pw_scores <- function(pw_table, exp_mat,
 #' @examples
 #' score_mat <- calculate_pw_scores(RA_output, RA_exp_mat, plot_hmap = FALSE)
 #' hmap <- plot_scores(score_mat)
-plot_scores <- function(score_matrix, cases = NULL, label_cases = TRUE,
+plot_scores <- function(score_matrix, cases = NULL, label_samples = TRUE,
                         case_control_titles = c("Case", "Control"),
                         low = "green", high = "red") {
   if (length(case_control_titles) != 2)
@@ -153,7 +153,7 @@ plot_scores <- function(score_matrix, cases = NULL, label_cases = TRUE,
     g <- g + ggplot2::theme(strip.text.x = ggplot2::element_text(size = 12,
                                                                  face="bold"))
   }
-  if (!label_cases) {
+  if (!label_samples) {
     g <- g + ggplot2::theme(axis.text.x = ggplot2::element_blank(),
                             axis.ticks.x = ggplot2::element_blank())
   }

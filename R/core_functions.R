@@ -151,14 +151,12 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   # Gene Sets
   if (!gene_sets %in% c("KEGG", "Reactome", "BioCarta",
                         "GO-All", "GO-BP", "GO-CC", "GO-MF", "Custom"))
-    stop("`gene_sets` must be one of KEGG, Reactome,
-         BioCarta, GO-All, GO-BP, GO-CC, GO-MF or Custom")
+    stop("`gene_sets` must be one of KEGG, Reactome, BioCarta, GO-All, GO-BP, GO-CC, GO-MF or Custom")
 
   cstm_cond <- gene_sets == "Custom"
   cstm_cond <- cstm_cond & (is.null(custom_genes) | is.null(custom_pathways))
   if (cstm_cond)
-    stop("You must provide both `custom_genes` and `custom_pathways`
-         if `gene_sets` is `Custom`!")
+    stop("You must provide both `custom_genes` and `custom_pathways` if `gene_sets` is `Custom`!")
 
   # Enrichment chart option
   if (!is.logical(bubble))
@@ -231,7 +229,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   doParallel::registerDoParallel(cl)
 
   dirs <- c()
-  for(i in 1:iterations) {
+  for(i in base::seq_len(iterations)) {
     dir_i <- paste0("active_snw_searches/Iteration_", i)
     dir.create(dir_i, recursive = TRUE)
     dirs <- c(dirs, dir_i)
@@ -291,9 +289,12 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
 
   ##### Visualize the Pathways (If KEGG human, KEGG diagram. Otherwise,
   # Interactions of Genes in the PIN)
+  kegg_non_kegg <- ifelse(gene_sets == "KEGG", "KEGG", "non-KEGG")
   if (visualize_pathways)
-    pathfindR::visualize_pws(final_res, input_processed,
-                             gene_sets, pin_name_path)
+    pathfindR::visualize_pws(result_df = final_res,
+                             input_processed = input_processed,
+                             gene_sets = kegg_non_kegg,
+                             pin_name_path = pin_name_path)
 
   ############ Create HTML Report
   message("## Creating HTML report\n\n")
@@ -355,9 +356,9 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
 return_pin_path <- function(pin_name_path = "Biogrid") {
   if (pin_name_path %in% c("Biogrid", "GeneMania",
                            "IntAct", "KEGG"))
-    path <- normalizePath(system.file(paste0("extdata/", pin_name_path, ".sif"),
-                                      package = "pathfindR"))
-  else if (file.exists(normalizePath(pin_name_path))) {
+    path <- system.file(paste0("extdata/", pin_name_path, ".sif"),
+                        package = "pathfindR")
+  else if (file.exists(suppressWarnings(normalizePath(pin_name_path)))) {
     path <- normalizePath(pin_name_path)
     pin <- utils::read.delim(file = path,
                              header = FALSE, stringsAsFactors = FALSE)
@@ -366,11 +367,11 @@ return_pin_path <- function(pin_name_path = "Biogrid") {
 
     if (any(pin[, 2] != "pp"))
       stop("The second column of the PIN file must all be \"pp\" ")
-    else
-      stop(paste0("The chosen PIN must be one of:\n",
-                  "Biogrid, GeneMania, IntAct, KEGG or a valid /path/to/SIF"))
-    return(path)
+  } else {
+    stop(paste0("The chosen PIN must be one of:\n",
+                "Biogrid, GeneMania, IntAct, KEGG or a valid /path/to/SIF"))
   }
+  return(path)
 }
 
 #' Input Testing
@@ -627,6 +628,8 @@ annotate_pathway_DEGs <- function(result_df, input_processed,
     genes_name <- paste0("pathfindR::", genes_name)
     genes_by_pathway <- base::eval(parse(text = genes_name))
   } else if (gene_sets == "Custom") {
+    if (is.null(custom_genes))
+      stop("`custom_genes` must be provided if `gene_sets = \"Custom\"`")
     genes_by_pathway <- custom_genes
   }
 

@@ -35,7 +35,7 @@ Perform Enrichment Analysis for a Single Gene Set
 }
 \examples{
 enrichment(kegg_genes, c("PER1", "PER2", "CRY1", "CREB1"), kegg_pathways,
-           "bonferroni", 0.05, c("PER1"), unlist(kegg_genes))
+           "bonferroni", 0.05, "PER1", unlist(kegg_genes))
 }
 \seealso{
 \code{\link[stats]{p.adjust}} for adjustment of p values. See

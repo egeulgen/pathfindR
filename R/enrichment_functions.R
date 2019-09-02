@@ -18,7 +18,14 @@
 #' hyperg_test(letters[1:5], letters[2:10], letters)
 #' hyperg_test(letters[1:5], letters[2:13], letters)
 hyperg_test <- function(pw_genes, chosen_genes, all_genes) {
-  pw_genes_selected <- length(intersect(chosen_genes, pw_genes))
+
+  # sanity checks
+  if (length(pw_genes) > length(all_genes))
+    stop("`pw_genes` cannot be larger than `all_genes`!")
+  if (length(chosen_genes) > length(all_genes))
+    stop("`chosen_genes` cannot be larger than `all_genes`!")
+
+  pw_genes_selected <- sum(chosen_genes %in% pw_genes)
   pw_genes_in_pool <- length(pw_genes)
   tot_genes_in_pool <- length(all_genes)
   non_pw_genes_in_pool <- tot_genes_in_pool - pw_genes_in_pool
@@ -53,7 +60,7 @@ hyperg_test <- function(pw_genes, chosen_genes, all_genes) {
 #'   distribution-based hypothesis testing.
 #' @examples
 #' enrichment(kegg_genes, c("PER1", "PER2", "CRY1", "CREB1"), kegg_pathways,
-#'            "bonferroni", 0.05, c("PER1"), unlist(kegg_genes))
+#'            "bonferroni", 0.05, "PER1", unlist(kegg_genes))
 enrichment <- function(genes_by_pathway, genes_of_interest,
                        pathways_list, adj_method = "bonferroni",
                        enrichment_threshold, DEG_vec, all_genes) {
