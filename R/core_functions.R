@@ -485,8 +485,7 @@ input_processing <- function(input, p_val_threshold,
 
   ## Choose lowest p for each gene
   if (anyDuplicated(input$GENE)) {
-    warning("Duplicated genes found!
-The lowest p value for each gene was selected")
+    warning("Duplicated genes found! The lowest p value for each gene was selected")
 
     input <- input[order(input$P_VALUE, decreasing = FALSE), ]
     input <- input[!duplicated(input$GENE), ]
@@ -494,8 +493,7 @@ The lowest p value for each gene was selected")
 
   ## Fix p < 1e-13
   if (any(input$P_VALUE < 1e-13)) {
-    message("pathfindR cannot handle p values < 1e-13
-            These were changed to 1e-13")
+    message("pathfindR cannot handle p values < 1e-13. These were changed to 1e-13")
     input$P_VALUE <- ifelse(input$P_VALUE < 1e-13, 1e-13, input$P_VALUE)
   }
 

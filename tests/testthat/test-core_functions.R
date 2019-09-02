@@ -15,7 +15,7 @@ test_that("run_pathfindR works as expected", {
                           visualize_pathways = FALSE),
             "data.frame")
   expect_is(run_pathfindR(RA_input,
-                          iterations = 1,
+                          iterations = 2,
                           gene_sets = "BioCarta",
                           pin_name_path = "GeneMania"),
             "data.frame")
@@ -142,7 +142,68 @@ test_that("input_testing works", {
 })
 
 # input_processing --------------------------------------------------------
+test_that("input_processing works", {
+  path2pin <- return_pin_path()
+  # full df
+  expect_is(input_processing(RA_input,
+                             p_val_threshold = 0.05,
+                             pin_path = path2pin,
+                             human_genes = TRUE),
+            "data.frame")
 
+  expect_is(input_processing(RA_input[1:10,],
+                             p_val_threshold = 0.05,
+                             pin_path = path2pin,
+                             human_genes = FALSE),
+            "data.frame")
+
+  # no change val.s df
+  input2 <- RA_input[, -2]
+  expect_is(input_processing(input2,
+                             p_val_threshold = 0.05,
+                             pin_path = path2pin,
+                             human_genes = TRUE),
+            "data.frame")
+})
+
+test_that("input_processing errors and warnings work", {
+  expect_warning(input_processing(input2[1:10,],
+                                  p_val_threshold = 0.05,
+                                  pin_path = path2pin,
+                                  human_genes = TRUE),
+                 "The gene column was turned into character from factor.")
+
+  expect_error(input_processing(RA_input,
+                                p_val_threshold = 1e-100,
+                                pin_path = path2pin),
+               "No input p value is lower than the provided threshold \\(1e-100\\)")
+
+  input_dup <- RA_input[1:3, ]
+  input_dup <- rbind(input_dup, input_dup[1, ])
+  expect_warning(input_processing(input_dup,
+                                  p_val_threshold = 5e-2,
+                                  pin_path = path2pin),
+                 "Duplicated genes found! The lowest p value for each gene was selected")
+
+  tmp_input <- RA_input[1:10,]
+  tmp_input$adj.P.Val <- 1e-15
+  expect_true(all(input_processing(tmp_input,
+                                   p_val_threshold = 5e-2,
+                                   pin_path = path2pin)$P_VALUE >= 1e-13))
+
+  tmp_input$Gene.symbol <- paste0(LETTERS[seq_len(nrow(tmp_input))], "WRONG")
+  expect_error(input_processing(tmp_input,
+                                p_val_threshold = 5e-2,
+                                pin_path = path2pin),
+          "None of the genes were in the PIN\nPlease check your gene symbols")
+
+  tmp_input$Gene.symbol[1] <- "B"
+  tmp_input$Gene.symbol[2] <- "PPIB"
+  expect_error(input_processing(tmp_input,
+                                p_val_threshold = 5e-2,
+                                pin_path = path2pin),
+        "After processing, 1 gene \\(or no genes\\) could be mapped to the PIN")
+})
 
 # annotate_pathway_DEGs ---------------------------------------------------
 example_gene_data <- RA_input[1:50, ]
