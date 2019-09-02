@@ -314,11 +314,11 @@ enrichment_chart <- function(result_df, plot_by_cluster = FALSE,
   necessary <- c("Pathway", "Fold_Enrichment", "lowest_p",
                  "Up_regulated", "Down_regulated")
   if (!all(necessary %in% colnames(result_df)))
-    stop("The input data frame must have the columns:
-         Pathway, Fold_Enrichment, lowest_p, Up_regulated, Down_regulated")
+    stop("The input data frame must have the columns:\n",
+         paste(necessary, collapse = ", "))
 
   if (!is.logical(plot_by_cluster))
-    stop("plot_by_cluster must be either TRUE or FALSE")
+    stop("`plot_by_cluster` must be either TRUE or FALSE")
 
   # sort by lowest adj.p
   result_df <- result_df[order(result_df$lowest_p), ]
@@ -358,8 +358,7 @@ enrichment_chart <- function(result_df, plot_by_cluster = FALSE,
     g <- g + ggplot2::facet_grid(result_df$Cluster~.,
                                  scales = "free_y", space = "free", drop = TRUE)
   } else if (plot_by_cluster) {
-    message("For plotting by cluster, there must a column named `Cluster`
-            in the input data frame!")
+    message("For plotting by cluster, there must a column named `Cluster` in the input data frame!")
   }
 
   return(g)
