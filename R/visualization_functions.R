@@ -323,17 +323,18 @@ enrichment_chart <- function(result_df, plot_by_cluster = FALSE,
   # sort by lowest adj.p
   result_df <- result_df[order(result_df$lowest_p), ]
 
-  n <- vapply(result_df$Up_regulated,
-              function(x) length(unlist(strsplit(x, ", "))), 1)
-  n <- n + vapply(result_df$Down_regulated,
-                  function(x) length(unlist(strsplit(x, ", "))), 1)
+  num_genes <- vapply(result_df$Up_regulated,
+                      function(x) length(unlist(strsplit(x, ", "))), 1)
+  num_genes <- c(num_genes,
+                 vapply(result_df$Down_regulated,
+                        function(x) length(unlist(strsplit(x, ", "))), 1))
 
   result_df$Pathway <- factor(result_df$Pathway,
                               levels = rev(unique(result_df$Pathway)))
 
   g <- ggplot2::ggplot(result_df, ggplot2::aes_(~Fold_Enrichment, ~Pathway))
   g <- g + ggplot2::geom_point(ggplot2::aes(color = -log10(result_df$lowest_p),
-                                            size = n), na.rm = TRUE)
+                                            size = num_genes), na.rm = TRUE)
   g <- g + ggplot2::theme_bw()
   g <- g + ggplot2::theme(axis.text.x = ggplot2::element_text(size = 10),
                           axis.text.y = ggplot2::element_text(size = 10),
@@ -342,11 +343,13 @@ enrichment_chart <- function(result_df, plot_by_cluster = FALSE,
   g <- g + ggplot2::labs(size = "# of DEGs", color = "-log10(lowest-p)")
 
   ## breaks for # of DEGs
-  if (max(n) < num_bubbles) {
-    g <- g + ggplot2::scale_size_continuous(breaks = seq(0, max(n)))
+  if (max(num_genes) < num_bubbles) {
+    g <- g + ggplot2::scale_size_continuous(breaks = seq(0, max(num_genes)))
   } else {
-    tmp1 <- base::seq(0, max(n), round(max(n) / (num_bubbles + 1)))
-    tmp2 <- base::round(base::seq(0, max(n), length.out = num_bubbles + 1))
+    tmp1 <- base::seq(0, max(num_genes),
+                      round(max(num_genes) / (num_bubbles + 1)))
+    tmp2 <- base::round(base::seq(0, max(num_genes),
+                                  length.out = num_bubbles + 1))
     brks <- ifelse(even_breaks, tmp1, tmp2)
 
     g <- g + ggplot2::scale_size_continuous(breaks = brks)
