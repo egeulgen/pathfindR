@@ -167,6 +167,7 @@ test_that("input_processing works", {
 })
 
 test_that("input_processing errors and warnings work", {
+  input2 <- RA_input[, -2]
   expect_warning(input_processing(input2[1:10,],
                                   p_val_threshold = 0.05,
                                   pin_path = path2pin,
