@@ -42,6 +42,26 @@ test_that("run_pathfindR works as expected", {
                  "Did not find any enriched pathways!")
 })
 
+test_that("run_pathfindR arg checks work", {
+  expect_error(run_pathfindR(RA_input, search_method = "WRONG"),
+               '`search_method` must be one of "GR", "SA", "GA"')
+
+  expect_error(run_pathfindR(RA_input, use_all_positives = "WRONG"),
+               "the argument `use_all_positives` must be either TRUE or FALSE")
+
+  expect_error(run_pathfindR(RA_input, silent_option = "WRONG"),
+               "the argument `silent_option` must be either TRUE or FALSE")
+
+  expect_error(run_pathfindR(RA_input, gene_sets = "WRONG"),
+               "`gene_sets` must be one of KEGG, Reactome, BioCarta, GO-All, GO-BP, GO-CC, GO-MF or Custom")
+
+  expect_error(run_pathfindR(RA_input, gene_sets = "Custom"),
+               "You must provide both `custom_genes` and `custom_pathways` if `gene_sets` is `Custom`!")
+
+  expect_error(run_pathfindR(RA_input, bubble = "WRONG"),
+               "the argument `bubble` must be either TRUE or FALSE")
+})
+
 # return_pin_path ---------------------------------------------------------
 test_that("return_pin_path returns the absolute path to PIN file", {
 

@@ -151,14 +151,12 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   # Gene Sets
   if (!gene_sets %in% c("KEGG", "Reactome", "BioCarta",
                         "GO-All", "GO-BP", "GO-CC", "GO-MF", "Custom"))
-    stop("`gene_sets` must be one of KEGG, Reactome,
-         BioCarta, GO-All, GO-BP, GO-CC, GO-MF or Custom")
+    stop("`gene_sets` must be one of KEGG, Reactome, BioCarta, GO-All, GO-BP, GO-CC, GO-MF or Custom")
 
   cstm_cond <- gene_sets == "Custom"
   cstm_cond <- cstm_cond & (is.null(custom_genes) | is.null(custom_pathways))
   if (cstm_cond)
-    stop("You must provide both `custom_genes` and `custom_pathways`
-         if `gene_sets` is `Custom`!")
+    stop("You must provide both `custom_genes` and `custom_pathways` if `gene_sets` is `Custom`!")
 
   # Enrichment chart option
   if (!is.logical(bubble))
