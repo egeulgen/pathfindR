@@ -7,7 +7,40 @@
 ##################################################
 
 # run_pathfindR -----------------------------------------------------------
+test_that("run_pathfindR works as expected", {
 
+  ## GR
+  expect_is(run_pathfindR(RA_input,
+                          iterations = 1,
+                          visualize_pathways = FALSE),
+            "data.frame")
+  expect_is(run_pathfindR(RA_input,
+                          iterations = 1,
+                          gene_sets = "BioCarta",
+                          pin_name_path = "GeneMania"),
+            "data.frame")
+  ## SA
+  expect_is(run_pathfindR(RA_input,
+                          iterations = 1,
+                          gene_sets = "BioCarta",
+                          pin_name_path = "GeneMania",
+                          search_method = "SA",
+                          visualize_pathways = FALSE),
+            "data.frame")
+
+  ## GA
+  expect_is(run_pathfindR(RA_input,
+                          iterations = 1,
+                          gene_sets = "BioCarta",
+                          pin_name_path = "GeneMania",
+                          search_method = "GA",
+                          visualize_pathways = FALSE),
+            "data.frame")
+
+  expect_warning(run_pathfindR(RA_input[1:3,],
+                               iterations = 1),
+                 "Did not find any enriched pathways!")
+})
 
 # return_pin_path ---------------------------------------------------------
 test_that("return_pin_path returns the absolute path to PIN file", {

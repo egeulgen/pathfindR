@@ -231,7 +231,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   doParallel::registerDoParallel(cl)
 
   dirs <- c()
-  for(i in 1:iterations) {
+  for(i in base::seq_len(iterations)) {
     dir_i <- paste0("active_snw_searches/Iteration_", i)
     dir.create(dir_i, recursive = TRUE)
     dirs <- c(dirs, dir_i)
