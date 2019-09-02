@@ -17,8 +17,7 @@ test_that("Filter function returns list object", {
   expect_is(tmp_filtered[[1]], "character")
 
   # empty file case
-  expect_equal(suppressWarnings(filterActiveSnws("", RA_input$Gene.symbol)),
-               NULL)
+  expect_null(suppressWarnings(filterActiveSnws("", RA_input$Gene.symbol)))
 })
 
 test_that("Filter function arguments work OK", {
