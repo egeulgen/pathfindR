@@ -199,6 +199,7 @@ test_that("Check errors of clustering wrapper function", {
   expect_error(cluster_pathways(RA_output[1:3, ], use_names = "WRONG"),
                "`use_names` must be logical!")
 
-  expect_error(cluster_pathways(RA_output[1:3, ], plot_clusters_graph = "WRONG"),
+  expect_error(cluster_pathways(RA_output[1:3, ],
+                                plot_clusters_graph = "WRONG"),
                "`plot_clusters_graph` must be logical!")
 })

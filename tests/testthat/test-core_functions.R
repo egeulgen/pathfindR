@@ -164,6 +164,18 @@ test_that("input_processing works", {
                              pin_path = path2pin,
                              human_genes = TRUE),
             "data.frame")
+
+  # multiple mapping
+  input_m <- RA_input
+  input_m$Gene.symbol[1] <- "GIG24"
+  input_m$Gene.symbol[2] <- "ACT"
+  input_m$Gene.symbol[3] <- "AACT"
+  input_m$Gene.symbol[4] <- "GIG25"
+  expect_is(input_processing(input_m,
+                             p_val_threshold = 0.05,
+                             pin_path = path2pin,
+                             human_genes = TRUE),
+            "data.frame")
 })
 
 test_that("input_processing errors and warnings work", {
@@ -177,14 +189,14 @@ test_that("input_processing errors and warnings work", {
   expect_error(input_processing(RA_input,
                                 p_val_threshold = 1e-100,
                                 pin_path = path2pin),
-               "No input p value is lower than the provided threshold \\(1e-100\\)")
+          "No input p value is lower than the provided threshold \\(1e-100\\)")
 
   input_dup <- RA_input[1:3, ]
   input_dup <- rbind(input_dup, input_dup[1, ])
   expect_warning(input_processing(input_dup,
                                   p_val_threshold = 5e-2,
                                   pin_path = path2pin),
-                 "Duplicated genes found! The lowest p value for each gene was selected")
+        "Duplicated genes found! The lowest p value for each gene was selected")
 
   tmp_input <- RA_input[1:10,]
   tmp_input$adj.P.Val <- 1e-15
@@ -225,7 +237,7 @@ test_that("annotate_pathway_DEGs adds input genes for each term", {
   expect_is(annotated_result <- annotate_pathway_DEGs(tmp_res,
                                                       example_gene_data,
                                                       gene_sets = "Custom",
-                                                      custom_genes = kegg_genes),
+                                                    custom_genes = kegg_genes),
             "data.frame")
   expect_true("Up_regulated" %in% colnames(annotated_result) &
                 "Down_regulated" %in% colnames(annotated_result))
