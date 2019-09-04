@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 
 `pathfindR` is an R package for pathway enrichment analysis of gene-level differential expression/methylation data utilizing active subnetworks. The package also enables hierarchical clustering of the enriched pathways. The method is described in detail in Ulgen E, Ozisik O, Sezerman OU. 2018. pathfindR: An R Package for Pathway Enrichment Analysis Utilizing Active Subnetworks. bioRxiv. [https://doi.org/10.1101/272450](https://doi.org/10.1101/272450)
 
-This vignette walks through each step of the pathfindR active-subnetwork-oriented pathway enrichment analysis. The wrapper function `run_pathfindR` can be used to perform this analysis from start to end but for users who need to have further control, the following script will be of much more use.
+This vignette walks through each step of the pathfindR active-subnetwork-oriented pathway enrichment analysis. The wrapper function `run_pathfindR` can be used to perform this analysis from start to end but for users who wish to have further control over the workflow, the following script will be much more useful.
 
 # Initial Steps
 
@@ -46,7 +46,7 @@ RA_processed <- input_processing(input = RA_input, ## the input: in this case, d
 
 # Active Subnetwork Search and Enrichment Analyses
 
-For active subnetwork search, we use the function `active_snw_search` and for enrichment analyses we use `enrichment_analyses`. Because the active subnetwork search algorithms are stochastic, we iterate the search and enrichment steps multiple times, and later summarize the results.
+For active subnetwork search, we use the function `active_snw_search` and for enrichment analyses we use `enrichment_analyses`. Because the active subnetwork search algorithms are stochastic, we iterate the search and enrichment steps multiple times (here we are using a regular `for` loop but in the wrapper function `run_pathfindR` a parallel loop using `foreach` is used), and later summarize the results.
 
 ```{r snw_search, eval=FALSE}
 n_iter <- 15 ## number of iterations
@@ -58,10 +58,11 @@ for (i in 1:n_iter) {
   active_snws <- active_snw_search(RA_processed, pin_path, snws_file = snws_file, search_method = "GR")
 
   ###### Enrichment analyses
-  enrichment_res <- enrichment_analyses(active_snws, gene_sets = "GO-All",
+  enrichment_res <- enrichment_analyses(active_snws, 
+                                        gene_sets = "GO-All", # using "GO-All" as our gene sets for enrichment
                                         pin_path = pin_path,
                                         input_genes = RA_processed$GENE,
-                                        list_active_snw_genes = TRUE)
+                                        list_active_snw_genes = TRUE) # also listing the non-input active snw genes in output (default = FALSE)
   ## combine all results via rbind
   combined_res <- rbind(combined_res, enrichment_res)
 }
@@ -71,18 +72,24 @@ We next summarize the results and annotate the involved input genes in each path
 
 ```{r post_proc, eval=FALSE}
 ##### Summarize Combined Enrichment Results
-final_res <- summarize_enrichment_results(combined_res, list_active_snw_genes = TRUE)
+final_res <- summarize_enrichment_results(combined_res, 
+                                          list_active_snw_genes = TRUE)
 
 ##### Annotate DEGs Involved in Each Pathway
-final_res <- annotate_pathway_DEGs(final_res, input_processed = RA_processed, gene_sets = "GO-All")
+final_res <- annotate_pathway_DEGs(final_res, 
+                                   input_processed = RA_processed, 
+                                   gene_sets = "GO-All")
 ```
 
 # Visualizations
 
-Finally, we can visualize each pathway diagram (in this case graphs of interactions of pathway-involved genes for each pathway):
+Finally, we can visualize each pathway diagram (in this case graphs of interactions of pathway-involved genes for each pathway, see `?visualize_pws` for more details):
 
 ```{r vis_pws, eval=FALSE}
-visualize_pws(final_res, RA_processed, gene_sets = "GO-All", pin_name_path = "Biogrid")
+visualize_pws(final_res, 
+              RA_processed, 
+              gene_sets = "non-KEGG", # this can either be "KEGG" (default) or non-KEGG
+              pin_name_path = "Biogrid")
 ```
 
 <img src="./example_pw_vis.png" width="650" height="519.87" />

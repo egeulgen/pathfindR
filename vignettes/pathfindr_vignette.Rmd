@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-`pathfindR` is an R package for pathway enrichment analysis of gene-level omics data utilizing active subnetworks. The package also enables hierarchical clustering of the enriched pathways. The method is described in detail in Ulgen E, Ozisik O, Sezerman OU. 2018. pathfindR: An R Package for Pathway Enrichment Analysis Utilizing Active Subnetworks. bioRxiv. [https://doi.org/10.1101/272450](https://doi.org/10.1101/272450)
+`pathfindR` is an R package for pathway enrichment analysis of gene-level omics data utilizing active subnetworks. The package also enables clustering of the enriched pathways, scoring of overall pathway activity and visualization of analysis results. pathfindR is described in detail in Ulgen E, Ozisik O, Sezerman OU. 2018. pathfindR: An R Package for Pathway Enrichment Analysis Utilizing Active Subnetworks. bioRxiv. [https://doi.org/10.1101/272450](https://doi.org/10.1101/272450)
 
 Our motivation to develop this package was that direct pathway enrichment analysis of differential RNA/protein expression or DNA methylation results may not provide the researcher with the full picture. That is to say; pathway enrichment of only the list of significant genes may not be informative enough to explain the underlying disease mechanisms. 
 
@@ -45,7 +45,7 @@ Executing the workflow is straightforward (but takes several minutes):
 RA_output <- run_pathfindR(RA_input)
 ```
 
-The user may want to change certain arguments of the function:
+Useful arguments to control the certain aspects of analysis are provided below:
 ```{r eval=FALSE}
 # to change the output directory
 RA_output <- run_pathfindR(RA_input, output = "new_directory")
@@ -55,7 +55,7 @@ RA_output <- run_pathfindR(RA_input, pin_name = "IntAct")
 # to use an external PIN of user's choice
 RA_output <- run_pathfindR(RA_input, pin_name = "/path/to/myPIN.sif")
 
-# available gene sets are KEGG, Reactome, BioCarta, GO-BP, GO-CC and GO-MF
+# available gene sets are KEGG, Reactome, BioCarta, GO-All, GO-BP, GO-CC and GO-MF
 # default is KEGG
 # to change the gene sets used for enrichment analysis
 RA_output <- run_pathfindR(RA_input, gene_sets = "BioCarta")
@@ -63,17 +63,20 @@ RA_output <- run_pathfindR(RA_input, gene_sets = "BioCarta")
 # to change the active subnetwork search algorithm (default = "GR", i.e. greedy algorithm)
 # for simulated annealing:
 RA_output <- run_pathfindR(RA_input, search_method = "SA")
+# for genetic algorithm:
+RA_output <- run_pathfindR(RA_input, search_method = "GA")
 
 # to change the number of iterations (default = 10)
-RA_output <- run_pathfindR(RA_input, iterations = 5) 
+RA_output <- run_pathfindR(RA_input, iterations = 25) 
 
 # to manually specify the number processes used during parallel loop by foreach
 # defaults to the number of detected cores 
 RA_output <- run_pathfindR(RA_input, n_processes = 2)
 
-# to report the non-DEG active subnetwork genes
+# to report the non-DEG active subnetwork genes (for further analysis)
 RA_output <- run_pathfindR(RA_input, list_active_snw_genes = TRUE)
 ```
+
 For a full list of arguments, see `?run_pathfindR`.
 
 The workflow consists of the following steps :
@@ -84,7 +87,7 @@ After input testing, the program attempts to convert any gene symbol that is not
 - Simulated Annealing Algorithm (based on Ideker et al. [^2]) and 
 - Genetic Algorithm (based on Ozisik et al. [^3]).
 
-Next, pathway enrichment analyses are performed using the genes in each of the active subnetworks. For this, up-to-date information on human gene sets from KEGG, Reactome, BioCarta and Gene Ontology were retrieved and is available for use within the package. The user may specify custom gene sets, including gene sets for non-human organisms, as described in the section "pathfindR Analysis with Custom Gene Sets".
+Next, pathway enrichment analyses are performed using the genes in each of the active subnetworks. For this, up-to-date information on human gene sets from KEGG, Reactome, BioCarta and Gene Ontology were retrieved and is available for use within the package. The user may specify custom gene sets, including gene sets for non-human organisms, as described in the section "pathfindR Analysis with Custom Gene Sets" below.
 
 During enrichment analyses, pathways with adjusted-p values larger than the `enrichment_threshold` (an argument of `run_pathfindR()`, defaults to 0.05) are discarded. The results of enrichment analyses over all active subnetworks are combined by keeping only the lowest adjusted-p value for each pathway. 
 
@@ -108,6 +111,7 @@ This document contains a table of the active subnetwork-oriented pathway enrichm
 - occurrence: The number of times the pathway was found to be enriched over all iterations
 - lowest_p: the lowest adjusted-p value of the pathway over all iterations
 - highest_p: the highest adjusted-p value of the pathway over all iterations
+- (non_DEG_Active_Snw_Genes (OPTIONAL): the non-DEG active subnetwork genes involved in the pathway)
 - Up_regulated: the up-regulated genes involved in the pathway
 - Down_regulated: the down-regulated genes involved in the pathway
 
@@ -132,7 +136,7 @@ data("RA_output")
 RA_clustered <- cluster_pathways(RA_output)
 ## First 2 rows of clustered terms data frame
 knitr::kable(head(RA_clustered, 2))
-## The 8 representative terms
+## The representative terms
 knitr::kable(RA_clustered[RA_clustered$Status == "Representative", ])
 
 # to display the heatmap of kappa statistics
@@ -230,7 +234,7 @@ custom_result <- run_pathfindR(input,
                                gene_sets = "Custom", 
                                custom_genes = custom_genes, 
                                custom_pathways = custom_pathways, 
-                               iterations = 1)
+                               iterations = 1) # for demo, setting number of iterations to 1
 ```
 
 ``` {r include = FALSE}
