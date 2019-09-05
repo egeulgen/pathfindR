@@ -155,6 +155,30 @@ Alternatively, the `fuzzy` clustering method (as described by Huang et al.[^1]) 
 RA_clustered <- cluster_pathways(RA_output, method = "fuzzy")
 ```
 
+# Term-Gene Graph
+
+The function `term_gene_graph` (adapted from the Gene-Concept network visualization by the R package `enrichplot`) can be utilized to visualize which genes are involved in the enriched terms. The function creates the term-gene graph which shows the connections between genes and biological terms (enriched pathways or gene sets). This allows for the investigation of multiple terms to which significant genes are related. The graph also enables determination of the degree of overlap between the enriched terms by identifying shared and/or distinct significant genes.
+
+By default, the function visualizes the term-gene graph for the top 10 enriched pathways:
+```{r term_gene1, fig.height=4, fig.width=8}
+term_gene_graph(RA_output)
+```
+
+To plot all of the enriched terms in a data frame, set `num_terms = NULL` (not advised due to cluttered visualization):
+```{r term_gene2, fig.height=4, fig.width=8}
+term_gene_graph(RA_output, num_terms = NULL)
+```
+
+To plot using full term names (instead of IDs which is the default), set `use_names = TRUE`:
+```{r term_gene3, fig.height=4, fig.width=8}
+term_gene_graph(RA_output, num_terms = 3, use_names = TRUE)
+```
+
+By default the node sizes are plotted proportional to the number of genes a term contains (`num_DEGs`). To adjust node sizes using the $-log_{10}$(lowest p values), set `node_size = p_val`:
+```{r term_gene4, fig.height=4, fig.width=8}
+term_gene_graph(RA_output, num_terms = 3, node_size = "p_val")
+```
+
 # Pathway Scores per Sample
 
 The function `calculate_pw_scores` can be used to calculate the pathway scores per sample. This allows the user to individually examine the scores and infer whether a pathway is activated or repressed in a given sample.

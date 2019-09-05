@@ -106,6 +106,14 @@ RA_clustered <- cluster_pathways(RA_output, method = "fuzzy")
 
 See the [wiki page](https://github.com/egeulgen/pathfindR/wiki/Clustering%20Documentation) for more details.
 
+## Term-Gene Graph Visualization
+
+The function `term_gene_graph` (adapted from the Gene-Concept network visualization by the R package `enrichplot`) can be utilized to visualize which genes are involved in the enriched terms. The function creates the term-gene graph which shows the connections between genes and biological terms (enriched pathways or gene sets). This allows for the investigation of multiple terms to which significant genes are related. The graph also enables determination of the degree of overlap between the enriched terms by identifying shared and/or distinct significant genes.
+
+![Term-Gene Graph](./vignettes/term_gene.png?raw=true "Term-Gene Graph")
+
+For more details, see `?term_gene_graph`
+
 ## Overview of the Pathway Scoring Functionality
 
 ![Pathway Scoring per Sample](./vignettes/pw_score_hmap.png?raw=true "Pathway Scoring per Sample")
