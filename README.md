@@ -112,7 +112,7 @@ The function `term_gene_graph` (adapted from the Gene-Concept network visualizat
 
 ![Term-Gene Graph](./vignettes/term_gene.png?raw=true "Term-Gene Graph")
 
-For more details, see `?term_gene_graph`
+For more details, see the [wiki page](https://github.com/egeulgen/pathfindR/wiki/Term-Gene-Graph).
 
 ## Overview of the Pathway Scoring Functionality
 
