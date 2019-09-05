@@ -3,6 +3,7 @@ doc
 inst/doc
 misc_data
 data-raw
+*.pptx
 
 .Rprofile
 
