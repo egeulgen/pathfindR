@@ -26,7 +26,7 @@ hyperg_test <- function(pw_genes, chosen_genes, all_genes) {
     stop("`chosen_genes` cannot be larger than `all_genes`!")
 
   pw_genes_selected <- sum(chosen_genes %in% pw_genes)
-  pw_genes_in_pool <- length(pw_genes)
+  pw_genes_in_pool <- sum(pw_genes %in% all_genes)
   tot_genes_in_pool <- length(all_genes)
   non_pw_genes_in_pool <- tot_genes_in_pool - pw_genes_in_pool
   num_selected_genes <- length(chosen_genes)
