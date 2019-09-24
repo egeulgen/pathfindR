@@ -1,32 +1,32 @@
-#'Wrapper Function for pathfindR Workflow
+#' Wrapper Function for pathfindR Workflow
 #'
-#'\code{run_pathfindR} is the wrapper function for the pathfindR workflow
+#' \code{run_pathfindR} is the wrapper function for the pathfindR workflow
 #'
-#'This function takes in a data frame consisting of Gene Symbol, log-fold-change
-#'and adjusted-p values. After input testing, any gene symbols that are not in
-#'the PIN are converted to alias symbols if the alias is in the PIN. Next,
-#'active subnetwork search is performed. Pathway enrichment analysis is
-#'performed using the genes in each of the active subnetworks. Pathways with
-#'adjusted-p values lower than \code{enrichment_threshold} are discarded. The
-#'lowest adjusted-p value (over all subnetworks) for each pathway is kept. This
-#'process of active subnetwork search and enrichment is repeated  for a selected
-#'number of \code{iterations}, which is done in parallel. Over all iterations,
-#'the lowest and the highest adjusted-p values, as well as number of occurrences
-#'are reported for each enriched pathway.
+#' This function takes in a data frame consisting of Gene Symbol, log-fold-change
+#' and adjusted-p values. After input testing, any gene symbols that are not in
+#' the PIN are converted to alias symbols if the alias is in the PIN. Next,
+#' active subnetwork search is performed. Pathway enrichment analysis is
+#' performed using the genes in each of the active subnetworks. Pathways with
+#' adjusted-p values lower than \code{enrichment_threshold} are discarded. The
+#' lowest adjusted-p value (over all subnetworks) for each pathway is kept. This
+#' process of active subnetwork search and enrichment is repeated  for a selected
+#' number of \code{iterations}, which is done in parallel. Over all iterations,
+#' the lowest and the highest adjusted-p values, as well as number of occurrences
+#' are reported for each enriched pathway.
 #'
-#'@inheritParams input_testing
-#'@param visualize_pathways Boolean value to indicate whether or not to create pathway diagrams.
-#'@param human_genes boolean to indicate whether the input genes are
+#' @inheritParams input_testing
+#' @param visualize_pathways Boolean value to indicate whether or not to create pathway diagrams.
+#' @param human_genes boolean to indicate whether the input genes are
 #'  human gene symbols or not (default = TRUE)
-#'@param enrichment_threshold threshold used when filtering individual iterations' pathway
+#' @param enrichment_threshold threshold used when filtering individual iterations' pathway
 #'  enrichment results
-#'@param adj_method correction method to be used for adjusting p-values of
+#' @param adj_method correction method to be used for adjusting p-values of
 #'  pathway enrichment results (Default: 'bonferroni', see ?p.adjust)
-#'@param search_method algorithm to use when performing active subnetwork
+#' @param search_method algorithm to use when performing active subnetwork
 #'  search. Options are greedy search (GR), simulated annealing (SA) or genetic
 #'  algorithm (GA) for the search (Default:GR. Can be one of c("GR", "SA",
 #'  "GA"))
-#'@param use_all_positives if TRUE: in GA, adds an individual with all positive
+#' @param use_all_positives if TRUE: in GA, adds an individual with all positive
 #'  nodes. In SA, initializes candidate solution with all positive nodes.
 #'  (Default = FALSE)
 #' @param saTemp0 Initial temperature for SA (Default = 1.0)
@@ -40,34 +40,34 @@
 #' @param grSearchDepth Search depth in greedy search (Default = 1)
 #' @param grOverlap Overlap threshold for results of greedy search (Default = 0.5)
 #' @param grSubNum Number of subnetworks to be presented in the results (Default = 1000)
-#'@param iterations number of iterations for active subnetwork search and
+#' @param iterations number of iterations for active subnetwork search and
 #'  enrichment analyses (Default = 10. Gets set to 1 for Genetic Algorithm)
-#'@param n_processes optional argument for specifying the number of processes
+#' @param n_processes optional argument for specifying the number of processes
 #'  used by foreach. If not specified, the function determines this
 #'  automatically (Default == NULL. Gets set to 1 for Genetic Algorithm)
-#'@inheritParams return_pin_path
-#'@param score_quan_thr active subnetwork score quantile threshold (Default = 0.80)
-#'@param sig_gene_thr threshold for minimum number of significant genes (Default = 10)
-#'@param gene_sets the gene sets to be used for enrichment analysis. Available gene sets
+#' @inheritParams return_pin_path
+#' @param score_quan_thr active subnetwork score quantile threshold (Default = 0.80)
+#' @param sig_gene_thr threshold for minimum number of significant genes (Default = 10)
+#' @param gene_sets the gene sets to be used for enrichment analysis. Available gene sets
 #'  are KEGG, Reactome, BioCarta, GO-All, GO-BP, GO-CC, GO-MF or Custom. If "Custom", the arguments
 #'  custom_genes and custom pathways must be specified. (Default = "KEGG")
-#'@param custom_genes a list containing the genes involved in each custom pathway. Each element
+#' @param custom_genes a list containing the genes involved in each custom pathway. Each element
 #' is a vector of gene symbols located in the given pathway. Names correspond to
 #' the ID of the pathway.
-#'@param custom_pathways A list containing the descriptions for each custom pathway. Names of the
+#' @param custom_pathways A list containing the descriptions for each custom pathway. Names of the
 #' list correspond to the ID of the pathway.
-#'@param bubble boolean value. If TRUE, a bubble chart displaying the enrichment
+#' @param bubble boolean value. If TRUE, a bubble chart displaying the enrichment
 #' results is plotted. (default = TRUE)
-#'@param output_dir the directory to be created under the current working
+#' @param output_dir the directory to be created under the current working
 #' directory where the output and intermediate files are saved (default: "pathfindR_Results")
-#'@param list_active_snw_genes boolean value indicating whether or not to report
+#' @param list_active_snw_genes boolean value indicating whether or not to report
 #' the non-DEG active subnetwork genes for the active subnetwork which was enriched for
 #' the given pathway with the lowest p value (default = FALSE)
-#'@param silent_option boolean value indicating whether to print the messages to the console (FALSE)
+#' @param silent_option boolean value indicating whether to print the messages to the console (FALSE)
 #' or print to a file (TRUE) during active subnetwork search (default = TRUE). This option was added
 #' because during parallel runs, the console messages get mixed up.
 #'
-#'@return Data frame of pathfindR enrichment results. Columns are: \describe{
+#' @return Data frame of pathfindR enrichment results. Columns are: \describe{
 #'   \item{ID}{KEGG ID of the enriched pathway}
 #'   \item{Pathway}{Description of the enriched pathway}
 #'   \item{Fold_Enrichment}{Fold enrichment value for the enriched pathway (Calculated using ONLY the input genes)}
@@ -89,20 +89,20 @@
 #'  Color indicates the -log10(lowest-p) value; the more red it gets, the more significant
 #'  the pathway is.
 #'
-#'@import knitr
-#'@import rmarkdown
-#'@import parallel
-#'@import doParallel
-#'@import foreach
-#'@import graphics
+#' @import knitr
+#' @import rmarkdown
+#' @import parallel
+#' @import doParallel
+#' @import foreach
+#' @import graphics
 #'
-#'@export
+#' @export
 #'
-#'@section Warning: Especially depending on the protein interaction network,
+#' @section Warning: Especially depending on the protein interaction network,
 #'  the algorithm and the number of iterations you choose, active subnetwork
 #'  search component of pathfindR may take a very long time to finish.
 #'
-#'@seealso
+#' @seealso
 #' \code{\link{input_testing}} for input testing, \code{\link{input_processing}} for input processing,
 #' \code{\link{active_snw_search}} for active subnetwork search and subnetwork filtering,
 #' \code{\link{enrichment_analyses}} for enrichment analysis (using the active subnetworks),
@@ -139,28 +139,36 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
                           silent_option = TRUE) {
   ############ Argument checks
   # Active Subnetwork Search
-  if (!search_method %in% c("GR", "SA", "GA"))
+  if (!search_method %in% c("GR", "SA", "GA")) {
     stop("`search_method` must be one of \"GR\", \"SA\", \"GA\"")
+  }
 
-  if (!is.logical(use_all_positives))
+  if (!is.logical(use_all_positives)) {
     stop("the argument `use_all_positives` must be either TRUE or FALSE")
+  }
 
-  if (!is.logical(silent_option))
+  if (!is.logical(silent_option)) {
     stop("the argument `silent_option` must be either TRUE or FALSE")
+  }
 
   # Gene Sets
-  if (!gene_sets %in% c("KEGG", "Reactome", "BioCarta",
-                        "GO-All", "GO-BP", "GO-CC", "GO-MF", "Custom"))
+  if (!gene_sets %in% c(
+    "KEGG", "Reactome", "BioCarta",
+    "GO-All", "GO-BP", "GO-CC", "GO-MF", "Custom"
+  )) {
     stop("`gene_sets` must be one of KEGG, Reactome, BioCarta, GO-All, GO-BP, GO-CC, GO-MF or Custom")
+  }
 
   cstm_cond <- gene_sets == "Custom"
   cstm_cond <- cstm_cond & (is.null(custom_genes) | is.null(custom_pathways))
-  if (cstm_cond)
+  if (cstm_cond) {
     stop("You must provide both `custom_genes` and `custom_pathways` if `gene_sets` is `Custom`!")
+  }
 
   # Enrichment chart option
-  if (!is.logical(bubble))
+  if (!is.logical(bubble)) {
     stop("the argument `bubble` must be either TRUE or FALSE")
+  }
 
   ############ Initial Steps
   ## absolute path to PIN
@@ -169,9 +177,9 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   ## create output dir
   dir_changed <- FALSE
   output_dir_init <- output_dir
-  while(dir.exists(output_dir)) {
-    if (grepl("\\(\\d+\\)$" , output_dir)) {
-      output_dir <- unlist(strsplit(output_dir, "\\(" ))
+  while (dir.exists(output_dir)) {
+    if (grepl("\\(\\d+\\)$", output_dir)) {
+      output_dir <- unlist(strsplit(output_dir, "\\("))
       suffix <- as.numeric(sub("\\)", "", output_dir[2])) + 1
       output_dir <- paste0(output_dir[1], "(", suffix, ")")
     } else {
@@ -181,9 +189,11 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   }
 
   if (dir_changed) {
-    message(paste0("There already is a directory named \"", output_dir_init,
-                   "\".\nWriting the result to \"", output_dir,
-                   "\" not to overwrite the previous results."))
+    message(paste0(
+      "There already is a directory named \"", output_dir_init,
+      "\".\nWriting the result to \"", output_dir,
+      "\" not to overwrite the previous results."
+    ))
   }
 
   # on exit, set working directory back to original working directory
@@ -197,12 +207,14 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   output_dir <- getwd()
 
   ## If search_method is GA, set iterations as 1
-  if (search_method == "GA")
+  if (search_method == "GA") {
     iterations <- n_processes <- 1
+  }
 
   ## If iterations == 1, set n_processes to 1
-  if (iterations == 1)
+  if (iterations == 1) {
     n_processes <- 1
+  }
 
   ## Set initial probabilities
   geneInitProbs <- seq(from = 0.01, to = 0.2, length.out = iterations)
@@ -215,21 +227,24 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   ## Process input
   message("## Processing input. Converting gene symbols,
           if necessary (and if human gene symbols provided)\n\n")
-  input_processed <- pathfindR::input_processing(input, p_val_threshold,
-                                                 pin_path, human_genes)
+  input_processed <- pathfindR::input_processing(
+    input, p_val_threshold,
+    pin_path, human_genes
+  )
 
   ############ Active Subnetwork Search and Enrichment
   ## Prep for parallel run
   message("## Performing Active Subnetwork Search and Enrichment\n")
   # calculate the number of cores, if necessary
-  if (is.null(n_processes))
+  if (is.null(n_processes)) {
     n_processes <- parallel::detectCores() - 1
+  }
   # Initiate the clusters
   cl <- parallel::makeCluster(n_processes)
   doParallel::registerDoParallel(cl)
 
   dirs <- c()
-  for(i in base::seq_len(iterations)) {
+  for (i in base::seq_len(iterations)) {
     dir_i <- paste0("active_snw_searches/Iteration_", i)
     dir.create(dir_i, recursive = TRUE)
     dirs <- c(dirs, dir_i)
@@ -241,17 +256,18 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
 
     ## Active Subnetwork Search
     snws <- pathfindR::active_snw_search(input_processed, pin_path,
-                                         snws_file = paste0("active_snws_", i),
-                                         dir_for_parallel_run = dirs[i],
-                                         score_quan_thr, sig_gene_thr,
-                                         search_method,
-                                         silent_option,
-                                         use_all_positives,
-                                         geneInitProbs[i],
-                                         saTemp0, saTemp1, saIter,
-                                         gaPop, gaIter, gaThread, gaMut,
-                                         grMaxDepth, grSearchDepth,
-                                         grOverlap, grSubNum)
+      snws_file = paste0("active_snws_", i),
+      dir_for_parallel_run = dirs[i],
+      score_quan_thr, sig_gene_thr,
+      search_method,
+      silent_option,
+      use_all_positives,
+      geneInitProbs[i],
+      saTemp0, saTemp1, saIter,
+      gaPop, gaIter, gaThread, gaMut,
+      grMaxDepth, grSearchDepth,
+      grOverlap, grSubNum
+    )
 
     enrichment_res <- pathfindR::enrichment_analyses(
       snws = snws,
@@ -262,7 +278,8 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
       pin_path = pin_path,
       adj_method = adj_method,
       enrichment_threshold = enrichment_threshold,
-      list_active_snw_genes = list_active_snw_genes)
+      list_active_snw_genes = list_active_snw_genes
+    )
 
     enrichment_res
   }
@@ -277,42 +294,56 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
 
   ############ Process Enrichment Results of All Iterations
   message("## Processing the enrichment results over all iterations \n\n")
-  final_res <- pathfindR::summarize_enrichment_results(combined_res,
-                                                       list_active_snw_genes)
+  final_res <- pathfindR::summarize_enrichment_results(
+    combined_res,
+    list_active_snw_genes
+  )
 
   ############ Annotation of Involved DEGs and Visualization
   message("## Annotating involved genes and visualizing pathways\n\n")
 
   ##### Annotate Involved DEGs by up/down-regulation status
-  final_res <- pathfindR::annotate_pathway_DEGs(final_res, input_processed,
-                                                gene_sets, custom_genes)
+  final_res <- pathfindR::annotate_pathway_DEGs(
+    final_res, input_processed,
+    gene_sets, custom_genes
+  )
 
   ##### Visualize the Pathways (If KEGG human, KEGG diagram. Otherwise,
   # Interactions of Genes in the PIN)
   kegg_non_kegg <- ifelse(gene_sets == "KEGG", "KEGG", "non-KEGG")
-  if (visualize_pathways)
-    pathfindR::visualize_pws(result_df = final_res,
-                             input_processed = input_processed,
-                             gene_sets = kegg_non_kegg,
-                             pin_name_path = pin_name_path)
+  if (visualize_pathways) {
+    pathfindR::visualize_pws(
+      result_df = final_res,
+      input_processed = input_processed,
+      gene_sets = kegg_non_kegg,
+      pin_name_path = pin_name_path
+    )
+  }
 
   ############ Create HTML Report
   message("## Creating HTML report\n\n")
   ## Create report
   rmarkdown::render(system.file("rmd/results.Rmd", package = "pathfindR"),
-                    output_dir = ".")
+    output_dir = "."
+  )
 
   rmarkdown::render(system.file("rmd/enriched_pathways.Rmd",
-                                package = "pathfindR"),
-                    params = list(df = final_res, gset = gene_sets,
-                                  vis_cond = visualize_pathways,
-                                  out_dir = output_dir),
-                    output_dir = ".")
+    package = "pathfindR"
+  ),
+  params = list(
+    df = final_res, gset = gene_sets,
+    vis_cond = visualize_pathways,
+    out_dir = output_dir
+  ),
+  output_dir = "."
+  )
 
   rmarkdown::render(system.file("rmd/conversion_table.Rmd",
-                                package = "pathfindR"),
-                    params = list(df = input_processed, original_df = input),
-                    output_dir = ".")
+    package = "pathfindR"
+  ),
+  params = list(df = input_processed, original_df = input),
+  output_dir = "."
+  )
 
   ############ Bubble Chart
   if (bubble) {
@@ -352,24 +383,32 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
 #' @examples
 #' pin_path <- return_pin_path("Biogrid")
 #' pin_path <- return_pin_path("KEGG")
-
 return_pin_path <- function(pin_name_path = "Biogrid") {
-  if (pin_name_path %in% c("Biogrid", "GeneMania",
-                           "IntAct", "KEGG"))
+  if (pin_name_path %in% c(
+    "Biogrid", "GeneMania",
+    "IntAct", "KEGG"
+  )) {
     path <- system.file(paste0("extdata/", pin_name_path, ".sif"),
-                        package = "pathfindR")
-  else if (file.exists(suppressWarnings(normalizePath(pin_name_path)))) {
+      package = "pathfindR"
+    )
+  } else if (file.exists(suppressWarnings(normalizePath(pin_name_path)))) {
     path <- normalizePath(pin_name_path)
-    pin <- utils::read.delim(file = path,
-                             header = FALSE, stringsAsFactors = FALSE)
-    if (ncol(pin) != 3)
+    pin <- utils::read.delim(
+      file = path,
+      header = FALSE, stringsAsFactors = FALSE
+    )
+    if (ncol(pin) != 3) {
       stop("The PIN file must have 3 columns and be tab-separated")
+    }
 
-    if (any(pin[, 2] != "pp"))
+    if (any(pin[, 2] != "pp")) {
       stop("The second column of the PIN file must all be \"pp\" ")
+    }
   } else {
-    stop(paste0("The chosen PIN must be one of:\n",
-                "Biogrid, GeneMania, IntAct, KEGG or a valid /path/to/SIF"))
+    stop(paste0(
+      "The chosen PIN must be one of:\n",
+      "Biogrid, GeneMania, IntAct, KEGG or a valid /path/to/SIF"
+    ))
   }
   return(path)
 }
@@ -392,34 +431,41 @@ return_pin_path <- function(pin_name_path = "Biogrid") {
 #'   pathfindR workflow
 #' @examples
 #' input_testing(RA_input, 0.05)
-input_testing <- function(input, p_val_threshold = 0.05){
-
-  if (!is.data.frame(input))
+input_testing <- function(input, p_val_threshold = 0.05) {
+  if (!is.data.frame(input)) {
     stop("the input is not a data frame")
+  }
 
-  if (nrow(input) < 2)
+  if (nrow(input) < 2) {
     stop("There must be at least 2 rows (genes) in the input data frame")
+  }
 
-  if (ncol(input) < 2)
+  if (ncol(input) < 2) {
     stop("There must be at least 2 columns in the input data frame")
+  }
 
-  if (!is.numeric(p_val_threshold))
+  if (!is.numeric(p_val_threshold)) {
     stop("`p_val_threshold` must be a numeric value between 0 and 1")
+  }
 
-  if (p_val_threshold > 1 | p_val_threshold < 0)
+  if (p_val_threshold > 1 | p_val_threshold < 0) {
     stop("`p_val_threshold` must be between 0 and 1")
+  }
 
   # if changes are provided, p vals are in col. 3, else in col. 2
   p_column <- ifelse(ncol(input) == 3, 3, 2)
 
-  if (any(is.na(input[, p_column])))
+  if (any(is.na(input[, p_column]))) {
     stop("p values cannot contain NA values")
+  }
 
-  if (!all(is.numeric(input[, p_column])))
+  if (!all(is.numeric(input[, p_column]))) {
     stop("p values must all be numeric")
+  }
 
-  if (any(input[, p_column] > 1 | input[, p_column] < 0))
+  if (any(input[, p_column] > 1 | input[, p_column] < 0)) {
     stop("p values must all be between 0 and 1")
+  }
 
   message("The input looks OK\n\n")
 }
@@ -451,8 +497,8 @@ input_testing <- function(input, p_val_threshold = 0.05){
 #'
 #' @examples
 #' \dontshow{
-#' input_processing(RA_input[1:20,], 0.05, return_pin_path("KEGG"))
-#' input_processing(RA_input[1:20,], 0.05, return_pin_path("KEGG"), human_genes = FALSE)
+#' input_processing(RA_input[1:20, ], 0.05, return_pin_path("KEGG"))
+#' input_processing(RA_input[1:20, ], 0.05, return_pin_path("KEGG"), human_genes = FALSE)
 #' }
 #' \dontrun{
 #' input_processing(RA_input, 0.05, return_pin_path("KEGG"))
@@ -460,12 +506,14 @@ input_testing <- function(input, p_val_threshold = 0.05){
 #'
 input_processing <- function(input, p_val_threshold,
                              pin_path, human_genes = TRUE) {
-
   input <- as.data.frame(input)
-  if (ncol(input) == 2)
-    input <- data.frame(GENE = input[, 1],
-                        CHANGE = rep(100, nrow(input)),
-                        P_VALUE = input[, 2])
+  if (ncol(input) == 2) {
+    input <- data.frame(
+      GENE = input[, 1],
+      CHANGE = rep(100, nrow(input)),
+      P_VALUE = input[, 2]
+    )
+  }
 
   colnames(input) <- c("GENE", "CHANGE", "P_VALUE")
 
@@ -477,9 +525,12 @@ input_processing <- function(input, p_val_threshold,
 
   message("Number of genes provided in input: ", nrow(input))
   ## Discard larger than p-value threshold
-  if (sum(input$P_VALUE <= p_val_threshold) == 0)
-    stop("No input p value is lower than the provided threshold (",
-         p_val_threshold, ")")
+  if (sum(input$P_VALUE <= p_val_threshold) == 0) {
+    stop(
+      "No input p value is lower than the provided threshold (",
+      p_val_threshold, ")"
+    )
+  }
   input <- input[input$P_VALUE <= p_val_threshold, ]
   message("Number of genes in input after p-value filtering: ", nrow(input))
 
@@ -498,8 +549,10 @@ input_processing <- function(input, p_val_threshold,
   }
 
   ## load and prep pin
-  pin <- utils::read.delim(file = pin_path,
-                           header = FALSE, stringsAsFactors = FALSE)
+  pin <- utils::read.delim(
+    file = pin_path,
+    header = FALSE, stringsAsFactors = FALSE
+  )
   pin$V2 <- NULL
 
   ## Genes not in pin
@@ -516,23 +569,28 @@ input_processing <- function(input, p_val_threshold,
     alias_symbol <- DBI::dbGetQuery(db_con, sql_query)
 
     select_alias <- function(result, converted, idx) {
-      if (idx == 0)
+      if (idx == 0) {
         return("NOT_FOUND")
-      else if (result[idx] %in% converted[, 2])
+      } else if (result[idx] %in% converted[, 2]) {
         return(result[idx - 1])
-      else
+      } else {
         return(result[idx])
+      }
     }
 
     ## loop for getting all symbols
     converted <- c()
     for (i in base::seq_len(length(missing))) {
-      result <- alias_symbol[alias_symbol$alias_symbol == missing[i],
-                             c("alias_symbol", "symbol")]
-      result <- alias_symbol[alias_symbol$symbol %in% result$symbol,
-                             c("alias_symbol", "symbol")]
+      result <- alias_symbol[
+        alias_symbol$alias_symbol == missing[i],
+        c("alias_symbol", "symbol")
+      ]
+      result <- alias_symbol[
+        alias_symbol$symbol %in% result$symbol,
+        c("alias_symbol", "symbol")
+      ]
       result <- result$alias_symbol[result$alias_symbol %in%
-                                      c(pin[, 1], pin[, 2])]
+        c(pin[, 1], pin[, 2])]
       ## avoid duplicate entries
       to_add <- select_alias(result, converted, length(result))
       converted <- rbind(converted, c(missing[i], to_add))
@@ -549,14 +607,17 @@ input_processing <- function(input, p_val_threshold,
   n <- sum(input$new_gene == "NOT_FOUND")
   perc <- n / nrow(input) * 100
 
-  if (n == nrow(input))
+  if (n == nrow(input)) {
     stop("None of the genes were in the PIN\nPlease check your gene symbols")
+  }
 
   ## Give out warning indicating the number of still missing
   if (n != 0) {
-    message(paste0("Could not find any interactions for ",
-                   n,
-                   " (", round(perc, 2), "%) genes in the PIN\n\n"))
+    message(paste0(
+      "Could not find any interactions for ",
+      n,
+      " (", round(perc, 2), "%) genes in the PIN\n\n"
+    ))
   } else {
     message(paste0("Found interactions for all genes in the PIN\n\n"))
   }
@@ -603,21 +664,28 @@ input_processing <- function(input, p_val_threshold,
 #' colnames(example_gene_data) <- c("GENE", "CHANGE", "P_VALUE")
 #'
 #' annotated_result <- annotate_pathway_DEGs(RA_output, example_gene_data)
-#'
 annotate_pathway_DEGs <- function(result_df, input_processed,
                                   gene_sets = "KEGG", custom_genes = NULL) {
   ############ Load Gene Set Data
-  gset_names <- c("KEGG", "Reactome", "BioCarta",
-                  "GO-All", "GO-BP", "GO-CC", "GO-MF")
-  pw_genes <- c("kegg_genes", "reactome_genes", "biocarta_genes",
-                "go_all_genes", "go_bp_genes", "go_cc_genes", "go_mf_genes")
-  pw_lists <- c("kegg_pathways", "reactome_pathways", "biocarta_pathways",
-                "go_all_pathways",
-                "go_bp_pathways", "go_cc_pathways", "go_mf_pathways")
+  gset_names <- c(
+    "KEGG", "Reactome", "BioCarta",
+    "GO-All", "GO-BP", "GO-CC", "GO-MF"
+  )
+  pw_genes <- c(
+    "kegg_genes", "reactome_genes", "biocarta_genes",
+    "go_all_genes", "go_bp_genes", "go_cc_genes", "go_mf_genes"
+  )
+  pw_lists <- c(
+    "kegg_pathways", "reactome_pathways", "biocarta_pathways",
+    "go_all_pathways",
+    "go_bp_pathways", "go_cc_pathways", "go_mf_pathways"
+  )
 
-  gene_sets_df <- data.frame("Gene Set Name" = gset_names,
-                             "genes_by_pathway" = pw_genes,
-                             "pathways_list" = pw_lists)
+  gene_sets_df <- data.frame(
+    "Gene Set Name" = gset_names,
+    "genes_by_pathway" = pw_genes,
+    "pathways_list" = pw_lists
+  )
 
   if (gene_sets %in% gene_sets_df$Gene.Set.Name) {
     idx <- which(gene_sets_df$Gene.Set.Name == gene_sets)
@@ -626,8 +694,9 @@ annotate_pathway_DEGs <- function(result_df, input_processed,
     genes_name <- paste0("pathfindR::", genes_name)
     genes_by_pathway <- base::eval(parse(text = genes_name))
   } else if (gene_sets == "Custom") {
-    if (is.null(custom_genes))
+    if (is.null(custom_genes)) {
       stop("`custom_genes` must be provided if `gene_sets = \"Custom\"`")
+    }
     genes_by_pathway <- custom_genes
   }
 
@@ -644,9 +713,11 @@ annotate_pathway_DEGs <- function(result_df, input_processed,
     idx <- which(names(genes_by_pathway) == annotated_df$ID[i])
     temp <- genes_by_pathway[[idx]]
     annotated_df$Up_regulated[i] <- paste(temp[temp %in% upreg],
-                                          collapse = ", ")
+      collapse = ", "
+    )
     annotated_df$Down_regulated[i] <- paste(temp[temp %in% downreg],
-                                            collapse = ", ")
+      collapse = ", "
+    )
   }
 
   return(annotated_df)

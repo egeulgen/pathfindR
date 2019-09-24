@@ -20,10 +20,12 @@
 hyperg_test <- function(pw_genes, chosen_genes, all_genes) {
 
   # sanity checks
-  if (length(pw_genes) > length(all_genes))
+  if (length(pw_genes) > length(all_genes)) {
     stop("`pw_genes` cannot be larger than `all_genes`!")
-  if (length(chosen_genes) > length(all_genes))
+  }
+  if (length(chosen_genes) > length(all_genes)) {
     stop("`chosen_genes` cannot be larger than `all_genes`!")
+  }
 
   pw_genes_selected <- sum(chosen_genes %in% pw_genes)
   pw_genes_in_pool <- sum(pw_genes %in% all_genes)
@@ -32,8 +34,9 @@ hyperg_test <- function(pw_genes, chosen_genes, all_genes) {
   num_selected_genes <- length(chosen_genes)
 
   p_val <- stats::phyper(pw_genes_selected - 1, pw_genes_in_pool,
-                         non_pw_genes_in_pool, num_selected_genes,
-                         lower.tail = FALSE)
+    non_pw_genes_in_pool, num_selected_genes,
+    lower.tail = FALSE
+  )
   return(p_val)
 }
 
@@ -59,15 +62,19 @@ hyperg_test <- function(pw_genes, chosen_genes, all_genes) {
 #'   workflow. \code{\link{hyperg_test}} for the details on hypergeometric
 #'   distribution-based hypothesis testing.
 #' @examples
-#' enrichment(kegg_genes, c("PER1", "PER2", "CRY1", "CREB1"), kegg_pathways,
-#'            "bonferroni", 0.05, "PER1", unlist(kegg_genes))
+#' enrichment(
+#'   kegg_genes, c("PER1", "PER2", "CRY1", "CREB1"), kegg_pathways,
+#'   "bonferroni", 0.05, "PER1", unlist(kegg_genes)
+#' )
 enrichment <- function(genes_by_pathway, genes_of_interest,
                        pathways_list, adj_method = "bonferroni",
                        enrichment_threshold, DEG_vec, all_genes) {
 
   ## Hypergeometric test for p value
-  enrichment_res <- vapply(genes_by_pathway, pathfindR::hyperg_test, 0.1,
-                             genes_of_interest, all_genes)
+  enrichment_res <- vapply(
+    genes_by_pathway, pathfindR::hyperg_test, 0.1,
+    genes_of_interest, all_genes
+  )
   enrichment_res <- as.data.frame(enrichment_res)
   colnames(enrichment_res) <- "p_value"
 
@@ -77,16 +84,18 @@ enrichment <- function(genes_by_pathway, genes_of_interest,
     B <- sum(x %in% all_genes) / length(all_genes)
     return(A / B)
   }
-  enrichment_res$Fold_Enrichment <- vapply(genes_by_pathway, fe_calc, 1.5,
-                                           DEG_vec, all_genes)
+  enrichment_res$Fold_Enrichment <- vapply(
+    genes_by_pathway, fe_calc, 1.5,
+    DEG_vec, all_genes
+  )
 
   idx <- order(enrichment_res$p_value)
-  enrichment_res <- enrichment_res[idx,, drop = FALSE]
+  enrichment_res <- enrichment_res[idx, , drop = FALSE]
   enrichment_res$adj_p <- stats::p.adjust(enrichment_res$p, method = adj_method)
 
-  if (all(enrichment_res$adj_p > enrichment_threshold))
+  if (all(enrichment_res$adj_p > enrichment_threshold)) {
     return(NULL)
-  else {
+  } else {
     cond <- enrichment_res$adj_p <= enrichment_threshold
     enrichment_res <- enrichment_res[cond, ]
 
@@ -106,8 +115,10 @@ enrichment <- function(genes_by_pathway, genes_of_interest,
     }
 
     ## reorder columns
-    to_order <- c("ID", "Pathway", "Fold_Enrichment",
-                  "p_value", "adj_p", "non_DEG_Active_Snw_Genes")
+    to_order <- c(
+      "ID", "Pathway", "Fold_Enrichment",
+      "p_value", "adj_p", "non_DEG_Active_Snw_Genes"
+    )
     enrichment_res <- enrichment_res[, to_order]
 
     return(enrichment_res)
@@ -152,8 +163,10 @@ enrichment <- function(genes_by_pathway, genes_of_interest,
 #'
 #' @examples
 #' \dontrun{
-#' enr_res <- enrichment_analyses(snws, input_genes = my_input$GENE,
-#' gene_sets = "KEGG", pin_path = "path/to/PIN")
+#' enr_res <- enrichment_analyses(snws,
+#'   input_genes = my_input$GENE,
+#'   gene_sets = "KEGG", pin_path = "path/to/PIN"
+#' )
 #' }
 #'
 enrichment_analyses <- function(snws, input_genes,
@@ -164,17 +177,25 @@ enrichment_analyses <- function(snws, input_genes,
                                 enrichment_threshold = 5e-2,
                                 list_active_snw_genes = FALSE) {
   ############ Load Gene Set Data
-  gset_names <- c("KEGG", "Reactome", "BioCarta",
-                  "GO-All", "GO-BP", "GO-CC", "GO-MF")
-  pw_genes <- c("kegg_genes", "reactome_genes", "biocarta_genes",
-                "go_all_genes", "go_bp_genes", "go_cc_genes", "go_mf_genes")
-  pw_lists <- c("kegg_pathways", "reactome_pathways", "biocarta_pathways",
-                "go_all_pathways",
-                "go_bp_pathways", "go_cc_pathways", "go_mf_pathways")
+  gset_names <- c(
+    "KEGG", "Reactome", "BioCarta",
+    "GO-All", "GO-BP", "GO-CC", "GO-MF"
+  )
+  pw_genes <- c(
+    "kegg_genes", "reactome_genes", "biocarta_genes",
+    "go_all_genes", "go_bp_genes", "go_cc_genes", "go_mf_genes"
+  )
+  pw_lists <- c(
+    "kegg_pathways", "reactome_pathways", "biocarta_pathways",
+    "go_all_pathways",
+    "go_bp_pathways", "go_cc_pathways", "go_mf_pathways"
+  )
 
-  gene_sets_df <- data.frame("Gene Set Name" = gset_names,
-                             "genes_by_pathway" = pw_genes,
-                             "pathways_list" = pw_lists)
+  gene_sets_df <- data.frame(
+    "Gene Set Name" = gset_names,
+    "genes_by_pathway" = pw_genes,
+    "pathways_list" = pw_lists
+  )
 
   if (gene_sets %in% gene_sets_df$Gene.Set.Name) {
     idx <- which(gene_sets_df$Gene.Set.Name == gene_sets)
@@ -183,7 +204,7 @@ enrichment_analyses <- function(snws, input_genes,
     genes_name <- paste0("pathfindR::", genes_name)
     genes_by_pathway <- base::eval(parse(text = genes_name))
 
-    pws_name <-  gene_sets_df$pathways_list[idx]
+    pws_name <- gene_sets_df$pathways_list[idx]
     pws_name <- paste0("pathfindR::", pws_name)
     pathways_list <- base::eval(parse(text = pws_name))
   } else if (gene_sets == "Custom") {
@@ -191,16 +212,19 @@ enrichment_analyses <- function(snws, input_genes,
     pathways_list <- custom_pathways
   }
 
-  pin <- utils::read.delim(file = pin_path, header = FALSE,
-                           stringsAsFactors = FALSE)
+  pin <- utils::read.delim(
+    file = pin_path, header = FALSE,
+    stringsAsFactors = FALSE
+  )
   all_genes <- unique(c(pin$V1, pin$V2))
 
   ############ Enrichment per subnetwork
   enrichment_res <- lapply(snws, function(x)
     pathfindR::enrichment(genes_by_pathway, x, pathways_list,
-                          adj_method, enrichment_threshold,
-                          DEG_vec = input_genes,
-                          all_genes))
+      adj_method, enrichment_threshold,
+      DEG_vec = input_genes,
+      all_genes
+    ))
 
   ############ Combine Enrichments Results for All Subnetworks
   enrichment_res <- Reduce(rbind, enrichment_res)
@@ -208,8 +232,9 @@ enrichment_analyses <- function(snws, input_genes,
   ############ Process if non-empty
   if (!is.null(enrichment_res)) {
     ## delete non_DEG_Active_Snw_Genes if list_active_snw_genes == FALSE
-    if (!list_active_snw_genes)
+    if (!list_active_snw_genes) {
       enrichment_res$non_DEG_Active_Snw_Genes <- NULL
+    }
 
     ## keep lowest p for each pathway
     idx <- order(enrichment_res$adj_p)
@@ -267,10 +292,13 @@ summarize_enrichment_results <- function(enrichment_res,
   final_res$occurrence <- as.numeric(occurrence[matched_idx])
 
   ## reorder columns
-  keep <- c("ID", "Pathway", "Fold_Enrichment", "occurrence",
-            "lowest_p", "highest_p")
-  if (list_active_snw_genes)
+  keep <- c(
+    "ID", "Pathway", "Fold_Enrichment", "occurrence",
+    "lowest_p", "highest_p"
+  )
+  if (list_active_snw_genes) {
     keep <- c(keep, "non_DEG_Active_Snw_Genes")
+  }
   final_res <- final_res[, keep]
 
   ## keep data with lowest p-value over all iterations

@@ -34,5 +34,4 @@ example_gene_data <- RA_input
 colnames(example_gene_data) <- c("GENE", "CHANGE", "P_VALUE")
 
 annotated_result <- annotate_pathway_DEGs(RA_output, example_gene_data)
-
 }

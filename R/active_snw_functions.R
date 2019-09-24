@@ -15,18 +15,19 @@
 #' @examples
 #' \dontshow{
 #' tmp <- filterActiveSnws(system.file("extdata/resultActiveSubnetworkSearch.txt",
-#' package = "pathfindR"), pathfindR::RA_input$Gene.symbol)
+#'   package = "pathfindR"
+#' ), pathfindR::RA_input$Gene.symbol)
 #' }
 #' \dontrun{
 #' tmp <- filterActiveSnws("path/to/output", significant_genes)
 #' }
 filterActiveSnws <- function(active_snw_path, signif_genes,
                              score_quan_thr = 0.80, sig_gene_thr = 10) {
-
   output <- readLines(active_snw_path)
 
-  if (length(output) == 0)
+  if (length(output) == 0) {
     return(NULL)
+  }
 
   score_vec <- c()
   subnetworks <- list()
@@ -94,8 +95,10 @@ filterActiveSnws <- function(active_snw_path, signif_genes,
 #' @examples
 #' \dontrun{
 #' active_snw_search(input_for_search, pin_path = "path/to/PIN", search_method = "GR")
-#' active_snw_search(input_for_search, pin_path = "path/to/PIN",
-#' search_method = "SA", saTemp0 = 2, saTemp1 = 0.05)
+#' active_snw_search(input_for_search,
+#'   pin_path = "path/to/PIN",
+#'   search_method = "SA", saTemp0 = 2, saTemp1 = 0.05
+#' )
 #' }
 active_snw_search <- function(input_for_search, pin_path,
                               snws_file = "active_snws",
@@ -111,19 +114,22 @@ active_snw_search <- function(input_for_search, pin_path,
                               grMaxDepth = 1, grSearchDepth = 1,
                               grOverlap = 0.5, grSubNum = 1000) {
   ############ Argument checks
-  if (!search_method %in% c("GR", "SA", "GA"))
+  if (!search_method %in% c("GR", "SA", "GA")) {
     stop("`search_method` must be one of \"GR\", \"SA\", \"GA\"")
+  }
 
-  if (!is.logical(use_all_positives))
+  if (!is.logical(use_all_positives)) {
     stop("the argument `use_all_positives` must be either TRUE or FALSE")
+  }
 
-  if (!is.logical(silent_option))
+  if (!is.logical(silent_option)) {
     stop("the argument `silent_option` must be either TRUE or FALSE")
+  }
 
   ############ Initial Steps
   ## If dir_for_parallel_run is provided,
   # change working dir to dir_for_parallel_run
-  if(!is.null(dir_for_parallel_run)) {
+  if (!is.null(dir_for_parallel_run)) {
     org_dir <- getwd()
     on.exit(setwd(org_dir))
     setwd(dir_for_parallel_run)
@@ -131,60 +137,71 @@ active_snw_search <- function(input_for_search, pin_path,
 
   ## turn silent_option into argument
   silent_option <- ifelse(silent_option,
-                          paste0(" > ./active_snw_search/console_out_",
-                                 snws_file, ".txt"), "")
+    paste0(
+      " > ./active_snw_search/console_out_",
+      snws_file, ".txt"
+    ), ""
+  )
 
   ## turn use_all_positives into the java argument
   use_all_positives <- ifelse(use_all_positives, " -useAllPositives", "")
 
   ## absolute path for active snw search jar
   active_search_path <- system.file("java/ActiveSubnetworkSearch.jar",
-                                    package = "pathfindR")
+    package = "pathfindR"
+  )
 
   ## create directory for active subnetworks
-  if (!dir.exists("active_snw_search"))
+  if (!dir.exists("active_snw_search")) {
     dir.create("active_snw_search")
+  }
 
-  if(!file.exists("active_snw_search/input_for_search.txt")) {
+  if (!file.exists("active_snw_search/input_for_search.txt")) {
     utils::write.table(input_for_search[, c("GENE", "P_VALUE")],
-                       "active_snw_search/input_for_search.txt",
-                       col.names = FALSE,
-                       row.names = FALSE,
-                       quote = FALSE, sep = "\t")
+      "active_snw_search/input_for_search.txt",
+      col.names = FALSE,
+      row.names = FALSE,
+      quote = FALSE, sep = "\t"
+    )
   }
 
   input_path <- normalizePath("active_snw_search/input_for_search.txt")
 
   ############ Run active Subnetwork Search
   # running Active Subnetwork Search
-  system(paste0("java -Xss4m -jar \"", active_search_path, "\"",
-                " -sif=\"", pin_path,"\"",
-                " -sig=\"", input_path, "\"",
-                " -method=", search_method,
-                use_all_positives,
-                " -saTemp0=", saTemp0,
-                " -saTemp1=", saTemp1,
-                " -saIter=", format(saIter, scientific = FALSE),
-                " -geneInitProb=", geneInitProbs,
-                " -gaPop=", gaPop,
-                " -gaIter=", gaIter,
-                " -gaThread=", gaThread,
-                " -gaMut=", gaMut,
-                " -grMaxDepth=", grMaxDepth,
-                " -grSearchDepth=", grSearchDepth,
-                " -grOverlap=", grOverlap,
-                " -grSubNum=", grSubNum, silent_option))
+  system(paste0(
+    "java -Xss4m -jar \"", active_search_path, "\"",
+    " -sif=\"", pin_path, "\"",
+    " -sig=\"", input_path, "\"",
+    " -method=", search_method,
+    use_all_positives,
+    " -saTemp0=", saTemp0,
+    " -saTemp1=", saTemp1,
+    " -saIter=", format(saIter, scientific = FALSE),
+    " -geneInitProb=", geneInitProbs,
+    " -gaPop=", gaPop,
+    " -gaIter=", gaIter,
+    " -gaThread=", gaThread,
+    " -gaMut=", gaMut,
+    " -grMaxDepth=", grMaxDepth,
+    " -grSearchDepth=", grSearchDepth,
+    " -grOverlap=", grOverlap,
+    " -grSubNum=", grSubNum, silent_option
+  ))
 
   snws_file <- paste0("active_snw_search/", snws_file, ".txt")
-  file.rename(from = "resultActiveSubnetworkSearch.txt",
-              to = snws_file)
+  file.rename(
+    from = "resultActiveSubnetworkSearch.txt",
+    to = snws_file
+  )
 
   ############ Parse and filter active subnetworks
   snws <- pathfindR::filterActiveSnws(
     active_snw_path = snws_file,
     signif_genes = input_for_search$GENE,
     score_quan_thr = score_quan_thr,
-    sig_gene_thr = sig_gene_thr)
+    sig_gene_thr = sig_gene_thr
+  )
 
   message(paste0("Found ", length(snws), " active subnetworks\n\n"))
 

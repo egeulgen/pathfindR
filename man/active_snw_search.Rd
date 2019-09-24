@@ -76,7 +76,9 @@ Perform Active Subnetwork Search
 \examples{
 \dontrun{
 active_snw_search(input_for_search, pin_path = "path/to/PIN", search_method = "GR")
-active_snw_search(input_for_search, pin_path = "path/to/PIN",
-search_method = "SA", saTemp0 = 2, saTemp1 = 0.05)
+active_snw_search(input_for_search,
+  pin_path = "path/to/PIN",
+  search_method = "SA", saTemp0 = 2, saTemp1 = 0.05
+)
 }
 }

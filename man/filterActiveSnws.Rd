@@ -26,7 +26,8 @@ Parse Active Subnetwork Search Output File and Filter the Subnetworks
 \examples{
 \dontshow{
 tmp <- filterActiveSnws(system.file("extdata/resultActiveSubnetworkSearch.txt",
-package = "pathfindR"), pathfindR::RA_input$Gene.symbol)
+  package = "pathfindR"
+), pathfindR::RA_input$Gene.symbol)
 }
 \dontrun{
 tmp <- filterActiveSnws("path/to/output", significant_genes)
