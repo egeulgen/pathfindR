@@ -1,13 +1,15 @@
-citHeader("Please cite the pre-print article below for the pathfindR software")
+citHeader("Please cite the article below if you use pathfindR in published reseach")
 
 citEntry(entry="article",
 	author = c(person("Ege","Ulgen"),
 	           person("Ozan","Ozisik"),
 	           person(c("Osman","U"),"Sezerman")),
-	title = "{pathfindR} An R Package for Pathway Enrichment Analysis Utilizing Active Subnetworks",
-	journal = "BioRxiv",
-	year = 2018,
+	title = "pathfindR: An R Package for Comprehensive Identification of Enriched Pathways in Omics Data Through Active Subnetworks",
+	journal = "Frontiers in Genetics",
+	volume = 10,
+	year = 2019,
+	pages = 858,
 
 	textVersion = 
-	"Ulgen E, Ozisik O, Sezerman OU. 2018. pathfindR: An R Package for Pathway Enrichment Analysis Utilizing Active Subnetworks. bioRxiv. https://doi.org/10.1101/272450"
+	"Ulgen E, Ozisik O, Sezerman OU. 2019. pathfindR: An R Package for Comprehensive Identification of Enriched Pathways in Omics Data Through Active Subnetworks. Front. Genet. https://doi.org/10.3389/fgene.2019.00858"
 )

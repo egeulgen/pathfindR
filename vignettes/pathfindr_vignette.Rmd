@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-`pathfindR` is an R package for pathway enrichment analysis of gene-level omics data utilizing active subnetworks. The package also enables clustering of the enriched pathways, scoring of overall pathway activity and visualization of analysis results. pathfindR is described in detail in Ulgen E, Ozisik O, Sezerman OU. 2018. pathfindR: An R Package for Pathway Enrichment Analysis Utilizing Active Subnetworks. bioRxiv. [https://doi.org/10.1101/272450](https://doi.org/10.1101/272450)
+`pathfindR` is an R package for pathway enrichment analysis of gene-level omics data utilizing active subnetworks. The package also enables clustering of the enriched pathways, scoring of overall pathway activity and visualization of analysis results. pathfindR is described in detail in _Ulgen E, Ozisik O, Sezerman OU. 2019. pathfindR: An R Package for Comprehensive Identification of Enriched Pathways in Omics Data Through Active Subnetworks. Front. Genet. [https://doi.org/10.3389/fgene.2019.00858](https://doi.org/10.3389/fgene.2019.00858)_
 
 Our motivation to develop this package was that direct pathway enrichment analysis of differential RNA/protein expression or DNA methylation results may not provide the researcher with the full picture. That is to say; pathway enrichment of only the list of significant genes may not be informative enough to explain the underlying disease mechanisms. 
 

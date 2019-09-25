@@ -1,19 +1,20 @@
 Package: pathfindR
 Type: Package
 Title: Pathway Enrichment Analysis Utilizing Active Subnetworks
-Version: 1.4.0.9005
+Version: 1.4.0.9006
 Author: Ege Ulgen, Ozan Ozisik
 Maintainer: Ege Ulgen <egeulgen@gmail.com>
-Description: Pathway enrichment analysis enables researchers to uncover mechanisms 
-    underlying the phenotype. pathfindR is a tool for pathway enrichment analysis 
-    utilizing active subnetworks. It identifies active subnetworks in a 
-    protein-protein interaction network using user-provided a list of genes. 
-    It performs pathway enrichment analyses on the identified subnetworks. 
-    pathfindR also offers functionalities to cluster enriched pathways and identify 
-    representative pathways and to score the pathways per sample. The method is
-    described in detail in Ulgen E, Ozisik O, Sezerman OU. 2018. pathfindR: An R
-    Package for Pathway Enrichment Analysis Utilizing Active Subnetworks. bioRxiv. 
-    <doi:10.1101/272450>.
+Description: Pathway enrichment analysis enables researchers to uncover 
+    mechanisms underlying the phenotype. pathfindR is a tool for pathway 
+    enrichment analysis utilizing active subnetworks. It identifies active 
+    subnetworks in a protein-protein interaction network using user-provided a 
+    list of genes. It performs pathway enrichment analyses on the identified 
+    subnetworks. pathfindR also offers functionalities to cluster enriched 
+    pathways and identify representative pathways, to score the pathways per 
+    sample and to visualize analysis results. The method is described in detail 
+    in Ulgen E, Ozisik O, Sezerman OU. 2019. pathfindR: An R Package for 
+    Comprehensive Identification of Enriched athways in Omics Data Through 
+    Active Subnetworks. Front. Genet. <doi:10.3389/fgene.2019.00858>.
 License: MIT + file LICENSE
 URL: https://github.com/egeulgen/pathfindR
 BugReports: https://github.com/egeulgen/pathfindR/issues
@@ -35,8 +36,8 @@ Imports: DBI,
 Depends: R (>= 3.6),
     knitr,
     pathview
-RoxygenNote: 6.1.1
-VignetteBuilder: knitr
 Suggests: 
     testthat (>= 2.1.0),
     covr
+RoxygenNote: 6.1.1
+VignetteBuilder: knitr

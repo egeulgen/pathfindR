@@ -1,4 +1,4 @@
-# pathfindR 1.4.0.9005
+# pathfindR 1.4.0.9006
 ## To be released as 1.4.0
 
 ## Major Changes
