@@ -235,7 +235,10 @@
 
 #' Example Active Subnetworks
 #'
-#' A list of vectors containing genes for each active subnetwork that passed the filtering step.
+#' A list of vectors containing genes for each active subnetwork that passed
+#' the filtering step.
+#' \emph{Generated on Sep 28, 2019.}
 #'
-#' @format list containing 166 vectors. Each vector is the set of genes for an active subnetwork.
+#' @format list containing 167 vectors. Each vector is the set of genes for the
+#' given active subnetwork.
 "example_active_snws"
