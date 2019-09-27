@@ -26,5 +26,6 @@ versus 15 healthy subjects. Differentially-expressed genes with adj.P.Val <
 \seealso{
 \code{\link{RA_output}} for example output of the enrichment workflow.
 \code{\link{RA_clustered}} for example output of the clustering workflow.
+\code{\link{run_pathfindR}} for details on the patfindR enrichment analysis.
 }
 \keyword{datasets}

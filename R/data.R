@@ -13,18 +13,21 @@
 #'   \item{adj.P.Val}{adjusted p values, via the Benjamini & Hochberg (1995) method}
 #' }
 #' @source \url{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE15573}
+#'
 #' @seealso \code{\link{RA_output}} for example output of the enrichment workflow.
 #' \code{\link{RA_clustered}} for example output of the clustering workflow.
+#' \code{\link{run_pathfindR}} for details on the patfindR enrichment analysis.
 "RA_input"
 
 #' Example Output for the pathfindR Enrichment Workflow - Rheumatoid Arthritis
 #'
 #' A dataset containing the results of pathfindR's active-subnetwork-oriented
 #' pathway enrichment workflow performed on the rheumatoid arthritis
-#' differential-expression result dataset \code{RA_input}. Active subnetwork
-#' search was performed with Greedy Algorithm using the Biogrid PIN.
+#' differential-expression result dataset \code{RA_input}. Analysis via
+#' \code{run_pathfindR} was performed using the default settings.
+#' \emph{Generated on Sep 28, 2019.}
 #'
-#' @format A data frame with 79 rows and 8 columns:
+#' @format A data frame with 89 rows and 8 columns:
 #' \describe{
 #'   \item{ID}{KEGG ID of the enriched pathway}
 #'   \item{Pathway}{Description of the enriched pathway}
@@ -37,16 +40,23 @@
 #' }
 #' @seealso \code{\link{RA_input}} for example input of the enrichment workflow.
 #' \code{\link{RA_clustered}} for example output of the clustering workflow.
+#' \code{\link{run_pathfindR}} for details on the patfindR enrichment analysis.
 "RA_output"
 
 #' Example Output for the pathfindR Clustering Workflow - Rheumatoid Arthritis
 #'
 #' A dataset containing the results of pathfindR's pathway clustering and
 #' partitioning  workflow performed on the rheumatoid arthritis
-#' enrichment results \code{RA_output}. The number of clusters were detected
-#' automatically as 8 and the agglomeration method was "average".
+#' enrichment results \code{RA_output}. The clustering and partitioning
+#' function \code{cluster_pathways} was used with the default settings
+#' (i.e. hierarchical clustering was performed and the agglomeration method
+#' was "average"). The optimal number of clusters (yielding the highest average
+#' silhouette width) was determined to be 22. Finally, the pathways with the
+#' lowest p values in each cluster were assigned as representative pathways
+#' for that cluster.
+#' \emph{Generated on Sep 28, 2019.}
 #'
-#' @format A data frame with 79 rows and 10 columns:
+#' @format A data frame with 89 rows and 10 columns:
 #' \describe{
 #'   \item{ID}{KEGG ID of the enriched pathway}
 #'   \item{Pathway}{Description of the enriched pathway}
@@ -61,6 +71,7 @@
 #' }
 #' @seealso \code{\link{RA_input}} for example input of the enrichment workflow.
 #' \code{\link{RA_output}} for example output of the enrichment workflow.
+#' \code{\link{cluster_pathways}} for details on the patfindR clustering approaches.
 "RA_clustered"
 
 #' Example Input for pathfindR - pathway z-scores
@@ -218,7 +229,7 @@
 #' Custom Gene Set Enrichment Results
 #'
 #' A data frame consisting of pathfindR enrichment results on the example TF target data.
-#' Last update: Sep 27, 2019
+#' \emph{Generated on Sep 28, 2019.}
 #' @format data frame containing 2 rows and 8 columns. Each row is a gene set (the TF target gene sets).
 "custom_result"
 
