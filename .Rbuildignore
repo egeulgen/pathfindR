@@ -7,7 +7,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^data-raw$
-^misc_data$
+^misc$
 ^README.md$
 ^\.travis\.yml$
 ^cran-comments\.md$

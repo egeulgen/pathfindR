@@ -1,7 +1,7 @@
 Meta
 doc
 inst/doc
-misc_data
+misc
 data-raw
 *.pptx
 
