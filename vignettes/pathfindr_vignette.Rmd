@@ -217,7 +217,7 @@ score_matrix <- calculate_pw_scores(pws_table, exp_mat, cases)
 It is possible to use `run_pathfindR()` with custom gene sets. Here we provide an example application with a gene set consisting of targets of two transcription factors.
 
 We first load and prepare the gene sets:
-```{r}
+```{r custom_prep}
 ## CREB target genes
 CREB_targets <- normalizePath(system.file("extdata/CREB.txt",
                                       package = "pathfindR"))
@@ -238,40 +238,40 @@ custom_pathways <- c("CREB target genes", "MYC target genes")
 names(custom_pathways) <- c("TF1", "TF2")
 ```
 
-We next prepare an example input, because of the way we choose genes we expect significant enrichment for MYC targets (50 MYC target genes + 5 CREB target genes). Because this is only an example, we set the logFC values to 1.5 and the adj.P.Vals to 0.001:
+We next prepare an example input, because of the way we choose genes we expect significant enrichment for MYC targets (100 MYC target genes + 10 CREB target genes). Because this is only an example, we set the p values to 0.001:
 
-``` {r}
+``` {r custom_input}
 set.seed(123)
-selected_genes <- sample(MYC_targets, 50)
+selected_genes <- sample(MYC_targets, 100)
 selected_genes <- c(selected_genes,
-                    sample(CREB_targets, 5))
+                    sample(CREB_targets, 10))
 input <- data.frame(Gene.symbol = selected_genes,
-                    logFC = 1.5,
                     adj.P.Val = 0.001)
 head(input)
 ```
 
 Finally, we run the wrapper script `run_pathfindR` using the custom genes as the gene sets:
 
-``` {r eval=FALSE}
-custom_result <- run_pathfindR(input, 
-                               gene_sets = "Custom", 
-                               custom_genes = custom_genes, 
-                               custom_pathways = custom_pathways, 
-                               iterations = 1) # for demo, setting number of iterations to 1
+``` {r custom_run, eval=FALSE}
+custom_result <- run_pathfindR(input,
+                               gene_sets = "Custom",
+                               custom_genes = custom_genes,
+                               custom_pathways = custom_pathways,
+                               iterations = 1, # for demo, setting number of iterations to 1
+                               output_dir = "misc_data/CREB_MYC")
 ```
 
-``` {r include = FALSE}
-data(custom_result)
+``` {r custom_out, include = FALSE}
+data(custom_result, package = "pathfindR")
 ```
 
-``` {r}
+``` {r custom_display}
 knitr::kable(custom_result)
 ```
 
 The most significantly enriched gene set is, unsurprisingly, "MYC target genes". Interestingly, through interaction information, pathfindR was also able to identify significant enrichment for "CREB target genes" as well.
 
-**It is also possible to perform pathfindR analysis using non-human organism annotation. For this, custom gene sets and a custom PIN belonging to the species-of-interest must be specified.**
+**It is also possible to perform pathfindR analysis using non-human organism annotation. For this, custom gene sets AND a custom PIN belonging to the species-of-interest must be specified.**
 
 
 [^1]: Huang DW, Sherman BT, Tan Q, et al. The DAVID Gene Functional Classification Tool: a novel biological module-centric algorithm to functionally analyze large gene lists. Genome Biol. 2007;8(9):R183.

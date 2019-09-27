@@ -218,7 +218,7 @@
 #' Custom Gene Set Enrichment Results
 #'
 #' A data frame consisting of pathfindR enrichment results on the example TF target data.
-#'
+#' Last update: Sep 27, 2019
 #' @format data frame containing 2 rows and 8 columns. Each row is a gene set (the TF target gene sets).
 "custom_result"
 

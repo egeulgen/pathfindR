@@ -10,5 +10,6 @@ custom_result
 }
 \description{
 A data frame consisting of pathfindR enrichment results on the example TF target data.
+Last update: Sep 27, 2019
 }
 \keyword{datasets}
