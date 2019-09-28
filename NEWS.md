@@ -3,6 +3,10 @@
 
 ## Major Changes
 - Added the visualization fuction `term_gene_graph`, which creates a graph of enriched terms - involved genes
+- Made changes in `enrichment` and `enrichment_analyses` to get enrichment results faster
+- Added unit tests using `testthat`
+- Updated all gene sets data
+- Updated all RA example data
 
 ## Minor changes and bug fixes
 - In `hierarchical_pw_clustering`, redefined the distance measure as `1 - kappa statistic`
@@ -10,13 +14,12 @@
 - Removed title from graph visualization of hierarchical clustering in `cluster_graph_vis`
 - In `active_snw_search`, unneccessary warnings during active subnetwork search were removed
 - Fixed minor issue in `enrichment_chart`, supplying fuzzy clustered results no longer raises an error
-- Made changes in `enrichment` and `enrichment_analyses` to get enrichment results faster
 - Added new checks in `input_testing` and `input_processing` to ensure that both the initial input data frame and the processed input data frame for active subnetwork search contain at least 2 genes (to fix the corner case encountered in issue #17)
 - Fixed minor issue in `enrichment_chart`, ensuring that bubble sizes displayed in the legend (proportional to # of DEGs) are integers
 - In `enrichment_chart`, added the arguments `num_bubbles` (default is 4) to control number of bubbles displayed in the legend and `even_breaks` (default is `TRUE`) to indicate if even increments of breaks are required
 - Fixed code formatting, documentation and style issues (thanks to `goodpractice`)
-- Added unit tests using `testthat`
 - Updated the logo
+
 
 # pathfindR 1.3.0
 
