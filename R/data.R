@@ -91,9 +91,10 @@
 #' A list containing the genes involved in each human KEGG pathway. Each element
 #' is a vector of gene symbols located in the given pathway. Names correspond to
 #' the KEGG ID of the pathway. Pathways that did not contain any genes were
-#' discarded. This data was retrieved on Nov 9, 2018.
+#' discarded.
+#' \emph{Generated on Sep 28, 2019.}
 #'
-#' @format list containing 321 vectors of gene symbols. Each vector corresponds
+#' @format list containing 326 vectors of gene symbols. Each vector corresponds
 #'   to a pathway.
 "kegg_genes"
 
@@ -101,9 +102,10 @@
 #'
 #' A list containing the descriptions for each human KEGG pathway. Names of the
 #' list correspond to the KEGG ID of the pathway. Pathways that did not contain
-#' any genes were discarded. This data was retrieved on Nov 9, 2018.
+#' any genes were discarded.
+#' \emph{Generated on Sep 28, 2019.}
 #'
-#' @format vector containing 321 character values, the descriptions for the given
+#' @format vector containing 326 character values, the descriptions for the given
 #'   pathways.
 "kegg_pathways"
 
@@ -111,39 +113,39 @@
 #'
 #' A list containing the genes involved in each human Reactome pathway. Each
 #' element is a vector of gene symbols located in the given pathway. Names
-#' correspond to the Reactome ID of the pathway. This data was retrieved on Nov 9,
-#' 2018.
+#' correspond to the Reactome ID of the pathway.
+#' \emph{Generated on Sep 28, 2019.}
 #'
-#' @format list containing 2051 vectors of gene symbols. Each vector corresponds
+#' @format list containing 2263 vectors of gene symbols. Each vector corresponds
 #'   to a pathway.
 "reactome_genes"
 
 #' Reactome Pathway Descriptions
 #'
 #' A list containing the descriptions for each human Reactome pathway. Names of the
-#' list correspond to the Reactome ID of the pathway. This data was retrieved on
-#' Nov 9, 2018.
+#' list correspond to the Reactome ID of the pathway.
+#' \emph{Generated on Sep 28, 2019.}
 #'
-#' @format list containing 2051 character values, the descriptions for the given
+#' @format list containing 2263 character values, the descriptions for the given
 #'   pathways.
 "reactome_pathways"
 
 #' BioCarta Gene Sets
 #'
 #' A list containing the genes involved in each human BioCarta pathway. Each
-#' element is a vector of gene symbols located in the given pathway. This data
-#' was retrieved on May 13, 2018.
+#' element is a vector of gene symbols located in the given pathway.
+#' \emph{Generated on Sep 28, 2019.}
 #'
-#' @format list containing 217 vectors of gene symbols. Each vector corresponds
+#' @format list containing 314 vectors of gene symbols. Each vector corresponds
 #'   to a gene set.
 "biocarta_genes"
 
 #' BioCarta Pathway Descriptions
 #'
-#' A list containing the descriptions for each human Reactome pathway. This data
-#' was retrieved on May 13, 2018.
+#' A list containing the descriptions for each human BioCarta pathway.
+#' \emph{Generated on Sep 28, 2019.}
 #'
-#' @format list containing 217 character values, the descriptions for the given
+#' @format list containing 314 character values, the descriptions for the given
 #'   pathways.
 "biocarta_pathways"
 

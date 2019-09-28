@@ -4,13 +4,13 @@
 \name{biocarta_pathways}
 \alias{biocarta_pathways}
 \title{BioCarta Pathway Descriptions}
-\format{list containing 217 character values, the descriptions for the given
+\format{list containing 314 character values, the descriptions for the given
   pathways.}
 \usage{
 biocarta_pathways
 }
 \description{
-A list containing the descriptions for each human Reactome pathway. This data
-was retrieved on May 13, 2018.
+A list containing the descriptions for each human BioCarta pathway.
+\emph{Generated on Sep 28, 2019.}
 }
 \keyword{datasets}

@@ -4,7 +4,7 @@
 \name{kegg_pathways}
 \alias{kegg_pathways}
 \title{KEGG Pathway Descriptions}
-\format{vector containing 321 character values, the descriptions for the given
+\format{vector containing 326 character values, the descriptions for the given
   pathways.}
 \usage{
 kegg_pathways
@@ -12,6 +12,7 @@ kegg_pathways
 \description{
 A list containing the descriptions for each human KEGG pathway. Names of the
 list correspond to the KEGG ID of the pathway. Pathways that did not contain
-any genes were discarded. This data was retrieved on Nov 9, 2018.
+any genes were discarded.
+\emph{Generated on Sep 28, 2019.}
 }
 \keyword{datasets}
