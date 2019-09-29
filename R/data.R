@@ -6,6 +6,7 @@
 #' peripheral blood mononuclear cells of 18 rheumatoid arthritis (RA) patients
 #' versus 15 healthy subjects. Differentially-expressed genes with adj.P.Val <
 #' 0.05 are presented in this dataset.
+#' \emph{Generated on Sep 28, 2019.}
 #'
 #' @format A data frame with 572 rows and 3 variables: \describe{
 #'   \item{Gene.symbol}{HGNC gene symbols of the differentially-expressed genes}
@@ -79,6 +80,7 @@
 #' A matrix containing the log2-normalized expression values of the differentially-expressed genes
 #' for 18 rheumatoid arthritis (RA) patients and 15 healthy subjects. Expression values of
 #' differentially-expressed genes with adj.P.Val <= 0.05 are presented in this dataset.
+#' \emph{Generated on Sep 28, 2019.}
 #'
 #' @format A matrix with 572 rows and 33 columns.
 #' @source \url{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE15573}
@@ -92,7 +94,7 @@
 #' is a vector of gene symbols located in the given pathway. Names correspond to
 #' the KEGG ID of the pathway. Pathways that did not contain any genes were
 #' discarded.
-#' \emph{Generated on Sep 28, 2019.}
+#' \emph{Generated on Sep 30, 2019.}
 #'
 #' @format list containing 326 vectors of gene symbols. Each vector corresponds
 #'   to a pathway.
@@ -103,18 +105,18 @@
 #' A list containing the descriptions for each human KEGG pathway. Names of the
 #' list correspond to the KEGG ID of the pathway. Pathways that did not contain
 #' any genes were discarded.
-#' \emph{Generated on Sep 28, 2019.}
+#' \emph{Generated on Sep 30, 2019.}
 #'
 #' @format vector containing 326 character values, the descriptions for the given
 #'   pathways.
-"kegg_pathways"
+"kegg_descriptions"
 
 #' Reactome Gene Sets
 #'
 #' A list containing the genes involved in each human Reactome pathway. Each
 #' element is a vector of gene symbols located in the given pathway. Names
 #' correspond to the Reactome ID of the pathway.
-#' \emph{Generated on Sep 28, 2019.}
+#' \emph{Generated on Sep 30, 2019.}
 #'
 #' @format list containing 2263 vectors of gene symbols. Each vector corresponds
 #'   to a pathway.
@@ -124,17 +126,17 @@
 #'
 #' A list containing the descriptions for each human Reactome pathway. Names of the
 #' list correspond to the Reactome ID of the pathway.
-#' \emph{Generated on Sep 28, 2019.}
+#' \emph{Generated on Sep 30, 2019.}
 #'
 #' @format list containing 2263 character values, the descriptions for the given
 #'   pathways.
-"reactome_pathways"
+"reactome_descriptions"
 
 #' BioCarta Gene Sets
 #'
 #' A list containing the genes involved in each human BioCarta pathway. Each
 #' element is a vector of gene symbols located in the given pathway.
-#' \emph{Generated on Sep 28, 2019.}
+#' \emph{Generated on Sep 30, 2019.}
 #'
 #' @format list containing 314 vectors of gene symbols. Each vector corresponds
 #'   to a gene set.
@@ -143,88 +145,30 @@
 #' BioCarta Pathway Descriptions
 #'
 #' A list containing the descriptions for each human BioCarta pathway.
-#' \emph{Generated on Sep 28, 2019.}
+#' \emph{Generated on Sep 30, 2019.}
 #'
 #' @format list containing 314 character values, the descriptions for the given
 #'   pathways.
-"biocarta_pathways"
+"biocarta_descriptions"
 
 #' Gene Ontology - All Ontology Gene Sets
 #'
-#' A list containing the genes involved in each GO ontology category. Each
-#' element is a vector of gene symbols located in the given gene set. This data
-#' was retrieved on Nov 9, 2018.
+#' A list containing the genes involved in each GO ontology term. Each
+#' element is a vector of gene symbols located in the given gene set.
+#' \emph{Generated on Sep 30, 2019.}
 #'
-#' @format list containing 5123 vectors of gene symbols. Each vector corresponds
+#' @format list containing 14586 vectors of gene symbols. Each vector corresponds
 #'   to a gene set.
 "go_all_genes"
 
 #' Gene Ontology - All Ontology Descriptions
 #'
-#' A list containing the descriptions for each human GO ontology category. This
-#' data was retrieved on Nov 9, 2018.
+#' A list containing the descriptions for each human GO ontology term.
+#' \emph{Generated on Sep 30, 2019.}
 #'
-#' @format list containing 5123 character values, the descriptions for the given
-#' pathways.
-"go_all_pathways"
-
-#' Gene Ontology - Biological Process Ontology Gene Sets
-#'
-#' A list containing the genes involved in each GO Biological Process. Each
-#' element is a vector of gene symbols located in the given gene set. This data
-#' was retrieved on May 13, 2018.
-#'
-#' @format list containing 3941 vectors of gene symbols. Each vector corresponds
-#'   to a gene set.
-"go_bp_genes"
-
-#' Gene Ontology - Biological Process Ontology Descriptions
-#'
-#' A list containing the descriptions for each human GO Biological Process. This
-#' data was retrieved on May 13, 2018.
-#'
-#' @format list containing 3941 character values, the descriptions for the given
-#'   pathways.
-"go_bp_pathways"
-
-#' Gene Ontology - Cellular Component Ontology Gene Sets
-#'
-#' A list containing the genes involved in each GO Cellular Component. Each
-#' element is a vector of gene symbols located in the given gene set. This data
-#' was retrieved on May 13, 2018.
-#'
-#' @format list containing 470 vectors of gene symbols. Each vector corresponds
-#'   to a gene set.
-"go_cc_genes"
-
-#' Gene Ontology - Cellular Component Ontology Descriptions
-#'
-#' A list containing the descriptions for each human GO Cellular Component. This
-#' data was retrieved on May 13, 2018.
-#'
-#' @format list containing 470 character values, the descriptions for the given
-#'   pathways.
-"go_cc_pathways"
-
-#' Gene Ontology - Molecular Function Ontology Gene Sets
-#'
-#' A list containing the genes involved in each GO Molecular Function. Each
-#' element is a vector of gene symbols located in the given gene set. This data
-#' was retrieved on May 13, 2018.
-#'
-#' @format list containing 713 vectors of gene symbols. Each vector corresponds
-#'   to a gene set.
-"go_mf_genes"
-
-#' Gene Ontology - Molecular Function Ontology Descriptions
-#'
-#' A list containing the descriptions for each human GO Molecular Function. This
-#' data was retrieved on May 13, 2018.
-#'
-#' @format list containing 713 character values, the descriptions for the given
-#'   pathways.
-"go_mf_pathways"
-
+#' @format list containing 14586 character values, the descriptions for the given
+#' go gene set.
+"go_all_descriptions"
 
 
 

@@ -13,6 +13,6 @@ reactome_genes
 A list containing the genes involved in each human Reactome pathway. Each
 element is a vector of gene symbols located in the given pathway. Names
 correspond to the Reactome ID of the pathway.
-\emph{Generated on Sep 28, 2019.}
+\emph{Generated on Sep 30, 2019.}
 }
 \keyword{datasets}

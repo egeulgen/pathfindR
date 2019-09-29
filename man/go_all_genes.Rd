@@ -4,14 +4,14 @@
 \name{go_all_genes}
 \alias{go_all_genes}
 \title{Gene Ontology - All Ontology Gene Sets}
-\format{list containing 5123 vectors of gene symbols. Each vector corresponds
+\format{list containing 14586 vectors of gene symbols. Each vector corresponds
   to a gene set.}
 \usage{
 go_all_genes
 }
 \description{
-A list containing the genes involved in each GO ontology category. Each
-element is a vector of gene symbols located in the given gene set. This data
-was retrieved on Nov 9, 2018.
+A list containing the genes involved in each GO ontology term. Each
+element is a vector of gene symbols located in the given gene set.
+\emph{Generated on Sep 30, 2019.}
 }
 \keyword{datasets}

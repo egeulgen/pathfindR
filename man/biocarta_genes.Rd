@@ -12,6 +12,6 @@ biocarta_genes
 \description{
 A list containing the genes involved in each human BioCarta pathway. Each
 element is a vector of gene symbols located in the given pathway.
-\emph{Generated on Sep 28, 2019.}
+\emph{Generated on Sep 30, 2019.}
 }
 \keyword{datasets}

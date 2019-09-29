@@ -22,6 +22,7 @@ GSE15573. The microarray dataset aimed to characterize gene expression profiles 
 peripheral blood mononuclear cells of 18 rheumatoid arthritis (RA) patients
 versus 15 healthy subjects. Differentially-expressed genes with adj.P.Val <
 0.05 are presented in this dataset.
+\emph{Generated on Sep 28, 2019.}
 }
 \seealso{
 \code{\link{RA_output}} for example output of the enrichment workflow.

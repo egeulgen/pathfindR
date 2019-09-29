@@ -15,5 +15,6 @@ RA_exp_mat
 A matrix containing the log2-normalized expression values of the differentially-expressed genes
 for 18 rheumatoid arthritis (RA) patients and 15 healthy subjects. Expression values of
 differentially-expressed genes with adj.P.Val <= 0.05 are presented in this dataset.
+\emph{Generated on Sep 28, 2019.}
 }
 \keyword{datasets}
