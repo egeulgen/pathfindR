@@ -69,7 +69,7 @@ test_that("Filter function arguments work OK", {
 
 # active_snw_search -------------------------------------------------------
 pin_path <- return_pin_path()
-input_df1 <- suppressMessages(input_processing(RA_input[1:50, ],
+input_df1 <- suppressMessages(input_processing(RA_input,
   p_val_threshold = 0.05,
   pin_path
 ))

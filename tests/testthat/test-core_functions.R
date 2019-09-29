@@ -8,7 +8,7 @@
 
 # run_pathfindR -----------------------------------------------------------
 test_that("run_pathfindR works as expected", {
-
+  skip_on_cran()
   ## GR
   expect_is(
     run_pathfindR(RA_input,
@@ -20,6 +20,7 @@ test_that("run_pathfindR works as expected", {
   expect_is(
     run_pathfindR(RA_input,
       iterations = 2,
+      n_processes = 2,
       gene_sets = "BioCarta",
       pin_name_path = "GeneMania"
     ),
