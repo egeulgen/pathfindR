@@ -1,9 +1,18 @@
-# pathfindR 1.4.0.9006
+# pathfindR 1.4.0.9007
 ## To be released as 1.4.0
 
 ## Major Changes
+- Replaced most occurences of "pathway" to "term". This was adapted because "term" reflects the utility of the package better. The enrichment and clustering approaches work with any kind of gene set data (be it pathway gene sets, gene ontology gene sets, motif gene sets etc.) Accordingly:
+  - `DESCRIPTION` was updated
+  - The functions `annotate_pathway_DEGs`, `calculate_pw_scores`, `cluster_pathways`, `fuzzy_pw_clustering`, `hierarchical_pw_clustering`, `visualize_pw_interactions` and `visualize_pws` were renamed to 
+  `annotate_term_DEGs`, `calculate_scores`, `cluster_enriched_terms`, `fuzzy_term_clustering`, `hierarchical_term_clustering`, `visualize_term_interactions` and `visualize_terms` respectively
+  - The Rmd template file for the report `enriched_pathways.Rmd` was renamed to `enriched_terms.Rmd`
+  - All the Rmd template files for the report were updated
+  - The vignettes were updated (TODO)
+  - Documentation of each function was updated accordingly
 - Added the visualization fuction `term_gene_graph`, which creates a graph of enriched terms - involved genes
 - Made changes in `enrichment` and `enrichment_analyses` to get enrichment results faster
+- Added new internal function `fetch_gene_set` for obtaining gene set data more easily
 - Added unit tests using `testthat`
 - Updated all gene sets data
 - Updated all RA example data
@@ -17,8 +26,8 @@
 - Added new checks in `input_testing` and `input_processing` to ensure that both the initial input data frame and the processed input data frame for active subnetwork search contain at least 2 genes (to fix the corner case encountered in issue #17)
 - Fixed minor issue in `enrichment_chart`, ensuring that bubble sizes displayed in the legend (proportional to # of DEGs) are integers
 - In `enrichment_chart`, added the arguments `num_bubbles` (default is 4) to control number of bubbles displayed in the legend and `even_breaks` (default is `TRUE`) to indicate if even increments of breaks are required
-- Fixed code formatting, documentation and style issues (thanks to `goodpractice`)
 - Updated the logo
+- Minor fix in `term_gene_graph` (create the igraph object as an undirected graph for better auto layout)
 
 
 # pathfindR 1.3.0
