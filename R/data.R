@@ -151,7 +151,7 @@
 #'   pathways.
 "biocarta_descriptions"
 
-#' Gene Ontology - All Ontology Gene Sets
+#' Gene Ontology - All Gene Ontology Gene Sets
 #'
 #' A list containing the genes involved in each GO ontology term. Each
 #' element is a vector of gene symbols located in the given gene set.
@@ -161,14 +161,17 @@
 #'   to a gene set.
 "go_all_genes"
 
-#' Gene Ontology - All Ontology Descriptions
+#' Gene Ontology - All Gene Ontology Descriptions
 #'
-#' A list containing the descriptions for each human GO ontology term.
+#' A data frame containing descriptions of Gene Ontology terms (for all categories)
 #' \emph{Generated on Sep 30, 2019.}
 #'
-#' @format list containing 14586 character values, the descriptions for the given
-#' go gene set.
-"go_all_descriptions"
+#' @format data frame containing 14586 rows and 3 columns. Columns are \describe{
+#' \item{GO_ID}{ID of the GO term}
+#' \item{GO_term}{Description the GO term}
+#' \item{Category}{Category of the GO term (i.e., "Component", "Function" or "Process")}
+#' }
+"GO_all_terms_df"
 
 
 
