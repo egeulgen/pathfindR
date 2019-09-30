@@ -16,6 +16,7 @@
 #'
 #' @inheritParams input_testing
 #' @param visualize_pathways Boolean value to indicate whether or not to create pathway diagrams.
+#' @inheritParams fetch_gene_set
 #' @param human_genes boolean to indicate whether the input genes are
 #'  human gene symbols or not (default = TRUE)
 #' @param enrichment_threshold threshold used when filtering individual iterations' pathway
@@ -48,14 +49,7 @@
 #' @inheritParams return_pin_path
 #' @param score_quan_thr active subnetwork score quantile threshold (Default = 0.80)
 #' @param sig_gene_thr threshold for minimum number of significant genes (Default = 10)
-#' @param gene_sets the gene sets to be used for enrichment analysis. Available gene sets
-#'  are KEGG, Reactome, BioCarta, GO-All, GO-BP, GO-CC, GO-MF or Custom. If "Custom", the arguments
-#'  custom_genes and custom pathways must be specified. (Default = "KEGG")
-#' @param custom_genes a list containing the genes involved in each custom pathway. Each element
-#' is a vector of gene symbols located in the given pathway. Names correspond to
-#' the ID of the pathway.
-#' @param custom_pathways A list containing the descriptions for each custom pathway. Names of the
-#' list correspond to the ID of the pathway.
+
 #' @param bubble boolean value. If TRUE, a bubble chart displaying the enrichment
 #' results is plotted. (default = TRUE)
 #' @param output_dir the directory to be created under the current working
@@ -151,24 +145,17 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
     stop("the argument `silent_option` must be either TRUE or FALSE")
   }
 
-  # Gene Sets
-  if (!gene_sets %in% c(
-    "KEGG", "Reactome", "BioCarta",
-    "GO-All", "GO-BP", "GO-CC", "GO-MF", "Custom"
-  )) {
-    stop("`gene_sets` must be one of KEGG, Reactome, BioCarta, GO-All, GO-BP, GO-CC, GO-MF or Custom")
-  }
-
-  cstm_cond <- gene_sets == "Custom"
-  cstm_cond <- cstm_cond & (is.null(custom_genes) | is.null(custom_pathways))
-  if (cstm_cond) {
-    stop("You must provide both `custom_genes` and `custom_pathways` if `gene_sets` is `Custom`!")
-  }
-
   # Enrichment chart option
   if (!is.logical(bubble)) {
     stop("the argument `bubble` must be either TRUE or FALSE")
   }
+
+  # Gene Sets
+  gset_list <- pathfindR:::fetch_gene_set(gene_sets = gene_sets,
+                                          custom_genes = custom_genes,
+                                          custom_descriptions = custom_descriptions)
+  genes_by_term <- gset_list$genes_by_term
+  term_descriptions <- gset_list$term_descriptions
 
   ############ Initial Steps
   ## absolute path to PIN
@@ -272,9 +259,8 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
     enrichment_res <- pathfindR::enrichment_analyses(
       snws = snws,
       input_genes = input_processed$GENE,
-      gene_sets = gene_sets,
-      custom_genes = custom_genes,
-      custom_pathways = custom_pathways,
+      genes_by_term = genes_by_term,
+      term_descriptions = term_descriptions,
       pin_path = pin_path,
       adj_method = adj_method,
       enrichment_threshold = enrichment_threshold,
@@ -303,10 +289,9 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   message("## Annotating involved genes and visualizing pathways\n\n")
 
   ##### Annotate Involved DEGs by up/down-regulation status
-  final_res <- pathfindR::annotate_pathway_DEGs(
-    final_res, input_processed,
-    gene_sets, custom_genes
-  )
+  final_res <- pathfindR::annotate_term_DEGs(result_df = final_res,
+                                             input_processed = input_processed,
+                                             genes_by_term = genes_by_term)
 
   ##### Visualize the Pathways (If KEGG human, KEGG diagram. Otherwise,
   # Interactions of Genes in the PIN)
@@ -728,14 +713,11 @@ input_processing <- function(input, p_val_threshold,
 
 #' Annotate the Affected Genes in the Provided Pathways
 #'
-#' @param result_df data frame of enrichment results. The only must-have column is "ID".
-#' @param input_processed input data processed via `input_processing`
-#' @param gene_sets the gene sets used for enrichment analysis. Possible gene sets
-#'  are KEGG, Reactome, BioCarta, GO-All, GO-BP, GO-CC, GO-MF or Custom (Default = "KEGG"). If "Custom", the
-#'  custom_genes argument must be specified.
-#' @param custom_genes a list containing the genes involved in each custom gene set. Each element
-#' is a vector of gene symbols located in the given pathway. Names correspond to
-#' the ID of the pathway.
+#' @param result_df data frame of enrichment results.
+#'  The only must-have column is "ID".
+#' @param input_processed input data processed via \code{\link{input_processing}}
+#' @param genes_by_term List that contains genes for each gene set. Names of
+#'   this list are gene set IDs (default = \code{kegg_genes})
 #'
 #' @return The original data frame with two additional columns:  \describe{
 #'   \item{Up_regulated}{Up-regulated input genes in the given pathway}
@@ -747,45 +729,12 @@ input_processing <- function(input, p_val_threshold,
 #' example_gene_data <- RA_input
 #' colnames(example_gene_data) <- c("GENE", "CHANGE", "P_VALUE")
 #'
-#' annotated_result <- annotate_pathway_DEGs(RA_output, example_gene_data)
-annotate_pathway_DEGs <- function(result_df, input_processed,
-                                  gene_sets = "KEGG", custom_genes = NULL) {
-  ############ Load Gene Set Data
-  gset_names <- c(
-    "KEGG", "Reactome", "BioCarta",
-    "GO-All", "GO-BP", "GO-CC", "GO-MF"
-  )
-  pw_genes <- c(
-    "kegg_genes", "reactome_genes", "biocarta_genes",
-    "go_all_genes", "go_bp_genes", "go_cc_genes", "go_mf_genes"
-  )
-  pw_lists <- c(
-    "kegg_pathways", "reactome_pathways", "biocarta_pathways",
-    "go_all_pathways",
-    "go_bp_pathways", "go_cc_pathways", "go_mf_pathways"
-  )
+#' annotated_result <- annotate_term_DEGs(RA_output, example_gene_data)
+annotate_term_DEGs <- function(result_df,
+                               input_processed,
+                               genes_by_term = kegg_genes) {
 
-  gene_sets_df <- data.frame(
-    "Gene Set Name" = gset_names,
-    "genes_by_pathway" = pw_genes,
-    "pathways_list" = pw_lists
-  )
-
-  if (gene_sets %in% gene_sets_df$Gene.Set.Name) {
-    idx <- which(gene_sets_df$Gene.Set.Name == gene_sets)
-
-    genes_name <- gene_sets_df$genes_by_pathway[idx]
-    genes_name <- paste0("pathfindR::", genes_name)
-    genes_by_pathway <- base::eval(parse(text = genes_name))
-  } else if (gene_sets == "Custom") {
-    if (is.null(custom_genes)) {
-      stop("`custom_genes` must be provided if `gene_sets = \"Custom\"`")
-    }
-    genes_by_pathway <- custom_genes
-  }
-
-  ############ Annotate up/down-regulated pathway genes
-
+  ### Annotate up/down-regulated term-related genes
   ## Up/Down-regulated genes
   upreg <- input_processed$GENE[input_processed$CHANGE >= 0]
   downreg <- input_processed$GENE[input_processed$CHANGE < 0]
@@ -794,13 +743,13 @@ annotate_pathway_DEGs <- function(result_df, input_processed,
   annotated_df <- result_df
   annotated_df$Down_regulated <- annotated_df$Up_regulated <- NA
   for (i in base::seq_len(nrow(annotated_df))) {
-    idx <- which(names(genes_by_pathway) == annotated_df$ID[i])
-    temp <- genes_by_pathway[[idx]]
+    idx <- which(names(genes_by_term) == annotated_df$ID[i])
+    temp <- genes_by_term[[idx]]
     annotated_df$Up_regulated[i] <- paste(temp[temp %in% upreg],
-      collapse = ", "
+                                          collapse = ", "
     )
     annotated_df$Down_regulated[i] <- paste(temp[temp %in% downreg],
-      collapse = ", "
+                                            collapse = ", "
     )
   }
 
