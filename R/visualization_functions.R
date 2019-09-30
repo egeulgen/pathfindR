@@ -1,32 +1,34 @@
-#' Create Pathway Diagrams
+#' Create Diagrams for Enriched Terms
 #'
 #' @param result_df Data frame of enrichment results. Must-have columns for
-#' KEGG human pathway diagrams are: "ID" and "Pathway".
-#' Must-have columns for the rest are: "Pathway", "Up_regulated" and "Down_regulated"
-#' @param input_processed input data processed via `input_processing`, not necessary for
-#' visualizations other than KEGG human pathway diagrams.
-#' @param gene_sets the gene sets used for enrichment analysis. Possible gene sets
-#'  are KEGG or non-KEGG (Default = "KEGG").
+#'  KEGG human pathway diagrams are: "ID" and "Term_Description".
+#'  Must-have columns for the rest are: "Term_Description", "Up_regulated" and
+#' "Down_regulated"
+#' @param input_processed input data processed via \code{\link{input_processing}},
+#'  not necessary for visualizations other than KEGG human pathway diagrams.
+#' @param hsa_KEGG boolean to indicate whether human KEGG gene sets were used for
+#'  enrichment analysis or not (default = \code{TRUE})
 #' @param pin_name_path Name of the chosen PIN or path/to/PIN.sif. If PIN name,
-#'   must be one of c("Biogrid", "GeneMania", "IntAct", "KEGG"). If
-#'   path/to/PIN.sif, the file must comply with the PIN specifications. Defaults
-#'   to Biogrid.
+#'  must be one of c("Biogrid", "GeneMania", "IntAct", "KEGG"). If
+#'  path/to/PIN.sif, the file must comply with the PIN specifications. (default
+#'  is "Biogrid")
 #'
-#' @return Depending on `gene_sets`, creates visualization of interactions of genes
-#' involved in the list of pathways in `result_df` and saves them in the folder
-#' "pathway_visualizations" under the current working directory.
+#' @return Depending on the argument \code{hsa_KEGG}, creates visualization of
+#'  interactions of genes involved in the list of enriched terms in
+#'  \code{result_df} and saves them in the folder "term_visualizations" under
+#'  the current working directory.
 #'
 #'
-#' @details For `gene_sets == "KEGG"`, KEGG human pathway diagrams are created,
+#' @details For \code{hsa_KEGG = TRUE}, KEGG human pathway diagrams are created,
 #' affected nodes colored by up/down regulation status.
-#' For other `gene_sets`, interactions of affected genes are determined (via a shortest-path
+#' For other gene sets, interactions of affected genes are determined (via a shortest-path
 #' algorithm) and are visualized (colored by change status) using igraph.
 #'
 #'
 #' @export
 #'
 #' @seealso See \code{\link{visualize_hsa_KEGG}} for the visualization function
-#' of human KEGG diagrams. See \code{\link{visualize_pw_interactions}} for the
+#' of human KEGG diagrams. See \code{\link{visualize_term_interactions}} for the
 #' visualization function that generates diagrams showing the interactions of
 #' input genes in the PIN. See \code{\link{run_pathfindR}} for the wrapper
 #' function of the pathfindR workflow. \code{\link[pathview]{pathview}} for
@@ -34,70 +36,71 @@
 #'
 #' @examples
 #' \dontrun{
-#' visualize_pws(result_df, input_processed)
-#' visualize_pws(result_df, gene_sets = "GO-BP", pin_name_path = "IntAct")
+#' visualize_terms(result_df, input_processed)
+#' visualize_terms(result_df, hsa_KEGG = FALSE, pin_name_path = "IntAct")
 #' }
-visualize_pws <- function(result_df, input_processed = NULL,
-                          gene_sets = "KEGG", pin_name_path = "Biogrid") {
+visualize_terms <- function(result_df, input_processed = NULL,
+                            hsa_KEGG = TRUE, pin_name_path = "Biogrid") {
+
   ############ Argument Checks
-  if (gene_sets == "KEGG" & is.null(input_processed)) {
-    stop("`input_processed` must be specified when `gene_sets` is KEGG")
+  if (!is.logical(hsa_KEGG)) {
+    stop("the argument `hsa_KEGG` must be either TRUE or FALSE")
   }
 
-  if (!gene_sets %in% c("KEGG", "non-KEGG")) {
-    stop("`gene_sets` must either be \"KEGG\" or \"non-KEGG\"")
+  if (hsa_KEGG & is.null(input_processed)) {
+    stop("`input_processed` must be specified when `hsa_KEGG` is `TRUE`")
   }
 
-  ############ Generate pathway diagrams
-  if (gene_sets == "KEGG") {
+  ############ Generate Diagrams
+  if (hsa_KEGG) {
     ## Prepare input
     genes_df <- input_processed[, c("GENE", "CHANGE")]
     rownames(genes_df) <- genes_df$GENE
     genes_df <- genes_df[, -1, drop = FALSE]
-    visualize_hsa_KEGG(result_df, genes_df)
+    visualize_hsa_KEGG(pw_table = result_df, gene_data = genes_df)
   } else {
-    visualize_pw_interactions(result_df, pin_name_path)
+    visualize_term_interactions(result_df = result_df, pin_name_path = pin_name_path)
   }
 }
 
-
-#' Visualize Interactions of Genes Involved in the Given Pathways
+#' Visualize Interactions of Genes Involved in the Given Enriched Terms
 #'
 #' @param result_df Data frame of enrichment results. Must-have columns
-#' are: "Pathway", "Up_regulated" and "Down_regulated"
+#' are: "Term_Description", "Up_regulated" and "Down_regulated"
 #' @param pin_name_path Name of the chosen PIN or path/to/PIN.sif. If PIN name,
 #'   must be one of c("Biogrid", "GeneMania", "IntAct", "KEGG"). If
 #'   path/to/PIN.sif, the file must comply with the PIN specifications. Defaults
 #'   to Biogrid.
 #'
 #' @return Creates PNG files visualizing the interactions of genes involved
-#' in the given pathways (annotated in the `result_df`) in the PIN used for enrichment
-#' analysis (specified by `pin_name_path`). The PNG files are saved in the folder
-#' "pathway_visualizations" under the current working directory.
+#' in the given enriched terms (annotated in the \code{result_df}) in the PIN used
+#' for enrichment analysis (specified by \code{pin_name_path}). The PNG files are
+#' saved in the folder "term_visualizations" under the current working directory.
 #'
 #' @details The following steps are performed for the visualization of interactions
-#' of genes involved in the given pathways: \enumerate{
-#'   \item shortest paths between all affected genes are determined (via `igraph`)
-#'   \item the nodes of all shortest pathways are merged
+#' of genes involved for each enriched term: \enumerate{
+#'   \item shortest paths between all affected genes are determined (via \code{\link[igraph]{igraph}})
+#'   \item the nodes of all shortest paths are merged
 #'   \item the PIN is subsetted using the merged nodes (genes)
 #'   \item using the PIN subset, the graph showing the interactions is generated
-#'   \item the final graph is visualized using `igraph`, colored by changed status and saved as a PNG file.
+#'   \item the final graph is visualized using \code{\link[igraph]{igraph}}, colored by changed
+#'   status (if provided), and is saved as a PNG file.
 #' }
 #'
 #' @export
 #'
-#' @seealso See \code{\link{visualize_pws}} for the wrapper function
-#'   for creating pathway diagrams. See \code{\link{run_pathfindR}} for the
-#'   wrapper function of the pathfindR workflow.
+#' @seealso See \code{\link{visualize_terms}} for the wrapper function
+#'   for creating enriched term diagrams. See \code{\link{run_pathfindR}} for the
+#'   wrapper function of the pathfindR enrichment workflow.
 #'
 #' @examples
 #' \dontrun{
-#' visualize_pw_interactions(result_df, pin_name_path = "IntAct")
+#' visualize_term_interactions(result_df, pin_name_path = "IntAct")
 #' }
-visualize_pw_interactions <- function(result_df, pin_name_path) {
+visualize_term_interactions <- function(result_df, pin_name_path) {
   ############ Initial Steps
-  ## fix pathway naming issue
-  result_df$Pathway <- gsub("\\/", "-", result_df$Pathway)
+  ## fix naming issue
+  result_df$Term_Description <- gsub("\\/", "-", result_df$Term_Description)
 
   ## load PIN
   pin_path <- return_pin_path(pin_name_path)
@@ -111,11 +114,11 @@ visualize_pw_interactions <- function(result_df, pin_name_path) {
   pin_g <- igraph::graph_from_data_frame(pin, directed = FALSE)
 
   ## Create visualization output directory
-  if (!dir.exists("pathway_visualizations")) {
-    dir.create("pathway_visualizations")
+  if (!dir.exists("term_visualizations")) {
+    dir.create("term_visualizations")
   }
 
-  ############ visualize interactions by pathway
+  ############ Visualize interactions by enriched term
   for (i in base::seq_len(nrow(result_df))) {
     current_row <- result_df[i, ]
 
@@ -134,11 +137,11 @@ visualize_pw_interactions <- function(result_df, pin_name_path) {
     if (length(current_genes) < 2) {
       message(paste0(
         "< 2 genes, skipping visualization of ",
-        current_row$Pathway
+        current_row$Term_Description
       ))
     } else {
       cat(paste0(
-        "Visualizing: ", current_row$Pathway,
+        "Visualizing: ", current_row$Term_Description,
         paste(rep(" ", 200), collapse = ""), "\r"
       ))
 
@@ -179,10 +182,8 @@ visualize_pw_interactions <- function(result_df, pin_name_path) {
         )
       )
 
-      path_to_png <- file.path(
-        "pathway_visualizations",
-        paste0(current_row$Pathway, ".png")
-      )
+      path_to_png <- file.path("term_visualizations",
+                               paste0(current_row$Term_Description, ".png"))
       grDevices::png(path_to_png, width = 1039, height = 831)
       # Plot the tree object
       igraph::plot.igraph(
@@ -196,10 +197,8 @@ visualize_pw_interactions <- function(result_df, pin_name_path) {
         vertex.label.cex = 0.8,
         edge.width = 1.2,
         edge.arrow.mode = 0,
-        main = paste(
-          current_row$Pathway,
-          "\n Involved Gene Interactions in", pin_name_path
-        )
+        main = paste(current_row$Term_Description,
+                     "\n Involved Gene Interactions in", pin_name_path)
       )
 
       graphics::legend("topleft",
@@ -220,19 +219,20 @@ visualize_pw_interactions <- function(result_df, pin_name_path) {
 #' Visualize Human KEGG Pathways
 #'
 #' @param pw_table Data frame of enrichment results. Must-have columns are: "ID" and
-#'   "Pathway".
+#'   "Term_Description".
 #' @param gene_data Single column data frame containing change values (e.g.
 #'   log(fold change) values) for significant genes. Row names are gene symbols.
 #'
-#' @return Creates visualizations of the pathways with the package \code{pathview}
-#'  and saves them in the folder "pathway_visualizations" under the current working directory.
+#' @return Creates visualizations of the enriched human KEGG pathways with
+#'  the package \code{pathview} and saves them in the folder
+#'  "term_visualizations" under the current working directory.
 #'
 #' @import pathview
 #' @export
 #' @seealso \code{\link[pathview]{pathview}} for KEGG pathway-based data integration
-#'   and visualization. See \code{\link{visualize_pws}} for the wrapper function
-#'   for creating pathway diagrams. See \code{\link{run_pathfindR}} for the
-#'   wrapper function of the pathfindR workflow.
+#'   and visualization. See \code{\link{visualize_terms}} for the wrapper function
+#'   for creating enriched term diagrams. See \code{\link{run_pathfindR}} for the
+#'   wrapper function of the pathfindR enrichment workflow.
 #' @examples
 #' \dontrun{
 #' visualize_hsa_KEGG(pathway_table, gene_data)
@@ -240,11 +240,11 @@ visualize_pw_interactions <- function(result_df, pin_name_path) {
 visualize_hsa_KEGG <- function(pw_table, gene_data) {
 
   ## fix KEGG names such as "Glycolysis / Gluconeogenesis"
-  pw_table$Pathway <- gsub("\\/", "-", pw_table$Pathway)
+  pw_table$Term_Description <- gsub("\\/", "-", pw_table$Term_Description)
 
   ## Create visualization output directory
-  dir.create("pathway_visualizations")
-  setwd("pathway_visualizations")
+  dir.create("term_visualizations")
+  setwd("term_visualizations")
   on.exit(setwd(".."))
 
   for (i in base::seq_len(nrow(pw_table))) {
@@ -255,7 +255,7 @@ visualize_hsa_KEGG <- function(pw_table, gene_data) {
         gene.idtype = "SYMBOL",
         pathway.id = pw_table$ID[i],
         species = "hsa",
-        out.suffix = pw_table$Pathway[i],
+        out.suffix = pw_table$Term_Description[i],
         keys.align = "y", kegg.native = TRUE,
         key.pos = "topright", same.layer = FALSE,
         discrete = list(gene = TRUE, cpd = TRUE),
@@ -276,7 +276,7 @@ visualize_hsa_KEGG <- function(pw_table, gene_data) {
         gene.idtype = "SYMBOL",
         pathway.id = pw_table$ID[i],
         species = "hsa",
-        out.suffix = pw_table$Pathway[i],
+        out.suffix = pw_table$Term_Description[i],
         keys.align = "y", kegg.native = TRUE,
         key.pos = "topright", same.layer = FALSE,
         discrete = list(gene = TRUE, cpd = TRUE),
@@ -290,7 +290,7 @@ visualize_hsa_KEGG <- function(pw_table, gene_data) {
         gene.idtype = "SYMBOL",
         pathway.id = pw_table$ID[i],
         species = "hsa",
-        out.suffix = pw_table$Pathway[i],
+        out.suffix = pw_table$Term_Description[i],
         keys.align = "y", kegg.native = TRUE,
         key.pos = "topright", same.layer = FALSE,
         new.signature = FALSE
@@ -305,28 +305,32 @@ visualize_hsa_KEGG <- function(pw_table, gene_data) {
 #' This function is used to plot a bubble chart displaying the enrichment
 #' results.
 #'
-#' @param result_df a data frame that must contain the following columns:\describe{
-#'   \item{Pathway}{Description of the enriched pathway}
-#'   \item{Fold_Enrichment}{Fold enrichment value for the enriched pathway}
-#'   \item{lowest_p}{the lowest adjusted-p value of the given pathway over all iterations}
-#'   \item{Up_regulated}{the up-regulated genes in the input involved in the given pathway, comma-separated}
-#'   \item{Down_regulated}{the down-regulated genes in the input involved in the given pathway, comma-separated}
-#'   \item{Cluster(OPTIONAL)}{the cluster to which the pathway is assigned}
+#' @param result_df a data frame that must contain the following columns: \describe{
+#'   \item{Term_Description}{Description of the enriched term}
+#'   \item{Fold_Enrichment}{Fold enrichment value for the enriched term}
+#'   \item{lowest_p}{the lowest adjusted-p value of the given term over all iterations}
+#'   \item{Up_regulated}{the up-regulated genes in the input involved in the given term's gene set, comma-separated}
+#'   \item{Down_regulated}{the down-regulated genes in the input involved in the given term's gene set, comma-separated}
+#'   \item{Cluster(OPTIONAL)}{the cluster to which the enriched term is assigned}
 #' }
 #' @param plot_by_cluster boolean value indicating whether or not to group the
-#' pathways by cluster (works if "Cluster" is a column of `result_df`).
-#' @param num_bubbles number of sizes displayed in the legend `# of DEGs` (Default = 5).
-#' @param even_breaks whether or not to set even breaks for the number of sizes displayed
-#' in the legend `# of DEGs`. If `TRUE` (default), sets equal breaks and the number of
-#' displayed bubbles may be different than the number set by `num_bubbles`. If the exact
-#' number set by `num_bubbles` is required, set this argument to `FALSE`.
+#'  enriched terms by cluster (works if \code{result_df} contains a
+#'  "Cluster" column).
+#' @param num_bubbles number of sizes displayed in the legend \code{# of DEGs}
+#'  (Default = 4)
+#' @param even_breaks whether or not to set even breaks for the number of sizes
+#'  displayed in the legend \code{# of DEGs}. If \code{TRUE} (default), sets
+#'  equal breaks and the number of displayed bubbles may be different than the
+#'  number set by \code{num_bubbles}. If the exact number set by
+#'  \code{num_bubbles} is required, set this argument to \code{FALSE}
 #'
-#' @return a `ggplot2` object containing the bubble chart. The x-axis corresponds to
-#' fold enrichment values while the y-axis indicates the enriched pathways. Size of
-#' the bubble indicates the number of DEGs in the given pathway. Color indicates
-#' the -log10(lowest-p) value. The closer the color is to red, the more significant
-#' the enrichment is. Optionally, if "Cluster" is a column of `result_df` and
-#' plot_by_cluster == TRUE, the pathways are grouped by clusters.
+#' @return a \code{\link[ggplot2]{ggplot2}} object containing the bubble chart.
+#' The x-axis corresponds to fold enrichment values while the y-axis indicates
+#' the enriched terms. Size of the bubble indicates the number of DEGs in the
+#' given enriched term. Color indicates the -log10(lowest-p) value. The closer
+#' the color is to red, the more significant the enrichment is. Optionally, if
+#' "Cluster" is a column of \code{result_df} and \code{plot_by_cluster == TRUE},
+#' the enriched terms are grouped by clusters.
 #'
 #' @import ggplot2
 #' @export
@@ -336,7 +340,7 @@ visualize_hsa_KEGG <- function(pw_table, gene_data) {
 enrichment_chart <- function(result_df, plot_by_cluster = FALSE,
                              num_bubbles = 4, even_breaks = TRUE) {
   necessary <- c(
-    "Pathway", "Fold_Enrichment", "lowest_p",
+    "Term_Description", "Fold_Enrichment", "lowest_p",
     "Up_regulated", "Down_regulated"
   )
   if (!all(necessary %in% colnames(result_df))) {
@@ -362,11 +366,11 @@ enrichment_chart <- function(result_df, plot_by_cluster = FALSE,
     function(x) length(unlist(strsplit(x, ", "))), 1
   )
 
-  result_df$Pathway <- factor(result_df$Pathway,
-    levels = rev(unique(result_df$Pathway))
+  result_df$Term_Description <- factor(result_df$Term_Description,
+    levels = rev(unique(result_df$Term_Description))
   )
 
-  g <- ggplot2::ggplot(result_df, ggplot2::aes_(~Fold_Enrichment, ~Pathway))
+  g <- ggplot2::ggplot(result_df, ggplot2::aes_(~Fold_Enrichment, ~Term_Description))
   g <- g + ggplot2::geom_point(ggplot2::aes(
     color = -log10(result_df$lowest_p),
     size = num_genes
@@ -377,7 +381,8 @@ enrichment_chart <- function(result_df, plot_by_cluster = FALSE,
     axis.text.y = ggplot2::element_text(size = 10),
     plot.title = ggplot2::element_blank()
   )
-  g <- g + ggplot2::xlab("Fold Enrichment") + ggplot2::ylab("")
+  g <- g + ggplot2::xlab("Fold Enrichment")
+  g <- g + ggplot2::theme(axis.title.y = ggplot2::element_blank())
   g <- g + ggplot2::labs(size = "# of DEGs", color = "-log10(lowest-p)")
 
   ## breaks for # of DEGs
@@ -412,28 +417,30 @@ enrichment_chart <- function(result_df, plot_by_cluster = FALSE,
 
 #' Plot Term-Gene Graph
 #'
-#' @param result_df A dataframe of pathfindR results that must contain the following columns:\describe{
-#'   \item{Pathway}{Description of the enriched pathway (necessary if `use_names` is TRUE)}
-#'   \item{ID}{ID of the enriched pathway (necessary if `use_names` is FALSE)}
-#'   \item{lowest_p}{the lowest adjusted-p value of the given pathway over all iterations}
-#'   \item{Up_regulated}{the up-regulated genes in the input involved in the given pathway, comma-separated}
-#'   \item{Down_regulated}{the down-regulated genes in the input involved in the given pathway, comma-separated}
+#' @param result_df A dataframe of pathfindR results that must contain the following columns: \describe{
+#'   \item{Term_Description}{Description of the enriched term (necessary if \code{use_description = TRUE})}
+#'   \item{ID}{ID of the enriched term (necessary if \code{use_description = FALSE})}
+#'   \item{lowest_p}{the lowest adjusted-p value of the given term over all iterations}
+#'   \item{Up_regulated}{the up-regulated genes in the input involved in the given term's gene set, comma-separated}
+#'   \item{Down_regulated}{the down-regulated genes in the input involved in the given term's gene set, comma-separated}
 #' }
-#' @param num_terms Number of top terms to use while creating the graph. Set to `NULL` to use
-#' all terms (default = 10, i.e. top 10 terms)
+#' @param num_terms Number of top enriched terms to use while creating the graph. Set to \code{NULL} to use
+#'  all enriched terms (default = 10, i.e. top 10 terms)
 #' @param layout The type of layout to create (see \code{\link[ggraph]{ggraph}} for details. Default = "auto")
-#' @param use_names Boolean argument to indicate whether term descriptions (in the Pathway column) should be used. (default = `FALSE`)
+#' @param use_description Boolean argument to indicate whether term descriptions
+#'  (in the "Term_Description" column) should be used. (default = \code{FALSE})
 #' @param node_size Argument to indicate whether to use number of DEGs ("num_DEGS")
-#' or the -log10(lowest p value) ("p_val") for adjusting the node sizes (default = "num_DEGS")
+#'  or the -log10(lowest p value) ("p_val") for adjusting the node sizes (default = "num_DEGS")
 #'
-#' @return a `ggplot` object containing the term-gene graph. Each node corresponds to
-#' an enriched term (beige), an up-regulated gene (green) or a down-regulated gene (red).
-#' An edge between a term and a gene indicates that the given term involves the gene. Size
-#' of a term node is proportional to either the number of genes (if `node_size`= "num_DEGs")
-#' or the -log10(lowest p value) (if `node_size`= "p_val").
+#' @return a  \code{\link[ggraph]{ggraph}} object containing the term-gene graph.
+#'  Each node corresponds to an enriched term (beige), an up-regulated gene (green)
+#'  or a down-regulated gene (red). An edge between a term and a gene indicates
+#'  that the given term involves the gene. Size of a term node is proportional
+#'  to either the number of genes (if \code{node_size = "num_DEGs"}) or
+#'  the -log10(lowest p value) (if \code{node_size = "p_val"}).
 #'
-#' @details this plotting function was created based on the Gene-Concept network visualization
-#' by the R package `enrichplot`.
+#' @details this plotting function was created based on the Gene-Concept
+#' network visualization by the R package \code{enrichplot}.
 #'
 #' @import ggraph
 #' @export
@@ -443,27 +450,25 @@ enrichment_chart <- function(result_df, plot_by_cluster = FALSE,
 #' p <- term_gene_graph(RA_output, num_terms = 5)
 #' p <- term_gene_graph(RA_output, node_size = "p_val")
 term_gene_graph <- function(result_df, num_terms = 10,
-                            layout = "auto", use_names = FALSE,
+                            layout = "auto", use_description = FALSE,
                             node_size = "num_DEGs") {
 
   ############ Argument Checks
-  ### Set column for term labels
-  ID_column <- ifelse(use_names, "Pathway", "ID")
-
   ### Check num_terms is NULL or numeric
   if (!is.numeric(num_terms) & !is.null(num_terms)) {
     stop("`num_terms` must either be numeric or NULL!")
   }
 
-  ### Check use_names is boolean
-  if (!is.logical(use_names)) {
-    stop("`use_names` must either be TRUE or FALSE!")
+  ### Check use_description is boolean
+  if (!is.logical(use_description)) {
+    stop("`use_description` must either be TRUE or FALSE!")
   }
 
+  ### Set column for term labels
+  ID_column <- ifelse(use_description, "Term_Descriptions", "ID")
+
   ### Check node_size
-  if (node_size != "num_DEGs" & node_size != "p_val") {
-    stop("`node_size` must either be num_DEGs or p_val!")
-  }
+  node_size <- match.arg(node_size, c("num_DEGs", "p_val"))
 
   ### Check necessary columnns
   necessary_cols <- c("Up_regulated", "Down_regulated", "lowest_p", ID_column)

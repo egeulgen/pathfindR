@@ -5,24 +5,25 @@
 #' This function takes in a data frame consisting of Gene Symbol, log-fold-change
 #' and adjusted-p values. After input testing, any gene symbols that are not in
 #' the PIN are converted to alias symbols if the alias is in the PIN. Next,
-#' active subnetwork search is performed. Pathway enrichment analysis is
-#' performed using the genes in each of the active subnetworks. Pathways with
+#' active subnetwork search is performed. Enrichment analysis is
+#' performed using the genes in each of the active subnetworks. Terms with
 #' adjusted-p values lower than \code{enrichment_threshold} are discarded. The
-#' lowest adjusted-p value (over all subnetworks) for each pathway is kept. This
+#' lowest adjusted-p value (over all subnetworks) for each term is kept. This
 #' process of active subnetwork search and enrichment is repeated  for a selected
 #' number of \code{iterations}, which is done in parallel. Over all iterations,
 #' the lowest and the highest adjusted-p values, as well as number of occurrences
-#' are reported for each enriched pathway.
+#' are reported for each enriched term.
 #'
 #' @inheritParams input_testing
-#' @param visualize_pathways Boolean value to indicate whether or not to create pathway diagrams.
 #' @inheritParams fetch_gene_set
+#' @param visualize_enriched_terms Boolean value to indicate whether or not to
+#'  create diagrams for enriched terms (default = TRUE)
 #' @param human_genes boolean to indicate whether the input genes are
 #'  human gene symbols or not (default = TRUE)
-#' @param enrichment_threshold threshold used when filtering individual iterations' pathway
+#' @param enrichment_threshold adjusted-p value threshold used when filtering
 #'  enrichment results
 #' @param adj_method correction method to be used for adjusting p-values of
-#'  pathway enrichment results (Default: 'bonferroni', see ?p.adjust)
+#'  enrichment results (Default: 'bonferroni', see ?p.adjust)
 #' @param search_method algorithm to use when performing active subnetwork
 #'  search. Options are greedy search (GR), simulated annealing (SA) or genetic
 #'  algorithm (GA) for the search (Default:GR. Can be one of c("GR", "SA",
@@ -56,32 +57,32 @@
 #' directory where the output and intermediate files are saved (default: "pathfindR_Results")
 #' @param list_active_snw_genes boolean value indicating whether or not to report
 #' the non-DEG active subnetwork genes for the active subnetwork which was enriched for
-#' the given pathway with the lowest p value (default = FALSE)
+#' the given term with the lowest p value (default = FALSE)
 #' @param silent_option boolean value indicating whether to print the messages to the console (FALSE)
 #' or print to a file (TRUE) during active subnetwork search (default = TRUE). This option was added
 #' because during parallel runs, the console messages get mixed up.
 #'
 #' @return Data frame of pathfindR enrichment results. Columns are: \describe{
-#'   \item{ID}{KEGG ID of the enriched pathway}
-#'   \item{Pathway}{Description of the enriched pathway}
-#'   \item{Fold_Enrichment}{Fold enrichment value for the enriched pathway (Calculated using ONLY the input genes)}
-#'   \item{occurrence}{the number of iterations that the given pathway was found to enriched over all iterations}
-#'   \item{lowest_p}{the lowest adjusted-p value of the given pathway over all iterations}
-#'   \item{highest_p}{the highest adjusted-p value of the given pathway over all iterations}
+#'   \item{ID}{ID of the enriched term}
+#'   \item{Term_Description}{Description of the enriched term}
+#'   \item{Fold_Enrichment}{Fold enrichment value for the enriched term (Calculated using ONLY the input genes)}
+#'   \item{occurrence}{the number of iterations that the given term was found to enriched over all iterations}
+#'   \item{lowest_p}{the lowest adjusted-p value of the given term over all iterations}
+#'   \item{highest_p}{the highest adjusted-p value of the given term over all iterations}
 #'   \item{non_DEG_Active_Snw_Genes (OPTIONAL)}{the non-DEG active subnetwork genes, comma-separated}
-#'   \item{Up_regulated}{the up-regulated genes in the input involved in the given pathway, comma-separated}
-#'   \item{Down_regulated}{the down-regulated genes in the input involved in the given pathway, comma-separated}
+#'   \item{Up_regulated}{the up-regulated genes in the input involved in the given term's gene set, comma-separated}
+#'   \item{Down_regulated}{the down-regulated genes in the input involved in the given term's gene set, comma-separated}
 #' }
 #'  The function also creates an HTML report with the pathfindR enrichment
-#'  results linked to the visualizations of the pathways in addition to
+#'  results linked to the visualizations of the enriched terms in addition to
 #'  the table of converted gene symbols. This report can be found in
-#'  "`output_dir`/results.html" under the current working directory.
+#'  "\code{output_dir}/results.html" under the current working directory.
 #'
 #'  Optionally, a bubble chart of enrichment results are plotted. The x-axis
 #'  corresponds to fold enrichment values while the y-axis indicates the enriched
-#'  pathways. Size of the bubble indicates the number of DEGs in the given pathway.
-#'  Color indicates the -log10(lowest-p) value; the more red it gets, the more significant
-#'  the pathway is.
+#'  terms. Size of the bubble indicates the number of DEGs in the given term.
+#'  Color indicates the -log10(lowest-p) value; the more red it is, the more significant
+#'  the enriched term is.
 #'
 #' @import knitr
 #' @import rmarkdown
@@ -101,8 +102,8 @@
 #' \code{\link{active_snw_search}} for active subnetwork search and subnetwork filtering,
 #' \code{\link{enrichment_analyses}} for enrichment analysis (using the active subnetworks),
 #' \code{\link{summarize_enrichment_results}} for summarizing the active-subnetwork-oriented enrichment results,
-#' \code{\link{annotate_pathway_DEGs}} for annotation of affected genes in the given gene sets,
-#' \code{\link{visualize_pws}} for visualization of pathway diagrams,
+#' \code{\link{annotate_term_DEGs}} for annotation of affected genes in the given gene sets,
+#' \code{\link{visualize_terms}} for visualization of enriched terms,
 #' \code{\link{enrichment_chart}} for a visual summary of the pathfindR enrichment result,
 #' \code{\link[foreach]{foreach}} for details on parallel execution of looping constructs,
 #' \code{\link{cluster_pathways}} for clustering the resulting enriched pathways and partitioning into clusters.
@@ -111,8 +112,12 @@
 #' \dontrun{
 #' run_pathfindR(RA_input)
 #' }
-run_pathfindR <- function(input, p_val_threshold = 5e-2,
-                          visualize_pathways = TRUE,
+run_pathfindR <- function(input,
+                          gene_sets = "KEGG",
+                          custom_genes = NULL, custom_descriptions = NULL,
+                          pin_name_path = "Biogrid",
+                          p_val_threshold = 5e-2,
+                          visualize_enriched_terms = TRUE,
                           human_genes = TRUE,
                           enrichment_threshold = 5e-2,
                           adj_method = "bonferroni",
@@ -123,10 +128,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
                           grMaxDepth = 1, grSearchDepth = 1,
                           grOverlap = 0.5, grSubNum = 1000,
                           iterations = 10, n_processes = NULL,
-                          pin_name_path = "Biogrid",
                           score_quan_thr = 0.80, sig_gene_thr = 10,
-                          gene_sets = "KEGG",
-                          custom_genes = NULL, custom_pathways = NULL,
                           bubble = TRUE,
                           output_dir = "pathfindR_Results",
                           list_active_snw_genes = FALSE,
@@ -274,7 +276,7 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
 
   ## In case no enrichment was found
   if (is.null(combined_res)) {
-    warning("Did not find any enriched pathways!")
+    warning("Did not find any enriched terms!")
     return(data.frame())
   }
 
@@ -286,23 +288,20 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
   )
 
   ############ Annotation of Involved DEGs and Visualization
-  message("## Annotating involved genes and visualizing pathways\n\n")
+  message("## Annotating involved genes and visualizing enriched terms\n\n")
 
   ##### Annotate Involved DEGs by up/down-regulation status
   final_res <- pathfindR::annotate_term_DEGs(result_df = final_res,
                                              input_processed = input_processed,
                                              genes_by_term = genes_by_term)
 
-  ##### Visualize the Pathways (If KEGG human, KEGG diagram. Otherwise,
+  ##### Visualize the Enriched Terms (If human KEGG, KEGG diagram. Otherwise,
   # Interactions of Genes in the PIN)
-  kegg_non_kegg <- ifelse(gene_sets == "KEGG", "KEGG", "non-KEGG")
-  if (visualize_pathways) {
-    pathfindR::visualize_pws(
-      result_df = final_res,
-      input_processed = input_processed,
-      gene_sets = kegg_non_kegg,
-      pin_name_path = pin_name_path
-    )
+  if (visualize_enriched_terms) {
+    pathfindR::visualize_terms(result_df = final_res,
+                               input_processed = input_processed,
+                               hsa_KEGG = (gene_sets == "KEGG"),
+                               pin_name_path = pin_name_path)
   }
 
   ############ Create HTML Report
@@ -312,12 +311,12 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
     output_dir = "."
   )
 
-  rmarkdown::render(system.file("rmd/enriched_pathways.Rmd",
+  rmarkdown::render(system.file("rmd/enriched_terms.Rmd",
     package = "pathfindR"
   ),
   params = list(
     df = final_res, gset = gene_sets,
-    vis_cond = visualize_pathways,
+    vis_cond = visualize_enriched_terms,
     out_dir = output_dir
   ),
   output_dir = "."
@@ -336,12 +335,12 @@ run_pathfindR <- function(input, p_val_threshold = 5e-2,
     graphics::plot(pathfindR::enrichment_chart(final_res))
   }
 
-  message(paste0("Found ", nrow(final_res), " enriched pathways\n\n"))
+  message(paste0("Found ", nrow(final_res), " enriched terms\n\n"))
 
-  message("Pathway enrichment results and table of converted genes ")
+  message("Enrichment results and table of converted genes ")
   message("can be found in \"results.html\" ")
   message(paste0("in the folder \"", output_dir, "\"\n\n"))
-  message("Run cluster_pathways() for clustering pathways\n\n")
+  message("Run cluster_pathways() for clustering enriched terms\n\n")
 
   return(final_res)
 }
@@ -711,7 +710,7 @@ input_processing <- function(input, p_val_threshold,
   return(input)
 }
 
-#' Annotate the Affected Genes in the Provided Pathways
+#' Annotate the Affected Genes in the Provided Enriched Terms
 #'
 #' @param result_df data frame of enrichment results.
 #'  The only must-have column is "ID".
@@ -720,8 +719,8 @@ input_processing <- function(input, p_val_threshold,
 #'   this list are gene set IDs (default = \code{kegg_genes})
 #'
 #' @return The original data frame with two additional columns:  \describe{
-#'   \item{Up_regulated}{Up-regulated input genes in the given pathway}
-#'   \item{Down_regulated}{Down-regulated input genes in the given pathway}
+#'   \item{Up_regulated}{the up-regulated genes in the input involved in the given term's gene set, comma-separated}
+#'   \item{Down_regulated}{the down-regulated genes in the input involved in the given term's gene set, comma-separated}
 #' }
 #' @export
 #'

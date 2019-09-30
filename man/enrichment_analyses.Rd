@@ -4,8 +4,8 @@
 \alias{enrichment_analyses}
 \title{Perform Enrichment Analyses on the Input Subnetworks}
 \usage{
-enrichment_analyses(snws, input_genes, gene_sets = "KEGG",
-  custom_genes = NULL, custom_pathways = NULL, pin_path,
+enrichment_analyses(snws, input_genes, pin_path,
+  genes_by_term = kegg_genes, term_descriptions = kegg_descriptions,
   adj_method = "bonferroni", enrichment_threshold = 0.05,
   list_active_snw_genes = FALSE)
 }
@@ -14,35 +14,29 @@ enrichment_analyses(snws, input_genes, gene_sets = "KEGG",
 
 \item{input_genes}{vector of input gene symbols (that were used during active subnetwork genes)}
 
-\item{gene_sets}{the gene sets used for enrichment analysis. Available gene sets
-are KEGG, Reactome, BioCarta, GO-All, GO-BP, GO-CC, GO-MF or Custom. If "Custom", the arguments
-custom_genes and custom pathways must be specified. (Default = "KEGG")}
-
-\item{custom_genes}{a list containing the genes involved in each custom pathway. Each element
-is a vector of gene symbols located in the given pathway. Names correspond to
-the ID of the pathway.}
-
-\item{custom_pathways}{A list containing the descriptions for each custom pathway. Names of the
-list correspond to the ID of the pathway.}
-
 \item{pin_path}{path to the Protein Interaction Network (PIN) file used in
 the analysis}
 
-\item{adj_method}{correction method to be used for adjusting p-values of
-pathway enrichment results (Default: 'bonferroni', see ?p.adjust)}
+\item{genes_by_term}{List that contains genes for each gene set. Names of
+this list are gene set IDs (default = \code{kegg_genes})}
 
-\item{enrichment_threshold}{threshold used when filtering individual iterations' pathway
-enrichment results}
+\item{term_descriptions}{Vector that contains term descriptions for the
+gene sets. Names of this vector are gene set IDs (default = \code{kegg_descriptions})}
+
+\item{adj_method}{correction method to be used for adjusting p-values of}
+
+\item{enrichment_threshold}{adjusted-p value threshold used when filtering
+enrichment results (default = 0.05)}
 
 \item{list_active_snw_genes}{boolean value indicating whether or not to report
 the non-DEG active subnetwork genes for the active subnetwork which was enriched for
-the given pathway with the lowest p value (default = FALSE)}
+the given term with the lowest p value (default = \code{FALSE})}
 }
 \value{
 a dataframe of combined enrichment results. Columns are: \describe{
-  \item{ID}{KEGG ID of the enriched pathway}
-  \item{Pathway}{Description of the enriched pathway}
-  \item{Fold_Enrichment}{Fold enrichment value for the enriched pathway}
+  \item{ID}{ID of the enriched term}
+  \item{Term_Description}{Description of the enriched term}
+  \item{Fold_Enrichment}{Fold enrichment value for the enriched term}
   \item{p_value}{p value of enrichment}
   \item{adj_p}{adjusted p value of enrichment}
   \item{non_DEG_Active_Snw_Genes (OPTIONAL)}{the non-DEG active subnetwork genes, comma-separated}
@@ -52,13 +46,8 @@ a dataframe of combined enrichment results. Columns are: \describe{
 Perform Enrichment Analyses on the Input Subnetworks
 }
 \examples{
-\dontrun{
-enr_res <- enrichment_analyses(snws,
-  input_genes = my_input$GENE,
-  gene_sets = "KEGG", pin_path = "path/to/PIN"
-)
-}
-
+pin_path <- return_pin_path()
+enr_res <- enrichment_analyses(example_active_snws[1:2], RA_input$Gene.symbol[1:25], pin_path)
 }
 \seealso{
 \code{\link{enrichment}} for the enrichment analysis for a single gene set

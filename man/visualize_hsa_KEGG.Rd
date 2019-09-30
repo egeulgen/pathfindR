@@ -8,14 +8,15 @@ visualize_hsa_KEGG(pw_table, gene_data)
 }
 \arguments{
 \item{pw_table}{Data frame of enrichment results. Must-have columns are: "ID" and
-"Pathway".}
+"Term_Description".}
 
 \item{gene_data}{Single column data frame containing change values (e.g.
 log(fold change) values) for significant genes. Row names are gene symbols.}
 }
 \value{
-Creates visualizations of the pathways with the package \code{pathview}
- and saves them in the folder "pathway_visualizations" under the current working directory.
+Creates visualizations of the enriched human KEGG pathways with
+ the package \code{pathview} and saves them in the folder
+ "term_visualizations" under the current working directory.
 }
 \description{
 Visualize Human KEGG Pathways
@@ -27,7 +28,7 @@ visualize_hsa_KEGG(pathway_table, gene_data)
 }
 \seealso{
 \code{\link[pathview]{pathview}} for KEGG pathway-based data integration
-  and visualization. See \code{\link{visualize_pws}} for the wrapper function
-  for creating pathway diagrams. See \code{\link{run_pathfindR}} for the
-  wrapper function of the pathfindR workflow.
+  and visualization. See \code{\link{visualize_terms}} for the wrapper function
+  for creating enriched term diagrams. See \code{\link{run_pathfindR}} for the
+  wrapper function of the pathfindR enrichment workflow.
 }

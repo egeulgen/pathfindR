@@ -10,8 +10,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 pathfindR-Enrichment results are presented below:
 
-## [All pathways found to be enriched](./enriched_pathways.html)
-A table that lists all pathways found to be enriched as well as lists of up- or down-regulated genes for each pathway. If it was requested, the pathway descriptions (names) are linked to the visualizations of these pathways with differentially-expressed genes colored according to change values.
+## [All terms found to be enriched](./enriched_terms.html)
+A table that lists all terms found to be enriched as well as lists of up- or down-regulated genes for each term. If it was requested, the term descriptions are linked to the visualizations of these terms, where affected color genes are colored by change values (if provided).
 
 ## [Tables of genes with converted gene symbols and genes without interactions](./conversion_table.html)
 - A table listing the genes whose symbols (Old Symbol) were converted to aliases (Converted Symbol) that were in the protein-protein interaction network.

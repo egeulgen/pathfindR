@@ -8,32 +8,36 @@ enrichment_chart(result_df, plot_by_cluster = FALSE, num_bubbles = 4,
   even_breaks = TRUE)
 }
 \arguments{
-\item{result_df}{a data frame that must contain the following columns:\describe{
-  \item{Pathway}{Description of the enriched pathway}
-  \item{Fold_Enrichment}{Fold enrichment value for the enriched pathway}
-  \item{lowest_p}{the lowest adjusted-p value of the given pathway over all iterations}
-  \item{Up_regulated}{the up-regulated genes in the input involved in the given pathway, comma-separated}
-  \item{Down_regulated}{the down-regulated genes in the input involved in the given pathway, comma-separated}
-  \item{Cluster(OPTIONAL)}{the cluster to which the pathway is assigned}
+\item{result_df}{a data frame that must contain the following columns: \describe{
+  \item{Term_Description}{Description of the enriched term}
+  \item{Fold_Enrichment}{Fold enrichment value for the enriched term}
+  \item{lowest_p}{the lowest adjusted-p value of the given term over all iterations}
+  \item{Up_regulated}{the up-regulated genes in the input involved in the given term's gene set, comma-separated}
+  \item{Down_regulated}{the down-regulated genes in the input involved in the given term's gene set, comma-separated}
+  \item{Cluster(OPTIONAL)}{the cluster to which the enriched term is assigned}
 }}
 
 \item{plot_by_cluster}{boolean value indicating whether or not to group the
-pathways by cluster (works if "Cluster" is a column of `result_df`).}
+enriched terms by cluster (works if \code{result_df} contains a
+"Cluster" column).}
 
-\item{num_bubbles}{number of sizes displayed in the legend `# of DEGs` (Default = 5).}
+\item{num_bubbles}{number of sizes displayed in the legend \code{# of DEGs}
+(Default = 4)}
 
-\item{even_breaks}{whether or not to set even breaks for the number of sizes displayed
-in the legend `# of DEGs`. If `TRUE` (default), sets equal breaks and the number of
-displayed bubbles may be different than the number set by `num_bubbles`. If the exact
-number set by `num_bubbles` is required, set this argument to `FALSE`.}
+\item{even_breaks}{whether or not to set even breaks for the number of sizes
+displayed in the legend \code{# of DEGs}. If \code{TRUE} (default), sets
+equal breaks and the number of displayed bubbles may be different than the
+number set by \code{num_bubbles}. If the exact number set by
+\code{num_bubbles} is required, set this argument to \code{FALSE}}
 }
 \value{
-a `ggplot2` object containing the bubble chart. The x-axis corresponds to
-fold enrichment values while the y-axis indicates the enriched pathways. Size of
-the bubble indicates the number of DEGs in the given pathway. Color indicates
-the -log10(lowest-p) value. The closer the color is to red, the more significant
-the enrichment is. Optionally, if "Cluster" is a column of `result_df` and
-plot_by_cluster == TRUE, the pathways are grouped by clusters.
+a \code{\link[ggplot2]{ggplot2}} object containing the bubble chart.
+The x-axis corresponds to fold enrichment values while the y-axis indicates
+the enriched terms. Size of the bubble indicates the number of DEGs in the
+given enriched term. Color indicates the -log10(lowest-p) value. The closer
+the color is to red, the more significant the enrichment is. Optionally, if
+"Cluster" is a column of \code{result_df} and \code{plot_by_cluster == TRUE},
+the enriched terms are grouped by clusters.
 }
 \description{
 This function is used to plot a bubble chart displaying the enrichment

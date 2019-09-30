@@ -4,40 +4,45 @@
 \alias{enrichment}
 \title{Perform Enrichment Analysis for a Single Gene Set}
 \usage{
-enrichment(genes_by_pathway, genes_of_interest, pathways_list,
-  adj_method = "bonferroni", enrichment_threshold, DEG_vec, all_genes)
+enrichment(input_genes, genes_by_term = kegg_genes,
+  term_descriptions = kegg_descriptions, adj_method = "bonferroni",
+  enrichment_threshold = 0.05, sig_genes_vec, background_genes)
 }
 \arguments{
-\item{genes_by_pathway}{List that contains genes for each gene set. Names of
-this list are gene set IDs.}
-
-\item{genes_of_interest}{The set of gene symbols to be used for enrichment
+\item{input_genes}{The set of gene symbols to be used for enrichment
 analysis. In the scope of this package, these are genes that were
-identified for an active subnetwork.}
+identified for an active subnetwork}
 
-\item{pathways_list}{List that contains pathway descriptions for the gene set
-IDs. Names of this list are gene set IDs.}
+\item{genes_by_term}{List that contains genes for each gene set. Names of
+this list are gene set IDs (default = \code{kegg_genes})}
 
-\item{adj_method}{correction method to be used for adjusting p-values.}
+\item{term_descriptions}{Vector that contains term descriptions for the
+gene sets. Names of this vector are gene set IDs
+(default = \code{kegg_descriptions})}
+
+\item{adj_method}{correction method to be used for adjusting p-values.
+(default = "bonferroni")}
 
 \item{enrichment_threshold}{adjusted-p value threshold used when filtering
-pathway enrichment results}
+enrichment results (default = 0.05)}
 
-\item{DEG_vec}{vector of differentially-expressed gene symbols}
+\item{sig_genes_vec}{vector of significant gene symbols. In the scope of this
+package, these are the input genes that were used for active subnetwork search}
 
-\item{all_genes}{vector of background genes}
+\item{background_genes}{vector of background genes. In the scope of this package,
+the background genes are taken as all genes in the PIN
+(see \code{\link{enrichment_analyses}})}
 }
 \value{
-A data frame that contains enrichment results.
+A data frame that contains enrichment results
 }
 \description{
 Perform Enrichment Analysis for a Single Gene Set
 }
 \examples{
-enrichment(
-  kegg_genes, c("PER1", "PER2", "CRY1", "CREB1"), kegg_pathways,
-  "bonferroni", 0.05, "PER1", unlist(kegg_genes)
-)
+enrichment(input_genes = c("PER1", "PER2", "CRY1", "CREB1"),
+           sig_genes_vec = "PER1",
+           background_genes = unlist(kegg_genes))
 }
 \seealso{
 \code{\link[stats]{p.adjust}} for adjustment of p values. See

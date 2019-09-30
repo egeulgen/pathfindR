@@ -1,5 +1,5 @@
 ---
-title: '`r logo_path <- system.file("help/figures/logo.png", package = "pathfindR"); knitr::opts_chunk$set(out.width="15%"); knitr::include_graphics(logo_path)` pathfindR - All Enriched Pathways - `r params$gset`' 
+title: '`r logo_path <- system.file("help/figures/logo.png", package = "pathfindR"); knitr::opts_chunk$set(out.width="15%"); knitr::include_graphics(logo_path)` pathfindR - All Enriched Terms - `r params$gset`' 
 output: html_document
 params:
   df: ""
@@ -12,7 +12,7 @@ params:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r pathview, echo=FALSE, comment=NA}
+```{r pathview_message, echo=FALSE, comment=NA}
 if (params$gset == "KEGG" & params$vis_cond)
   cat("KEGG pathway visualizations were performed via the R Biocondutor package __pathview__ [1].\n")
 ```
@@ -28,15 +28,15 @@ if (params$vis_cond) {
   ## If hsa KEGG visualizations
   if (params$gset == "KEGG") {
     for(i in 1:nrow(result_df))
-      result_df[i, 2] <- paste0("[", result_df[i, 2], "]", "(./pathway_visualizations/", result_df[i, 1],".", result_df[i, 2],".png)")
+      result_df[i, 2] <- paste0("[", result_df[i, 2], "]", "(./term_visualizations/", result_df[i, 1],".", result_df[i, 2],".png)")
   } else {
-    ## If interactions of pw genes visualizations
-    pw_dir <- paste0(params$out_dir, "/pathway_visualizations")
+    ## If interactions of term-related genes visualizations
+    pw_dir <- paste0(params$out_dir, "/term_visualizations")
     pw_dir <- normalizePath(pw_dir)
     for(i in 1:nrow(result_df)) {
       file_path <- paste0(pw_dir, "/", result_df[i, 2],".png")
       if (file.exists(file_path))
-        result_df[i, 2] <- paste0("[", result_df[i, 2], "]", "(./pathway_visualizations/", result_df[i, 2],".png)")
+        result_df[i, 2] <- paste0("[", result_df[i, 2], "]", "(./term_visualizations/", result_df[i, 2],".png)")
     }
   }
 }

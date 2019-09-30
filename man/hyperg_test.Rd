@@ -4,14 +4,15 @@
 \alias{hyperg_test}
 \title{Hypergeometic Distribution-based Hypothesis Testing}
 \usage{
-hyperg_test(pw_genes, chosen_genes, all_genes)
+hyperg_test(term_genes, chosen_genes, background_genes)
 }
 \arguments{
-\item{pw_genes}{vector of genes in the selected pathway}
+\item{term_genes}{vector of genes in the selected term gene set}
 
 \item{chosen_genes}{vector containing the set of input genes}
 
-\item{all_genes}{vector of "all" genes (background)}
+\item{background_genes}{vector of background genes (i.e. all genes in
+the experiment)}
 }
 \value{
 the p-value as determined using the hypergeometric distribution.
@@ -20,8 +21,8 @@ the p-value as determined using the hypergeometric distribution.
 Hypergeometic Distribution-based Hypothesis Testing
 }
 \details{
-To determine whether the `chosen genes` are enriched
-(compared to a background pool of genes) in the `pw_genes`, the
+To determine whether the \code{chosen_genes} are enriched
+(compared to a background pool of genes) in the \code{term_genes}, the
 hypergeometric distribution is assumed and the appropriate p value
 (the value under the right tail) is calculated and returned.
 }

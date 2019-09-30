@@ -5,40 +5,42 @@
 \title{Plot Term-Gene Graph}
 \usage{
 term_gene_graph(result_df, num_terms = 10, layout = "auto",
-  use_names = FALSE, node_size = "num_DEGs")
+  use_description = FALSE, node_size = "num_DEGs")
 }
 \arguments{
-\item{result_df}{A dataframe of pathfindR results that must contain the following columns:\describe{
-  \item{Pathway}{Description of the enriched pathway (necessary if `use_names` is TRUE)}
-  \item{ID}{ID of the enriched pathway (necessary if `use_names` is FALSE)}
-  \item{lowest_p}{the lowest adjusted-p value of the given pathway over all iterations}
-  \item{Up_regulated}{the up-regulated genes in the input involved in the given pathway, comma-separated}
-  \item{Down_regulated}{the down-regulated genes in the input involved in the given pathway, comma-separated}
+\item{result_df}{A dataframe of pathfindR results that must contain the following columns: \describe{
+  \item{Term_Description}{Description of the enriched term (necessary if \code{use_description = TRUE})}
+  \item{ID}{ID of the enriched term (necessary if \code{use_description = FALSE})}
+  \item{lowest_p}{the lowest adjusted-p value of the given term over all iterations}
+  \item{Up_regulated}{the up-regulated genes in the input involved in the given term's gene set, comma-separated}
+  \item{Down_regulated}{the down-regulated genes in the input involved in the given term's gene set, comma-separated}
 }}
 
-\item{num_terms}{Number of top terms to use while creating the graph. Set to `NULL` to use
-all terms (default = 10, i.e. top 10 terms)}
+\item{num_terms}{Number of top enriched terms to use while creating the graph. Set to \code{NULL} to use
+all enriched terms (default = 10, i.e. top 10 terms)}
 
 \item{layout}{The type of layout to create (see \code{\link[ggraph]{ggraph}} for details. Default = "auto")}
 
-\item{use_names}{Boolean argument to indicate whether term descriptions (in the Pathway column) should be used. (default = `FALSE`)}
+\item{use_description}{Boolean argument to indicate whether term descriptions
+(in the "Term_Description" column) should be used. (default = \code{FALSE})}
 
 \item{node_size}{Argument to indicate whether to use number of DEGs ("num_DEGS")
 or the -log10(lowest p value) ("p_val") for adjusting the node sizes (default = "num_DEGS")}
 }
 \value{
-a `ggplot` object containing the term-gene graph. Each node corresponds to
-an enriched term (beige), an up-regulated gene (green) or a down-regulated gene (red).
-An edge between a term and a gene indicates that the given term involves the gene. Size
-of a term node is proportional to either the number of genes (if `node_size`= "num_DEGs")
-or the -log10(lowest p value) (if `node_size`= "p_val").
+a  \code{\link[ggraph]{ggraph}} object containing the term-gene graph.
+ Each node corresponds to an enriched term (beige), an up-regulated gene (green)
+ or a down-regulated gene (red). An edge between a term and a gene indicates
+ that the given term involves the gene. Size of a term node is proportional
+ to either the number of genes (if \code{node_size = "num_DEGs"}) or
+ the -log10(lowest p value) (if \code{node_size = "p_val"}).
 }
 \description{
 Plot Term-Gene Graph
 }
 \details{
-this plotting function was created based on the Gene-Concept network visualization
-by the R package `enrichplot`.
+this plotting function was created based on the Gene-Concept
+network visualization by the R package \code{enrichplot}.
 }
 \examples{
 p <- term_gene_graph(RA_output)
