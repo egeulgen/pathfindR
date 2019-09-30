@@ -481,59 +481,58 @@ term_gene_graph <- function(result_df, num_terms = 10,
   }
 
   ############ Initial steps
+  ### set num_terms to NULL if number of enriched terms is smaller than num_terms
+  if (nrow(result_df) < num_terms) {
+    num_terms <- NULL
+  }
+
   ### Order and filter for top N genes
-  df_for_vis <- result_df[order(result_df$lowest_p, decreasing = FALSE), ]
+  result_df <- result_df[order(result_df$lowest_p, decreasing = FALSE), ]
   if (!is.null(num_terms)) {
-    df_for_vis <- df_for_vis[1:num_terms, ]
+    result_df <- result_df[1:num_terms, ]
   }
 
   ### Prep data frame for graph
-  for_graph <- data.frame()
-  for (i in base::seq_len(nrow(df_for_vis))) {
-    up_genes <- unlist(strsplit(df_for_vis$Up_regulated[i], ", "))
-    down_genes <- unlist(strsplit(df_for_vis$Down_regulated[i], ", "))
+  graph_df <- data.frame()
+  for (i in base::seq_len(nrow(result_df))) {
+    up_genes <- unlist(strsplit(result_df$Up_regulated[i], ", "))
+    down_genes <- unlist(strsplit(result_df$Down_regulated[i], ", "))
     genes <- c(up_genes, down_genes)
 
     for (gene in genes) {
-      for_graph <- rbind(
-        for_graph,
-        data.frame(
-          Pathway = df_for_vis[i, ID_column],
-          Gene = gene
-        )
-      )
+      graph_df <- rbind(graph_df,
+                         data.frame(Term = result_df[i, ID_column],
+                                    Gene = gene))
     }
   }
 
-  up_genes <- unlist(lapply(
-    df_for_vis$Up_regulated,
-    function(x) unlist(strsplit(x, ", "))
-  ))
 
-  ############ Create graph and plot
+  up_genes <- lapply(result_df$Up_regulated,
+                     function(x) unlist(strsplit(x, ", ")))
+  up_genes <- unlist(up_genes)
 
+  ############ Create graph object and plot
   ### create igraph object
-  g <- igraph::graph_from_data_frame(for_graph)
-  cond1 <- names(igraph::V(g)) %in% df_for_vis[, ID_column]
-  cond2 <- names(igraph::V(g)) %in% up_genes
-  igraph::V(g)$type <- ifelse(cond1, "pathway",
-    ifelse(cond2, "up", "down")
-  )
+  g <- igraph::graph_from_data_frame(graph_df, directed = FALSE)
+  cond_term <- names(igraph::V(g)) %in% result_df[, ID_column]
+  cond_up_gene <- names(igraph::V(g)) %in% up_genes
+  igraph::V(g)$type <- ifelse(cond_term, "term",
+                              ifelse(cond_up_gene, "up", "down"))
   # Adjust node sizes
   if (node_size == "num_DEGs") {
     sizes <- igraph::degree(g)
-    sizes <- ifelse(igraph::V(g)$type == "pathway", sizes, 2)
+    sizes <- ifelse(igraph::V(g)$type == "term", sizes, 2)
     size_label <- "# DEGs"
   } else {
-    idx <- match(names(igraph::V(g)), df_for_vis[, ID_column])
-    sizes <- -log10(df_for_vis$lowest_p[idx])
+    idx <- match(names(igraph::V(g)), result_df[, ID_column])
+    sizes <- -log10(result_df$lowest_p[idx])
     sizes[is.na(sizes)] <- 2
     size_label <- "-log10(p)"
   }
   igraph::V(g)$size <- sizes
   igraph::V(g)$label.cex <- 0.5
   igraph::V(g)$frame.color <- "gray"
-  igraph::V(g)$color <- ifelse(igraph::V(g)$type == "pathway", "#E5D7BF",
+  igraph::V(g)$color <- ifelse(igraph::V(g)$type == "term", "#E5D7BF",
     ifelse(igraph::V(g)$type == "up", "green",
       "red"
     )
