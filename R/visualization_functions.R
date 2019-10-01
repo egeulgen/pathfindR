@@ -465,7 +465,7 @@ term_gene_graph <- function(result_df, num_terms = 10,
   }
 
   ### Set column for term labels
-  ID_column <- ifelse(use_description, "Term_Descriptions", "ID")
+  ID_column <- ifelse(use_description, "Term_Description", "ID")
 
   ### Check node_size
   node_size <- match.arg(node_size, c("num_DEGs", "p_val"))
