@@ -35,5 +35,5 @@ tmp <- filterActiveSnws("path/to/output", significant_genes)
 }
 \seealso{
 See \code{\link{run_pathfindR}} for the wrapper function of the
-  pathfindR workflow
+  pathfindR enrichment workflow
 }

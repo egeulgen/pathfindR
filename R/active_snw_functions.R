@@ -10,7 +10,7 @@
 #' @export
 #'
 #' @seealso See \code{\link{run_pathfindR}} for the wrapper function of the
-#'   pathfindR workflow
+#'   pathfindR enrichment workflow
 #'
 #' @examples
 #' \dontshow{
