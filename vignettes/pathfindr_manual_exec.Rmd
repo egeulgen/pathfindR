@@ -92,7 +92,7 @@ visualize_pws(final_res,
               pin_name_path = "Biogrid")
 ```
 
-<img src="./example_pw_vis.png" width="650" height="519.87" />
+<img src="./example_interaction_vis.png" width="650" height="519.87" />
 
 and also a graphical summary of enrichment results:
 
