@@ -4,7 +4,7 @@
 \name{RA_clustered}
 \alias{RA_clustered}
 \title{Example Output for the pathfindR Clustering Workflow - Rheumatoid Arthritis}
-\format{A data frame with 89 rows and 10 columns:
+\format{A data frame with 104 rows and 10 columns:
 \describe{
   \item{ID}{ID of the enriched term}
   \item{Term_Description}{Description of the enriched term}
@@ -27,10 +27,10 @@ enrichment results \code{RA_output}. The clustering and partitioning
 function \code{cluster_enriched_terms} was used with the default settings
 (i.e. hierarchical clustering was performed and the agglomeration method
 was "average"). The optimal number of clusters (yielding the highest average
-silhouette width) was determined to be 22. Finally, the enriched terms with the
+silhouette width) was determined to be 16. Finally, the enriched terms with the
 lowest p values in each cluster were assigned as representative terms
 for that cluster.
-\emph{Generated on Sep 28, 2019.}
+\emph{Generated on Oct 1, 2019.}
 }
 \seealso{
 \code{\link{RA_input}} for example input of the enrichment workflow.

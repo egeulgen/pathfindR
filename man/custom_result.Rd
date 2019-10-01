@@ -10,6 +10,6 @@ custom_result
 }
 \description{
 A data frame consisting of pathfindR enrichment results on the example TF target data.
-\emph{Generated on Sep 28, 2019.}
+\emph{Generated on Oct 1, 2019.}
 }
 \keyword{datasets}

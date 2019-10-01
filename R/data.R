@@ -1,3 +1,14 @@
+#' Example Input for pathfindR - Enriched Term Scoring
+#'
+#' A matrix containing the log2-normalized expression values of the differentially-expressed genes
+#' for 18 rheumatoid arthritis (RA) patients and 15 healthy subjects. Expression values of 572
+#' differentially-expressed genes with adj.P.Val <= 0.05 are presented in this dataset.
+#' \emph{Generated on Sep 28, 2019.}
+#'
+#' @format A matrix with 572 rows and 33 columns.
+#' @source \url{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE15573}
+"RA_exp_mat"
+
 #' Example Input for the pathfindR Enrichment Workflow - Rheumatoid Arthritis
 #'
 #' A dataset containing the differentially-expressed genes along with the
@@ -26,9 +37,9 @@
 #' enrichment workflow performed on the rheumatoid arthritis
 #' differential-expression result dataset \code{RA_input}. Analysis via
 #' \code{run_pathfindR} was performed using the default settings.
-#' \emph{Generated on Sep 28, 2019.}
+#' \emph{Generated on Oct 1, 2019.}
 #'
-#' @format A data frame with 89 rows and 8 columns:
+#' @format A data frame with 104 rows and 8 columns:
 #' \describe{
 #'   \item{ID}{ID of the enriched term}
 #'   \item{Term_Description}{Description of the enriched term}
@@ -52,12 +63,12 @@
 #' function \code{cluster_enriched_terms} was used with the default settings
 #' (i.e. hierarchical clustering was performed and the agglomeration method
 #' was "average"). The optimal number of clusters (yielding the highest average
-#' silhouette width) was determined to be 22. Finally, the enriched terms with the
+#' silhouette width) was determined to be 16. Finally, the enriched terms with the
 #' lowest p values in each cluster were assigned as representative terms
 #' for that cluster.
-#' \emph{Generated on Sep 28, 2019.}
+#' \emph{Generated on Oct 1, 2019.}
 #'
-#' @format A data frame with 89 rows and 10 columns:
+#' @format A data frame with 104 rows and 10 columns:
 #' \describe{
 #'   \item{ID}{ID of the enriched term}
 #'   \item{Term_Description}{Description of the enriched term}
@@ -74,19 +85,6 @@
 #' \code{\link{RA_output}} for example output of the enrichment workflow.
 #' \code{\link{cluster_enriched_terms}} for details on the patfindR clustering approaches.
 "RA_clustered"
-
-#' Example Input for pathfindR - Enriched Term z-scores
-#'
-#' A matrix containing the log2-normalized expression values of the differentially-expressed genes
-#' for 18 rheumatoid arthritis (RA) patients and 15 healthy subjects. Expression values of
-#' differentially-expressed genes with adj.P.Val <= 0.05 are presented in this dataset.
-#' \emph{Generated on Sep 28, 2019.}
-#'
-#' @format A matrix with 572 rows and 33 columns.
-#' @source \url{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE15573}
-"RA_exp_mat"
-
-
 
 #' KEGG Pathways - Gene Sets
 #'
@@ -178,7 +176,7 @@
 #' Custom Gene Set Enrichment Results
 #'
 #' A data frame consisting of pathfindR enrichment results on the example TF target data.
-#' \emph{Generated on Sep 28, 2019.}
+#' \emph{Generated on Oct 1, 2019.}
 #' @format data frame containing 2 rows and 8 columns. Each row is a gene set (the TF target gene sets).
 "custom_result"
 
