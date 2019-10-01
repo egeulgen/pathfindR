@@ -3,7 +3,7 @@
 \docType{data}
 \name{RA_exp_mat}
 \alias{RA_exp_mat}
-\title{Example Input for pathfindR - pathway z-scores}
+\title{Example Input for pathfindR - Enriched Term z-scores}
 \format{A matrix with 572 rows and 33 columns.}
 \source{
 \url{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE15573}

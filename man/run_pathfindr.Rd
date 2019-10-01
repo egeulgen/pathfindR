@@ -174,5 +174,5 @@ run_pathfindR(RA_input)
 \code{\link{visualize_terms}} for visualization of enriched terms,
 \code{\link{enrichment_chart}} for a visual summary of the pathfindR enrichment result,
 \code{\link[foreach]{foreach}} for details on parallel execution of looping constructs,
-\code{\link{cluster_pathways}} for clustering the resulting enriched pathways and partitioning into clusters.
+\code{\link{cluster_enriched_terms}} for clustering the resulting enriched pathways and partitioning into clusters.
 }

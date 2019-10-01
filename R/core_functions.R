@@ -106,7 +106,7 @@
 #' \code{\link{visualize_terms}} for visualization of enriched terms,
 #' \code{\link{enrichment_chart}} for a visual summary of the pathfindR enrichment result,
 #' \code{\link[foreach]{foreach}} for details on parallel execution of looping constructs,
-#' \code{\link{cluster_pathways}} for clustering the resulting enriched pathways and partitioning into clusters.
+#' \code{\link{cluster_enriched_terms}} for clustering the resulting enriched pathways and partitioning into clusters.
 #'
 #' @examples
 #' \dontrun{
@@ -340,7 +340,7 @@ run_pathfindR <- function(input,
   message("Enrichment results and table of converted genes ")
   message("can be found in \"results.html\" ")
   message(paste0("in the folder \"", output_dir, "\"\n\n"))
-  message("Run cluster_pathways() for clustering enriched terms\n\n")
+  message("Run cluster_enriched_terms() for clustering enriched terms\n\n")
 
   return(final_res)
 }

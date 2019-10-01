@@ -3,7 +3,7 @@
 \docType{data}
 \name{biocarta_genes}
 \alias{biocarta_genes}
-\title{BioCarta Gene Sets}
+\title{BioCarta Pathways - Gene Sets}
 \format{list containing 314 vectors of gene symbols. Each vector corresponds
   to a gene set.}
 \usage{

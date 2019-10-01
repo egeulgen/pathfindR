@@ -13,8 +13,7 @@ Front. Genet. doi:10.3389/fgene.2019.00858
   )
 }
 
-#' pathfindR: A package for Pathway Enrichment Analysis Utilizing Active
-#' Subnetworks
+#' pathfindR: A package for Enrichment Analysis Utilizing Active Subnetworks
 #'
 #' The pathfindR package provides two important main functions: \code{run_pathfindR} and
 #' \code{choose_clusters}.
@@ -33,13 +32,13 @@ Front. Genet. doi:10.3389/fgene.2019.00858
 #'   lowest and the highest adjusted-p values, as well as number of occurrences
 #'   are reported for each enriched term.
 #'
-#' @section cluster_pathways: This function first calculates the pairwise
+#' @section cluster_enriched_terms: This function first calculates the pairwise
 #'   kappa statistics between the terms in the \code{result_df} data frame. By default,
 #'   hierarchical clustering is performed and the optimal number of clusters is chosen.
 #'   Optionally, a fuzzy partitioning algorithm can also be used. The function returns
 #'   a data frame with cluster assignments.
 #'
-#' @seealso See \code{\link{run_pathfindR}} and \code{\link{cluster_pathways}}
+#' @seealso See \code{\link{run_pathfindR}} and \code{\link{cluster_enriched_terms}}
 #'   for more details.
 #'
 #' @docType package

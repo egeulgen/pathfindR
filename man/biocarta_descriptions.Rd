@@ -3,7 +3,7 @@
 \docType{data}
 \name{biocarta_descriptions}
 \alias{biocarta_descriptions}
-\title{BioCarta Pathway Descriptions}
+\title{BioCarta Pathways - Descriptions}
 \format{list containing 314 character values, the descriptions for the given
   pathways.}
 \usage{

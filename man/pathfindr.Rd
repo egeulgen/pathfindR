@@ -4,8 +4,7 @@
 \name{pathfindR}
 \alias{pathfindR}
 \alias{pathfindR-package}
-\title{pathfindR: A package for Pathway Enrichment Analysis Utilizing Active
-Subnetworks}
+\title{pathfindR: A package for Enrichment Analysis Utilizing Active Subnetworks}
 \description{
 The pathfindR package provides two important main functions: \code{run_pathfindR} and
 \code{choose_clusters}.
@@ -26,7 +25,7 @@ The pathfindR package provides two important main functions: \code{run_pathfindR
   are reported for each enriched term.
 }
 
-\section{cluster_pathways}{
+\section{cluster_enriched_terms}{
  This function first calculates the pairwise
   kappa statistics between the terms in the \code{result_df} data frame. By default,
   hierarchical clustering is performed and the optimal number of clusters is chosen.
@@ -35,6 +34,6 @@ The pathfindR package provides two important main functions: \code{run_pathfindR
 }
 
 \seealso{
-See \code{\link{run_pathfindR}} and \code{\link{cluster_pathways}}
+See \code{\link{run_pathfindR}} and \code{\link{cluster_enriched_terms}}
   for more details.
 }

@@ -23,59 +23,59 @@
 #' Example Output for the pathfindR Enrichment Workflow - Rheumatoid Arthritis
 #'
 #' A dataset containing the results of pathfindR's active-subnetwork-oriented
-#' pathway enrichment workflow performed on the rheumatoid arthritis
+#' enrichment workflow performed on the rheumatoid arthritis
 #' differential-expression result dataset \code{RA_input}. Analysis via
 #' \code{run_pathfindR} was performed using the default settings.
 #' \emph{Generated on Sep 28, 2019.}
 #'
 #' @format A data frame with 89 rows and 8 columns:
 #' \describe{
-#'   \item{ID}{KEGG ID of the enriched pathway}
-#'   \item{Pathway}{Description of the enriched pathway}
-#'   \item{Fold_Enrichment}{Fold enrichment value for the enriched pathway}
-#'   \item{occurrence}{the number of iterations that the given pathway was found to enriched over all iterations}
-#'   \item{lowest_p}{the lowest adjusted-p value of the given pathway over all iterations}
-#'   \item{highest_p}{the highest adjusted-p value of the given pathway over all iterations}
-#'   \item{Up_regulated}{the up-regulated genes in the input involved in the given pathway, comma-separated}
-#'   \item{Down_regulated}{the down-regulated genes in the input involved in the given pathway, comma-separated}
+#'   \item{ID}{ID of the enriched term}
+#'   \item{Term_Description}{Description of the enriched term}
+#'   \item{Fold_Enrichment}{Fold enrichment value for the enriched term}
+#'   \item{occurrence}{the number of iterations that the given term was found to enriched over all iterations}
+#'   \item{lowest_p}{the lowest adjusted-p value of the given term over all iterations}
+#'   \item{highest_p}{the highest adjusted-p value of the given term over all iterations}
+#'   \item{Up_regulated}{the up-regulated genes in the input involved in the given term, comma-separated}
+#'   \item{Down_regulated}{the down-regulated genes in the input involved in the given term, comma-separated}
 #' }
 #' @seealso \code{\link{RA_input}} for example input of the enrichment workflow.
 #' \code{\link{RA_clustered}} for example output of the clustering workflow.
-#' \code{\link{run_pathfindR}} for details on the patfindR enrichment analysis.
+#' \code{\link{run_pathfindR}} for details on the patfindR enrichment workflow.
 "RA_output"
 
 #' Example Output for the pathfindR Clustering Workflow - Rheumatoid Arthritis
 #'
-#' A dataset containing the results of pathfindR's pathway clustering and
+#' A dataset containing the results of pathfindR's clustering and
 #' partitioning  workflow performed on the rheumatoid arthritis
 #' enrichment results \code{RA_output}. The clustering and partitioning
-#' function \code{cluster_pathways} was used with the default settings
+#' function \code{cluster_enriched_terms} was used with the default settings
 #' (i.e. hierarchical clustering was performed and the agglomeration method
 #' was "average"). The optimal number of clusters (yielding the highest average
-#' silhouette width) was determined to be 22. Finally, the pathways with the
-#' lowest p values in each cluster were assigned as representative pathways
+#' silhouette width) was determined to be 22. Finally, the enriched terms with the
+#' lowest p values in each cluster were assigned as representative terms
 #' for that cluster.
 #' \emph{Generated on Sep 28, 2019.}
 #'
 #' @format A data frame with 89 rows and 10 columns:
 #' \describe{
-#'   \item{ID}{KEGG ID of the enriched pathway}
-#'   \item{Pathway}{Description of the enriched pathway}
-#'   \item{Fold_Enrichment}{Fold enrichment value for the enriched pathway}
-#'   \item{occurrence}{the number of iterations that the given pathway was found to enriched over all iterations}
-#'   \item{lowest_p}{the lowest adjusted-p value of the given pathway over all iterations}
-#'   \item{highest_p}{the highest adjusted-p value of the given pathway over all iterations}
-#'   \item{Up_regulated}{the up-regulated genes in the input involved in the given pathway, comma-separated}
-#'   \item{Down_regulated}{the down-regulated genes in the input involved in the given pathway, comma-separated}
-#'   \item{Cluster}{the cluster to which the pathway is assigned}
-#'   \item{Status}{whether the pathway is the "Representative" pathway in its cluster or only a "Member"}
+#'   \item{ID}{ID of the enriched term}
+#'   \item{Term_Description}{Description of the enriched term}
+#'   \item{Fold_Enrichment}{Fold enrichment value for the enriched term}
+#'   \item{occurrence}{the number of iterations that the given term was found to enriched over all iterations}
+#'   \item{lowest_p}{the lowest adjusted-p value of the given term over all iterations}
+#'   \item{highest_p}{the highest adjusted-p value of the given term over all iterations}
+#'   \item{Up_regulated}{the up-regulated genes in the input involved in the given term, comma-separated}
+#'   \item{Down_regulated}{the down-regulated genes in the input involved in the given term, comma-separated}
+#'   \item{Cluster}{the cluster to which the enriched term is assigned}
+#'   \item{Status}{whether the enriched term is the "Representative" term in its cluster or only a "Member"}
 #' }
 #' @seealso \code{\link{RA_input}} for example input of the enrichment workflow.
 #' \code{\link{RA_output}} for example output of the enrichment workflow.
-#' \code{\link{cluster_pathways}} for details on the patfindR clustering approaches.
+#' \code{\link{cluster_enriched_terms}} for details on the patfindR clustering approaches.
 "RA_clustered"
 
-#' Example Input for pathfindR - pathway z-scores
+#' Example Input for pathfindR - Enriched Term z-scores
 #'
 #' A matrix containing the log2-normalized expression values of the differentially-expressed genes
 #' for 18 rheumatoid arthritis (RA) patients and 15 healthy subjects. Expression values of
@@ -88,7 +88,7 @@
 
 
 
-#' KEGG Gene Sets
+#' KEGG Pathways - Gene Sets
 #'
 #' A list containing the genes involved in each human KEGG pathway. Each element
 #' is a vector of gene symbols located in the given pathway. Names correspond to
@@ -100,7 +100,7 @@
 #'   to a pathway.
 "kegg_genes"
 
-#' KEGG Pathway Descriptions
+#' KEGG Pathways - Descriptions
 #'
 #' A list containing the descriptions for each human KEGG pathway. Names of the
 #' list correspond to the KEGG ID of the pathway. Pathways that did not contain
@@ -111,7 +111,7 @@
 #'   pathways.
 "kegg_descriptions"
 
-#' Reactome Gene Sets
+#' Reactome Pathways - Gene Sets
 #'
 #' A list containing the genes involved in each human Reactome pathway. Each
 #' element is a vector of gene symbols located in the given pathway. Names
@@ -122,7 +122,7 @@
 #'   to a pathway.
 "reactome_genes"
 
-#' Reactome Pathway Descriptions
+#' Reactome Pathways - Descriptions
 #'
 #' A list containing the descriptions for each human Reactome pathway. Names of the
 #' list correspond to the Reactome ID of the pathway.
@@ -132,7 +132,7 @@
 #'   pathways.
 "reactome_descriptions"
 
-#' BioCarta Gene Sets
+#' BioCarta Pathways - Gene Sets
 #'
 #' A list containing the genes involved in each human BioCarta pathway. Each
 #' element is a vector of gene symbols located in the given pathway.
@@ -142,7 +142,7 @@
 #'   to a gene set.
 "biocarta_genes"
 
-#' BioCarta Pathway Descriptions
+#' BioCarta Pathways - Descriptions
 #'
 #' A list containing the descriptions for each human BioCarta pathway.
 #' \emph{Generated on Sep 30, 2019.}

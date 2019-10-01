@@ -4,22 +4,22 @@
 \alias{create_kappa_matrix}
 \title{Create Kappa Statistics Matrix}
 \usage{
-create_kappa_matrix(enrichment_res, use_names = FALSE,
+create_kappa_matrix(enrichment_res, use_description = FALSE,
   use_active_snw_genes = FALSE)
 }
 \arguments{
-\item{enrichment_res}{data frame of pathway enrichment results. Must-have
-columns are "Pathway" or "ID", "Down_regulated", and "Up_regulated". If
-`use_active_snw_genes = TRUE`, "non_DEG_Active_Snw_Genes" must also be
+\item{enrichment_res}{data frame of enrichment results. Must-have
+columns are "Term_Description" (if \code{use_description = TRUE}) or "ID"
+(if \code{use_description = FALSE}), "Down_regulated", and "Up_regulated".
+If \code{use_active_snw_genes = TRUE}, "non_DEG_Active_Snw_Genes" must also be
 provided.}
 
-\item{use_names}{boolean to indicate whether to use pathway names instead of
-IDs (default = FALSE, i.e. use IDs)}
+\item{use_description}{Boolean argument to indicate whether term descriptions
+(in the "Term_Description" column) should be used. (default = \code{FALSE})}
 
 \item{use_active_snw_genes}{boolean to indicate whether or not to use
-non-input active subnetwork genes
-in the calculation of kappa statistics (default = FALSE,
-i.e. use only affected genes)}
+non-input active subnetwork genes in the calculation of kappa statistics
+(default = FALSE, i.e. only use affected genes)}
 }
 \value{
 a matrix of kappa statistics between each term in the

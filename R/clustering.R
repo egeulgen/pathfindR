@@ -1,15 +1,15 @@
 #' Create Kappa Statistics Matrix
 #'
-#' @param enrichment_res data frame of pathway enrichment results. Must-have
-#' columns are "Pathway" or "ID", "Down_regulated", and "Up_regulated". If
-#' `use_active_snw_genes = TRUE`, "non_DEG_Active_Snw_Genes" must also be
+#' @param enrichment_res data frame of enrichment results. Must-have
+#' columns are "Term_Description" (if \code{use_description = TRUE}) or "ID"
+#' (if \code{use_description = FALSE}), "Down_regulated", and "Up_regulated".
+#' If \code{use_active_snw_genes = TRUE}, "non_DEG_Active_Snw_Genes" must also be
 #' provided.
-#' @param use_names boolean to indicate whether to use pathway names instead of
-#' IDs (default = FALSE, i.e. use IDs)
+#' @param use_description Boolean argument to indicate whether term descriptions
+#'  (in the "Term_Description" column) should be used. (default = \code{FALSE})
 #' @param use_active_snw_genes boolean to indicate whether or not to use
-#' non-input active subnetwork genes
-#' in the calculation of kappa statistics (default = FALSE,
-#' i.e. use only affected genes)
+#' non-input active subnetwork genes in the calculation of kappa statistics
+#' (default = FALSE, i.e. only use affected genes)
 #'
 #' @return a matrix of kappa statistics between each term in the
 #' enrichment results.
@@ -20,17 +20,17 @@
 #' sub_df <- RA_output[1:3, ]
 #' create_kappa_matrix(sub_df)
 create_kappa_matrix <- function(enrichment_res,
-                                use_names = FALSE,
+                                use_description = FALSE,
                                 use_active_snw_genes = FALSE) {
   ### Argument checks
-  if (!is.logical(use_names)) {
-    stop("`use_names` must be logical!")
+  if (!is.logical(use_description)) {
+    stop("`use_description` must be logical!")
   }
 
   ### Initial steps
   # Column to use for gene set names
-  pw_id <- ifelse(use_names,
-    which(colnames(enrichment_res) == "Pathway"),
+  chosen_id <- ifelse(use_description,
+    which(colnames(enrichment_res) == "Term_Description"),
     which(colnames(enrichment_res) == "ID")
   )
 
@@ -68,11 +68,11 @@ create_kappa_matrix <- function(enrichment_res,
   ### Create Kappa Matrix
   all_genes <- unique(unlist(genes_lists, use.names = FALSE))
   N <- nrow(enrichment_res)
-  pw_names <- enrichment_res[, pw_id]
+  term_names <- enrichment_res[, chosen_id]
 
   kappa_mat <- matrix(0,
     nrow = N, ncol = N,
-    dimnames = list(pw_names, pw_names)
+    dimnames = list(term_names, term_names)
   )
   diag(kappa_mat) <- 1
 
@@ -99,48 +99,48 @@ create_kappa_matrix <- function(enrichment_res,
 }
 
 
-#' Hierarchical Clustering of Pathways
+#' Hierarchical Clustering of Enriched Terms
 #'
-#' @param kappa_mat matrix of kappa statistics (output of `create_kappa_matrix`)
-#' @param enrichment_res data frame of pathway enrichment results
-#' @param use_names boolean to indicate whether to use pathway names instead of
-#' IDs (default = FALSE, i.e. use IDs)
+#' @param kappa_mat matrix of kappa statistics (output of \code{\link{create_kappa_matrix})})
+#' @param enrichment_res data frame of enrichment results
+#' @param use_description Boolean argument to indicate whether term descriptions
+#'  (in the "Term_Description" column) should be used. (default = \code{FALSE})
 #' @param clu_method the agglomeration method to be used
-#' (default = "average", see `?hclust`)
+#' (default = "average", see \code{\link{[stats]hclust}})
 #' @param plot_hmap boolean to indicate whether to plot the kappa statistics
 #' heatmap or not (default = FALSE)
 #' @param plot_dend boolean to indicate whether to plot the clustering
 #' dendrogram partitioned into the optimal number of clusters (default = TRUE)
 #'
 #' @details The function initially performs hierarchical clustering
-#' of the terms in `enrichment_res` using the kappa statistics
+#' of the enriched terms in `enrichment_res` using the kappa statistics
 #' (defining the distance as `1 - kappa_statistic`). Next,
 #' the clustering dendrogram is cut into k = 2, 3, ..., n - 1 clusters
 #' (where n is the number of terms). The optimal number of clusters is
 #' determined as the k value which yields the highest average silhouette width.
 #'
-#' @return a vector of clusters for each term in the enrichment results.
+#' @return a vector of clusters for each enriched term in the enrichment results.
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' hierarchical_pw_clustering(kappa_mat, enrichment_res)
-#' hierarchical_pw_clustering(kappa_mat, enrichment_res, method = "complete")
+#' hierarchical_term_clustering(kappa_mat, enrichment_res)
+#' hierarchical_term_clustering(kappa_mat, enrichment_res, method = "complete")
 #' }
-hierarchical_pw_clustering <- function(kappa_mat, enrichment_res,
-                                       use_names = FALSE,
+hierarchical_term_clustering <- function(kappa_mat, enrichment_res,
+                                       use_description = FALSE,
                                        clu_method = "average",
                                        plot_hmap = FALSE, plot_dend = TRUE) {
   ### Set ID/Name index
-  pw_id <- ifelse(use_names,
-    which(colnames(enrichment_res) == "Pathway"),
+  chosen_id <- ifelse(use_description,
+    which(colnames(enrichment_res) == "Term_Description"),
     which(colnames(enrichment_res) == "ID")
   )
 
   ### Add excluded (zero-length) genes
   kappa_mat2 <- kappa_mat
-  cond <- !enrichment_res[, pw_id] %in% rownames(kappa_mat2)
-  outliers <- enrichment_res[cond, pw_id]
+  cond <- !enrichment_res[, chosen_id] %in% rownames(kappa_mat2)
+  outliers <- enrichment_res[cond, chosen_id]
   outliers_mat <- matrix(-1,
     nrow = nrow(kappa_mat2), ncol = length(outliers),
     dimnames = list(rownames(kappa_mat2), outliers)
@@ -191,31 +191,31 @@ hierarchical_pw_clustering <- function(kappa_mat, enrichment_res,
   return(clusters)
 }
 
-#' Heuristic Fuzzy Multiple-linkage Partitioning of Pathways
+#' Heuristic Fuzzy Multiple-linkage Partitioning of Enriched Terms
 #'
-#' @param kappa_mat matrix of kappa statistics (output of `create_kappa_matrix`)
-#' @param enrichment_res data frame of pathway enrichment results
+#' @param kappa_mat matrix of kappa statistics (output of \code{\link{create_kappa_matrix}})
+#' @param enrichment_res data frame of enrichment results
 #' @param kappa_threshold threshold for kappa statistics, defining strong
 #' relation (default = 0.35)
-#' @param use_names boolean to indicate whether to use pathway names instead of
-#' IDs (default = FALSE, i.e. use IDs)
+#' @param use_description Boolean argument to indicate whether term descriptions
+#'  (in the "Term_Description" column) should be used. (default = \code{FALSE})
 #'
 #' @details The fuzzy clustering algorithm was implemented based on:
 #' Huang DW, Sherman BT, Tan Q, et al. The DAVID Gene Functional
 #' Classification Tool: a novel biological module-centric algorithm to
 #' functionally analyze large gene lists. Genome Biol. 2007;8(9):R183.
 #'
-#' @return a boolean matrix of cluster assignments. Each row corresponds to a
-#' term, each column corresponds to a cluster.
+#' @return a boolean matrix of cluster assignments. Each row corresponds to an
+#' enriched term, each column corresponds to a cluster.
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' fuzzy_pw_clustering(kappa_mat, enrichment_res)
-#' fuzzy_pw_clustering(kappa_mat, enrichment_res, kappa_threshold = 0.45)
+#' fuzzy_term_clustering(kappa_mat, enrichment_res)
+#' fuzzy_term_clustering(kappa_mat, enrichment_res, kappa_threshold = 0.45)
 #' }
-fuzzy_pw_clustering <- function(kappa_mat, enrichment_res,
-                                kappa_threshold = 0.35, use_names = FALSE) {
+fuzzy_term_clustering <- function(kappa_mat, enrichment_res,
+                                kappa_threshold = 0.35, use_description = FALSE) {
 
   ### Check that the kappa threshold is numeric
   if (!is.numeric(kappa_threshold)) {
@@ -223,8 +223,8 @@ fuzzy_pw_clustering <- function(kappa_mat, enrichment_res,
   }
 
   ### Set ID/Name index
-  pw_id <- ifelse(use_names,
-    which(colnames(enrichment_res) == "Pathway"),
+  chosen_id <- ifelse(use_description,
+    which(colnames(enrichment_res) == "Term_Description"),
     which(colnames(enrichment_res) == "ID")
   )
 
@@ -278,8 +278,8 @@ fuzzy_pw_clustering <- function(kappa_mat, enrichment_res,
   }
 
   ### Find Outliers
-  cond <- !enrichment_res[, pw_id] %in% c(names(clusters), unlist(clusters))
-  outliers <- enrichment_res[cond, pw_id]
+  cond <- !enrichment_res[, chosen_id] %in% c(names(clusters), unlist(clusters))
+  outliers <- enrichment_res[cond, chosen_id]
   for (outlier in outliers) {
     clusters[[outlier]] <- outlier
   }
@@ -290,7 +290,7 @@ fuzzy_pw_clustering <- function(kappa_mat, enrichment_res,
     nrow = nrow(enrichment_res),
     ncol = length(clusters),
     dimnames = list(
-      enrichment_res[, pw_id],
+      enrichment_res[, chosen_id],
       names(clusters)
     )
   )
@@ -303,18 +303,18 @@ fuzzy_pw_clustering <- function(kappa_mat, enrichment_res,
 }
 
 
-#' Graph Visualization of Pathway Clustering
+#' Graph Visualization of Clustered Enriched Terms
 #'
 #' @param clu_obj clustering result (either a matrix obtained via
-#' `fuzzy_pw_clustering` or a vector obtained via `hierarchical_pw_clustering`)
+#' `fuzzy_term_clustering` or a vector obtained via `hierarchical_term_clustering`)
 #' @param kappa_mat matrix of kappa statistics (output of `create_kappa_matrix`)
-#' @param enrichment_res data frame of pathway enrichment results
+#' @param enrichment_res data frame of enrichment results
 #' @param kappa_threshold threshold for kappa statistics, defining strong
 #' relation (default = 0.35)
-#' @param use_names boolean to indicate whether to use pathway names instead of
-#' IDs (default = FALSE, i.e. use IDs)
+#' @param use_description Boolean argument to indicate whether term descriptions
+#'  (in the "Term_Description" column) should be used. (default = \code{FALSE})
 #'
-#' @return Plots a graph diagram of clustering results. Each node is a term
+#' @return Plots a graph diagram of clustering results. Each node is an enriched term
 #' from `enrichment_res`. Size of node corresponds to -log(lowest_p). Thickness
 #' of the edges between nodes correspond to the kappa statistic between the two
 #' terms. Color of each node corresponds to distinct clusters. For fuzzy
@@ -327,7 +327,7 @@ fuzzy_pw_clustering <- function(kappa_mat, enrichment_res,
 #' cluster_graph_vis(clu_obj, kappa_mat, enrichment_res)
 #' }
 cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res,
-                              kappa_threshold = 0.35, use_names = FALSE) {
+                              kappa_threshold = 0.35, use_description = FALSE) {
 
   ### Argument checks
   if (class(kappa_mat) != "matrix") {
@@ -348,13 +348,13 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res,
 
 
   ### Set ID/Name index
-  pw_id <- ifelse(use_names,
-    which(colnames(enrichment_res) == "Pathway"),
+  chosen_id <- ifelse(use_description,
+    which(colnames(enrichment_res) == "Term_Description"),
     which(colnames(enrichment_res) == "ID")
   )
 
   ## other checks
-  if (!all(rownames(kappa_mat) %in% enrichment_res[, pw_id])) {
+  if (!all(rownames(kappa_mat) %in% enrichment_res[, chosen_id])) {
     stop("Not all terms in `kappa_mat` and `enrichment_res` match!")
   }
 
@@ -383,7 +383,7 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res,
     diag(kappa_mat2) <- 0
     kappa_mat2 <- ifelse(kappa_mat2 < kappa_threshold, 0, kappa_mat2)
 
-    # Add missing pathways
+    # Add missing terms
     missing <- rownames(clu_obj)[!rownames(clu_obj) %in% colnames(kappa_mat2)]
     missing_mat <- matrix(0,
       nrow = nrow(kappa_mat2), ncol = length(missing),
@@ -420,7 +420,7 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res,
     igraph::V(g)$color <- vapply(cols, function(x) x[1], "")
 
     # Node sizes are -log(lowest_p)
-    p_idx <- match(names(igraph::V(g)), enrichment_res[, pw_id])
+    p_idx <- match(names(igraph::V(g)), enrichment_res[, chosen_id])
     transformed_p <- -log10(enrichment_res$lowest_p[p_idx])
     igraph::V(g)$size <- transformed_p * 2.5
 
@@ -449,7 +449,7 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res,
     diag(kappa_mat2) <- 0
     kappa_mat2 <- ifelse(kappa_mat2 > kappa_threshold, kappa_mat2, 0)
 
-    # Add missing pathways
+    # Add missing terms
     missing <- names(clu_obj)[!names(clu_obj) %in% colnames(kappa_mat2)]
     missing_mat <- matrix(0,
       nrow = nrow(kappa_mat2), ncol = length(missing),
@@ -478,7 +478,7 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res,
     igraph::V(g)$color <- all_cols[as.integer(igraph::V(g)$Clu)]
 
     # Node sizes are -log(lowest_p)
-    p_idx <- match(names(igraph::V(g)), enrichment_res[, pw_id])
+    p_idx <- match(names(igraph::V(g)), enrichment_res[, chosen_id])
     transformed_p <- -log10(enrichment_res$lowest_p[p_idx])
     igraph::V(g)$size <- transformed_p * 2.5
 
@@ -498,18 +498,19 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res,
   }
 }
 
-#' Cluster Pathways
+#' Cluster Enriched Terms
 #'
-#' @param enrichment_res data frame of pathway enrichment results
+#' @param enrichment_res data frame of enrichment results
 #' (result of `run_pathfindR`)
 #' @param method Either "hierarchical" or "fuzzy". Details of clustering are
 #' provided in the corresponding functions.
 #' @param plot_clusters_graph boolean value indicate whether or not to plot
 #' the graph diagram of clustering results (default = TRUE)
-#' @param use_names boolean to indicate whether to use pathway names instead of
-#' IDs (default = FALSE, i.e. use IDs)
-#' @param ... additional arguments for `create_kappa_matrix`,
-#' `hierarchical_pw_clustering`, `fuzzy_pw_clustering` and `cluster_graph_vis`.
+#' @param use_description Boolean argument to indicate whether term descriptions
+#'  (in the "Term_Description" column) should be used. (default = \code{FALSE})
+#' @param ... additional arguments for \code{\link{create_kappa_matrix}},
+#' \code{\link{hierarchical_term_clustering}}, \code{\link{fuzzy_term_clustering}}
+#' and \code{\link{cluster_graph_vis}}.
 #' See documentation of these functions for more details.
 #'
 #'
@@ -523,28 +524,28 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res,
 #' @export
 #'
 #' @examples
-#' example_clustered <- cluster_pathways(RA_output[1:3, ],
+#' example_clustered <- cluster_enriched_terms(RA_output[1:3, ],
 #'   plot_clusters_graph = FALSE
 #' )
-#' example_clustered <- cluster_pathways(RA_output[1:3, ],
+#' example_clustered <- cluster_enriched_terms(RA_output[1:3, ],
 #'   method = "fuzzy", plot_clusters_graph = FALSE
 #' )
-#' @seealso See \code{\link{hierarchical_pw_clustering}} for hierarchical
+#' @seealso See \code{\link{hierarchical_term_clustering}} for hierarchical
 #' clustering of enriched terms.
-#' See \code{\link{fuzzy_pw_clustering}} for fuzzy clustering of enriched terms.
+#' See \code{\link{fuzzy_term_clustering}} for fuzzy clustering of enriched terms.
 #' See \code{\link{cluster_graph_vis}} for graph visualization of clustering.
-cluster_pathways <- function(enrichment_res,
-                             method = "hierarchical",
-                             plot_clusters_graph = TRUE,
-                             use_names = FALSE,
-                             ...) {
+cluster_enriched_terms <- function(enrichment_res,
+                                   method = "hierarchical",
+                                   plot_clusters_graph = TRUE,
+                                   use_description = FALSE,
+                                   ...) {
   ### Argument Checks
   if (!method %in% c("hierarchical", "fuzzy")) {
     stop("the clustering `method` must either be \"hierarchical\" or \"fuzzy\"")
   }
 
-  if (!is.logical(use_names)) {
-    stop("`use_names` must be logical!")
+  if (!is.logical(use_description)) {
+    stop("`use_description` must be logical!")
   }
 
   if (!is.logical(plot_clusters_graph)) {
@@ -554,23 +555,23 @@ cluster_pathways <- function(enrichment_res,
   ### Create Kappa Matrix
   kappa_mat <- R.utils::doCall("create_kappa_matrix",
     enrichment_res = enrichment_res,
-    use_names = use_names,
+    use_description = use_description,
     ...
   )
 
-  ### Cluster Pathways
+  ### Cluster Terms
   if (method == "hierarchical") {
-    clu_obj <- R.utils::doCall("hierarchical_pw_clustering",
+    clu_obj <- R.utils::doCall("hierarchical_term_clustering",
       kappa_mat = kappa_mat,
       enrichment_res = enrichment_res,
-      use_names = use_names,
+      use_description = use_description,
       ...
     )
   } else {
-    clu_obj <- R.utils::doCall("fuzzy_pw_clustering",
+    clu_obj <- R.utils::doCall("fuzzy_term_clustering",
       kappa_mat = kappa_mat,
       enrichment_res = enrichment_res,
-      use_names = use_names,
+      use_description = use_description,
       ...
     )
   }
@@ -581,7 +582,7 @@ cluster_pathways <- function(enrichment_res,
       clu_obj = clu_obj,
       kappa_mat = kappa_mat,
       enrichment_res = enrichment_res,
-      use_names = use_names,
+      use_description = use_description,
       ...
     )
   }
@@ -590,33 +591,33 @@ cluster_pathways <- function(enrichment_res,
   clustered_df <- enrichment_res
 
   ### Set ID/Name index
-  pw_id <- ifelse(use_names,
-    which(colnames(enrichment_res) == "Pathway"),
+  chosen_id <- ifelse(use_description,
+    which(colnames(enrichment_res) == "Term_Description"),
     which(colnames(enrichment_res) == "ID")
   )
 
   if (method == "hierarchical") {
-    ### Assign Clusters
-    clu_idx <- match(clustered_df[, pw_id], names(clu_obj))
+    ### Assign Clusters and Representatives
+    clu_idx <- match(clustered_df[, chosen_id], names(clu_obj))
     clustered_df$Cluster <- clu_obj[clu_idx]
     clustered_df <- clustered_df[order(clustered_df$Cluster,
       clustered_df$lowest_p,
       decreasing = FALSE
     ), ]
 
-    tmp <- tapply(clustered_df$Pathway, clustered_df$Cluster, function(x) x[1])
-    stat_cond <- clustered_df$Pathway %in% tmp
+    tmp <- tapply(clustered_df[, chosen_id], clustered_df$Cluster, function(x) x[1])
+    stat_cond <- clustered_df[, chosen_id] %in% tmp
     clustered_df$Status <- ifelse(stat_cond, "Representative", "Member")
   } else {
-    pws_list <- list()
-    for (pw in rownames(clu_obj)) {
-      pws_list[[pw]] <- which(clu_obj[pw, ])
+    term_list <- list()
+    for (term in rownames(clu_obj)) {
+      term_list[[term]] <- which(clu_obj[term, ])
     }
-    ### Assign Clusters
+    ### Assign Clusters and Representatives
     clustered_df2 <- c()
     for (i in base::seq_len(nrow(clustered_df))) {
       current_row <- clustered_df[i, ]
-      current_clusters <- pws_list[[current_row[, pw_id]]]
+      current_clusters <- term_list[[current_row[, chosen_id]]]
       for (clu in current_clusters) {
         clustered_df2 <- rbind(
           clustered_df2,
@@ -631,8 +632,8 @@ cluster_pathways <- function(enrichment_res,
       decreasing = FALSE
     ), ]
 
-    tmp <- tapply(clustered_df$Pathway, clustered_df$Cluster, function(x) x[1])
-    stat_cond <- clustered_df$Pathway %in% tmp
+    tmp <- tapply(clustered_df[, chosen_id], clustered_df$Cluster, function(x) x[1])
+    stat_cond <- clustered_df[, chosen_id] %in% tmp
     clustered_df$Status <- ifelse(stat_cond, "Representative", "Member")
   }
 

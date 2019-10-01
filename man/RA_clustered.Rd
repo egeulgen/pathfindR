@@ -6,35 +6,35 @@
 \title{Example Output for the pathfindR Clustering Workflow - Rheumatoid Arthritis}
 \format{A data frame with 89 rows and 10 columns:
 \describe{
-  \item{ID}{KEGG ID of the enriched pathway}
-  \item{Pathway}{Description of the enriched pathway}
-  \item{Fold_Enrichment}{Fold enrichment value for the enriched pathway}
-  \item{occurrence}{the number of iterations that the given pathway was found to enriched over all iterations}
-  \item{lowest_p}{the lowest adjusted-p value of the given pathway over all iterations}
-  \item{highest_p}{the highest adjusted-p value of the given pathway over all iterations}
-  \item{Up_regulated}{the up-regulated genes in the input involved in the given pathway, comma-separated}
-  \item{Down_regulated}{the down-regulated genes in the input involved in the given pathway, comma-separated}
-  \item{Cluster}{the cluster to which the pathway is assigned}
-  \item{Status}{whether the pathway is the "Representative" pathway in its cluster or only a "Member"}
+  \item{ID}{ID of the enriched term}
+  \item{Term_Description}{Description of the enriched term}
+  \item{Fold_Enrichment}{Fold enrichment value for the enriched term}
+  \item{occurrence}{the number of iterations that the given term was found to enriched over all iterations}
+  \item{lowest_p}{the lowest adjusted-p value of the given term over all iterations}
+  \item{highest_p}{the highest adjusted-p value of the given term over all iterations}
+  \item{Up_regulated}{the up-regulated genes in the input involved in the given term, comma-separated}
+  \item{Down_regulated}{the down-regulated genes in the input involved in the given term, comma-separated}
+  \item{Cluster}{the cluster to which the enriched term is assigned}
+  \item{Status}{whether the enriched term is the "Representative" term in its cluster or only a "Member"}
 }}
 \usage{
 RA_clustered
 }
 \description{
-A dataset containing the results of pathfindR's pathway clustering and
+A dataset containing the results of pathfindR's clustering and
 partitioning  workflow performed on the rheumatoid arthritis
 enrichment results \code{RA_output}. The clustering and partitioning
-function \code{cluster_pathways} was used with the default settings
+function \code{cluster_enriched_terms} was used with the default settings
 (i.e. hierarchical clustering was performed and the agglomeration method
 was "average"). The optimal number of clusters (yielding the highest average
-silhouette width) was determined to be 22. Finally, the pathways with the
-lowest p values in each cluster were assigned as representative pathways
+silhouette width) was determined to be 22. Finally, the enriched terms with the
+lowest p values in each cluster were assigned as representative terms
 for that cluster.
 \emph{Generated on Sep 28, 2019.}
 }
 \seealso{
 \code{\link{RA_input}} for example input of the enrichment workflow.
 \code{\link{RA_output}} for example output of the enrichment workflow.
-\code{\link{cluster_pathways}} for details on the patfindR clustering approaches.
+\code{\link{cluster_enriched_terms}} for details on the patfindR clustering approaches.
 }
 \keyword{datasets}

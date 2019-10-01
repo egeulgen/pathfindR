@@ -2,34 +2,34 @@
 % Please edit documentation in R/clustering.R
 \name{cluster_graph_vis}
 \alias{cluster_graph_vis}
-\title{Graph Visualization of Pathway Clustering}
+\title{Graph Visualization of Clustered Enriched Terms}
 \usage{
 cluster_graph_vis(clu_obj, kappa_mat, enrichment_res,
-  kappa_threshold = 0.35, use_names = FALSE)
+  kappa_threshold = 0.35, use_description = FALSE)
 }
 \arguments{
 \item{clu_obj}{clustering result (either a matrix obtained via
-`fuzzy_pw_clustering` or a vector obtained via `hierarchical_pw_clustering`)}
+`fuzzy_term_clustering` or a vector obtained via `hierarchical_term_clustering`)}
 
 \item{kappa_mat}{matrix of kappa statistics (output of `create_kappa_matrix`)}
 
-\item{enrichment_res}{data frame of pathway enrichment results}
+\item{enrichment_res}{data frame of enrichment results}
 
 \item{kappa_threshold}{threshold for kappa statistics, defining strong
 relation (default = 0.35)}
 
-\item{use_names}{boolean to indicate whether to use pathway names instead of
-IDs (default = FALSE, i.e. use IDs)}
+\item{use_description}{Boolean argument to indicate whether term descriptions
+(in the "Term_Description" column) should be used. (default = \code{FALSE})}
 }
 \value{
-Plots a graph diagram of clustering results. Each node is a term
+Plots a graph diagram of clustering results. Each node is an enriched term
 from `enrichment_res`. Size of node corresponds to -log(lowest_p). Thickness
 of the edges between nodes correspond to the kappa statistic between the two
 terms. Color of each node corresponds to distinct clusters. For fuzzy
 clustering, if a term is in multiple clusters, multiple colors are utilized.
 }
 \description{
-Graph Visualization of Pathway Clustering
+Graph Visualization of Clustered Enriched Terms
 }
 \examples{
 \dontrun{
