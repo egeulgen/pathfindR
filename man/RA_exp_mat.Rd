@@ -3,7 +3,7 @@
 \docType{data}
 \name{RA_exp_mat}
 \alias{RA_exp_mat}
-\title{Example Input for pathfindR - Enriched Term z-scores}
+\title{Example Input for pathfindR - Enriched Term Scoring}
 \format{A matrix with 572 rows and 33 columns.}
 \source{
 \url{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE15573}
@@ -13,7 +13,7 @@ RA_exp_mat
 }
 \description{
 A matrix containing the log2-normalized expression values of the differentially-expressed genes
-for 18 rheumatoid arthritis (RA) patients and 15 healthy subjects. Expression values of
+for 18 rheumatoid arthritis (RA) patients and 15 healthy subjects. Expression values of 572
 differentially-expressed genes with adj.P.Val <= 0.05 are presented in this dataset.
 \emph{Generated on Sep 28, 2019.}
 }

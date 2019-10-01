@@ -216,10 +216,8 @@ run_pathfindR <- function(input,
   ## Process input
   message("## Processing input. Converting gene symbols,
           if necessary (and if human gene symbols provided)\n\n")
-  input_processed <- pathfindR::input_processing(
-    input, p_val_threshold,
-    pin_path, human_genes
-  )
+  input_processed <- pathfindR::input_processing(input, p_val_threshold,
+                                                 pin_path, human_genes)
 
   ############ Active Subnetwork Search and Enrichment
   ## Prep for parallel run
@@ -244,30 +242,30 @@ run_pathfindR <- function(input,
   combined_res <- foreach::foreach(i = 1:iterations, .combine = rbind) %dopar% {
 
     ## Active Subnetwork Search
-    snws <- pathfindR::active_snw_search(input_processed, pin_path,
-      snws_file = paste0("active_snws_", i),
-      dir_for_parallel_run = dirs[i],
-      score_quan_thr, sig_gene_thr,
-      search_method,
-      silent_option,
-      use_all_positives,
-      geneInitProbs[i],
-      saTemp0, saTemp1, saIter,
-      gaPop, gaIter, gaThread, gaMut,
-      grMaxDepth, grSearchDepth,
-      grOverlap, grSubNum
-    )
+    snws <- pathfindR::active_snw_search(input_for_search = input_processed,
+                                         pin_path = pin_path,
+                                         snws_file = paste0("active_snws_", i),
+                                         dir_for_parallel_run = dirs[i],
+                                         score_quan_thr = score_quan_thr,
+                                         sig_gene_thr = sig_gene_thr,
+                                         search_method = search_method,
+                                         silent_option = silent_option,
+                                         use_all_positives = use_all_positives,
+                                         geneInitProbs = geneInitProbs[i],
+                                         saTemp0 = saTemp0, saTemp1 = saTemp1, saIter = saIter,
+                                         gaPop = gaPop, gaIter = gaIter,
+                                         gaThread = gaThread, gaMut = gaMut,
+                                         grMaxDepth = grMaxDepth, grSearchDepth = grSearchDepth,
+                                         grOverlap = grOverlap, grSubNum = grSubNum)
 
-    enrichment_res <- pathfindR::enrichment_analyses(
-      snws = snws,
-      input_genes = input_processed$GENE,
-      genes_by_term = genes_by_term,
-      term_descriptions = term_descriptions,
-      pin_path = pin_path,
-      adj_method = adj_method,
-      enrichment_threshold = enrichment_threshold,
-      list_active_snw_genes = list_active_snw_genes
-    )
+    enrichment_res <- pathfindR::enrichment_analyses(snws = snws,
+                                                     input_genes = input_processed$GENE,
+                                                     pin_path = pin_path,
+                                                     genes_by_term = genes_by_term,
+                                                     term_descriptions = term_descriptions,
+                                                     adj_method = adj_method,
+                                                     enrichment_threshold = enrichment_threshold,
+                                                     list_active_snw_genes = list_active_snw_genes)
 
     enrichment_res
   }

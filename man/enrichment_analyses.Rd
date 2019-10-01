@@ -12,7 +12,7 @@ enrichment_analyses(snws, input_genes, pin_path,
 \arguments{
 \item{snws}{a list of subnetwork genes (i.e., vectors of genes for each subnetwork)}
 
-\item{input_genes}{vector of input gene symbols (that were used during active subnetwork genes)}
+\item{input_genes}{vector of input gene symbols (that were used during active subnetwork search)}
 
 \item{pin_path}{path to the Protein Interaction Network (PIN) file used in
 the analysis}

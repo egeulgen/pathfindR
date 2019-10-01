@@ -136,7 +136,7 @@ enrichment <- function(input_genes,
 #' Perform Enrichment Analyses on the Input Subnetworks
 #'
 #' @param snws a list of subnetwork genes (i.e., vectors of genes for each subnetwork)
-#' @param input_genes vector of input gene symbols (that were used during active subnetwork genes)
+#' @param input_genes vector of input gene symbols (that were used during active subnetwork search)
 #' @param pin_path path to the Protein Interaction Network (PIN) file used in
 #'   the analysis
 #' @param genes_by_term List that contains genes for each gene set. Names of
@@ -180,15 +180,17 @@ enrichment_analyses <- function(snws,
     file = pin_path, header = FALSE,
     stringsAsFactors = FALSE
   )
-  background_genes <- unique(c(pin$V1, pin$V2))
+  background_genes <- unique(c(pin[, 1], pin[, 3]))
 
   ############ Enrichment per subnetwork
   enrichment_res <- lapply(snws, function(x)
-    pathfindR::enrichment(genes_by_term, x, term_descriptions,
-      adj_method, enrichment_threshold,
-      sig_genes_vec = input_genes,
-      background_genes
-    ))
+    pathfindR::enrichment(input_genes = x,
+                          genes_by_term = genes_by_term,
+                          term_descriptions = term_descriptions,
+                          adj_method = adj_method,
+                          enrichment_threshold = enrichment_threshold,
+                          sig_genes_vec = input_genes,
+                          background_genes = background_genes))
 
   ############ Combine Enrichments Results for All Subnetworks
   enrichment_res <- Reduce(rbind, enrichment_res)
