@@ -3,7 +3,7 @@
 \docType{data}
 \name{kegg_genes}
 \alias{kegg_genes}
-\title{KEGG Gene Sets}
+\title{KEGG Pathways - Gene Sets}
 \format{list containing 326 vectors of gene symbols. Each vector corresponds
   to a pathway.}
 \usage{

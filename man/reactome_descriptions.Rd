@@ -3,7 +3,7 @@
 \docType{data}
 \name{reactome_descriptions}
 \alias{reactome_descriptions}
-\title{Reactome Pathway Descriptions}
+\title{Reactome Pathways - Descriptions}
 \format{list containing 2263 character values, the descriptions for the given
   pathways.}
 \usage{

@@ -3,7 +3,7 @@
 \docType{data}
 \name{kegg_descriptions}
 \alias{kegg_descriptions}
-\title{KEGG Pathway Descriptions}
+\title{KEGG Pathways - Descriptions}
 \format{vector containing 326 character values, the descriptions for the given
   pathways.}
 \usage{

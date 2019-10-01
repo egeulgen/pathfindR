@@ -3,7 +3,7 @@
 \docType{data}
 \name{reactome_genes}
 \alias{reactome_genes}
-\title{Reactome Gene Sets}
+\title{Reactome Pathways - Gene Sets}
 \format{list containing 2263 vectors of gene symbols. Each vector corresponds
   to a pathway.}
 \usage{
