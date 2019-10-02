@@ -26,10 +26,10 @@ The package also offers functionalities to cluster the enriched terms
 and identify representative terms in each cluster, to score the enriched
 terms per sample and to visualize analysis results.
 
-The method is described in detail in *Ulgen E, Ozisik O, Sezerman OU.
-2019. pathfindR: An R Package for Comprehensive Identification of
-Enriched Pathways in Omics Data Through Active Subnetworks. Front.
-Genet. <https://doi.org/10.3389/fgene.2019.00858>*
+The functionalities of pathfindR is described in detail in *Ulgen E,
+Ozisik O, Sezerman OU. 2019. pathfindR: An R Package for Comprehensive
+Identification of Enriched Pathways in Omics Data Through Active
+Subnetworks. Front. Genet. <https://doi.org/10.3389/fgene.2019.00858>*
 
 See [the pathfindR wiki](https://github.com/egeulgen/pathfindR/wiki) for
 detailed documentation.
