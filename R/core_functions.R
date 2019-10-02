@@ -102,11 +102,11 @@
 #' \code{\link{active_snw_search}} for active subnetwork search and subnetwork filtering,
 #' \code{\link{enrichment_analyses}} for enrichment analysis (using the active subnetworks),
 #' \code{\link{summarize_enrichment_results}} for summarizing the active-subnetwork-oriented enrichment results,
-#' \code{\link{annotate_term_DEGs}} for annotation of affected genes in the given gene sets,
+#' \code{\link{annotate_term_genes}} for annotation of affected genes in the given gene sets,
 #' \code{\link{visualize_terms}} for visualization of enriched terms,
 #' \code{\link{enrichment_chart}} for a visual summary of the pathfindR enrichment result,
 #' \code{\link[foreach]{foreach}} for details on parallel execution of looping constructs,
-#' \code{\link{cluster_enriched_terms}} for clustering the resulting enriched pathways and partitioning into clusters.
+#' \code{\link{cluster_enriched_terms}} for clustering the resulting enriched terms and partitioning into clusters.
 #'
 #' @examples
 #' \dontrun{
@@ -289,7 +289,7 @@ run_pathfindR <- function(input,
   message("## Annotating involved genes and visualizing enriched terms\n\n")
 
   ##### Annotate Involved DEGs by up/down-regulation status
-  final_res <- pathfindR::annotate_term_DEGs(result_df = final_res,
+  final_res <- pathfindR::annotate_term_genes(result_df = final_res,
                                              input_processed = input_processed,
                                              genes_by_term = genes_by_term)
 
@@ -712,6 +712,8 @@ input_processing <- function(input, p_val_threshold,
 
 #' Annotate the Affected Genes in the Provided Enriched Terms
 #'
+#' Function to annotate the involved affected (input) genes in each term.
+#'
 #' @param result_df data frame of enrichment results.
 #'  The only must-have column is "ID".
 #' @param input_processed input data processed via \code{\link{input_processing}}
@@ -728,10 +730,10 @@ input_processing <- function(input, p_val_threshold,
 #' example_gene_data <- RA_input
 #' colnames(example_gene_data) <- c("GENE", "CHANGE", "P_VALUE")
 #'
-#' annotated_result <- annotate_term_DEGs(RA_output, example_gene_data)
-annotate_term_DEGs <- function(result_df,
-                               input_processed,
-                               genes_by_term = kegg_genes) {
+#' annotated_result <- annotate_term_genes(RA_output, example_gene_data)
+annotate_term_genes <- function(result_df,
+                                input_processed,
+                                genes_by_term = kegg_genes) {
 
   ### Annotate up/down-regulated term-related genes
   ## Up/Down-regulated genes

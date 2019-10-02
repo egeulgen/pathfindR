@@ -170,9 +170,9 @@ run_pathfindR(RA_input)
 \code{\link{active_snw_search}} for active subnetwork search and subnetwork filtering,
 \code{\link{enrichment_analyses}} for enrichment analysis (using the active subnetworks),
 \code{\link{summarize_enrichment_results}} for summarizing the active-subnetwork-oriented enrichment results,
-\code{\link{annotate_term_DEGs}} for annotation of affected genes in the given gene sets,
+\code{\link{annotate_term_genes}} for annotation of affected genes in the given gene sets,
 \code{\link{visualize_terms}} for visualization of enriched terms,
 \code{\link{enrichment_chart}} for a visual summary of the pathfindR enrichment result,
 \code{\link[foreach]{foreach}} for details on parallel execution of looping constructs,
-\code{\link{cluster_enriched_terms}} for clustering the resulting enriched pathways and partitioning into clusters.
+\code{\link{cluster_enriched_terms}} for clustering the resulting enriched terms and partitioning into clusters.
 }
