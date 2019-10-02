@@ -114,6 +114,8 @@
 #' }
 run_pathfindR <- function(input,
                           gene_sets = "KEGG",
+                          min_gset_size = 10,
+                          max_gset_size = 300,
                           custom_genes = NULL, custom_descriptions = NULL,
                           pin_name_path = "Biogrid",
                           p_val_threshold = 5e-2,
@@ -353,6 +355,8 @@ run_pathfindR <- function(input,
 #'  "GO-BP", "GO-CC", "GO-MF" or "Custom".
 #'  If "Custom", the arguments \code{custom_genes} and \code{custom_descriptions}
 #'  must be specified. (Default = "KEGG")
+#' @param min_gset_size minimum number of genes a term must contain (default = 10)
+#' @param max_gset_size maximum number of genes a term must contain (default = 10)
 #' @param custom_genes a list containing the genes involved in each custom
 #'  term. Each element is a vector of gene symbols located in the given custom
 #'  term. Names should correspond to the IDs of the custom terms.
@@ -371,6 +375,8 @@ run_pathfindR <- function(input,
 #' KEGG_gset <- fetch_gene_set()
 #' GO_MF_gset <- fetch_gene_set("GO-MF")
 fetch_gene_set <- function(gene_sets = "KEGG",
+                           min_gset_size = 10,
+                           max_gset_size = 300,
                            custom_genes = NULL,
                            custom_descriptions = NULL) {
 
@@ -385,6 +391,13 @@ fetch_gene_set <- function(gene_sets = "KEGG",
     if (is.null(custom_genes) | is.null(custom_descriptions)) {
       stop("`custom_genes` and `custom_descriptions` must be provided if `gene_sets = \"Custom\"`")
     }
+
+    # filter by size
+    gset_lens <- vapply(custom_genes, length, 1)
+    keep <- which(gset_lens >= min_gset_size & gset_lens <= max_gset_size)
+    custom_genes <- custom_genes[keep]
+    custom_descriptions <- custom_descriptions[names(custom_genes)]
+
     return(list(genes_by_term = custom_genes,
                 term_descriptions = custom_descriptions))
   }
@@ -425,6 +438,13 @@ fetch_gene_set <- function(gene_sets = "KEGG",
       term_descriptions <- pathfindR::biocarta_descriptions
     }
   }
+
+  # filter by size
+  term_lens <- vapply(genes_by_term, length, 1)
+  keep <- which(term_lens >= min_gset_size & term_lens <= max_gset_size)
+  genes_by_term <- genes_by_term[keep]
+  term_descriptions <- term_descriptions[names(genes_by_term)]
+
   return(list(genes_by_term = genes_by_term,
               term_descriptions = term_descriptions))
 }

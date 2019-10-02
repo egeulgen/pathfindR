@@ -4,7 +4,8 @@
 \alias{fetch_gene_set}
 \title{Fetch Gene Set Objects}
 \usage{
-fetch_gene_set(gene_sets = "KEGG", custom_genes = NULL,
+fetch_gene_set(gene_sets = "KEGG", min_gset_size = 10,
+  max_gset_size = 300, custom_genes = NULL,
   custom_descriptions = NULL)
 }
 \arguments{
@@ -13,6 +14,10 @@ Available gene sets are "KEGG", "Reactome", "BioCarta", "GO-All",
 "GO-BP", "GO-CC", "GO-MF" or "Custom".
 If "Custom", the arguments \code{custom_genes} and \code{custom_descriptions}
 must be specified. (Default = "KEGG")}
+
+\item{min_gset_size}{minimum number of genes a term must contain (default = 10)}
+
+\item{max_gset_size}{maximum number of genes a term must contain (default = 10)}
 
 \item{custom_genes}{a list containing the genes involved in each custom
 term. Each element is a vector of gene symbols located in the given custom
