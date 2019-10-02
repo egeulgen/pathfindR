@@ -51,6 +51,10 @@ And the development version from [GitHub](https://github.com/) with:
 devtools::install_github("egeulgen/pathfindR")
 ```
 
+> **IMPORTANT NOTE** For the active subnetwork search component to work,
+> the user must have [Java](https://www.java.com/en/download/manual.jsp)
+> installed and path/to/java must be in the PATH environment variable.
+
 We also have docker images available on Docker Hub:
 
 ``` bash
@@ -63,12 +67,6 @@ docker pull egeulgen/pathfindr:1.3.0
 # pull image for development version
 docker pull egeulgen/pathfindr:dev
 ```
-
-> **NOTE**
-
-> For the active subnetwork search component to work, the user must have
-> [Java](https://www.java.com/en/download/manual.jsp) installed and
-> path/to/java must be in the PATH environment variable.
 
 See the [wiki
 page](https://github.com/egeulgen/pathfindR/wiki/Installation) for more
@@ -97,6 +95,13 @@ symbol if there is an alias that is in the PIN. After mapping the input
 genes with the associated p values onto the PIN, active subnetwork
 search is performed. The resulting active subnetworks are then filtered
 based on their scores and the number of significant genes they contain.
+
+> An active subnetwork can be defined as a group of interconnected genes
+> in a protein-protein interaction network (PIN) that predominantly
+> consists of significantly altered genes. In other words, active
+> subnetworks define distinct disease-associated sets of interacting
+> genes.
+
 These filtered list of active subnetworks are then used for enrichment
 analyses, i.e. using the genes in each of the active subnetworks, the
 significantly enriched terms (pathways/gene sets) are identified.
