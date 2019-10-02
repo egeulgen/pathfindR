@@ -1,36 +1,59 @@
-# <img src="man/figures/logo.png" align="left" height=150/> pathfindR : An R Package for Pathway Enrichment Analysis Utilizing Active Subnetworks
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+# <img src="man/figures/logo.png" align="left" height=150/> pathfindR: An R Package for Enrichment Analysis Utilizing Active Subnetworks
 
 <!-- badges: start -->
-[![Travis-CI Build Status](https://travis-ci.org/egeulgen/pathfindR.svg?branch=master)](https://travis-ci.org/egeulgen/pathfindR)
-[![Codecov test coverage](https://codecov.io/gh/egeulgen/pathfindR/branch/master/graph/badge.svg)](https://codecov.io/gh/egeulgen/pathfindR)
-[![CRAN version](http://www.r-pkg.org/badges/version-ago/pathfindR)](https://cran.r-project.org/package=pathfindR)
-[![CRAN total downloads](https://cranlogs.r-pkg.org/badges/grand-total/pathfindR)](https://cran.r-project.org/package=pathfindR)
-[![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+[![Travis-CI Build
+Status](https://travis-ci.org/egeulgen/pathfindR.svg?branch=master)](https://travis-ci.org/egeulgen/pathfindR)
+[![Codecov test
+coverage](https://codecov.io/gh/egeulgen/pathfindR/branch/master/graph/badge.svg)](https://codecov.io/gh/egeulgen/pathfindR)
+[![CRAN
+version](http://www.r-pkg.org/badges/version-ago/pathfindR)](https://cran.r-project.org/package=pathfindR)
+[![CRAN total
+downloads](https://cranlogs.r-pkg.org/badges/grand-total/pathfindR)](https://cran.r-project.org/package=pathfindR)
+[![Lifecycle:
+maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+[![License:
+MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 <!-- badges: end -->
 
 ## Overview
 
-`pathfindR` is a tool for pathway enrichment analysis via active subnetworks. The package also offers the option to cluster the enriched pathways and choose representative pathways. The method is described in detail in _Ulgen E, Ozisik O, Sezerman OU. 2019. pathfindR: An R Package for Comprehensive Identification of Enriched Pathways in Omics Data Through Active Subnetworks. Front. Genet. [https://doi.org/10.3389/fgene.2019.00858](https://doi.org/10.3389/fgene.2019.00858)_
+`pathfindR` is a tool for enrichment analysis via active subnetworks.
+The package also offers functionalities to cluster the enriched terms
+and identify representative terms in each cluster, to score the enriched
+terms per sample and to visualize analysis results.
 
-## Wiki
-See [the pathfindR wiki](https://github.com/egeulgen/pathfindR/wiki) for detailed documentation.
+The method is described in detail in *Ulgen E, Ozisik O, Sezerman OU.
+2019. pathfindR: An R Package for Comprehensive Identification of
+Enriched Pathways in Omics Data Through Active Subnetworks. Front.
+Genet. <https://doi.org/10.3389/fgene.2019.00858>*
+
+See [the pathfindR wiki](https://github.com/egeulgen/pathfindR/wiki) for
+detailed documentation.
 
 ## Installation
 
-From CRAN (release):
-```r
+You can install the released version of pathfindR from
+[CRAN](https://CRAN.R-project.org) with:
+
+``` r
 install.packages("pathfindR")
 ```
 
-From GitHub (development):
-```r
-install.packages("devtools") # if you have not installed "devtools" package
+And the development version from [GitHub](https://github.com/) with:
+
+``` r
+# if you have not installed "devtools"
+# install.packages("devtools")
 devtools::install_github("egeulgen/pathfindR")
 ```
 
-From Docker Hub (docker images):
-```bash
+We also have docker images available on Docker Hub:
+
+``` bash
 # pull image for latest release
 docker pull egeulgen/pathfindr:latest
 
@@ -41,110 +64,151 @@ docker pull egeulgen/pathfindr:1.3.0
 docker pull egeulgen/pathfindr:dev
 ```
 
-See the [wiki page](https://github.com/egeulgen/pathfindR/wiki/Installation) for more details.
+> **NOTE**
 
-## Overview of the Enrichment Workflow
+> For the active subnetwork search component to work, the user must have
+> [Java](https://www.java.com/en/download/manual.jsp) installed and
+> path/to/java must be in the PATH environment variable.
 
-![pathfindR Enrichment Workflow](./vignettes/pathfindr.png?raw=true "pathfindr Enrichment Workflow")
-This workflow takes in a data frame consisting of Gene Symbol, log-fold-change and adjusted-p values. After input testing, any gene symbol that is not in the protein-protein interaction network (PIN) is converted to an alias symbol if there is an alias that is in the PIN. Next, active subnetwork search is performed. Pathway enrichment analyses are then performed using the genes in each of the identified active subnetworks. Pathways with adjusted p values larger than a given threshold are discarded. The lowest adjusted p value (over all active subnetworks) for each pathway is kept. This process of active subnetwork search and enrichment analyses is repeated for a selected number of iterations, which is done in parallel. Over all iterations, the lowest and the highest adjusted-p values, as well as number of occurrences are reported for each enriched pathway.
+See the [wiki
+page](https://github.com/egeulgen/pathfindR/wiki/Installation) for more
+details.
+
+## Enrichment Analysis with pathfindR
+
+![pathfindR Enrichment Workflow](./vignettes/pathfindr.png?raw=true
+"pathfindr Enrichment Workflow")
+
+This workflow takes in a data frame consisting of Gene symbols,
+log-fold-change (optional) and associated p values. The first 3 lines of
+an example input data frame looks like:
+
+``` r
+head(RA_input, 3)
+#>   Gene.symbol    logFC  adj.P.Val
+#> 1     FAM110A -0.69394 3.4087e-06
+#> 2      RNASE2  1.35350 1.0085e-05
+#> 3      S100A8  1.54483 3.4664e-05
+```
+
+After input testing, any gene symbol that is not in the chosen
+protein-protein interaction network (PIN) is converted to an alias
+symbol if there is an alias that is in the PIN. After mapping the input
+genes with the associated p values onto the PIN, active subnetwork
+search is performed. The resulting active subnetworks are then filtered
+based on their scores and the number of significant genes they contain.
+These filtered list of active subnetworks are then used for enrichment
+analyses, i.e. using the genes in each of the active subnetworks, the
+significantly enriched terms (pathways/gene sets) are identified.
+Enriched terms with adjusted p values larger than the given threshold
+are discarded and the lowest adjusted p value (over all active
+subnetworks) for each term is kept. This process of `active subnetwork
+search + enrichment analyses` is repeated for a selected number of
+iterations, performed in parallel. Over all iterations, the lowest and
+the highest adjusted-p values, as well as number of occurrences over all
+iterations are reported for each significantly enriched term.
 
 This workflow can be run using the function `run_pathfindR`:
 
-```r
+``` r
+library(pathfindR)
 RA_output <- run_pathfindR(RA_input)
 
 # to change the output directory
-RA_output <- run_pathfindR(RA_input, output = "new_directory")
+RA_output <- run_pathfindR(RA_input, output_dir = "new_directory")
 
 # to change the PIN (default = Biogrid)
-RA_output <- run_pathfindR(RA_input, pin_name = "IntAct")
+RA_output <- run_pathfindR(RA_input, pin_name_path = "IntAct")
 # to use an external PIN of user's choice
-RA_output <- run_pathfindR(RA_input, pin_name = "/path/to/myPIN.sif")
+RA_output <- run_pathfindR(RA_input, pin_name_path = "/path/to/myPIN.sif")
 
 # to change the active subnetwork search algorithm (default = "GR", i.e. greedy algorithm)
 # for simulated annealing:
 RA_output <- run_pathfindR(RA_input, search_method = "SA")
 
 # to change the number of iterations (default = 10)
-RA_output <- run_pathfindR(RA_input, iterations = 5) 
+RA_output <- run_pathfindR(RA_input, iterations = 25) 
 
 # to manually specify the number processes used during parallel loop by foreach
-# defaults to the number of detected cores 
+# defaults to the number of detected cores (See ?parallel::detectCores()) 
 RA_output <- run_pathfindR(RA_input, n_processes = 2)
 
 # to report the non-DEG active subnetwork genes
 RA_output <- run_pathfindR(RA_input, list_active_snw_genes = TRUE)
 ```
 
-See the [wiki page](https://github.com/egeulgen/pathfindR/wiki/Enrichment%20Documentation) for more details.
+See the [wiki
+page](https://github.com/egeulgen/pathfindR/wiki/Enrichment%20Documentation)
+for more details.
 
-## Overview of the Clustering Workflow
+## Clustering of the Enriched Terms
 
-![Pathway Clustering Workflow](./vignettes/pw_clustering.png?raw=true "Pathway Clustering Workflow")
-The wrapper function for this workflow is `cluster_pathways()`.
+![Enriched Terms Clustering
+Workflow](./vignettes/term_clustering.png?raw=true
+"Enriched Terms Clustering Workflow") The wrapper function for this
+workflow is `cluster_enriched_terms()`.
 
-This workflow first calculates the pairwise kappa statistics between the terms in the resulting data frame. By default, the function performs hierarchical clustering, automatically determines the optimal number of clusters by maximizing the average silhouette width and returns a data frame with cluster assignments.
+This workflow first calculates the pairwise kappa statistics between the
+enriched terms. The function then performs hierarchical clustering (by
+default), automatically determines the optimal number of clusters by
+maximizing the average silhouette width and returns a data frame with
+cluster assignments.
 
-```r
+``` r
 # default settings
-RA_clustered <- cluster_pathways(RA_output)
+RA_clustered <- cluster_enriched_terms(RA_output)
 
-# to display the heatmap of pathway clustering
-RA_clustered <- cluster_pathways(RA_output, plot_hmap = TRUE)
+# to display the heatmap of hierarchical clustering
+RA_clustered <- cluster_enriched_terms(RA_output, plot_hmap = TRUE)
 
 # to display the dendrogram and clusters
-RA_clustered <- cluster_pathways(RA_output, plot_dend = TRUE)
+RA_clustered <- cluster_enriched_terms(RA_output, plot_dend = TRUE)
 
 # to change agglomeration method (default = "average")
-RA_clustered <- cluster_pathways(RA_output, hclu_method = "centroid")
+RA_clustered <- cluster_enriched_terms(RA_output, clu_method = "centroid")
 ```
 
-Alternatively, the `fuzzy` clustering method (as described in Huang DW, Sherman BT, Tan Q, et al. The DAVID Gene Functional Classification Tool: a novel biological module-centric algorithm to functionally analyze large gene lists. Genome Biol. 2007;8(9):R183.) can be used:
+Alternatively, the `fuzzy` clustering method (as described in Huang DW,
+Sherman BT, Tan Q, et al. The DAVID Gene Functional Classification Tool:
+a novel biological module-centric algorithm to functionally analyze
+large gene lists. Genome Biol. 2007;8(9):R183.) can be used:
 
-```r
-RA_clustered <- cluster_pathways(RA_output, method = "fuzzy")
+``` r
+RA_clustered_fuzzy <- cluster_enriched_terms(RA_output, method = "fuzzy")
 ```
 
-See the [wiki page](https://github.com/egeulgen/pathfindR/wiki/Clustering%20Documentation) for more details.
+See the [wiki
+page](https://github.com/egeulgen/pathfindR/wiki/Clustering%20Documentation)
+for more details.
 
 ## Term-Gene Graph Visualization
 
-The function `term_gene_graph` (adapted from the Gene-Concept network visualization by the R package `enrichplot`) can be utilized to visualize which genes are involved in the enriched terms. The function creates the term-gene graph which shows the connections between genes and biological terms (enriched pathways or gene sets). This allows for the investigation of multiple terms to which significant genes are related. The graph also enables determination of the degree of overlap between the enriched terms by identifying shared and/or distinct significant genes.
+The function `term_gene_graph` (adapted from the Gene-Concept network
+visualization by the R package `enrichplot`) can be utilized to
+visualize which significant genes are involved in the enriched terms.
+The function creates the term-gene graph, displaying the connections
+between genes and biological terms (enriched pathways or gene sets).
+This allows for the investigation of multiple terms to which significant
+genes are related. The graph also enables determination of the degree of
+overlap between the enriched terms by identifying shared and/or distinct
+significant genes.
 
 ![Term-Gene Graph](./vignettes/term_gene.png?raw=true "Term-Gene Graph")
 
-For more details, see the [wiki page](https://github.com/egeulgen/pathfindR/wiki/Term-Gene-Graph).
+For more details, see the [wiki
+page](https://github.com/egeulgen/pathfindR/wiki/Term-Gene-Graph).
 
-## Overview of the Pathway Scoring Functionality
+## Per Sample Enriched Term Scores
 
-![Pathway Scoring per Sample](./vignettes/pw_score_hmap.png?raw=true "Pathway Scoring per Sample")
- 
-The function `calculate_pw_scores` can be used to calculate the pathway scores per sample. This allows the user to individually examine the scores and infer whether a pathway is activated or repressed in a given sample.
+![Agglomerated Scores for all Enriched Terms per
+Sample](./vignettes/score_hmap.png?raw=true "Scoring per Sample")
 
-For a set of pathways <img src="https://latex.codecogs.com/gif.latex?\inline&space;P&space;=&space;\{P_1,&space;P_2,&space;...&space;,&space;P_n\}" title="P = \{P_1, P_2, ... , P_n\}" />, where each <img src="https://latex.codecogs.com/gif.latex?\inline&space;P_i" title="P_i" /> contains a set of genes, i.e. <img src="https://latex.codecogs.com/gif.latex?\inline&space;P_i&space;=&space;\{g_1,&space;g_2,&space;...,&space;g_k\}" title="P_i = \{g_1, g_2, ..., g_k\}" />, the pathway score matrix _PS_ is defined as:
+The function `calculate_scores` can be used to calculate the
+agglomerated z score of each enriched term per sample. This allows the
+user to individually examine the scores and infer how a term is overall
+altered (activated or repressed) in a given sample or a group of
+samples.
 
-<img src="https://latex.codecogs.com/gif.latex?\inline&space;PS_{p,s}&space;=&space;\frac{1}{k}&space;\sum_{g&space;\in&space;P_p}&space;GS_{g,s}" title="PS_{p,s} = \frac{1}{k} \sum_{g \in P_p} GS_{g,s}" /> for each pathway _p_ and for each sample _s_.
-
-_GS_ is the gene score per sample matrix and is defined as:
-
-<img src="https://latex.codecogs.com/gif.latex?\inline&space;GS_{g,s}&space;=&space;(EM_{g,s}&space;-&space;\bar{x}_g)&space;/&space;s_g" title="GS_{g,s} = (EM_{g,s} - \bar{x}_g) / s_g" />
-
-where _EM_ is the expression matrix (columns are samples, rows are genes), <img src="https://latex.codecogs.com/gif.latex?\inline&space;\bar{x}_g" title="\bar{x}_g" /> is the mean expression value of the gene and <img src="https://latex.codecogs.com/gif.latex?\inline&space;s_g" title="s_g" /> is the standard deviaton of the expression values for the gene.
-
-See the [wiki page](https://github.com/egeulgen/pathfindR/wiki/Pathway-Scoring) for more details.
-
-## Dependencies
-For the active subnetwork search component to work, the user must have [Java](https://www.java.com/en/download/manual.jsp) installed and path/to/java must be in the PATH environment variable.
-
-## Resources
-The default (homo sapiens) PINs were gathered from various resources:
-- [Biogrid](https://downloads.thebiogrid.org/BioGRID)
-- [GeneMania](http://genemania.org/data/): only interactions with weights >= 0.0006 were kept.
-- [IntAct](https://www.ebi.ac.uk/intact/)
-- KEGG PIN - created via an in-house script.
-
-The default (homo sapiens) gene sets for enrichment analyses were gathered from:
-- KEGG - created using the R package KEGGREST (_Dan Tenenbaum (2018). KEGGREST: Client-side REST access to KEGG. R package version 1.18.1._)
-- [Reactome](https://reactome.org/download-data)
-- [BioCarta](http://software.broadinstitute.org/gsea/msigdb/genesets.jsp?collection=CP:BIOCARTA)
-- [Gene Ontology gene sets](http://www.go2msig.org/cgi-bin/prebuilt.cgi?taxid=9606) - High quality GO annotations only
+See the [wiki
+page](https://github.com/egeulgen/pathfindR/wiki/Enriched-Term-Scoring)
+for more details.

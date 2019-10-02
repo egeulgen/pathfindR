@@ -16,3 +16,4 @@
 ^Dockerfile_dev$
 ^codecov\.yml$
 ^LICENSE\.md$
+^README\.Rmd$
