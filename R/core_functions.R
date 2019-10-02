@@ -153,7 +153,7 @@ run_pathfindR <- function(input,
   }
 
   # Gene Sets
-  gset_list <- pathfindR:::fetch_gene_set(gene_sets = gene_sets,
+  gset_list <- pathfindR::fetch_gene_set(gene_sets = gene_sets,
                                           custom_genes = custom_genes,
                                           custom_descriptions = custom_descriptions)
   genes_by_term <- gset_list$genes_by_term
@@ -365,9 +365,11 @@ run_pathfindR <- function(input,
 #'   \item{term_descriptions}{vector of descriptions per each term}
 #' }
 #'
+#' @export
+#'
 #' @examples
-#' KEGG_gset <- pathfindR:::fetch_gene_set()
-#' GO_MF_gset <- pathfindR:::fetch_gene_set("GO-MF")
+#' KEGG_gset <- fetch_gene_set()
+#' GO_MF_gset <- fetch_gene_set("GO-MF")
 fetch_gene_set <- function(gene_sets = "KEGG",
                            custom_genes = NULL,
                            custom_descriptions = NULL) {

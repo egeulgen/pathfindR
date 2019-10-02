@@ -12,7 +12,7 @@
   - Documentation of each function was updated accordingly
 - Added the visualization fuction `term_gene_graph`, which creates a graph of enriched terms - involved genes
 - Made changes in `enrichment` and `enrichment_analyses` to get enrichment results faster
-- Added new internal function `fetch_gene_set` for obtaining gene set data more easily
+- Added the function `fetch_gene_set` for obtaining gene set data more easily
 - Added unit tests using `testthat`
 - Updated all gene sets data
 - Updated all RA example data

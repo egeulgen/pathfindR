@@ -33,6 +33,6 @@ Function for obtaining the gene sets per term and the term descriptions to
 be used for enrichment analysis.
 }
 \examples{
-KEGG_gset <- pathfindR:::fetch_gene_set()
-GO_MF_gset <- pathfindR:::fetch_gene_set("GO-MF")
+KEGG_gset <- fetch_gene_set()
+GO_MF_gset <- fetch_gene_set("GO-MF")
 }
