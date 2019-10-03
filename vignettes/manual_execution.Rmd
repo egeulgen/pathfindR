@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 This vignette walks through each step of the pathfindR active-subnetwork-oriented pathway enrichment analysis. For most purposes, the wrapper function `run_pathfindR` can be used to perform this analysis from start to end. For users who wish to have further control over the enrichment workflow, this vignette will be more useful.
 
 
-<img src="./pathfindr.png" width="650"/>
+<img src="./pathfindr.png" style="max-width:100%;" />
 
 # Load the package and prepare the input data frame
 
@@ -135,7 +135,7 @@ visualize_terms(result_df = final_res,
                 pin_name_path = path2PIN)
 ```
 
-<img src="./example_interaction_vis.png" width="650" height="519.87" />
+<img src="./example_interaction_vis.png" style="max-width:100%;" />
 
 We can also create a graphical summary of the top 10 enrichment results using `enrichment_chart`:
 
@@ -143,4 +143,4 @@ We can also create a graphical summary of the top 10 enrichment results using `e
 enrichment_chart(final_res[1:10, ])
 ```
 
-<img src="./man_enrichment_chart.png" width="650"/>
+<img src="./man_enrichment_chart.png" style="max-width:100%;" />
