@@ -482,8 +482,10 @@ term_gene_graph <- function(result_df, num_terms = 10,
 
   ############ Initial steps
   ### set num_terms to NULL if number of enriched terms is smaller than num_terms
-  if (nrow(result_df) < num_terms) {
-    num_terms <- NULL
+  if (!is.null(num_terms)) {
+    if (nrow(result_df) < num_terms) {
+      num_terms <- NULL
+    }
   }
 
   ### Order and filter for top N genes
