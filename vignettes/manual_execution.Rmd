@@ -35,7 +35,7 @@ head(RA_input, 3)
 
 For the active subnetwork search process, we will need a protein-protein interaction network (PIN). pathfindR will map the input genes onto this PIN and identify active subnetworks which will then be used for enrichment analyses.
 
-> An active subnetwork can be defined as a group of interconnected genes in a protein-protein interaction network (PIN) that predominantly consists of significantly altered genes. In other words, active subnetworks define distinct disease-associated sets of interacting genes.
+> An active subnetwork can be defined as a group of interconnected genes in a protein-protein interaction network (PIN) that predominantly consists of significantly altered genes. In other words, active subnetworks define distinct disease-associated sets of interacting genes, whether discovered through the original analysis or discovered because of being in interaction with a significant gene.
 
 We obtain the full path to the PIN file to be used during analyses via `return_pin_path`. The `pin_name_path` argument can be one of "Biogrid", "GeneMania", "IntAct", "KEGG" or it can be the path to a custom PIN file provided by the user.
 

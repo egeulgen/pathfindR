@@ -100,7 +100,8 @@ based on their scores and the number of significant genes they contain.
 > in a protein-protein interaction network (PIN) that predominantly
 > consists of significantly altered genes. In other words, active
 > subnetworks define distinct disease-associated sets of interacting
-> genes.
+> genes, whether discovered through the original analysis or discovered
+> because of being in interaction with a significant gene.
 
 These filtered list of active subnetworks are then used for enrichment
 analyses, i.e. using the genes in each of the active subnetworks, the
