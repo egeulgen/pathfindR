@@ -128,8 +128,8 @@ Data frame of pathfindR enrichment results. Columns are: \describe{
   \item{lowest_p}{the lowest adjusted-p value of the given term over all iterations}
   \item{highest_p}{the highest adjusted-p value of the given term over all iterations}
   \item{non_DEG_Active_Snw_Genes (OPTIONAL)}{the non-DEG active subnetwork genes, comma-separated}
-  \item{Up_regulated}{the up-regulated genes in the input involved in the given term's gene set, comma-separated}
-  \item{Down_regulated}{the down-regulated genes in the input involved in the given term's gene set, comma-separated}
+  \item{Up_regulated}{the up-regulated genes (as determined by `change value` > 0, if the `change column` was provided) in the input involved in the given term's gene set, comma-separated}. If change column not provided, all affected are listed here.
+  \item{Down_regulated}{the down-regulated genes (as determined by `change value` < 0, if the `change column` was provided) in the input involved in the given term's gene set, comma-separated}
 }
  The function also creates an HTML report with the pathfindR enrichment
  results linked to the visualizations of the enriched terms in addition to
