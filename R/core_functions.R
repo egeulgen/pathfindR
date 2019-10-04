@@ -181,10 +181,9 @@ run_pathfindR <- function(input,
 
   if (dir_changed) {
     message(paste0(
-      "There already is a directory named \"", output_dir_init,
+      "There is already a directory named \"", output_dir_init,
       "\".\nWriting the result to \"", output_dir,
-      "\" not to overwrite the previous results."
-    ))
+      "\" not to overwrite any previous results."))
   }
 
   # on exit, set working directory back to original working directory
