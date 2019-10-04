@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-This vignette walks through each step of the pathfindR active-subnetwork-oriented pathway enrichment analysis. For most purposes, the wrapper function `run_pathfindR` can be used to perform this analysis from start to end. For users who wish to have further control over the enrichment workflow, this vignette will be more useful.
+This vignette walks through each step of the pathfindR active-subnetwork-oriented pathway enrichment analysis. For most purposes, the wrapper function `run_pathfindR()` can be used to perform this analysis from start to end. For users who wish to have further control over the enrichment workflow, this vignette will be more useful.
 
 
 <img src="./pathfindr.png" style="max-width:100%;" />
@@ -37,7 +37,7 @@ For the active subnetwork search process, we will need a protein-protein interac
 
 > An active subnetwork can be defined as a group of interconnected genes in a protein-protein interaction network (PIN) that predominantly consists of significantly altered genes. In other words, active subnetworks define distinct disease-associated sets of interacting genes, whether discovered through the original analysis or discovered because of being in interaction with a significant gene.
 
-We obtain the full path to the PIN file to be used during analyses via `return_pin_path`. The `pin_name_path` argument can be one of "Biogrid", "GeneMania", "IntAct", "KEGG" or it can be the path to a custom PIN file provided by the user.
+We obtain the full path to the PIN file to be used during analyses via `return_pin_path()`. The `pin_name_path` argument can be one of "Biogrid", "GeneMania", "IntAct", "KEGG" or it can be the path to a custom PIN file provided by the user.
 
 ```{r path2PIN}
 path2PIN <- return_pin_path(pin_name_path = "Biogrid")
@@ -45,7 +45,7 @@ path2PIN <- return_pin_path(pin_name_path = "Biogrid")
 
 # Process input data
 
-We next need to process the input data for use in analysis via `input_processing`:
+We next need to process the input data for use in analysis via `input_processing()`:
 
 ```{r process}
 RA_processed <- input_processing(input = RA_input, # the input: in this case, differential expression results
@@ -54,11 +54,11 @@ RA_processed <- input_processing(input = RA_input, # the input: in this case, di
                                  human_genes = TRUE) # boolean indicating whether the input genes are human gene symbols
 ```
 
-> After checking that the data frame complies with the requirements, `input_processing` filters the input so that genes with p values larger than `p_val_threshold` are excluded. Next, if human genes are provided (controlled by the argument `human_genes`), gene symbols that are not in the PIN are identified. If aliases of these missing gene symbols are found in the PIN, these symbols are converted to the corresponding aliases. This step is performed to best map the input data onto the PIN.
+> After checking that the data frame complies with the requirements, `input_processing()` filters the input so that genes with p values larger than `p_val_threshold` are excluded. Next, if human genes are provided (controlled by the argument `human_genes`), gene symbols that are not in the PIN are identified. If aliases of these missing gene symbols are found in the PIN, these symbols are converted to the corresponding aliases. This step is performed to best map the input data onto the PIN.
 
 # Obtain Gene Set Data
 
-We obtain the necessary gene sets for enrichment analyses using `fetch_gene_set`:
+We obtain the necessary gene sets for enrichment analyses using `fetch_gene_set()`:
 
 ``` {r gene_set}
 # using "BioCarta" as our gene sets for enrichment
@@ -74,11 +74,11 @@ biocarta_descriptions <- biocarta_list[[2]]
 
 # Active Subnetwork Search and Enrichment Analyses
 
-As outlined in the vignette [Introduction to pathfindR](intro_vignette.html), `run_pathfindR` initially identifies and filters active subnetworks, then performs enrichment analyses on these subnetworks and summarize the results.
+As outlined in the vignette [Introduction to pathfindR](intro_vignette.html), `run_pathfindR()` initially identifies and filters active subnetworks, then performs enrichment analyses on these subnetworks and summarize the results.
 
-To perform these steps manually, we utilize the function `active_snw_search` for identifying and filtering active subnetworks and the function `enrichment_analyses` for obtaining enriched terms using these subnetworks. Because the active subnetwork search algorithms are stochastic, we suggest iterating these subnetwork identification and enrichment steps multiple times [^1]:
+To perform these steps manually, we utilize the function `active_snw_search()` for identifying and filtering active subnetworks and the function `enrichment_analyses()` for obtaining enriched terms using these subnetworks. Because the active subnetwork search algorithms are stochastic, we suggest iterating these subnetwork identification and enrichment steps multiple times [^1]:
 
-[^1]: Here we are using a regular `for` loop. In the wrapper function `run_pathfindR`, however, a parallel loop (via the package `foreach`) is used.
+[^1]: Here we are using a regular `for` loop. In the wrapper function `run_pathfindR()`, however, a parallel loop (via the package `foreach`) is used.
 
 ```{r snw_search, eval=FALSE}
 n_iter <- 15 ## number of iterations
@@ -112,7 +112,7 @@ for (i in 1:n_iter) {
 
 # Summary of Enrichment Results
 
-We next summarize the enrichent results (in `combined_res`) using `summarize_enrichment_results` and annotate the involved significant (input) genes in each term using `annotate_term_genes`.
+We next summarize the enrichent results (in `combined_res`) using `summarize_enrichment_results()` and annotate the involved significant (input) genes in each term using `annotate_term_genes()`.
 
 ```{r post_proc, eval=FALSE}
 ###### Summarize Combined Enrichment Results
@@ -127,7 +127,7 @@ final_res <- annotate_term_genes(result_df = summarized_df,
 
 # Visualizations
 
-Finally, we can visualize each enriched term diagram using `visualize_terms`. In this case, these will be graphs of interactions of pathway-involved genes for each pathway. See `?visualize_terms` for more details.
+We can visualize each enriched term diagram using `visualize_terms()`. In this case, these will be graphs of interactions of pathway-involved genes for each pathway. See `?visualize_terms` for more details.
 
 ```{r vis_pws, eval=FALSE}
 visualize_terms(result_df = final_res, 
@@ -137,10 +137,12 @@ visualize_terms(result_df = final_res,
 
 <img src="./example_interaction_vis.png" style="max-width:100%;" />
 
-We can also create a graphical summary of the top 10 enrichment results using `enrichment_chart`:
+We can also create a graphical summary of the top 10 enrichment results using `enrichment_chart()`:
 
 ```{r enr_chart, eval=FALSE}
 enrichment_chart(final_res[1:10, ])
 ```
 
 <img src="./man_enrichment_chart.png" style="max-width:100%;" />
+
+The x-axis corresponds to fold enrichment values while the y-axis indicates the enriched terms. The size of each bubble indicates the number of significant genes in the given enriched term. Color indicates the -log10(lowest-p) value. The closer the color is to red, the more significant the enrichment is.
