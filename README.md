@@ -78,16 +78,14 @@ details.
 "pathfindr Enrichment Workflow")
 
 This workflow takes in a data frame consisting of Gene symbols,
-log-fold-change (optional) and associated p values. The first 3 lines of
-an example input data frame looks like:
+log-fold-change (optional) and associated p values.
 
-``` r
-head(RA_input, 3)
-#>   Gene.symbol    logFC  adj.P.Val
-#> 1     FAM110A -0.69394 3.4087e-06
-#> 2      RNASE2  1.35350 1.0085e-05
-#> 3      S100A8  1.54483 3.4664e-05
-```
+| Gene.symbol |     logFC | adj.P.Val |
+| :---------- | --------: | --------: |
+| FAM110A     | \-0.69394 |   0.00000 |
+| RNASE2      |   1.35350 |   0.00001 |
+| S100A8      |   1.54483 |   0.00003 |
+| S100A9      |   1.02809 |   0.00023 |
 
 After input testing, any gene symbol that is not in the chosen
 protein-protein interaction network (PIN) is converted to an alias
@@ -114,33 +112,43 @@ iterations, performed in parallel. Over all iterations, the lowest and
 the highest adjusted-p values, as well as number of occurrences over all
 iterations are reported for each significantly enriched term.
 
-This workflow can be run using the function `run_pathfindR`:
+This workflow can be run using the function `run_pathfindR()`:
 
 ``` r
 library(pathfindR)
-RA_output <- run_pathfindR(RA_input)
+output_df <- run_pathfindR(input_df)
+```
 
-# to change the output directory
-RA_output <- run_pathfindR(RA_input, output_dir = "new_directory")
+This wrapper function performs the active-subnetwork-oriented enrichment
+analysis and returns a data frame of enriched terms (as well as
+visualization of enriched terms and an HTML report)
 
-# to change the PIN (default = Biogrid)
-RA_output <- run_pathfindR(RA_input, pin_name_path = "IntAct")
-# to use an external PIN of user's choice
-RA_output <- run_pathfindR(RA_input, pin_name_path = "/path/to/myPIN.sif")
+| ID       | Term\_Description                         | Fold\_Enrichment | occurrence | lowest\_p | highest\_p | Up\_regulated                                                   | Down\_regulated                                                                |
+| :------- | :---------------------------------------- | ---------------: | ---------: | --------: | ---------: | :-------------------------------------------------------------- | :----------------------------------------------------------------------------- |
+| hsa00190 | Oxidative phosphorylation                 |           3.0548 |         10 |         0 |          0 | NDUFA1, NDUFB3, UQCRQ, COX6A1, COX7A2, COX7C, ATP6V1D, ATP6V0E1 | ATP6V0E2                                                                       |
+| hsa05012 | Parkinson disease                         |           2.8024 |         10 |         0 |          0 | NDUFA1, NDUFB3, UQCRQ, COX6A1, COX7A2, COX7C                    | UBE2G1, VDAC1, SLC25A5                                                         |
+| hsa04932 | Non-alcoholic fatty liver disease (NAFLD) |           2.3712 |         10 |         0 |          0 | DDIT3, NDUFA1, NDUFB3, UQCRQ, COX6A1, COX7A2, COX7C             | IKBKB, FASLG                                                                   |
+| hsa03040 | Spliceosome                               |           3.9363 |         10 |         0 |          0 | SF3B6, LSM3, BUD31                                              | SNRPB, SF3B2, U2AF2, PUF60, SNU13, DDX23, EIF4A3, HNRNPA1, PCBP1, SRSF8, SRSF5 |
 
-# to change the active subnetwork search algorithm (default = "GR", i.e. greedy algorithm)
-# for simulated annealing:
-RA_output <- run_pathfindR(RA_input, search_method = "SA")
+Some useful arguments are:
 
-# to change the number of iterations (default = 10)
-RA_output <- run_pathfindR(RA_input, iterations = 25) 
+``` r
+# change the output directory
+output_df <- run_pathfindR(input_df, output_dir = "new_directory")
 
-# to manually specify the number processes used during parallel loop by foreach
-# defaults to the number of detected cores (See ?parallel::detectCores()) 
-RA_output <- run_pathfindR(RA_input, n_processes = 2)
+# change the gene sets used for analysis (default = "KEGG")
+output_df <- run_pathfindR(input_df, gene_sets = "GO-MF")
 
-# to report the non-DEG active subnetwork genes
-RA_output <- run_pathfindR(RA_input, list_active_snw_genes = TRUE)
+# change the PIN for active subnetwork search (default = Biogrid)
+output_df <- run_pathfindR(input_df, pin_name_path = "IntAct")
+# or use an external PIN of your choice
+output_df <- run_pathfindR(input_df, pin_name_path = "/path/to/myPIN.sif")
+
+# change the number of iterations (default = 10)
+output_df <- run_pathfindR(input_df, iterations = 25) 
+
+# report the non-DEG active subnetwork genes (for later analyses)
+output_df <- run_pathfindR(input_df, list_active_snw_genes = TRUE)
 ```
 
 See the [wiki
@@ -162,16 +170,16 @@ cluster assignments.
 
 ``` r
 # default settings
-RA_clustered <- cluster_enriched_terms(RA_output)
+clustered_df <- cluster_enriched_terms(output_df)
 
-# to display the heatmap of hierarchical clustering
-RA_clustered <- cluster_enriched_terms(RA_output, plot_hmap = TRUE)
+# display the heatmap of hierarchical clustering
+clustered_df <- cluster_enriched_terms(output_df, plot_hmap = TRUE)
 
-# to display the dendrogram and clusters
-RA_clustered <- cluster_enriched_terms(RA_output, plot_dend = TRUE)
+# display the dendrogram and automatically-determined clusters
+clustered_df <- cluster_enriched_terms(output_df, plot_dend = TRUE)
 
-# to change agglomeration method (default = "average")
-RA_clustered <- cluster_enriched_terms(RA_output, clu_method = "centroid")
+# change agglomeration method (default = "average") for hierarchical clustering
+clustered_df <- cluster_enriched_terms(output_df, clu_method = "centroid")
 ```
 
 Alternatively, the `fuzzy` clustering method (as described in Huang DW,
@@ -180,7 +188,7 @@ a novel biological module-centric algorithm to functionally analyze
 large gene lists. Genome Biol. 2007;8(9):R183.) can be used:
 
 ``` r
-RA_clustered_fuzzy <- cluster_enriched_terms(RA_output, method = "fuzzy")
+clustered_df_fuzzy <- cluster_enriched_terms(output_df, method = "fuzzy")
 ```
 
 See the [wiki
@@ -189,7 +197,7 @@ for more details.
 
 ## Term-Gene Graph Visualization
 
-The function `term_gene_graph` (adapted from the Gene-Concept network
+The function `term_gene_graph()` (adapted from the Gene-Concept network
 visualization by the R package `enrichplot`) can be utilized to
 visualize which significant genes are involved in the enriched terms.
 The function creates the term-gene graph, displaying the connections
@@ -209,7 +217,7 @@ page](https://github.com/egeulgen/pathfindR/wiki/Term-Gene-Graph).
 ![Agglomerated Scores for all Enriched Terms per
 Sample](./vignettes/score_hmap.png?raw=true "Scoring per Sample")
 
-The function `calculate_scores` can be used to calculate the
+The function `calculate_scores()` can be used to calculate the
 agglomerated z score of each enriched term per sample. This allows the
 user to individually examine the scores and infer how a term is overall
 altered (activated or repressed) in a given sample or a group of
