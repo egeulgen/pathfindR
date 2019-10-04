@@ -123,18 +123,19 @@ This wrapper function performs the active-subnetwork-oriented enrichment
 analysis and returns a data frame of enriched terms (as well as
 visualization of enriched terms and an HTML report)
 
-| ID       | Term\_Description                         | Fold\_Enrichment | occurrence | lowest\_p | highest\_p | Up\_regulated                                                   | Down\_regulated                                                                |
-| :------- | :---------------------------------------- | ---------------: | ---------: | --------: | ---------: | :-------------------------------------------------------------- | :----------------------------------------------------------------------------- |
-| hsa00190 | Oxidative phosphorylation                 |           3.0548 |         10 |         0 |          0 | NDUFA1, NDUFB3, UQCRQ, COX6A1, COX7A2, COX7C, ATP6V1D, ATP6V0E1 | ATP6V0E2                                                                       |
-| hsa05012 | Parkinson disease                         |           2.8024 |         10 |         0 |          0 | NDUFA1, NDUFB3, UQCRQ, COX6A1, COX7A2, COX7C                    | UBE2G1, VDAC1, SLC25A5                                                         |
-| hsa04932 | Non-alcoholic fatty liver disease (NAFLD) |           2.3712 |         10 |         0 |          0 | DDIT3, NDUFA1, NDUFB3, UQCRQ, COX6A1, COX7A2, COX7C             | IKBKB, FASLG                                                                   |
-| hsa03040 | Spliceosome                               |           3.9363 |         10 |         0 |          0 | SF3B6, LSM3, BUD31                                              | SNRPB, SF3B2, U2AF2, PUF60, SNU13, DDX23, EIF4A3, HNRNPA1, PCBP1, SRSF8, SRSF5 |
+| ID       | Term\_Description                         | Fold\_Enrichment | occurrence | lowest\_p | highest\_p | Up\_regulated                                                   | Down\_regulated        |
+| :------- | :---------------------------------------- | ---------------: | ---------: | --------: | ---------: | :-------------------------------------------------------------- | :--------------------- |
+| hsa00190 | Oxidative phosphorylation                 |           3.0548 |         10 |         0 |          0 | NDUFA1, NDUFB3, UQCRQ, COX6A1, COX7A2, COX7C, ATP6V1D, ATP6V0E1 | ATP6V0E2               |
+| hsa05012 | Parkinson disease                         |           2.8024 |         10 |         0 |          0 | NDUFA1, NDUFB3, UQCRQ, COX6A1, COX7A2, COX7C                    | UBE2G1, VDAC1, SLC25A5 |
+| hsa04932 | Non-alcoholic fatty liver disease (NAFLD) |           2.3712 |         10 |         0 |          0 | DDIT3, NDUFA1, NDUFB3, UQCRQ, COX6A1, COX7A2, COX7C             | IKBKB, FASLG           |
+
+<img src="man/figures/example_output-1.png" width="100%" />
 
 Some useful arguments are:
 
 ``` r
 # change the output directory
-output_df <- run_pathfindR(input_df, output_dir = "new_directory")
+output_df <- run_pathfindR(input_df, output_dir = "/top/secret/results")
 
 # change the gene sets used for analysis (default = "KEGG")
 output_df <- run_pathfindR(input_df, gene_sets = "GO-MF")
