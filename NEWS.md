@@ -28,7 +28,7 @@
 - In `enrichment_chart`, added the arguments `num_bubbles` (default is 4) to control number of bubbles displayed in the legend and `even_breaks` (default is `TRUE`) to indicate if even increments of breaks are required
 - Updated the logo
 - Minor fix in `term_gene_graph` (create the igraph object as an undirected graph for better auto layout)
-
+- Minor fix in `visualize_term_interactions`. The legend no longer displays "Non-input Active Snw. Genes" if they were not provided
 
 # pathfindR 1.3.0
 

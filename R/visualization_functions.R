@@ -201,16 +201,27 @@ visualize_term_interactions <- function(result_df, pin_name_path) {
                      "\n Involved Gene Interactions in", pin_name_path)
       )
 
-      graphics::legend("topleft",
-        legend = c(
-          "Non-input Active Snw. Genes",
-          "Upregulated Input Genes",
-          "Downregulated Input Genes",
-          "Other"
-        ),
-        col = c("blue", "red", "green", "gray60"),
-        pch = 19, cex = 1.5, bty = "n"
-      )
+      if (is.null(snw_genes))
+        graphics::legend("topleft",
+                         legend = c(
+                           "Upregulated Input Genes",
+                           "Downregulated Input Genes",
+                           "Other"
+                         ),
+                         col = c("red", "green", "gray60"),
+                         pch = 19, cex = 1.5, bty = "n"
+        ) else {
+          graphics::legend("topleft",
+                           legend = c(
+                             "Non-input Active Snw. Genes",
+                             "Upregulated Input Genes",
+                             "Downregulated Input Genes",
+                             "Other"
+                           ),
+                           col = c("blue", "red", "green", "gray60"),
+                           pch = 19, cex = 1.5, bty = "n"
+          )
+        }
       grDevices::dev.off()
     }
   }
