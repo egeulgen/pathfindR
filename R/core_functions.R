@@ -53,8 +53,7 @@
 
 #' @param bubble boolean value. If TRUE, a bubble chart displaying the enrichment
 #' results is plotted. (default = TRUE)
-#' @param output_dir the directory to be created under the current working
-#' directory where the output and intermediate files are saved (default: "pathfindR_Results")
+#' @param output_dir the directory to be created where the output and intermediate files are saved (default: "pathfindR_Results")
 #' @param list_active_snw_genes boolean value indicating whether or not to report
 #' the non-DEG active subnetwork genes for the active subnetwork which was enriched for
 #' the given term with the lowest p value (default = FALSE)
