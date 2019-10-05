@@ -155,8 +155,10 @@ run_pathfindR <- function(input,
 
   # Gene Sets
   gset_list <- pathfindR::fetch_gene_set(gene_sets = gene_sets,
-                                          custom_genes = custom_genes,
-                                          custom_descriptions = custom_descriptions)
+                                         min_gset_size = min_gset_size,
+                                         max_gset_size = max_gset_size,
+                                         custom_genes = custom_genes,
+                                         custom_descriptions = custom_descriptions)
   genes_by_term <- gset_list$genes_by_term
   term_descriptions <- gset_list$term_descriptions
 
