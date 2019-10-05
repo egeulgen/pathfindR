@@ -294,50 +294,54 @@ score_matrix <- calculate_scores(enrichment_table = RA_clustered[RA_clustered$St
 
 # Analysis with Custom Gene Sets
 
-It is possible to use `run_pathfindR()` with custom gene sets (including gene sets for non-Homo-sapiens species). Here we provide an example application of enrichment of the target genes of two transcription factors.
+It is possible to use `run_pathfindR()` with custom gene sets (including gene sets for non-Homo-sapiens species). Here, we provide an example application of active-subnetwork-oriented enrichment analysis of the target genes of two transcription factors.
 
 We first load and prepare the gene sets:
 
 ```{r custom_prep, eval=TRUE}
 ## CREB target genes
-CREB_targets <- normalizePath(system.file("extdata/CREB.txt",
-                                      package = "pathfindR"))
-CREB_targets <- readLines(CREB_targets)[-c(1, 2)]
+CREB_target_genes <- normalizePath(system.file("extdata/CREB.txt", package = "pathfindR"))
+CREB_target_genes <- readLines(CREB_target_genes)[-c(1, 2)] # skip the first two lines
 
 ## MYC target genes
-MYC_targets <- normalizePath(system.file("extdata/MYC.txt",
-                                      package = "pathfindR"))
-MYC_targets <- readLines(MYC_targets)[-c(1, 2)]
+MYC_target_genes <- normalizePath(system.file("extdata/MYC.txt", package = "pathfindR"))
+MYC_target_genes <- readLines(MYC_target_genes)[-c(1, 2)] # skip the first two lines
 
 ## Prep for use
-custom_genes <- list(CREB_targets, MYC_targets)
-names(custom_genes) <- c("TF1", "TF2")
-
-custom_terms <- c("CREB target genes", "MYC target genes")
-names(custom_terms) <- c("TF1", "TF2")
+custom_genes <- list(TF1 = CREB_target_genes, TF2 = MYC_target_genes)
+custom_descriptions <- c(TF1 = "CREB target genes", TF2 = "MYC target genes")
 ```
 
-We next prepare an example input, because of the way we choose genes we expect significant enrichment for MYC targets (100 MYC target genes + 10 CREB target genes). Because this is only an example, we set the p values to 0.001:
+We next prepare the example input data frame. Because of the way we choose genes, we expect significant enrichment for MYC targets (40 MYC target genes + 10 CREB target genes). Because this is only an example, we also assign each genes random p-values between 0.001 and 0.05.
 
 ```{r custom_input, eval=TRUE}
 set.seed(123)
-selected_genes <- sample(MYC_targets, 100)
-selected_genes <- c(selected_genes,
-                    sample(CREB_targets, 10))
-input <- data.frame(Gene.symbol = selected_genes,
-                    adj.P.Val = 0.001)
-head(input)
+
+## Select 40 random genes from MYC gene sets and 10 from CREB gene sets
+selected_genes <- sample(MYC_target_genes, 40)
+selected_genes <- c(selected_genes, 
+                    sample(CREB_target_genes, 10))
+
+## Assign random p value between 0.001 and 0.05 for each selected gene
+rand_p_vals <- sample(seq(0.001, 0.05, length.out = 5),
+                      size = length(selected_genes),
+                      replace = TRUE)
+
+input_df <- data.frame(Gene_symbol = selected_genes,
+                       p_val = rand_p_vals)
+knitr::kable(head(input_df))
 ```
 
-Finally, we run the wrapper script `run_pathfindR` using the custom genes as the gene sets:
+Finally, we perform active-subnetwork-oriented enrichment analysis via `run_pathfindR()` using the custom genes as the gene sets:
 
 ```{r custom_run}
-custom_result <- run_pathfindR(input,
+custom_result <- run_pathfindR(input_df,
                                gene_sets = "Custom",
                                custom_genes = custom_genes,
-                               custom_terms = custom_terms,
+                               custom_descriptions = custom_descriptions,
+                               max_gset_size = Inf, # DO NOT LIMIT GENE SET SIZE
                                iterations = 1, # for demo, setting number of iterations to 1
-                               output_dir = "/dir/to/custom/out")
+                               output_dir = "misc/v1.4/CREB_MYC")
 
 knitr::kable(custom_result)
 ```

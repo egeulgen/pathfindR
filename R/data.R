@@ -175,8 +175,9 @@
 
 #' Custom Gene Set Enrichment Results
 #'
-#' A data frame consisting of pathfindR enrichment results on the example TF target data.
-#' \emph{Generated on Oct 1, 2019.}
+#' A data frame consisting of pathfindR enrichment analysis results on the
+#' example TF target genes data (target gene sets of CREB and MYC).
+#' \emph{Generated on Oct 5, 2019.}
 #' @format data frame containing 2 rows and 8 columns. Each row is a gene set (the TF target gene sets).
 "custom_result"
 
