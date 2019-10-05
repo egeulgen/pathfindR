@@ -8,7 +8,6 @@
   `annotate_term_DEGs`, `calculate_scores`, `cluster_enriched_terms`, `fuzzy_term_clustering`, `hierarchical_term_clustering`, `visualize_term_interactions` and `visualize_terms` respectively
   - The Rmd template file for the report `enriched_pathways.Rmd` was renamed to `enriched_terms.Rmd`
   - All the Rmd template files for the report were updated
-  - The vignettes were updated (TODO)
   - Documentation of each function was updated accordingly
 - Added the visualization fuction `term_gene_graph`, which creates a graph of enriched terms - involved genes
 - Made changes in `enrichment` and `enrichment_analyses` to get enrichment results faster
@@ -16,6 +15,7 @@
 - Added unit tests using `testthat`
 - Updated all gene sets data
 - Updated all RA example data
+- The vignettes were updated
 
 ## Minor changes and bug fixes
 - In `hierarchical_pw_clustering`, redefined the distance measure as `1 - kappa statistic`
