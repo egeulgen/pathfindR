@@ -4,7 +4,7 @@
 \alias{input_processing}
 \title{Process Input}
 \usage{
-input_processing(input, p_val_threshold, pin_path, human_genes = TRUE)
+input_processing(input, p_val_threshold, pin_path, convert2alias = TRUE)
 }
 \arguments{
 \item{input}{the input data that pathfindR uses. The input must be a data
@@ -20,7 +20,9 @@ the input data frame}
 \item{pin_path}{path to the Protein Interaction Network (PIN) file used in
 the analysis}
 
-\item{human_genes}{boolean to indicate whether the input genes are human gene symbols or not (default = TRUE)}
+\item{convert2alias}{boolean to indicate whether or not to convert gene symbols
+in the input that are not found in the PIN to an alias symbol found in the PIN
+(default = TRUE) IMPORTANT NOTE: the conversion uses human gene symbols/alias symbols.}
 }
 \value{
 This function first filters the input so that all p values are less
@@ -36,7 +38,7 @@ Process Input
 \examples{
 \dontshow{
 input_processing(RA_input[1:20, ], 0.05, return_pin_path("KEGG"))
-input_processing(RA_input[1:20, ], 0.05, return_pin_path("KEGG"), human_genes = FALSE)
+input_processing(RA_input[1:20, ], 0.05, return_pin_path("KEGG"), convert2alias = FALSE)
 }
 \dontrun{
 input_processing(RA_input, 0.05, return_pin_path("KEGG"))

@@ -198,7 +198,7 @@ This document contains the table of converted gene symbols. Columns are:
 - Change: the provided change value
 - p-value: the provided adjusted p value
 
-> If human genes are provided (controlled by the argument `human_genes`), gene symbols that are not in the PIN are identified. If aliases of these missing gene symbols are found in the PIN, these symbols are converted to the corresponding aliases. This step is performed to best map the input data onto the PIN.
+> During input processing, gene symbols that are not in the PIN are identified and exluded. For human genes, if aliases of these missing gene symbols are found in the PIN, these symbols are converted to the corresponding aliases (controlled by the argument `convert2alias`). This step is performed to best map the input data onto the PIN.
 
 The document contains a second table of genes for which **no interactions** were identified after checking for alias symbols (so these could not be used during the analysis).
 
@@ -350,7 +350,7 @@ knitr::kable(custom_result)
 knitr::kable(custom_result)
 ```
 
-> It is also possible to run pathfindR using non-human organism annotation. For this, `human_genes` must be set to `FALSE`, the custom gene set objects AND the path to a custom PIN file belonging to the species of interest must be specified.
+> It is also possible to run pathfindR using non-human organism annotation. For this, `convert2alias` must be set to `FALSE`, the custom gene set objects AND the path to a custom PIN file belonging to the species of interest must be specified.
 
 
 [^1]: Huang DW, Sherman BT, Tan Q, et al. The DAVID Gene Functional Classification Tool: a novel biological module-centric algorithm to functionally analyze large gene lists. Genome Biol. 2007;8(9):R183.

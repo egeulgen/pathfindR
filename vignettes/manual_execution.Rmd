@@ -51,10 +51,10 @@ We next need to process the input data for use in analysis via `input_processing
 RA_processed <- input_processing(input = RA_input, # the input: in this case, differential expression results
                                  p_val_threshold = 0.05, # p value threshold to filter significant genes
                                  pin_path = path2PIN, # path/to/PIN/file
-                                 human_genes = TRUE) # boolean indicating whether the input genes are human gene symbols
+                                 convert2alias = TRUE) # boolean indicating whether or not to convert missing symbols to alias symbols in the PIN
 ```
 
-> After checking that the data frame complies with the requirements, `input_processing()` filters the input so that genes with p values larger than `p_val_threshold` are excluded. Next, if human genes are provided (controlled by the argument `human_genes`), gene symbols that are not in the PIN are identified. If aliases of these missing gene symbols are found in the PIN, these symbols are converted to the corresponding aliases. This step is performed to best map the input data onto the PIN.
+> After checking that the data frame complies with the requirements, `input_processing()` filters the input so that genes with p values larger than `p_val_threshold` are excluded. Next, gene symbols that are not in the PIN are identified and exluded. For human genes, if aliases of these missing gene symbols are found in the PIN, these symbols are converted to the corresponding aliases (controlled by the argument `convert2alias`). This step is performed to best map the input data onto the PIN.
 
 # Obtain Gene Set Data
 

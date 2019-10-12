@@ -18,8 +18,9 @@
 #' @inheritParams fetch_gene_set
 #' @param visualize_enriched_terms Boolean value to indicate whether or not to
 #'  create diagrams for enriched terms (default = TRUE)
-#' @param human_genes boolean to indicate whether the input genes are
-#'  human gene symbols or not (default = TRUE)
+#' @param convert2alias boolean to indicate whether or not to convert gene symbols
+#' in the input that are not found in the PIN to an alias symbol found in the PIN
+#' (default = TRUE) IMPORTANT NOTE: the conversion uses human gene symbols/alias symbols.
 #' @param enrichment_threshold adjusted-p value threshold used when filtering
 #'  enrichment results
 #' @param adj_method correction method to be used for adjusting p-values of
@@ -119,7 +120,7 @@ run_pathfindR <- function(input,
                           pin_name_path = "Biogrid",
                           p_val_threshold = 5e-2,
                           visualize_enriched_terms = TRUE,
-                          human_genes = TRUE,
+                          convert2alias = TRUE,
                           enrichment_threshold = 5e-2,
                           adj_method = "bonferroni",
                           search_method = "GR",
@@ -219,7 +220,7 @@ run_pathfindR <- function(input,
   message("## Processing input. Converting gene symbols,
           if necessary (and if human gene symbols provided)\n\n")
   input_processed <- pathfindR::input_processing(input, p_val_threshold,
-                                                 pin_path, human_genes)
+                                                 pin_path, convert2alias)
 
   ############ Active Subnetwork Search and Enrichment
   ## Prep for parallel run
@@ -570,7 +571,9 @@ input_testing <- function(input, p_val_threshold = 0.05) {
 #'   the input data frame
 #' @param pin_path path to the Protein Interaction Network (PIN) file used in
 #'   the analysis
-#' @param human_genes boolean to indicate whether the input genes are human gene symbols or not (default = TRUE)
+#' @param convert2alias boolean to indicate whether or not to convert gene symbols
+#' in the input that are not found in the PIN to an alias symbol found in the PIN
+#' (default = TRUE) IMPORTANT NOTE: the conversion uses human gene symbols/alias symbols.
 #'
 #' @return This function first filters the input so that all p values are less
 #'   than or equal to the threshold. Next, gene symbols that are not found in
@@ -586,21 +589,19 @@ input_testing <- function(input, p_val_threshold = 0.05) {
 #' @examples
 #' \dontshow{
 #' input_processing(RA_input[1:20, ], 0.05, return_pin_path("KEGG"))
-#' input_processing(RA_input[1:20, ], 0.05, return_pin_path("KEGG"), human_genes = FALSE)
+#' input_processing(RA_input[1:20, ], 0.05, return_pin_path("KEGG"), convert2alias = FALSE)
 #' }
 #' \dontrun{
 #' input_processing(RA_input, 0.05, return_pin_path("KEGG"))
 #' }
 #'
 input_processing <- function(input, p_val_threshold,
-                             pin_path, human_genes = TRUE) {
+                             pin_path, convert2alias = TRUE) {
   input <- as.data.frame(input)
   if (ncol(input) == 2) {
-    input <- data.frame(
-      GENE = input[, 1],
-      CHANGE = rep(100, nrow(input)),
-      P_VALUE = input[, 2]
-    )
+    input <- data.frame(GENE = input[, 1],
+                        CHANGE = rep(100, nrow(input)),
+                        P_VALUE = input[, 2])
   }
 
   colnames(input) <- c("GENE", "CHANGE", "P_VALUE")
@@ -641,12 +642,11 @@ input_processing <- function(input, p_val_threshold,
     file = pin_path,
     header = FALSE, stringsAsFactors = FALSE
   )
-  pin$V2 <- NULL
 
   ## Genes not in pin
-  missing <- input$GENE[!input$GENE %in% c(pin[, 1], pin[, 2])]
+  missing_symbols <- input$GENE[!input$GENE %in% c(pin[, 1], pin[, 3])]
 
-  if (human_genes & length(missing) != 0) {
+  if (convert2alias & length(missing_symbols) != 0) {
     ## use SQL to get alias table and gene_info table (contains the symbols)
     ## first open the database connection
     db_con <- org.Hs.eg.db::org.Hs.eg_dbconn()
@@ -654,7 +654,7 @@ input_processing <- function(input, p_val_threshold,
     sql_query <-
       "SELECT * FROM alias, gene_info WHERE alias._id == gene_info._id;"
     ## execute the query on the database
-    alias_symbol <- DBI::dbGetQuery(db_con, sql_query)
+    hsa_alias_df <- DBI::dbGetQuery(db_con, sql_query)
 
     select_alias <- function(result, converted, idx) {
       if (idx == 0) {
@@ -668,27 +668,22 @@ input_processing <- function(input, p_val_threshold,
 
     ## loop for getting all symbols
     converted <- c()
-    for (i in base::seq_len(length(missing))) {
-      result <- alias_symbol[
-        alias_symbol$alias_symbol == missing[i],
-        c("alias_symbol", "symbol")
-      ]
-      result <- alias_symbol[
-        alias_symbol$symbol %in% result$symbol,
-        c("alias_symbol", "symbol")
-      ]
-      result <- result$alias_symbol[result$alias_symbol %in%
-        c(pin[, 1], pin[, 2])]
+    for (i in base::seq_len(length(missing_symbols))) {
+      result <- hsa_alias_df[hsa_alias_df$alias_symbol == missing_symbols[i],
+                             c("alias_symbol", "symbol")]
+      result <- hsa_alias_df[hsa_alias_df$symbol %in% result$symbol,
+                             c("alias_symbol", "symbol")]
+      result <- result$alias_symbol[result$alias_symbol %in% c(pin[, 1], pin[, 3])]
       ## avoid duplicate entries
       to_add <- select_alias(result, converted, length(result))
-      converted <- rbind(converted, c(missing[i], to_add))
+      converted <- rbind(converted, c(missing_symbols[i], to_add))
     }
 
     ## Convert to appropriate symbol
     input$new_gene <- input$GENE
     input$new_gene[match(converted[, 1], input$new_gene)] <- converted[, 2]
   } else {
-    input$new_gene <- ifelse(input$GENE %in% missing, "NOT_FOUND", input$GENE)
+    input$new_gene <- ifelse(input$GENE %in% missing_symbols, "NOT_FOUND", input$GENE)
   }
 
   ## number and percent still missing

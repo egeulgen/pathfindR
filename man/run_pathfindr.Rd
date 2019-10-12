@@ -8,7 +8,7 @@ run_pathfindR(input, gene_sets = "KEGG", min_gset_size = 10,
   max_gset_size = 300, custom_genes = NULL,
   custom_descriptions = NULL, pin_name_path = "Biogrid",
   p_val_threshold = 0.05, visualize_enriched_terms = TRUE,
-  human_genes = TRUE, enrichment_threshold = 0.05,
+  convert2alias = TRUE, enrichment_threshold = 0.05,
   adj_method = "bonferroni", search_method = "GR",
   use_all_positives = FALSE, saTemp0 = 1, saTemp1 = 0.01,
   saIter = 10000, gaPop = 400, gaIter = 200, gaThread = 5,
@@ -55,8 +55,9 @@ the input data frame. Must a numeric value between 0 and 1. (default = 0.05)}
 \item{visualize_enriched_terms}{Boolean value to indicate whether or not to
 create diagrams for enriched terms (default = TRUE)}
 
-\item{human_genes}{boolean to indicate whether the input genes are
-human gene symbols or not (default = TRUE)}
+\item{convert2alias}{boolean to indicate whether or not to convert gene symbols
+in the input that are not found in the PIN to an alias symbol found in the PIN
+(default = TRUE) IMPORTANT NOTE: the conversion uses human gene symbols/alias symbols.}
 
 \item{enrichment_threshold}{adjusted-p value threshold used when filtering
 enrichment results}
