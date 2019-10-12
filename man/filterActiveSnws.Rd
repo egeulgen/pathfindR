@@ -4,13 +4,14 @@
 \alias{filterActiveSnws}
 \title{Parse Active Subnetwork Search Output File and Filter the Subnetworks}
 \usage{
-filterActiveSnws(active_snw_path, signif_genes, score_quan_thr = 0.8,
+filterActiveSnws(active_snw_path, sig_genes_vec, score_quan_thr = 0.8,
   sig_gene_thr = 10)
 }
 \arguments{
 \item{active_snw_path}{path to the output of an Active Subnetwork Search.}
 
-\item{signif_genes}{the vector of significant genes.}
+\item{sig_genes_vec}{vector of significant gene symbols. In the scope of this
+package, these are the input genes that were used for active subnetwork search}
 
 \item{score_quan_thr}{active subnetwork score quantile threshold (Default = 0.80)}
 

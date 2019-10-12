@@ -1,7 +1,8 @@
 #' Parse Active Subnetwork Search Output File and Filter the Subnetworks
 #'
 #' @param active_snw_path path to the output of an Active Subnetwork Search.
-#' @param signif_genes the vector of significant genes.
+#' @param sig_genes_vec vector of significant gene symbols. In the scope of this
+#'   package, these are the input genes that were used for active subnetwork search
 #' @param score_quan_thr active subnetwork score quantile threshold (Default = 0.80)
 #' @param sig_gene_thr threshold for minimum number of affected genes (Default = 10)
 #'
@@ -21,7 +22,7 @@
 #' \dontrun{
 #' tmp <- filterActiveSnws("path/to/output", significant_genes)
 #' }
-filterActiveSnws <- function(active_snw_path, signif_genes,
+filterActiveSnws <- function(active_snw_path, sig_genes_vec,
                              score_quan_thr = 0.80, sig_gene_thr = 10) {
   output <- readLines(active_snw_path)
 
@@ -34,7 +35,7 @@ filterActiveSnws <- function(active_snw_path, signif_genes,
   for (i in base::seq_len(length(output))) {
     snw <- output[[i]]
 
-    snw <- unlist(strsplit(snw, " "))
+    snw <- unlist(strsplit(snw, "\\s"))
 
     score_vec <- c(score_vec, as.numeric(snw[1]))
     subnetworks[[i]] <- snw[-1]
@@ -43,9 +44,10 @@ filterActiveSnws <- function(active_snw_path, signif_genes,
   # keep subnetworks with score over the "score_quan_thr"th quantile
   score_thr <- stats::quantile(score_vec, score_quan_thr)
   subnetworks <- subnetworks[as.numeric(score_vec) > as.numeric(score_thr)]
-  # select subnetworks with at least sig_gene_thr significant genes
-  snw_sig_counts <- vapply(subnetworks, function(snw)
-    sum(snw %in% signif_genes), 1)
+
+  # select subnetworks with at least "sig_gene_thr" significant genes
+  snw_sig_counts <- vapply(subnetworks, function(snw_genes)
+    sum(base::toupper(snw_genes) %in% base::toupper(sig_genes_vec)), 1)
   cond <- (snw_sig_counts >= sig_gene_thr)
   subnetworks <- subnetworks[cond]
 
