@@ -110,6 +110,9 @@ visualize_term_interactions <- function(result_df, pin_name_path) {
   )
   pin$V2 <- NULL
 
+  pin[, 1] <- base::toupper(pin[, 1])
+  pin[, 3] <- base::toupper(pin[, 3])
+
   ## pin graph
   pin_g <- igraph::graph_from_data_frame(pin, directed = FALSE)
 
@@ -122,13 +125,14 @@ visualize_term_interactions <- function(result_df, pin_name_path) {
   for (i in base::seq_len(nrow(result_df))) {
     current_row <- result_df[i, ]
 
-    up_genes <- unlist(strsplit(current_row$Up_regulated, ", "))
-    down_genes <- unlist(strsplit(current_row$Down_regulated, ", "))
+    up_genes <- base::toupper(unlist(strsplit(current_row$Up_regulated, ", ")))
+    down_genes <- base::toupper(unlist(strsplit(current_row$Down_regulated, ", ")))
     current_genes <- c(down_genes, up_genes)
 
     ## Add active snw genes if listed
     if (!is.null(result_df$non_DEG_Active_Snw_Genes)) {
       snw_genes <- unlist(strsplit(current_row$non_DEG_Active_Snw_Genes, ", "))
+      snw_genes <- base::toupper(snw_genes)
       current_genes <- c(current_genes, snw_genes)
     } else {
       snw_genes <- NULL

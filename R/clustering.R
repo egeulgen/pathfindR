@@ -39,10 +39,8 @@ create_kappa_matrix <- function(enrichment_res,
   up_idx <- which(colnames(enrichment_res) == "Up_regulated")
 
   genes_lists <- apply(enrichment_res, 1, function(x)
-    c(
-      unlist(strsplit(as.character(x[up_idx]), ", ")),
-      unlist(strsplit(as.character(x[down_idx]), ", "))
-    ))
+    base::toupper(c(unlist(strsplit(as.character(x[up_idx]), ", ")),
+                    unlist(strsplit(as.character(x[down_idx]), ", ")))))
 
   if (use_active_snw_genes) {
     if (!"non_DEG_Active_Snw_Genes" %in% colnames(enrichment_res)) {
@@ -51,9 +49,8 @@ create_kappa_matrix <- function(enrichment_res,
 
     active_idx <- which(colnames(enrichment_res) == "non_DEG_Active_Snw_Genes")
 
-    genes_lists <- mapply(
-      function(x, y)
-        c(x, unlist(strsplit(as.character(y), ", "))),
+    genes_lists <- mapply(function(x, y)
+      c(x, unlist(strsplit(as.character(y), ", "))),
       genes_lists, enrichment_res[, active_idx]
     )
   }
