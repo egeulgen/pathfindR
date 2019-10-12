@@ -11,6 +11,6 @@ biocarta_descriptions
 }
 \description{
 A list containing the descriptions for each human BioCarta pathway.
-\emph{Generated on Sep 30, 2019.}
+\emph{Generated on Oct 12, 2019.}
 }
 \keyword{datasets}

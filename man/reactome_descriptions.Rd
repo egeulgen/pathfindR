@@ -12,6 +12,6 @@ reactome_descriptions
 \description{
 A list containing the descriptions for each human Reactome pathway. Names of the
 list correspond to the Reactome ID of the pathway.
-\emph{Generated on Sep 30, 2019.}
+\emph{Generated on Oct 12, 2019.}
 }
 \keyword{datasets}

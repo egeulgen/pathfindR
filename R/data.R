@@ -92,7 +92,7 @@
 #' is a vector of gene symbols located in the given pathway. Names correspond to
 #' the KEGG ID of the pathway. Pathways that did not contain any genes were
 #' discarded.
-#' \emph{Generated on Oct 10, 2019.}
+#' \emph{Generated on Oct 12, 2019.}
 #'
 #' @format list containing 327 vectors of gene symbols. Each vector corresponds
 #'   to a pathway.
@@ -103,7 +103,7 @@
 #' A list containing the descriptions for each human KEGG pathway. Names of the
 #' list correspond to the KEGG ID of the pathway. Pathways that did not contain
 #' any genes were discarded.
-#' \emph{Generated on Oct 10, 2019.}
+#' \emph{Generated on Oct 12, 2019.}
 #'
 #' @format vector containing 327 character values, the descriptions for the given
 #'   pathways.
@@ -114,7 +114,7 @@
 #' A list containing the genes involved in each human Reactome pathway. Each
 #' element is a vector of gene symbols located in the given pathway. Names
 #' correspond to the Reactome ID of the pathway.
-#' \emph{Generated on Sep 30, 2019.}
+#' \emph{Generated on Oct 12, 2019.}
 #'
 #' @format list containing 2263 vectors of gene symbols. Each vector corresponds
 #'   to a pathway.
@@ -124,7 +124,7 @@
 #'
 #' A list containing the descriptions for each human Reactome pathway. Names of the
 #' list correspond to the Reactome ID of the pathway.
-#' \emph{Generated on Sep 30, 2019.}
+#' \emph{Generated on Oct 12, 2019.}
 #'
 #' @format list containing 2263 character values, the descriptions for the given
 #'   pathways.
@@ -134,7 +134,7 @@
 #'
 #' A list containing the genes involved in each human BioCarta pathway. Each
 #' element is a vector of gene symbols located in the given pathway.
-#' \emph{Generated on Sep 30, 2019.}
+#' \emph{Generated on Oct 12, 2019.}
 #'
 #' @format list containing 314 vectors of gene symbols. Each vector corresponds
 #'   to a gene set.
@@ -143,7 +143,7 @@
 #' BioCarta Pathways - Descriptions
 #'
 #' A list containing the descriptions for each human BioCarta pathway.
-#' \emph{Generated on Sep 30, 2019.}
+#' \emph{Generated on Oct 12, 2019.}
 #'
 #' @format list containing 314 character values, the descriptions for the given
 #'   pathways.

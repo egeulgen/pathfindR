@@ -14,6 +14,6 @@ A list containing the genes involved in each human KEGG pathway. Each element
 is a vector of gene symbols located in the given pathway. Names correspond to
 the KEGG ID of the pathway. Pathways that did not contain any genes were
 discarded.
-\emph{Generated on Oct 10, 2019.}
+\emph{Generated on Oct 12, 2019.}
 }
 \keyword{datasets}

@@ -13,6 +13,6 @@ kegg_descriptions
 A list containing the descriptions for each human KEGG pathway. Names of the
 list correspond to the KEGG ID of the pathway. Pathways that did not contain
 any genes were discarded.
-\emph{Generated on Oct 10, 2019.}
+\emph{Generated on Oct 12, 2019.}
 }
 \keyword{datasets}
