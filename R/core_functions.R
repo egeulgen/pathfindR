@@ -308,26 +308,23 @@ run_pathfindR <- function(input,
   ############ Create HTML Report
   message("## Creating HTML report\n\n")
   ## Create report
-  rmarkdown::render(system.file("rmd/results.Rmd", package = "pathfindR"),
-    output_dir = "."
-  )
+  rmarkdown::render(system.file("rmd/results.Rmd",
+                                package = "pathfindR"),
+                    output_dir = ".")
 
   rmarkdown::render(system.file("rmd/enriched_terms.Rmd",
-    package = "pathfindR"
-  ),
-  params = list(
-    df = final_res, gset = gene_sets,
-    vis_cond = visualize_enriched_terms,
-    out_dir = output_dir
-  ),
-  output_dir = "."
-  )
+                                package = "pathfindR"),
+                    params = list(df = final_res,
+                                  gset = gene_sets,
+                                  vis_cond = visualize_enriched_terms,
+                                  out_dir = output_dir),
+                    output_dir = ".")
 
   rmarkdown::render(system.file("rmd/conversion_table.Rmd",
-    package = "pathfindR"
-  ),
-  params = list(df = input_processed, original_df = input),
-  output_dir = "."
+                                package = "pathfindR"),
+                    params = list(df = input_processed,
+                                  original_df = input),
+                    output_dir = "."
   )
 
   ############ Bubble Chart
@@ -644,7 +641,8 @@ input_processing <- function(input, p_val_threshold,
   )
 
   ## Genes not in pin
-  missing_symbols <- input$GENE[!input$GENE %in% c(pin[, 1], pin[, 3])]
+  PIN_genes <- c(base::toupper(pin[, 1]), base::toupper(pin[, 3]))
+  missing_symbols <- input$GENE[!base::toupper(input$GENE) %in% PIN_genes]
 
   if (convert2alias & length(missing_symbols) != 0) {
     ## use SQL to get alias table and gene_info table (contains the symbols)
@@ -673,7 +671,7 @@ input_processing <- function(input, p_val_threshold,
                              c("alias_symbol", "symbol")]
       result <- hsa_alias_df[hsa_alias_df$symbol %in% result$symbol,
                              c("alias_symbol", "symbol")]
-      result <- result$alias_symbol[result$alias_symbol %in% c(pin[, 1], pin[, 3])]
+      result <- result$alias_symbol[base::toupper(result$alias_symbol) %in% PIN_genes]
       ## avoid duplicate entries
       to_add <- select_alias(result, converted, length(result))
       converted <- rbind(converted, c(missing_symbols[i], to_add))
@@ -752,8 +750,8 @@ annotate_term_genes <- function(result_df,
 
   ### Annotate up/down-regulated term-related genes
   ## Up/Down-regulated genes
-  upreg <- input_processed$GENE[input_processed$CHANGE >= 0]
-  downreg <- input_processed$GENE[input_processed$CHANGE < 0]
+  upreg <- base::toupper(input_processed$GENE[input_processed$CHANGE >= 0])
+  downreg <- base::toupper(input_processed$GENE[input_processed$CHANGE < 0])
 
   ## Annotation
   annotated_df <- result_df
@@ -761,12 +759,10 @@ annotate_term_genes <- function(result_df,
   for (i in base::seq_len(nrow(annotated_df))) {
     idx <- which(names(genes_by_term) == annotated_df$ID[i])
     temp <- genes_by_term[[idx]]
-    annotated_df$Up_regulated[i] <- paste(temp[temp %in% upreg],
-                                          collapse = ", "
-    )
-    annotated_df$Down_regulated[i] <- paste(temp[temp %in% downreg],
-                                            collapse = ", "
-    )
+    annotated_df$Up_regulated[i] <- paste(temp[base::toupper(temp) %in% upreg],
+                                          collapse = ", ")
+    annotated_df$Down_regulated[i] <- paste(temp[base::toupper(temp) %in% downreg],
+                                            collapse = ", ")
   }
 
   return(annotated_df)

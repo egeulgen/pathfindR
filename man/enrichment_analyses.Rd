@@ -4,7 +4,7 @@
 \alias{enrichment_analyses}
 \title{Perform Enrichment Analyses on the Input Subnetworks}
 \usage{
-enrichment_analyses(snws, input_genes, pin_path,
+enrichment_analyses(snws, sig_genes_vec, pin_path,
   genes_by_term = kegg_genes, term_descriptions = kegg_descriptions,
   adj_method = "bonferroni", enrichment_threshold = 0.05,
   list_active_snw_genes = FALSE)
@@ -12,7 +12,8 @@ enrichment_analyses(snws, input_genes, pin_path,
 \arguments{
 \item{snws}{a list of subnetwork genes (i.e., vectors of genes for each subnetwork)}
 
-\item{input_genes}{vector of input gene symbols (that were used during active subnetwork search)}
+\item{sig_genes_vec}{vector of significant gene symbols. In the scope of this
+package, these are the input genes that were used for active subnetwork search}
 
 \item{pin_path}{path to the Protein Interaction Network (PIN) file used in
 the analysis}

@@ -79,23 +79,19 @@ enrichment <- function(input_genes,
                        background_genes) {
 
   ## Hypergeometric test for p value
-  enrichment_res <- vapply(
-    genes_by_term, pathfindR::hyperg_test, 0.1,
-    input_genes, background_genes
-  )
+  enrichment_res <- vapply(genes_by_term, pathfindR::hyperg_test, 0.1,
+                           input_genes, background_genes)
   enrichment_res <- as.data.frame(enrichment_res)
   colnames(enrichment_res) <- "p_value"
 
   ## Fold enrinchment
-  fe_calc <- function(x, genes_vec, background_genes) {
-    A <- sum(x %in% genes_vec) / length(genes_vec)
+  fe_calc <- function(x, sig_genes_vec, background_genes) {
+    A <- sum(x %in% sig_genes_vec) / length(sig_genes_vec)
     B <- sum(x %in% background_genes) / length(background_genes)
     return(A / B)
   }
-  enrichment_res$Fold_Enrichment <- vapply(
-    genes_by_term, fe_calc, 1.5,
-    sig_genes_vec, background_genes
-  )
+  enrichment_res$Fold_Enrichment <- vapply(genes_by_term, fe_calc, 1.5,
+                                           sig_genes_vec, background_genes)
 
   idx <- order(enrichment_res$p_value)
   enrichment_res <- enrichment_res[idx, , drop = FALSE]
@@ -123,10 +119,8 @@ enrichment <- function(input_genes,
     }
 
     ## reorder columns
-    to_order <- c(
-      "ID", "Term_Description", "Fold_Enrichment",
-      "p_value", "adj_p", "non_DEG_Active_Snw_Genes"
-    )
+    to_order <- c("ID", "Term_Description", "Fold_Enrichment",
+                  "p_value", "adj_p", "non_DEG_Active_Snw_Genes")
     enrichment_res <- enrichment_res[, to_order]
 
     return(enrichment_res)
@@ -136,7 +130,8 @@ enrichment <- function(input_genes,
 #' Perform Enrichment Analyses on the Input Subnetworks
 #'
 #' @param snws a list of subnetwork genes (i.e., vectors of genes for each subnetwork)
-#' @param input_genes vector of input gene symbols (that were used during active subnetwork search)
+#' @param sig_genes_vec vector of significant gene symbols. In the scope of this
+#'   package, these are the input genes that were used for active subnetwork search
 #' @param pin_path path to the Protein Interaction Network (PIN) file used in
 #'   the analysis
 #' @param genes_by_term List that contains genes for each gene set. Names of
@@ -168,7 +163,7 @@ enrichment <- function(input_genes,
 #' pin_path <- return_pin_path()
 #' enr_res <- enrichment_analyses(example_active_snws[1:2], RA_input$Gene.symbol[1:25], pin_path)
 enrichment_analyses <- function(snws,
-                                input_genes,
+                                sig_genes_vec,
                                 pin_path,
                                 genes_by_term = kegg_genes,
                                 term_descriptions = kegg_descriptions,
@@ -180,16 +175,22 @@ enrichment_analyses <- function(snws,
     file = pin_path, header = FALSE,
     stringsAsFactors = FALSE
   )
+
   background_genes <- unique(c(pin[, 1], pin[, 3]))
+
+  # turn all to upper case for best match
+  genes_by_term <- base::toupper(genes_by_term)
+  sig_genes_vec <- base::toupper(sig_genes_vec)
+  background_genes <- base::toupper(background_genes)
 
   ############ Enrichment per subnetwork
   enrichment_res <- lapply(snws, function(x)
-    pathfindR::enrichment(input_genes = x,
+    pathfindR::enrichment(input_genes = base::toupper(x),
                           genes_by_term = genes_by_term,
                           term_descriptions = term_descriptions,
                           adj_method = adj_method,
                           enrichment_threshold = enrichment_threshold,
-                          sig_genes_vec = input_genes,
+                          sig_genes_vec = sig_genes_vec,
                           background_genes = background_genes))
 
   ############ Combine Enrichments Results for All Subnetworks
@@ -258,10 +259,8 @@ summarize_enrichment_results <- function(enrichment_res,
   final_res$occurrence <- as.numeric(occurrence[matched_idx])
 
   ## reorder columns
-  keep <- c(
-    "ID", "Term_Description", "Fold_Enrichment", "occurrence",
-    "lowest_p", "highest_p"
-  )
+  keep <- c("ID", "Term_Description", "Fold_Enrichment",
+    "occurrence", "lowest_p", "highest_p")
   if (list_active_snw_genes) {
     keep <- c(keep, "non_DEG_Active_Snw_Genes")
   }
