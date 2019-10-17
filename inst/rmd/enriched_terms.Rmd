@@ -23,24 +23,29 @@ result_df <- params$df
 result_df$lowest_p <- format(result_df$lowest_p, digits = 2)
 result_df$highest_p <- format(result_df$highest_p, digits = 2)
 
+create_link <- function(text, link)
+  return(paste0("[", text, "]", "(", link, ")"))
+
 if (params$vis_cond) {
-  
+  vis_dir <- file.path(params$out_dir, "term_visualizations")
+  vis_dir <- normalizePath(vis_dir)
   ## If hsa KEGG visualizations
   if (params$gset == "KEGG") {
     for(i in 1:nrow(result_df))
-      result_df[i, 2] <- paste0("[", result_df[i, 2], "]", "(./term_visualizations/", result_df[i, 1],".", result_df[i, 2],".png)")
+      fpath <- file.path(vis_dir, paste0(result_df[i, 1],".", result_df[i, 2],".png")) 
+      result_df[i, 2] <- create_link(result_df[i, 2], fpath)
   } else {
     ## If interactions of term-related genes visualizations
-    pw_dir <- paste0(params$out_dir, "/term_visualizations")
-    pw_dir <- normalizePath(pw_dir)
     for(i in 1:nrow(result_df)) {
-      file_path <- paste0(pw_dir, "/", result_df[i, 2],".png")
-      if (file.exists(file_path))
-        result_df[i, 2] <- paste0("[", result_df[i, 2], "]", "(./term_visualizations/", result_df[i, 2],".png)")
+      fpath <- file.path(vis_dir, paste0(result_df[i, 2],".png"))
+      fpath <- paste0(vis_dir, "/", result_df[i, 2],".png")
+      if (file.exists(fpath)) {
+        fpath <- normalizePath(fpath)
+        result_df[i, 2] <- create_link(result_df[i, 2], fpath)
+      }
     }
   }
 }
-
 
 knitr::kable(result_df, align = "c",table.caption.prefix ="")
 ```
