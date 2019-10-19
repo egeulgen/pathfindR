@@ -190,3 +190,47 @@
 #' @format list containing 167 vectors. Each vector is the set of genes for the
 #' given active subnetwork.
 "example_active_snws"
+
+#' BioGRID PIN Adjacency List
+#'
+#' An adjacency list of vectors containing interactors B for each interactor A
+#' in the BioGRID protein-protein interaction network (The designations
+#' "interactor A" and "interactor B" are arbitrary).
+#' \emph{Generated on Oct 12, 2019.}
+#'
+#' @format list containing 15231 vectors. Each vector is the set of gene symbols
+#' of interactors B for each interactor A.
+"biogrid_adj_list"
+
+#' GeneMania PIN Adjacency List
+#'
+#' An adjacency list of vectors containing interactors B for each interactor A
+#' in the GeneMania protein-protein interaction network (The designations
+#' "interactor A" and "interactor B" are arbitrary).
+#' \emph{Generated on Oct 12, 2019.}
+#'
+#' @format list containing 12345 vectors. Each vector is the set of gene symbols
+#' of interactors B for each interactor A.
+"gene_mania_adj_list"
+
+#' KEGG PIN Adjacency List
+#'
+#' An adjacency list of vectors containing interactors B for each interactor A
+#' in the KEGG protein-protein interaction network (The designations
+#' "interactor A" and "interactor B" are arbitrary).
+#' \emph{Generated on Oct 12, 2019.}
+#'
+#' @format list containing 4507 vectors. Each vector is the set of gene symbols
+#' of interactors B for each interactor A.
+"kegg_adj_list"
+
+#' IntAct PIN Adjacency List
+#'
+#' An adjacency list of vectors containing interactors B for each interactor A
+#' in the IntAct protein-protein interaction network (The designations
+#' "interactor A" and "interactor B" are arbitrary).
+#' \emph{Generated on Oct 19, 2019.}
+#'
+#' @format list containing 15057 vectors. Each vector is the set of gene symbols
+#' of interactors B for each interactor A.
+"intact_adj_list"

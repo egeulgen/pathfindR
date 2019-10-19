@@ -16,6 +16,7 @@
 - Updated all gene sets data
 - Updated all RA example data
 - The vignettes were updated
+- Updated all PIN data
 
 ## Minor changes and bug fixes
 - In `hierarchical_term_clustering()`, redefined the distance measure as `1 - kappa statistic`
@@ -30,6 +31,7 @@
 - Minor fix in `term_gene_graph()` (create the igraph object as an undirected graph for better auto layout)
 - Minor fix in `visualize_term_interactions()`. The legend no longer displays "Non-input Active Snw. Genes" if they were not provided
 - The argument `human_genes` in `run_pathfindR()` and `input_processing()` was renamed as `convert2alias`
+- The gene symbols in the input data frame, the PIN and the gene sets are now turned into uppercase (for obtaining the best overlap)
 
 # pathfindR 1.3.0
 

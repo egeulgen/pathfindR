@@ -470,13 +470,34 @@ fetch_gene_set <- function(gene_sets = "KEGG",
 #' pin_path <- return_pin_path("Biogrid")
 #' pin_path <- return_pin_path("KEGG")
 return_pin_path <- function(pin_name_path = "Biogrid") {
-  if (pin_name_path %in% c(
-    "Biogrid", "GeneMania",
-    "IntAct", "KEGG"
-  )) {
-    path <- system.file(paste0("extdata/", pin_name_path, ".sif"),
-      package = "pathfindR"
-    )
+
+  ## Default PINs
+  if (pin_name_path %in% c("Biogrid", "GeneMania", "IntAct", "KEGG")) {
+
+    path <- file.path(tempdir(), paste0(pin_name_path, ".sif"))
+    if (!file.exists(path)) {
+      if (pin_name_path == "Biogrid") {
+        adj_list <- pathfindR:::biogrid_adj_list
+      } else if (pin_name_path == "GeneMania") {
+        adj_list <- pathfindR:::gene_mania_adj_list
+      } else if (pin_name_path == "IntAct") {
+        adj_list <- pathfindR:::intact_adj_list
+      } else {
+        adj_list <- pathfindR:::kegg_adj_list
+      }
+      pin_df <- lapply(seq_along(adj_list),
+                       function(i, nm, val) data.frame(nm[[i]], "pp", val[[i]],
+                                                       stringsAsFactors = FALSE),
+                       val = adj_list, nm = names(adj_list))
+      pin_df <- base::do.call("rbind", pin_df)
+      write.table(pin_df,
+                  path,
+                  sep = "\t",
+                  row.names = F, col.names = F, quote = F)
+    }
+    path <- normalizePath(path)
+
+    ## Custom PIN
   } else if (file.exists(suppressWarnings(normalizePath(pin_name_path)))) {
     path <- normalizePath(pin_name_path)
     pin <- utils::read.delim(
