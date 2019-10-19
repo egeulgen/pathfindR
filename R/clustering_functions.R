@@ -44,7 +44,8 @@ create_kappa_matrix <- function(enrichment_res,
 
   if (use_active_snw_genes) {
     if (!"non_DEG_Active_Snw_Genes" %in% colnames(enrichment_res)) {
-      stop("No column named `non_DEG_Active_Snw_Genes`, please execute `run_pathfindR` with `list_active_snw_genes = TRUE`!")
+      stop("No column named `non_DEG_Active_Snw_Genes`,
+      please execute `run_pathfindR` with `list_active_snw_genes = TRUE`!")
     }
 
     active_idx <- which(colnames(enrichment_res) == "non_DEG_Active_Snw_Genes")
@@ -125,14 +126,13 @@ create_kappa_matrix <- function(enrichment_res,
 #' hierarchical_term_clustering(kappa_mat, enrichment_res, method = "complete")
 #' }
 hierarchical_term_clustering <- function(kappa_mat, enrichment_res,
-                                       use_description = FALSE,
-                                       clu_method = "average",
-                                       plot_hmap = FALSE, plot_dend = TRUE) {
+                                         use_description = FALSE,
+                                         clu_method = "average",
+                                         plot_hmap = FALSE, plot_dend = TRUE) {
   ### Set ID/Name index
   chosen_id <- ifelse(use_description,
-    which(colnames(enrichment_res) == "Term_Description"),
-    which(colnames(enrichment_res) == "ID")
-  )
+                      which(colnames(enrichment_res) == "Term_Description"),
+                      which(colnames(enrichment_res) == "ID"))
 
   ### Add excluded (zero-length) genes
   kappa_mat2 <- kappa_mat
