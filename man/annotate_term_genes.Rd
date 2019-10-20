@@ -4,8 +4,7 @@
 \alias{annotate_term_genes}
 \title{Annotate the Affected Genes in the Provided Enriched Terms}
 \usage{
-annotate_term_genes(result_df, input_processed,
-  genes_by_term = kegg_genes)
+annotate_term_genes(result_df, input_processed, genes_by_term)
 }
 \arguments{
 \item{result_df}{data frame of enrichment results.
@@ -14,7 +13,7 @@ The only must-have column is "ID".}
 \item{input_processed}{input data processed via \code{\link{input_processing}}}
 
 \item{genes_by_term}{List that contains genes for each gene set. Names of
-this list are gene set IDs (default = \code{kegg_genes})}
+this list are gene set IDs}
 }
 \value{
 The original data frame with two additional columns:  \describe{

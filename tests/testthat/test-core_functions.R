@@ -51,21 +51,6 @@ test_that("run_pathfindR works as expected", {
   unlink(tmp, recursive = TRUE)
 })
 
-expect_that("output dir. renaming works", {
-  for (i in 1:3) {
-    expect_warning(res <- run_pathfindR(RA_input[1:3, ],
-                                        iterations = 1,
-                                        output_dir = "TEST"),
-                   "Did not find any enriched terms!")
-    idx <- paste0("(", i - 1,")")
-    expect_true(dir.exists(paste0("TEST",
-                                  ifelse(i == 1, "", idx))))
-  }
-  tmp <- list.dirs(recursive = FALSE)
-  tmp <- tmp[grep("^\\./TEST", tmp)]
-  unlink(tmp, recursive = TRUE)
-
-})
 
 test_that("run_pathfindR arg checks work", {
   expect_error(run_pathfindR(RA_input, search_method = "WRONG"),

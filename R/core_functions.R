@@ -407,7 +407,7 @@ fetch_gene_set <- function(gene_sets = "KEGG",
   if (grepl("^GO", gene_sets)) {
     genes_by_term <- pathfindR::go_all_genes
 
-    GO_df <- pathfindR:::GO_all_terms_df
+    GO_df <- GO_all_terms_df
     term_descriptions <- GO_df$GO_term
     names(term_descriptions) <- GO_df$GO_ID
 
@@ -479,23 +479,23 @@ return_pin_path <- function(pin_name_path = "Biogrid") {
     path <- file.path(tempdir(check = TRUE), paste0(pin_name_path, ".sif"))
     if (!file.exists(path)) {
       if (pin_name_path == "Biogrid") {
-        adj_list <- pathfindR:::biogrid_adj_list
+        adj_list <- biogrid_adj_list
       } else if (pin_name_path == "GeneMania") {
-        adj_list <- pathfindR:::gene_mania_adj_list
+        adj_list <- gene_mania_adj_list
       } else if (pin_name_path == "IntAct") {
-        adj_list <- pathfindR:::intact_adj_list
+        adj_list <- intact_adj_list
       } else {
-        adj_list <- pathfindR:::kegg_adj_list
+        adj_list <- kegg_adj_list
       }
       pin_df <- lapply(seq_along(adj_list),
                        function(i, nm, val) data.frame(nm[[i]], "pp", val[[i]],
                                                        stringsAsFactors = FALSE),
                        val = adj_list, nm = names(adj_list))
       pin_df <- base::do.call("rbind", pin_df)
-      write.table(pin_df,
-                  path,
-                  sep = "\t",
-                  row.names = F, col.names = F, quote = F)
+      utils::write.table(pin_df,
+                         path,
+                         sep = "\t",
+                         row.names = F, col.names = F, quote = F)
     }
     path <- normalizePath(path)
 
@@ -753,7 +753,7 @@ input_processing <- function(input, p_val_threshold,
 #'  The only must-have column is "ID".
 #' @param input_processed input data processed via \code{\link{input_processing}}
 #' @param genes_by_term List that contains genes for each gene set. Names of
-#'   this list are gene set IDs (default = \code{kegg_genes})
+#'   this list are gene set IDs
 #'
 #' @return The original data frame with two additional columns:  \describe{
 #'   \item{Up_regulated}{the up-regulated genes in the input involved in the given term's gene set, comma-separated}
@@ -768,7 +768,7 @@ input_processing <- function(input, p_val_threshold,
 #' annotated_result <- annotate_term_genes(RA_output, example_gene_data)
 annotate_term_genes <- function(result_df,
                                 input_processed,
-                                genes_by_term = kegg_genes) {
+                                genes_by_term) {
 
   ### Annotate up/down-regulated term-related genes
   ## Up/Down-regulated genes

@@ -4,10 +4,9 @@
 \alias{enrichment_analyses}
 \title{Perform Enrichment Analyses on the Input Subnetworks}
 \usage{
-enrichment_analyses(snws, sig_genes_vec, pin_path,
-  genes_by_term = kegg_genes, term_descriptions = kegg_descriptions,
-  adj_method = "bonferroni", enrichment_threshold = 0.05,
-  list_active_snw_genes = FALSE)
+enrichment_analyses(snws, sig_genes_vec, pin_path, genes_by_term,
+  term_descriptions, adj_method = "bonferroni",
+  enrichment_threshold = 0.05, list_active_snw_genes = FALSE)
 }
 \arguments{
 \item{snws}{a list of subnetwork genes (i.e., vectors of genes for each subnetwork)}
@@ -19,10 +18,10 @@ package, these are the input genes that were used for active subnetwork search}
 the analysis}
 
 \item{genes_by_term}{List that contains genes for each gene set. Names of
-this list are gene set IDs (default = \code{kegg_genes})}
+this list are gene set IDs}
 
 \item{term_descriptions}{Vector that contains term descriptions for the
-gene sets. Names of this vector are gene set IDs (default = \code{kegg_descriptions})}
+gene sets. Names of this vector are gene set IDs}
 
 \item{adj_method}{correction method to be used for adjusting p-values of}
 
