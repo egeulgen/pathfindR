@@ -3,8 +3,8 @@
 #' @param active_snw_path path to the output of an Active Subnetwork Search.
 #' @param sig_genes_vec vector of significant gene symbols. In the scope of this
 #'   package, these are the input genes that were used for active subnetwork search
-#' @param score_quan_thr active subnetwork score quantile threshold (Default = 0.80,
-#' must be between 0 and 1)
+#' @param score_quan_thr active subnetwork score quantile threshold (Default = 0.80)
+#' Must be between 0 and 1 or set to -1 for not filtering
 #' @param sig_gene_thr threshold for minimum number of affected genes (Default = 10)
 #'
 #' @return A list of genes in every active subnetwork that has a score greater than
@@ -26,15 +26,17 @@
 filterActiveSnws <- function(active_snw_path, sig_genes_vec,
                              score_quan_thr = 0.80, sig_gene_thr = 10) {
   ## Arg. checks
-  active_snw_path <- normalizePath(active_snw_path)
+  active_snw_path <- suppressWarnings(normalizePath(active_snw_path))
   if (!file.exists(active_snw_path))
     stop("The active subnetwork file does not exist! Check the `active_snw_path` argument")
 
   if (class(sig_genes_vec) != "character")
     stop("`sig_genes_vec` must be a character vector")
 
-  if (score_quan_thr > 1 | score_quan_thr < 0)
-    stop("`score_quan_thr` must be in [0, 1]!")
+  if (!is.numeric(score_quan_thr))
+    stop("`score_quan_thr` must be numeric!")
+  if (score_quan_thr != -1 & (score_quan_thr > 1 | score_quan_thr < 0))
+    stop("`score_quan_thr` must be in [0, 1] or -1 (if not filtering)")
 
   output <- readLines(active_snw_path)
 
@@ -54,7 +56,11 @@ filterActiveSnws <- function(active_snw_path, sig_genes_vec,
   }
 
   # keep subnetworks with score over the "score_quan_thr"th quantile
-  score_thr <- stats::quantile(score_vec, score_quan_thr)
+  if (score_quan_thr == -1) {
+    score_thr <- min(score_vec) - 1
+  } else {
+    score_thr <- stats::quantile(score_vec, score_quan_thr)
+  }
   subnetworks <- subnetworks[as.numeric(score_vec) > as.numeric(score_thr)]
 
   # select subnetworks with at least "sig_gene_thr" significant genes
@@ -149,21 +155,18 @@ active_snw_search <- function(input_for_search, pin_path,
     setwd(dir_for_parallel_run)
   }
 
-  ## turn silent_option into argument
+  ## turn silent_option into shell argument
   silent_option <- ifelse(silent_option,
-    paste0(
-      " > ./active_snw_search/console_out_",
-      snws_file, ".txt"
-    ), ""
-  )
+    paste0(" > ./active_snw_search/console_out_",
+           snws_file, ".txt"),
+    "")
 
   ## turn use_all_positives into the java argument
   use_all_positives <- ifelse(use_all_positives, " -useAllPositives", "")
 
   ## absolute path for active snw search jar
-  active_search_path <- system.file("java/ActiveSubnetworkSearch.jar",
-    package = "pathfindR"
-  )
+  active_search_jar_path <- system.file("java/ActiveSubnetworkSearch.jar",
+                                        package = "pathfindR")
 
   ## create directory for active subnetworks
   if (!dir.exists("active_snw_search")) {
@@ -172,11 +175,11 @@ active_snw_search <- function(input_for_search, pin_path,
 
   if (!file.exists("active_snw_search/input_for_search.txt")) {
     utils::write.table(input_for_search[, c("GENE", "P_VALUE")],
-      "active_snw_search/input_for_search.txt",
-      col.names = FALSE,
-      row.names = FALSE,
-      quote = FALSE, sep = "\t"
-    )
+                       "active_snw_search/input_for_search.txt",
+                       col.names = FALSE,
+                       row.names = FALSE,
+                       quote = FALSE,
+                       sep = "\t")
   }
 
   input_path <- normalizePath("active_snw_search/input_for_search.txt")
@@ -184,7 +187,7 @@ active_snw_search <- function(input_for_search, pin_path,
   ############ Run active Subnetwork Search
   # running Active Subnetwork Search
   system(paste0(
-    "java -Xss4m -jar \"", active_search_path, "\"",
+    "java -Xss4m -jar \"", active_search_jar_path, "\"",
     " -sif=\"", pin_path, "\"",
     " -sig=\"", input_path, "\"",
     " -method=", search_method,
@@ -204,18 +207,14 @@ active_snw_search <- function(input_for_search, pin_path,
   ))
 
   snws_file <- paste0("active_snw_search/", snws_file, ".txt")
-  file.rename(
-    from = "resultActiveSubnetworkSearch.txt",
-    to = snws_file
-  )
+  file.rename(from = "resultActiveSubnetworkSearch.txt",
+              to = snws_file)
 
   ############ Parse and filter active subnetworks
-  snws <- pathfindR::filterActiveSnws(
-    active_snw_path = snws_file,
-    signif_genes = input_for_search$GENE,
-    score_quan_thr = score_quan_thr,
-    sig_gene_thr = sig_gene_thr
-  )
+  snws <- pathfindR::filterActiveSnws(active_snw_path  = snws_file,
+                                      sig_genes_vec = input_for_search$GENE,
+                                      score_quan_thr = score_quan_thr,
+                                      sig_gene_thr = sig_gene_thr)
 
   message(paste0("Found ", length(snws), " active subnetworks\n\n"))
 

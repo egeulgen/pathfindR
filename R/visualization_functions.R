@@ -111,15 +111,13 @@ visualize_term_interactions <- function(result_df, pin_name_path) {
   pin$V2 <- NULL
 
   pin[, 1] <- base::toupper(pin[, 1])
-  pin[, 3] <- base::toupper(pin[, 3])
+  pin[, 2] <- base::toupper(pin[, 2])
 
   ## pin graph
   pin_g <- igraph::graph_from_data_frame(pin, directed = FALSE)
 
   ## Create visualization output directory
-  if (!dir.exists("term_visualizations")) {
-    dir.create("term_visualizations")
-  }
+  dir.create("term_visualizations", showWarnings = FALSE)
 
   ############ Visualize interactions by enriched term
   for (i in base::seq_len(nrow(result_df))) {
@@ -258,7 +256,7 @@ visualize_hsa_KEGG <- function(pw_table, gene_data) {
   pw_table$Term_Description <- gsub("\\/", "-", pw_table$Term_Description)
 
   ## Create visualization output directory
-  dir.create("term_visualizations")
+  dir.create("term_visualizations", showWarnings = FALSE)
   setwd("term_visualizations")
   on.exit(setwd(".."))
 
@@ -483,8 +481,9 @@ term_gene_graph <- function(result_df, num_terms = 10,
   ID_column <- ifelse(use_description, "Term_Description", "ID")
 
   ### Check node_size
-  node_size <- match.arg(node_size, c("num_DEGs", "p_val"))
-
+  if (!node_size %in% c("num_DEGs", "p_val")) {
+    stop("`node_size` should be one of 'num_DEGs' or 'num_DEGs'")
+  }
   ### Check necessary columnns
   necessary_cols <- c("Up_regulated", "Down_regulated", "lowest_p", ID_column)
 

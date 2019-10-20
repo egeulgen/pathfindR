@@ -332,7 +332,7 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res,
   }
 
   if (!isSymmetric.matrix(kappa_mat)) {
-    stop("`kappa_mat` must be symmetric!")
+    stop("`kappa_mat` must be a symmetric matrix!")
   }
 
   if (class(enrichment_res) != "data.frame") {

@@ -213,18 +213,18 @@ run_pathfindR <- function(input,
 
   ############ Input testing and Processing
   ## Check input
-  message("## Testing input\n\n")
+  message("## Testing input")
   pathfindR::input_testing(input, p_val_threshold)
 
   ## Process input
   message("## Processing input. Converting gene symbols,
-          if necessary (and if human gene symbols provided)\n\n")
+          if necessary (and if human gene symbols provided)")
   input_processed <- pathfindR::input_processing(input, p_val_threshold,
                                                  pin_path, convert2alias)
 
   ############ Active Subnetwork Search and Enrichment
   ## Prep for parallel run
-  message("## Performing Active Subnetwork Search and Enrichment\n")
+  message("## Performing Active Subnetwork Search and Enrichment")
   # calculate the number of cores, if necessary
   if (is.null(n_processes)) {
     n_processes <- parallel::detectCores() - 1
@@ -262,7 +262,7 @@ run_pathfindR <- function(input,
                                          grOverlap = grOverlap, grSubNum = grSubNum)
 
     enrichment_res <- pathfindR::enrichment_analyses(snws = snws,
-                                                     input_genes = input_processed$GENE,
+                                                     sig_genes_vec = input_processed$GENE,
                                                      pin_path = pin_path,
                                                      genes_by_term = genes_by_term,
                                                      term_descriptions = term_descriptions,
@@ -282,14 +282,14 @@ run_pathfindR <- function(input,
   }
 
   ############ Process Enrichment Results of All Iterations
-  message("## Processing the enrichment results over all iterations \n\n")
+  message("## Processing the enrichment results over all iterations")
   final_res <- pathfindR::summarize_enrichment_results(
     combined_res,
     list_active_snw_genes
   )
 
   ############ Annotation of Involved DEGs and Visualization
-  message("## Annotating involved genes and visualizing enriched terms\n\n")
+  message("## Annotating involved genes and visualizing enriched terms")
 
   ##### Annotate Involved DEGs by up/down-regulation status
   final_res <- pathfindR::annotate_term_genes(result_df = final_res,
@@ -306,7 +306,7 @@ run_pathfindR <- function(input,
   }
 
   ############ Create HTML Report
-  message("## Creating HTML report\n\n")
+  message("## Creating HTML report")
   ## Create report
   rmarkdown::render(system.file("rmd/results.Rmd",
                                 package = "pathfindR"),
@@ -329,15 +329,15 @@ run_pathfindR <- function(input,
 
   ############ Bubble Chart
   if (bubble) {
-    message("Plotting the enrichment bubble chart\n\n")
+    message("Plotting the enrichment bubble chart")
     graphics::plot(pathfindR::enrichment_chart(final_res))
   }
 
-  message(paste0("Found ", nrow(final_res), " enriched terms\n\n"))
+  message(paste0("Found ", nrow(final_res), " enriched terms\n"))
 
   message("Enrichment results and table of converted genes ")
   message("can be found in \"results.html\" ")
-  message(paste0("in the folder \"", output_dir, "\"\n\n"))
+  message(paste0("in the folder \"", output_dir, "\"\n"))
   message("Run cluster_enriched_terms() for clustering enriched terms\n\n")
 
   return(final_res)
@@ -382,7 +382,9 @@ fetch_gene_set <- function(gene_sets = "KEGG",
   all_gs_opts <- c("KEGG", "Reactome", "BioCarta",
                    "GO-All", "GO-BP", "GO-CC", "GO-MF",
                    "Custom")
-  gene_sets <- match.arg(gene_sets, all_gs_opts)
+  if (!gene_sets %in% all_gs_opts) {
+    stop("`gene_sets` should be one of ", paste(dQuote(all_gs_opts), collapse = ", "))
+  }
 
   ### Custom Gene Sets
   if (gene_sets == "Custom") {
@@ -474,7 +476,7 @@ return_pin_path <- function(pin_name_path = "Biogrid") {
   ## Default PINs
   if (pin_name_path %in% c("Biogrid", "GeneMania", "IntAct", "KEGG")) {
 
-    path <- file.path(tempdir(), paste0(pin_name_path, ".sif"))
+    path <- file.path(tempdir(check = TRUE), paste0(pin_name_path, ".sif"))
     if (!file.exists(path)) {
       if (pin_name_path == "Biogrid") {
         adj_list <- pathfindR:::biogrid_adj_list
@@ -574,7 +576,7 @@ input_testing <- function(input, p_val_threshold = 0.05) {
     stop("p values must all be between 0 and 1")
   }
 
-  message("The input looks OK\n\n")
+  message("The input looks OK")
 }
 
 #' Process Input
@@ -615,7 +617,6 @@ input_testing <- function(input, p_val_threshold = 0.05) {
 #'
 input_processing <- function(input, p_val_threshold,
                              pin_path, convert2alias = TRUE) {
-  input <- as.data.frame(input)
   if (ncol(input) == 2) {
     input <- data.frame(GENE = input[, 1],
                         CHANGE = rep(100, nrow(input)),
@@ -718,10 +719,10 @@ input_processing <- function(input, p_val_threshold,
     message(paste0(
       "Could not find any interactions for ",
       n,
-      " (", round(perc, 2), "%) genes in the PIN\n\n"
+      " (", round(perc, 2), "%) genes in the PIN"
     ))
   } else {
-    message(paste0("Found interactions for all genes in the PIN\n\n"))
+    message(paste0("Found interactions for all genes in the PIN"))
   }
 
   ## reorder columns

@@ -178,7 +178,7 @@ enrichment_analyses <- function(snws,
   background_genes <- unique(c(pin[, 1], pin[, 3]))
 
   # turn all to upper case for best match
-  genes_by_term <- base::toupper(genes_by_term)
+  genes_by_term <- lapply(genes_by_term, base::toupper)
   sig_genes_vec <- base::toupper(sig_genes_vec)
   background_genes <- base::toupper(background_genes)
 
