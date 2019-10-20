@@ -3,7 +3,8 @@
 #' @param active_snw_path path to the output of an Active Subnetwork Search.
 #' @param sig_genes_vec vector of significant gene symbols. In the scope of this
 #'   package, these are the input genes that were used for active subnetwork search
-#' @param score_quan_thr active subnetwork score quantile threshold (Default = 0.80)
+#' @param score_quan_thr active subnetwork score quantile threshold (Default = 0.80,
+#' must be between 0 and 1)
 #' @param sig_gene_thr threshold for minimum number of affected genes (Default = 10)
 #'
 #' @return A list of genes in every active subnetwork that has a score greater than
@@ -24,6 +25,17 @@
 #' }
 filterActiveSnws <- function(active_snw_path, sig_genes_vec,
                              score_quan_thr = 0.80, sig_gene_thr = 10) {
+  ## Arg. checks
+  active_snw_path <- normalizePath(active_snw_path)
+  if (!file.exists(active_snw_path))
+    stop("The active subnetwork file does not exist! Check the `active_snw_path` argument")
+
+  if (class(sig_genes_vec) != "character")
+    stop("`sig_genes_vec` must be a character vector")
+
+  if (score_quan_thr > 1 | score_quan_thr < 0)
+    stop("`score_quan_thr` must be in [0, 1]!")
+
   output <- readLines(active_snw_path)
 
   if (length(output) == 0) {
