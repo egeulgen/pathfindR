@@ -85,13 +85,12 @@ enrichment <- function(input_genes,
   colnames(enrichment_res) <- "p_value"
 
   ## Fold enrinchment
-  fe_calc <- function(x, sig_genes_vec, background_genes) {
-    A <- sum(x %in% sig_genes_vec) / length(sig_genes_vec)
-    B <- sum(x %in% background_genes) / length(background_genes)
+  fe_calc <- function(term_genes, sig_genes_vec, background_genes) {
+    A <- vapply(term_genes, function(x) length(intersect(sig_genes_vec, x)), 1L) / length(sig_genes_vec)
+    B <- vapply(term_genes, function(x) length(intersect(background_genes, x)), 1L) / length(background_genes)
     return(A / B)
   }
-  enrichment_res$Fold_Enrichment <- vapply(genes_by_term, fe_calc, 1.5,
-                                           sig_genes_vec, background_genes)
+  enrichment_res$Fold_Enrichment <- fe_calc(genes_by_term, sig_genes_vec, background_genes)
 
   idx <- order(enrichment_res$p_value)
   enrichment_res <- enrichment_res[idx, , drop = FALSE]
