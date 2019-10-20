@@ -27,8 +27,8 @@ public class Parameters {
     public static int ga_populationSize=400;//(default 400)
     public static int ga_totalIterations=200;//(default 200)
     public static int ga_threadNumber=5;//(default 5)
-    public static boolean ga_mutation=false;//(default mutation off)
-    public static double ga_mutationRate=0.05;
+    public static double ga_crossoverRate=1;
+    public static double ga_mutationRate=0.0;
     public static boolean ga_Elitism=true;
     
     public static int gr_maxDepth=1;//(default 1)

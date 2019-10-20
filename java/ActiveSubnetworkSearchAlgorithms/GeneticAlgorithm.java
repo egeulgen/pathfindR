@@ -256,40 +256,43 @@ class NewPopulationFactory implements Runnable{
         /**
          * Crossover
          */
-        if(crossoverType==CrossoverType.SINGLEPOINT){
-            int crossoverPoint=ThreadLocalRandom.current().nextInt(parent1Boolean.size());
-            for(int i=0;i<crossoverPoint;i++){
-                child1Boolean.add(parent1Boolean.get(i));
-                child2Boolean.add(parent2Boolean.get(i));
-            }
-            for(int i=crossoverPoint;i<parent1Boolean.size();i++){
-                child1Boolean.add(parent2Boolean.get(i));
-                child2Boolean.add(parent1Boolean.get(i));
-            }
-        }else if(crossoverType==CrossoverType.MULTIPOINT){
-            int flag=0, count=0;
-            for(int i=0;i<parent1Boolean.size();i++){
-                if(flag==0){
+        if(ThreadLocalRandom.current().nextDouble()<Parameters.ga_crossoverRate){
+            
+            if(crossoverType==CrossoverType.SINGLEPOINT){
+                int crossoverPoint=ThreadLocalRandom.current().nextInt(parent1Boolean.size());
+                for(int i=0;i<crossoverPoint;i++){
                     child1Boolean.add(parent1Boolean.get(i));
                     child2Boolean.add(parent2Boolean.get(i));
-                }else{
+                }
+                for(int i=crossoverPoint;i<parent1Boolean.size();i++){
                     child1Boolean.add(parent2Boolean.get(i));
                     child2Boolean.add(parent1Boolean.get(i));
                 }
-                count++;
-                if(count==10){
-                    count=0;
-                    flag=(flag+1)%2;
-                }             
-            }
-        }else{//UNIFORM
-            for(int i=0;i<parent1Boolean.size();i++){
-                if(ThreadLocalRandom.current().nextBoolean()){
-                    child1Boolean.add(parent1Boolean.get(i));
-                    child2Boolean.add(parent2Boolean.get(i));
-                }else{
-                    child1Boolean.add(parent2Boolean.get(i));
-                    child2Boolean.add(parent1Boolean.get(i));
+            }else if(crossoverType==CrossoverType.MULTIPOINT){
+                int flag=0, count=0;
+                for(int i=0;i<parent1Boolean.size();i++){
+                    if(flag==0){
+                        child1Boolean.add(parent1Boolean.get(i));
+                        child2Boolean.add(parent2Boolean.get(i));
+                    }else{
+                        child1Boolean.add(parent2Boolean.get(i));
+                        child2Boolean.add(parent1Boolean.get(i));
+                    }
+                    count++;
+                    if(count==10){
+                        count=0;
+                        flag=(flag+1)%2;
+                    }             
+                }
+            }else{//UNIFORM
+                for(int i=0;i<parent1Boolean.size();i++){
+                    if(ThreadLocalRandom.current().nextBoolean()){
+                        child1Boolean.add(parent1Boolean.get(i));
+                        child2Boolean.add(parent2Boolean.get(i));
+                    }else{
+                        child1Boolean.add(parent2Boolean.get(i));
+                        child2Boolean.add(parent1Boolean.get(i));
+                    }
                 }
             }
         }
@@ -297,7 +300,7 @@ class NewPopulationFactory implements Runnable{
         /**
          * Mutation
          */ 
-        if(Parameters.ga_mutation){
+        if(Parameters.ga_mutationRate>0){
             for(int i=0;i<child1Boolean.size();i++){
                 if(ThreadLocalRandom.current().nextDouble()<Parameters.ga_mutationRate){
                     child1Boolean.set(i, !child1Boolean.get(i));

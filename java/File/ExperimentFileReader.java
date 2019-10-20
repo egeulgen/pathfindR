@@ -31,7 +31,7 @@ public class ExperimentFileReader {
                 strArr=line.split("[ \\t]");
                 if(strArr.length==2){
                     try{
-                        namePValuePairList.add(new SimpleEntry<>(strArr[0], Double.parseDouble(strArr[1])));
+                        namePValuePairList.add(new SimpleEntry<>(strArr[0].toUpperCase(), Double.parseDouble(strArr[1])));
                     }catch(NumberFormatException nfe){
                         Logger.getLogger(ExperimentFileReader.class.getName()).log(Level.WARNING, "Unexpected number format in experiment file line {0}, discarded", lineNo);
                     }

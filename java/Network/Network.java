@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 public class Network {
     
     private HashMap<Node, HashSet<Node>> adjacency;
+    private boolean selfInteractionWarningGiven=false;
 
     public Network() {
         adjacency=new HashMap<Node, HashSet<Node>>();
@@ -26,7 +27,10 @@ public class Network {
     
     public void addInteraction(Node node1, Node node2){
         if(node1.equals(node2)){
-            Logger.getLogger(Network.class.getName()).log(Level.WARNING, "Self interaction discarded");
+            if(!selfInteractionWarningGiven){
+                Logger.getLogger(Network.class.getName()).log(Level.WARNING, "Self interactions are discarded.");
+                selfInteractionWarningGiven=true;
+            }
         }else{
             if(adjacency.get(node1)==null){
             adjacency.put(node1, new HashSet<Node>());

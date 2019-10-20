@@ -41,7 +41,8 @@ public class AppActiveSubnetworkSearch {
                 + "-gaPop=<value>         \tpopulation size for GA (default 400)\n"
                 + "-gaIter=<value>        \titeration number for GA (default 200)\n"
                 + "-gaThread=<value>      \tnumber of threads to be used in GA (default 5)\n"
-                + "-gaMut=<value>         \tapplies mutation with given mutation rate (default mutation off)\n"
+                + "-gaCrossover=<value>   \tapplies crossover with given probability (default 1)\n"
+                + "-gaMut=<value>         \tapplies mutation with given rate (default 0)\n"
                 + "-grMaxDepth=<value>    \tsets max depth in greedy search, 0 for no limit (default 1)\n"
                 + "-grSearchDepth=<value> \tsets search depth in greedy search (default 1)\n"
                 + "-grOverlap=<value>     \tsets overlap threshold for results of greedy search (default 0.5)\n"
@@ -72,7 +73,7 @@ public class AppActiveSubnetworkSearch {
                     case "-gaPop":Parameters.ga_populationSize=Integer.parseInt(value);break;
                     case "-gaIter":Parameters.ga_totalIterations=Integer.parseInt(value);break;
                     case "-gaThread":Parameters.ga_threadNumber=Integer.parseInt(value);break;
-                    case "-gaMut":Parameters.ga_mutation=true;Parameters.ga_mutationRate=Double.parseDouble(value);break;
+                    case "-gaMut":Parameters.ga_mutationRate=Double.parseDouble(value);break;
                     case "-grMaxDepth":Parameters.gr_maxDepth=Integer.parseInt(value);break;
                     case "-grSearchDepth":Parameters.gr_searchDepth=Integer.parseInt(value);break;
                     case "-grOverlap":Parameters.gr_overlapThreshold=Double.parseDouble(value);break;

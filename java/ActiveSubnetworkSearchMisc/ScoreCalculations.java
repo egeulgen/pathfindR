@@ -60,7 +60,8 @@ public class ScoreCalculations {
                 geneFromExperimentNotExisingInNetwork++;
             }
         }
-        if(geneFromExperimentNotExisingInNetwork!=0){
+        System.out.println(nodeToPValueMap);
+        if(geneFromExperimentNotExisingInNetwork>0){
             Logger.getLogger(ScoreCalculations.class.getName()).log(Level.WARNING, "{0} genes in experiment file does not exist in the network", geneFromExperimentNotExisingInNetwork);
         }
         

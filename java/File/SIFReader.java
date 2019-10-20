@@ -49,9 +49,9 @@ public class SIFReader {
                         strNode1=strArr[0];
                         strNode2=strArr[2];
                     }
-                    
+                    strNode1=strNode1.toUpperCase();
+                    strNode2=strNode2.toUpperCase();
                     network.addInteraction(strNode1,strNode2);
-                    
                 }else{
                     Logger.getLogger(SIFReader.class.getName()).log(Level.WARNING, "Unexpected column number in SIF line {0}, discarded", lineNo);
                 }
