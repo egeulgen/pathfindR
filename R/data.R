@@ -39,7 +39,7 @@
 #' \code{run_pathfindR} was performed using the default settings.
 #' \emph{Generated on Oct 22, 2019.}
 #'
-#' @format A data frame with 104 rows and 8 columns:
+#' @format A data frame with 101 rows and 8 columns:
 #' \describe{
 #'   \item{ID}{ID of the enriched term}
 #'   \item{Term_Description}{Description of the enriched term}
@@ -66,9 +66,9 @@
 #' silhouette width) was determined to be 16. Finally, the enriched terms with the
 #' lowest p values in each cluster were assigned as representative terms
 #' for that cluster.
-#' \emph{Generated on Oct 1, 2019.}
+#' \emph{Generated on Oct 22, 2019.}
 #'
-#' @format A data frame with 104 rows and 10 columns:
+#' @format A data frame with 101 rows and 10 columns:
 #' \describe{
 #'   \item{ID}{ID of the enriched term}
 #'   \item{Term_Description}{Description of the enriched term}
@@ -177,7 +177,7 @@
 #'
 #' A data frame consisting of pathfindR enrichment analysis results on the
 #' example TF target genes data (target gene sets of CREB and MYC).
-#' \emph{Generated on Oct 5, 2019.}
+#' \emph{Generated on Oct 22, 2019.}
 #' @format data frame containing 2 rows and 8 columns. Each row is a gene set (the TF target gene sets).
 "custom_result"
 
@@ -185,9 +185,9 @@
 #'
 #' A list of vectors containing genes for each active subnetwork that passed
 #' the filtering step.
-#' \emph{Generated on Sep 28, 2019.}
+#' \emph{Generated on Oct 22, 2019.}
 #'
-#' @format list containing 167 vectors. Each vector is the set of genes for the
+#' @format list containing 175 vectors. Each vector is the set of genes for the
 #' given active subnetwork.
 "example_active_snws"
 
