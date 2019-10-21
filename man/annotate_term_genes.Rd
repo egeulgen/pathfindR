@@ -28,5 +28,5 @@ Function to annotate the involved affected (input) genes in each term.
 example_gene_data <- RA_input
 colnames(example_gene_data) <- c("GENE", "CHANGE", "P_VALUE")
 
-annotated_result <- annotate_term_genes(RA_output, example_gene_data)
+annotated_result <- annotate_term_genes(RA_output, example_gene_data, kegg_genes)
 }

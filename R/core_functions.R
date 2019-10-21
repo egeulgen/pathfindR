@@ -308,24 +308,23 @@ run_pathfindR <- function(input,
   ############ Create HTML Report
   message("## Creating HTML report")
   ## Create report
-  rmarkdown::render(system.file("rmd/results.Rmd",
-                                package = "pathfindR"),
+  rmarkdown::render(input = base::system.file("rmd", "results.Rmd",
+                                        package = "pathfindR"),
                     output_dir = ".")
 
-  rmarkdown::render(system.file("rmd/enriched_terms.Rmd",
-                                package = "pathfindR"),
+  rmarkdown::render(input = base::system.file("rmd", "enriched_terms.Rmd",
+                                              package = "pathfindR"),
                     params = list(df = final_res,
                                   gset = gene_sets,
                                   vis_cond = visualize_enriched_terms,
                                   out_dir = output_dir),
                     output_dir = ".")
 
-  rmarkdown::render(system.file("rmd/conversion_table.Rmd",
-                                package = "pathfindR"),
+  rmarkdown::render(input = base::system.file("rmd", "conversion_table.Rmd",
+                                              package = "pathfindR"),
                     params = list(df = input_processed,
                                   original_df = input),
-                    output_dir = "."
-  )
+                    output_dir = ".")
 
   ############ Bubble Chart
   if (bubble) {
@@ -765,7 +764,7 @@ input_processing <- function(input, p_val_threshold,
 #' example_gene_data <- RA_input
 #' colnames(example_gene_data) <- c("GENE", "CHANGE", "P_VALUE")
 #'
-#' annotated_result <- annotate_term_genes(RA_output, example_gene_data)
+#' annotated_result <- annotate_term_genes(RA_output, example_gene_data, kegg_genes)
 annotate_term_genes <- function(result_df,
                                 input_processed,
                                 genes_by_term) {
