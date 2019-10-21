@@ -163,7 +163,7 @@ enrichment <- function(input_genes,
 #' pin_path <- return_pin_path()
 #' enr_res <- enrichment_analyses(snws = example_active_snws[1:2],
 #'                                sig_genes_vec = RA_input$Gene.symbol[1:25],
-#'                                pin_path = pin_path
+#'                                pin_path = pin_path,
 #'                                genes_by_term = kegg_genes,
 #'                                term_descriptions = kegg_descriptions)
 enrichment_analyses <- function(snws,
