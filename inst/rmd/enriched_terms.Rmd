@@ -1,5 +1,5 @@
 ---
-title: '`r logo_path <- system.file("help/figures/logo.png", package = "pathfindR"); knitr::opts_chunk$set(out.width="15%"); knitr::include_graphics(logo_path)` pathfindR - All Enriched Terms - `r params$gset`' 
+title: '`r logo_path <- system.file("vignettes", "logo.png", package = "pathfindR"); knitr::opts_chunk$set(out.width="15%"); knitr::include_graphics(logo_path)` pathfindR - All Enriched Terms - `r params$gset`' 
 output: html_document
 params:
   df: ""

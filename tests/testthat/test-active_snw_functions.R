@@ -11,7 +11,7 @@ sample_path <- system.file("extdata/resultActiveSubnetworkSearch.txt",
                            package = "pathfindR")
 def_smw_len <- 1000
 
-test_that("Filter function returns list object", {
+test_that("`filterActiveSnws()` returns list object", {
   tmp_filtered <- filterActiveSnws(active_snw_path = sample_path,
                                    sig_genes_vec = RA_input$Gene.symbol)
   expect_is(tmp_filtered, "list")
@@ -24,7 +24,7 @@ test_that("Filter function returns list object", {
                                                 sig_genes_vec = RA_input$Gene.symbol)))
 })
 
-test_that("Effect of number of sig. genes supplied", {
+test_that("`sig_genes_vec` in `filterActiveSnws()` works", {
   tmp_filtered1 <- filterActiveSnws(active_snw_path = sample_path,
                                     sig_genes_vec = RA_input$Gene.symbol)
   tmp_filtered2 <- filterActiveSnws(active_snw_path = sample_path,
@@ -32,7 +32,7 @@ test_that("Effect of number of sig. genes supplied", {
   expect_true(length(tmp_filtered1) > length(tmp_filtered2))
 })
 
-test_that("`score_quan_thr` works", {
+test_that("`score_quan_thr` in `filterActiveSnws()` works", {
   tmp_filtered <- filterActiveSnws(active_snw_path = sample_path,
                                    sig_genes_vec = RA_input$Gene.symbol,
                                    score_quan_thr = -1,
@@ -49,7 +49,7 @@ test_that("`score_quan_thr` works", {
   }
 })
 
-test_that("`sig_gene_thr` works", {
+test_that("`sig_gene_thr` in `filterActiveSnws()` works", {
   tmp_filtered1 <- filterActiveSnws(active_snw_path = sample_path,
                                     sig_genes_vec = RA_input$Gene.symbol,
                                     sig_gene_thr = 10, # default
@@ -64,7 +64,7 @@ test_that("`sig_gene_thr` works", {
   expect_true(length(tmp_filtered1) > length(tmp_filtered2))
 })
 
-test_that("`filterActiveSnws` arg checks work", {
+test_that("`filterActiveSnws()` arg checks work", {
   expect_error(filterActiveSnws(active_snw_path = "this/is/not/a/path"),
                "The active subnetwork file does not exist! Check the `active_snw_path` argument")
 
@@ -90,14 +90,14 @@ test_that("`filterActiveSnws` arg checks work", {
 
 # active_snw_search -------------------------------------------------------
 pin_path <- return_pin_path()
-input_df1 <- suppressMessages(input_processing(RA_input[1:30, ],
+input_df1 <- suppressMessages(input_processing(RA_input[1:100, ],
                                                p_val_threshold = 0.05,
                                                pin_path))
 input_df2 <- suppressMessages(input_processing(RA_input[1:3, ],
                                                p_val_threshold = 0.05,
                                                pin_path))
 
-test_that("Active snw search function returns list object", {
+test_that("`active_snw_search()` returns list object", {
   # Expect > 0 active snws
   expect_message(snw_list <- active_snw_search(input_for_search = input_df1,
                                                pin_path = pin_path),
@@ -123,7 +123,7 @@ test_that("Active snw search function returns list object", {
   unlink("dummy_dir", recursive = TRUE)
 })
 
-test_that("All search methods work", {
+test_that("All search methods for `active_snw_search()` work", {
   ## GR
   expect_message(snw_list <- active_snw_search(input_for_search = input_df1,
                                                pin_path = pin_path,
@@ -153,7 +153,7 @@ test_that("All search methods work", {
   unlink("active_snw_search", recursive = TRUE)
 })
 
-test_that("Active snw search function error messages work", {
+test_that("`active_snw_search()` error messages work", {
   expect_error(active_snw_search(input_for_search = input_df2,
                                  pin_path = pin_path,
                                  search_method = "WRONG"),

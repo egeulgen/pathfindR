@@ -7,7 +7,7 @@
 ##################################################
 
 # run_pathfindR -----------------------------------------------------------
-test_that("run_pathfindR works as expected", {
+test_that("`run_pathfindR()` works as expected", {
   skip_on_cran()
   ## GR
   expect_is(run_pathfindR(RA_input,
@@ -21,6 +21,8 @@ test_that("run_pathfindR works as expected", {
                           pin_name_path = "GeneMania",
                           bubble = FALSE),
             "data.frame")
+
+  skip("will test SA and GA if we can create a suitable (faster and non-empty) test case")
   ## SA
   expect_is(run_pathfindR(RA_input,
                           iterations = 1,
@@ -40,19 +42,17 @@ test_that("run_pathfindR works as expected", {
                                            visualize_enriched_terms = FALSE,
                                            bubble = FALSE)),
             "data.frame")
+})
 
+test_that("Expect warning with empty result from `run_pathfindR()`", {
   expect_warning(res <- run_pathfindR(RA_input[1:3, ],
                                       iterations = 1),
                  "Did not find any enriched terms!")
   expect_identical(res, data.frame())
-
-  tmp <- list.dirs(recursive = FALSE)
-  tmp <- tmp[grep("^\\./pathfindR_Results", tmp)]
-  unlink(tmp, recursive = TRUE)
 })
 
 
-test_that("run_pathfindR arg checks work", {
+test_that("`run_pathfindR()` arg checks work", {
   expect_error(run_pathfindR(RA_input, search_method = "WRONG"),
                '`search_method` must be one of "GR", "SA", "GA"')
 
@@ -76,7 +76,7 @@ test_that("run_pathfindR arg checks work", {
 })
 
 # fetch_gene_set ----------------------------------------------------------
-test_that("`fetch_gene_set` can fetch all gene set objects", {
+test_that("`fetch_gene_set()` can fetch all gene set objects", {
   ###### KEGG
   expect_is(gset_obj <- fetch_gene_set(gene_sets = "KEGG",
                                        min_gset_size = 10,
@@ -167,7 +167,7 @@ test_that("`fetch_gene_set` can fetch all gene set objects", {
   expect_true(min(tmp) >= 10 & max(tmp) <= 300)
 })
 
-test_that("min/max_gset_size args correctly filter gene sets", {
+test_that("min/max_gset_size args in `fetch_gene_set()` correctly filter gene sets", {
   expect_is(gset_obj1 <- fetch_gene_set(gene_sets = "KEGG",
                                         min_gset_size = 10,
                                         max_gset_size = 300),
@@ -184,7 +184,7 @@ test_that("min/max_gset_size args correctly filter gene sets", {
   expect_true(length(gset_obj2$genes_by_term) < length(gset_obj1$genes_by_term))
 })
 
-test_that("With 'Custom' gene set, check if the custom objects are provided", {
+test_that("In `fetch_gene_set()`, for 'Custom' gene set, check if the custom objects are provided", {
   expect_error(fetch_gene_set(gene_sets = "Custom"),
                "`custom_genes` and `custom_descriptions` must be provided if `gene_sets = \"Custom\"`")
   expect_error(fetch_gene_set(gene_sets = "Custom",
@@ -196,7 +196,7 @@ test_that("With 'Custom' gene set, check if the custom objects are provided", {
 })
 
 # return_pin_path ---------------------------------------------------------
-test_that("return_pin_path returns the absolute path to PIN file", {
+test_that("`return_pin_path()` returns the absolute path to PIN file", {
 
   # default PINs
   expect_true(file.exists(return_pin_path("Biogrid")))
@@ -231,10 +231,10 @@ test_that("return_pin_path returns the absolute path to PIN file", {
 })
 
 # input_testing -----------------------------------------------------------
-test_that("input_testing works", {
+test_that("`input_testing()` works", {
   expect_message(input_testing(input = RA_input,
                                p_val_threshold = 0.05),
-                 "The input looks OK\n\n")
+                 "The input looks OK")
 
   expect_error(input_testing(input = matrix(),
                              p_val_threshold = 0.05),
@@ -277,7 +277,7 @@ test_that("input_testing works", {
 
 # input_processing --------------------------------------------------------
 path2pin <- return_pin_path()
-test_that("`input_processing` works", {
+test_that("`input_processing()` works", {
   # full df
   expect_is(tmp <- input_processing(input = RA_input,
                                     p_val_threshold = 0.05,
@@ -314,7 +314,7 @@ test_that("`input_processing` works", {
             "data.frame")
 })
 
-test_that("`input_processing` errors and warnings work", {
+test_that("`input_processing()` errors and warnings work", {
   input2 <- RA_input[1:10, ]
   input2$Gene.symbol <- as.factor(input2$Gene.symbol)
   expect_warning(input_processing(input2,
@@ -363,16 +363,7 @@ example_gene_data <- RA_input[1:50, ]
 colnames(example_gene_data) <- c("GENE", "CHANGE", "P_VALUE")
 tmp_res <- RA_output[, -c(7, 8)]
 
-test_that("`annotate_term_genes` adds input genes for each term", {
-
-  ## Default
-  expect_is(annotated_result <- annotate_term_genes(tmp_res, example_gene_data),
-            "data.frame")
-  expect_true("Up_regulated" %in% colnames(annotated_result) &
-                "Down_regulated" %in% colnames(annotated_result))
-  expect_true(nrow(annotated_result) == nrow(tmp_res))
-
-  ## Custom
+test_that("`annotate_term_genes()` adds input genes for each term", {
   expect_is(annotated_result <- annotate_term_genes(result_df = tmp_res,
                                                     input_processed = example_gene_data,
                                                     genes_by_term = kegg_genes),
@@ -380,4 +371,5 @@ test_that("`annotate_term_genes` adds input genes for each term", {
   expect_true("Up_regulated" %in% colnames(annotated_result) &
                 "Down_regulated" %in% colnames(annotated_result))
   expect_true(nrow(annotated_result) == nrow(tmp_res))
+
 })

@@ -7,7 +7,7 @@
 ##################################################
 
 # hyperg_test -------------------------------------------------------------
-test_that("hyperg_test returns a p value", {
+test_that("`hyperg_test` returns a p value", {
   expect_is(tmp_p <- hyperg_test(term_genes = LETTERS[1:10],
                                  chosen_genes = LETTERS[2:5],
                                  background_genes = LETTERS),
@@ -22,7 +22,7 @@ test_that("hyperg_test returns a p value", {
   expect_true(tmp_p2 > tmp_p)
 })
 
-test_that("hyperg_test arg checks work", {
+test_that("`hyperg_test` arg checks work", {
   expect_error(hyperg_test(term_genes = c(LETTERS, LETTERS),
                            chosen_genes = LETTERS[1:3],
                            background_genes = LETTERS),
@@ -41,7 +41,7 @@ tmp_gset <- tmp_gset_obj$genes_by_term
 tmp_gset_descriptions <- tmp_gset_obj$term_descriptions
 tmp_gset_genes <- unlist(tmp_gset)
 
-test_that("enrichment function returns a data frame", {
+test_that("`enrichment` returns a data frame", {
 
   tmp_input_genes <- sample(unlist(tmp_gset[1:3]), 100)
   tmp_sig_vec <- c(sample(tmp_input_genes, 100), sample(unlist(tmp_gset), 400))
@@ -54,14 +54,14 @@ test_that("enrichment function returns a data frame", {
                                enrichment_threshold = 0.05,
                                sig_genes_vec = tmp_sig_vec,
                                background_genes = tmp_gset_genes),
-    "data.frame")
+            "data.frame")
 
   # higher enrichment threshold
   expect_is(tmp2 <- enrichment(input_genes = tmp_input_genes,
                                genes_by_term = tmp_gset,
                                term_descriptions = tmp_gset_descriptions,
                                adj_method = "bonferroni",
-                               enrichment_threshold = 0.5,
+                               enrichment_threshold = 1,
                                sig_genes_vec = tmp_sig_vec,
                                background_genes = tmp_gset_genes),
             "data.frame")

@@ -8,13 +8,13 @@ output: github_document
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "man/figures/",
+  fig.path = "vignettes/",
   out.width = "100%"
 )
 suppressPackageStartupMessages(library(pathfindR))
 ```
 
-# <img src="man/figures/logo.png" align="left" height=150/> pathfindR: An R Package for Enrichment Analysis Utilizing Active Subnetworks
+# <img src="vignettes/logo.png" align="left" height=150/> pathfindR: An R Package for Enrichment Analysis Utilizing Active Subnetworks
 
 <!-- badges: start -->
 [![Travis-CI Build Status](https://travis-ci.org/egeulgen/pathfindR.svg?branch=master)](https://travis-ci.org/egeulgen/pathfindR)

@@ -1,5 +1,5 @@
 ---
-title: '`r logo_path <- system.file("help/figures/logo.png", package = "pathfindR"); knitr::opts_chunk$set(out.width="15%"); knitr::include_graphics(logo_path)` pathfindR - Converted Genes and Genes without Interactions' 
+title: '`r logo_path <- system.file("vignettes", "logo.png", package = "pathfindR"); knitr::opts_chunk$set(out.width="15%"); knitr::include_graphics(logo_path)` pathfindR - Converted Genes and Genes without Interactions' 
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: html_document
 params:

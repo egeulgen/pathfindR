@@ -308,20 +308,20 @@ run_pathfindR <- function(input,
   ############ Create HTML Report
   message("## Creating HTML report")
   ## Create report
-  rmarkdown::render(input = base::system.file("rmd", "results.Rmd",
+  rmarkdown::render(input = system.file("rmd", "results.Rmd",
                                         package = "pathfindR"),
                     output_dir = ".")
 
-  rmarkdown::render(input = base::system.file("rmd", "enriched_terms.Rmd",
-                                              package = "pathfindR"),
+  rmarkdown::render(input = system.file("rmd", "enriched_terms.Rmd",
+                                        package = "pathfindR"),
                     params = list(df = final_res,
                                   gset = gene_sets,
                                   vis_cond = visualize_enriched_terms,
                                   out_dir = output_dir),
                     output_dir = ".")
 
-  rmarkdown::render(input = base::system.file("rmd", "conversion_table.Rmd",
-                                              package = "pathfindR"),
+  rmarkdown::render(input = system.file("rmd", "conversion_table.Rmd",
+                                        package = "pathfindR"),
                     params = list(df = input_processed,
                                   original_df = input),
                     output_dir = ".")
