@@ -17,7 +17,7 @@ hierarchical_term_clustering(kappa_mat, enrichment_res,
 (in the "Term_Description" column) should be used. (default = \code{FALSE})}
 
 \item{clu_method}{the agglomeration method to be used
-(default = "average", see \code{\link{[stats]{hclust}}})}
+(default = "average", see \code{\link[stats]{hclust}})}
 
 \item{plot_hmap}{boolean to indicate whether to plot the kappa statistics
 heatmap or not (default = FALSE)}

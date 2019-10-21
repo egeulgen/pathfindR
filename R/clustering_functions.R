@@ -104,7 +104,7 @@ create_kappa_matrix <- function(enrichment_res,
 #' @param use_description Boolean argument to indicate whether term descriptions
 #'  (in the "Term_Description" column) should be used. (default = \code{FALSE})
 #' @param clu_method the agglomeration method to be used
-#' (default = "average", see \code{\link{[stats]{hclust}}})
+#' (default = "average", see \code{\link[stats]{hclust}})
 #' @param plot_hmap boolean to indicate whether to plot the kappa statistics
 #' heatmap or not (default = FALSE)
 #' @param plot_dend boolean to indicate whether to plot the clustering

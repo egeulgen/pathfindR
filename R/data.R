@@ -37,7 +37,7 @@
 #' enrichment workflow performed on the rheumatoid arthritis
 #' differential-expression result dataset \code{RA_input}. Analysis via
 #' \code{run_pathfindR} was performed using the default settings.
-#' \emph{Generated on Oct 1, 2019.}
+#' \emph{Generated on Oct 22, 2019.}
 #'
 #' @format A data frame with 104 rows and 8 columns:
 #' \describe{

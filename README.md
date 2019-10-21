@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# <img src="vignettes/logo.png" align="left" height=150/> pathfindR: An R Package for Enrichment Analysis Utilizing Active Subnetworks
+# <img src="inst/extdata/logo.png" align="left" height=150/> pathfindR: An R Package for Enrichment Analysis Utilizing Active Subnetworks
 
 <!-- badges: start -->
 
@@ -129,7 +129,7 @@ visualization of enriched terms and an HTML report)
 | hsa05012 | Parkinson disease                         |           2.8024 |         10 |         0 |          0 | NDUFA1, NDUFB3, UQCRQ, COX6A1, COX7A2, COX7C                    | UBE2G1, VDAC1, SLC25A5 |
 | hsa04932 | Non-alcoholic fatty liver disease (NAFLD) |           2.3712 |         10 |         0 |          0 | DDIT3, NDUFA1, NDUFB3, UQCRQ, COX6A1, COX7A2, COX7C             | IKBKB, FASLG           |
 
-<img src="vignettes/example_output-1.png" width="100%" />
+<img src="inst/extdata/example_output-1.png" width="100%" />
 
 Some useful arguments are:
 

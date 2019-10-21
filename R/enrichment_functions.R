@@ -67,8 +67,10 @@ hyperg_test <- function(term_genes, chosen_genes, background_genes) {
 #'   distribution-based hypothesis testing.
 #' @examples
 #' enrichment(input_genes = c("PER1", "PER2", "CRY1", "CREB1"),
+#'            genes_by_term = kegg_genes,
+#'            term_descriptions = kegg_descriptions,
 #'            sig_genes_vec = "PER1",
-#'            background_genes = unlist(pathfindR::kegg_genes))
+#'            background_genes = unlist(kegg_genes))
 enrichment <- function(input_genes,
                        genes_by_term,
                        term_descriptions,
@@ -159,7 +161,11 @@ enrichment <- function(input_genes,
 #'
 #' @examples
 #' pin_path <- return_pin_path()
-#' enr_res <- enrichment_analyses(example_active_snws[1:2], RA_input$Gene.symbol[1:25], pin_path)
+#' enr_res <- enrichment_analyses(snws = example_active_snws[1:2],
+#'                                sig_genes_vec = RA_input$Gene.symbol[1:25],
+#'                                pin_path = pin_path
+#'                                genes_by_term = kegg_genes,
+#'                                term_descriptions = kegg_descriptions)
 enrichment_analyses <- function(snws,
                                 sig_genes_vec,
                                 pin_path,

@@ -23,7 +23,7 @@ A dataset containing the results of pathfindR's active-subnetwork-oriented
 enrichment workflow performed on the rheumatoid arthritis
 differential-expression result dataset \code{RA_input}. Analysis via
 \code{run_pathfindR} was performed using the default settings.
-\emph{Generated on Oct 1, 2019.}
+\emph{Generated on Oct 22, 2019.}
 }
 \seealso{
 \code{\link{RA_input}} for example input of the enrichment workflow.
