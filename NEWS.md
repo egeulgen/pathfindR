@@ -1,4 +1,4 @@
-# pathfindR 1.4.0.9008
+# pathfindR 1.4.0.9009
 ## To be released as 1.4.0
 
 ## Major Changes
@@ -13,11 +13,13 @@
 - Made changes in `enrichment()` and `enrichment_analyses()` to get enrichment results faster
 - Added the function `fetch_gene_set()` for obtaining gene set data more easily
 - Terms in gene sets can now be filtered according to the number of genes a term contains (controlled by `min_gset_size`, `max_gset_size` in `fetch_gene_set()` and `run_pathfindR()`) 
+- Added the argument `gaCrossover` during active subnetwork search which controls the probability of a crossover in GA (default = 1, i.e. always perform crossover)
 - Added unit tests using `testthat`
 - Updated all gene sets data
 - Updated all RA example data
 - The vignettes were updated
 - Updated all PIN data
+
 
 ## Minor changes and bug fixes
 - In `hierarchical_term_clustering()`, redefined the distance measure as `1 - kappa statistic`

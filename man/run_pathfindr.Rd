@@ -86,6 +86,8 @@ nodes. In SA, initializes candidate solution with all positive nodes.
 
 \item{gaThread}{Number of threads to be used in GA (Default = 5)}
 
+\item{gaCrossover}{For GA, applies crossover with the given probability (default = 1, i.e. always perform crossover)}
+
 \item{gaMut}{For GA, applies mutation with given mutation rate (Default = 0, i.e. mutation off)}
 
 \item{grMaxDepth}{Sets max depth in greedy search, 0 for no limit (Default = 1)}
