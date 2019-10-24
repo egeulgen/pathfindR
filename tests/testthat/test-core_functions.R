@@ -19,7 +19,7 @@ test_that("`run_pathfindR()` works as expected", {
                           n_processes = 2,
                           gene_sets = "BioCarta",
                           pin_name_path = "GeneMania",
-                          bubble = FALSE),
+                          plot_enrichment_chart = FALSE),
             "data.frame")
 
   skip("will test SA and GA if we can create a suitable (faster and non-empty) test case")
@@ -30,7 +30,7 @@ test_that("`run_pathfindR()` works as expected", {
                           pin_name_path = "GeneMania",
                           search_method = "SA",
                           visualize_enriched_terms = FALSE,
-                          bubble = FALSE),
+                          plot_enrichment_chart = FALSE),
             "data.frame")
 
   ## GA
@@ -40,7 +40,7 @@ test_that("`run_pathfindR()` works as expected", {
                                            pin_name_path = "GeneMania",
                                            search_method = "GA",
                                            visualize_enriched_terms = FALSE,
-                                           bubble = FALSE)),
+                                           plot_enrichment_chart = FALSE)),
             "data.frame")
 })
 
@@ -71,8 +71,8 @@ test_that("`run_pathfindR()` arg checks work", {
   expect_error(run_pathfindR(RA_input, gene_sets = "Custom"),
                "`custom_genes` and `custom_descriptions` must be provided if `gene_sets = \"Custom\"`")
 
-  expect_error(run_pathfindR(RA_input, bubble = "WRONG"),
-               "the argument `bubble` must be either TRUE or FALSE")
+  expect_error(run_pathfindR(RA_input, plot_enrichment_chart = "WRONG"),
+               "the argument `plot_enrichment_chart` must be either TRUE or FALSE")
 })
 
 # fetch_gene_set ----------------------------------------------------------
