@@ -79,8 +79,6 @@ filterActiveSnws <- function(active_snw_path, sig_genes_vec,
 #'   \item{describe}{HGNC Gene Symbol}
 #'   \item{P_VALUE}{p value obtained through a test, e.g. differential expression/methylation}
 #' }
-#' @param pin_path path to the Protein Interaction Network (PIN) file used in
-#'   the analysis
 #' @param snws_file name for active subnetwork search output data
 #' @param dir_for_parallel_run directory for parallel run iteration.
 #' Only used in the wrapper function (see ?run_pathfindR) (Default = NULL)
@@ -115,13 +113,12 @@ filterActiveSnws <- function(active_snw_path, sig_genes_vec,
 #'
 #' @examples
 #' \dontrun{
-#' active_snw_search(input_for_search, pin_path = "path/to/PIN", search_method = "GR")
+#' active_snw_search(input_for_search, pin_name_path = "KEGG", search_method = "GR")
 #' active_snw_search(input_for_search,
-#'   pin_path = "path/to/PIN",
-#'   search_method = "SA", saTemp0 = 2, saTemp1 = 0.05
-#' )
+#'   pin_name_path = "KEGG",
+#'   search_method = "SA", saTemp0 = 2, saTemp1 = 0.05)
 #' }
-active_snw_search <- function(input_for_search, pin_path,
+active_snw_search <- function(input_for_search, pin_name_path,
                               snws_file = "active_snws",
                               dir_for_parallel_run = NULL,
                               score_quan_thr = 0.80, sig_gene_thr = 10,
@@ -134,6 +131,9 @@ active_snw_search <- function(input_for_search, pin_path,
                               gaThread = 5, gaCrossover = 1, gaMut = 0,
                               grMaxDepth = 1, grSearchDepth = 1,
                               grOverlap = 0.5, grSubNum = 1000) {
+
+  pin_path <- return_pin_path(pin_name_path)
+
   ############ Argument checks
   if (!search_method %in% c("GR", "SA", "GA")) {
     stop("`search_method` must be one of \"GR\", \"SA\", \"GA\"")

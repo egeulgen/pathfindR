@@ -9,9 +9,9 @@ input_testing(input, p_val_threshold = 0.05)
 \arguments{
 \item{input}{the input data that pathfindR uses. The input must be a data
   frame with three columns: \enumerate{
-  \item Gene Symbol (HGNC Gene Symbol)
+  \item Gene Symbol (Gene Symbol)
   \item Change value, e.g. log(fold change) (OPTIONAL)
-  \item adjusted p value associated with test, e.g. differential expression/methylation
+  \item p value, e.g. adjusted p value associated with differential expression
 }}
 
 \item{p_val_threshold}{the p value threshold to use when filtering

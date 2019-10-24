@@ -132,8 +132,7 @@ enrichment <- function(input_genes,
 #' @param snws a list of subnetwork genes (i.e., vectors of genes for each subnetwork)
 #' @param sig_genes_vec vector of significant gene symbols. In the scope of this
 #'   package, these are the input genes that were used for active subnetwork search
-#' @param pin_path path to the Protein Interaction Network (PIN) file used in
-#'   the analysis
+#' @inheritParams return_pin_path
 #' @param genes_by_term List that contains genes for each gene set. Names of
 #'   this list are gene set IDs
 #' @param term_descriptions Vector that contains term descriptions for the
@@ -160,20 +159,22 @@ enrichment <- function(input_genes,
 #' @seealso \code{\link{enrichment}} for the enrichment analysis for a single gene set
 #'
 #' @examples
-#' pin_path <- return_pin_path()
 #' enr_res <- enrichment_analyses(snws = example_active_snws[1:2],
 #'                                sig_genes_vec = RA_input$Gene.symbol[1:25],
-#'                                pin_path = pin_path,
+#'                                pin_name_path = "KEGG",
 #'                                genes_by_term = kegg_genes,
 #'                                term_descriptions = kegg_descriptions)
 enrichment_analyses <- function(snws,
                                 sig_genes_vec,
-                                pin_path,
+                                pin_name_path,
                                 genes_by_term,
                                 term_descriptions,
                                 adj_method = "bonferroni",
                                 enrichment_threshold = 5e-2,
                                 list_active_snw_genes = FALSE) {
+
+  pin_path <- return_pin_path(pin_name_path)
+
   ### Load PIN Data
   pin <- utils::read.delim(
     file = pin_path, header = FALSE,

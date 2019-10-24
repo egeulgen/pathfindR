@@ -4,21 +4,24 @@
 \alias{input_processing}
 \title{Process Input}
 \usage{
-input_processing(input, p_val_threshold, pin_path, convert2alias = TRUE)
+input_processing(input, p_val_threshold, pin_name_path,
+  convert2alias = TRUE)
 }
 \arguments{
 \item{input}{the input data that pathfindR uses. The input must be a data
   frame with three columns: \enumerate{
-  \item Gene Symbol (HGNC Gene Symbol)
-  \item Change value, e.g. log(fold change) (Not obligatory)
-  \item adjusted p value associated with test, e.g. differential expression/methylation
+  \item Gene Symbol (Gene Symbol)
+  \item Change value, e.g. log(fold change) (OPTIONAL)
+  \item p value, e.g. adjusted p value associated with differential expression
 }}
 
-\item{p_val_threshold}{the adjusted-p value threshold to use when filtering
-the input data frame}
+\item{p_val_threshold}{the p value threshold to use when filtering
+the input data frame. Must a numeric value between 0 and 1. (default = 0.05)}
 
-\item{pin_path}{path to the Protein Interaction Network (PIN) file used in
-the analysis}
+\item{pin_name_path}{Name of the chosen PIN or path/to/PIN.sif. If PIN name,
+must be one of c("Biogrid", "GeneMania", "IntAct", "KEGG"). If
+path/to/PIN.sif, the file must comply with the PIN specifications. Defaults
+to "Biogrid".}
 
 \item{convert2alias}{boolean to indicate whether or not to convert gene symbols
 in the input that are not found in the PIN to an alias symbol found in the PIN
@@ -37,11 +40,11 @@ Process Input
 }
 \examples{
 \dontshow{
-input_processing(RA_input[1:20, ], 0.05, return_pin_path("KEGG"))
-input_processing(RA_input[1:20, ], 0.05, return_pin_path("KEGG"), convert2alias = FALSE)
+input_processing(RA_input[1:20, ], 0.05, "KEGG")
+input_processing(RA_input[1:20, ], 0.05, "KEGG", convert2alias = FALSE)
 }
 \dontrun{
-input_processing(RA_input, 0.05, return_pin_path("KEGG"))
+input_processing(RA_input, 0.05, "KEGG")
 }
 
 }

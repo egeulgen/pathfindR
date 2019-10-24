@@ -4,7 +4,7 @@
 \alias{enrichment_analyses}
 \title{Perform Enrichment Analyses on the Input Subnetworks}
 \usage{
-enrichment_analyses(snws, sig_genes_vec, pin_path, genes_by_term,
+enrichment_analyses(snws, sig_genes_vec, pin_name_path, genes_by_term,
   term_descriptions, adj_method = "bonferroni",
   enrichment_threshold = 0.05, list_active_snw_genes = FALSE)
 }
@@ -14,8 +14,10 @@ enrichment_analyses(snws, sig_genes_vec, pin_path, genes_by_term,
 \item{sig_genes_vec}{vector of significant gene symbols. In the scope of this
 package, these are the input genes that were used for active subnetwork search}
 
-\item{pin_path}{path to the Protein Interaction Network (PIN) file used in
-the analysis}
+\item{pin_name_path}{Name of the chosen PIN or path/to/PIN.sif. If PIN name,
+must be one of c("Biogrid", "GeneMania", "IntAct", "KEGG"). If
+path/to/PIN.sif, the file must comply with the PIN specifications. Defaults
+to "Biogrid".}
 
 \item{genes_by_term}{List that contains genes for each gene set. Names of
 this list are gene set IDs}
@@ -46,10 +48,9 @@ a dataframe of combined enrichment results. Columns are: \describe{
 Perform Enrichment Analyses on the Input Subnetworks
 }
 \examples{
-pin_path <- return_pin_path()
 enr_res <- enrichment_analyses(snws = example_active_snws[1:2],
                                sig_genes_vec = RA_input$Gene.symbol[1:25],
-                               pin_path = pin_path,
+                               pin_name_path = "KEGG",
                                genes_by_term = kegg_genes,
                                term_descriptions = kegg_descriptions)
 }

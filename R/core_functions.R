@@ -14,54 +14,23 @@
 #' the lowest and the highest adjusted-p values, as well as number of occurrences
 #' are reported for each enriched term.
 #'
-#' @inheritParams input_testing
+#' @inheritParams input_processing
 #' @inheritParams fetch_gene_set
-#' @param visualize_enriched_terms Boolean value to indicate whether or not to
-#'  create diagrams for enriched terms (default = TRUE)
-#' @param convert2alias boolean to indicate whether or not to convert gene symbols
-#' in the input that are not found in the PIN to an alias symbol found in the PIN
-#' (default = TRUE) IMPORTANT NOTE: the conversion uses human gene symbols/alias symbols.
-#' @param enrichment_threshold adjusted-p value threshold used when filtering
-#'  enrichment results
-#' @param adj_method correction method to be used for adjusting p-values of
-#'  enrichment results (Default: 'bonferroni', see ?p.adjust)
-#' @param search_method algorithm to use when performing active subnetwork
-#'  search. Options are greedy search (GR), simulated annealing (SA) or genetic
-#'  algorithm (GA) for the search (Default:GR. Can be one of c("GR", "SA",
-#'  "GA"))
-#' @param use_all_positives if TRUE: in GA, adds an individual with all positive
-#'  nodes. In SA, initializes candidate solution with all positive nodes.
-#'  (Default = FALSE)
-#' @param saTemp0 Initial temperature for SA (Default = 1.0)
-#' @param saTemp1 Final temperature for SA (Default = 0.01)
-#' @param saIter Iteration number for SA (Default = 10000)
-#' @param gaPop Population size for GA (Default = 400)
-#' @param gaIter Iteration number for GA (Default = 200)
-#' @param gaThread Number of threads to be used in GA (Default = 5)
-#' @param gaCrossover For GA, applies crossover with the given probability (default = 1, i.e. always perform crossover)
-#' @param gaMut For GA, applies mutation with given mutation rate (Default = 0, i.e. mutation off)
-#' @param grMaxDepth Sets max depth in greedy search, 0 for no limit (Default = 1)
-#' @param grSearchDepth Search depth in greedy search (Default = 1)
-#' @param grOverlap Overlap threshold for results of greedy search (Default = 0.5)
-#' @param grSubNum Number of subnetworks to be presented in the results (Default = 1000)
+#' @inheritParams active_snw_search
+#' @inheritParams enrichment_analyses
 #' @param iterations number of iterations for active subnetwork search and
 #'  enrichment analyses (Default = 10. Gets set to 1 for Genetic Algorithm)
 #' @param n_processes optional argument for specifying the number of processes
 #'  used by foreach. If not specified, the function determines this
 #'  automatically (Default == NULL. Gets set to 1 for Genetic Algorithm)
-#' @inheritParams return_pin_path
-#' @param score_quan_thr active subnetwork score quantile threshold used for filtering active subnetworks (Default = 0.80)
-#' @param sig_gene_thr threshold for minimum number of significant genes used for filtering active subnetworks (Default = 10)
-
+#' @param visualize_enriched_terms Boolean value to indicate whether or not to
+#'  create diagrams for enriched terms (default = TRUE)
 #' @param plot_enrichment_chart boolean value. If TRUE, a bubble chart displaying the enrichment
 #' results is plotted. (default = TRUE)
 #' @param output_dir the directory to be created where the output and intermediate files are saved (default = "pathfindR_Results")
 #' @param list_active_snw_genes boolean value indicating whether or not to report
 #' the non-DEG active subnetwork genes for the active subnetwork which was enriched for
 #' the given term with the lowest p value (default = FALSE)
-#' @param silent_option boolean value indicating whether to print the messages to the console (FALSE)
-#' or print to a file (TRUE) during active subnetwork search (default = TRUE). This option was added
-#' because during parallel runs, the console messages get mixed up.
 #'
 #' @return Data frame of pathfindR enrichment results. Columns are: \describe{
 #'   \item{ID}{ID of the enriched term}
@@ -528,9 +497,9 @@ return_pin_path <- function(pin_name_path = "Biogrid") {
 #'
 #' @param input the input data that pathfindR uses. The input must be a data
 #'   frame with three columns: \enumerate{
-#'   \item Gene Symbol (HGNC Gene Symbol)
+#'   \item Gene Symbol (Gene Symbol)
 #'   \item Change value, e.g. log(fold change) (OPTIONAL)
-#'   \item adjusted p value associated with test, e.g. differential expression/methylation
+#'   \item p value, e.g. adjusted p value associated with differential expression
 #' }
 #' @param p_val_threshold the p value threshold to use when filtering
 #'   the input data frame. Must a numeric value between 0 and 1. (default = 0.05)
@@ -582,17 +551,9 @@ input_testing <- function(input, p_val_threshold = 0.05) {
 }
 
 #' Process Input
-#'
-#' @param input the input data that pathfindR uses. The input must be a data
-#'   frame with three columns: \enumerate{
-#'   \item Gene Symbol (HGNC Gene Symbol)
-#'   \item Change value, e.g. log(fold change) (Not obligatory)
-#'   \item adjusted p value associated with test, e.g. differential expression/methylation
-#' }
-#' @param p_val_threshold the adjusted-p value threshold to use when filtering
-#'   the input data frame
-#' @param pin_path path to the Protein Interaction Network (PIN) file used in
-#'   the analysis
+#' @inheritParams input_testing
+#' @inheritParams active_snw_search
+#' @inheritParams return_pin_path
 #' @param convert2alias boolean to indicate whether or not to convert gene symbols
 #' in the input that are not found in the PIN to an alias symbol found in the PIN
 #' (default = TRUE) IMPORTANT NOTE: the conversion uses human gene symbols/alias symbols.
@@ -610,15 +571,18 @@ input_testing <- function(input, p_val_threshold = 0.05) {
 #'
 #' @examples
 #' \dontshow{
-#' input_processing(RA_input[1:20, ], 0.05, return_pin_path("KEGG"))
-#' input_processing(RA_input[1:20, ], 0.05, return_pin_path("KEGG"), convert2alias = FALSE)
+#' input_processing(RA_input[1:20, ], 0.05, "KEGG")
+#' input_processing(RA_input[1:20, ], 0.05, "KEGG", convert2alias = FALSE)
 #' }
 #' \dontrun{
-#' input_processing(RA_input, 0.05, return_pin_path("KEGG"))
+#' input_processing(RA_input, 0.05, "KEGG")
 #' }
 #'
 input_processing <- function(input, p_val_threshold,
-                             pin_path, convert2alias = TRUE) {
+                             pin_name_path, convert2alias = TRUE) {
+
+  pin_path <- return_pin_path(pin_name_path)
+
   if (ncol(input) == 2) {
     input <- data.frame(GENE = input[, 1],
                         CHANGE = rep(100, nrow(input)),

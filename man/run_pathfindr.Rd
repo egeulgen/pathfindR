@@ -21,9 +21,9 @@ run_pathfindR(input, gene_sets = "KEGG", min_gset_size = 10,
 \arguments{
 \item{input}{the input data that pathfindR uses. The input must be a data
   frame with three columns: \enumerate{
-  \item Gene Symbol (HGNC Gene Symbol)
+  \item Gene Symbol (Gene Symbol)
   \item Change value, e.g. log(fold change) (OPTIONAL)
-  \item adjusted p value associated with test, e.g. differential expression/methylation
+  \item p value, e.g. adjusted p value associated with differential expression
 }}
 
 \item{gene_sets}{Name of the gene sets to be used for enrichment analysis.
@@ -60,43 +60,40 @@ in the input that are not found in the PIN to an alias symbol found in the PIN
 (default = TRUE) IMPORTANT NOTE: the conversion uses human gene symbols/alias symbols.}
 
 \item{enrichment_threshold}{adjusted-p value threshold used when filtering
-enrichment results}
+enrichment results (default = 0.05)}
 
-\item{adj_method}{correction method to be used for adjusting p-values of
-enrichment results (Default: 'bonferroni', see ?p.adjust)}
+\item{adj_method}{correction method to be used for adjusting p-values of}
 
 \item{search_method}{algorithm to use when performing active subnetwork
 search. Options are greedy search (GR), simulated annealing (SA) or genetic
-algorithm (GA) for the search (Default:GR. Can be one of c("GR", "SA",
-"GA"))}
+algorithm (GA) for the search (default = GR).}
 
 \item{use_all_positives}{if TRUE: in GA, adds an individual with all positive
-nodes. In SA, initializes candidate solution with all positive nodes.
-(Default = FALSE)}
+nodes. In SA, initializes candidate solution with all positive nodes. (default = FALSE)}
 
-\item{saTemp0}{Initial temperature for SA (Default = 1.0)}
+\item{saTemp0}{Initial temperature for SA (default = 1.0)}
 
-\item{saTemp1}{Final temperature for SA (Default = 0.01)}
+\item{saTemp1}{Final temperature for SA (default = 0.01)}
 
-\item{saIter}{Iteration number for SA (Default = 10000)}
+\item{saIter}{Iteration number for SA (default = 10000)}
 
-\item{gaPop}{Population size for GA (Default = 400)}
+\item{gaPop}{Population size for GA (default = 400)}
 
-\item{gaIter}{Iteration number for GA (Default = 200)}
+\item{gaIter}{Iteration number for GA (default = 200)}
 
-\item{gaThread}{Number of threads to be used in GA (Default = 5)}
+\item{gaThread}{Number of threads to be used in GA (default = 5)}
 
-\item{gaCrossover}{For GA, applies crossover with the given probability (default = 1, i.e. always perform crossover)}
+\item{gaCrossover}{Applies crossover with the given probability in GA (default = 1, i.e. always perform crossover)}
 
-\item{gaMut}{For GA, applies mutation with given mutation rate (Default = 0, i.e. mutation off)}
+\item{gaMut}{For GA, applies mutation with given mutation rate (default = 0, i.e. mutation off)}
 
-\item{grMaxDepth}{Sets max depth in greedy search, 0 for no limit (Default = 1)}
+\item{grMaxDepth}{Sets max depth in greedy search, 0 for no limit (default = 1)}
 
-\item{grSearchDepth}{Search depth in greedy search (Default = 1)}
+\item{grSearchDepth}{Search depth in greedy search (default = 1)}
 
-\item{grOverlap}{Overlap threshold for results of greedy search (Default = 0.5)}
+\item{grOverlap}{Overlap threshold for results of greedy search (default = 0.5)}
 
-\item{grSubNum}{Number of subnetworks to be presented in the results (Default = 1000)}
+\item{grSubNum}{Number of subnetworks to be presented in the results (default = 1000)}
 
 \item{iterations}{number of iterations for active subnetwork search and
 enrichment analyses (Default = 10. Gets set to 1 for Genetic Algorithm)}
@@ -105,9 +102,9 @@ enrichment analyses (Default = 10. Gets set to 1 for Genetic Algorithm)}
 used by foreach. If not specified, the function determines this
 automatically (Default == NULL. Gets set to 1 for Genetic Algorithm)}
 
-\item{score_quan_thr}{active subnetwork score quantile threshold used for filtering active subnetworks (Default = 0.80)}
+\item{score_quan_thr}{active subnetwork score quantile threshold (default = 0.80)}
 
-\item{sig_gene_thr}{threshold for minimum number of significant genes used for filtering active subnetworks (Default = 10)}
+\item{sig_gene_thr}{threshold for minimum number of significant genes (default = 10)}
 
 \item{plot_enrichment_chart}{boolean value. If TRUE, a bubble chart displaying the enrichment
 results is plotted. (default = TRUE)}
