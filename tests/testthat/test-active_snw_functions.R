@@ -89,18 +89,17 @@ test_that("`filterActiveSnws()` arg checks work", {
 })
 
 # active_snw_search -------------------------------------------------------
-pin_path <- return_pin_path()
 input_df1 <- suppressMessages(input_processing(RA_input[1:100, ],
                                                p_val_threshold = 0.05,
-                                               pin_path))
+                                               pin_name_path = "Biogrid"))
 input_df2 <- suppressMessages(input_processing(RA_input[1:3, ],
                                                p_val_threshold = 0.05,
-                                               pin_path))
+                                               pin_name_path = "Biogrid"))
 
 test_that("`active_snw_search()` returns list object", {
   # Expect > 0 active snws
   expect_message(snw_list <- active_snw_search(input_for_search = input_df1,
-                                               pin_path = pin_path),
+                                               pin_name_path = "Biogrid"),
                  "Found [1-9]\\d* active subnetworks")
   expect_is(snw_list, "list")
   expect_is(snw_list[[1]], "character")
@@ -108,7 +107,7 @@ test_that("`active_snw_search()` returns list object", {
 
   # Expect no active snws
   expect_message(snw_list <- active_snw_search(input_for_search = input_df2,
-                                               pin_path = pin_path),
+                                               pin_name_path = "Biogrid"),
                  "Found 0 active subnetworks")
   expect_identical(snw_list, list())
   unlink("active_snw_search", recursive = TRUE)
@@ -116,7 +115,7 @@ test_that("`active_snw_search()` returns list object", {
   # dir_for_parallel_run works?
   dir.create("dummy_dir")
   expect_message(snw_list <- active_snw_search(input_for_search = input_df1,
-                                               pin_path = pin_path,
+                                               pin_name_path = "Biogrid",
                                                dir_for_parallel_run = "dummy_dir"),
                  "Found [1-9]\\d* active subnetworks")
   expect_true(file.exists("dummy_dir/active_snw_search/active_snws.txt"))
@@ -126,7 +125,7 @@ test_that("`active_snw_search()` returns list object", {
 test_that("All search methods for `active_snw_search()` work", {
   ## GR
   expect_message(snw_list <- active_snw_search(input_for_search = input_df1,
-                                               pin_path = pin_path,
+                                               pin_name_path = "Biogrid",
                                                search_method = "GR"),
                  "Found [1-9]\\d* active subnetworks")
   expect_is(snw_list, "list")
@@ -136,7 +135,7 @@ test_that("All search methods for `active_snw_search()` work", {
   skip("will test SA and GA if we can create a suitable (faster and non-empty) test case")
   ## SA
   expect_message(snw_list <- active_snw_search(input_for_search = input_df1[1:100, ],
-                                               pin_path = pin_path,
+                                               pin_name_path = "Biogrid",
                                                search_method = "SA"),
                  "Found [1-9]\\d* active subnetworks")
   expect_is(snw_list, "list")
@@ -145,7 +144,7 @@ test_that("All search methods for `active_snw_search()` work", {
 
   ## GA
   expect_message(snw_list <- active_snw_search(input_for_search = input_df1,
-                                               pin_path = pin_path,
+                                               pin_name_path = "Biogrid",
                                                search_method = "GA"),
                  "Found [1-9]\\d* active subnetworks")
   expect_is(snw_list, "list")
@@ -155,17 +154,17 @@ test_that("All search methods for `active_snw_search()` work", {
 
 test_that("`active_snw_search()` error messages work", {
   expect_error(active_snw_search(input_for_search = input_df2,
-                                 pin_path = pin_path,
+                                 pin_name_path = "Biogrid",
                                  search_method = "WRONG"),
     "`search_method` must be one of \"GR\", \"SA\", \"GA\"")
 
   expect_error(active_snw_search(input_for_search = input_df2,
-                                 pin_path = pin_path,
+                                 pin_name_path = "Biogrid",
                                  use_all_positives = "WRONG"),
     "the argument `use_all_positives` must be either TRUE or FALSE")
 
   expect_error(active_snw_search(input_for_search = input_df2,
-                                 pin_path = pin_path,
+                                 pin_name_path = "Biogrid",
                                  silent_option = "WRONG"),
                "the argument `silent_option` must be either TRUE or FALSE")
 })

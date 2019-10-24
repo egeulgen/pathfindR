@@ -79,7 +79,6 @@ test_that("`enrichment` returns a data frame", {
 })
 
 # enrichment_analyses -----------------------------------------------------
-pin_path <- return_pin_path()
 tmp <- fetch_gene_set()
 tmp_gset_genes <- tmp$genes_by_term
 tmp_gset_desc <- tmp$term_descriptions
@@ -89,7 +88,7 @@ test_that("enrichment function returns a data frame", {
   # default
   expect_is(tmp1 <- enrichment_analyses(snws = example_active_snws[1:3],
                                         sig_genes_vec = RA_input$Gene.symbol,
-                                        pin_path = pin_path,
+                                        pin_name_path = "Biogrid",
                                         genes_by_term = tmp_gset_genes,
                                         term_descriptions = tmp_gset_desc,
                                         adj_method = "bonferroni",
@@ -100,7 +99,7 @@ test_that("enrichment function returns a data frame", {
   # list active snw genes
   expect_is(tmp2 <- enrichment_analyses(snws = example_active_snws[1:3],
                                         sig_genes_vec = RA_input$Gene.symbol,
-                                        pin_path = pin_path,
+                                        pin_name_path = "Biogrid",
                                         genes_by_term = tmp_gset_genes,
                                         term_descriptions = tmp_gset_desc,
                                         adj_method = "bonferroni",
@@ -113,7 +112,7 @@ test_that("enrichment function returns a data frame", {
 # summarize_enrichment_results --------------------------------------------
 enr_res <- enrichment_analyses(snws = example_active_snws[1:10],
                                sig_genes_vec = RA_input$Gene.symbol,
-                               pin_path = pin_path,
+                               pin_name_path = "Biogrid",
                                genes_by_term = tmp_gset_genes,
                                term_descriptions = tmp_gset_desc,
                                adj_method = "bonferroni",
