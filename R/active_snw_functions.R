@@ -84,28 +84,29 @@ filterActiveSnws <- function(active_snw_path, sig_genes_vec,
 #' @param snws_file name for active subnetwork search output data
 #' @param dir_for_parallel_run directory for parallel run iteration.
 #' Only used in the wrapper function (see ?run_pathfindR) (Default = NULL)
-#' @param score_quan_thr active subnetwork score quantile threshold (Default = 0.80)
-#' @param sig_gene_thr threshold for minimum number of significant genes (Default = 10)
+#' @param score_quan_thr active subnetwork score quantile threshold (default = 0.80)
+#' @param sig_gene_thr threshold for minimum number of significant genes (default = 10)
 #' @param search_method algorithm to use when performing active subnetwork
 #'  search. Options are greedy search (GR), simulated annealing (SA) or genetic
-#'  algorithm (GA) for the search (Default = GR).
+#'  algorithm (GA) for the search (default = GR).
 #' @param silent_option boolean value indicating whether to print the messages to the console (FALSE)
 #' or print to a file (TRUE) during active subnetwork search (default = TRUE). This option was added
 #' because during parallel runs, the console messages get mixed up.
 #' @param use_all_positives if TRUE: in GA, adds an individual with all positive
-#'  nodes. In SA, initializes candidate solution with all positive nodes. (Default = FALSE)
-#' @param geneInitProbs For SA and GA, probability of adding a gene in initial solution (Default = 0.1)
-#' @param saTemp0 Initial temperature for SA (Default = 1.0)
-#' @param saTemp1 Final temperature for SA (Default = 0.01)
-#' @param saIter Iteration number for SA (Default = 10000)
-#' @param gaPop Population size for GA (Default = 400)
-#' @param gaIter Iteration number for GA (Default = 200)
-#' @param gaThread Number of threads to be used in GA (Default = 5)
-#' @param gaMut For GA, applies mutation with given mutation rate (Default = 0, i.e. mutation off)
-#' @param grMaxDepth Sets max depth in greedy search, 0 for no limit (Default = 1)
-#' @param grSearchDepth Search depth in greedy search (Default = 1)
-#' @param grOverlap Overlap threshold for results of greedy search (Default = 0.5)
-#' @param grSubNum Number of subnetworks to be presented in the results (Default = 1000)
+#'  nodes. In SA, initializes candidate solution with all positive nodes. (default = FALSE)
+#' @param geneInitProbs For SA and GA, probability of adding a gene in initial solution (default = 0.1)
+#' @param saTemp0 Initial temperature for SA (default = 1.0)
+#' @param saTemp1 Final temperature for SA (default = 0.01)
+#' @param saIter Iteration number for SA (default = 10000)
+#' @param gaPop Population size for GA (default = 400)
+#' @param gaIter Iteration number for GA (default = 200)
+#' @param gaThread Number of threads to be used in GA (default = 5)
+#' @param gaCrossover Applies crossover with the given probability in GA (default = 1, i.e. always perform crossover)
+#' @param gaMut For GA, applies mutation with given mutation rate (default = 0, i.e. mutation off)
+#' @param grMaxDepth Sets max depth in greedy search, 0 for no limit (default = 1)
+#' @param grSearchDepth Search depth in greedy search (default = 1)
+#' @param grOverlap Overlap threshold for results of greedy search (default = 0.5)
+#' @param grSubNum Number of subnetworks to be presented in the results (default = 1000)
 #'
 #' @return A list of genes in every identified active subnetwork that has a score greater than
 #' the `score_quan_thr`th quantile and that has at least `sig_gene_thr` affected genes.
@@ -130,7 +131,7 @@ active_snw_search <- function(input_for_search, pin_path,
                               geneInitProbs = 0.1,
                               saTemp0 = 1, saTemp1 = 0.01, saIter = 10000,
                               gaPop = 400, gaIter = 10000,
-                              gaThread = 5, gaMut = 0,
+                              gaThread = 5, gaCrossover = 1, gaMut = 0,
                               grMaxDepth = 1, grSearchDepth = 1,
                               grOverlap = 0.5, grSubNum = 1000) {
   ############ Argument checks
@@ -156,10 +157,8 @@ active_snw_search <- function(input_for_search, pin_path,
   }
 
   ## turn silent_option into shell argument
-  silent_option <- ifelse(silent_option,
-    paste0(" > ./active_snw_search/console_out_",
-           snws_file, ".txt"),
-    "")
+  tmp_out <- file.path(tempdir(check = TRUE), paste0("console_out_", snws_file, ".txt"))
+  silent_option <- ifelse(silent_option, paste0(" > ", tmp_out), "")
 
   ## turn use_all_positives into the java argument
   use_all_positives <- ifelse(use_all_positives, " -useAllPositives", "")
@@ -199,6 +198,7 @@ active_snw_search <- function(input_for_search, pin_path,
     " -gaPop=", gaPop,
     " -gaIter=", gaIter,
     " -gaThread=", gaThread,
+    " -gaCrossover=", gaCrossover,
     " -gaMut=", gaMut,
     " -grMaxDepth=", grMaxDepth,
     " -grSearchDepth=", grSearchDepth,

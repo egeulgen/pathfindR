@@ -49,12 +49,12 @@
 #'  used by foreach. If not specified, the function determines this
 #'  automatically (Default == NULL. Gets set to 1 for Genetic Algorithm)
 #' @inheritParams return_pin_path
-#' @param score_quan_thr active subnetwork score quantile threshold (Default = 0.80)
-#' @param sig_gene_thr threshold for minimum number of significant genes (Default = 10)
+#' @param score_quan_thr active subnetwork score quantile threshold used for filtering active subnetworks (Default = 0.80)
+#' @param sig_gene_thr threshold for minimum number of significant genes used for filtering active subnetworks (Default = 10)
 
-#' @param bubble boolean value. If TRUE, a bubble chart displaying the enrichment
+#' @param plot_enrichment_chart boolean value. If TRUE, a bubble chart displaying the enrichment
 #' results is plotted. (default = TRUE)
-#' @param output_dir the directory to be created where the output and intermediate files are saved (default: "pathfindR_Results")
+#' @param output_dir the directory to be created where the output and intermediate files are saved (default = "pathfindR_Results")
 #' @param list_active_snw_genes boolean value indicating whether or not to report
 #' the non-DEG active subnetwork genes for the active subnetwork which was enriched for
 #' the given term with the lowest p value (default = FALSE)
@@ -70,7 +70,7 @@
 #'   \item{lowest_p}{the lowest adjusted-p value of the given term over all iterations}
 #'   \item{highest_p}{the highest adjusted-p value of the given term over all iterations}
 #'   \item{non_DEG_Active_Snw_Genes (OPTIONAL)}{the non-DEG active subnetwork genes, comma-separated}
-#'   \item{Up_regulated}{the up-regulated genes (as determined by `change value` > 0, if the `change column` was provided) in the input involved in the given term's gene set, comma-separated}. If change column not provided, all affected are listed here.
+#'   \item{Up_regulated}{the up-regulated genes (as determined by `change value` > 0, if the `change column` was provided) in the input involved in the given term's gene set, comma-separated. If change column not provided, all affected are listed here.}
 #'   \item{Down_regulated}{the down-regulated genes (as determined by `change value` < 0, if the `change column` was provided) in the input involved in the given term's gene set, comma-separated}
 #' }
 #'  The function also creates an HTML report with the pathfindR enrichment
@@ -126,12 +126,13 @@ run_pathfindR <- function(input,
                           search_method = "GR",
                           use_all_positives = FALSE,
                           saTemp0 = 1, saTemp1 = 0.01, saIter = 10000,
-                          gaPop = 400, gaIter = 200, gaThread = 5, gaMut = 0,
+                          gaPop = 400, gaIter = 200, gaThread = 5,
+                          gaCrossover = 1, gaMut = 0,
                           grMaxDepth = 1, grSearchDepth = 1,
                           grOverlap = 0.5, grSubNum = 1000,
                           iterations = 10, n_processes = NULL,
                           score_quan_thr = 0.80, sig_gene_thr = 10,
-                          bubble = TRUE,
+                          plot_enrichment_chart = TRUE,
                           output_dir = "pathfindR_Results",
                           list_active_snw_genes = FALSE,
                           silent_option = TRUE) {
@@ -150,8 +151,8 @@ run_pathfindR <- function(input,
   }
 
   # Enrichment chart option
-  if (!is.logical(bubble)) {
-    stop("the argument `bubble` must be either TRUE or FALSE")
+  if (!is.logical(plot_enrichment_chart)) {
+    stop("the argument `plot_enrichment_chart` must be either TRUE or FALSE")
   }
 
   # Gene Sets
@@ -257,7 +258,8 @@ run_pathfindR <- function(input,
                                          geneInitProbs = geneInitProbs[i],
                                          saTemp0 = saTemp0, saTemp1 = saTemp1, saIter = saIter,
                                          gaPop = gaPop, gaIter = gaIter,
-                                         gaThread = gaThread, gaMut = gaMut,
+                                         gaThread = gaThread,
+                                         gaCrossover = gaCrossover, gaMut = gaMut,
                                          grMaxDepth = grMaxDepth, grSearchDepth = grSearchDepth,
                                          grOverlap = grOverlap, grSubNum = grSubNum)
 
@@ -326,8 +328,8 @@ run_pathfindR <- function(input,
                                   original_df = input),
                     output_dir = ".")
 
-  ############ Bubble Chart
-  if (bubble) {
+  ############ Enrichment Chart
+  if (plot_enrichment_chart) {
     message("Plotting the enrichment bubble chart")
     graphics::plot(pathfindR::enrichment_chart(final_res))
   }
@@ -526,10 +528,10 @@ return_pin_path <- function(pin_name_path = "Biogrid") {
 #' @param input the input data that pathfindR uses. The input must be a data
 #'   frame with three columns: \enumerate{
 #'   \item Gene Symbol (HGNC Gene Symbol)
-#'   \item Change value, e.g. log(fold change) (Not obligatory)
+#'   \item Change value, e.g. log(fold change) (OPTIONAL)
 #'   \item adjusted p value associated with test, e.g. differential expression/methylation
 #' }
-#' @param p_val_threshold the adjusted-p value threshold to use when filtering
+#' @param p_val_threshold the p value threshold to use when filtering
 #'   the input data frame. Must a numeric value between 0 and 1. (default = 0.05)
 #'
 #' @return Only checks if the input and the threshold follows the required

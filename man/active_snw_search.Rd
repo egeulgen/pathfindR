@@ -9,8 +9,8 @@ active_snw_search(input_for_search, pin_path, snws_file = "active_snws",
   sig_gene_thr = 10, search_method = "GR", silent_option = TRUE,
   use_all_positives = FALSE, geneInitProbs = 0.1, saTemp0 = 1,
   saTemp1 = 0.01, saIter = 10000, gaPop = 400, gaIter = 10000,
-  gaThread = 5, gaMut = 0, grMaxDepth = 1, grSearchDepth = 1,
-  grOverlap = 0.5, grSubNum = 1000)
+  gaThread = 5, gaCrossover = 1, gaMut = 0, grMaxDepth = 1,
+  grSearchDepth = 1, grOverlap = 0.5, grSubNum = 1000)
 }
 \arguments{
 \item{input_for_search}{input the input data that active subnetwork search uses. The input
@@ -27,44 +27,46 @@ the analysis}
 \item{dir_for_parallel_run}{directory for parallel run iteration.
 Only used in the wrapper function (see ?run_pathfindR) (Default = NULL)}
 
-\item{score_quan_thr}{active subnetwork score quantile threshold (Default = 0.80)}
+\item{score_quan_thr}{active subnetwork score quantile threshold (default = 0.80)}
 
-\item{sig_gene_thr}{threshold for minimum number of significant genes (Default = 10)}
+\item{sig_gene_thr}{threshold for minimum number of significant genes (default = 10)}
 
 \item{search_method}{algorithm to use when performing active subnetwork
 search. Options are greedy search (GR), simulated annealing (SA) or genetic
-algorithm (GA) for the search (Default = GR).}
+algorithm (GA) for the search (default = GR).}
 
 \item{silent_option}{boolean value indicating whether to print the messages to the console (FALSE)
 or print to a file (TRUE) during active subnetwork search (default = TRUE). This option was added
 because during parallel runs, the console messages get mixed up.}
 
 \item{use_all_positives}{if TRUE: in GA, adds an individual with all positive
-nodes. In SA, initializes candidate solution with all positive nodes. (Default = FALSE)}
+nodes. In SA, initializes candidate solution with all positive nodes. (default = FALSE)}
 
-\item{geneInitProbs}{For SA and GA, probability of adding a gene in initial solution (Default = 0.1)}
+\item{geneInitProbs}{For SA and GA, probability of adding a gene in initial solution (default = 0.1)}
 
-\item{saTemp0}{Initial temperature for SA (Default = 1.0)}
+\item{saTemp0}{Initial temperature for SA (default = 1.0)}
 
-\item{saTemp1}{Final temperature for SA (Default = 0.01)}
+\item{saTemp1}{Final temperature for SA (default = 0.01)}
 
-\item{saIter}{Iteration number for SA (Default = 10000)}
+\item{saIter}{Iteration number for SA (default = 10000)}
 
-\item{gaPop}{Population size for GA (Default = 400)}
+\item{gaPop}{Population size for GA (default = 400)}
 
-\item{gaIter}{Iteration number for GA (Default = 200)}
+\item{gaIter}{Iteration number for GA (default = 200)}
 
-\item{gaThread}{Number of threads to be used in GA (Default = 5)}
+\item{gaThread}{Number of threads to be used in GA (default = 5)}
 
-\item{gaMut}{For GA, applies mutation with given mutation rate (Default = 0, i.e. mutation off)}
+\item{gaCrossover}{Applies crossover with the given probability in GA (default = 1, i.e. always perform crossover)}
 
-\item{grMaxDepth}{Sets max depth in greedy search, 0 for no limit (Default = 1)}
+\item{gaMut}{For GA, applies mutation with given mutation rate (default = 0, i.e. mutation off)}
 
-\item{grSearchDepth}{Search depth in greedy search (Default = 1)}
+\item{grMaxDepth}{Sets max depth in greedy search, 0 for no limit (default = 1)}
 
-\item{grOverlap}{Overlap threshold for results of greedy search (Default = 0.5)}
+\item{grSearchDepth}{Search depth in greedy search (default = 1)}
 
-\item{grSubNum}{Number of subnetworks to be presented in the results (Default = 1000)}
+\item{grOverlap}{Overlap threshold for results of greedy search (default = 0.5)}
+
+\item{grSubNum}{Number of subnetworks to be presented in the results (default = 1000)}
 }
 \value{
 A list of genes in every identified active subnetwork that has a score greater than
