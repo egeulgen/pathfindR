@@ -217,7 +217,7 @@ run_pathfindR <- function(input,
 
     ## Active Subnetwork Search
     snws <- pathfindR::active_snw_search(input_for_search = input_processed,
-                                         pin_path = pin_path,
+                                         pin_name_path = pin_path,
                                          snws_file = paste0("active_snws_", i),
                                          dir_for_parallel_run = dirs[i],
                                          score_quan_thr = score_quan_thr,
@@ -235,7 +235,7 @@ run_pathfindR <- function(input,
 
     enrichment_res <- pathfindR::enrichment_analyses(snws = snws,
                                                      sig_genes_vec = input_processed$GENE,
-                                                     pin_path = pin_path,
+                                                     pin_name_path = pin_path,
                                                      genes_by_term = genes_by_term,
                                                      term_descriptions = term_descriptions,
                                                      adj_method = adj_method,
