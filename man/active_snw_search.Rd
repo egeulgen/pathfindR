@@ -4,7 +4,7 @@
 \alias{active_snw_search}
 \title{Perform Active Subnetwork Search}
 \usage{
-active_snw_search(input_for_search, pin_name_path,
+active_snw_search(input_for_search, pin_name_path = "Biogrid",
   snws_file = "active_snws", dir_for_parallel_run = NULL,
   score_quan_thr = 0.8, sig_gene_thr = 10, search_method = "GR",
   silent_option = TRUE, use_all_positives = FALSE,
@@ -19,6 +19,11 @@ must be a data frame containing at least these three columns: \describe{
   \item{describe}{HGNC Gene Symbol}
   \item{P_VALUE}{p value obtained through a test, e.g. differential expression/methylation}
 }}
+
+\item{pin_name_path}{Name of the chosen PIN or path/to/PIN.sif. If PIN name,
+must be one of c("Biogrid", "GeneMania", "IntAct", "KEGG"). If
+path/to/PIN.sif, the file must comply with the PIN specifications. Defaults
+to "Biogrid".}
 
 \item{snws_file}{name for active subnetwork search output data}
 

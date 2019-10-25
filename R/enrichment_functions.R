@@ -166,7 +166,7 @@ enrichment <- function(input_genes,
 #'                                term_descriptions = kegg_descriptions)
 enrichment_analyses <- function(snws,
                                 sig_genes_vec,
-                                pin_name_path,
+                                pin_name_path = "Biogrid",
                                 genes_by_term,
                                 term_descriptions,
                                 adj_method = "bonferroni",

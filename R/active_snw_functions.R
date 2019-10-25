@@ -79,6 +79,7 @@ filterActiveSnws <- function(active_snw_path, sig_genes_vec,
 #'   \item{describe}{HGNC Gene Symbol}
 #'   \item{P_VALUE}{p value obtained through a test, e.g. differential expression/methylation}
 #' }
+#' @inheritParams return_pin_path
 #' @param snws_file name for active subnetwork search output data
 #' @param dir_for_parallel_run directory for parallel run iteration.
 #' Only used in the wrapper function (see ?run_pathfindR) (Default = NULL)
@@ -118,7 +119,8 @@ filterActiveSnws <- function(active_snw_path, sig_genes_vec,
 #'   pin_name_path = "KEGG",
 #'   search_method = "SA", saTemp0 = 2, saTemp1 = 0.05)
 #' }
-active_snw_search <- function(input_for_search, pin_name_path,
+active_snw_search <- function(input_for_search,
+                              pin_name_path = "Biogrid",
                               snws_file = "active_snws",
                               dir_for_parallel_run = NULL,
                               score_quan_thr = 0.80, sig_gene_thr = 10,

@@ -4,8 +4,8 @@
 \alias{enrichment_analyses}
 \title{Perform Enrichment Analyses on the Input Subnetworks}
 \usage{
-enrichment_analyses(snws, sig_genes_vec, pin_name_path, genes_by_term,
-  term_descriptions, adj_method = "bonferroni",
+enrichment_analyses(snws, sig_genes_vec, pin_name_path = "Biogrid",
+  genes_by_term, term_descriptions, adj_method = "bonferroni",
   enrichment_threshold = 0.05, list_active_snw_genes = FALSE)
 }
 \arguments{
