@@ -184,7 +184,7 @@ enrichment_chart(RA_output)
 
 You may also disable plotting this chart by setting `plot_enrichment_chart=FALSE` and later produce this plot via the function `enrichment_chart()`:
 
-```{r encrichment_plot, eval=TRUE, echo=FALSE}
+```{r encrichment_plot_shown, eval=TRUE, echo=FALSE}
 # change number of top terms plotted (default = 10)
 enrichment_chart(result_df = RA_output, 
                  top_terms = 15)
