@@ -387,7 +387,7 @@ enrichment_chart <- function(result_df,
 
   ## Filter for top_terms
   if (!is.null(top_terms)) {
-    if (plot_by_cluster) {
+    if (plot_by_cluster & "Cluster" %in% colnames(result_df)) {
       keep_ids <- tapply(result_df$ID, result_df$Cluster, function(x)
                                           x[seq_len(min(top_terms, length(x)))])
       keep_ids <- unlist(keep_ids)
