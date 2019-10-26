@@ -175,6 +175,7 @@ active_snw_search <- function(input_for_search,
   }
 
   if (!file.exists("active_snw_search/input_for_search.txt")) {
+    input_for_search$GENE <- base::toupper(input_for_search$GENE)
     utils::write.table(input_for_search[, c("GENE", "P_VALUE")],
                        "active_snw_search/input_for_search.txt",
                        col.names = FALSE,

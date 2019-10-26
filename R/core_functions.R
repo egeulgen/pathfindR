@@ -459,7 +459,9 @@ return_pin_path <- function(pin_name_path = "Biogrid") {
         adj_list <- kegg_adj_list
       }
       pin_df <- lapply(seq_along(adj_list),
-                       function(i, nm, val) data.frame(nm[[i]], "pp", val[[i]],
+                       function(i, nm, val) data.frame(base::toupper(nm[[i]]),
+                                                       "pp",
+                                                       base::toupper(val[[i]]),
                                                        stringsAsFactors = FALSE),
                        val = adj_list, nm = names(adj_list))
       pin_df <- base::do.call("rbind", pin_df)
@@ -483,6 +485,18 @@ return_pin_path <- function(pin_name_path = "Biogrid") {
 
     if (any(pin[, 2] != "pp")) {
       stop("The second column of the PIN file must all be \"pp\" ")
+    }
+
+    if (any(grepl("[a-z]", pin[, 1])) | any(grepl("[a-z]", pin[, 3]))) {
+      pin[, 1] <- base::toupper(pin[, 1])
+      pin[, 3] <- base::toupper(pin[, 3])
+
+      path <- file.path(tempdir(check = TRUE), "custom_PIN.sif")
+      utils::write.table(pin,
+                         path,
+                         sep = "\t",
+                         row.names = F, col.names = F, quote = F)
+      path <- normalizePath(path)
     }
   } else {
     stop(paste0(
