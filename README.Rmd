@@ -5,12 +5,10 @@ output: github_document
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.path = "inst/extdata/",
-  out.width = "100%"
-)
+knitr::opts_chunk$set(collapse = TRUE,
+                      comment = "#>",
+                      fig.path = "inst/extdata/",
+                      out.width = "100%")
 suppressPackageStartupMessages(library(pathfindR))
 ```
 
@@ -38,15 +36,14 @@ See [the pathfindR wiki](https://github.com/egeulgen/pathfindR/wiki) for detaile
 
 You can install the released version of pathfindR from [CRAN](https://CRAN.R-project.org) with:
 
-``` r
+```{r installation1, eval=FALSE}
 install.packages("pathfindR")
 ```
 
 And the development version from [GitHub](https://github.com/) with:
 
-``` r
-# if you have not installed "devtools"
-# install.packages("devtools")
+```{r installation2, eval=FALSE}
+install.packages("devtools") # if you have not installed "devtools"
 devtools::install_github("egeulgen/pathfindR")
 ```
 
@@ -55,7 +52,7 @@ devtools::install_github("egeulgen/pathfindR")
 
 We also have docker images available on Docker Hub:
 
-``` bash
+```{bash docker, eval = FALSE}
 # pull image for latest release
 docker pull egeulgen/pathfindr:latest
 
@@ -73,10 +70,14 @@ See the [wiki page](https://github.com/egeulgen/pathfindR/wiki/Installation) for
 
 ![pathfindR Enrichment Workflow](./vignettes/pathfindr.png?raw=true "pathfindr Enrichment Workflow")
 
-This workflow takes in a data frame consisting of Gene symbols, log-fold-change (optional) and associated p values.
+This workflow takes in a data frame consisting of "gene symbols", "change values" (optional) and "associated p values":
 
 ```{r example_input, echo=FALSE}
-knitr::kable(RA_input[1:4, ])
+tmp <- RA_input[1:4, ]
+tmp$logFC <- round(tmp$logFC,2)
+tmp$adj.P.Val <- format(tmp$adj.P.Val, digits = 2)
+colnames(tmp) <- c("Gene_symbol", "logFC", "FDR_p")
+knitr::kable(tmp, align = c("l", "c", "c"))
 ```
 
 After input testing, any gene symbol that is not in the chosen protein-protein interaction network (PIN) is converted to an alias symbol if there is an alias that is in the PIN. After mapping the input genes with the associated p values onto the PIN, active subnetwork search is performed. The resulting active subnetworks are then filtered based on their scores and the number of significant genes they contain. 
@@ -87,21 +88,32 @@ These filtered list of active subnetworks are then used for enrichment analyses,
 
 This workflow can be run using the function `run_pathfindR()`:
 
-``` r
+```{r basic_usage, eval=FALSE}
 library(pathfindR)
 output_df <- run_pathfindR(input_df)
 ```
 
-This wrapper function performs the active-subnetwork-oriented enrichment analysis and returns a data frame of enriched terms (as well as visualization of enriched terms and an HTML report)
+This wrapper function performs the active-subnetwork-oriented enrichment analysis and returns a data frame of enriched terms (as well as visualization of enriched terms and an HTML report):
 
 ```{r example_output, echo=FALSE}
-knitr::kable(RA_output[1:3, ])
-enrichment_chart(RA_output[1:10, ])
+tmp <- RA_output[1:3, ]
+tmp$Up_regulated[1] <- "NDUFA1, NDUFB3, UQCRQ"
+tmp$Up_regulated[2] <- "COX7C"
+tmp$Up_regulated[3] <- "DDIT3, NDUFA1"
+
+tmp$Down_regulated[1] <- "SNRPB, SF3B2"
+tmp$Down_regulated[2] <- "UBE2G1, VDAC1"
+
+tmp$lowest_p <- format(tmp$lowest_p, scientific = TRUE, digits = 2)
+tmp$highest_p <- format(tmp$highest_p, scientific = TRUE, digits = 2)
+
+knitr::kable(tmp, align = c("l", "l", "c", "c", "c", "c", "l", "l"))
+enrichment_chart(RA_output)
 ```
 
 Some useful arguments are:
 
-``` r
+```{r useful_args, eval=FALSE}
 # change the output directory
 output_df <- run_pathfindR(input_df, output_dir = "/top/secret/results")
 
@@ -130,7 +142,7 @@ The wrapper function for this workflow is `cluster_enriched_terms()`.
 
 This workflow first calculates the pairwise kappa statistics between the enriched terms. The function then performs hierarchical clustering (by default), automatically determines the optimal number of clusters by maximizing the average silhouette width and returns a data frame with cluster assignments.
 
-``` r
+```{r clustering_h, eval=FALSE}
 # default settings
 clustered_df <- cluster_enriched_terms(output_df)
 
@@ -146,7 +158,7 @@ clustered_df <- cluster_enriched_terms(output_df, clu_method = "centroid")
 
 Alternatively, the `fuzzy` clustering method (as described in Huang DW, Sherman BT, Tan Q, et al. The DAVID Gene Functional Classification Tool: a novel biological module-centric algorithm to functionally analyze large gene lists. Genome Biol. 2007;8(9):R183.) can be used:
 
-``` r
+```{r clustering_f, eval=FALSE}
 clustered_df_fuzzy <- cluster_enriched_terms(output_df, method = "fuzzy")
 ```
 

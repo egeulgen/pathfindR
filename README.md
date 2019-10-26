@@ -46,8 +46,7 @@ install.packages("pathfindR")
 And the development version from [GitHub](https://github.com/) with:
 
 ``` r
-# if you have not installed "devtools"
-# install.packages("devtools")
+install.packages("devtools") # if you have not installed "devtools"
 devtools::install_github("egeulgen/pathfindR")
 ```
 
@@ -77,15 +76,15 @@ details.
 ![pathfindR Enrichment Workflow](./vignettes/pathfindr.png?raw=true
 "pathfindr Enrichment Workflow")
 
-This workflow takes in a data frame consisting of Gene symbols,
-log-fold-change (optional) and associated p values.
+This workflow takes in a data frame consisting of “gene symbols”,
+“change values” (optional) and “associated p values”:
 
-| Gene.symbol |     logFC | adj.P.Val |
-| :---------- | --------: | --------: |
-| FAM110A     | \-0.69394 |   0.00000 |
-| RNASE2      |   1.35350 |   0.00001 |
-| S100A8      |   1.54483 |   0.00003 |
-| S100A9      |   1.02809 |   0.00023 |
+| Gene\_symbol | logFC  | FDR\_p  |
+| :----------- | :----: | :-----: |
+| FAM110A      | \-0.69 | 3.4e-06 |
+| RNASE2       |  1.35  | 1.0e-05 |
+| S100A8       |  1.54  | 3.5e-05 |
+| S100A9       |  1.03  | 2.3e-04 |
 
 After input testing, any gene symbol that is not in the chosen
 protein-protein interaction network (PIN) is converted to an alias
@@ -121,13 +120,13 @@ output_df <- run_pathfindR(input_df)
 
 This wrapper function performs the active-subnetwork-oriented enrichment
 analysis and returns a data frame of enriched terms (as well as
-visualization of enriched terms and an HTML report)
+visualization of enriched terms and an HTML report):
 
-| ID       | Term\_Description                         | Fold\_Enrichment | occurrence | lowest\_p | highest\_p | Up\_regulated                                                   | Down\_regulated        |
-| :------- | :---------------------------------------- | ---------------: | ---------: | --------: | ---------: | :-------------------------------------------------------------- | :--------------------- |
-| hsa00190 | Oxidative phosphorylation                 |           3.0548 |         10 |         0 |          0 | NDUFA1, NDUFB3, UQCRQ, COX6A1, COX7A2, COX7C, ATP6V1D, ATP6V0E1 | ATP6V0E2               |
-| hsa05012 | Parkinson disease                         |           2.8024 |         10 |         0 |          0 | NDUFA1, NDUFB3, UQCRQ, COX6A1, COX7A2, COX7C                    | UBE2G1, VDAC1, SLC25A5 |
-| hsa04932 | Non-alcoholic fatty liver disease (NAFLD) |           2.3712 |         10 |         0 |          0 | DDIT3, NDUFA1, NDUFB3, UQCRQ, COX6A1, COX7A2, COX7C             | IKBKB, FASLG           |
+| ID       | Term\_Description         | Fold\_Enrichment | occurrence | lowest\_p | highest\_p | Up\_regulated         | Down\_regulated |
+| :------- | :------------------------ | :--------------: | :--------: | :-------: | :--------: | :-------------------- | :-------------- |
+| hsa03040 | Spliceosome               |      3.0975      |     10     |  2.6e-10  |  3.7e-09   | NDUFA1, NDUFB3, UQCRQ | SNRPB, SF3B2    |
+| hsa05012 | Parkinson disease         |      2.3188      |     10     |  2.7e-08  |  2.7e-08   | COX7C                 | UBE2G1, VDAC1   |
+| hsa00190 | Oxidative phosphorylation |      2.5240      |     10     |  2.9e-08  |  2.9e-08   | DDIT3, NDUFA1         | ATP6V0E2        |
 
 <img src="inst/extdata/example_output-1.png" width="100%" />
 

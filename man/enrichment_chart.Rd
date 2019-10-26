@@ -2,10 +2,10 @@
 % Please edit documentation in R/visualization_functions.R
 \name{enrichment_chart}
 \alias{enrichment_chart}
-\title{Plot the Bubble Chart of Enrichment Results}
+\title{Create Bubble Chart of Enrichment Results}
 \usage{
-enrichment_chart(result_df, plot_by_cluster = FALSE, num_bubbles = 4,
-  even_breaks = TRUE)
+enrichment_chart(result_df, top_terms = 10, plot_by_cluster = FALSE,
+  num_bubbles = 4, even_breaks = TRUE)
 }
 \arguments{
 \item{result_df}{a data frame that must contain the following columns: \describe{
@@ -16,6 +16,12 @@ enrichment_chart(result_df, plot_by_cluster = FALSE, num_bubbles = 4,
   \item{Down_regulated}{the down-regulated genes in the input involved in the given term's gene set, comma-separated}
   \item{Cluster(OPTIONAL)}{the cluster to which the enriched term is assigned}
 }}
+
+\item{top_terms}{number of top terms (according to the "lowest_p" column)
+to plot (default = 10). If \code{plot_by_cluster = TRUE}, selects the top
+\code{top_terms} terms per each cluster. Set \code{top_terms = NULL} to plot
+for all terms.If the total number of terms is less than \code{top_terms},
+all terms are plotted.}
 
 \item{plot_by_cluster}{boolean value indicating whether or not to group the
 enriched terms by cluster (works if \code{result_df} contains a
@@ -40,8 +46,8 @@ the color is to red, the more significant the enrichment is. Optionally, if
 the enriched terms are grouped by clusters.
 }
 \description{
-This function is used to plot a bubble chart displaying the enrichment
-results.
+This function is used to create a ggplot2 bubble chart displaying the
+enrichment results.
 }
 \examples{
 g <- enrichment_chart(RA_output)

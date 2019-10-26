@@ -35,6 +35,7 @@
 - Minor fix in `visualize_term_interactions()`. The legend no longer displays "Non-input Active Snw. Genes" if they were not provided
 - The argument `human_genes` in `run_pathfindR()` and `input_processing()` was renamed as `convert2alias`
 - The gene symbols in the input data frame, the PIN and the gene sets are now turned into uppercase (for obtaining the best overlap)
+- Added the argument `top_terms` to `enrichment_chart()`, controlling the number top enriched terms to plot (default is 10)
 
 # pathfindR 1.3.0
 

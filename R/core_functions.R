@@ -48,11 +48,11 @@
 #'  the table of converted gene symbols. This report can be found in
 #'  "\code{output_dir}/results.html" under the current working directory.
 #'
-#'  Optionally, a bubble chart of enrichment results are plotted. The x-axis
+#'  By default, a bubble chart of top 10 enrichment results are plotted. The x-axis
 #'  corresponds to fold enrichment values while the y-axis indicates the enriched
-#'  terms. Size of the bubble indicates the number of DEGs in the given term.
-#'  Color indicates the -log10(lowest-p) value; the more red it is, the more significant
-#'  the enriched term is.
+#'  terms. Sizes of the bubbles indicate the number of DEGs in the given terms.
+#'  Color indicates the -log10(lowest-p) value; the more red it is, the more
+#'  significant the enriched term is. See \code{\link{enrichment_chart}}.
 #'
 #' @import knitr
 #' @import rmarkdown
@@ -64,8 +64,8 @@
 #' @export
 #'
 #' @section Warning: Especially depending on the protein interaction network,
-#'  the algorithm and the number of iterations you choose, active subnetwork
-#'  search component of pathfindR may take a very long time to finish.
+#'  the algorithm and the number of iterations you choose, "active subnetwork
+#'  search + enrichment" component of \code{run_pathfindR} may take a long time to finish.
 #'
 #' @seealso
 #' \code{\link{input_testing}} for input testing, \code{\link{input_processing}} for input processing,
@@ -74,7 +74,7 @@
 #' \code{\link{summarize_enrichment_results}} for summarizing the active-subnetwork-oriented enrichment results,
 #' \code{\link{annotate_term_genes}} for annotation of affected genes in the given gene sets,
 #' \code{\link{visualize_terms}} for visualization of enriched terms,
-#' \code{\link{enrichment_chart}} for a visual summary of the pathfindR enrichment result,
+#' \code{\link{enrichment_chart}} for a visual summary of the pathfindR enrichment results,
 #' \code{\link[foreach]{foreach}} for details on parallel execution of looping constructs,
 #' \code{\link{cluster_enriched_terms}} for clustering the resulting enriched terms and partitioning into clusters.
 #'
@@ -301,7 +301,7 @@ run_pathfindR <- function(input,
   ############ Enrichment Chart
   if (plot_enrichment_chart) {
     message("Plotting the enrichment bubble chart")
-    graphics::plot(pathfindR::enrichment_chart(final_res))
+    graphics::plot(pathfindR::enrichment_chart(result_df = final_res))
   }
 
   message(paste0("Found ", nrow(final_res), " enriched terms\n"))

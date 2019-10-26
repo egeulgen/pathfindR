@@ -13,8 +13,7 @@ vignette: >
 knitr::opts_chunk$set(collapse = TRUE,
                       comment = "#>",
                       eval = FALSE,
-                      fig.width = 7, fig.height = 7, fig.align = "center"
-)
+                      fig.width = 7, fig.height = 7, fig.align = "center")
 suppressPackageStartupMessages(library(pathfindR))
 ```
 
@@ -177,13 +176,19 @@ The first 2 rows of the output data frame of the example analysis on the rheumat
 knitr::kable(head(RA_output, 2))
 ```
 
-By default, `run_pathfindR()` also produces a graphical summary of enrichment results (demonstrated for 10 example enriched terms):
+By default, `run_pathfindR()` also produces a graphical summary of enrichment results for top 10 enriched terms, which can also be later produced by `enrichment_chart()`:
 
 ```{r encrichment_plot, eval=TRUE, echo=FALSE}
-enrichment_chart(RA_output[1:10, ])
+enrichment_chart(RA_output)
 ```
 
-You may also disable this option by setting `bubble=FALSE` and later produce this plot via the function `enrichment_chart()`.
+You may also disable plotting this chart by setting `plot_enrichment_chart=FALSE` and later produce this plot via the function `enrichment_chart()`:
+
+```{r encrichment_plot, eval=TRUE, echo=FALSE}
+# change number of top terms plotted (default = 10)
+enrichment_chart(result_df = RA_output, 
+                 top_terms = 15)
+```
 
 ### HTML Report
 

@@ -119,7 +119,7 @@ test_that("enrichment_chart produces a ggplot object with correct labels", {
   expect_equal(ggplot2::quo_name(g$mapping$x), "Fold_Enrichment")
   expect_equal(ggplot2::quo_name(g$mapping$y), "Term_Description")
   expect_equal(g$labels$size, "# of DEGs")
-  expect_equal(g$labels$colour, "-log10(lowest-p)")
+  expect_equal(g$labels$colour, expression(-log[10](p)))
   expect_equal(g$labels$x, "Fold Enrichment")
   expect_equal(g$labels$y, "Term_Description")
 
@@ -129,7 +129,26 @@ test_that("enrichment_chart produces a ggplot object with correct labels", {
   expect_equal(ggplot2::quo_name(g$mapping$x), "Fold_Enrichment")
   expect_equal(ggplot2::quo_name(g$mapping$y), "Term_Description")
   expect_equal(g$labels$size, "# of DEGs")
-  expect_equal(g$labels$colour, "-log10(lowest-p)")
+  expect_equal(g$labels$colour, expression(-log[10](p)))
+  expect_equal(g$labels$x, "Fold Enrichment")
+  expect_equal(g$labels$y, "Term_Description")
+
+  # chang top_terms
+  expect_is(g <- enrichment_chart(RA_output, top_terms = NULL),
+            "ggplot")
+  expect_equal(ggplot2::quo_name(g$mapping$x), "Fold_Enrichment")
+  expect_equal(ggplot2::quo_name(g$mapping$y), "Term_Description")
+  expect_equal(g$labels$size, "# of DEGs")
+  expect_equal(g$labels$colour, expression(-log[10](p)))
+  expect_equal(g$labels$x, "Fold Enrichment")
+  expect_equal(g$labels$y, "Term_Description")
+
+  expect_is(g <- enrichment_chart(RA_output, top_terms = 1e3),
+            "ggplot")
+  expect_equal(ggplot2::quo_name(g$mapping$x), "Fold_Enrichment")
+  expect_equal(ggplot2::quo_name(g$mapping$y), "Term_Description")
+  expect_equal(g$labels$size, "# of DEGs")
+  expect_equal(g$labels$colour, expression(-log[10](p)))
   expect_equal(g$labels$x, "Fold Enrichment")
   expect_equal(g$labels$y, "Term_Description")
 
@@ -140,7 +159,7 @@ test_that("enrichment_chart produces a ggplot object with correct labels", {
   expect_equal(ggplot2::quo_name(g$mapping$x), "Fold_Enrichment")
   expect_equal(ggplot2::quo_name(g$mapping$y), "Term_Description")
   expect_equal(g$labels$size, "# of DEGs")
-  expect_equal(g$labels$colour, "-log10(lowest-p)")
+  expect_equal(g$labels$colour, expression(-log[10](p)))
   expect_equal(g$labels$x, "Fold Enrichment")
   expect_equal(g$labels$y, "Term_Description")
 
@@ -150,7 +169,7 @@ test_that("enrichment_chart produces a ggplot object with correct labels", {
   expect_equal(ggplot2::quo_name(g$mapping$x), "Fold_Enrichment")
   expect_equal(ggplot2::quo_name(g$mapping$y), "Term_Description")
   expect_equal(g$labels$size, "# of DEGs")
-  expect_equal(g$labels$colour, "-log10(lowest-p)")
+  expect_equal(g$labels$colour, expression(-log[10](p)))
   expect_equal(g$labels$x, "Fold Enrichment")
   expect_equal(g$labels$y, "Term_Description")
 })
@@ -167,6 +186,12 @@ test_that("enrichment_chart arg checks work", {
 
   expect_message(enrichment_chart(RA_output, plot_by_cluster = TRUE),
     "For plotting by cluster, there must a column named `Cluster` in the input data frame!")
+
+  expect_error(enrichment_chart(RA_output, top_terms = "WRONG"),
+               "`top_terms` must be either numeric or NULL")
+
+  expect_error(enrichment_chart(RA_output, top_terms = 0),
+               "`top_terms` must be > 1")
 })
 
 # term_gene_graph ---------------------------------------------------------

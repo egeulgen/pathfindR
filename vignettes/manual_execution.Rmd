@@ -10,10 +10,8 @@ vignette: >
 ---
 
 ```{r setup, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
+knitr::opts_chunk$set(collapse = TRUE,
+                      comment = "#>")
 ```
 
 This vignette walks through each step of the pathfindR active-subnetwork-oriented pathway enrichment analysis. For most purposes, the wrapper function `run_pathfindR()` can be used to perform this analysis from start to end. For users who wish to have further control over the enrichment workflow, this vignette will be more useful.
