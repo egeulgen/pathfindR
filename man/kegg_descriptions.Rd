@@ -10,7 +10,7 @@
 kegg_descriptions
 }
 \description{
-A list containing the descriptions for each human KEGG pathway. Names of the
+A list containing the descriptions for each Homo sapiens KEGG pathway. Names of the
 list correspond to the KEGG ID of the pathway. Pathways that did not contain
 any genes were discarded.
 \emph{Generated on Oct 12, 2019.}

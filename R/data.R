@@ -110,7 +110,7 @@
 
 #' KEGG Pathways - Gene Sets
 #'
-#' A list containing the genes involved in each human KEGG pathway. Each element
+#' A list containing the genes involved in each Homo sapiens KEGG pathway. Each element
 #' is a vector of gene symbols located in the given pathway. Names correspond to
 #' the KEGG ID of the pathway. Pathways that did not contain any genes were
 #' discarded.
@@ -122,7 +122,7 @@
 
 #' KEGG Pathways - Descriptions
 #'
-#' A list containing the descriptions for each human KEGG pathway. Names of the
+#' A list containing the descriptions for each Homo sapiens KEGG pathway. Names of the
 #' list correspond to the KEGG ID of the pathway. Pathways that did not contain
 #' any genes were discarded.
 #' \emph{Generated on Oct 12, 2019.}
@@ -130,6 +130,30 @@
 #' @format vector containing 327 character values, the descriptions for the given
 #'   pathways.
 "kegg_descriptions"
+
+
+#' Mus Musculus KEGG Pathways - Gene Sets
+#'
+#' A list containing the genes involved in each Mus musculus KEGG pathway. Each element
+#' is a vector of gene symbols located in the given pathway. Names correspond to
+#' the KEGG ID of the pathway. Pathways that did not contain any genes were
+#' discarded.
+#' \emph{Generated on Oct 28, 2019.}
+#'
+#' @format list containing 323 vectors of gene symbols. Each vector corresponds
+#'   to a pathway.
+"mmu_kegg_genes"
+
+#' Mus Musculus KEGG Pathways - Descriptions
+#'
+#' A list containing the descriptions for each Mus musculus KEGG pathway. Names of the
+#' list correspond to the KEGG ID of the pathway. Pathways that did not contain
+#' any genes were discarded.
+#' \emph{Generated on Oct 28, 2019.}
+#'
+#' @format vector containing 323 character values, the descriptions for the given
+#'   pathways.
+"mmu_kegg_descriptions"
 
 #' Reactome Pathways - Gene Sets
 #'
