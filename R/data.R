@@ -1,3 +1,25 @@
+#' Example Input for Mus Musculus Analysis (Myeloma)
+#'
+#' A dataset containing the differentially-expressed genes and adjusted p-values
+#' for the GEO dataset GSE99393. The RNA microarray experiment was perform to
+#' detail the global programme of gene expression underlying polarization of
+#' myeloma-associated macrophages by CSF1R antibody treatment. The samples were
+#' 6 murine bone marrow derived macrophages cocultured with myeloma cells
+#' (myeloma-associated  macrophages), 3 of which were treated with CSF1R
+#' antibody (treatment group) and the rest were treated with control IgG
+#' antibody (control group). In this dataset, differentially-expressed genes
+#' with |logFC| >= 2 and FDR < 0.05 are presented.
+#' \emph{Generated on Oct 28, 2019.}
+#'
+#' @format A data frame with 45 rows and 2 variables: \describe{
+#'   \item{Gene_Symbol}{MGI gene symbols of the differentially-expressed genes}
+#'   \item{FDR}{adjusted p values, via the Benjamini & Hochberg (1995) method}
+#' }
+#' @source \url{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE99393}
+#'
+#' @seealso \code{\link{run_pathfindR}} for details on the patfindR enrichment analysis.
+"myeloma_input"
+
 #' Example Input for pathfindR - Enriched Term Scoring
 #'
 #' A matrix containing the log2-normalized expression values of the differentially-expressed genes
