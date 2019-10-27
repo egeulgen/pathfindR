@@ -8,10 +8,7 @@
 #'  not necessary for visualizations other than KEGG human pathway diagrams.
 #' @param hsa_KEGG boolean to indicate whether human KEGG gene sets were used for
 #'  enrichment analysis or not (default = \code{TRUE})
-#' @param pin_name_path Name of the chosen PIN or path/to/PIN.sif. If PIN name,
-#'  must be one of c("Biogrid", "GeneMania", "IntAct", "KEGG"). If
-#'  path/to/PIN.sif, the file must comply with the PIN specifications. (default
-#'  is "Biogrid")
+#' @inheritParams return_pin_path
 #'
 #' @return Depending on the argument \code{hsa_KEGG}, creates visualization of
 #'  interactions of genes involved in the list of enriched terms in
@@ -67,10 +64,7 @@ visualize_terms <- function(result_df, input_processed = NULL,
 #'
 #' @param result_df Data frame of enrichment results. Must-have columns
 #' are: "Term_Description", "Up_regulated" and "Down_regulated"
-#' @param pin_name_path Name of the chosen PIN or path/to/PIN.sif. If PIN name,
-#'   must be one of c("Biogrid", "GeneMania", "IntAct", "KEGG"). If
-#'   path/to/PIN.sif, the file must comply with the PIN specifications. Defaults
-#'   to Biogrid.
+#' @inheritParams return_pin_path
 #'
 #' @return Creates PNG files visualizing the interactions of genes involved
 #' in the given enriched terms (annotated in the \code{result_df}) in the PIN used

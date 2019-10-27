@@ -280,3 +280,14 @@
 #' @format list containing 15057 vectors. Each vector is the set of gene symbols
 #' of interactors B for each interactor A.
 "intact_adj_list"
+
+#' Mus musculus STRING PIN Adjacency List
+#'
+#' An adjacency list of vectors containing interactors B for each interactor A
+#' in the Mus musculus STRING protein-protein interaction network (The designations
+#' "interactor A" and "interactor B" are arbitrary).
+#' \emph{Generated on Oct 28, 2019.}
+#'
+#' @format list containing 19059 vectors. Each vector is the set of gene symbols
+#' of interactors B for each interactor A.
+"mmu_string_adj_list"

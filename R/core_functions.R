@@ -422,19 +422,19 @@ fetch_gene_set <- function(gene_sets = "KEGG",
 
 #' Return The Path to Given Protein-Protein Interaction Network (PIN)
 #'
-#' This function returns the path/to/PIN.sif. While the default PINs are
-#' Biogrid, GeneMania, IntAct and KEGG, the user can choose to use any other PIN
-#' by specifying the path/to/PIN.sif. All PINs to be used in this workflow must
-#' have 3 columns with no header and be tab-separated. Columns 1 and 3 must be
-#' interacting proteins' HGNC gene symbols, column 2 must be a column with all
+#' This function returns the absolute path/to/PIN.sif. While the default PINs are
+#' "Biogrid", "GeneMania", "IntAct", "KEGG" and "mmu_STRING". The user can also
+#' use any other PIN by specifying the "path/to/PIN.sif". All PINs to be used
+#' in this package must formatted as SIF files: i.e. have 3 columns with no
+#' header, no row names and be tab-separated. Columns 1 and 3 must be
+#' interactors' gene symbols, column 2 must be a column with all
 #' rows consisting of "pp".
 #'
 #' @param pin_name_path Name of the chosen PIN or path/to/PIN.sif. If PIN name,
-#'   must be one of c("Biogrid", "GeneMania", "IntAct", "KEGG"). If
-#'   path/to/PIN.sif, the file must comply with the PIN specifications. Defaults
-#'   to "Biogrid".
+#'   must be one of c("Biogrid", "GeneMania", "IntAct", "KEGG", "mmu_STRING"). If
+#'   path/to/PIN.sif, the file must comply with the PIN specifications. (Default = "Biogrid")
 #'
-#' @return A character value that contains the path to chosen PIN.
+#' @return The absolute path to chosen PIN.
 #'
 #' @export
 #' @seealso See \code{\link{run_pathfindR}} for the wrapper function of the
@@ -445,7 +445,7 @@ fetch_gene_set <- function(gene_sets = "KEGG",
 return_pin_path <- function(pin_name_path = "Biogrid") {
 
   ## Default PINs
-  if (pin_name_path %in% c("Biogrid", "GeneMania", "IntAct", "KEGG")) {
+  if (pin_name_path %in% c("Biogrid", "GeneMania", "IntAct", "KEGG", "mmu_STRING")) {
 
     path <- file.path(tempdir(check = TRUE), paste0(pin_name_path, ".sif"))
     if (!file.exists(path)) {
@@ -455,8 +455,10 @@ return_pin_path <- function(pin_name_path = "Biogrid") {
         adj_list <- gene_mania_adj_list
       } else if (pin_name_path == "IntAct") {
         adj_list <- intact_adj_list
-      } else {
+      } else if (pin_path == "KEGG"){
         adj_list <- kegg_adj_list
+      } else {
+        adj_list <- mmu_string_adj_list
       }
       pin_df <- lapply(seq_along(adj_list),
                        function(i, nm, val) data.frame(base::toupper(nm[[i]]),
@@ -501,7 +503,7 @@ return_pin_path <- function(pin_name_path = "Biogrid") {
   } else {
     stop(paste0(
       "The chosen PIN must be one of:\n",
-      "Biogrid, GeneMania, IntAct, KEGG or a valid /path/to/SIF"
+      "Biogrid, GeneMania, IntAct, KEGG, mmu_STRING or a valid /path/to/SIF"
     ))
   }
   return(path)

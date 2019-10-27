@@ -45,9 +45,8 @@ custom  term. Names of the vector should correspond to the IDs of the custom
 terms.}
 
 \item{pin_name_path}{Name of the chosen PIN or path/to/PIN.sif. If PIN name,
-must be one of c("Biogrid", "GeneMania", "IntAct", "KEGG"). If
-path/to/PIN.sif, the file must comply with the PIN specifications. Defaults
-to "Biogrid".}
+must be one of c("Biogrid", "GeneMania", "IntAct", "KEGG", "mmu_STRING"). If
+path/to/PIN.sif, the file must comply with the PIN specifications. (Default = "Biogrid")}
 
 \item{p_val_threshold}{the p value threshold to use when filtering
 the input data frame. Must a numeric value between 0 and 1. (default = 0.05)}
