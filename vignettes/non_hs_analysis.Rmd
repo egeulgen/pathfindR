@@ -1,0 +1,214 @@
+---
+title: "pathfindR Analysis for non-Homo-sapiens organisms"
+author: "Ege Ulgen"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{pathfindR Analysis for non-Homo-sapiens organisms}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE,
+                      comment = "#>",
+                      fig.width = 7, fig.height = 7, fig.align = "center")
+suppressPackageStartupMessages(library(pathfindR))
+```
+
+As mentioned in the vignette [Introduction to pathfindR](intro_vignette.html), enrichment analysis with pathfindR is not limited to the built-in data. The users are able to utilize custom protein-protein interaction networks (PINs) as well as custom gene sets. These abilities to use custom data naturally allow for performing pathfindR analysis on non-Homo-sapiens input data. In this vignette, we'll try to provide an overview of how pathfindR analysis using Mus musculus data can be performed. 
+
+# Preparation of Necessary Data
+
+For performing non-human active-subnetwork-oriented enrichment analysis, the user needs the following resources:
+
+- organism-specific protein interaction network (PIN) data
+- organism-specific gene sets data
+
+After obtaining and processing these data for use, the user can run pathfindR using custom parameters.
+
+> Important Note: Because the non-human organism-specific PIN will likely contain less interactions than the Homo sapiens PIN, pathfindR may result in less (or even no) enriched terms!
+
+## Obtain Organism-specific Gene Sets 
+
+We first obtain the most up-to-date M.musculus (KEGG identifier: mmu) KEGG Gene Sets using the R package `KEGGREST`.
+
+> If using another organism, all you have to do is to replace "mmu" with the KEGG organism code in the related arguments in this vignette.
+
+```{r KEGG, eval=FALSE}
+library(KEGGREST)
+# Obtain list of M.musculus pathways
+mmu_kegg_descriptions <- keggList("pathway", "mmu")
+
+# Turn the identifiers of KEGGREST into KEGG-style pathway identifiers
+kegg_ids <- sub("path:", "", names(mmu_kegg_descriptions))
+
+# Obtain and parse genes per each pathway
+mmu_kegg_genes <- sapply(kegg_ids, function(pwid){
+  pw <- keggGet(pwid)
+  pw <- pw[[1]]$GENE[c(FALSE, TRUE)] # get gene symbols, not descriptions
+  pw <- sub(";.+", "", pw) # discard any remaining description
+  pw <- pw[grep("^[A-Za-z0-9_-]+(\\@)?$", pw)] # remove mistaken lines that cannot be gene symbols
+  pw <- unique(pw) # keep unique symbols
+  pw
+})
+
+## Filter list to exclude terms with 0 genes (metabolic pathways)
+mmu_kegg_genes <- mmu_kegg_genes[sapply(mmu_kegg_genes, length) != 0]
+
+## Form the custom descriptions vector
+names(mmu_kegg_descriptions) <- sub("path:", "", names(mmu_kegg_descriptions))
+mmu_kegg_descriptions <- sub(" - Mus musculus \\(mouse\\)", "", mmu_kegg_descriptions)
+mmu_kegg_descriptions <- mmu_kegg_descriptions[names(mmu_kegg_descriptions) %in% names(mmu_kegg_genes)]
+```
+
+The M.musculus KEGG pathway gene set data `mmu_kegg_genes` and `mmu_kegg_descriptions` are already provided in pathfindR. For other organisms, the user may wish to save the gene set objects as RDS files for future use:
+
+```{r KEGG_save, eval=FALSE}
+## Save both as RDS files for later use
+saveRDS(mmu_kegg_genes, "mmu_kegg_genes.RDS")
+saveRDS(mmu_kegg_descriptions, "mmu_kegg_descriptions.RDS")
+```
+
+These can be later loaded via:
+
+```{r KEGG_load, eval=FALSE}
+mmu_kegg_genes <- readRDS("mmu_kegg_genes.RDS")
+```
+
+## Obtain Organism-specific Protein-protein Interaction Network
+
+We recommend obtaining the organism-specific protein-protein interaction network (PIN) from [STRING](https://stringdb-static.org/cgi/download.pl). You may choose the organism of your choice and find the PIN on the downloads page with the description "protein network data (scored links between proteins)". When processing, we recommend filtering the interactions using a link score threshold (e.g. 400).
+
+Alternatively, you obtain the organism-specific PIN from [BioGRID](https://downloads.thebiogrid.org/BioGRID). Under "Current-Release", download `BIOGRID-ORGANISM-X.X.X.tab2.zip`. This contains PIN data for a large number of organisms. The data the user needs is named as `BIOGRID-ORGANISM-YOUR_ORGANISM-X.X.X.tab.txt` (e.g. BIOGRID-ORGANISM-Mus_musculus-3.5.169.tab.txt).
+
+> Note that BioGRID PINs are smaller for non-H.sapiens organisms and that this in turn results in less or no significantly enriched terms with pathfindR analysis.
+
+Regardless of the resource, the raw PIN data should be processed to a SIF file, each interactor should be specified with their gene symbols. The first 3 interactions from an example SIF file is provided below:
+
+|         |   |        |
+|:--------|:--|:-------|
+|C2cd2    |pp |Ints2   |
+|Apob     |pp |Gpt     |
+|B4galnt1 |pp |Mettl1  |
+
+Notice there are no headers and each line contains an interaction in the form `GeneA pp GeneB`, separated by tab (i.e. `\t`) with no row names and no column names.
+
+Below we download process the STRING PIN for use with pathfindR:
+
+```{r process_PIN1, eval=FALSE}
+## Downloading the STRING PIN file to tempdir
+url <- "https://stringdb-static.org/download/protein.links.v11.0/10090.protein.links.v11.0.txt.gz"
+path2file <- file.path(tempdir(check = TRUE), "STRING.txt.gz")
+download.file(url, path2file)
+
+## read STRING pin file
+mmu_string_df <- read.table(path2file, header = TRUE)
+
+## filter using combined_score cut-off value of 400
+mmu_string_df <- mmu_string_df[mmu_string_df$combined_score >= 400, ]
+
+## fix ids
+mmu_string_pin <- data.frame(Interactor_A = sub("^10090\\.", "", mmu_string_df$protein1),
+                             Interactor_B = sub("^10090\\.", "", mmu_string_df$protein2))
+head(mmu_string_pin, 2)
+```
+
+|Interactor_A       |Interactor_B       |
+|:------------------|:------------------|
+|ENSMUSP00000000001 |ENSMUSP00000113105 |
+|ENSMUSP00000000001 |ENSMUSP00000017460 |
+
+Since the interactors are Ensembl peptide IDs, we'll need to convert them to MGI symbols for use with pathfindR. This can be achieved via `biomaRt` or any other conversion method you prefer:
+
+```{r process_PIN2, eval=FALSE}
+library(biomaRt)
+mmu_ensembl <- useMart("ensembl", dataset = "mmusculus_gene_ensembl")
+converted <- getBM(attributes = c("ensembl_peptide_id", "mgi_symbol"),
+                   filters = "ensembl_peptide_id",
+                   values = unique(unlist(mmu_string_pin)),
+                   mart = mmu_ensembl)
+mmu_string_pin$Interactor_A <- converted$mgi_symbol[match(mmu_string_pin$Interactor_A, converted$ensembl_peptide_id)]
+mmu_string_pin$Interactor_B <- converted$mgi_symbol[match(mmu_string_pin$Interactor_B, converted$ensembl_peptide_id)]
+mmu_string_pin <- mmu_string_pin[!is.na(mmu_string_pin$Interactor_A) & !is.na(mmu_string_pin$Interactor_B), ]
+mmu_string_pin <- mmu_string_pin[mmu_string_pin$Interactor_A != "" & mmu_string_pin$Interactor_B != "", ]
+
+head(mmu_string_pin, 2)
+```
+
+| Interactor_A | Interactor_B |
+|:------------:|:------------:|
+|    Gnai3     |     Rerg     |
+|    Gnai3     |     Ppy      |
+
+Next, we remove self interactions and any duplicated interactions, format the data frame as SIF:
+
+```{r process_PIN3, eval=FALSE}
+# remove self interactions
+self_intr_cond <- mmu_string_pin$Interactor_A == mmu_string_pin$Interactor_B
+mmu_string_pin <- mmu_string_pin[!self_intr_cond, ]
+
+# remove duplicated inteactions (including symmetric ones)
+mmu_string_pin <- unique(t(apply(mmu_string_pin, 1, sort))) # this will return a matrix object
+
+mmu_string_pin <- data.frame(A = mmu_string_pin[, 1],
+                             pp = "pp",
+                             B = mmu_string_pin[, 2])
+```
+
+Finally we save the gene symbol PIN as a SIF file named "mmusculusPIN.sif" under the temporary directory (i.e. `tempdir()`):
+
+```{r process_PIN4, eval=FALSE}
+path2SIF <- file.path(tempdir(), "mmusculusPIN.sif")
+write.table(mmu_string_pin,
+            file = path2SIF,
+            col.names = FALSE,
+            row.names = FALSE,
+            sep = "\t")
+path2SIF <- normalizePath(path2SIF)
+```
+
+We'll use this path to the custom sif for analysis with `run_pathfindR()`.
+
+>The STRING Mus musculus PIN created above is available in pathfindR and can be used via setting `pin_name_path = "mmu_STRING"` in `run_pathfindR()`.
+
+# Running pathfindR on non-Homo sapiens data
+
+## Input Data
+
+The data used in this vignette (`myeloma_input`) is the data frame of differentially-expressed genes along for the GEO dataset [GSE99393](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE99393). The RNA microarray experiment was perform to detail the global programme of gene expression underlying polarization of myeloma-associated macrophages by CSF1R antibody treatment. The samples are 6 murine bone marrow derived macrophages cocultured with myeloma cells (myeloma-associated macrophages), 3 of which were treated with CSF1R antibody (treatment group) and the rest were treated with control IgG antibody (control group). In `myeloma_input`, 45 differentially-expressed genes with |logFC| >= 2 and FDR < 0.05 are presented.
+
+```{r mmu_input_df}
+knitr::kable(head(myeloma_input))
+```
+
+
+## Executing `run_pathfindR()`
+
+After obtaining the necessary PIN and gene sets data, you can then perform pathfindR analysis by setting these arguments:
+- `convert2alias = FALSE`: alias conversion only works on H.sapiens genes
+- `pin_name_path = path2SIF`: as we're using a non-built-in PIN, we need to provide the path to the mmu sif file
+- `gene_sets = "Custom`: as we're using a non-built-in source for gene sets
+- `custom_genes = mmu_kegg_genes`
+- `custom_descriptions = mmu_kegg_descriptions`
+
+```{r run, eval=FALSE}
+myeloma_output <- run_pathfindR(input = myeloma_input,
+                                convert2alias = FALSE,
+                                gene_sets = "Custom",
+                                custom_genes = mmu_kegg_genes,
+                                custom_descriptions = mmu_kegg_descriptions,
+                                pin_name_path = path2SIF)
+```
+
+```{r enr_chart, echo=FALSE}
+enrichment_chart(myeloma_output)
+```
+
+```{r output}
+knitr::kable(myeloma_output)
+```
+
+Because we used a very strict cut-off (logFC > 2 + FDR < 0.05), there were only 9 enriched KEGG pathways. However, the pathways identified here significantly related to the pathways identified in the original publication by Wang et al.[^1].
+
+[^1]: Wang Q, Lu Y, Li R, et al. Therapeutic effects of CSF1R-blocking antibodies in multiple myeloma. Leukemia. 2018;32(1):176-183.
