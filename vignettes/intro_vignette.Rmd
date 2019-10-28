@@ -55,7 +55,7 @@ output_df <- run_pathfindR(input_df)
 
 ## Useful arguments
 
-This subsection demonstrates some (selected) useful arguments of `run_pathfindR()`. For a full list of arguments, see `?run_pathfindR` or visit [out GitHub wiki](https://github.com/egeulgen/pathfindR/wiki).
+This subsection demonstrates some (selected) useful arguments of `run_pathfindR()`. For a full list of arguments, see `?run_pathfindR` or visit [our GitHub wiki](https://github.com/egeulgen/pathfindR/wiki).
 
 ### Filtering Input Genes
 
@@ -184,7 +184,7 @@ enrichment_chart(RA_output)
 
 You may also disable plotting this chart by setting `plot_enrichment_chart=FALSE` and later produce this plot via the function `enrichment_chart()`:
 
-```{r encrichment_plot_shown, eval=TRUE, echo=FALSE}
+```{r encrichment_plot_shown, eval=FALSE}
 # change number of top terms plotted (default = 10)
 enrichment_chart(result_df = RA_output, 
                  top_terms = 15)
@@ -359,7 +359,7 @@ knitr::kable(custom_result)
 knitr::kable(custom_result)
 ```
 
-> It is also possible to run pathfindR using non-human organism annotation. For this, `convert2alias` must be set to `FALSE`, the custom gene set objects AND the path to a custom PIN file belonging to the species of interest must be specified.
+> It is also possible to run pathfindR using non-human organism annotation. See the vignette [pathfindR Analysis for non-Homo-sapiens organisms](non_hs_analysis.html)
 
 
 [^1]: Huang DW, Sherman BT, Tan Q, et al. The DAVID Gene Functional Classification Tool: a novel biological module-centric algorithm to functionally analyze large gene lists. Genome Biol. 2007;8(9):R183.
