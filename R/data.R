@@ -17,8 +17,31 @@
 #' }
 #' @source \url{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE99393}
 #'
-#' @seealso \code{\link{run_pathfindR}} for details on the patfindR enrichment analysis.
+#' @seealso  \code{\link{myeloma_output}} for the example mmu enrichment output.
+#' \code{\link{run_pathfindR}} for details on the patfindR enrichment analysis.
 "myeloma_input"
+
+#' Example Output for Mus Musculus Analysis (Myeloma)
+#'
+#' A dataset containing the results of pathfindR's active-subnetwork-oriented
+#' enrichment workflow performed on the Mus musculus myeloma
+#' differential-expression dataset \code{myeloma_input}.
+#' \emph{Generated on Oct 28, 2019.}
+#'
+#' @format A data frame with 9 rows and 8 columns:
+#' \describe{
+#'   \item{ID}{ID of the enriched term}
+#'   \item{Term_Description}{Description of the enriched term}
+#'   \item{Fold_Enrichment}{Fold enrichment value for the enriched term}
+#'   \item{occurrence}{the number of iterations that the given term was found to enriched over all iterations}
+#'   \item{lowest_p}{the lowest adjusted-p value of the given term over all iterations}
+#'   \item{highest_p}{the highest adjusted-p value of the given term over all iterations}
+#'   \item{Up_regulated}{the up-regulated genes in the input involved in the given term, comma-separated}
+#'   \item{Down_regulated}{the down-regulated genes in the input involved in the given term, comma-separated}
+#' }
+#' @seealso \code{\link{myeloma_input}} for the example mmu input.
+#' \code{\link{run_pathfindR}} for details on the patfindR enrichment workflow.
+"myeloma_output"
 
 #' Example Input for pathfindR - Enriched Term Scoring
 #'
@@ -57,7 +80,7 @@
 #'
 #' A dataset containing the results of pathfindR's active-subnetwork-oriented
 #' enrichment workflow performed on the rheumatoid arthritis
-#' differential-expression result dataset \code{RA_input}. Analysis via
+#' differential-expression dataset \code{RA_input}. Analysis via
 #' \code{run_pathfindR} was performed using the default settings.
 #' \emph{Generated on Oct 22, 2019.}
 #'
@@ -72,8 +95,8 @@
 #'   \item{Up_regulated}{the up-regulated genes in the input involved in the given term, comma-separated}
 #'   \item{Down_regulated}{the down-regulated genes in the input involved in the given term, comma-separated}
 #' }
-#' @seealso \code{\link{RA_input}} for example input of the enrichment workflow.
-#' \code{\link{RA_clustered}} for example output of the clustering workflow.
+#' @seealso \code{\link{RA_input}} for the example input of the enrichment workflow.
+#' \code{\link{RA_clustered}} for the example output of the clustering workflow.
 #' \code{\link{run_pathfindR}} for details on the patfindR enrichment workflow.
 "RA_output"
 

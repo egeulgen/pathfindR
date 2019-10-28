@@ -27,6 +27,7 @@ with |logFC| >= 2 and FDR < 0.05 are presented.
 \emph{Generated on Oct 28, 2019.}
 }
 \seealso{
+\code{\link{myeloma_output}} for the example mmu enrichment output.
 \code{\link{run_pathfindR}} for details on the patfindR enrichment analysis.
 }
 \keyword{datasets}
