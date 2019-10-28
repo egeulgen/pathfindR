@@ -455,7 +455,7 @@ return_pin_path <- function(pin_name_path = "Biogrid") {
         adj_list <- gene_mania_adj_list
       } else if (pin_name_path == "IntAct") {
         adj_list <- intact_adj_list
-      } else if (pin_path == "KEGG"){
+      } else if (pin_name_path == "KEGG"){
         adj_list <- kegg_adj_list
       } else {
         adj_list <- mmu_string_adj_list
@@ -477,10 +477,8 @@ return_pin_path <- function(pin_name_path = "Biogrid") {
     ## Custom PIN
   } else if (file.exists(suppressWarnings(normalizePath(pin_name_path)))) {
     path <- normalizePath(pin_name_path)
-    pin <- utils::read.delim(
-      file = path,
-      header = FALSE, stringsAsFactors = FALSE
-    )
+    pin <- utils::read.delim(file = path,
+                             header = FALSE, stringsAsFactors = FALSE)
     if (ncol(pin) != 3) {
       stop("The PIN file must have 3 columns and be tab-separated")
     }
@@ -639,10 +637,8 @@ input_processing <- function(input, p_val_threshold,
   }
 
   ## load and prep pin
-  pin <- utils::read.delim(
-    file = pin_path,
-    header = FALSE, stringsAsFactors = FALSE
-  )
+  pin <- utils::read.delim(file = pin_path,
+                           header = FALSE, stringsAsFactors = FALSE)
 
   ## Genes not in pin
   PIN_genes <- c(base::toupper(pin[, 1]), base::toupper(pin[, 3]))
