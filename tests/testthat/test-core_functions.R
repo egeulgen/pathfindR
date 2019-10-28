@@ -203,6 +203,7 @@ test_that("`return_pin_path()` returns the absolute path to PIN file", {
   expect_true(file.exists(return_pin_path("GeneMania")))
   expect_true(file.exists(return_pin_path("IntAct")))
   expect_true(file.exists(return_pin_path("KEGG")))
+  expect_true(file.exists(return_pin_path("mmu_STRING")))
 
   # custom PIN
   custom_sif_path <- file.path(tempdir(check = TRUE), "custom.sif")
@@ -227,7 +228,7 @@ test_that("`return_pin_path()` returns the absolute path to PIN file", {
   # invalid option
   expect_error(return_pin_path("WRONG"),
                paste0("The chosen PIN must be one of:\n",
-                      "Biogrid, GeneMania, IntAct, KEGG or a valid /path/to/SIF"))
+                      "Biogrid, GeneMania, IntAct, KEGG, mmu_STRING or a valid /path/to/SIF"))
 })
 
 # input_testing -----------------------------------------------------------
