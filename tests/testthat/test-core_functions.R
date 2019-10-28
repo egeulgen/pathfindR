@@ -2,7 +2,7 @@
 ## Project: pathfindR
 ## Script purpose: Testthat testing script for
 ## core functions
-## Date: Oct 21, 2019
+## Date: Oct 28, 2019
 ## Author: Ege Ulgen
 ##################################################
 
@@ -64,7 +64,7 @@ test_that("`run_pathfindR()` arg checks work", {
 
   all_gs_opts <- c("KEGG", "Reactome", "BioCarta",
                    "GO-All", "GO-BP", "GO-CC", "GO-MF",
-                   "Custom")
+                   "mmu_KEGG", "Custom")
   expect_error(run_pathfindR(RA_input, gene_sets = "WRONG"),
                paste0("`gene_sets` should be one of ", paste(dQuote(all_gs_opts), collapse = ", ")))
 
@@ -79,6 +79,17 @@ test_that("`run_pathfindR()` arg checks work", {
 test_that("`fetch_gene_set()` can fetch all gene set objects", {
   ###### KEGG
   expect_is(gset_obj <- fetch_gene_set(gene_sets = "KEGG",
+                                       min_gset_size = 10,
+                                       max_gset_size = 300),
+            "list")
+  expect_is(gset_obj$genes_by_term, "list")
+  expect_is(gset_obj$term_descriptions, "character")
+  expect_true(length(gset_obj$genes_by_term) == length(gset_obj$term_descriptions))
+  tmp <- vapply(gset_obj$genes_by_term, length, 1L)
+  expect_true(min(tmp) >= 10 & max(tmp) <= 300)
+
+  ###### mmu KEGG
+  expect_is(gset_obj <- fetch_gene_set(gene_sets = "mmu_KEGG",
                                        min_gset_size = 10,
                                        max_gset_size = 300),
             "list")
@@ -226,9 +237,10 @@ test_that("`return_pin_path()` returns the absolute path to PIN file", {
                "The second column of the PIN file must all be \"pp\" ")
 
   # invalid option
+  valid_opts <- c("Biogrid", "GeneMania", "IntAct", "KEGG", "mmu_STRING", "/path/to/custom/SIF")
   expect_error(return_pin_path("WRONG"),
                paste0("The chosen PIN must be one of:\n",
-                      "Biogrid, GeneMania, IntAct, KEGG, mmu_STRING or a valid /path/to/SIF"))
+                      paste(dQuote(valid_opts), collapse = ", ")))
 })
 
 # input_testing -----------------------------------------------------------

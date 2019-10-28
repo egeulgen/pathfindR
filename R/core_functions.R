@@ -352,7 +352,7 @@ fetch_gene_set <- function(gene_sets = "KEGG",
   # parse gene_sets argument
   all_gs_opts <- c("KEGG", "Reactome", "BioCarta",
                    "GO-All", "GO-BP", "GO-CC", "GO-MF",
-                   "Custom")
+                   "mmu_KEGG", "Custom")
   if (!gene_sets %in% all_gs_opts) {
     stop("`gene_sets` should be one of ", paste(dQuote(all_gs_opts), collapse = ", "))
   }
@@ -396,7 +396,7 @@ fetch_gene_set <- function(gene_sets = "KEGG",
       term_descriptions <- term_descriptions[tmp]
     }
 
-    ## non-GO (KEGG, Reactome, BioCarta)
+    ## non-GO (KEGG, Reactome, BioCarta, mmu_KEGG)
   } else {
     if (gene_sets == "KEGG") {
       genes_by_term <- pathfindR::kegg_genes
@@ -404,9 +404,12 @@ fetch_gene_set <- function(gene_sets = "KEGG",
     } else if (gene_sets == "Reactome") {
       genes_by_term <- pathfindR::reactome_genes
       term_descriptions <- pathfindR::reactome_descriptions
-    } else {
+    } else if(gene_sets == "Biocarta"){
       genes_by_term <- pathfindR::biocarta_genes
       term_descriptions <- pathfindR::biocarta_descriptions
+    } else {
+      genes_by_term <- pathfindR::mmu_kegg_genes
+      term_descriptions <- pathfindR::mmu_kegg_descriptions
     }
   }
 
@@ -445,7 +448,8 @@ fetch_gene_set <- function(gene_sets = "KEGG",
 return_pin_path <- function(pin_name_path = "Biogrid") {
 
   ## Default PINs
-  if (pin_name_path %in% c("Biogrid", "GeneMania", "IntAct", "KEGG", "mmu_STRING")) {
+  valid_opts <- c("Biogrid", "GeneMania", "IntAct", "KEGG", "mmu_STRING", "/path/to/custom/SIF")
+  if (pin_name_path %in% valid_opts[-length(valid_opts)]) {
 
     path <- file.path(tempdir(check = TRUE), paste0(pin_name_path, ".sif"))
     if (!file.exists(path)) {
@@ -499,10 +503,8 @@ return_pin_path <- function(pin_name_path = "Biogrid") {
       path <- normalizePath(path)
     }
   } else {
-    stop(paste0(
-      "The chosen PIN must be one of:\n",
-      "Biogrid, GeneMania, IntAct, KEGG, mmu_STRING or a valid /path/to/SIF"
-    ))
+    stop("The chosen PIN must be one of:\n",
+         paste(dQuote(valid_opts), collapse = ", "))
   }
   return(path)
 }
