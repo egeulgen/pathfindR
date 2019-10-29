@@ -20,7 +20,17 @@
 #' hyperg_test(letters[1:5], letters[2:13], letters)
 hyperg_test <- function(term_genes, chosen_genes, background_genes) {
 
-  # sanity checks
+  #### Argument checks
+  if (!is.vector(term_genes)) {
+    stop("`term_genes` should be a vector")
+  }
+  if (!is.vector(chosen_genes)) {
+    stop("`chosen_genes` should be a vector")
+  }
+  if(!is.vector(background_genes)) {
+    stop("`background_genes` should be a vector")
+  }
+
   if (length(term_genes) > length(background_genes)) {
     stop("`term_genes` cannot be larger than `background_genes`!")
   }
@@ -28,6 +38,7 @@ hyperg_test <- function(term_genes, chosen_genes, background_genes) {
     stop("`chosen_genes` cannot be larger than `background_genes`!")
   }
 
+  #### Calculate p value
   term_genes_selected <- sum(chosen_genes %in% term_genes)
   term_genes_in_pool <- sum(term_genes %in% background_genes)
   tot_genes_in_pool <- length(background_genes)
@@ -79,7 +90,51 @@ enrichment <- function(input_genes,
                        sig_genes_vec,
                        background_genes) {
 
-  ## Hypergeometric test for p value
+  #### Argument checks
+  ## input genes
+  if (!is.vector(input_genes)) {
+    stop("`input_genes` should be a vector of gene symbols")
+  }
+
+  ## gene set data
+  if (!is.list(genes_by_term)) {
+    stop("`genes_by_term` should be a list of term gene sets")
+  }
+  if (is.null(names(genes_by_term))) {
+    stop("`genes_by_term` should be a named list (names are gene set IDs)")
+  }
+
+  if (!is.vector(term_descriptions)) {
+    stop("`term_descriptions` should be a vector of term gene descriptions")
+  }
+  if (is.null(names(term_descriptions))) {
+    stop("`term_descriptions` should be a named vector (names are gene set IDs)")
+  }
+
+  if (length(genes_by_term) != length(term_descriptions)) {
+    stop("The lengths of `genes_by_term` and `term_descriptions` should be the same")
+  }
+  if (any(names(genes_by_term) != names(term_descriptions))) {
+    stop("The names of `genes_by_term` and `term_descriptions` should all be the same")
+  }
+
+  ## enrichment threshold
+  if (!is.numeric(enrichment_threshold)) {
+    stop("`enrichment_threshold` should be a numeric value between 0 and 1")
+  }
+  if (enrichment_threshold < 0 | enrichment_threshold > 1) {
+    stop("`enrichment_threshold` should be between 0 and 1")
+  }
+
+  ## signif. genes and background (universal set) genes
+  if (!is.vector(sig_genes_vec)) {
+    stop("`sig_genes_vec` should be a vector")
+  }
+  if (!is.vector(background_genes)) {
+    stop("`background_genes` should be a vector")
+  }
+
+  #### Hypergeometric test for p value
   enrichment_res <- vapply(genes_by_term, pathfindR::hyperg_test, 0.1,
                            input_genes, background_genes)
   enrichment_res <- as.data.frame(enrichment_res)
@@ -173,13 +228,15 @@ enrichment_analyses <- function(snws,
                                 enrichment_threshold = 5e-2,
                                 list_active_snw_genes = FALSE) {
 
-  pin_path <- return_pin_path(pin_name_path)
+  ### Argument checks
+  if (!is.logical(list_active_snw_genes)) {
+    stop("`list_active_snw_genes` should be either TRUE or FALSE")
+  }
 
   ### Load PIN Data
-  pin <- utils::read.delim(
-    file = pin_path, header = FALSE,
-    stringsAsFactors = FALSE
-  )
+  pin_path <- return_pin_path(pin_name_path)
+  pin <- utils::read.delim(file = pin_path, header = FALSE,
+                           stringsAsFactors = FALSE)
 
   background_genes <- unique(c(pin[, 1], pin[, 3]))
 

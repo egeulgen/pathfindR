@@ -106,26 +106,58 @@ run_pathfindR <- function(input,
                           output_dir = "pathfindR_Results",
                           list_active_snw_genes = FALSE,
                           silent_option = TRUE) {
+
+  # calculate the number of processes, if necessary
+  if (is.null(n_processes))
+    n_processes <- parallel::detectCores() - 1
+
   ############ Argument checks
   # Active Subnetwork Search
-  if (!search_method %in% c("GR", "SA", "GA")) {
-    stop("`search_method` must be one of \"GR\", \"SA\", \"GA\"")
+  valid_mets <- c("GR", "SA", "GA")
+
+  if (!search_method %in% valid_mets) {
+    stop("`search_method` should be one of ",
+         paste(dQuote(valid_mets), collapse = ", "))
   }
 
   if (!is.logical(use_all_positives)) {
-    stop("the argument `use_all_positives` must be either TRUE or FALSE")
+    stop("`use_all_positives` should be either TRUE or FALSE")
   }
 
   if (!is.logical(silent_option)) {
-    stop("the argument `silent_option` must be either TRUE or FALSE")
+    stop("`silent_option` should be either TRUE or FALSE")
   }
 
-  # Enrichment chart option
+  if (!is.logical(visualize_enriched_terms)) {
+    stop("`visualize_enriched_terms` should be either TRUE or FALSE")
+  }
+
+  if (!is.logical(convert2alias)) {
+    stop("`convert2alias` should be either TRUE or FALSE")
+  }
+
   if (!is.logical(plot_enrichment_chart)) {
-    stop("the argument `plot_enrichment_chart` must be either TRUE or FALSE")
+    stop("`plot_enrichment_chart` should be either TRUE or FALSE")
   }
 
-  # Gene Sets
+  if (!is.numeric(iterations)) {
+    stop("`iterations` should be a positive integer")
+  }
+  if (iterations < 1) {
+    stop("`iterations` should be > 1")
+  }
+
+  if (!is.null(n_processes)){
+    if (!is.numeric(n_processes)) {
+      stop("`n_processes` should be either NULL or a positive integer")
+    }
+    if (n_processes < 1) {
+      stop("`n_processes` should be > 1")
+    }
+  }
+
+  ############ Initial Steps
+  ## Gene Sets
   gset_list <- pathfindR::fetch_gene_set(gene_sets = gene_sets,
                                          min_gset_size = min_gset_size,
                                          max_gset_size = max_gset_size,
@@ -134,7 +166,6 @@ run_pathfindR <- function(input,
   genes_by_term <- gset_list$genes_by_term
   term_descriptions <- gset_list$term_descriptions
 
-  ############ Initial Steps
   ## absolute path to PIN
   pin_path <- return_pin_path(pin_name_path)
 
@@ -171,12 +202,12 @@ run_pathfindR <- function(input,
 
   ## If search_method is GA, set iterations as 1
   if (search_method == "GA") {
-    iterations <- n_processes <- 1
+    iterations <- 1
   }
 
-  ## If iterations == 1, set n_processes to 1
-  if (iterations == 1) {
-    n_processes <- 1
+  ## If iterations < n_processes, set n_processes to iterations
+  if (iterations < n_processes ) {
+    n_processes <- iterations
   }
 
   ## Set initial probabilities
@@ -196,10 +227,6 @@ run_pathfindR <- function(input,
   ############ Active Subnetwork Search and Enrichment
   ## Prep for parallel run
   message("## Performing Active Subnetwork Search and Enrichment")
-  # calculate the number of cores, if necessary
-  if (is.null(n_processes)) {
-    n_processes <- parallel::detectCores() - 1
-  }
   # Initiate the clusters
   cl <- parallel::makeCluster(n_processes)
   doParallel::registerDoParallel(cl)
