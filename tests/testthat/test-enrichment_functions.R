@@ -2,12 +2,12 @@
 ## Project: pathfindR
 ## Script purpose: Testthat testing script for
 ## enrichment-related functions
-## Date: Oct 20, 2019
+## Date: Oct 30, 2019
 ## Author: Ege Ulgen
 ##################################################
 
 # hyperg_test -------------------------------------------------------------
-test_that("`hyperg_test` returns a p value", {
+test_that("`hyperg_test()` returns a p value", {
   expect_is(tmp_p <- hyperg_test(term_genes = LETTERS[1:10],
                                  chosen_genes = LETTERS[2:5],
                                  background_genes = LETTERS),
@@ -22,17 +22,28 @@ test_that("`hyperg_test` returns a p value", {
   expect_true(tmp_p2 > tmp_p)
 })
 
-test_that("`hyperg_test` arg checks work", {
+test_that("`hyperg_test()` arg checks work", {
+  expect_error(hyperg_test(term_genes = list()),
+               "`term_genes` should be a vector")
+
+  expect_error(hyperg_test(term_genes = LETTERS,
+                           chosen_genes = list()),
+               "`term_genes` should be a vector")
+
+  expect_error(hyperg_test(term_genes = LETTERS,
+                           chosen_genes = LETTERS[1:2],
+                           background_genes = list()),
+               "`background_genes` should be a vector")
+
   expect_error(hyperg_test(term_genes = c(LETTERS, LETTERS),
                            chosen_genes = LETTERS[1:3],
                            background_genes = LETTERS),
-               "`term_genes` cannot be larger than `background_genes`!"
-  )
+               "`term_genes` cannot be larger than `background_genes`!")
+
   expect_error(hyperg_test(term_genes = LETTERS[1:10],
                            chosen_genes = c(LETTERS, LETTERS),
                            background_genes = LETTERS),
-               "`chosen_genes` cannot be larger than `background_genes`!"
-  )
+               "`chosen_genes` cannot be larger than `background_genes`!")
 })
 
 # enrichment --------------------------------------------------------------
@@ -41,11 +52,10 @@ tmp_gset <- tmp_gset_obj$genes_by_term
 tmp_gset_descriptions <- tmp_gset_obj$term_descriptions
 tmp_gset_genes <- unlist(tmp_gset)
 
-test_that("`enrichment` returns a data frame", {
+tmp_input_genes <- sample(unlist(tmp_gset[1:3]), 100)
+tmp_sig_vec <- c(sample(tmp_input_genes, 100), sample(unlist(tmp_gset), 400))
 
-  tmp_input_genes <- sample(unlist(tmp_gset[1:3]), 100)
-  tmp_sig_vec <- c(sample(tmp_input_genes, 100), sample(unlist(tmp_gset), 400))
-
+test_that("`enrichment()` returns a data frame", {
   # default
   expect_is(tmp1 <- enrichment(input_genes = tmp_input_genes,
                                genes_by_term = tmp_gset,
@@ -78,12 +88,80 @@ test_that("`enrichment` returns a data frame", {
                          background_genes = tmp_gset_genes))
 })
 
+test_that("`enrichment()` arg checks work", {
+  ## input genes
+  expect_error(enrichment(input_genes = list(),
+                          sig_genes_vec = "PER1",
+                          background_genes = unlist(kegg_genes)),
+               "`input_genes` should be a vector of gene symbols")
+
+  ## gene sets data
+  expect_error(enrichment(input_genes = tmp_input_genes,
+                          genes_by_term = "INVALID",
+                          sig_genes_vec = tmp_sig_vec,
+                          background_genes = unlist(kegg_genes)),
+               "`genes_by_term` should be a list of term gene sets")
+  expect_error(enrichment(input_genes = tmp_input_genes,
+                          genes_by_term = list(1:3),
+                          sig_genes_vec = tmp_sig_vec,
+                          background_genes = unlist(kegg_genes)),
+               "`genes_by_term` should be a named list \\(names are gene set IDs\\)")
+
+  expect_error(enrichment(input_genes = tmp_input_genes,
+                          term_descriptions = list(),
+                          sig_genes_vec = tmp_sig_vec,
+                          background_genes = unlist(kegg_genes)),
+               "`term_descriptions` should be a vector of term gene descriptions")
+  expect_error(enrichment(input_genes = tmp_input_genes,
+                          term_descriptions = 1:3,
+                          sig_genes_vec = tmp_sig_vec,
+                          background_genes = unlist(kegg_genes)),
+               "`term_descriptions` should be a named vector \\(names are gene set IDs\\)")
+
+  expect_error(enrichment(input_genes = tmp_input_genes,
+                          genes_by_term = list(A = 1:3),
+                          term_descriptions = c(A = "a", B = "b"),
+                          sig_genes_vec = tmp_sig_vec,
+                          background_genes = unlist(kegg_genes)),
+               "The lengths of `genes_by_term` and `term_descriptions` should be the same")
+  expect_error(enrichment(input_genes = tmp_input_genes,
+                          genes_by_term = list(A = 1:3, X = 1:3),
+                          term_descriptions = c(A = "a", B = "b"),
+                          sig_genes_vec = tmp_sig_vec,
+                          background_genes = unlist(kegg_genes)),
+               "The names of `genes_by_term` and `term_descriptions` should all be the same")
+
+  ## enrichment threshold
+  expect_error(enrichment(input_genes = tmp_input_genes,
+                          sig_genes_vec = tmp_sig_vec,
+                          background_genes = unlist(kegg_genes),
+                          enrichment_threshold = "INVALID"),
+               "`enrichment_threshold` should be a numeric value between 0 and 1")
+
+  expect_error(enrichment(input_genes = tmp_input_genes,
+                          sig_genes_vec = tmp_sig_vec,
+                          background_genes = unlist(kegg_genes),
+                          enrichment_threshold = -1),
+               "`enrichment_threshold` should be between 0 and 1")
+
+  ## signif. genes and background (universal set) genes
+  expect_error(enrichment(input_genes = tmp_input_genes,
+                          sig_genes_vec = list(),
+                          background_genes = unlist(kegg_genes)),
+               "`sig_genes_vec` should be a vector")
+  expect_error(enrichment(input_genes = tmp_input_genes,
+                          sig_genes_vec = tmp_sig_vec,
+                          background_genes = list()),
+               "`background_genes` should be a vector")
+})
+
+
 # enrichment_analyses -----------------------------------------------------
 tmp <- fetch_gene_set()
 tmp_gset_genes <- tmp$genes_by_term
 tmp_gset_desc <- tmp$term_descriptions
 
-test_that("enrichment function returns a data frame", {
+test_that("`enrichment_analyses()` returns a data frame", {
 
   # default
   expect_is(tmp1 <- enrichment_analyses(snws = example_active_snws[1:3],
@@ -109,26 +187,75 @@ test_that("enrichment function returns a data frame", {
   expect_true(ncol(tmp2) == ncol(tmp1) + 1)
 })
 
-# summarize_enrichment_results --------------------------------------------
-enr_res <- enrichment_analyses(snws = example_active_snws[1:10],
-                               sig_genes_vec = RA_input$Gene.symbol,
-                               pin_name_path = "Biogrid",
-                               genes_by_term = tmp_gset_genes,
-                               term_descriptions = tmp_gset_desc,
-                               adj_method = "bonferroni",
-                               enrichment_threshold = 0.05,
-                               list_active_snw_genes = TRUE)
+test_that("`enrichment_analyses()` arg check works", {
+  expect_error(enrichment_analyses(snws = example_active_snws,
+                                   list_active_snw_genes = "INVALID"),
+               "`list_active_snw_genes` should be either TRUE or FALSE")
+})
 
-test_that("summarize_enrichment_results function returns a data frame", {
+# summarize_enrichment_results --------------------------------------------
+iter1_res <- enrichment_analyses(snws = example_active_snws[1:5],
+                                 sig_genes_vec = RA_input$Gene.symbol,
+                                 genes_by_term = tmp_gset_genes,
+                                 term_descriptions = tmp_gset_desc,
+                                 list_active_snw_genes = TRUE)
+
+iter2_res <- enrichment_analyses(snws = example_active_snws[11:16],
+                                 sig_genes_vec = RA_input$Gene.symbol,
+                                 genes_by_term = tmp_gset_genes,
+                                 term_descriptions = tmp_gset_desc,
+                                 list_active_snw_genes = TRUE)
+combined_res <- rbind(iter1_res, iter2_res)
+
+test_that("`summarize_enrichment_results()` returns summarized enrichment results", {
   # default
-  expect_is(tmp <- summarize_enrichment_results(enrichment_res = enr_res),
+  expect_is(tmp <- summarize_enrichment_results(enrichment_res = combined_res),
             "data.frame")
   expect_equal(ncol(tmp), 6)
-  expect_false("non_DEG_Active_Snw_Genes" %in% colnames(tmp))
+  expect_false("non_Signif_Snw_Genes" %in% colnames(tmp))
+  expect_true(nrow(tmp) <= nrow(combined_res))
 
   # list active snw genes
-  expect_is(tmp <- summarize_enrichment_results(enr_res, TRUE), "data.frame")
+  expect_is(tmp <- summarize_enrichment_results(enrichment_res = combined_res,
+                                                list_active_snw_genes = TRUE),
+            "data.frame")
   expect_equal(ncol(tmp), 7)
-  expect_true("non_DEG_Active_Snw_Genes" %in% colnames(tmp))
-  expect_true(nrow(tmp) <= nrow(enr_res))
+  expect_true("non_Signif_Snw_Genes" %in% colnames(tmp))
+  expect_true(nrow(tmp) <= nrow(combined_res))
+})
+
+test_that("summarize_enrichment_results() arg checks work", {
+  expect_error(summarize_enrichment_results(enrichment_res = combined_res,
+                                            list_active_snw_genes = "INVALID"),
+               "`list_active_snw_genes` should be either TRUE or FALSE")
+
+  expect_error(summarize_enrichment_results(enrichment_res = list()),
+               "`enrichment_res` should be a data frame")
+
+  # list_active_snw_genes = FALSE
+  nec_cols <- c("ID", "Term_Description", "Fold_Enrichment", "p_value", "adj_p")
+
+  expect_error(summarize_enrichment_results(enrichment_res = data.frame()),
+               paste0("`enrichment_res` should have exactly ", length(nec_cols), " columns"))
+
+  tmp <- as.data.frame(matrix(nrow = 1, ncol = length(nec_cols),
+                              dimnames = list(NULL, letters[1:length(nec_cols)])))
+  expect_error(summarize_enrichment_results(enrichment_res = tmp),
+               paste0("`enrichment_res` should have column names ",
+                      paste(dQuote(nec_cols), collapse = ", ")))
+
+  # list_active_snw_genes = TRUE
+  nec_cols <- c("ID", "Term_Description", "Fold_Enrichment", "p_value", "adj_p",
+                "non_Signif_Snw_Genes")
+
+  expect_error(summarize_enrichment_results(enrichment_res = data.frame(),
+                                            list_active_snw_genes = TRUE),
+               paste0("`enrichment_res` should have exactly ", length(nec_cols), " columns"))
+
+  tmp <- as.data.frame(matrix(nrow = 1, ncol = length(nec_cols),
+                              dimnames = list(NULL, letters[1:length(nec_cols)])))
+  expect_error(summarize_enrichment_results(enrichment_res = tmp,
+                                            list_active_snw_genes = TRUE),
+               paste0("`enrichment_res` should have column names ",
+                      paste(dQuote(nec_cols), collapse = ", ")))
 })

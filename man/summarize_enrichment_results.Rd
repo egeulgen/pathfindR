@@ -19,7 +19,7 @@ summarize_enrichment_results(enrichment_res,
 
 \item{list_active_snw_genes}{boolean value indicating whether or not to report
 the non-significant active subnetwork genes for the active subnetwork which was enriched for
-the given term with the lowest p value (default = FALSE)}
+the given term with the lowest p value (default = \code{FALSE})}
 }
 \value{
 a dataframe of summarized enrichment results (over multiple iterations). Columns are: \describe{

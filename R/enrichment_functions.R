@@ -2,8 +2,8 @@
 #'
 #' @param term_genes vector of genes in the selected term gene set
 #' @param chosen_genes vector containing the set of input genes
-#' @param background_genes vector of background genes (i.e. all genes in
-#' the experiment)
+#' @param background_genes vector of background genes (i.e. universal set of
+#' genes in the experiment)
 #'
 #' @return the p-value as determined using the hypergeometric distribution.
 #'
@@ -215,7 +215,7 @@ enrichment_analyses <- function(snws,
                                 enrichment_threshold = 0.05,
                                 list_active_snw_genes = FALSE) {
 
-  ### Argument checks
+  ### Argument check
   if (!is.logical(list_active_snw_genes)) {
     stop("`list_active_snw_genes` should be either TRUE or FALSE")
   }
@@ -271,9 +271,7 @@ enrichment_analyses <- function(snws,
 #'   \item{adj_p}{adjusted p value of enrichment}
 #'   \item{non_Signif_Snw_Genes (OPTIONAL)}{the non-significant active subnetwork genes, comma-separated}
 #' }
-#' @param list_active_snw_genes boolean value indicating whether or not to report
-#' the non-significant active subnetwork genes for the active subnetwork which was enriched for
-#' the given term with the lowest p value (default = FALSE)
+#' @inheritParams enrichment_analyses
 #'
 #' @return a dataframe of summarized enrichment results (over multiple iterations). Columns are: \describe{
 #'   \item{ID}{ID of the enriched term}
@@ -292,6 +290,29 @@ enrichment_analyses <- function(snws,
 #' }
 summarize_enrichment_results <- function(enrichment_res,
                                          list_active_snw_genes = FALSE) {
+  ## Argument checks
+  if(!is.logical(list_active_snw_genes)) {
+    stop("`list_active_snw_genes` should be either TRUE or FALSE")
+  }
+
+  nec_cols <- c("ID", "Term_Description", "Fold_Enrichment", "p_value", "adj_p")
+  if (list_active_snw_genes) {
+    nec_cols <- c(nec_cols, "non_Signif_Snw_Genes")
+  }
+
+  if (!is.data.frame(enrichment_res)) {
+    stop("`enrichment_res` should be a data frame")
+  }
+
+  if (ncol(enrichment_res) != length(nec_cols)) {
+    stop("`enrichment_res` should have exactly ", length(nec_cols), " columns")
+  }
+
+  if (!all(nec_cols == colnames(enrichment_res))) {
+    stop("`enrichment_res` should have column names ",
+         paste(dQuote(nec_cols), collapse = ", "))
+  }
+
   ## Annotate lowest p, highest p and occurrence
   final_res <- enrichment_res
   lowest_p <- tapply(enrichment_res$adj_p, enrichment_res$ID, min)

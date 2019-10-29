@@ -11,8 +11,8 @@ hyperg_test(term_genes, chosen_genes, background_genes)
 
 \item{chosen_genes}{vector containing the set of input genes}
 
-\item{background_genes}{vector of background genes (i.e. all genes in
-the experiment)}
+\item{background_genes}{vector of background genes (i.e. universal set of
+genes in the experiment)}
 }
 \value{
 the p-value as determined using the hypergeometric distribution.
