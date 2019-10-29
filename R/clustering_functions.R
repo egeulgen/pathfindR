@@ -30,9 +30,8 @@ create_kappa_matrix <- function(enrichment_res,
   ### Initial steps
   # Column to use for gene set names
   chosen_id <- ifelse(use_description,
-    which(colnames(enrichment_res) == "Term_Description"),
-    which(colnames(enrichment_res) == "ID")
-  )
+                      which(colnames(enrichment_res) == "Term_Description"),
+                      which(colnames(enrichment_res) == "ID"))
 
   # list of genes
   down_idx <- which(colnames(enrichment_res) == "Down_regulated")
@@ -69,26 +68,25 @@ create_kappa_matrix <- function(enrichment_res,
   term_names <- enrichment_res[, chosen_id]
 
   kappa_mat <- matrix(0,
-    nrow = N, ncol = N,
-    dimnames = list(term_names, term_names)
-  )
+                      nrow = N, ncol = N,
+                      dimnames = list(term_names, term_names))
   diag(kappa_mat) <- 1
 
+  total <- length(all_genes)
   for (i in 1:(N - 1)) {
     for (j in (i + 1):N) {
       genes_i <- genes_lists[[i]]
       genes_j <- genes_lists[[j]]
 
-      C1_1 <- length(intersect(genes_i, genes_j))
-      C0_0 <- sum(!all_genes %in% genes_i & !all_genes %in% genes_j)
-      C0_1 <- sum(all_genes %in% genes_i & !all_genes %in% genes_j)
-      C1_0 <- sum(!all_genes %in% genes_i & all_genes %in% genes_j)
+      both <- length(intersect(genes_i, genes_j))
+      term_i <- length(base::setdiff(genes_i, genes_j))
+      term_j <- length(base::setdiff(genes_j, genes_i))
+      no_terms <- total - sum(both, term_i, term_j)
 
-      tot <- sum(C0_0, C0_1, C1_0, C1_1)
-
-      observed <- (C1_1 + C0_0) / tot
-      chance <- (C1_1 + C0_1) * (C1_1 + C1_0) + (C1_0 + C0_0) * (C0_1 + C0_0)
-      chance <- chance / tot^2
+      observed <- (both + no_terms) / total
+      chance <- (both + term_i) * (both + term_j)
+      chance <- chance + (term_j + no_terms) * (term_i + no_terms)
+      chance <- chance / total^2
       kappa_mat[j, i] <- kappa_mat[i, j] <- (observed - chance) / (1 - chance)
     }
   }
