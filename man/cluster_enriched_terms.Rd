@@ -5,14 +5,19 @@
 \title{Cluster Enriched Terms}
 \usage{
 cluster_enriched_terms(enrichment_res, method = "hierarchical",
-  plot_clusters_graph = TRUE, use_description = FALSE, ...)
+  plot_clusters_graph = TRUE, use_description = FALSE,
+  use_active_snw_genes = FALSE, ...)
 }
 \arguments{
-\item{enrichment_res}{data frame of enrichment results
-(result of `run_pathfindR`)}
+\item{enrichment_res}{data frame of pathfindR enrichment results. Must-have
+columns are "Term_Description" (if \code{use_description = TRUE}) or "ID"
+(if \code{use_description = FALSE}), "Down_regulated", and "Up_regulated".
+If \code{use_active_snw_genes = TRUE}, "non_Signif_Snw_Genes" must also be
+provided.}
 
 \item{method}{Either "hierarchical" or "fuzzy". Details of clustering are
-provided in the corresponding functions.}
+provided in the corresponding functions \code{\link{hierarchical_term_clustering}},
+and \code{\link{fuzzy_term_clustering}}}
 
 \item{plot_clusters_graph}{boolean value indicate whether or not to plot
 the graph diagram of clustering results (default = TRUE)}
@@ -20,9 +25,12 @@ the graph diagram of clustering results (default = TRUE)}
 \item{use_description}{Boolean argument to indicate whether term descriptions
 (in the "Term_Description" column) should be used. (default = \code{FALSE})}
 
-\item{...}{additional arguments for \code{\link{create_kappa_matrix}},
-\code{\link{hierarchical_term_clustering}}, \code{\link{fuzzy_term_clustering}}
-and \code{\link{cluster_graph_vis}}.
+\item{use_active_snw_genes}{boolean to indicate whether or not to use
+non-input active subnetwork genes in the calculation of kappa statistics
+(default = FALSE, i.e. only use affected genes)}
+
+\item{...}{additional arguments for \code{\link{hierarchical_term_clustering}},
+\code{\link{fuzzy_term_clustering}} and \code{\link{cluster_graph_vis}}.
 See documentation of these functions for more details.}
 }
 \value{
@@ -38,11 +46,9 @@ Cluster Enriched Terms
 }
 \examples{
 example_clustered <- cluster_enriched_terms(RA_output[1:3, ],
-  plot_clusters_graph = FALSE
-)
+  plot_clusters_graph = FALSE)
 example_clustered <- cluster_enriched_terms(RA_output[1:3, ],
-  method = "fuzzy", plot_clusters_graph = FALSE
-)
+  method = "fuzzy", plot_clusters_graph = FALSE)
 }
 \seealso{
 See \code{\link{hierarchical_term_clustering}} for hierarchical

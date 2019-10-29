@@ -2,12 +2,12 @@
 ## Project: pathfindR
 ## Script purpose: Testthat testing script for
 ## enriched term clustering functions
-## Date: Oct 20, 2019
+## Date: Oct 29, 2019
 ## Author: Ege Ulgen
 ##################################################
 
 # create_kappa_matrix -----------------------------------------------------
-test_that("Creates kappa matrix", {
+test_that("`create_kappa_matrix()` reates kappa matrix", {
   tmp <- RA_output[1:3, ]
   expect_is(create_kappa_matrix(tmp), "matrix")
   expect_is(create_kappa_matrix(tmp, use_description = TRUE), "matrix")
@@ -15,23 +15,70 @@ test_that("Creates kappa matrix", {
   tmp$Down_regulated[1] <- tmp$Up_regulated[1] <- ""
   expect_is(create_kappa_matrix(tmp), "matrix")
 
-  tmp$non_DEG_Active_Snw_Genes <- ""
+  tmp$non_Signif_Snw_Genes <- ""
   expect_is(create_kappa_matrix(tmp, use_active_snw_genes = TRUE), "matrix")
 })
 
-test_that("kappa matrix creator function error checks works", {
-  expect_error(create_kappa_matrix(RA_output[1:3, ],
-                                   use_active_snw_genes = TRUE),
-  "No column named `non_DEG_Active_Snw_Genes`,
-      please execute `run_pathfindR` with `list_active_snw_genes = TRUE`!")
+test_that("`create_kappa_matrix()` arg checks works", {
+  expect_error(create_kappa_matrix(RA_output,
+                                   use_description = "INVALID"),
+               "`use_description` should be TRUE or FALSE")
 
-  expect_error(create_kappa_matrix(RA_output[1:3, ],
-                                   use_description = "WRONG"),
-               "`use_description` must be logical!")
+  expect_error(create_kappa_matrix(RA_output,
+                                   use_active_snw_genes = "INVALID"),
+               "`use_active_snw_genes` should be TRUE or FALSE")
+
+
+  expect_error(create_kappa_matrix("INVALID"),
+               "`enrichment_res` should be a data frame of enrichment results")
+  expect_error(create_kappa_matrix(RA_output[1, ]),
+               "`enrichment_res` should contain at least 2 rows")
+
+  cr_cols <- function(use_description = FALSE, use_active_snw_genes = FALSE) {
+    nec_cols <- c("Down_regulated", "Up_regulated")
+    if (use_description) {
+      nec_cols <- c("Term_Description", nec_cols)
+    } else {
+      nec_cols <- c("ID", nec_cols)
+    }
+    if (use_active_snw_genes) {
+      nec_cols <- c(nec_cols, "non_Signif_Snw_Genes")
+    }
+    return(nec_cols)
+  }
+
+  # desc F
+  nec_cols <- cr_cols()
+  valid_res <- RA_output[, -2]
+  expect_silent(create_kappa_matrix(valid_res))
+  invalid_res <- RA_output[, -1]
+  expect_error(create_kappa_matrix(invalid_res),
+               paste0("`enrichment_res` should contain all of ",
+                      paste(dQuote(nec_cols), collapse = ", ")))
+  # desc T
+  nec_cols <- cr_cols(use_description = TRUE)
+  valid_res <- RA_output[, -1]
+  expect_silent(create_kappa_matrix(valid_res,
+                                    use_description = TRUE))
+  invalid_res <- RA_output[, -2]
+  expect_error(create_kappa_matrix(invalid_res,
+                                   use_description = TRUE),
+               paste0("`enrichment_res` should contain all of ",
+                      paste(dQuote(nec_cols), collapse = ", ")))
+  # snw_g T
+  nec_cols <- cr_cols(use_active_snw_genes = TRUE)
+  valid_res <- RA_output
+  valid_res$non_Signif_Snw_Genes <- ""
+  expect_silent(create_kappa_matrix(valid_res,
+                                    use_active_snw_genes = TRUE))
+  expect_error(create_kappa_matrix(RA_output,
+                                   use_active_snw_genes = TRUE),
+               paste0("`enrichment_res` should contain all of ",
+                      paste(dQuote(nec_cols), collapse = ", ")))
 })
 
 # hierarchical_term_clustering --------------------------------------------
-test_that("Hierarchical term clustering returns integer vector", {
+test_that("H`hierarchical_term_clustering()` returns integer vector", {
   enrichment_res <- RA_output[1:5, ]
   kappa_mat <- create_kappa_matrix(enrichment_res)
 
@@ -43,7 +90,7 @@ test_that("Hierarchical term clustering returns integer vector", {
             "integer")
 })
 
-test_that("Consistent hierarchical term clustering results", {
+test_that("Consistent `hierarchical_term_clustering()` results", {
   enrichment_res <- RA_output[1:5, ]
   kappa_mat1 <- create_kappa_matrix(enrichment_res, use_description = TRUE)
   kappa_mat2 <- create_kappa_matrix(enrichment_res, use_description = FALSE)
@@ -64,8 +111,34 @@ test_that("Consistent hierarchical term clustering results", {
   expect_true(all(names(a) != names(b)))
 })
 
+test_that("`hierarchical_term_clustering()` arg checks work", {
+  expect_error(hierarchical_term_clustering(kappa_mat = list(),
+                                            enrichment_res = data.frame()),
+               "`kappa_mat` should be a symmetric matrix")
+  expect_error(hierarchical_term_clustering(kappa_mat = matrix(nrow = 1,
+                                                               ncol = 2),
+                                            enrichment_res = data.frame()),
+               "`kappa_mat` should be a symmetric matrix")
+
+  mat <- matrix(nrow = 3, ncol = 3,
+                dimnames = list(1:3, 1:3))
+  expect_error(hierarchical_term_clustering(kappa_mat = mat,
+                                            enrichment_res = data.frame(ID = 4:5)),
+               "All terms in `kappa_mat` should be present in `enrichment_res`")
+
+  expect_error(hierarchical_term_clustering(kappa_mat = mat,
+                                            enrichment_res = data.frame(ID = 1:3),
+                                            plot_hmap = "INVALID"),
+               "`plot_hmap` should be logical")
+
+  expect_error(hierarchical_term_clustering(kappa_mat = mat,
+                                            enrichment_res = data.frame(ID = 1:3),
+                                            plot_dend = "INVALID"),
+               "`plot_dend` should be logical")
+})
+
 # fuzzy_term_clustering ---------------------------------------------------
-test_that("Fuzzy term clustering returns matrix of cluster memberships", {
+test_that("`fuzzy_term_clustering()` returns matrix of cluster memberships", {
   kappa_mat <- create_kappa_matrix(RA_output)
 
   expect_is(fuzzy_term_clustering(kappa_mat, RA_output), "matrix")
@@ -76,10 +149,29 @@ test_that("Fuzzy term clustering returns matrix of cluster memberships", {
                                   kappa_threshold = -1), "matrix")
 })
 
-test_that("Error raised if kappa threshold is not numeric", {
-  expect_error(fuzzy_term_clustering(kappa_mat, enrichment_res,
-                                     kappa_threshold = "test"),
-               "`kappa_threshold` must be numeric!")
+test_that("`fuzzy_term_clustering()` arg checks work", {
+  expect_error(fuzzy_term_clustering(kappa_mat = list(),
+                                     enrichment_res = data.frame()),
+               "`kappa_mat` should be a symmetric matrix")
+  expect_error(fuzzy_term_clustering(kappa_mat = matrix(nrow = 1,
+                                                        ncol = 2),
+                                     enrichment_res = data.frame()),
+               "`kappa_mat` should be a symmetric matrix")
+
+  mat <- matrix(nrow = 3, ncol = 3,
+                dimnames = list(1:3, 1:3))
+  expect_error(fuzzy_term_clustering(kappa_mat = mat,
+                                     enrichment_res = data.frame(ID = 4:5)),
+               "All terms in `kappa_mat` should be present in `enrichment_res`")
+
+  expect_error(fuzzy_term_clustering(kappa_mat = mat,
+                                     enrichment_res = data.frame(ID = 1:3),
+                                     kappa_threshold = "INVALID"),
+               "`kappa_threshold` should be numeric")
+  expect_error(fuzzy_term_clustering(kappa_mat = mat,
+                                     enrichment_res = data.frame(ID = 1:3),
+                                     kappa_threshold = 1.5),
+               "`kappa_threshold` should be at most 1 as kappa statistic is always <= 1")
 })
 
 test_that("Consistent fuzzy term clustering results", {
@@ -101,7 +193,7 @@ test_that("Consistent fuzzy term clustering results", {
 })
 
 # cluster_graph_vis -------------------------------------------------------
-test_that("Graph visualization of clusters works OK", {
+test_that("Graph visualization of clusters via `cluster_graph_vis()` works OK", {
 
   ## use_description = FALSE
   enrichment_res <- RA_output[1:5, ]
@@ -131,7 +223,7 @@ test_that("Graph visualization of clusters works OK", {
                                 enrichment_res, use_description = TRUE))
 })
 
-test_that("Test that coloring of 'extra' clusters work", {
+test_that("`cluster_graph_vis()` coloring of 'extra' clusters work", {
   ### more than 41 clusters # better test case?
   N <- 45
   enrichment_res <- RA_output[1:N, ]
@@ -150,31 +242,9 @@ test_that("Test that coloring of 'extra' clusters work", {
   expect_silent(cluster_graph_vis(clu_obj, kappa_mat, enrichment_res))
 })
 
-
-test_that("Check errors of clustering visualizations", {
+test_that("Check errors of `cluster_graph_vis()`", {
   expect_error(cluster_graph_vis(list(), matrix(), data.frame(ID = 1)),
                "Invalid class for `clu_obj`!")
-
-  expect_error(cluster_graph_vis(c(1L), list(), data.frame()),
-               "`kappa_mat` must be a matrix!")
-
-  expect_error(cluster_graph_vis(c(1L), matrix(0, nrow = 2, ncol = 1),
-                                 data.frame()),
-    "`kappa_mat` must be a symmetric matrix!")
-
-  expect_error(cluster_graph_vis(c(1L), matrix(), list()),
-               "`enrichment_res` must be a data.frame!")
-
-  expect_error(cluster_graph_vis(c(1L), matrix(), data.frame(a = 1:3)),
-    "`kappa_mat` and `enrichment_res` must contain the same # of terms")
-
-  expect_error(cluster_graph_vis(c(1L),
-                                 matrix(nrow = 3, ncol = 3,
-                                        dimnames = list(c("A", "B", "D"),
-                                                        c("A", "B", "D"))),
-                                 data.frame(ID = c("A", "B", "C"))),
-               "Not all terms in `kappa_mat` and `enrichment_res` match!"
-  )
 
   enrichment_res <- RA_output[1:5, ]
   kappa_mat <- create_kappa_matrix(enrichment_res)
@@ -194,7 +264,7 @@ test_that("Check errors of clustering visualizations", {
 })
 
 # cluster_enriched_terms --------------------------------------------------
-test_that("Clustering wrapper returns the input data frame
+test_that("`cluster_enriched_terms()` returns the input data frame
           with the additional columns `Cluster` and `Status`", {
 
   #### use_description = FALSE
@@ -230,13 +300,9 @@ test_that("Clustering wrapper returns the input data frame
   expect_true(max(tmp$Cluster) == sum(tmp$Status == "Representative"))
 })
 
-test_that("Check errors of clustering wrapper function", {
+test_that("`cluster_enriched_terms()` arg checks work", {
   expect_error(cluster_enriched_terms(RA_output[1, 3, ], method = "WRONG"),
     "the clustering `method` must either be \"hierarchical\" or \"fuzzy\"")
-
-  expect_error(cluster_enriched_terms(RA_output[1:3, ],
-                                      use_description = "WRONG"),
-               "`use_description` must be logical!")
 
   expect_error(cluster_enriched_terms(RA_output[1:3, ],
                                       plot_clusters_graph = "WRONG"),

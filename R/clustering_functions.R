@@ -1,6 +1,6 @@
 #' Create Kappa Statistics Matrix
 #'
-#' @param enrichment_res data frame of enrichment results. Must-have
+#' @param enrichment_res data frame of pathfindR enrichment results. Must-have
 #' columns are "Term_Description" (if \code{use_description = TRUE}) or "ID"
 #' (if \code{use_description = FALSE}), "Down_regulated", and "Up_regulated".
 #' If \code{use_active_snw_genes = TRUE}, "non_Signif_Snw_Genes" must also be
@@ -24,7 +24,32 @@ create_kappa_matrix <- function(enrichment_res,
                                 use_active_snw_genes = FALSE) {
   ### Argument checks
   if (!is.logical(use_description)) {
-    stop("`use_description` must be logical!")
+    stop("`use_description` should be TRUE or FALSE")
+  }
+
+  if (!is.logical(use_active_snw_genes)) {
+    stop("`use_active_snw_genes` should be TRUE or FALSE")
+  }
+
+  if (!is.data.frame(enrichment_res)) {
+    stop("`enrichment_res` should be a data frame of enrichment results")
+  }
+  if (nrow(enrichment_res) < 2) {
+    stop("`enrichment_res` should contain at least 2 rows")
+  }
+
+  nec_cols <- c("Down_regulated", "Up_regulated")
+  if (use_description) {
+    nec_cols <- c("Term_Description", nec_cols)
+  } else {
+    nec_cols <- c("ID", nec_cols)
+  }
+  if (use_active_snw_genes) {
+    nec_cols <- c(nec_cols, "non_Signif_Snw_Genes")
+  }
+  if (!all(nec_cols %in% colnames(enrichment_res))) {
+    stop("`enrichment_res` should contain all of ",
+         paste(dQuote(nec_cols), collapse = ", "))
   }
 
   ### Initial steps
@@ -42,11 +67,6 @@ create_kappa_matrix <- function(enrichment_res,
                     unlist(strsplit(as.character(x[down_idx]), ", ")))))
 
   if (use_active_snw_genes) {
-    if (!"non_Signif_Snw_Genes" %in% colnames(enrichment_res)) {
-      stop("No column named `non_Signif_Snw_Genes`,
-      please execute `run_pathfindR` with `list_active_snw_genes = TRUE`!")
-    }
-
     active_idx <- which(colnames(enrichment_res) == "non_Signif_Snw_Genes")
 
     genes_lists <- mapply(function(x, y)
@@ -97,14 +117,12 @@ create_kappa_matrix <- function(enrichment_res,
 
 #' Hierarchical Clustering of Enriched Terms
 #'
-#' @param kappa_mat matrix of kappa statistics (output of \code{\link{create_kappa_matrix})})
-#' @param enrichment_res data frame of enrichment results
-#' @param use_description Boolean argument to indicate whether term descriptions
-#'  (in the "Term_Description" column) should be used. (default = \code{FALSE})
+#' @param kappa_mat matrix of kappa statistics (output of \code{\link{create_kappa_matrix}})
+#' @inheritParams create_kappa_matrix
 #' @param clu_method the agglomeration method to be used
 #' (default = "average", see \code{\link[stats]{hclust}})
 #' @param plot_hmap boolean to indicate whether to plot the kappa statistics
-#' heatmap or not (default = FALSE)
+#' clustering heatmap or not (default = FALSE)
 #' @param plot_dend boolean to indicate whether to plot the clustering
 #' dendrogram partitioned into the optimal number of clusters (default = TRUE)
 #'
@@ -123,7 +141,8 @@ create_kappa_matrix <- function(enrichment_res,
 #' hierarchical_term_clustering(kappa_mat, enrichment_res)
 #' hierarchical_term_clustering(kappa_mat, enrichment_res, method = "complete")
 #' }
-hierarchical_term_clustering <- function(kappa_mat, enrichment_res,
+hierarchical_term_clustering <- function(kappa_mat,
+                                         enrichment_res,
                                          use_description = FALSE,
                                          clu_method = "average",
                                          plot_hmap = FALSE, plot_dend = TRUE) {
@@ -131,6 +150,23 @@ hierarchical_term_clustering <- function(kappa_mat, enrichment_res,
   chosen_id <- ifelse(use_description,
                       which(colnames(enrichment_res) == "Term_Description"),
                       which(colnames(enrichment_res) == "ID"))
+
+  ### Argument checks
+  if (!isSymmetric.matrix(kappa_mat)) {
+    stop("`kappa_mat` should be a symmetric matrix")
+  }
+
+  if (!all(colnames(kappa_mat) %in% enrichment_res[, chosen_id])) {
+    stop("All terms in `kappa_mat` should be present in `enrichment_res`")
+  }
+
+  if (!is.logical(plot_hmap)) {
+    stop("`plot_hmap` should be logical")
+  }
+
+  if (!is.logical(plot_dend)) {
+    stop("`plot_dend` should be logical")
+  }
 
   ### Add excluded (zero-length) genes
   kappa_mat2 <- kappa_mat
@@ -188,12 +224,10 @@ hierarchical_term_clustering <- function(kappa_mat, enrichment_res,
 
 #' Heuristic Fuzzy Multiple-linkage Partitioning of Enriched Terms
 #'
-#' @param kappa_mat matrix of kappa statistics (output of \code{\link{create_kappa_matrix}})
-#' @param enrichment_res data frame of enrichment results
+#' @inheritParams hierarchical_term_clustering
+#' @inheritParams create_kappa_matrix
 #' @param kappa_threshold threshold for kappa statistics, defining strong
 #' relation (default = 0.35)
-#' @param use_description Boolean argument to indicate whether term descriptions
-#'  (in the "Term_Description" column) should be used. (default = \code{FALSE})
 #'
 #' @details The fuzzy clustering algorithm was implemented based on:
 #' Huang DW, Sherman BT, Tan Q, et al. The DAVID Gene Functional
@@ -210,18 +244,30 @@ hierarchical_term_clustering <- function(kappa_mat, enrichment_res,
 #' fuzzy_term_clustering(kappa_mat, enrichment_res, kappa_threshold = 0.45)
 #' }
 fuzzy_term_clustering <- function(kappa_mat, enrichment_res,
-                                kappa_threshold = 0.35, use_description = FALSE) {
-
-  ### Check that the kappa threshold is numeric
-  if (!is.numeric(kappa_threshold)) {
-    stop("`kappa_threshold` must be numeric!")
-  }
+                                  kappa_threshold = 0.35,
+                                  use_description = FALSE) {
 
   ### Set ID/Name index
   chosen_id <- ifelse(use_description,
-    which(colnames(enrichment_res) == "Term_Description"),
-    which(colnames(enrichment_res) == "ID")
-  )
+                      which(colnames(enrichment_res) == "Term_Description"),
+                      which(colnames(enrichment_res) == "ID"))
+
+  ### Argument checks
+  if (!isSymmetric.matrix(kappa_mat)) {
+    stop("`kappa_mat` should be a symmetric matrix")
+  }
+
+  if (!all(colnames(kappa_mat) %in% enrichment_res[, chosen_id])) {
+    stop("All terms in `kappa_mat` should be present in `enrichment_res`")
+  }
+
+  if (!is.numeric(kappa_threshold)) {
+    stop("`kappa_threshold` should be numeric")
+  }
+
+  if (kappa_threshold > 1) {
+    stop("`kappa_threshold` should be at most 1 as kappa statistic is always <= 1")
+  }
 
   ### Find Qualified Seeds
   qualified_seeds <- list()
@@ -301,13 +347,9 @@ fuzzy_term_clustering <- function(kappa_mat, enrichment_res,
 #' Graph Visualization of Clustered Enriched Terms
 #'
 #' @param clu_obj clustering result (either a matrix obtained via
+#' \code{\link{hierarchical_term_clustering}} or \code{\link{fuzzy_term_clustering}}
 #' `fuzzy_term_clustering` or a vector obtained via `hierarchical_term_clustering`)
-#' @param kappa_mat matrix of kappa statistics (output of `create_kappa_matrix`)
-#' @param enrichment_res data frame of enrichment results
-#' @param kappa_threshold threshold for kappa statistics, defining strong
-#' relation (default = 0.35)
-#' @param use_description Boolean argument to indicate whether term descriptions
-#'  (in the "Term_Description" column) should be used. (default = \code{FALSE})
+#' @inheritParams fuzzy_term_clustering
 #'
 #' @return Plots a graph diagram of clustering results. Each node is an enriched term
 #' from `enrichment_res`. Size of node corresponds to -log(lowest_p). Thickness
@@ -323,48 +365,21 @@ fuzzy_term_clustering <- function(kappa_mat, enrichment_res,
 #' }
 cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res,
                               kappa_threshold = 0.35, use_description = FALSE) {
-
-  ### Argument checks
-  if (class(kappa_mat) != "matrix") {
-    stop("`kappa_mat` must be a matrix!")
-  }
-
-  if (!isSymmetric.matrix(kappa_mat)) {
-    stop("`kappa_mat` must be a symmetric matrix!")
-  }
-
-  if (class(enrichment_res) != "data.frame") {
-    stop("`enrichment_res` must be a data.frame!")
-  }
-
-  if (nrow(kappa_mat) != nrow(enrichment_res)) {
-    stop("`kappa_mat` and `enrichment_res` must contain the same # of terms")
-  }
-
-
   ### Set ID/Name index
   chosen_id <- ifelse(use_description,
-    which(colnames(enrichment_res) == "Term_Description"),
-    which(colnames(enrichment_res) == "ID")
-  )
-
-  ## other checks
-  if (!all(rownames(kappa_mat) %in% enrichment_res[, chosen_id])) {
-    stop("Not all terms in `kappa_mat` and `enrichment_res` match!")
-  }
+                      which(colnames(enrichment_res) == "Term_Description"),
+                      which(colnames(enrichment_res) == "ID"))
 
   ### For coloring nodes
-  all_cols <- c(
-    "#E41A1C", "#377EB8", "#4DAF4A", "#984EA3", "#FF7F00",
-    "#FFFF33", "#A65628", "#F781BF", "#999999", "#66C2A5",
-    "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F",
-    "#E5C494", "#B3B3B3", "#8DD3C7", "#FFFFB3", "#BEBADA",
-    "#FB8072", "#80B1D3", "#FDB462", "#B3DE69", "#FCCDE5",
-    "#D9D9D9", "#BC80BD", "#CCEBC5", "#FFED6F", "#A6CEE3",
-    "#1F78B4", "#B2DF8A", "#33A02C", "#FB9A99", "#E31A1C",
-    "#FDBF6F", "#FF7F00", "#CAB2D6", "#6A3D9A", "#FFFF99",
-    "#B15928"
-  )
+  all_cols <- c("#E41A1C", "#377EB8", "#4DAF4A", "#984EA3", "#FF7F00",
+                "#FFFF33", "#A65628", "#F781BF", "#999999", "#66C2A5",
+                "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F",
+                "#E5C494", "#B3B3B3", "#8DD3C7", "#FFFFB3", "#BEBADA",
+                "#FB8072", "#80B1D3", "#FDB462", "#B3DE69", "#FCCDE5",
+                "#D9D9D9", "#BC80BD", "#CCEBC5", "#FFED6F", "#A6CEE3",
+                "#1F78B4", "#B2DF8A", "#33A02C", "#FB9A99", "#E31A1C",
+                "#FDBF6F", "#FF7F00", "#CAB2D6", "#6A3D9A", "#FFFF99",
+                "#B15928")
 
   if (class(clu_obj) == "matrix") {
     ### Argument checks
@@ -381,15 +396,13 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res,
     # Add missing terms
     missing <- rownames(clu_obj)[!rownames(clu_obj) %in% colnames(kappa_mat2)]
     missing_mat <- matrix(0,
-      nrow = nrow(kappa_mat2), ncol = length(missing),
-      dimnames = list(rownames(kappa_mat2), missing)
-    )
+                          nrow = nrow(kappa_mat2), ncol = length(missing),
+                          dimnames = list(rownames(kappa_mat2), missing))
     kappa_mat2 <- cbind(kappa_mat2, missing_mat)
     missing <- rownames(clu_obj)[!rownames(clu_obj) %in% rownames(kappa_mat2)]
     missing_mat <- matrix(0,
-      nrow = length(missing), ncol = ncol(kappa_mat2),
-      dimnames = list(missing, colnames(kappa_mat2))
-    )
+                          nrow = length(missing), ncol = ncol(kappa_mat2),
+                          dimnames = list(missing, colnames(kappa_mat2)))
     kappa_mat2 <- rbind(kappa_mat2, missing_mat)
 
     ### Create Graph, Set Color, Size and Percentages
@@ -421,17 +434,16 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res,
 
     ### Plot Graph
     igraph::plot.igraph(g,
-      vertex.pie = percs,
-      vertex.pie.color = cols,
-      layout = igraph::layout_nicely(g),
-      edge.curved = FALSE,
-      vertex.label.dist = 0,
-      vertex.label.color = "black",
-      asp = 1,
-      vertex.label.cex = 0.7,
-      edge.width = igraph::E(g)$weight,
-      edge.arrow.mode = 0
-    )
+                        vertex.pie = percs,
+                        vertex.pie.color = cols,
+                        layout = igraph::layout_nicely(g),
+                        edge.curved = FALSE,
+                        vertex.label.dist = 0,
+                        vertex.label.color = "black",
+                        asp = 1,
+                        vertex.label.cex = 0.7,
+                        edge.width = igraph::E(g)$weight,
+                        edge.arrow.mode = 0)
   } else if (class(clu_obj) == "integer") {
     ### Argument checks
     if (!all(names(clu_obj) %in% colnames(kappa_mat))) {
@@ -447,15 +459,13 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res,
     # Add missing terms
     missing <- names(clu_obj)[!names(clu_obj) %in% colnames(kappa_mat2)]
     missing_mat <- matrix(0,
-      nrow = nrow(kappa_mat2), ncol = length(missing),
-      dimnames = list(rownames(kappa_mat2), missing)
-    )
+                          nrow = nrow(kappa_mat2), ncol = length(missing),
+                          dimnames = list(rownames(kappa_mat2), missing))
     kappa_mat2 <- cbind(kappa_mat2, missing_mat)
     missing <- names(clu_obj)[!names(clu_obj) %in% rownames(kappa_mat2)]
     missing_mat <- matrix(0,
-      nrow = length(missing), ncol = ncol(kappa_mat2),
-      dimnames = list(missing, colnames(kappa_mat2))
-    )
+                          nrow = length(missing), ncol = ncol(kappa_mat2),
+                          dimnames = list(missing, colnames(kappa_mat2)))
     kappa_mat2 <- rbind(kappa_mat2, missing_mat)
 
     ### Create Graph, Set Colors and Sizes
@@ -479,15 +489,14 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res,
 
     ### Plot graph
     igraph::plot.igraph(g,
-      layout = igraph::layout_nicely(g),
-      edge.curved = FALSE,
-      vertex.label.dist = 0,
-      vertex.label.color = "black",
-      asp = 0,
-      vertex.label.cex = 0.7,
-      edge.width = igraph::E(g)$weight,
-      edge.arrow.mode = 0
-    )
+                        layout = igraph::layout_nicely(g),
+                        edge.curved = FALSE,
+                        vertex.label.dist = 0,
+                        vertex.label.color = "black",
+                        asp = 0,
+                        vertex.label.cex = 0.7,
+                        edge.width = igraph::E(g)$weight,
+                        edge.arrow.mode = 0)
   } else {
     stop("Invalid class for `clu_obj`!")
   }
@@ -495,17 +504,14 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res,
 
 #' Cluster Enriched Terms
 #'
-#' @param enrichment_res data frame of enrichment results
-#' (result of `run_pathfindR`)
+#' @inheritParams create_kappa_matrix
 #' @param method Either "hierarchical" or "fuzzy". Details of clustering are
-#' provided in the corresponding functions.
+#' provided in the corresponding functions \code{\link{hierarchical_term_clustering}},
+#' and \code{\link{fuzzy_term_clustering}}
 #' @param plot_clusters_graph boolean value indicate whether or not to plot
 #' the graph diagram of clustering results (default = TRUE)
-#' @param use_description Boolean argument to indicate whether term descriptions
-#'  (in the "Term_Description" column) should be used. (default = \code{FALSE})
-#' @param ... additional arguments for \code{\link{create_kappa_matrix}},
-#' \code{\link{hierarchical_term_clustering}}, \code{\link{fuzzy_term_clustering}}
-#' and \code{\link{cluster_graph_vis}}.
+#' @param ... additional arguments for \code{\link{hierarchical_term_clustering}},
+#' \code{\link{fuzzy_term_clustering}} and \code{\link{cluster_graph_vis}}.
 #' See documentation of these functions for more details.
 #'
 #'
@@ -520,11 +526,9 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res,
 #'
 #' @examples
 #' example_clustered <- cluster_enriched_terms(RA_output[1:3, ],
-#'   plot_clusters_graph = FALSE
-#' )
+#'   plot_clusters_graph = FALSE)
 #' example_clustered <- cluster_enriched_terms(RA_output[1:3, ],
-#'   method = "fuzzy", plot_clusters_graph = FALSE
-#' )
+#'   method = "fuzzy", plot_clusters_graph = FALSE)
 #' @seealso See \code{\link{hierarchical_term_clustering}} for hierarchical
 #' clustering of enriched terms.
 #' See \code{\link{fuzzy_term_clustering}} for fuzzy clustering of enriched terms.
@@ -533,14 +537,11 @@ cluster_enriched_terms <- function(enrichment_res,
                                    method = "hierarchical",
                                    plot_clusters_graph = TRUE,
                                    use_description = FALSE,
+                                   use_active_snw_genes = FALSE,
                                    ...) {
   ### Argument Checks
   if (!method %in% c("hierarchical", "fuzzy")) {
     stop("the clustering `method` must either be \"hierarchical\" or \"fuzzy\"")
-  }
-
-  if (!is.logical(use_description)) {
-    stop("`use_description` must be logical!")
   }
 
   if (!is.logical(plot_clusters_graph)) {
@@ -548,38 +549,33 @@ cluster_enriched_terms <- function(enrichment_res,
   }
 
   ### Create Kappa Matrix
-  kappa_mat <- R.utils::doCall("create_kappa_matrix",
-    enrichment_res = enrichment_res,
-    use_description = use_description,
-    ...
-  )
+  kappa_mat <- create_kappa_matrix(enrichment_res = enrichment_res,
+                                   use_description = use_description,
+                                   use_active_snw_genes = use_active_snw_genes)
 
   ### Cluster Terms
   if (method == "hierarchical") {
     clu_obj <- R.utils::doCall("hierarchical_term_clustering",
-      kappa_mat = kappa_mat,
-      enrichment_res = enrichment_res,
-      use_description = use_description,
-      ...
-    )
+                               kappa_mat = kappa_mat,
+                               enrichment_res = enrichment_res,
+                               use_description = use_description,
+                               ...)
   } else {
     clu_obj <- R.utils::doCall("fuzzy_term_clustering",
-      kappa_mat = kappa_mat,
-      enrichment_res = enrichment_res,
-      use_description = use_description,
-      ...
-    )
+                               kappa_mat = kappa_mat,
+                               enrichment_res = enrichment_res,
+                               use_description = use_description,
+                               ...)
   }
 
   ### Graph Visualization of Clusters
   if (plot_clusters_graph) {
     R.utils::doCall("cluster_graph_vis",
-      clu_obj = clu_obj,
-      kappa_mat = kappa_mat,
-      enrichment_res = enrichment_res,
-      use_description = use_description,
-      ...
-    )
+                    clu_obj = clu_obj,
+                    kappa_mat = kappa_mat,
+                    enrichment_res = enrichment_res,
+                    use_description = use_description,
+                    ...)
   }
 
   ### Returned Data Frame with Cluster Information
@@ -596,9 +592,8 @@ cluster_enriched_terms <- function(enrichment_res,
     clu_idx <- match(clustered_df[, chosen_id], names(clu_obj))
     clustered_df$Cluster <- clu_obj[clu_idx]
     clustered_df <- clustered_df[order(clustered_df$Cluster,
-      clustered_df$lowest_p,
-      decreasing = FALSE
-    ), ]
+                                       clustered_df$lowest_p,
+                                       decreasing = FALSE), ]
 
     tmp <- tapply(clustered_df[, chosen_id], clustered_df$Cluster, function(x) x[1])
     stat_cond <- clustered_df[, chosen_id] %in% tmp
@@ -614,18 +609,15 @@ cluster_enriched_terms <- function(enrichment_res,
       current_row <- clustered_df[i, ]
       current_clusters <- term_list[[current_row[, chosen_id]]]
       for (clu in current_clusters) {
-        clustered_df2 <- rbind(
-          clustered_df2,
-          data.frame(current_row, Cluster = clu)
-        )
+        clustered_df2 <- rbind(clustered_df2,
+                               data.frame(current_row, Cluster = clu))
       }
     }
 
     clustered_df <- clustered_df2
     clustered_df <- clustered_df[order(clustered_df$Cluster,
-      clustered_df$lowest_p,
-      decreasing = FALSE
-    ), ]
+                                       clustered_df$lowest_p,
+                                       decreasing = FALSE), ]
 
     tmp <- tapply(clustered_df[, chosen_id], clustered_df$Cluster, function(x) x[1])
     stat_cond <- clustered_df[, chosen_id] %in% tmp

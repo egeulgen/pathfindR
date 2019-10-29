@@ -10,7 +10,11 @@ fuzzy_term_clustering(kappa_mat, enrichment_res, kappa_threshold = 0.35,
 \arguments{
 \item{kappa_mat}{matrix of kappa statistics (output of \code{\link{create_kappa_matrix}})}
 
-\item{enrichment_res}{data frame of enrichment results}
+\item{enrichment_res}{data frame of pathfindR enrichment results. Must-have
+columns are "Term_Description" (if \code{use_description = TRUE}) or "ID"
+(if \code{use_description = FALSE}), "Down_regulated", and "Up_regulated".
+If \code{use_active_snw_genes = TRUE}, "non_Signif_Snw_Genes" must also be
+provided.}
 
 \item{kappa_threshold}{threshold for kappa statistics, defining strong
 relation (default = 0.35)}
