@@ -15,8 +15,8 @@ active_snw_search(input_for_search, pin_name_path = "Biogrid",
 }
 \arguments{
 \item{input_for_search}{input the input data that active subnetwork search uses. The input
-must be a data frame containing at least these three columns: \describe{
-  \item{describe}{HGNC Gene Symbol}
+must be a data frame containing at least these 2 columns: \describe{
+  \item{GENE}{Gene Symbol}
   \item{P_VALUE}{p value obtained through a test, e.g. differential expression/methylation}
 }}
 
@@ -24,22 +24,25 @@ must be a data frame containing at least these three columns: \describe{
 must be one of c("Biogrid", "GeneMania", "IntAct", "KEGG", "mmu_STRING"). If
 path/to/PIN.sif, the file must comply with the PIN specifications. (Default = "Biogrid")}
 
-\item{snws_file}{name for active subnetwork search output data}
+\item{snws_file}{name for active subnetwork search output data
+\strong{without file extension} (default = "active_snws")}
 
-\item{dir_for_parallel_run}{directory for parallel run iteration.
-Only used in the wrapper function (see ?run_pathfindR) (Default = NULL)}
+\item{dir_for_parallel_run}{(previously created) directory for a parallel run iteration.
+Used in the wrapper function (see ?run_pathfindR) (Default = NULL)}
 
-\item{score_quan_thr}{active subnetwork score quantile threshold (default = 0.80)}
+\item{score_quan_thr}{active subnetwork score quantile threshold (Default = 0.80)
+Must be between 0 and 1 or set to -1 for not filtering}
 
-\item{sig_gene_thr}{threshold for minimum number of significant genes (default = 10)}
+\item{sig_gene_thr}{threshold for minimum number of affected genes (Default = 10)}
 
 \item{search_method}{algorithm to use when performing active subnetwork
 search. Options are greedy search (GR), simulated annealing (SA) or genetic
-algorithm (GA) for the search (default = GR).}
+algorithm (GA) for the search (default = "GR").}
 
-\item{silent_option}{boolean value indicating whether to print the messages to the console (FALSE)
-or print to a file (TRUE) during active subnetwork search (default = TRUE). This option was added
-because during parallel runs, the console messages get mixed up.}
+\item{silent_option}{boolean value indicating whether to print the messages
+to the console (FALSE) or not (TRUE, this will print to a temp. file) during
+active subnetwork search (default = TRUE). This option was added because
+during parallel runs, the console messages get disorderdly printed.}
 
 \item{use_all_positives}{if TRUE: in GA, adds an individual with all positive
 nodes. In SA, initializes candidate solution with all positive nodes. (default = FALSE)}

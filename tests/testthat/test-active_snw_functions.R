@@ -2,7 +2,7 @@
 ## Project: pathfindR
 ## Script purpose: Testthat testing script for
 ## active subnetwork search functions
-## Date: Oct 20, 2019
+## Date: Oct 29, 2019
 ## Author: Ege Ulgen
 ##################################################
 
@@ -69,23 +69,30 @@ test_that("`filterActiveSnws()` arg checks work", {
                "The active subnetwork file does not exist! Check the `active_snw_path` argument")
 
   expect_error(filterActiveSnws(active_snw_path = sample_path,
-                                sig_genes_vec = 1:3),
-               "`sig_genes_vec` must be a character vector")
+                                sig_genes_vec = list()),
+               "`sig_genes_vec` should be a vector")
 
   expect_error(filterActiveSnws(active_snw_path = sample_path,
                                 sig_genes_vec = RA_input$Gene.symbol,
-                                score_quan_thr = "NOT_NUMERIC"),
-               "`score_quan_thr` must be numeric!")
-
+                                score_quan_thr = "INVALID"),
+               "`score_quan_thr` should be numeric")
   expect_error(filterActiveSnws(active_snw_path = sample_path,
                                 sig_genes_vec = RA_input$Gene.symbol,
                                 score_quan_thr = -2),
-               "`score_quan_thr` must be in \\[0, 1\\] or -1 \\(if not filtering\\)")
-
+               "`score_quan_thr` should be in \\[0, 1\\] or -1 \\(if not filtering\\)")
   expect_error(filterActiveSnws(active_snw_path = sample_path,
                                 sig_genes_vec = RA_input$Gene.symbol,
                                 score_quan_thr = 2),
-               "`score_quan_thr` must be in \\[0, 1\\] or -1 \\(if not filtering\\)")
+               "`score_quan_thr` should be in \\[0, 1\\] or -1 \\(if not filtering\\)")
+
+  expect_error(filterActiveSnws(active_snw_path = sample_path,
+                                sig_genes_vec = RA_input$Gene.symbol,
+                                sig_gene_thr = "INVALID"),
+               "`sig_gene_thr` should be numeric")
+  expect_error(filterActiveSnws(active_snw_path = sample_path,
+                                sig_genes_vec = RA_input$Gene.symbol,
+                                sig_gene_thr = -1),
+               "sig_gene_thr` should be >= 0")
 })
 
 # active_snw_search -------------------------------------------------------
@@ -152,19 +159,35 @@ test_that("All search methods for `active_snw_search()` work", {
   unlink("active_snw_search", recursive = TRUE)
 })
 
-test_that("`active_snw_search()` error messages work", {
-  expect_error(active_snw_search(input_for_search = input_df2,
-                                 pin_name_path = "Biogrid",
-                                 search_method = "WRONG"),
-    "`search_method` must be one of \"GR\", \"SA\", \"GA\"")
+test_that("`active_snw_search()` arg checks work", {
+  # input_for_search
+  expect_error(snw_list <- active_snw_search(input_for_search = list()),
+               "`input_for_search` should be data frame")
 
-  expect_error(active_snw_search(input_for_search = input_df2,
-                                 pin_name_path = "Biogrid",
-                                 use_all_positives = "WRONG"),
-    "the argument `use_all_positives` must be either TRUE or FALSE")
+  invalid_input <- input_df2[, 3:4]
+  cnames <- c("GENE", "P_VALUE")
+  expect_error(snw_list <- active_snw_search(input_for_search = invalid_input),
+               paste0("`input_for_search` should contain the columns ",
+                      paste(dQuote(cnames), collapse = ",")))
 
+  # snws_file
+  expect_error(snw_list <- active_snw_search(input_for_search = input_df2,
+                                             snws_file = "[/]"),
+               "`snws_file` may be containing forbidden characters. Please change and try again")
+
+  # search_method
+  valid_mets <- c("GR", "SA", "GA")
   expect_error(active_snw_search(input_for_search = input_df2,
-                                 pin_name_path = "Biogrid",
+                                 search_method = "INVALID"),
+               paste0("`search_method` should be one of ",
+                      paste(dQuote(valid_mets), collapse = ", ")))
+
+  # silent_option
+  expect_error(active_snw_search(input_for_search = input_df2,
                                  silent_option = "WRONG"),
-               "the argument `silent_option` must be either TRUE or FALSE")
+               "`silent_option` should be either TRUE or FALSE")
+
+  expect_error(active_snw_search(input_for_search = input_df2,
+                                 use_all_positives = "INVALID"),
+               "`use_all_positives` should be either TRUE or FALSE")
 })

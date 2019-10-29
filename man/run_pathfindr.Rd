@@ -66,7 +66,7 @@ enrichment results (default = 0.05)}
 
 \item{search_method}{algorithm to use when performing active subnetwork
 search. Options are greedy search (GR), simulated annealing (SA) or genetic
-algorithm (GA) for the search (default = GR).}
+algorithm (GA) for the search (default = "GR").}
 
 \item{use_all_positives}{if TRUE: in GA, adds an individual with all positive
 nodes. In SA, initializes candidate solution with all positive nodes. (default = FALSE)}
@@ -102,9 +102,10 @@ enrichment analyses (Default = 10. Gets set to 1 for Genetic Algorithm)}
 used by foreach. If not specified, the function determines this
 automatically (Default == NULL. Gets set to 1 for Genetic Algorithm)}
 
-\item{score_quan_thr}{active subnetwork score quantile threshold (default = 0.80)}
+\item{score_quan_thr}{active subnetwork score quantile threshold (Default = 0.80)
+Must be between 0 and 1 or set to -1 for not filtering}
 
-\item{sig_gene_thr}{threshold for minimum number of significant genes (default = 10)}
+\item{sig_gene_thr}{threshold for minimum number of affected genes (Default = 10)}
 
 \item{plot_enrichment_chart}{boolean value. If TRUE, a bubble chart displaying the enrichment
 results is plotted. (default = TRUE)}
@@ -115,9 +116,10 @@ results is plotted. (default = TRUE)}
 the non-significant active subnetwork genes for the active subnetwork which was enriched for
 the given term with the lowest p value (default = \code{FALSE})}
 
-\item{silent_option}{boolean value indicating whether to print the messages to the console (FALSE)
-or print to a file (TRUE) during active subnetwork search (default = TRUE). This option was added
-because during parallel runs, the console messages get mixed up.}
+\item{silent_option}{boolean value indicating whether to print the messages
+to the console (FALSE) or not (TRUE, this will print to a temp. file) during
+active subnetwork search (default = TRUE). This option was added because
+during parallel runs, the console messages get disorderdly printed.}
 }
 \value{
 Data frame of pathfindR enrichment results. Columns are: \describe{

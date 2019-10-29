@@ -24,19 +24,25 @@
 #' tmp <- filterActiveSnws("path/to/output", significant_genes)
 #' }
 filterActiveSnws <- function(active_snw_path, sig_genes_vec,
-                             score_quan_thr = 0.80, sig_gene_thr = 10) {
+                             score_quan_thr = 0.80, sig_gene_thr = 10L) {
   ## Arg. checks
   active_snw_path <- suppressWarnings(normalizePath(active_snw_path))
+
   if (!file.exists(active_snw_path))
     stop("The active subnetwork file does not exist! Check the `active_snw_path` argument")
 
-  if (class(sig_genes_vec) != "character")
-    stop("`sig_genes_vec` must be a character vector")
+  if (!is.atomic(sig_genes_vec))
+    stop("`sig_genes_vec` should be a vector")
 
   if (!is.numeric(score_quan_thr))
-    stop("`score_quan_thr` must be numeric!")
+    stop("`score_quan_thr` should be numeric")
   if (score_quan_thr != -1 & (score_quan_thr > 1 | score_quan_thr < 0))
-    stop("`score_quan_thr` must be in [0, 1] or -1 (if not filtering)")
+    stop("`score_quan_thr` should be in [0, 1] or -1 (if not filtering)")
+
+  if(!is.numeric(sig_gene_thr))
+    stop("`sig_gene_thr` should be numeric")
+  if(sig_gene_thr < 0)
+    stop("`sig_gene_thr` should be >= 0")
 
   output <- readLines(active_snw_path)
 
@@ -75,22 +81,23 @@ filterActiveSnws <- function(active_snw_path, sig_genes_vec,
 #' Perform Active Subnetwork Search
 #'
 #' @param input_for_search input the input data that active subnetwork search uses. The input
-#' must be a data frame containing at least these three columns: \describe{
-#'   \item{describe}{HGNC Gene Symbol}
+#' must be a data frame containing at least these 2 columns: \describe{
+#'   \item{GENE}{Gene Symbol}
 #'   \item{P_VALUE}{p value obtained through a test, e.g. differential expression/methylation}
 #' }
 #' @inheritParams return_pin_path
 #' @param snws_file name for active subnetwork search output data
-#' @param dir_for_parallel_run directory for parallel run iteration.
-#' Only used in the wrapper function (see ?run_pathfindR) (Default = NULL)
-#' @param score_quan_thr active subnetwork score quantile threshold (default = 0.80)
-#' @param sig_gene_thr threshold for minimum number of significant genes (default = 10)
+#' \strong{without file extension} (default = "active_snws")
+#' @param dir_for_parallel_run (previously created) directory for a parallel run iteration.
+#' Used in the wrapper function (see ?run_pathfindR) (Default = NULL)
+#' @inheritParams filterActiveSnws
 #' @param search_method algorithm to use when performing active subnetwork
 #'  search. Options are greedy search (GR), simulated annealing (SA) or genetic
-#'  algorithm (GA) for the search (default = GR).
-#' @param silent_option boolean value indicating whether to print the messages to the console (FALSE)
-#' or print to a file (TRUE) during active subnetwork search (default = TRUE). This option was added
-#' because during parallel runs, the console messages get mixed up.
+#'  algorithm (GA) for the search (default = "GR").
+#' @param silent_option boolean value indicating whether to print the messages
+#' to the console (FALSE) or not (TRUE, this will print to a temp. file) during
+#' active subnetwork search (default = TRUE). This option was added because
+#' during parallel runs, the console messages get disorderdly printed.
 #' @param use_all_positives if TRUE: in GA, adds an individual with all positive
 #'  nodes. In SA, initializes candidate solution with all positive nodes. (default = FALSE)
 #' @param geneInitProbs For SA and GA, probability of adding a gene in initial solution (default = 0.1)
@@ -134,19 +141,41 @@ active_snw_search <- function(input_for_search,
                               grMaxDepth = 1, grSearchDepth = 1,
                               grOverlap = 0.5, grSubNum = 1000) {
 
+  ############ Argument checks
+  # input_for_search
+  if (!is.data.frame(input_for_search)) {
+    stop("`input_for_search` should be data frame")
+  }
+  cnames <- c("GENE", "P_VALUE")
+  if (any(!cnames %in% colnames(input_for_search))) {
+    stop("`input_for_search` should contain the columns ",
+         paste(dQuote(cnames), collapse = ","))
+  }
+
+  # pin_name_path (fetch pin path)
   pin_path <- return_pin_path(pin_name_path)
 
-  ############ Argument checks
-  if (!search_method %in% c("GR", "SA", "GA")) {
-    stop("`search_method` must be one of \"GR\", \"SA\", \"GA\"")
+  # snws_file
+  if (!suppressWarnings(file.create(file.path(tempdir(check = TRUE),
+                                              snws_file)))) {
+    stop("`snws_file` may be containing forbidden characters. Please change and try again")
   }
 
-  if (!is.logical(use_all_positives)) {
-    stop("the argument `use_all_positives` must be either TRUE or FALSE")
+  # search_method
+  valid_mets <- c("GR", "SA", "GA")
+  if (!search_method %in% valid_mets) {
+    stop("`search_method` should be one of ",
+         paste(dQuote(valid_mets), collapse = ", "))
   }
 
+  # silent_option
   if (!is.logical(silent_option)) {
-    stop("the argument `silent_option` must be either TRUE or FALSE")
+    stop("`silent_option` should be either TRUE or FALSE")
+  }
+
+  # use_all_positives
+  if (!is.logical(use_all_positives)) {
+    stop("`use_all_positives` should be either TRUE or FALSE")
   }
 
   ############ Initial Steps
@@ -209,7 +238,8 @@ active_snw_search <- function(input_for_search,
     " -grSubNum=", grSubNum, silent_option
   ))
 
-  snws_file <- paste0("active_snw_search/", snws_file, ".txt")
+  snws_file <- file.path(active_snw_search,
+                         paste0(snws_file, ".txt"))
   file.rename(from = "resultActiveSubnetworkSearch.txt",
               to = snws_file)
 

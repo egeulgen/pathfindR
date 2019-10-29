@@ -111,7 +111,6 @@ run_pathfindR <- function(input,
   ############ Argument checks
   # Active Subnetwork Search
   valid_mets <- c("GR", "SA", "GA")
-
   if (!search_method %in% valid_mets) {
     stop("`search_method` should be one of ",
          paste(dQuote(valid_mets), collapse = ", "))
@@ -125,6 +124,7 @@ run_pathfindR <- function(input,
     stop("`silent_option` should be either TRUE or FALSE")
   }
 
+  # Other
   if (!is.logical(visualize_enriched_terms)) {
     stop("`visualize_enriched_terms` should be either TRUE or FALSE")
   }
