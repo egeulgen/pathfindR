@@ -493,7 +493,7 @@ term_gene_graph <- function(result_df, num_terms = 10,
 
   ### Check node_size
   val_node_size <- c("num_genes", "p_val")
-  if (!node_size %in% c()) {
+  if (!node_size %in% val_node_size) {
     stop("`node_size` should be one of ", paste(dQuote(val_node_size), collapse = ", "))
   }
   ### Check necessary columnns

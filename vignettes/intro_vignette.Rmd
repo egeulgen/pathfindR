@@ -294,11 +294,11 @@ cases <- c("GSM389703", "GSM389704", "GSM389706", "GSM389708",
 ## Calculate scores for representative terms 
 ## and plot heat map using term descriptions
 score_matrix <- score_terms(enrichment_table = RA_clustered[RA_clustered$Status == "Representative", ],
-                                 exp_mat = RA_exp_mat,
-                                 cases = cases,
-                                 use_description = TRUE, # default FALSE
-                                 label_samples = FALSE, # (default = TRUE)
-                                 case_control_titles = c("RA", "Healthy")) # default = c("Case", "Control")
+                            exp_mat = RA_exp_mat,
+                            cases = cases,
+                            use_description = TRUE, # default FALSE
+                            label_samples = FALSE, # (default = TRUE)
+                            case_control_titles = c("RA", "Healthy")) # default = c("Case", "Control")
 ```
 
 # Analysis with Custom Gene Sets
