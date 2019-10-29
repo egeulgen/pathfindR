@@ -404,7 +404,7 @@ fetch_gene_set <- function(gene_sets = "KEGG",
     } else if (gene_sets == "Reactome") {
       genes_by_term <- pathfindR::reactome_genes
       term_descriptions <- pathfindR::reactome_descriptions
-    } else if(gene_sets == "Biocarta"){
+    } else if(gene_sets == "BioCarta"){
       genes_by_term <- pathfindR::biocarta_genes
       term_descriptions <- pathfindR::biocarta_descriptions
     } else {
