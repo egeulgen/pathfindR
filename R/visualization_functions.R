@@ -122,8 +122,8 @@ visualize_term_interactions <- function(result_df, pin_name_path) {
     current_genes <- c(down_genes, up_genes)
 
     ## Add active snw genes if listed
-    if (!is.null(result_df$non_DEG_Active_Snw_Genes)) {
-      snw_genes <- unlist(strsplit(current_row$non_DEG_Active_Snw_Genes, ", "))
+    if (!is.null(result_df$non_Signif_Snw_Genes)) {
+      snw_genes <- unlist(strsplit(current_row$non_Signif_Snw_Genes, ", "))
       snw_genes <- base::toupper(snw_genes)
       current_genes <- c(current_genes, snw_genes)
     } else {
@@ -328,21 +328,21 @@ visualize_hsa_KEGG <- function(pw_table, gene_data) {
 #' @param plot_by_cluster boolean value indicating whether or not to group the
 #'  enriched terms by cluster (works if \code{result_df} contains a
 #'  "Cluster" column).
-#' @param num_bubbles number of sizes displayed in the legend \code{# of DEGs}
+#' @param num_bubbles number of sizes displayed in the legend \code{# genes}
 #'  (Default = 4)
 #' @param even_breaks whether or not to set even breaks for the number of sizes
-#'  displayed in the legend \code{# of DEGs}. If \code{TRUE} (default), sets
+#'  displayed in the legend \code{# genes}. If \code{TRUE} (default), sets
 #'  equal breaks and the number of displayed bubbles may be different than the
 #'  number set by \code{num_bubbles}. If the exact number set by
 #'  \code{num_bubbles} is required, set this argument to \code{FALSE}
 #'
 #' @return a \code{\link[ggplot2]{ggplot2}} object containing the bubble chart.
 #' The x-axis corresponds to fold enrichment values while the y-axis indicates
-#' the enriched terms. Size of the bubble indicates the number of DEGs in the
-#' given enriched term. Color indicates the -log10(lowest-p) value. The closer
-#' the color is to red, the more significant the enrichment is. Optionally, if
-#' "Cluster" is a column of \code{result_df} and \code{plot_by_cluster == TRUE},
-#' the enriched terms are grouped by clusters.
+#' the enriched terms. Size of the bubble indicates the number of significant
+#' genes in the given enriched term. Color indicates the -log10(lowest-p) value.
+#' The closer the color is to red, the more significant the enrichment is.
+#' Optionally, if "Cluster" is a column of \code{result_df} and
+#' \code{plot_by_cluster == TRUE}, the enriched terms are grouped by clusters.
 #'
 #' @import ggplot2
 #' @export
@@ -408,9 +408,9 @@ enrichment_chart <- function(result_df,
                           plot.title = ggplot2::element_blank())
   g <- g + ggplot2::xlab("Fold Enrichment")
   g <- g + ggplot2::theme(axis.title.y = ggplot2::element_blank())
-  g <- g + ggplot2::labs(size = "# of DEGs", color = expression(-log[10](p)))
+  g <- g + ggplot2::labs(size = "# genes", color = expression(-log[10](p)))
 
-  ## breaks for # of DEGs
+  ## breaks for # genes
   if (max(num_genes) < num_bubbles) {
     g <- g + ggplot2::scale_size_continuous(breaks = seq(0, max(num_genes)))
   } else {
@@ -453,14 +453,14 @@ enrichment_chart <- function(result_df,
 #' @param layout The type of layout to create (see \code{\link[ggraph]{ggraph}} for details. Default = "auto")
 #' @param use_description Boolean argument to indicate whether term descriptions
 #'  (in the "Term_Description" column) should be used. (default = \code{FALSE})
-#' @param node_size Argument to indicate whether to use number of DEGs ("num_DEGS")
-#'  or the -log10(lowest p value) ("p_val") for adjusting the node sizes (default = "num_DEGS")
+#' @param node_size Argument to indicate whether to use number of significant genes ("num_genes")
+#'  or the -log10(lowest p value) ("p_val") for adjusting the node sizes (default = "num_genes")
 #'
 #' @return a  \code{\link[ggraph]{ggraph}} object containing the term-gene graph.
 #'  Each node corresponds to an enriched term (beige), an up-regulated gene (green)
 #'  or a down-regulated gene (red). An edge between a term and a gene indicates
 #'  that the given term involves the gene. Size of a term node is proportional
-#'  to either the number of genes (if \code{node_size = "num_DEGs"}) or
+#'  to either the number of genes (if \code{node_size = "num_genes"}) or
 #'  the -log10(lowest p value) (if \code{node_size = "p_val"}).
 #'
 #' @details this plotting function was created based on the Gene-Concept
@@ -475,7 +475,7 @@ enrichment_chart <- function(result_df,
 #' p <- term_gene_graph(RA_output, node_size = "p_val")
 term_gene_graph <- function(result_df, num_terms = 10,
                             layout = "auto", use_description = FALSE,
-                            node_size = "num_DEGs") {
+                            node_size = "num_genes") {
 
   ############ Argument Checks
   ### Check num_terms is NULL or numeric
@@ -492,8 +492,9 @@ term_gene_graph <- function(result_df, num_terms = 10,
   ID_column <- ifelse(use_description, "Term_Description", "ID")
 
   ### Check node_size
-  if (!node_size %in% c("num_DEGs", "p_val")) {
-    stop("`node_size` should be one of 'num_DEGs' or 'num_DEGs'")
+  val_node_size <- c("num_genes", "p_val")
+  if (!node_size %in% c()) {
+    stop("`node_size` should be one of ", paste(dQuote(val_node_size), collapse = ", "))
   }
   ### Check necessary columnns
   necessary_cols <- c("Up_regulated", "Down_regulated", "lowest_p", ID_column)
@@ -546,10 +547,10 @@ term_gene_graph <- function(result_df, num_terms = 10,
   igraph::V(g)$type <- ifelse(cond_term, "term",
                               ifelse(cond_up_gene, "up", "down"))
   # Adjust node sizes
-  if (node_size == "num_DEGs") {
+  if (node_size == "num_genes") {
     sizes <- igraph::degree(g)
     sizes <- ifelse(igraph::V(g)$type == "term", sizes, 2)
-    size_label <- "# DEGs"
+    size_label <- "# genes"
   } else {
     idx <- match(names(igraph::V(g)), result_df[, ID_column])
     sizes <- -log10(result_df$lowest_p[idx])

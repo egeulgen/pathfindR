@@ -5,7 +5,7 @@
 \title{Plot Term-Gene Graph}
 \usage{
 term_gene_graph(result_df, num_terms = 10, layout = "auto",
-  use_description = FALSE, node_size = "num_DEGs")
+  use_description = FALSE, node_size = "num_genes")
 }
 \arguments{
 \item{result_df}{A dataframe of pathfindR results that must contain the following columns: \describe{
@@ -24,15 +24,15 @@ all enriched terms (default = 10, i.e. top 10 terms)}
 \item{use_description}{Boolean argument to indicate whether term descriptions
 (in the "Term_Description" column) should be used. (default = \code{FALSE})}
 
-\item{node_size}{Argument to indicate whether to use number of DEGs ("num_DEGS")
-or the -log10(lowest p value) ("p_val") for adjusting the node sizes (default = "num_DEGS")}
+\item{node_size}{Argument to indicate whether to use number of significant genes ("num_genes")
+or the -log10(lowest p value) ("p_val") for adjusting the node sizes (default = "num_genes")}
 }
 \value{
 a  \code{\link[ggraph]{ggraph}} object containing the term-gene graph.
  Each node corresponds to an enriched term (beige), an up-regulated gene (green)
  or a down-regulated gene (red). An edge between a term and a gene indicates
  that the given term involves the gene. Size of a term node is proportional
- to either the number of genes (if \code{node_size = "num_DEGs"}) or
+ to either the number of genes (if \code{node_size = "num_genes"}) or
  the -log10(lowest p value) (if \code{node_size = "p_val"}).
 }
 \description{

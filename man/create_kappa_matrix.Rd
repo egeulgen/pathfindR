@@ -11,7 +11,7 @@ create_kappa_matrix(enrichment_res, use_description = FALSE,
 \item{enrichment_res}{data frame of enrichment results. Must-have
 columns are "Term_Description" (if \code{use_description = TRUE}) or "ID"
 (if \code{use_description = FALSE}), "Down_regulated", and "Up_regulated".
-If \code{use_active_snw_genes = TRUE}, "non_DEG_Active_Snw_Genes" must also be
+If \code{use_active_snw_genes = TRUE}, "non_Signif_Snw_Genes" must also be
 provided.}
 
 \item{use_description}{Boolean argument to indicate whether term descriptions

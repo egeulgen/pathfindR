@@ -27,11 +27,11 @@ all terms are plotted.}
 enriched terms by cluster (works if \code{result_df} contains a
 "Cluster" column).}
 
-\item{num_bubbles}{number of sizes displayed in the legend \code{# of DEGs}
+\item{num_bubbles}{number of sizes displayed in the legend \code{# genes}
 (Default = 4)}
 
 \item{even_breaks}{whether or not to set even breaks for the number of sizes
-displayed in the legend \code{# of DEGs}. If \code{TRUE} (default), sets
+displayed in the legend \code{# genes}. If \code{TRUE} (default), sets
 equal breaks and the number of displayed bubbles may be different than the
 number set by \code{num_bubbles}. If the exact number set by
 \code{num_bubbles} is required, set this argument to \code{FALSE}}
@@ -39,11 +39,11 @@ number set by \code{num_bubbles}. If the exact number set by
 \value{
 a \code{\link[ggplot2]{ggplot2}} object containing the bubble chart.
 The x-axis corresponds to fold enrichment values while the y-axis indicates
-the enriched terms. Size of the bubble indicates the number of DEGs in the
-given enriched term. Color indicates the -log10(lowest-p) value. The closer
-the color is to red, the more significant the enrichment is. Optionally, if
-"Cluster" is a column of \code{result_df} and \code{plot_by_cluster == TRUE},
-the enriched terms are grouped by clusters.
+the enriched terms. Size of the bubble indicates the number of significant
+genes in the given enriched term. Color indicates the -log10(lowest-p) value.
+The closer the color is to red, the more significant the enrichment is.
+Optionally, if "Cluster" is a column of \code{result_df} and
+\code{plot_by_cluster == TRUE}, the enriched terms are grouped by clusters.
 }
 \description{
 This function is used to create a ggplot2 bubble chart displaying the

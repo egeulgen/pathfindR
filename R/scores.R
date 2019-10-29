@@ -47,7 +47,7 @@ calculate_scores <- function(enrichment_table, exp_mat, cases = NULL,
 
   all_scores_matrix <- c()
   for (i in base::seq_len(nrow(enrichment_table))) {
-    # Get DEGs
+    # Get signif. genes
     up_genes <- enrichment_table$Up_regulated[i]
     down_genes <- enrichment_table$Down_regulated[i]
     up_genes <- unlist(strsplit(up_genes, ", "))
@@ -59,7 +59,7 @@ calculate_scores <- function(enrichment_table, exp_mat, cases = NULL,
     genes <- genes[genes %in% rownames(exp_mat)]
 
     if (length(genes) != 0) {
-      # subset exp. matrix to include only DEGs
+      # subset exp. matrix to include only genes
       sub_mat <- exp_mat[rownames(exp_mat) %in% genes, , drop = FALSE]
 
       current_term_score_matrix <- c()

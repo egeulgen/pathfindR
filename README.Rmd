@@ -128,7 +128,7 @@ output_df <- run_pathfindR(input_df, pin_name_path = "/path/to/myPIN.sif")
 # change the number of iterations (default = 10)
 output_df <- run_pathfindR(input_df, iterations = 25) 
 
-# report the non-DEG active subnetwork genes (for later analyses)
+# report the non-significant active subnetwork genes (for later analyses)
 output_df <- run_pathfindR(input_df, list_active_snw_genes = TRUE)
 ```
 

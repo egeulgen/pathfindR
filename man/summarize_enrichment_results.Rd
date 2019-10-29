@@ -14,11 +14,11 @@ summarize_enrichment_results(enrichment_res,
   \item{Fold_Enrichment}{Fold enrichment value for the enriched term}
   \item{p_value}{p value of enrichment}
   \item{adj_p}{adjusted p value of enrichment}
-  \item{non_DEG_Active_Snw_Genes (OPTIONAL)}{the non-DEG active subnetwork genes, comma-separated}
+  \item{non_Signif_Snw_Genes (OPTIONAL)}{the non-significant active subnetwork genes, comma-separated}
 }}
 
 \item{list_active_snw_genes}{boolean value indicating whether or not to report
-the non-DEG active subnetwork genes for the active subnetwork which was enriched for
+the non-significant active subnetwork genes for the active subnetwork which was enriched for
 the given term with the lowest p value (default = FALSE)}
 }
 \value{
@@ -29,7 +29,7 @@ a dataframe of summarized enrichment results (over multiple iterations). Columns
   \item{occurrence}{the number of iterations that the given term was found to enriched over all iterations}
   \item{lowest_p}{the lowest adjusted-p value of the given term over all iterations}
   \item{highest_p}{the highest adjusted-p value of the given term over all iterations}
-  \item{non_DEG_Active_Snw_Genes (OPTIONAL)}{the non-DEG active subnetwork genes, comma-separated}
+  \item{non_Signif_Snw_Genes (OPTIONAL)}{the non-significant active subnetwork genes, comma-separated}
 }
 }
 \description{

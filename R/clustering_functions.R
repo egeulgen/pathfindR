@@ -3,7 +3,7 @@
 #' @param enrichment_res data frame of enrichment results. Must-have
 #' columns are "Term_Description" (if \code{use_description = TRUE}) or "ID"
 #' (if \code{use_description = FALSE}), "Down_regulated", and "Up_regulated".
-#' If \code{use_active_snw_genes = TRUE}, "non_DEG_Active_Snw_Genes" must also be
+#' If \code{use_active_snw_genes = TRUE}, "non_Signif_Snw_Genes" must also be
 #' provided.
 #' @param use_description Boolean argument to indicate whether term descriptions
 #'  (in the "Term_Description" column) should be used. (default = \code{FALSE})
@@ -42,12 +42,12 @@ create_kappa_matrix <- function(enrichment_res,
                     unlist(strsplit(as.character(x[down_idx]), ", ")))))
 
   if (use_active_snw_genes) {
-    if (!"non_DEG_Active_Snw_Genes" %in% colnames(enrichment_res)) {
-      stop("No column named `non_DEG_Active_Snw_Genes`,
+    if (!"non_Signif_Snw_Genes" %in% colnames(enrichment_res)) {
+      stop("No column named `non_Signif_Snw_Genes`,
       please execute `run_pathfindR` with `list_active_snw_genes = TRUE`!")
     }
 
-    active_idx <- which(colnames(enrichment_res) == "non_DEG_Active_Snw_Genes")
+    active_idx <- which(colnames(enrichment_res) == "non_Signif_Snw_Genes")
 
     genes_lists <- mapply(function(x, y)
       c(x, unlist(strsplit(as.character(y), ", "))),

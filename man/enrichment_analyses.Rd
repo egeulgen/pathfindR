@@ -32,7 +32,7 @@ gene sets. Names of this vector are gene set IDs (default = kegg_descriptions)}
 enrichment results (default = 0.05)}
 
 \item{list_active_snw_genes}{boolean value indicating whether or not to report
-the non-DEG active subnetwork genes for the active subnetwork which was enriched for
+the non-significant active subnetwork genes for the active subnetwork which was enriched for
 the given term with the lowest p value (default = \code{FALSE})}
 }
 \value{
@@ -42,7 +42,7 @@ a dataframe of combined enrichment results. Columns are: \describe{
   \item{Fold_Enrichment}{Fold enrichment value for the enriched term}
   \item{p_value}{p value of enrichment}
   \item{adj_p}{adjusted p value of enrichment}
-  \item{non_DEG_Active_Snw_Genes (OPTIONAL)}{the non-DEG active subnetwork genes, comma-separated}
+  \item{non_Signif_Snw_Genes (OPTIONAL)}{the non-significant active subnetwork genes, comma-separated}
 }
 }
 \description{

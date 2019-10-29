@@ -112,8 +112,8 @@ results is plotted. (default = TRUE)}
 \item{output_dir}{the directory to be created where the output and intermediate files are saved (default = "pathfindR_Results")}
 
 \item{list_active_snw_genes}{boolean value indicating whether or not to report
-the non-DEG active subnetwork genes for the active subnetwork which was enriched for
-the given term with the lowest p value (default = FALSE)}
+the non-significant active subnetwork genes for the active subnetwork which was enriched for
+the given term with the lowest p value (default = \code{FALSE})}
 
 \item{silent_option}{boolean value indicating whether to print the messages to the console (FALSE)
 or print to a file (TRUE) during active subnetwork search (default = TRUE). This option was added
@@ -127,7 +127,7 @@ Data frame of pathfindR enrichment results. Columns are: \describe{
   \item{occurrence}{the number of iterations that the given term was found to enriched over all iterations}
   \item{lowest_p}{the lowest adjusted-p value of the given term over all iterations}
   \item{highest_p}{the highest adjusted-p value of the given term over all iterations}
-  \item{non_DEG_Active_Snw_Genes (OPTIONAL)}{the non-DEG active subnetwork genes, comma-separated}
+  \item{non_Signif_Snw_Genes (OPTIONAL)}{the non-significant active subnetwork genes, comma-separated}
   \item{Up_regulated}{the up-regulated genes (as determined by `change value` > 0, if the `change column` was provided) in the input involved in the given term's gene set, comma-separated. If change column not provided, all affected are listed here.}
   \item{Down_regulated}{the down-regulated genes (as determined by `change value` < 0, if the `change column` was provided) in the input involved in the given term's gene set, comma-separated}
 }
@@ -138,7 +138,7 @@ Data frame of pathfindR enrichment results. Columns are: \describe{
 
  By default, a bubble chart of top 10 enrichment results are plotted. The x-axis
  corresponds to fold enrichment values while the y-axis indicates the enriched
- terms. Sizes of the bubbles indicate the number of DEGs in the given terms.
+ terms. Sizes of the bubbles indicate the number of significant genes in the given terms.
  Color indicates the -log10(lowest-p) value; the more red it is, the more
  significant the enriched term is. See \code{\link{enrichment_chart}}.
 }

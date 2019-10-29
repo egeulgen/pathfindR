@@ -186,7 +186,7 @@ enrichment <- function(input_genes,
 #' @inheritParams enrichment
 #' @inheritParams return_pin_path
 #' @param list_active_snw_genes boolean value indicating whether or not to report
-#' the non-DEG active subnetwork genes for the active subnetwork which was enriched for
+#' the non-significant active subnetwork genes for the active subnetwork which was enriched for
 #' the given term with the lowest p value (default = \code{FALSE})
 #'
 #' @return a dataframe of combined enrichment results. Columns are: \describe{
@@ -195,7 +195,7 @@ enrichment <- function(input_genes,
 #'   \item{Fold_Enrichment}{Fold enrichment value for the enriched term}
 #'   \item{p_value}{p value of enrichment}
 #'   \item{adj_p}{adjusted p value of enrichment}
-#'   \item{non_DEG_Active_Snw_Genes (OPTIONAL)}{the non-DEG active subnetwork genes, comma-separated}
+#'   \item{non_Signif_Snw_Genes (OPTIONAL)}{the non-significant active subnetwork genes, comma-separated}
 #' }
 #'
 #' @export
@@ -247,9 +247,9 @@ enrichment_analyses <- function(snws,
 
   ############ Process if non-empty
   if (!is.null(enrichment_res)) {
-    ## delete non_DEG_Active_Snw_Genes if list_active_snw_genes == FALSE
+    ## delete non_Signif_Snw_Genes if list_active_snw_genes == FALSE
     if (!list_active_snw_genes) {
-      enrichment_res$non_DEG_Active_Snw_Genes <- NULL
+      enrichment_res$non_Signif_Snw_Genes <- NULL
     }
 
     ## keep lowest p for each term
@@ -269,10 +269,10 @@ enrichment_analyses <- function(snws,
 #'   \item{Fold_Enrichment}{Fold enrichment value for the enriched term}
 #'   \item{p_value}{p value of enrichment}
 #'   \item{adj_p}{adjusted p value of enrichment}
-#'   \item{non_DEG_Active_Snw_Genes (OPTIONAL)}{the non-DEG active subnetwork genes, comma-separated}
+#'   \item{non_Signif_Snw_Genes (OPTIONAL)}{the non-significant active subnetwork genes, comma-separated}
 #' }
 #' @param list_active_snw_genes boolean value indicating whether or not to report
-#' the non-DEG active subnetwork genes for the active subnetwork which was enriched for
+#' the non-significant active subnetwork genes for the active subnetwork which was enriched for
 #' the given term with the lowest p value (default = FALSE)
 #'
 #' @return a dataframe of summarized enrichment results (over multiple iterations). Columns are: \describe{
@@ -282,7 +282,7 @@ enrichment_analyses <- function(snws,
 #'   \item{occurrence}{the number of iterations that the given term was found to enriched over all iterations}
 #'   \item{lowest_p}{the lowest adjusted-p value of the given term over all iterations}
 #'   \item{highest_p}{the highest adjusted-p value of the given term over all iterations}
-#'   \item{non_DEG_Active_Snw_Genes (OPTIONAL)}{the non-DEG active subnetwork genes, comma-separated}
+#'   \item{non_Signif_Snw_Genes (OPTIONAL)}{the non-significant active subnetwork genes, comma-separated}
 #' }
 #' @export
 #'
@@ -309,9 +309,9 @@ summarize_enrichment_results <- function(enrichment_res,
 
   ## reorder columns
   keep <- c("ID", "Term_Description", "Fold_Enrichment",
-    "occurrence", "lowest_p", "highest_p")
+            "occurrence", "lowest_p", "highest_p")
   if (list_active_snw_genes) {
-    keep <- c(keep, "non_DEG_Active_Snw_Genes")
+    keep <- c(keep, "non_Signif_Snw_Genes")
   }
   final_res <- final_res[, keep]
 
