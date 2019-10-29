@@ -21,13 +21,13 @@
 hyperg_test <- function(term_genes, chosen_genes, background_genes) {
 
   #### Argument checks
-  if (!is.vector(term_genes)) {
+  if (!is.atomic(term_genes)) {
     stop("`term_genes` should be a vector")
   }
-  if (!is.vector(chosen_genes)) {
+  if (!is.atomic(chosen_genes)) {
     stop("`chosen_genes` should be a vector")
   }
-  if(!is.vector(background_genes)) {
+  if(!is.atomic(background_genes)) {
     stop("`background_genes` should be a vector")
   }
 
@@ -90,11 +90,11 @@ enrichment <- function(input_genes,
 
   #### Argument checks
   ## input genes
-  if (!is.vector(input_genes)) {
+  if (!is.atomic(input_genes)) {
     stop("`input_genes` should be a vector of gene symbols")
   }
 
-  ## gene set data
+  ## gene sets data
   if (!is.list(genes_by_term)) {
     stop("`genes_by_term` should be a list of term gene sets")
   }
@@ -102,7 +102,7 @@ enrichment <- function(input_genes,
     stop("`genes_by_term` should be a named list (names are gene set IDs)")
   }
 
-  if (!is.vector(term_descriptions)) {
+  if (!is.atomic(term_descriptions)) {
     stop("`term_descriptions` should be a vector of term gene descriptions")
   }
   if (is.null(names(term_descriptions))) {
@@ -125,75 +125,66 @@ enrichment <- function(input_genes,
   }
 
   ## signif. genes and background (universal set) genes
-  if (!is.vector(sig_genes_vec)) {
+  if (!is.atomic(sig_genes_vec)) {
     stop("`sig_genes_vec` should be a vector")
   }
-  if (!is.vector(background_genes)) {
+  if (!is.atomic(background_genes)) {
     stop("`background_genes` should be a vector")
   }
 
-  #### Hypergeometric test for p value
+  #### Obtain p values
   enrichment_res <- vapply(genes_by_term, pathfindR::hyperg_test, 0.1,
                            input_genes, background_genes)
   enrichment_res <- as.data.frame(enrichment_res)
   colnames(enrichment_res) <- "p_value"
 
-  ## Fold enrinchment
-  fe_calc <- function(term_genes, sig_genes_vec, background_genes) {
-    A <- vapply(term_genes, function(x) length(intersect(sig_genes_vec, x)), 1L) / length(sig_genes_vec)
-    B <- vapply(term_genes, function(x) length(intersect(background_genes, x)), 1L) / length(background_genes)
-    return(A / B)
-  }
-  enrichment_res$Fold_Enrichment <- fe_calc(genes_by_term, sig_genes_vec, background_genes)
-
+  # Adjust p values
   idx <- order(enrichment_res$p_value)
   enrichment_res <- enrichment_res[idx, , drop = FALSE]
   enrichment_res$adj_p <- stats::p.adjust(enrichment_res$p, method = adj_method)
 
-  if (all(enrichment_res$adj_p > enrichment_threshold)) {
+
+  #### Filter by adj-p
+  cond <- enrichment_res$adj_p <= enrichment_threshold
+  # Empty case (if all adj-p > threshold)
+  if (sum(cond) == 0)
     return(NULL)
-  } else {
-    cond <- enrichment_res$adj_p <= enrichment_threshold
-    enrichment_res <- enrichment_res[cond, ]
+  enrichment_res <- enrichment_res[cond, ]
 
-    ## Term IDs
-    enrichment_res$ID <- rownames(enrichment_res)
+  #### Add other columns
+  # Term IDs
+  enrichment_res$ID <- rownames(enrichment_res)
 
-    ## Term descriptions
-    idx <- match(enrichment_res$ID, names(term_descriptions))
-    enrichment_res$Term_Description <- term_descriptions[idx]
+  ## Term descriptions
+  idx <- match(enrichment_res$ID, names(term_descriptions))
+  enrichment_res$Term_Description <- term_descriptions[idx]
 
-    ## non-DEG Active Subnetwork Genes
-    tmp <- input_genes[!input_genes %in% sig_genes_vec]
+  # Fold enrinchment
+  gset_for_fe <- genes_by_term[rownames(enrichment_res)]
+  A <- vapply(gset_for_fe, function(gset) length(intersect(sig_genes_vec, gset)), 1L) / length(sig_genes_vec)
+  B <- vapply(gset_for_fe, function(gset) length(intersect(background_genes, gset)), 1L) / length(background_genes)
+  enrichment_res$Fold_Enrichment <- A / B
 
-    for (i in base::seq_len(nrow(enrichment_res))) {
-      tmp2 <- tmp[tmp %in% genes_by_term[[enrichment_res$ID[i]]]]
-      enrichment_res$non_DEG_Active_Snw_Genes[i] <- paste(tmp2, collapse = ", ")
-    }
-
-    ## reorder columns
-    to_order <- c("ID", "Term_Description", "Fold_Enrichment",
-                  "p_value", "adj_p", "non_DEG_Active_Snw_Genes")
-    enrichment_res <- enrichment_res[, to_order]
-
-    return(enrichment_res)
+  # Non-significant Subnetwork Genes
+  non_sig_snw_genes <- base::setdiff(input_genes, sig_genes_vec)
+  for (i in base::seq_len(nrow(enrichment_res))) {
+    tmp <- intersect(non_sig_snw_genes, genes_by_term[[enrichment_res$ID[i]]])
+    enrichment_res$non_Signif_Snw_Genes[i] <- paste(tmp, collapse = ", ")
   }
+
+  ## reorder columns
+  to_order <- c("ID", "Term_Description", "Fold_Enrichment",
+                "p_value", "adj_p", "non_Signif_Snw_Genes")
+  enrichment_res <- enrichment_res[, to_order]
+
+  return(enrichment_res)
 }
 
 #' Perform Enrichment Analyses on the Input Subnetworks
 #'
 #' @param snws a list of subnetwork genes (i.e., vectors of genes for each subnetwork)
-#' @param sig_genes_vec vector of significant gene symbols. In the scope of this
-#'   package, these are the input genes that were used for active subnetwork search
+#' @inheritParams enrichment
 #' @inheritParams return_pin_path
-#' @param genes_by_term List that contains genes for each gene set. Names of
-#'   this list are gene set IDs
-#' @param term_descriptions Vector that contains term descriptions for the
-#'   gene sets. Names of this vector are gene set IDs
-#' @param adj_method correction method to be used for adjusting p-values of
-#   enrichment results (Default: "bonferroni". see ?p.adjust for details)
-#' @param enrichment_threshold adjusted-p value threshold used when filtering
-#'  enrichment results (default = 0.05)
 #' @param list_active_snw_genes boolean value indicating whether or not to report
 #' the non-DEG active subnetwork genes for the active subnetwork which was enriched for
 #' the given term with the lowest p value (default = \code{FALSE})
