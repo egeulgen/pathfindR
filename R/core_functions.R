@@ -760,7 +760,7 @@ input_processing <- function(input, p_val_threshold,
 #'  The only must-have column is "ID".
 #' @param input_processed input data processed via \code{\link{input_processing}}
 #' @param genes_by_term List that contains genes for each gene set. Names of
-#'   this list are gene set IDs
+#'   this list are gene set IDs (default = kegg_genes)
 #'
 #' @return The original data frame with two additional columns:  \describe{
 #'   \item{Up_regulated}{the up-regulated genes in the input involved in the given term's gene set, comma-separated}
@@ -772,10 +772,11 @@ input_processing <- function(input, p_val_threshold,
 #' example_gene_data <- RA_input
 #' colnames(example_gene_data) <- c("GENE", "CHANGE", "P_VALUE")
 #'
-#' annotated_result <- annotate_term_genes(RA_output, example_gene_data, kegg_genes)
+#' annotated_result <- annotate_term_genes(result_df = RA_output,
+#'                                         input_processed = example_gene_data)
 annotate_term_genes <- function(result_df,
                                 input_processed,
-                                genes_by_term) {
+                                genes_by_term = kegg_genes) {
 
   ### Annotate up/down-regulated term-related genes
   ## Up/Down-regulated genes

@@ -57,9 +57,9 @@ hyperg_test <- function(term_genes, chosen_genes, background_genes) {
 #'   analysis. In the scope of this package, these are genes that were
 #'   identified for an active subnetwork
 #' @param genes_by_term List that contains genes for each gene set. Names of
-#'   this list are gene set IDs
+#'   this list are gene set IDs (default = kegg_genes)
 #' @param term_descriptions Vector that contains term descriptions for the
-#'   gene sets. Names of this vector are gene set IDs
+#'   gene sets. Names of this vector are gene set IDs (default = kegg_descriptions)
 #' @param adj_method correction method to be used for adjusting p-values.
 #'   (default = "bonferroni")
 #' @param enrichment_threshold adjusted-p value threshold used when filtering
@@ -78,13 +78,11 @@ hyperg_test <- function(term_genes, chosen_genes, background_genes) {
 #'   distribution-based hypothesis testing.
 #' @examples
 #' enrichment(input_genes = c("PER1", "PER2", "CRY1", "CREB1"),
-#'            genes_by_term = kegg_genes,
-#'            term_descriptions = kegg_descriptions,
 #'            sig_genes_vec = "PER1",
 #'            background_genes = unlist(kegg_genes))
 enrichment <- function(input_genes,
-                       genes_by_term,
-                       term_descriptions,
+                       genes_by_term = kegg_genes,
+                       term_descriptions = kegg_descriptions,
                        adj_method = "bonferroni",
                        enrichment_threshold = 5e-2,
                        sig_genes_vec,
@@ -216,16 +214,14 @@ enrichment <- function(input_genes,
 #' @examples
 #' enr_res <- enrichment_analyses(snws = example_active_snws[1:2],
 #'                                sig_genes_vec = RA_input$Gene.symbol[1:25],
-#'                                pin_name_path = "KEGG",
-#'                                genes_by_term = kegg_genes,
-#'                                term_descriptions = kegg_descriptions)
+#'                                pin_name_path = "KEGG")
 enrichment_analyses <- function(snws,
                                 sig_genes_vec,
                                 pin_name_path = "Biogrid",
-                                genes_by_term,
-                                term_descriptions,
+                                genes_by_term = kegg_genes,
+                                term_descriptions = kegg_descriptions,
                                 adj_method = "bonferroni",
-                                enrichment_threshold = 5e-2,
+                                enrichment_threshold = 0.05,
                                 list_active_snw_genes = FALSE) {
 
   ### Argument checks

@@ -5,8 +5,9 @@
 \title{Perform Enrichment Analyses on the Input Subnetworks}
 \usage{
 enrichment_analyses(snws, sig_genes_vec, pin_name_path = "Biogrid",
-  genes_by_term, term_descriptions, adj_method = "bonferroni",
-  enrichment_threshold = 0.05, list_active_snw_genes = FALSE)
+  genes_by_term = kegg_genes, term_descriptions = kegg_descriptions,
+  adj_method = "bonferroni", enrichment_threshold = 0.05,
+  list_active_snw_genes = FALSE)
 }
 \arguments{
 \item{snws}{a list of subnetwork genes (i.e., vectors of genes for each subnetwork)}
@@ -19,12 +20,13 @@ must be one of c("Biogrid", "GeneMania", "IntAct", "KEGG", "mmu_STRING"). If
 path/to/PIN.sif, the file must comply with the PIN specifications. (Default = "Biogrid")}
 
 \item{genes_by_term}{List that contains genes for each gene set. Names of
-this list are gene set IDs}
+this list are gene set IDs (default = kegg_genes)}
 
 \item{term_descriptions}{Vector that contains term descriptions for the
-gene sets. Names of this vector are gene set IDs}
+gene sets. Names of this vector are gene set IDs (default = kegg_descriptions)}
 
-\item{adj_method}{correction method to be used for adjusting p-values of}
+\item{adj_method}{correction method to be used for adjusting p-values.
+(default = "bonferroni")}
 
 \item{enrichment_threshold}{adjusted-p value threshold used when filtering
 enrichment results (default = 0.05)}
@@ -49,9 +51,7 @@ Perform Enrichment Analyses on the Input Subnetworks
 \examples{
 enr_res <- enrichment_analyses(snws = example_active_snws[1:2],
                                sig_genes_vec = RA_input$Gene.symbol[1:25],
-                               pin_name_path = "KEGG",
-                               genes_by_term = kegg_genes,
-                               term_descriptions = kegg_descriptions)
+                               pin_name_path = "KEGG")
 }
 \seealso{
 \code{\link{enrichment}} for the enrichment analysis for a single gene set

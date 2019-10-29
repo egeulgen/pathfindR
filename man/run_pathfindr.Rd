@@ -61,7 +61,8 @@ in the input that are not found in the PIN to an alias symbol found in the PIN
 \item{enrichment_threshold}{adjusted-p value threshold used when filtering
 enrichment results (default = 0.05)}
 
-\item{adj_method}{correction method to be used for adjusting p-values of}
+\item{adj_method}{correction method to be used for adjusting p-values.
+(default = "bonferroni")}
 
 \item{search_method}{algorithm to use when performing active subnetwork
 search. Options are greedy search (GR), simulated annealing (SA) or genetic

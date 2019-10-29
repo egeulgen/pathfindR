@@ -4,9 +4,9 @@
 \alias{enrichment}
 \title{Perform Enrichment Analysis for a Single Gene Set}
 \usage{
-enrichment(input_genes, genes_by_term, term_descriptions,
-  adj_method = "bonferroni", enrichment_threshold = 0.05,
-  sig_genes_vec, background_genes)
+enrichment(input_genes, genes_by_term = kegg_genes,
+  term_descriptions = kegg_descriptions, adj_method = "bonferroni",
+  enrichment_threshold = 0.05, sig_genes_vec, background_genes)
 }
 \arguments{
 \item{input_genes}{The set of gene symbols to be used for enrichment
@@ -14,10 +14,10 @@ analysis. In the scope of this package, these are genes that were
 identified for an active subnetwork}
 
 \item{genes_by_term}{List that contains genes for each gene set. Names of
-this list are gene set IDs}
+this list are gene set IDs (default = kegg_genes)}
 
 \item{term_descriptions}{Vector that contains term descriptions for the
-gene sets. Names of this vector are gene set IDs}
+gene sets. Names of this vector are gene set IDs (default = kegg_descriptions)}
 
 \item{adj_method}{correction method to be used for adjusting p-values.
 (default = "bonferroni")}
@@ -40,8 +40,6 @@ Perform Enrichment Analysis for a Single Gene Set
 }
 \examples{
 enrichment(input_genes = c("PER1", "PER2", "CRY1", "CREB1"),
-           genes_by_term = kegg_genes,
-           term_descriptions = kegg_descriptions,
            sig_genes_vec = "PER1",
            background_genes = unlist(kegg_genes))
 }
