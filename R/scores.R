@@ -25,26 +25,45 @@
 #' @export
 #'
 #' @examples
-#' score_matrix <- calculate_scores(RA_output, RA_exp_mat, plot_hmap = FALSE)
-calculate_scores <- function(enrichment_table, exp_mat, cases = NULL,
-                             use_description = FALSE,
-                             plot_hmap = TRUE,
-                             ...) {
-
-  ############ Argument Checks
-  ### Check use_description is boolean
+#' score_matrix <- score_terms(RA_output, RA_exp_mat, plot_hmap = FALSE)
+score_terms <- function(enrichment_table, exp_mat, cases = NULL,
+                        use_description = FALSE,
+                        plot_hmap = TRUE,
+                        ...) {
+  #### Argument Checks
   if (!is.logical(use_description)) {
-    stop("`use_description` must either be TRUE or FALSE!")
+    stop("`use_description` should either be TRUE or FALSE")
   }
 
-  ### Check whether any cases (if provided) are missing from exp_mat
-  if (!is.null(cases) & any(!cases %in% colnames(exp_mat))) {
-    stop("Missing cases in the expression matrix!")
+  if (!is.logical(plot_hmap)) {
+    stop("`plot_hmap` should either be TRUE or FALSE")
   }
 
-  ### Set column for term labels
+  if (!is.data.frame(enrichment_table)) {
+    stop("`enrichment_table` should be a data frame of enrichment results")
+  }
   ID_column <- ifelse(use_description, "Term_Description", "ID")
+  nec_cols <- c(ID_column, "Up_regulated", "Down_regulated")
+  if (!all(nec_cols %in% colnames(enrichment_table))) {
+    stop("`enrichment_table` should contain all of ",
+         paste(dQuote(nec_cols), collapse = ", "))
+  }
 
+  if(!is.matrix(exp_mat)) {
+    stop("`exp_mat` should be a matrix")
+  }
+
+  if (!is.null(cases)) {
+    if (!is.atomic(cases)) {
+      stop("`cases` should be a vector")
+    }
+
+    if (!all(cases %in% colnames(exp_mat))) {
+      stop("Missing `cases` in `exp_mat`")
+    }
+  }
+
+  #### Create score matrix
   all_scores_matrix <- c()
   for (i in base::seq_len(nrow(enrichment_table))) {
     # Get signif. genes
@@ -102,38 +121,60 @@ calculate_scores <- function(enrichment_table, exp_mat, cases = NULL,
 #'
 #' @param score_matrix Matrix of agglomerated enriched term scores per sample. Columns are
 #' samples, rows are enriched terms
-#' @param cases (Optional) A vector of sample names that are cases in the
-#' case/control experiment.
+#' @inheritParams score_terms
 #' @param label_samples Boolean value to indicate whether or not to label the
 #' samples in the heatmap plot (default = TRUE)
-#' @param case_control_titles A vector of length two for naming of the 'Case'
-#' and 'Control' groups (in order) (default = \code{c('Case', 'Control')})
+#' @param case_title Naming of the 'Case' group (as in \code{cases}) (default = "Case")
+#' @param control_title Naming of the 'Control' group (default = "Control")
 #' @param low a string indicating the color of 'low' values in the score coloring gradient (default = 'green')
+#' @param mid a string indicating the color of 'mid' values in the score coloring gradient (default = 'black')
 #' @param high a string indicating the color of 'high' values in the score coloring gradient (default = 'red')
 #'
 #' @return A `ggplot2` object containing the heatmap plot. x-axis indicates
 #' the samples. y-axis indicates the enriched terms. "Score" indicates the
 #' score of the term in a given sample. If \code{cases} are provided, the plot is
-#' divided into 2 facets, named by the \code{case_control_titles}.
+#' divided into 2 facets, named by \code{case_title} and \code{control_title}.
 #'
 #' @import ggplot2
 #' @export
 #'
 #' @examples
-#' score_mat <- calculate_scores(RA_output, RA_exp_mat, plot_hmap = FALSE)
+#' score_mat <- score_terms(RA_output, RA_exp_mat, plot_hmap = FALSE)
 #' hmap <- plot_scores(score_mat)
 plot_scores <- function(score_matrix, cases = NULL, label_samples = TRUE,
-                        case_control_titles = c("Case", "Control"),
-                        low = "green", high = "red") {
+                        case_title = "Case",
+                        control_title = "Control",
+                        low = "green", mid = "black", high = "red") {
 
-  ############ Argument Checks
-  if (length(case_control_titles) != 2) {
-    stop("\"case_control_titles\" must contain exactly two elements!")
-  }
-  if (any(!cases %in% colnames(score_matrix)) & !is.null(cases)) {
-    stop("Missing cases in the score matrix!")
+  #### Argument Checks
+  if (!is.matrix(score_matrix)) {
+    stop("`score_matrix` should be a matrix")
   }
 
+  if (!is.null(cases)) {
+    if (!is.atomic(cases)) {
+      stop("`cases` should be a vector")
+    }
+
+    if (!all(cases %in% colnames(score_matrix))) {
+      stop("Missing `cases` in `score_matrix`")
+    }
+  }
+
+  if (!is.logical(label_samples)) {
+    stop("`label_samples` should be TRUE or FALSE")
+  }
+
+  if (!is.character(case_title) | length(case_title) != 1) {
+    stop("`case_title` should be a single character value")
+  }
+
+  if (!is.character(control_title) | length(control_title) != 1) {
+    stop("`control_title` should be a single character value")
+  }
+
+
+  #### Create plot
   ## sort according to activity (up/down)
   if (!is.null(cases)) {
     tmp <- rowMeans(score_matrix[, cases, drop = FALSE])
@@ -157,40 +198,29 @@ plot_scores <- function(score_matrix, cases = NULL, label_samples = TRUE,
   scores <- data.frame(scores)
   score_df <- cbind(score_df, scores)
   if (!is.null(cases)) {
-    score_df$Type <- factor(ifelse(score_df$Sample %in% cases,
-      case_control_titles[1],
-      case_control_titles[2]
-    ),
-    levels = case_control_titles
-    )
+    score_df$Type <- ifelse(score_df$Sample %in% cases, case_title, control_title)
+    score_df$Type <- factor(score_df$Type,
+                            levels = c(case_title, control_title))
   }
 
   g <- ggplot2::ggplot(score_df, ggplot2::aes_(x = ~Sample, y = ~Term))
   g <- g + ggplot2::geom_tile(ggplot2::aes_(fill = ~scores), color = "white")
-  g <- g + ggplot2::scale_fill_gradient2(low = low, mid = "black", high = high)
-  g <- g + ggplot2::theme(
-    axis.title.x = ggplot2::element_blank(),
-    axis.title.y = ggplot2::element_blank(),
-    axis.text.x = ggplot2::element_text(
-      angle = 45,
-      hjust = 1
-    ),
-    legend.title = ggplot2::element_text(size = 10),
-    legend.text = ggplot2::element_text(size = 12)
-  )
+  g <- g + ggplot2::scale_fill_gradient2(low = low, mid = mid, high = high)
+  g <- g + ggplot2::theme(axis.title.x = ggplot2::element_blank(),
+                          axis.title.y = ggplot2::element_blank(),
+                          axis.text.x = ggplot2::element_text(angle = 45,
+                                                              hjust = 1),
+                          legend.title = ggplot2::element_text(size = 10),
+                          legend.text = ggplot2::element_text(size = 12))
   g <- g + ggplot2::labs(fill = "Score")
   if (!is.null(cases)) {
     g <- g + ggplot2::facet_grid(~Type, scales = "free_x", space = "free")
-    g <- g + ggplot2::theme(strip.text.x = ggplot2::element_text(
-      size = 12,
-      face = "bold"
-    ))
+    g <- g + ggplot2::theme(strip.text.x = ggplot2::element_text(size = 12,
+                                                                 face = "bold"))
   }
   if (!label_samples) {
-    g <- g + ggplot2::theme(
-      axis.text.x = ggplot2::element_blank(),
-      axis.ticks.x = ggplot2::element_blank()
-    )
+    g <- g + ggplot2::theme(axis.text.x = ggplot2::element_blank(),
+                            axis.ticks.x = ggplot2::element_blank())
   }
   return(g)
 }

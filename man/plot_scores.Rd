@@ -5,23 +5,26 @@
 \title{Plot the Heatmap of Score Matrix of Enriched Terms per Sample}
 \usage{
 plot_scores(score_matrix, cases = NULL, label_samples = TRUE,
-  case_control_titles = c("Case", "Control"), low = "green",
-  high = "red")
+  case_title = "Case", control_title = "Control", low = "green",
+  mid = "black", high = "red")
 }
 \arguments{
 \item{score_matrix}{Matrix of agglomerated enriched term scores per sample. Columns are
 samples, rows are enriched terms}
 
 \item{cases}{(Optional) A vector of sample names that are cases in the
-case/control experiment.}
+case/control experiment. (default = NULL)}
 
 \item{label_samples}{Boolean value to indicate whether or not to label the
 samples in the heatmap plot (default = TRUE)}
 
-\item{case_control_titles}{A vector of length two for naming of the 'Case'
-and 'Control' groups (in order) (default = \code{c('Case', 'Control')})}
+\item{case_title}{Naming of the 'Case' group (as in \code{cases}) (default = "Case")}
+
+\item{control_title}{Naming of the 'Control' group (default = "Control")}
 
 \item{low}{a string indicating the color of 'low' values in the score coloring gradient (default = 'green')}
+
+\item{mid}{a string indicating the color of 'mid' values in the score coloring gradient (default = 'black')}
 
 \item{high}{a string indicating the color of 'high' values in the score coloring gradient (default = 'red')}
 }
@@ -29,12 +32,12 @@ and 'Control' groups (in order) (default = \code{c('Case', 'Control')})}
 A `ggplot2` object containing the heatmap plot. x-axis indicates
 the samples. y-axis indicates the enriched terms. "Score" indicates the
 score of the term in a given sample. If \code{cases} are provided, the plot is
-divided into 2 facets, named by the \code{case_control_titles}.
+divided into 2 facets, named by \code{case_title} and \code{control_title}.
 }
 \description{
 Plot the Heatmap of Score Matrix of Enriched Terms per Sample
 }
 \examples{
-score_mat <- calculate_scores(RA_output, RA_exp_mat, plot_hmap = FALSE)
+score_mat <- score_terms(RA_output, RA_exp_mat, plot_hmap = FALSE)
 hmap <- plot_scores(score_mat)
 }

@@ -5,7 +5,7 @@
 - Replaced most occurences of "pathway" to "term". This was adapted because "term" reflects the utility of the package better. The enrichment and clustering approaches work with any kind of gene set data (be it pathway gene sets, gene ontology gene sets, motif gene sets etc.) Accordingly:
   - `DESCRIPTION` was updated
   - The functions `annotate_pathway_DEGs()`, `calculate_pw_scores()`, `cluster_pathways()`, `fuzzy_pw_clustering()`, `hierarchical_pw_clustering()`, `visualize_pw_interactions()` and `visualize_pws()` were renamed to 
-  `annotate_term_DEGs()`, `calculate_scores()`, `cluster_enriched_terms()`, `fuzzy_term_clustering()`, `hierarchical_term_clustering()`, `visualize_term_interactions()` and `visualize_terms()` respectively
+  `annotate_term_DEGs()`, `score_terms()`, `cluster_enriched_terms()`, `fuzzy_term_clustering()`, `hierarchical_term_clustering()`, `visualize_term_interactions()` and `visualize_terms()` respectively
   - The Rmd template file for the report `enriched_pathways.Rmd` was renamed to `enriched_terms.Rmd`
   - All the Rmd template files for the report were updated
   - Documentation of each function was updated accordingly

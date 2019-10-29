@@ -281,7 +281,7 @@ term_gene_graph(RA_output, num_terms = 3, node_size = "p_val")
 
 # Aggregated Term Scores per Sample
 
-The function `calculate_scores()` can be used to calculate the agglomerated z score of each enriched term per sample. This allows the user to individually examine the scores and infer how a term is overall altered (activated or repressed) in a given sample or a group of samples.
+The function `score_terms()` can be used to calculate the agglomerated z score of each enriched term per sample. This allows the user to individually examine the scores and infer how a term is overall altered (activated or repressed) in a given sample or a group of samples.
 
 ```{r scores, eval=TRUE, fig.height=4, fig.width=8}
 ## Vector of "Case" IDs
@@ -293,7 +293,7 @@ cases <- c("GSM389703", "GSM389704", "GSM389706", "GSM389708",
 
 ## Calculate scores for representative terms 
 ## and plot heat map using term descriptions
-score_matrix <- calculate_scores(enrichment_table = RA_clustered[RA_clustered$Status == "Representative", ],
+score_matrix <- score_terms(enrichment_table = RA_clustered[RA_clustered$Status == "Representative", ],
                                  exp_mat = RA_exp_mat,
                                  cases = cases,
                                  use_description = TRUE, # default FALSE

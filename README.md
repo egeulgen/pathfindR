@@ -217,11 +217,10 @@ page](https://github.com/egeulgen/pathfindR/wiki/Term-Gene-Graph).
 ![Agglomerated Scores for all Enriched Terms per
 Sample](./vignettes/score_hmap.png?raw=true "Scoring per Sample")
 
-The function `calculate_scores()` can be used to calculate the
-agglomerated z score of each enriched term per sample. This allows the
-user to individually examine the scores and infer how a term is overall
-altered (activated or repressed) in a given sample or a group of
-samples.
+The function `score_terms()` can be used to calculate the agglomerated z
+score of each enriched term per sample. This allows the user to
+individually examine the scores and infer how a term is overall altered
+(activated or repressed) in a given sample or a group of samples.
 
 See the [wiki
 page](https://github.com/egeulgen/pathfindR/wiki/Enriched-Term-Scoring)
