@@ -11,7 +11,7 @@ processed_input <- suppressMessages(input_processing(RA_input[1:10, ],
                                                      0.05, return_pin_path()))
 tmp_res <- RA_output[3, ]
 
-test_that("`visualize_terms` creates expected png file(s)", {
+test_that("`visualize_terms()` creates expected png file(s)", {
 
   ## hsa KEGG (pathview)
   expected_out_file <- file.path("term_visualizations",
@@ -72,9 +72,9 @@ test_that("`visualize_term_interactions` creates expected png file(s)", {
                         tmp_res2$Term_Description[2]))
   unlink("term_visualizations", recursive = TRUE)
 
-  # Non-empty non_DEG_Active_Snw_Genes
+  # Non-empty non_Signif_Snw_Genes
   tmp_res3 <- tmp_res
-  tmp_res3$non_DEG_Active_Snw_Genes <- RA_output$Up_regulated[2]
+  tmp_res3$non_Signif_Snw_Genes <- RA_output$Up_regulated[2]
   expect_null(visualize_term_interactions(tmp_res3,
                                           pin_name_path = "Biogrid"))
   expect_true(file.exists(expected_out_file))
@@ -118,7 +118,7 @@ test_that("enrichment_chart produces a ggplot object with correct labels", {
   expect_is(g <- enrichment_chart(RA_output), "ggplot")
   expect_equal(ggplot2::quo_name(g$mapping$x), "Fold_Enrichment")
   expect_equal(ggplot2::quo_name(g$mapping$y), "Term_Description")
-  expect_equal(g$labels$size, "# of DEGs")
+  expect_equal(g$labels$size, "# genes")
   expect_equal(g$labels$colour, expression(-log[10](p)))
   expect_equal(g$labels$x, "Fold Enrichment")
   expect_equal(g$labels$y, "Term_Description")
@@ -128,7 +128,7 @@ test_that("enrichment_chart produces a ggplot object with correct labels", {
             "ggplot")
   expect_equal(ggplot2::quo_name(g$mapping$x), "Fold_Enrichment")
   expect_equal(ggplot2::quo_name(g$mapping$y), "Term_Description")
-  expect_equal(g$labels$size, "# of DEGs")
+  expect_equal(g$labels$size, "# genes")
   expect_equal(g$labels$colour, expression(-log[10](p)))
   expect_equal(g$labels$x, "Fold Enrichment")
   expect_equal(g$labels$y, "Term_Description")
@@ -138,7 +138,7 @@ test_that("enrichment_chart produces a ggplot object with correct labels", {
             "ggplot")
   expect_equal(ggplot2::quo_name(g$mapping$x), "Fold_Enrichment")
   expect_equal(ggplot2::quo_name(g$mapping$y), "Term_Description")
-  expect_equal(g$labels$size, "# of DEGs")
+  expect_equal(g$labels$size, "# genes")
   expect_equal(g$labels$colour, expression(-log[10](p)))
   expect_equal(g$labels$x, "Fold Enrichment")
   expect_equal(g$labels$y, "Term_Description")
@@ -147,7 +147,7 @@ test_that("enrichment_chart produces a ggplot object with correct labels", {
             "ggplot")
   expect_equal(ggplot2::quo_name(g$mapping$x), "Fold_Enrichment")
   expect_equal(ggplot2::quo_name(g$mapping$y), "Term_Description")
-  expect_equal(g$labels$size, "# of DEGs")
+  expect_equal(g$labels$size, "# genes")
   expect_equal(g$labels$colour, expression(-log[10](p)))
   expect_equal(g$labels$x, "Fold Enrichment")
   expect_equal(g$labels$y, "Term_Description")
@@ -158,7 +158,7 @@ test_that("enrichment_chart produces a ggplot object with correct labels", {
             "ggplot")
   expect_equal(ggplot2::quo_name(g$mapping$x), "Fold_Enrichment")
   expect_equal(ggplot2::quo_name(g$mapping$y), "Term_Description")
-  expect_equal(g$labels$size, "# of DEGs")
+  expect_equal(g$labels$size, "# genes")
   expect_equal(g$labels$colour, expression(-log[10](p)))
   expect_equal(g$labels$x, "Fold Enrichment")
   expect_equal(g$labels$y, "Term_Description")
@@ -168,7 +168,7 @@ test_that("enrichment_chart produces a ggplot object with correct labels", {
             "ggplot")
   expect_equal(ggplot2::quo_name(g$mapping$x), "Fold_Enrichment")
   expect_equal(ggplot2::quo_name(g$mapping$y), "Term_Description")
-  expect_equal(g$labels$size, "# of DEGs")
+  expect_equal(g$labels$size, "# genes")
   expect_equal(g$labels$colour, expression(-log[10](p)))
   expect_equal(g$labels$x, "Fold Enrichment")
   expect_equal(g$labels$y, "Term_Description")
@@ -195,7 +195,7 @@ test_that("enrichment_chart arg checks work", {
 })
 
 # term_gene_graph ---------------------------------------------------------
-test_that("term_gene_graph produces a ggplot object using the correct data", {
+test_that("`term_gene_graph()` produces a ggplot object using the correct data", {
 
   # Top 10 (default)
   expect_is(p <- term_gene_graph(RA_output), "ggplot")
@@ -209,6 +209,10 @@ test_that("term_gene_graph produces a ggplot object using the correct data", {
   expect_is(p <- term_gene_graph(RA_output, num_terms = NULL), "ggplot")
   expect_equal(sum(p$data$type == "term"), nrow(RA_output))
 
+  # Top 1000, expect to plot top nrow(output)
+  expect_is(p <- term_gene_graph(RA_output, num_terms = 1e3), "ggplot")
+  expect_equal(sum(p$data$type == "term"), nrow(RA_output))
+
   # use_description = TRUE
   expect_is(p2 <- term_gene_graph(RA_output, use_description = TRUE), "ggplot")
   expect_equal(sum(p2$data$type == "term"), 10)
@@ -218,15 +222,16 @@ test_that("term_gene_graph produces a ggplot object using the correct data", {
   expect_equal(sum(p$data$type == "term"), 10)
 })
 
-test_that("term_gene_graph arg checks work", {
+test_that("`term_gene_graph()` arg checks work", {
   expect_error(term_gene_graph(RA_output, num_terms = "WRONG"),
     "`num_terms` must either be numeric or NULL!")
 
   expect_error(term_gene_graph(RA_output, use_description = "WRONG"),
     "`use_description` must either be TRUE or FALSE!")
 
+  val_node_size <- c("num_genes", "p_val")
   expect_error(term_gene_graph(RA_output, node_size = "WRONG"),
-               "`node_size` should be one of 'num_DEGs' or 'num_DEGs'")
+               "`node_size` should be one of ", paste(dQuote(val_node_size), collapse = ", "))
 
   wrong_df <- RA_output[, -c(1, 2)]
   ID_column <- "ID"

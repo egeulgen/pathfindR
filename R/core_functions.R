@@ -129,10 +129,6 @@ run_pathfindR <- function(input,
     stop("`visualize_enriched_terms` should be either TRUE or FALSE")
   }
 
-  if (!is.logical(convert2alias)) {
-    stop("`convert2alias` should be either TRUE or FALSE")
-  }
-
   if (!is.logical(plot_enrichment_chart)) {
     stop("`plot_enrichment_chart` should be either TRUE or FALSE")
   }
@@ -371,7 +367,7 @@ fetch_gene_set <- function(gene_sets = "KEGG",
                            custom_genes = NULL,
                            custom_descriptions = NULL) {
 
-  # parse gene_sets argument
+  ### Argument checks
   all_gs_opts <- c("KEGG", "Reactome", "BioCarta",
                    "GO-All", "GO-BP", "GO-CC", "GO-MF",
                    "mmu_KEGG", "Custom")
@@ -379,10 +375,32 @@ fetch_gene_set <- function(gene_sets = "KEGG",
     stop("`gene_sets` should be one of ", paste(dQuote(all_gs_opts), collapse = ", "))
   }
 
+  if (!is.numeric(min_gset_size)) {
+    stop("`min_gset_size` should be numeric")
+  }
+  if (!is.numeric(max_gset_size)) {
+    stop("`max_gset_size` should be numeric")
+  }
+
+
   ### Custom Gene Sets
   if (gene_sets == "Custom") {
     if (is.null(custom_genes) | is.null(custom_descriptions)) {
       stop("`custom_genes` and `custom_descriptions` must be provided if `gene_sets = \"Custom\"`")
+    }
+
+    if (!is.list(custom_genes)) {
+      stop("`custom_genes` should be a list of term gene sets")
+    }
+    if (is.null(names(custom_genes))) {
+      stop("`custom_genes` should be a named list (names are gene set IDs)")
+    }
+
+    if (!is.atomic(custom_descriptions)) {
+      stop("`custom_descriptions` should be a vector of term gene descriptions")
+    }
+    if (is.null(names(custom_descriptions))) {
+      stop("`custom_descriptions` should be a named vector (names are gene set IDs)")
     }
 
     # filter by size
@@ -619,6 +637,10 @@ input_testing <- function(input, p_val_threshold = 0.05) {
 input_processing <- function(input, p_val_threshold,
                              pin_name_path, convert2alias = TRUE) {
 
+  if (!is.logical(convert2alias)) {
+    stop("`convert2alias` should be either TRUE or FALSE")
+  }
+
   pin_path <- return_pin_path(pin_name_path)
 
   if (ncol(input) == 2) {
@@ -638,10 +660,8 @@ input_processing <- function(input, p_val_threshold,
   message("Number of genes provided in input: ", nrow(input))
   ## Discard larger than p-value threshold
   if (sum(input$P_VALUE <= p_val_threshold) == 0) {
-    stop(
-      "No input p value is lower than the provided threshold (",
-      p_val_threshold, ")"
-    )
+    stop("No input p value is lower than the provided threshold (",
+         p_val_threshold, ")")
   }
   input <- input[input$P_VALUE <= p_val_threshold, ]
   message("Number of genes in input after p-value filtering: ", nrow(input))
@@ -718,11 +738,8 @@ input_processing <- function(input, p_val_threshold,
 
   ## Give out warning indicating the number of still missing
   if (n != 0) {
-    message(paste0(
-      "Could not find any interactions for ",
-      n,
-      " (", round(perc, 2), "%) genes in the PIN"
-    ))
+    message(paste0("Could not find any interactions for ",
+                   n, " (", round(perc, 2), "%) genes in the PIN"))
   } else {
     message(paste0("Found interactions for all genes in the PIN"))
   }
@@ -772,6 +789,27 @@ input_processing <- function(input, p_val_threshold,
 annotate_term_genes <- function(result_df,
                                 input_processed,
                                 genes_by_term = kegg_genes) {
+  ### Argument checks
+  if(!is.data.frame(result_df)) {
+    stop("`result_df` should be a data frame")
+  }
+  if (!"ID" %in% colnames(result_df)) {
+    stop("`result_df` should contain an \"ID\" column")
+  }
+
+  if (!is.data.frame(input_processed)) {
+    stop("`input_processed` should be a data frame")
+  }
+  if (!all(c("GENE", "CHANGE") %in% colnames(input_processed))) {
+    stop("`input_processed` should contain the columns \"GENE\" and \"CHANGE\"")
+  }
+
+  if (!is.list(genes_by_term)) {
+    stop("`genes_by_term` should be a list of term gene sets")
+  }
+  if (is.null(names(genes_by_term))) {
+    stop("`genes_by_term` should be a named list (names are gene set IDs)")
+  }
 
   ### Annotate up/down-regulated term-related genes
   ## Up/Down-regulated genes

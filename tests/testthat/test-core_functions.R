@@ -2,7 +2,7 @@
 ## Project: pathfindR
 ## Script purpose: Testthat testing script for
 ## core functions
-## Date: Oct 28, 2019
+## Date: Oct 30, 2019
 ## Author: Ege Ulgen
 ##################################################
 
@@ -22,7 +22,14 @@ test_that("`run_pathfindR()` works as expected", {
                           plot_enrichment_chart = FALSE),
             "data.frame")
 
+  ## GA - n_processes <- 1
+  expect_warning(run_pathfindR(RA_input[1:2, ],
+                               search_method = "GA",
+                               output_dir = tempdir(check = TRUE)),
+                 "Did not find any enriched terms!")
+
   skip("will test SA and GA if we can create a suitable (faster and non-empty) test case")
+
   ## SA
   expect_is(run_pathfindR(RA_input,
                           iterations = 1,
@@ -34,13 +41,12 @@ test_that("`run_pathfindR()` works as expected", {
             "data.frame")
 
   ## GA
-  expect_is(suppressWarnings(run_pathfindR(RA_input,
-                                           iterations = 1,
-                                           gene_sets = "BioCarta",
-                                           pin_name_path = "GeneMania",
-                                           search_method = "GA",
-                                           visualize_enriched_terms = FALSE,
-                                           plot_enrichment_chart = FALSE)),
+  expect_is(run_pathfindR(RA_input,
+                          gene_sets = "GO-BP",
+                          pin_name_path = "GeneMania",
+                          search_method = "GA",
+                          visualize_enriched_terms = FALSE,
+                          plot_enrichment_chart = FALSE),
             "data.frame")
 })
 
@@ -53,26 +59,35 @@ test_that("Expect warning with empty result from `run_pathfindR()`", {
 
 
 test_that("`run_pathfindR()` arg checks work", {
-  expect_error(run_pathfindR(RA_input, search_method = "WRONG"),
-               '`search_method` must be one of "GR", "SA", "GA"')
+  valid_mets <- c("GR", "SA", "GA")
+  expect_error(run_pathfindR(RA_input, search_method = "INVALID"),
+               paste0("`search_method` should be one of ",
+                      paste(dQuote(valid_mets), collapse = ", ")))
 
-  expect_error(run_pathfindR(RA_input, use_all_positives = "WRONG"),
-               "the argument `use_all_positives` must be either TRUE or FALSE")
+  expect_error(run_pathfindR(RA_input, use_all_positives = "INVALID"),
+               "`use_all_positives` should be either TRUE or FALSE")
 
-  expect_error(run_pathfindR(RA_input, silent_option = "WRONG"),
-    "the argument `silent_option` must be either TRUE or FALSE")
+  expect_error(run_pathfindR(RA_input, silent_option = "INVALID"),
+               "`silent_option` should be either TRUE or FALSE")
 
-  all_gs_opts <- c("KEGG", "Reactome", "BioCarta",
-                   "GO-All", "GO-BP", "GO-CC", "GO-MF",
-                   "mmu_KEGG", "Custom")
-  expect_error(run_pathfindR(RA_input, gene_sets = "WRONG"),
-               paste0("`gene_sets` should be one of ", paste(dQuote(all_gs_opts), collapse = ", ")))
+  expect_error(run_pathfindR(RA_input, visualize_enriched_terms = "INVALID"),
+               "`visualize_enriched_terms` should be either TRUE or FALSE")
 
-  expect_error(run_pathfindR(RA_input, gene_sets = "Custom"),
-               "`custom_genes` and `custom_descriptions` must be provided if `gene_sets = \"Custom\"`")
+  expect_error(run_pathfindR(RA_input, plot_enrichment_chart = "INVALID"),
+               "`plot_enrichment_chart` should be either TRUE or FALSE")
 
-  expect_error(run_pathfindR(RA_input, plot_enrichment_chart = "WRONG"),
-               "the argument `plot_enrichment_chart` must be either TRUE or FALSE")
+  expect_error(run_pathfindR(RA_input, iterations = "INVALID"),
+               "`iterations` should be a positive integer")
+
+  expect_error(run_pathfindR(RA_input, iterations = 0),
+               "`iterations` should be > 1")
+
+  expect_error(run_pathfindR(RA_input, n_processes = "INVALID"),
+               "`n_processes` should be either NULL or a positive integer")
+
+  expect_error(run_pathfindR(RA_input, n_processes = 0),
+               "`n_processes` should be > 1")
+
 })
 
 # fetch_gene_set ----------------------------------------------------------
@@ -206,6 +221,39 @@ test_that("In `fetch_gene_set()`, for 'Custom' gene set, check if the custom obj
                "`custom_genes` and `custom_descriptions` must be provided if `gene_sets = \"Custom\"`")
 })
 
+test_that("`fetch_gene_set()` arg checks work", {
+  all_gs_opts <- c("KEGG", "Reactome", "BioCarta",
+                   "GO-All", "GO-BP", "GO-CC", "GO-MF",
+                   "mmu_KEGG", "Custom")
+  expect_error(fetch_gene_set(gene_sets = "INVALID"),
+               paste0("`gene_sets` should be one of ",
+                      paste(dQuote(all_gs_opts), collapse = ", ")))
+
+  expect_error(fetch_gene_set(min_gset_size = "INVALID"),
+               "`min_gset_size` should be numeric")
+
+  expect_error(fetch_gene_set(max_gset_size = "INVALID"),
+               "`max_gset_size` should be numeric")
+
+  expect_error(fetch_gene_set(gene_sets = "Custom",
+                              custom_genes = "INVALID",
+                              custom_descriptions = ""),
+               "`custom_genes` should be a list of term gene sets")
+  expect_error(fetch_gene_set(gene_sets = "Custom",
+                              custom_genes = list(),
+                              custom_descriptions = ""),
+               "`custom_genes` should be a named list \\(names are gene set IDs\\)")
+
+  expect_error(fetch_gene_set(gene_sets = "Custom",
+                              custom_genes = kegg_genes,
+                              custom_descriptions = list()),
+               "`custom_descriptions` should be a vector of term gene descriptions")
+  expect_error(fetch_gene_set(gene_sets = "Custom",
+                              custom_genes = kegg_genes,
+                              custom_descriptions = 1:3),
+               "`custom_descriptions` should be a named vector \\(names are gene set IDs\\)")
+  })
+
 # return_pin_path ---------------------------------------------------------
 test_that("`return_pin_path()` returns the absolute path to PIN file", {
 
@@ -216,10 +264,20 @@ test_that("`return_pin_path()` returns the absolute path to PIN file", {
   expect_true(file.exists(return_pin_path("KEGG")))
   expect_true(file.exists(return_pin_path("mmu_STRING")))
 
+  # convert to uppercase works
+  custom_pin <- read.delim(return_pin_path("GeneMania"),
+                           header = FALSE,
+                           stringsAsFactors = FALSE)
+  custom_pin <- custom_pin[1:10,]
+  custom_pin$V1 <- tolower(custom_pin$V1)
+  custom_sif_path <- file.path(tempdir(check = TRUE), "tmp_PIN.sif")
+  utils::write.table(custom_pin,
+                     custom_sif_path,
+                     sep = "\t",
+                     row.names = FALSE, col.names = FALSE, quote = FALSE)
+  expect_true(file.exists(return_pin_path(custom_sif_path)))
+
   # custom PIN
-  custom_sif_path <- file.path(tempdir(check = TRUE), "custom.sif")
-  download.file("http://www.biofabric.org/sifFiles/full100.sif",
-                custom_sif_path, quiet = TRUE)
   expect_true(file.exists(return_pin_path(custom_sif_path)))
 
   # invalid custom PIN - wrong format
@@ -368,6 +426,12 @@ test_that("`input_processing()` errors and warnings work", {
                                 pin_name_path = "Biogrid"),
                "After processing, 1 gene \\(or no genes\\) could be mapped to the PIN"
   )
+
+  expect_error(input_processing(tmp_input,
+                                p_val_threshold = 5e-2,
+                                pin_name_path = "Biogrid",
+                                convert2alias = "INVALID"),
+               "`convert2alias` should be either TRUE or FALSE")
 })
 
 # annotate_term_genes -----------------------------------------------------
@@ -377,11 +441,36 @@ tmp_res <- RA_output[, -c(7, 8)]
 
 test_that("`annotate_term_genes()` adds input genes for each term", {
   expect_is(annotated_result <- annotate_term_genes(result_df = tmp_res,
-                                                    input_processed = example_gene_data,
-                                                    genes_by_term = kegg_genes),
+                                                    input_processed = example_gene_data),
             "data.frame")
   expect_true("Up_regulated" %in% colnames(annotated_result) &
                 "Down_regulated" %in% colnames(annotated_result))
   expect_true(nrow(annotated_result) == nrow(tmp_res))
 
+})
+
+test_that("annotate_term_genes() arg checks work", {
+  expect_error(annotate_term_genes(result_df = list(),
+                                   input_processed = example_gene_data),
+               "`result_df` should be a data frame")
+  expect_error(annotate_term_genes(result_df = tmp_res[, -1],
+                                   input_processed = example_gene_data),
+               "`result_df` should contain an \"ID\" column")
+
+  expect_error(annotate_term_genes(result_df = tmp_res,
+                                   input_processed = list()),
+               "`input_processed` should be a data frame")
+  expect_error(annotate_term_genes(result_df = tmp_res,
+                                   input_processed = example_gene_data[, -1]),
+               "`input_processed` should contain the columns \"GENE\" and \"CHANGE\"")
+
+
+  expect_error(annotate_term_genes(result_df = tmp_res,
+                                   input_processed = example_gene_data,
+                                   genes_by_term = "INVALID"),
+               "`genes_by_term` should be a list of term gene sets")
+  expect_error(annotate_term_genes(result_df = tmp_res,
+                                   input_processed = example_gene_data,
+                                   genes_by_term = list(1)),
+               "`genes_by_term` should be a named list \\(names are gene set IDs\\)")
 })
