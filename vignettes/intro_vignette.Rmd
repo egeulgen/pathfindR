@@ -273,7 +273,7 @@ To plot using full term names (instead of IDs which is the default), set `use_na
 term_gene_graph(RA_output, num_terms = 3, use_description = TRUE)
 ```
 
-By default the node sizes are plotted proportional to the number of genes a term contains (`num_DEGs`). To adjust node sizes using the $-log_{10}$(lowest p values), set `node_size = "p_val"`:
+By default the node sizes are plotted proportional to the number of genes a term contains (`num_genes`). To adjust node sizes using the $-log_{10}$(lowest p values), set `node_size = "p_val"`:
 
 ```{r term_gene4, eval=TRUE, fig.height=4, fig.width=8}
 term_gene_graph(RA_output, num_terms = 3, node_size = "p_val")

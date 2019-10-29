@@ -561,48 +561,35 @@ term_gene_graph <- function(result_df, num_terms = 10,
   igraph::V(g)$label.cex <- 0.5
   igraph::V(g)$frame.color <- "gray"
   igraph::V(g)$color <- ifelse(igraph::V(g)$type == "term", "#E5D7BF",
-    ifelse(igraph::V(g)$type == "up", "green",
-      "red"
-    )
-  )
+                               ifelse(igraph::V(g)$type == "up", "green",
+                                      "red"))
 
   ### Create graph
   p <- ggraph::ggraph(g, layout = layout)
   p <- p + ggraph::geom_edge_link(alpha = .8, colour = "darkgrey")
   p <- p + ggraph::geom_node_point(ggplot2::aes_(color = ~ I(color), size = ~size))
-  p <- p + ggplot2::scale_size(
-    range = c(5, 10),
-    breaks = round(seq(round(min(igraph::V(g)$size)),
-      round(max(igraph::V(g)$size)),
-      length.out = 4
-    )),
-    name = size_label
-  )
+  p <- p + ggplot2::scale_size(range = c(5, 10),
+                               breaks = round(seq(round(min(igraph::V(g)$size)),
+                                                  round(max(igraph::V(g)$size)),
+                                                  length.out = 4)),
+                               name = size_label)
   p <- p + ggplot2::theme_void()
   p <- p + ggraph::geom_node_text(ggplot2::aes_(label = ~name), nudge_y = .2)
-  p <- p + ggplot2::scale_colour_manual(
-    values = unique(igraph::V(g)$color),
-    name = NULL,
-    labels = c(
-      "enriched term",
-      "up-regulated gene",
-      "down-regulated gene"
-    )
-  )
+  p <- p + ggplot2::scale_colour_manual(values = unique(igraph::V(g)$color),
+                                        name = NULL,
+                                        labels = c("enriched term",
+                                                   "up-regulated gene",
+                                                   "down-regulated gene"))
   if (is.null(num_terms)) {
     p <- p + ggplot2::ggtitle("Term-Gene Graph")
   } else {
     p <- p + ggplot2::ggtitle("Term-Gene Graph",
-      subtitle = paste(c("Top", num_terms, "terms"),
-        collapse = " "
-      )
-    )
+                              subtitle = paste(c("Top", num_terms, "terms"),
+                                               collapse = " "))
   }
 
-  p <- p + ggplot2::theme(
-    plot.title = ggplot2::element_text(hjust = 0.5),
-    plot.subtitle = ggplot2::element_text(hjust = 0.5)
-  )
+  p <- p + ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5),
+                          plot.subtitle = ggplot2::element_text(hjust = 0.5))
 
   return(p)
 }

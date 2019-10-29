@@ -72,10 +72,7 @@ calculate_scores <- function(enrichment_table, exp_mat, cases = NULL,
         gene_mean <- base::mean(gene_vec)
         gene_sd <- stats::sd(gene_vec)
 
-        gene_scores <- vapply(
-          gene_vec, function(x) (x - gene_mean) / gene_sd,
-          1.2
-        )
+        gene_scores <- vapply(gene_vec, function(x) (x - gene_mean) / gene_sd, 1.2)
         current_term_score_matrix <- rbind(current_term_score_matrix, gene_scores)
         rownames(current_term_score_matrix)[nrow(current_term_score_matrix)] <- gene
       }
