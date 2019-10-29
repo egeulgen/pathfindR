@@ -1,4 +1,4 @@
-# pathfindR 1.4.0.9009
+# pathfindR 1.4.0.9010
 ## To be released as 1.4.0
 
 ## Major Changes
@@ -19,7 +19,12 @@
 - Updated all RA example data
 - The vignettes were updated
 - Updated all PIN data
-
+- Improved speed of kappa matrix calculation (`create_kappa_matrix()`)
+- Added vigentte for non-Homo-sapiens organisms
+- Added Mus musculus (mmu) data:
+  - `mmu_kegg_genes` & `mmu_kegg_descriptions`: mmu KEGG gene sets data
+  - mmmu STRING PIN
+  - `myeloma_input` & `myeloma_output`: example mmu input and output data
 
 ## Minor changes and bug fixes
 - In `hierarchical_term_clustering()`, redefined the distance measure as `1 - kappa statistic`
@@ -36,6 +41,9 @@
 - The argument `human_genes` in `run_pathfindR()` and `input_processing()` was renamed as `convert2alias`
 - The gene symbols in the input data frame, the PIN and the gene sets are now turned into uppercase (for obtaining the best overlap)
 - Added the argument `top_terms` to `enrichment_chart()`, controlling the number top enriched terms to plot (default is 10)
+- Other minor bug/error fixes
+
+***
 
 # pathfindR 1.3.0
 
@@ -55,6 +63,8 @@
 - Added the data for `GO-All`, all annotations in the GO database (BP+MF+CC)
 - Updated the vignette `pathfindR - An R Package for Pathway Enrichment Analysis Utilizing Active Subnetworks` to reflect the new functionalities.
 
+***
+
 # pathfindR 1.2.3
 ## Minor changes and bug fixes
 - in the funtion `plot_scores`, added the argument `label_cases` to indicate whether or not to label the cases in the pathway scoring heatmap plot. Also added the argument `case_control_titles` which allows the user to change the default ‘Case’ and ‘Control’ headers. Also added the arguments `low` and `high` used to change the low and high end colors of the scoring color gradient.
@@ -63,12 +73,16 @@
 - minor change in `parseActiveSnwSearch`, increased `sig_gene_thr` from 2 to 10 as we observed in most of the cases, this resulted in faster runs with comparable results.
 - in `choose_clusters`, added the argument `p_val_threshold` to be used as p value threshold for filtering the enriched pathways prior to clustering.
 
+***
+
 # pathfindR 1.2.2
 
 ## Major Changes
 - fixed issue related to the package `pathview`.
 ## Minor changes and bug fixes
 - in the function `choose_clusters`, added option to use pathway names instead of pathway ids when visualizing the clustering dendrogram and heatmap.
+
+***
 
 # pathfindR 1.2.1
 
@@ -84,6 +98,8 @@
 - `run_pathfindR` checks whether the output directory (`output_dir`) already exists and if it exists, now appends "(1)" to `output_dir` and displays a warning message. This was implemented to prevent writing over existing results.
 - in run `run_pathfindR`, recursive creation for the output directory (`output_dir`) is now supported.
 - in run `run_pathfindR`, if no pathways are found, the function returns an empty data frame instead of raising an error.
+
+***
 
 # pathfindR 1.2
 
@@ -108,6 +124,8 @@
 - `run_pathfindR` now checks whether the output directory (`output_dir`) already exists and if it exists, stops and displays an error message. This was implemented to prevent writing over existing results.
 
 - `genes_table.html` now contains a second table displaying the input gene symbols for which there were no interactions in the PIN.
+
+***
 
 # pathfindR 1.1
 
