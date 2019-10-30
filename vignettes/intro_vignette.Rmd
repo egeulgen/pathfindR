@@ -297,8 +297,12 @@ score_matrix <- score_terms(enrichment_table = RA_clustered[RA_clustered$Status 
                             exp_mat = RA_exp_mat,
                             cases = cases,
                             use_description = TRUE, # default FALSE
-                            label_samples = FALSE, # (default = TRUE)
-                            case_control_titles = c("RA", "Healthy")) # default = c("Case", "Control")
+                            label_samples = FALSE, # default = TRUE
+                            case_title = "RA",  # default = "Case"
+                            control_title = "Healthy", # default = "Control"
+                            low = "#f7797d", # default = "green"
+                            mid = "#fffde4", # default = "black"
+                            high = "#1f4037") # default = "red"
 ```
 
 # Analysis with Custom Gene Sets
