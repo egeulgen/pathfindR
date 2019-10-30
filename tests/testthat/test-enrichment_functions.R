@@ -28,7 +28,7 @@ test_that("`hyperg_test()` arg checks work", {
 
   expect_error(hyperg_test(term_genes = LETTERS,
                            chosen_genes = list()),
-               "`term_genes` should be a vector")
+               "`chosen_genes` should be a vector")
 
   expect_error(hyperg_test(term_genes = LETTERS,
                            chosen_genes = LETTERS[1:2],
@@ -209,7 +209,7 @@ combined_res <- rbind(iter1_res, iter2_res)
 
 test_that("`summarize_enrichment_results()` returns summarized enrichment results", {
   # default
-  expect_is(tmp <- summarize_enrichment_results(enrichment_res = combined_res),
+  expect_is(tmp <- summarize_enrichment_results(enrichment_res = combined_res[, -6]),
             "data.frame")
   expect_equal(ncol(tmp), 6)
   expect_false("non_Signif_Snw_Genes" %in% colnames(tmp))

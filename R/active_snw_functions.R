@@ -238,7 +238,7 @@ active_snw_search <- function(input_for_search,
     " -grSubNum=", grSubNum, silent_option
   ))
 
-  snws_file <- file.path(active_snw_search,
+  snws_file <- file.path("active_snw_search",
                          paste0(snws_file, ".txt"))
   file.rename(from = "resultActiveSubnetworkSearch.txt",
               to = snws_file)

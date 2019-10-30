@@ -1,11 +1,11 @@
 #' Create Diagrams for Enriched Terms
 #'
 #' @param result_df Data frame of enrichment results. Must-have columns for
-#'  KEGG human pathway diagrams are: "ID" and "Term_Description".
+#'  KEGG human pathway diagrams (\code{hsa_kegg = TRUE}) are: "ID" and "Term_Description".
 #'  Must-have columns for the rest are: "Term_Description", "Up_regulated" and
 #' "Down_regulated"
 #' @param input_processed input data processed via \code{\link{input_processing}},
-#'  not necessary for visualizations other than KEGG human pathway diagrams.
+#'  not necessary when \code{hsa_KEGG = FALSE}
 #' @param hsa_KEGG boolean to indicate whether human KEGG gene sets were used for
 #'  enrichment analysis or not (default = \code{TRUE})
 #' @inheritParams return_pin_path
@@ -40,12 +40,34 @@ visualize_terms <- function(result_df, input_processed = NULL,
                             hsa_KEGG = TRUE, pin_name_path = "Biogrid") {
 
   ############ Argument Checks
-  if (!is.logical(hsa_KEGG)) {
-    stop("the argument `hsa_KEGG` must be either TRUE or FALSE")
+  if (!is.data.frame(result_df)) {
+    stop("`result_df` should be a data frame")
   }
 
-  if (hsa_KEGG & is.null(input_processed)) {
-    stop("`input_processed` must be specified when `hsa_KEGG` is `TRUE`")
+  if (!is.logical(hsa_KEGG)) {
+    stop("the argument `hsa_KEGG` should be either TRUE or FALSE")
+  }
+
+  if (hsa_KEGG) {
+    nec_cols <- c("ID", "Term_Description")
+  } else {
+    nec_cols <- c("Term_Description", "Up_regulated", "Down_regulated")
+  }
+  if (!all(nec_cols %in% colnames(result_df))) {
+    stop("`result_df` should contain the following columns: ",
+         paste(dQuote(nec_cols), collapse = ", "))
+  }
+
+  if (hsa_KEGG) {
+    if (is.null(input_processed)) {
+      stop("`input_processed` should be specified when `hsa_KEGG = TRUE`")
+    }
+
+    nec_cols <- c("GENE", "CHANGE")
+    if (!all(nec_cols %in% colnames(input_processed))) {
+      stop("`input_processed` should contain the following columns: ",
+           paste(dQuote(nec_cols), collapse = ", "))
+    }
   }
 
   ############ Generate Diagrams
@@ -54,9 +76,11 @@ visualize_terms <- function(result_df, input_processed = NULL,
     genes_df <- input_processed[, c("GENE", "CHANGE")]
     rownames(genes_df) <- genes_df$GENE
     genes_df <- genes_df[, -1, drop = FALSE]
-    visualize_hsa_KEGG(pw_table = result_df, gene_data = genes_df)
+    visualize_hsa_KEGG(result_df = result_df,
+                       gene_data = genes_df)
   } else {
-    visualize_term_interactions(result_df = result_df, pin_name_path = pin_name_path)
+    visualize_term_interactions(result_df = result_df,
+                                pin_name_path = pin_name_path)
   }
 }
 
@@ -225,7 +249,7 @@ visualize_term_interactions <- function(result_df, pin_name_path) {
 
 #' Visualize Human KEGG Pathways
 #'
-#' @param pw_table Data frame of enrichment results. Must-have columns are: "ID" and
+#' @param result_df Data frame of enrichment results. Must-have columns are: "ID" and
 #'   "Term_Description".
 #' @param gene_data Single column data frame containing change values (e.g.
 #'   log(fold change) values) for significant genes. Row names are gene symbols.
@@ -244,25 +268,25 @@ visualize_term_interactions <- function(result_df, pin_name_path) {
 #' \dontrun{
 #' visualize_hsa_KEGG(pathway_table, gene_data)
 #' }
-visualize_hsa_KEGG <- function(pw_table, gene_data) {
+visualize_hsa_KEGG <- function(result_df, gene_data) {
 
   ## fix KEGG names such as "Glycolysis / Gluconeogenesis"
-  pw_table$Term_Description <- gsub("\\/", "-", pw_table$Term_Description)
+  result_df$Term_Description <- gsub("\\/", "-", result_df$Term_Description)
 
   ## Create visualization output directory
   dir.create("term_visualizations", showWarnings = FALSE)
   setwd("term_visualizations")
   on.exit(setwd(".."))
 
-  for (i in base::seq_len(nrow(pw_table))) {
+  for (i in base::seq_len(nrow(result_df))) {
     ## If all change values are 100 (if no change values supplied in input)
     if (all(gene_data[, 1] == 100)) {
       pathview::pathview(
         gene.data = gene_data,
         gene.idtype = "SYMBOL",
-        pathway.id = pw_table$ID[i],
+        pathway.id = result_df$ID[i],
         species = "hsa",
-        out.suffix = pw_table$Term_Description[i],
+        out.suffix = result_df$Term_Description[i],
         keys.align = "y", kegg.native = TRUE,
         key.pos = "topright", same.layer = FALSE,
         discrete = list(gene = TRUE, cpd = TRUE),
@@ -281,9 +305,9 @@ visualize_hsa_KEGG <- function(pw_table, gene_data) {
       pathview::pathview(
         gene.data = gene_data,
         gene.idtype = "SYMBOL",
-        pathway.id = pw_table$ID[i],
+        pathway.id = result_df$ID[i],
         species = "hsa",
-        out.suffix = pw_table$Term_Description[i],
+        out.suffix = result_df$Term_Description[i],
         keys.align = "y", kegg.native = TRUE,
         key.pos = "topright", same.layer = FALSE,
         discrete = list(gene = TRUE, cpd = TRUE),
@@ -295,9 +319,9 @@ visualize_hsa_KEGG <- function(pw_table, gene_data) {
       pathview::pathview(
         gene.data = gene_data,
         gene.idtype = "SYMBOL",
-        pathway.id = pw_table$ID[i],
+        pathway.id = result_df$ID[i],
         species = "hsa",
-        out.suffix = pw_table$Term_Description[i],
+        out.suffix = result_df$Term_Description[i],
         keys.align = "y", kegg.native = TRUE,
         key.pos = "topright", same.layer = FALSE,
         new.signature = FALSE
@@ -500,10 +524,8 @@ term_gene_graph <- function(result_df, num_terms = 10,
   necessary_cols <- c("Up_regulated", "Down_regulated", "lowest_p", ID_column)
 
   if (!all(necessary_cols %in% colnames(result_df))) {
-    stop(paste(c(
-      "All of", paste(necessary_cols, collapse = ", "),
-      "must be present in `results_df`!"
-    ), collapse = " "))
+    stop(paste(c("All of", paste(necessary_cols, collapse = ", "),
+                 "must be present in `results_df`!"), collapse = " "))
   }
 
   ############ Initial steps
