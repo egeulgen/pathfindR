@@ -483,7 +483,7 @@ fetch_gene_set <- function(gene_sets = "KEGG",
 #' @seealso See \code{\link{run_pathfindR}} for the wrapper function of the
 #'   pathfindR workflow
 #' @examples
-#' pin_path <- return_pin_path("Biogrid")
+#' pin_path <- return_pin_path("GeneMania")
 #' pin_path <- return_pin_path("KEGG")
 return_pin_path <- function(pin_name_path = "Biogrid") {
 
@@ -788,7 +788,7 @@ input_processing <- function(input, p_val_threshold,
 #'                                         input_processed = example_gene_data)
 annotate_term_genes <- function(result_df,
                                 input_processed,
-                                genes_by_term = kegg_genes) {
+                                genes_by_term = pathfindR::kegg_genes) {
   ### Argument checks
   if(!is.data.frame(result_df)) {
     stop("`result_df` should be a data frame")
