@@ -37,28 +37,27 @@ We first obtain the most up-to-date M.musculus (KEGG identifier: mmu) KEGG Gene 
 
 ```{r KEGG, eval=FALSE}
 library(KEGGREST)
-# Obtain list of M.musculus pathways
+#### Obtain list of M.musculus pathways
 mmu_kegg_descriptions <- keggList("pathway", "mmu")
 
-# Turn the identifiers of KEGGREST into KEGG-style pathway identifiers
-kegg_ids <- sub("path:", "", names(mmu_kegg_descriptions))
+# Shorten descriptions
+mmu_kegg_descriptions <- sub(" - Mus musculus \\(mouse\\)", "", mmu_kegg_descriptions)
 
-# Obtain and parse genes per each pathway
-mmu_kegg_genes <- sapply(kegg_ids, function(pwid){
+# Turn the identifiers into KEGG-style pathway identifiers (org_id#####)
+names(mmu_kegg_descriptions) <- sub("path:", "", names(mmu_kegg_descriptions))
+
+#### Obtain and parse genes per each pathway
+mmu_kegg_genes <- sapply(names(mmu_kegg_descriptions), function(pwid){
   pw <- keggGet(pwid)
   pw <- pw[[1]]$GENE[c(FALSE, TRUE)] # get gene symbols, not descriptions
   pw <- sub(";.+", "", pw) # discard any remaining description
-  pw <- pw[grep("^[A-Za-z0-9_-]+(\\@)?$", pw)] # remove mistaken lines that cannot be gene symbols
+  pw <- pw[grep("^[A-Za-z0-9_-]+(\\@)?$", pw)] # remove any mistaken lines that cannot be gene symbols
   pw <- unique(pw) # keep unique symbols
-  pw
+  return(pw)
 })
 
-## Filter list to exclude terms with 0 genes (metabolic pathways)
+#### Filter terms to exclude those with 0 genes (metabolic pathways)
 mmu_kegg_genes <- mmu_kegg_genes[sapply(mmu_kegg_genes, length) != 0]
-
-## Form the custom descriptions vector
-names(mmu_kegg_descriptions) <- sub("path:", "", names(mmu_kegg_descriptions))
-mmu_kegg_descriptions <- sub(" - Mus musculus \\(mouse\\)", "", mmu_kegg_descriptions)
 mmu_kegg_descriptions <- mmu_kegg_descriptions[names(mmu_kegg_descriptions) %in% names(mmu_kegg_genes)]
 ```
 
