@@ -4,10 +4,10 @@
 \alias{visualize_hsa_KEGG}
 \title{Visualize Human KEGG Pathways}
 \usage{
-visualize_hsa_KEGG(pw_table, gene_data)
+visualize_hsa_KEGG(result_df, gene_data)
 }
 \arguments{
-\item{pw_table}{Data frame of enrichment results. Must-have columns are: "ID" and
+\item{result_df}{Data frame of enrichment results. Must-have columns are: "ID" and
 "Term_Description".}
 
 \item{gene_data}{Single column data frame containing change values (e.g.

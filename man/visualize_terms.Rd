@@ -9,12 +9,12 @@ visualize_terms(result_df, input_processed = NULL, hsa_KEGG = TRUE,
 }
 \arguments{
 \item{result_df}{Data frame of enrichment results. Must-have columns for
- KEGG human pathway diagrams are: "ID" and "Term_Description".
+ KEGG human pathway diagrams (\code{hsa_kegg = TRUE}) are: "ID" and "Term_Description".
  Must-have columns for the rest are: "Term_Description", "Up_regulated" and
 "Down_regulated"}
 
 \item{input_processed}{input data processed via \code{\link{input_processing}},
-not necessary for visualizations other than KEGG human pathway diagrams.}
+not necessary when \code{hsa_KEGG = FALSE}}
 
 \item{hsa_KEGG}{boolean to indicate whether human KEGG gene sets were used for
 enrichment analysis or not (default = \code{TRUE})}
