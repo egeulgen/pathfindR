@@ -25,6 +25,7 @@
   - `mmu_kegg_genes` & `mmu_kegg_descriptions`: mmu KEGG gene sets data
   - mmmu STRING PIN
   - `myeloma_input` & `myeloma_output`: example mmu input and output data
+- Added the STRING PIN (combined score >= 400)
 
 ## Minor changes and bug fixes
 - In `hierarchical_term_clustering()`, redefined the distance measure as `1 - kappa statistic`

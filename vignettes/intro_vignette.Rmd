@@ -120,7 +120,7 @@ For the active subnetwork search process, a protein-protein interaction network 
 output_df <- run_pathfindR(input_df, pin_name_path = "IntAct")
 ```
 
-The `pin_name_path` argument can be one of "Biogrid", "GeneMania", "IntAct", "KEGG" or it can be the path to a custom PIN file provided by the user.
+The `pin_name_path` argument can be one of "Biogrid", "STRING", "GeneMania", "IntAct", "KEGG", "mmu_STRING" or it can be the path to a custom PIN file provided by the user.
 
 ```{r change_PIN2}
 # to use an external PIN of your choice

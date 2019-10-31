@@ -35,7 +35,7 @@ For the active subnetwork search process, we will need a protein-protein interac
 
 > An active subnetwork can be defined as a group of interconnected genes in a protein-protein interaction network (PIN) that predominantly consists of significantly altered genes. In other words, active subnetworks define distinct disease-associated sets of interacting genes, whether discovered through the original analysis or discovered because of being in interaction with a significant gene.
 
-The `pin_name_path` argument in all functions can be one of “Biogrid”, “GeneMania”, “IntAct”, “KEGG” or it can be the path to a custom PIN file provided by the user.
+The `pin_name_path` argument in all functions can be one of "Biogrid", "STRING", "GeneMania", "IntAct", "KEGG", "mmu_STRING" or it can be the path to a custom PIN file provided by the user.
 
 # Process input data
 

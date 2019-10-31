@@ -21,7 +21,7 @@ must be a data frame containing at least these 2 columns: \describe{
 }}
 
 \item{pin_name_path}{Name of the chosen PIN or path/to/PIN.sif. If PIN name,
-must be one of c("Biogrid", "GeneMania", "IntAct", "KEGG", "mmu_STRING"). If
+must be one of c("Biogrid", "STRING", "GeneMania", "IntAct", "KEGG", "mmu_STRING"). If
 path/to/PIN.sif, the file must comply with the PIN specifications. (Default = "Biogrid")}
 
 \item{snws_file}{name for active subnetwork search output data

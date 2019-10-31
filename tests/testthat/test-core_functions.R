@@ -12,6 +12,7 @@ test_that("`run_pathfindR()` works as expected", {
   ## GR
   expect_is(run_pathfindR(RA_input,
                           iterations = 1,
+                          n_processes = 2,
                           visualize_enriched_terms = FALSE),
             "data.frame")
   expect_is(run_pathfindR(RA_input,
@@ -22,11 +23,14 @@ test_that("`run_pathfindR()` works as expected", {
                           plot_enrichment_chart = FALSE),
             "data.frame")
 
-  ## GA - n_processes <- 1
+  ## GA - n_processes <- 1 and n_processes <- iterations (iterations < n_processes)
+  expected_warns <- c("Did not find any enriched terms!",
+                      "`iterations` is set to 1 because `search_method = \"GA\"",
+                      "`n_processes` is set to `iterations` because `iterations` < `n_processes`")
   expect_warning(run_pathfindR(RA_input[1:2, ],
                                search_method = "GA",
                                output_dir = tempdir(check = TRUE)),
-                 "Did not find any enriched terms!")
+                 paste0(paste(expected_warns, collapse = "|")), all = TRUE, perl = TRUE)
 
   skip("will test SA and GA if we can create a suitable (faster and non-empty) test case")
 
@@ -259,6 +263,7 @@ test_that("`return_pin_path()` returns the absolute path to PIN file", {
 
   # default PINs
   expect_true(file.exists(return_pin_path("Biogrid")))
+  expect_true(file.exists(return_pin_path("STRING")))
   expect_true(file.exists(return_pin_path("GeneMania")))
   expect_true(file.exists(return_pin_path("IntAct")))
   expect_true(file.exists(return_pin_path("KEGG")))
@@ -288,15 +293,16 @@ test_that("`return_pin_path()` returns the absolute path to PIN file", {
 
   # invalid custom PIN - invalid second column
   invalid_sif_path <- file.path(tempdir(check = TRUE), "custom.sif")
-  invalid_custom_sif <- data.frame(P1 = "X", pp = "WRONG", P2 = "Y")
+  invalid_custom_sif <- data.frame(P1 = "X", pp = "INVALID", P2 = "Y")
   write.table(invalid_custom_sif, invalid_sif_path, sep = "\t",
               col.names = FALSE, row.names = FALSE)
   expect_error(return_pin_path(invalid_sif_path),
                "The second column of the PIN file must all be \"pp\" ")
 
   # invalid option
-  valid_opts <- c("Biogrid", "GeneMania", "IntAct", "KEGG", "mmu_STRING", "/path/to/custom/SIF")
-  expect_error(return_pin_path("WRONG"),
+  valid_opts <- c("Biogrid", "STRING", "GeneMania", "IntAct", "KEGG",
+                  "mmu_STRING", "/path/to/custom/SIF")
+  expect_error(return_pin_path("INVALID"),
                paste0("The chosen PIN must be one of:\n",
                       paste(dQuote(valid_opts), collapse = ", ")))
 })
@@ -320,7 +326,7 @@ test_that("`input_testing()` works", {
                "There must be at least 2 columns in the input data frame")
 
   expect_error(input_testing(input = RA_input,
-                             p_val_threshold = "WRONG"),
+                             p_val_threshold = "INVALID"),
                "`p_val_threshold` must be a numeric value between 0 and 1")
 
   expect_error(input_testing(input = RA_input,
@@ -334,7 +340,7 @@ test_that("`input_testing()` works", {
                "p values cannot contain NA values")
 
   tmp <- RA_input
-  tmp$adj.P.Val <- "WRONG"
+  tmp$adj.P.Val <- "INVALID"
   expect_error(input_testing(input = tmp,
                              p_val_threshold = 0.05),
                "p values must all be numeric")
@@ -413,7 +419,7 @@ test_that("`input_processing()` errors and warnings work", {
                  "pathfindR cannot handle p values < 1e-13. These were changed to 1e-13")
   expect_true(all(tmp$P_VALUE == 1e-13))
 
-  tmp_input$Gene.symbol <- paste0(LETTERS[seq_len(nrow(tmp_input))], "WRONG")
+  tmp_input$Gene.symbol <- paste0(LETTERS[seq_len(nrow(tmp_input))], "INVALID")
   expect_error(input_processing(tmp_input,
                                 p_val_threshold = 5e-2,
                                 pin_name_path = "Biogrid"),

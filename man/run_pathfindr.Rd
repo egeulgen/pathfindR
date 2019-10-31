@@ -28,7 +28,7 @@ run_pathfindR(input, gene_sets = "KEGG", min_gset_size = 10,
 
 \item{gene_sets}{Name of the gene sets to be used for enrichment analysis.
 Available gene sets are "KEGG", "Reactome", "BioCarta", "GO-All",
-"GO-BP", "GO-CC", "GO-MF" or "Custom".
+"GO-BP", "GO-CC", "GO-MF", "mmu_KEGG" or "Custom".
 If "Custom", the arguments \code{custom_genes} and \code{custom_descriptions}
 must be specified. (Default = "KEGG")}
 
@@ -45,7 +45,7 @@ custom  term. Names of the vector should correspond to the IDs of the custom
 terms.}
 
 \item{pin_name_path}{Name of the chosen PIN or path/to/PIN.sif. If PIN name,
-must be one of c("Biogrid", "GeneMania", "IntAct", "KEGG", "mmu_STRING"). If
+must be one of c("Biogrid", "STRING", "GeneMania", "IntAct", "KEGG", "mmu_STRING"). If
 path/to/PIN.sif, the file must comply with the PIN specifications. (Default = "Biogrid")}
 
 \item{p_val_threshold}{the p value threshold to use when filtering

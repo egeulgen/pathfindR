@@ -19,7 +19,7 @@ input_processing(input, p_val_threshold, pin_name_path,
 the input data frame. Must a numeric value between 0 and 1. (default = 0.05)}
 
 \item{pin_name_path}{Name of the chosen PIN or path/to/PIN.sif. If PIN name,
-must be one of c("Biogrid", "GeneMania", "IntAct", "KEGG", "mmu_STRING"). If
+must be one of c("Biogrid", "STRING", "GeneMania", "IntAct", "KEGG", "mmu_STRING"). If
 path/to/PIN.sif, the file must comply with the PIN specifications. (Default = "Biogrid")}
 
 \item{convert2alias}{boolean to indicate whether or not to convert gene symbols

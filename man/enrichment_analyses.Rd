@@ -17,7 +17,7 @@ enrichment_analyses(snws, sig_genes_vec, pin_name_path = "Biogrid",
 package, these are the input genes that were used for active subnetwork search}
 
 \item{pin_name_path}{Name of the chosen PIN or path/to/PIN.sif. If PIN name,
-must be one of c("Biogrid", "GeneMania", "IntAct", "KEGG", "mmu_STRING"). If
+must be one of c("Biogrid", "STRING", "GeneMania", "IntAct", "KEGG", "mmu_STRING"). If
 path/to/PIN.sif, the file must comply with the PIN specifications. (Default = "Biogrid")}
 
 \item{genes_by_term}{List that contains genes for each gene set. Names of

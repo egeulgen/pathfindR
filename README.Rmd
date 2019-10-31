@@ -132,6 +132,8 @@ output_df <- run_pathfindR(input_df, iterations = 25)
 output_df <- run_pathfindR(input_df, list_active_snw_genes = TRUE)
 ```
 
+The available PINs are "Biogrid", "STRING", "GeneMania", "IntAct", "KEGG" and "mmu_STRING". The available gene sets are "KEGG", "Reactome", "BioCarta", "GO-All", "GO-BP", "GO-CC", "GO-MF", and "mmu_KEGG". You also use a custom PIN (see `?return_pin_path`) or a custom gene set (see `?fetch_gene_set`)
+
 See the [wiki page](https://github.com/egeulgen/pathfindR/wiki/Enrichment%20Documentation) for more details.
 
 

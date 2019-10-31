@@ -103,11 +103,6 @@ run_pathfindR <- function(input,
                           output_dir = "pathfindR_Results",
                           list_active_snw_genes = FALSE,
                           silent_option = TRUE) {
-
-  # calculate the number of processes, if necessary
-  if (is.null(n_processes))
-    n_processes <- parallel::detectCores() - 1
-
   ############ Argument checks
   # Active Subnetwork Search
   valid_mets <- c("GR", "SA", "GA")
@@ -115,6 +110,31 @@ run_pathfindR <- function(input,
     stop("`search_method` should be one of ",
          paste(dQuote(valid_mets), collapse = ", "))
   }
+
+  ## If search_method is GA, set iterations as 1
+  if (search_method == "GA") {
+    warning("`iterations` is set to 1 because `search_method = \"GA\"`")
+    iterations <- 1
+  }
+
+  if (!is.null(n_processes)){
+    if (!is.numeric(n_processes)) {
+      stop("`n_processes` should be either NULL or a positive integer")
+    }
+    if (n_processes < 1) {
+      stop("`n_processes` should be > 1")
+    }
+
+    ## If iterations < n_processes, set n_processes to iterations
+    if (iterations < n_processes) {
+      warning("`n_processes` is set to `iterations` because `iterations` < `n_processes`")
+      n_processes <- iterations
+    }
+  }
+
+  # calculate the number of processes, if necessary
+  if (is.null(n_processes))
+    n_processes <- parallel::detectCores() - 1
 
   if (!is.logical(use_all_positives)) {
     stop("`use_all_positives` should be either TRUE or FALSE")
@@ -138,15 +158,6 @@ run_pathfindR <- function(input,
   }
   if (iterations < 1) {
     stop("`iterations` should be > 1")
-  }
-
-  if (!is.null(n_processes)){
-    if (!is.numeric(n_processes)) {
-      stop("`n_processes` should be either NULL or a positive integer")
-    }
-    if (n_processes < 1) {
-      stop("`n_processes` should be > 1")
-    }
   }
 
   ############ Initial Steps
@@ -192,16 +203,6 @@ run_pathfindR <- function(input,
   output_dir <- normalizePath(output_dir)
   setwd(output_dir)
   output_dir <- getwd()
-
-  ## If search_method is GA, set iterations as 1
-  if (search_method == "GA") {
-    iterations <- 1
-  }
-
-  ## If iterations < n_processes, set n_processes to iterations
-  if (iterations < n_processes ) {
-    n_processes <- iterations
-  }
 
   ## Set initial probabilities
   geneInitProbs <- seq(from = 0.01, to = 0.2, length.out = iterations)
@@ -339,7 +340,7 @@ run_pathfindR <- function(input,
 #'
 #' @param gene_sets Name of the gene sets to be used for enrichment analysis.
 #'  Available gene sets are "KEGG", "Reactome", "BioCarta", "GO-All",
-#'  "GO-BP", "GO-CC", "GO-MF" or "Custom".
+#'  "GO-BP", "GO-CC", "GO-MF", "mmu_KEGG" or "Custom".
 #'  If "Custom", the arguments \code{custom_genes} and \code{custom_descriptions}
 #'  must be specified. (Default = "KEGG")
 #' @param min_gset_size minimum number of genes a term must contain (default = 10)
@@ -466,7 +467,7 @@ fetch_gene_set <- function(gene_sets = "KEGG",
 #' Return The Path to Given Protein-Protein Interaction Network (PIN)
 #'
 #' This function returns the absolute path/to/PIN.sif. While the default PINs are
-#' "Biogrid", "GeneMania", "IntAct", "KEGG" and "mmu_STRING". The user can also
+#' "Biogrid", "STRING", "GeneMania", "IntAct", "KEGG" and "mmu_STRING". The user can also
 #' use any other PIN by specifying the "path/to/PIN.sif". All PINs to be used
 #' in this package must formatted as SIF files: i.e. have 3 columns with no
 #' header, no row names and be tab-separated. Columns 1 and 3 must be
@@ -474,7 +475,7 @@ fetch_gene_set <- function(gene_sets = "KEGG",
 #' rows consisting of "pp".
 #'
 #' @param pin_name_path Name of the chosen PIN or path/to/PIN.sif. If PIN name,
-#'   must be one of c("Biogrid", "GeneMania", "IntAct", "KEGG", "mmu_STRING"). If
+#'   must be one of c("Biogrid", "STRING", "GeneMania", "IntAct", "KEGG", "mmu_STRING"). If
 #'   path/to/PIN.sif, the file must comply with the PIN specifications. (Default = "Biogrid")
 #'
 #' @return The absolute path to chosen PIN.
@@ -484,26 +485,19 @@ fetch_gene_set <- function(gene_sets = "KEGG",
 #'   pathfindR workflow
 #' @examples
 #' pin_path <- return_pin_path("GeneMania")
-#' pin_path <- return_pin_path("KEGG")
 return_pin_path <- function(pin_name_path = "Biogrid") {
 
   ## Default PINs
-  valid_opts <- c("Biogrid", "GeneMania", "IntAct", "KEGG", "mmu_STRING", "/path/to/custom/SIF")
+  valid_opts <- c("Biogrid", "STRING", "GeneMania", "IntAct", "KEGG",
+                  "mmu_STRING", "/path/to/custom/SIF")
   if (pin_name_path %in% valid_opts[-length(valid_opts)]) {
 
     path <- file.path(tempdir(check = TRUE), paste0(pin_name_path, ".sif"))
     if (!file.exists(path)) {
-      if (pin_name_path == "Biogrid") {
-        adj_list <- biogrid_adj_list
-      } else if (pin_name_path == "GeneMania") {
-        adj_list <- gene_mania_adj_list
-      } else if (pin_name_path == "IntAct") {
-        adj_list <- intact_adj_list
-      } else if (pin_name_path == "KEGG"){
-        adj_list <- kegg_adj_list
-      } else {
-        adj_list <- mmu_string_adj_list
-      }
+
+      adj_list <- getFromNamespace(paste0(tolower(pin_name_path), "_adj_list"),
+                                   ns = "pathfindR")
+
       pin_df <- lapply(seq_along(adj_list),
                        function(i, nm, val) data.frame(base::toupper(nm[[i]]),
                                                        "pp",
