@@ -177,6 +177,7 @@ run_pathfindR <- function(input,
   dir_changed <- FALSE
   output_dir_init <- output_dir
   while (dir.exists(output_dir)) {
+    output_dir <- sub("/$", "", output_dir)
     if (grepl("\\(\\d+\\)$", output_dir)) {
       output_dir <- unlist(strsplit(output_dir, "\\("))
       suffix <- as.numeric(sub("\\)", "", output_dir[2])) + 1
