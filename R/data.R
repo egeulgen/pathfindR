@@ -25,7 +25,7 @@
 #'
 #' A dataset containing the results of pathfindR's active-subnetwork-oriented
 #' enrichment workflow performed on the Mus musculus myeloma
-#' differential-expression dataset \code{myeloma_input}.
+#' differential-expression dataset \code{\link{myeloma_input}}.
 #' \emph{Generated on Nov 1, 2019.}
 #'
 #' @format A data frame with 18 rows and 8 columns:
@@ -45,46 +45,54 @@
 
 #' Example Input for pathfindR - Enriched Term Scoring
 #'
-#' A matrix containing the log2-normalized expression values of the differentially-expressed genes
-#' for 18 rheumatoid arthritis (RA) patients and 15 healthy subjects. Expression values of 572
-#' differentially-expressed genes with adj.P.Val <= 0.05 are presented in this dataset.
+#' A matrix containing the log2-transformed and quantile-normalized expression
+#' values of the differentially-expressed genes for 18 rheumatoid arthritis (RA)
+#' patients and 15 healthy subjects. The matrix contains expression values of
+#' 572 significantly differentially-expressed genes (see \code{\link{RA_input}})
+#' with adj.P.Val <= 0.05.
 #' \emph{Generated on Sep 28, 2019.}
 #'
 #' @format A matrix with 572 rows and 33 columns.
 #' @source \url{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE15573}
+#'
+#' @seealso \code{\link{RA_input}}  for the RA differentially-expressed genes data frame
+#' \code{\link{RA_output}} for the RA example pathfindR enrinchment output
+#' \code{\link{score_terms}} for details on calculating agglomerated scores of enriched terms
 "RA_exp_mat"
 
 #' Example Input for the pathfindR Enrichment Workflow - Rheumatoid Arthritis
 #'
 #' A dataset containing the differentially-expressed genes along with the
-#' associated log2-fold-change values and adjusted p-values for the GEO dataset
-#' GSE15573. The microarray dataset aimed to characterize gene expression profiles in the
-#' peripheral blood mononuclear cells of 18 rheumatoid arthritis (RA) patients
-#' versus 15 healthy subjects. Differentially-expressed genes with adj.P.Val <
-#' 0.05 are presented in this dataset.
-#' \emph{Generated on Sep 28, 2019.}
+#' associated \ifelse{html}{\out{log<sub>2</sub>}}{\eqn{log_2}}(fold-change)
+#' values and FDR adjusted p-values for the GEO dataset GSE15573. This microarray
+#' dataset aimed to characterize gene xpression profiles in the peripheral
+#' blood mononuclear cells of 18 rheumatoid arthritis (RA) patients versus 15
+#' healthy subjects. Differentially-expressed genes with adj.P.Val < 0.05 are
+#' presented in this data frame.
+#' \emph{Generated on Nov 1, 2019.}
 #'
 #' @format A data frame with 572 rows and 3 variables: \describe{
 #'   \item{Gene.symbol}{HGNC gene symbols of the differentially-expressed genes}
-#'   \item{logFC}{log2-fold-change values}
+#'   \item{logFC}{\ifelse{html}{\out{log<sub>2</sub>}}{\eqn{log_2}}(fold-change) values}
 #'   \item{adj.P.Val}{adjusted p values, via the Benjamini & Hochberg (1995) method}
 #' }
 #' @source \url{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE15573}
 #'
-#' @seealso \code{\link{RA_output}} for example output of the enrichment workflow.
-#' \code{\link{RA_clustered}} for example output of the clustering workflow.
-#' \code{\link{run_pathfindR}} for details on the patfindR enrichment analysis.
+#' @seealso \code{\link{RA_output}} for the RA example pathfindR enrinchment output
+#' \code{\link{RA_clustered}} for the RA example pathfindR clustering output
+#' \code{\link{RA_exp_mat}} for the RA differentially-expressed genes expression matrix
+#' \code{\link{run_pathfindR}} for details on the patfindR enrichment analysis
 "RA_input"
 
 #' Example Output for the pathfindR Enrichment Workflow - Rheumatoid Arthritis
 #'
-#' A dataset containing the results of pathfindR's active-subnetwork-oriented
+#' The data frame containing the results of pathfindR's active-subnetwork-oriented
 #' enrichment workflow performed on the rheumatoid arthritis
-#' differential-expression dataset \code{RA_input}. Analysis via
+#' differential-expression data frame \code{\link{RA_input}}. Analysis via
 #' \code{run_pathfindR} was performed using the default settings.
-#' \emph{Generated on Oct 22, 2019.}
+#' \emph{Generated on Nov 1, 2019.}
 #'
-#' @format A data frame with 101 rows and 8 columns:
+#' @format A data frame with 95 rows and 8 columns:
 #' \describe{
 #'   \item{ID}{ID of the enriched term}
 #'   \item{Term_Description}{Description of the enriched term}
@@ -95,25 +103,26 @@
 #'   \item{Up_regulated}{the up-regulated genes in the input involved in the given term, comma-separated}
 #'   \item{Down_regulated}{the down-regulated genes in the input involved in the given term, comma-separated}
 #' }
-#' @seealso \code{\link{RA_input}} for the example input of the enrichment workflow.
-#' \code{\link{RA_clustered}} for the example output of the clustering workflow.
-#' \code{\link{run_pathfindR}} for details on the patfindR enrichment workflow.
+#' @seealso \code{\link{RA_input}}  for the RA differentially-expressed genes data frame
+#' \code{\link{RA_clustered}} for the RA example pathfindR clustering output
+#' \code{\link{RA_exp_mat}} for the RA differentially-expressed genes expression matrix
+#' \code{\link{run_pathfindR}} for details on the patfindR enrichment analysis
 "RA_output"
 
 #' Example Output for the pathfindR Clustering Workflow - Rheumatoid Arthritis
 #'
 #' A dataset containing the results of pathfindR's clustering and
 #' partitioning  workflow performed on the rheumatoid arthritis
-#' enrichment results \code{RA_output}. The clustering and partitioning
-#' function \code{cluster_enriched_terms} was used with the default settings
+#' enrichment results \code{\link{RA_output}}. The clustering and partitioning
+#' function \code{\link{cluster_enriched_terms}} was used with the default settings
 #' (i.e. hierarchical clustering was performed and the agglomeration method
 #' was "average"). The optimal number of clusters (yielding the highest average
-#' silhouette width) was determined to be 16. Finally, the enriched terms with the
+#' silhouette width) was determined to be 15 and the enriched terms with the
 #' lowest p values in each cluster were assigned as representative terms
-#' for that cluster.
-#' \emph{Generated on Oct 22, 2019.}
+#' for those clusters.
+#' \emph{Generated on Nov 1, 2019.}
 #'
-#' @format A data frame with 101 rows and 10 columns:
+#' @format A data frame with 95 rows and 10 columns:
 #' \describe{
 #'   \item{ID}{ID of the enriched term}
 #'   \item{Term_Description}{Description of the enriched term}
@@ -126,9 +135,12 @@
 #'   \item{Cluster}{the cluster to which the enriched term is assigned}
 #'   \item{Status}{whether the enriched term is the "Representative" term in its cluster or only a "Member"}
 #' }
-#' @seealso \code{\link{RA_input}} for example input of the enrichment workflow.
-#' \code{\link{RA_output}} for example output of the enrichment workflow.
-#' \code{\link{cluster_enriched_terms}} for details on the patfindR clustering approaches.
+#' @seealso \code{\link{RA_input}}  for the RA differentially-expressed genes data frame
+#' \code{\link{RA_clustered}} for the RA example pathfindR clustering output
+#' \code{\link{RA_exp_mat}} for the RA differentially-expressed genes expression matrix
+#' \code{\link{run_pathfindR}} for details on the patfindR enrichment analysis
+#' \code{\link{RA_output}} for the RA example pathfindR enrinchment output
+#' \code{\link{cluster_enriched_terms}} for details on clustering methods
 "RA_clustered"
 
 #' KEGG Pathways - Gene Sets

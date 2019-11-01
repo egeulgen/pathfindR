@@ -6,7 +6,7 @@
 \title{Example Input for the pathfindR Enrichment Workflow - Rheumatoid Arthritis}
 \format{A data frame with 572 rows and 3 variables: \describe{
   \item{Gene.symbol}{HGNC gene symbols of the differentially-expressed genes}
-  \item{logFC}{log2-fold-change values}
+  \item{logFC}{\ifelse{html}{\out{log<sub>2</sub>}}{\eqn{log_2}}(fold-change) values}
   \item{adj.P.Val}{adjusted p values, via the Benjamini & Hochberg (1995) method}
 }}
 \source{
@@ -17,16 +17,18 @@ RA_input
 }
 \description{
 A dataset containing the differentially-expressed genes along with the
-associated log2-fold-change values and adjusted p-values for the GEO dataset
-GSE15573. The microarray dataset aimed to characterize gene expression profiles in the
-peripheral blood mononuclear cells of 18 rheumatoid arthritis (RA) patients
-versus 15 healthy subjects. Differentially-expressed genes with adj.P.Val <
-0.05 are presented in this dataset.
-\emph{Generated on Sep 28, 2019.}
+associated \ifelse{html}{\out{log<sub>2</sub>}}{\eqn{log_2}}(fold-change)
+values and FDR adjusted p-values for the GEO dataset GSE15573. This microarray
+dataset aimed to characterize gene xpression profiles in the peripheral
+blood mononuclear cells of 18 rheumatoid arthritis (RA) patients versus 15
+healthy subjects. Differentially-expressed genes with adj.P.Val < 0.05 are
+presented in this data frame.
+\emph{Generated on Nov 1, 2019.}
 }
 \seealso{
-\code{\link{RA_output}} for example output of the enrichment workflow.
-\code{\link{RA_clustered}} for example output of the clustering workflow.
-\code{\link{run_pathfindR}} for details on the patfindR enrichment analysis.
+\code{\link{RA_output}} for the RA example pathfindR enrinchment output
+\code{\link{RA_clustered}} for the RA example pathfindR clustering output
+\code{\link{RA_exp_mat}} for the RA differentially-expressed genes expression matrix
+\code{\link{run_pathfindR}} for details on the patfindR enrichment analysis
 }
 \keyword{datasets}

@@ -4,7 +4,7 @@
 \name{RA_output}
 \alias{RA_output}
 \title{Example Output for the pathfindR Enrichment Workflow - Rheumatoid Arthritis}
-\format{A data frame with 101 rows and 8 columns:
+\format{A data frame with 95 rows and 8 columns:
 \describe{
   \item{ID}{ID of the enriched term}
   \item{Term_Description}{Description of the enriched term}
@@ -19,15 +19,16 @@
 RA_output
 }
 \description{
-A dataset containing the results of pathfindR's active-subnetwork-oriented
+The data frame containing the results of pathfindR's active-subnetwork-oriented
 enrichment workflow performed on the rheumatoid arthritis
-differential-expression dataset \code{RA_input}. Analysis via
+differential-expression data frame \code{\link{RA_input}}. Analysis via
 \code{run_pathfindR} was performed using the default settings.
-\emph{Generated on Oct 22, 2019.}
+\emph{Generated on Nov 1, 2019.}
 }
 \seealso{
-\code{\link{RA_input}} for the example input of the enrichment workflow.
-\code{\link{RA_clustered}} for the example output of the clustering workflow.
-\code{\link{run_pathfindR}} for details on the patfindR enrichment workflow.
+\code{\link{RA_input}}  for the RA differentially-expressed genes data frame
+\code{\link{RA_clustered}} for the RA example pathfindR clustering output
+\code{\link{RA_exp_mat}} for the RA differentially-expressed genes expression matrix
+\code{\link{run_pathfindR}} for details on the patfindR enrichment analysis
 }
 \keyword{datasets}

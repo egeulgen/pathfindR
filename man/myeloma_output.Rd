@@ -21,7 +21,7 @@ myeloma_output
 \description{
 A dataset containing the results of pathfindR's active-subnetwork-oriented
 enrichment workflow performed on the Mus musculus myeloma
-differential-expression dataset \code{myeloma_input}.
+differential-expression dataset \code{\link{myeloma_input}}.
 \emph{Generated on Nov 1, 2019.}
 }
 \seealso{

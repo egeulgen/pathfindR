@@ -12,9 +12,16 @@
 RA_exp_mat
 }
 \description{
-A matrix containing the log2-normalized expression values of the differentially-expressed genes
-for 18 rheumatoid arthritis (RA) patients and 15 healthy subjects. Expression values of 572
-differentially-expressed genes with adj.P.Val <= 0.05 are presented in this dataset.
+A matrix containing the log2-transformed and quantile-normalized expression
+values of the differentially-expressed genes for 18 rheumatoid arthritis (RA)
+patients and 15 healthy subjects. The matrix contains expression values of
+572 significantly differentially-expressed genes (see \code{\link{RA_input}})
+with adj.P.Val <= 0.05.
 \emph{Generated on Sep 28, 2019.}
+}
+\seealso{
+\code{\link{RA_input}}  for the RA differentially-expressed genes data frame
+\code{\link{RA_output}} for the RA example pathfindR enrinchment output
+\code{\link{score_terms}} for details on calculating agglomerated scores of enriched terms
 }
 \keyword{datasets}
