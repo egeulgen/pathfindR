@@ -18,9 +18,10 @@
 #'   pathfindR enrichment workflow
 #'
 #' @examples
-#' filtered <- filterActiveSnws(active_snw_path = system.file("extdata/resultActiveSubnetworkSearch.txt",
-#'                                                     package = "pathfindR"),
-#'                        sig_genes_vec = pathfindR::RA_input$Gene.symbol)
+#' path2snw_list <- system.file("extdata/resultActiveSubnetworkSearch.txt",
+#'                               package = "pathfindR")
+#' filtered <- filterActiveSnws(active_snw_path = path2snw_list,
+#'                              sig_genes_vec = pathfindR::RA_input$Gene.symbol)
 filterActiveSnws <- function(active_snw_path, sig_genes_vec,
                              score_quan_thr = 0.80, sig_gene_thr = 0.02) {
   ## Arg. checks
@@ -120,12 +121,14 @@ filterActiveSnws <- function(active_snw_path, sig_genes_vec,
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#' active_snw_search(input_for_search, pin_name_path = "KEGG", search_method = "GR")
-#' active_snw_search(input_for_search,
-#'   pin_name_path = "KEGG",
-#'   search_method = "SA", saTemp0 = 2, saTemp1 = 0.05)
-#' }
+#' processed_df <- input_processing(RA_input, 0.05, "GeneMania")
+#' GR_snws <- active_snw_search(input_for_search = processed_df,
+#'                              pin_name_path = "GeneMania",
+#'                              search_method = "GR")
+#' SA_snws <- active_snw_search(input_for_search = processed_df,
+#'                            pin_name_path = "GeneMania",
+#'                            search_method = "SA",
+#'                            saTemp0 = 2, saTemp1 = 0.05, saIter = 10)
 active_snw_search <- function(input_for_search,
                               pin_name_path = "Biogrid",
                               snws_file = "active_snws",

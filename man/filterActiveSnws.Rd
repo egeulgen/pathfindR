@@ -29,9 +29,10 @@ the `score_quan_thr`th quantile and that contains at least `sig_gene_thr` of sig
 Parse Active Subnetwork Search Output File and Filter the Subnetworks
 }
 \examples{
-filtered <- filterActiveSnws(active_snw_path = system.file("extdata/resultActiveSubnetworkSearch.txt",
-                                                    package = "pathfindR"),
-                       sig_genes_vec = pathfindR::RA_input$Gene.symbol)
+path2snw_list <- system.file("extdata/resultActiveSubnetworkSearch.txt",
+                              package = "pathfindR")
+filtered <- filterActiveSnws(active_snw_path = path2snw_list,
+                             sig_genes_vec = pathfindR::RA_input$Gene.symbol)
 }
 \seealso{
 See \code{\link{run_pathfindR}} for the wrapper function of the
