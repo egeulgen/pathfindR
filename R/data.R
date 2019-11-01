@@ -8,10 +8,10 @@
 #' (myeloma-associated  macrophages), 3 of which were treated with CSF1R
 #' antibody (treatment group) and the rest were treated with control IgG
 #' antibody (control group). In this dataset, differentially-expressed genes
-#' with |logFC| >= 1 and FDR < 0.05 are presented.
+#' with |logFC| >= 2 and FDR < 0.05 are presented.
 #' \emph{Generated on Nov 1, 2019.}
 #'
-#' @format A data frame with 714 rows and 2 variables: \describe{
+#' @format A data frame with 45 rows and 2 variables: \describe{
 #'   \item{Gene_Symbol}{MGI gene symbols of the differentially-expressed genes}
 #'   \item{FDR}{adjusted p values, via the Benjamini & Hochberg (1995) method}
 #' }
@@ -26,9 +26,9 @@
 #' A dataset containing the results of pathfindR's active-subnetwork-oriented
 #' enrichment workflow performed on the Mus musculus myeloma
 #' differential-expression dataset \code{myeloma_input}.
-#' \emph{Generated on Oct 28, 2019.}
+#' \emph{Generated on Nov 1, 2019.}
 #'
-#' @format A data frame with 9 rows and 8 columns:
+#' @format A data frame with 18 rows and 8 columns:
 #' \describe{
 #'   \item{ID}{ID of the enriched term}
 #'   \item{Term_Description}{Description of the enriched term}
@@ -322,8 +322,8 @@
 #' in the Mus musculus STRING protein-protein interaction network (The designations
 #' "interactor A" and "interactor B" are arbitrary). Only interactions with a combined
 #' score >= 800 were kept.
-#' \emph{Generated on Oct 31, 2019.}
+#' \emph{Generated on Nov 1, 2019.}
 #'
-#' @format list containing 11934 vectors. Each vector is the set of gene symbols
+#' @format list containing 11217 vectors. Each vector is the set of gene symbols
 #' of interactors B for each interactor A.
 "mmu_string_adj_list"

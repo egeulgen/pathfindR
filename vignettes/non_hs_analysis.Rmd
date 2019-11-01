@@ -77,7 +77,7 @@ mmu_kegg_genes <- readRDS("mmu_kegg_genes.RDS")
 
 ## Obtain Organism-specific Protein-protein Interaction Network
 
-We recommend obtaining the organism-specific protein-protein interaction network (PIN) from [STRING](https://stringdb-static.org/cgi/download.pl). You may choose the organism of your choice and find the PIN on the downloads page with the description "protein network data (scored links between proteins)". When processing, we recommend filtering the interactions using a link score threshold (e.g. 400).
+We recommend obtaining the organism-specific protein-protein interaction network (PIN) from [STRING](https://stringdb-static.org/cgi/download.pl). You may choose the organism of your choice and find the PIN on the downloads page with the description "protein network data (scored links between proteins)". When processing, we recommend filtering the interactions using a link score threshold (e.g. 800).
 
 Alternatively, you obtain the organism-specific PIN from [BioGRID](https://downloads.thebiogrid.org/BioGRID). Under "Current-Release", download `BIOGRID-ORGANISM-X.X.X.tab2.zip`. This contains PIN data for a large number of organisms. The data the user needs is named as `BIOGRID-ORGANISM-YOUR_ORGANISM-X.X.X.tab.txt` (e.g. BIOGRID-ORGANISM-Mus_musculus-3.5.169.tab.txt).
 
@@ -104,8 +104,8 @@ download.file(url, path2file)
 ## read STRING pin file
 mmu_string_df <- read.table(path2file, header = TRUE)
 
-## filter using combined_score cut-off value of 400
-mmu_string_df <- mmu_string_df[mmu_string_df$combined_score >= 400, ]
+## filter using combined_score cut-off value of 800
+mmu_string_df <- mmu_string_df[mmu_string_df$combined_score >= 800, ]
 
 ## fix ids
 mmu_string_pin <- data.frame(Interactor_A = sub("^10090\\.", "", mmu_string_df$protein1),
@@ -115,8 +115,8 @@ head(mmu_string_pin, 2)
 
 |Interactor_A       |Interactor_B       |
 |:------------------|:------------------|
-|ENSMUSP00000000001 |ENSMUSP00000113105 |
 |ENSMUSP00000000001 |ENSMUSP00000017460 |
+|ENSMUSP00000000001 |ENSMUSP00000039107 |
 
 Since the interactors are Ensembl peptide IDs, we'll need to convert them to MGI symbols for use with pathfindR. This can be achieved via `biomaRt` or any other conversion method you prefer:
 
@@ -137,8 +137,8 @@ head(mmu_string_pin, 2)
 
 | Interactor_A | Interactor_B |
 |:------------:|:------------:|
-|    Gnai3     |     Rerg     |
 |    Gnai3     |     Ppy      |
+|    Gnai3     |     Ccr3     |
 
 Next, we remove self interactions and any duplicated interactions, format the data frame as SIF:
 
@@ -175,7 +175,7 @@ We'll use this path to the custom sif for analysis with `run_pathfindR()`.
 
 ## Input Data
 
-The data used in this vignette (`myeloma_input`) is the data frame of differentially-expressed genes along for the GEO dataset [GSE99393](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE99393). The RNA microarray experiment was perform to detail the global programme of gene expression underlying polarization of myeloma-associated macrophages by CSF1R antibody treatment. The samples are 6 murine bone marrow derived macrophages cocultured with myeloma cells (myeloma-associated macrophages), 3 of which were treated with CSF1R antibody (treatment group) and the rest were treated with control IgG antibody (control group). In `myeloma_input`, 45 differentially-expressed genes with |logFC| >= 2 and FDR < 0.05 are presented.
+The data used in this vignette (`myeloma_input`) is the data frame of differentially-expressed genes along for the GEO dataset [GSE99393](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE99393). The RNA microarray experiment was perform to detail the global programme of gene expression underlying polarization of myeloma-associated macrophages by CSF1R antibody treatment. The samples are 6 murine bone marrow derived macrophages cocultured with myeloma cells (myeloma-associated macrophages), 3 of which were treated with CSF1R antibody (treatment group) and the rest were treated with control IgG antibody (control group). In `myeloma_input`, 45 differentially-expressed genes with |logFC| >= 2 and FDR <= 0.05 are presented.
 
 ```{r mmu_input_df}
 knitr::kable(head(myeloma_input))
@@ -208,6 +208,17 @@ enrichment_chart(myeloma_output)
 knitr::kable(myeloma_output)
 ```
 
-Because we used a very strict cut-off (logFC > 2 + FDR < 0.05), there were only 9 enriched KEGG pathways. However, the pathways identified here significantly related to the pathways identified in the original publication by Wang et al.[^1].
+Because we used a very strict cut-off (logFC >= 2 + FDR <= 0.05), there were only 18 enriched KEGG pathways. However, the pathways identified here significantly related to the pathways identified in the original publication by Wang et al.[^1].
 
 [^1]: Wang Q, Lu Y, Li R, et al. Therapeutic effects of CSF1R-blocking antibodies in multiple myeloma. Leukemia. 2018;32(1):176-183.
+
+## Built-in Mus musculus Data
+
+For Mus musculus (only), we have provided the necesarry PIN (`mmu_STRING`) and gene set data (`mmu_KEGG`) so you can also run:
+
+```{r run, eval=FALSE}
+myeloma_output <- run_pathfindR(input = myeloma_input,
+                                convert2alias = FALSE,
+                                gene_sets = "mmu_KEGG",
+                                pin_name_path = "mmu_STRING")
+```

@@ -3,7 +3,7 @@
 \docType{data}
 \name{myeloma_input}
 \alias{myeloma_input}
-\title{Example Input for Mus Musculus Analysis (Myeloma)}
+\title{Example Input for Myelome Analysis (Mus Musculus)}
 \format{A data frame with 45 rows and 2 variables: \describe{
   \item{Gene_Symbol}{MGI gene symbols of the differentially-expressed genes}
   \item{FDR}{adjusted p values, via the Benjamini & Hochberg (1995) method}
@@ -24,7 +24,7 @@ myeloma-associated macrophages by CSF1R antibody treatment. The samples were
 antibody (treatment group) and the rest were treated with control IgG
 antibody (control group). In this dataset, differentially-expressed genes
 with |logFC| >= 2 and FDR < 0.05 are presented.
-\emph{Generated on Oct 28, 2019.}
+\emph{Generated on Nov 1, 2019.}
 }
 \seealso{
 \code{\link{myeloma_output}} for the example mmu enrichment output.
