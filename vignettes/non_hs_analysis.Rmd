@@ -216,7 +216,7 @@ Because we used a very strict cut-off (logFC >= 2 + FDR <= 0.05), there were onl
 
 For Mus musculus (only), we have provided the necesarry PIN (`mmu_STRING`) and gene set data (`mmu_KEGG`) so you can also run:
 
-```{r run, eval=FALSE}
+```{r run2, eval=FALSE}
 myeloma_output <- run_pathfindR(input = myeloma_input,
                                 convert2alias = FALSE,
                                 gene_sets = "mmu_KEGG",
