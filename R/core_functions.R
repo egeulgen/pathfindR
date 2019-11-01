@@ -496,8 +496,8 @@ return_pin_path <- function(pin_name_path = "Biogrid") {
     path <- file.path(tempdir(check = TRUE), paste0(pin_name_path, ".sif"))
     if (!file.exists(path)) {
 
-      adj_list <- getFromNamespace(paste0(tolower(pin_name_path), "_adj_list"),
-                                   ns = "pathfindR")
+      adj_list <- utils::getFromNamespace(paste0(tolower(pin_name_path), "_adj_list"),
+                                          ns = "pathfindR")
 
       pin_df <- lapply(seq_along(adj_list),
                        function(i, nm, val) data.frame(base::toupper(nm[[i]]),
