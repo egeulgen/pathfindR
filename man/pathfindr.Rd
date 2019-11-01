@@ -6,34 +6,27 @@
 \alias{pathfindR-package}
 \title{pathfindR: A package for Enrichment Analysis Utilizing Active Subnetworks}
 \description{
-The pathfindR package provides two important main functions: \code{run_pathfindR} and
-\code{choose_clusters}.
+pathfindR is a tool for active-subnetwork-oriented gene set enrichment analysis.
+The main aim of the package is to identify active subnetworks in a
+protein-protein interaction network using a user-provided list of genes
+and associated p values then performing enrichment analyses on the identified
+subnetworks, discovering enriched terms (i.e. pathways, ontologies, TF target
+gene sets etc.) that possibly underlie the phenotype of interest.
 }
-\section{run_pathfindR}{
- This function is the wrapper function for the pathfindR
-  workflow. It takes in a data frame consisting of Gene Symbol,
-  log-fold-change (optional) and adjusted-p values. After input testing, any gene
-  symbols that are not in the PIN are converted to alias symbols if the alias
-  is in the PIN. Next, active subnetwork search is performed. Enrichment
-  analysis is performed using the genes in each of the active
-  subnetworks. Enriched terms with adjusted-p values lower than
-  \code{enrichment_threshold} are discarded. The lowest adjusted-p value
-  (over all subnetworks) for each term is kept. This process of active
-  subnetwork search and enrichment is repeated  for a selected number of
-  \code{iterations}, which is executed in parallel. Over all iterations, the
-  lowest and the highest adjusted-p values, as well as number of occurrences
-  are reported for each enriched term.
+\details{
+pathfindR also offers functionalities to cluster the enriched terms and
+identify representative terms in each cluster, to score the enriched terms
+per sample and to visualize analysis results.
 }
-
-\section{cluster_enriched_terms}{
- This function first calculates the pairwise
-  kappa statistics between the terms in the \code{result_df} data frame. By default,
-  hierarchical clustering is performed and the optimal number of clusters is chosen.
-  Optionally, a fuzzy partitioning algorithm can also be used. The function returns
-  a data frame with cluster assignments.
-}
-
 \seealso{
-See \code{\link{run_pathfindR}} and \code{\link{cluster_enriched_terms}}
-  for more details.
+See \code{\link{run_pathfindR}} for details on the pathfindR
+active-subnetwork-oriented enrichment analysis
+See \code{\link{cluster_enriched_terms}} for details on methods of enriched
+terms clustering to define clusters of biologically-related terms
+See \code{\link{score_terms}} for details on agglomerated score calculation
+for enriched terms to investigate how a gene set is altered in a given sample
+(or in cases vs. controls)
+See \code{\link{term_gene_graph}} for details on visualizing terms and
+term-related genes as a graph to determine the degree of overlap between the
+enriched terms by identifying shared and/or distinct significant genes
 }

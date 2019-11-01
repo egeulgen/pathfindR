@@ -39,8 +39,13 @@ a  \code{\link[ggraph]{ggraph}} object containing the term-gene graph.
 Plot Term-Gene Graph
 }
 \details{
-this plotting function was created based on the Gene-Concept
-network visualization by the R package \code{enrichplot}.
+This function (adapted from the Gene-Concept network visualization
+by the R package \code{enrichplot}) can be utilized to visualize which input
+genes are involved in the enriched terms as a graph. The term-gene graph
+shows the links between genes and biological terms and allows for the
+investigation of multiple terms to which significant genes are related. The
+graph also enables determination of the overlap between the enriched terms
+by identifying shared and distinct significant term-related genes.
 }
 \examples{
 p <- term_gene_graph(RA_output)

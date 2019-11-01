@@ -2,7 +2,7 @@
 % Please edit documentation in R/core_functions.R
 \name{run_pathfindR}
 \alias{run_pathfindR}
-\title{Wrapper Function for pathfindR Workflow}
+\title{Wrapper Function for pathfindR - Active-Subnetwork-Oriented Enrichment Analysis}
 \usage{
 run_pathfindR(input, gene_sets = "KEGG", min_gset_size = 10,
   max_gset_size = 300, custom_genes = NULL,

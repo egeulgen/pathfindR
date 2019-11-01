@@ -1,4 +1,4 @@
-#' Wrapper Function for pathfindR Workflow
+#' Wrapper Function for pathfindR - Active-Subnetwork-Oriented Enrichment Analysis
 #'
 #' \code{run_pathfindR} is the wrapper function for the pathfindR workflow
 #'

@@ -86,7 +86,7 @@ for (i in 1:n_iter) {
                                    pin_name_path = "Biogrid", 
                                    snws_file = snws_file,
                                    score_quan_thr = 0.8, # you may tweak these arguments for optimal filtering of subnetworks
-                                   sig_gene_thr = 10, # you may tweak these arguments for optimal filtering of subnetworks
+                                   sig_gene_thr = 0.02, # you may tweak these arguments for optimal filtering of subnetworks
                                    search_method = "GR")
   
   ###### Enrichment Analyses

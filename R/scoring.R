@@ -22,6 +22,36 @@
 #' Columns are samples, rows are enriched terms. Optionally, displays a heatmap
 #' of this matrix.
 #'
+#' @section Conceptual Background:
+#' For an experiment matrix (containing expression, methylation, etc. values),
+#' the rows of which are genes and the columns of which are samples,
+#' we denote: \itemize{
+#' \item E as a matrix of size \ifelse{html}{\out{m x n}}{\eqn{m \times n}}
+#' \item G as the set of all genes in the experiment \ifelse{html}{\out{G = E<sub>i.</sub>, i &#8712; [1, m]}}{\eqn{G = E_{i.}, i \in \[1, m\]}}
+#' \item S as the set of all samples in the experiment \ifelse{html}{\out{S = E<sub>.j</sub>, i &#8712; [1, n]}}{\eqn{S = E_{j.}, i \in \[1, n\]}}
+#' }
+#'
+#' We next define the gene score matrix GS (the standardized experiment matrix,
+#' also of size \ifelse{html}{\out{m x n}}{\eqn{m \times n}}) as:
+#'
+#' \ifelse{html}{\out{GS<sub>gs</sub> = (E<sub>gs</sub> - &#x113;<sub>g</sub>) / s<sub>g</sub>}}{\eqn{GS_{gs} = \frac{E_{gs} - \bar{e_g}}{s_g}}}
+#'
+#' where \ifelse{html}{\out{g &#8712; G}}{\eqn{g \in G}}, \ifelse{html}{\out{s &#8712; S}}{\eqn{s \in S}},
+#' \ifelse{html}{\out{&#x113;<sub>g</sub>}}{\eqn{\bar{e_g}}} is the mean of
+#' all values for gene g and \ifelse{html}{\out{s<sub>g</sub>}}{\eqn{\bar{s_g}}}
+#' is the standard deviation of all values for gene g.
+#'
+#' We next denote T to be a set of terms (where each \ifelse{html}{\out{t &#8712; T}}{\eqn{t \in T}}
+#' is a set of term-related genes, i.e.,
+#' \ifelse{html}{\out{t = \{g<sub>x</sub>, ..., g<sub>y</sub>\} &sub; G}}{\eqn{t = \{g_x, ..., g_y\} \subset G}})
+#' and finally define the agglomerated term scores matrix TS (where rows
+#' correspond to genes and columns corresponds to samples s.t. the matrix has size
+#' \ifelse{html}{\out{|T| x n}}{\eqn{|T| \times n}}) as:
+#'
+#' \ifelse{html}{\out{TS<sub>ts</sub> = 1/|t| &#x2211; <sub>g &#8712; t</sub> GS<sub>gs</sub>}}{\eqn{TS_{ts} = \frac{1}{|t|}\sum_{g \in t} GS_{gs}}}
+#'
+#' where \ifelse{html}{\out{t &#8712; T}}{\eqn{t \in T}} and \ifelse{html}{\out{s &#8712; S}}{\eqn{s \in S}}.
+#'
 #' @export
 #'
 #' @examples

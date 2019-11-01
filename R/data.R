@@ -45,11 +45,11 @@
 
 #' Example Input for pathfindR - Enriched Term Scoring
 #'
-#' A matrix containing the log2-transformed and quantile-normalized expression
-#' values of the differentially-expressed genes for 18 rheumatoid arthritis (RA)
-#' patients and 15 healthy subjects. The matrix contains expression values of
-#' 572 significantly differentially-expressed genes (see \code{\link{RA_input}})
-#' with adj.P.Val <= 0.05.
+#' A matrix containing the \ifelse{html}{\out{log<sub>2</sub>}}{\eqn{log_2}}-transformed
+#' and quantile-normalized expression values of the differentially-expressed
+#' genes for 18 rheumatoid arthritis (RA) atients and 15 healthy subjects. The
+#' matrix contains expression values of  572 significantly
+#' differentially-expressed genes (see \code{\link{RA_input}}) with adj.P.Val <= 0.05.
 #' \emph{Generated on Sep 28, 2019.}
 #'
 #' @format A matrix with 572 rows and 33 columns.
