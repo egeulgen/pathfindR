@@ -5,26 +5,24 @@
 #'   package, these are the input genes that were used for active subnetwork search
 #' @param score_quan_thr active subnetwork score quantile threshold (Default = 0.80)
 #' Must be between 0 and 1 or set to -1 for not filtering
-#' @param sig_gene_thr threshold for minimum number of affected genes (Default = 10)
+#' @param sig_gene_thr threshold for the minimum proportion of significant genes in
+#' the subnetwork (Default = 0.02) If the number of genes to use as threshold is
+#' calculated to be < 2 (e.g. 50 signif. genes x 0.01 = 0.5), the threshold number
+#' is set to 2
 #'
 #' @return A list of genes in every active subnetwork that has a score greater than
-#' the `score_quan_thr`th quantile and that has at least `sig_gene_thr` affected genes.
+#' the `score_quan_thr`th quantile and that contains at least `sig_gene_thr` of significant genes.
 #' @export
 #'
 #' @seealso See \code{\link{run_pathfindR}} for the wrapper function of the
 #'   pathfindR enrichment workflow
 #'
 #' @examples
-#' \dontshow{
-#' tmp <- filterActiveSnws(system.file("extdata/resultActiveSubnetworkSearch.txt",
-#'   package = "pathfindR"
-#' ), pathfindR::RA_input$Gene.symbol)
-#' }
-#' \dontrun{
-#' tmp <- filterActiveSnws("path/to/output", significant_genes)
-#' }
+#' filtered <- filterActiveSnws(active_snw_path = system.file("extdata/resultActiveSubnetworkSearch.txt",
+#'                                                     package = "pathfindR"),
+#'                        sig_genes_vec = pathfindR::RA_input$Gene.symbol)
 filterActiveSnws <- function(active_snw_path, sig_genes_vec,
-                             score_quan_thr = 0.80, sig_gene_thr = 10L) {
+                             score_quan_thr = 0.80, sig_gene_thr = 0.02) {
   ## Arg. checks
   active_snw_path <- suppressWarnings(normalizePath(active_snw_path))
 
@@ -41,8 +39,8 @@ filterActiveSnws <- function(active_snw_path, sig_genes_vec,
 
   if(!is.numeric(sig_gene_thr))
     stop("`sig_gene_thr` should be numeric")
-  if(sig_gene_thr < 0)
-    stop("`sig_gene_thr` should be >= 0")
+  if(sig_gene_thr < 0 | sig_gene_thr > 1)
+    stop("`sig_gene_thr` should be in [0, 1]")
 
   output <- readLines(active_snw_path)
 
@@ -69,10 +67,12 @@ filterActiveSnws <- function(active_snw_path, sig_genes_vec,
   }
   subnetworks <- subnetworks[as.numeric(score_vec) > as.numeric(score_thr)]
 
-  # select subnetworks with at least "sig_gene_thr" significant genes
+  # select subnetworks containing at least "sig_gene_thr" of significant genes
   snw_sig_counts <- vapply(subnetworks, function(snw_genes)
     sum(base::toupper(snw_genes) %in% base::toupper(sig_genes_vec)), 1)
-  cond <- (snw_sig_counts >= sig_gene_thr)
+  sig_gene_num_thr <- sig_gene_thr * length(sig_genes_vec)
+  sig_gene_num_thr <- max(2, sig_gene_num_thr)
+  cond <- (snw_sig_counts >= sig_gene_num_thr)
   subnetworks <- subnetworks[cond]
 
   return(subnetworks)

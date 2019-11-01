@@ -5,7 +5,7 @@
 \title{Parse Active Subnetwork Search Output File and Filter the Subnetworks}
 \usage{
 filterActiveSnws(active_snw_path, sig_genes_vec, score_quan_thr = 0.8,
-  sig_gene_thr = 10L)
+  sig_gene_thr = 0.02)
 }
 \arguments{
 \item{active_snw_path}{path to the output of an Active Subnetwork Search.}
@@ -16,24 +16,22 @@ package, these are the input genes that were used for active subnetwork search}
 \item{score_quan_thr}{active subnetwork score quantile threshold (Default = 0.80)
 Must be between 0 and 1 or set to -1 for not filtering}
 
-\item{sig_gene_thr}{threshold for minimum number of affected genes (Default = 10)}
+\item{sig_gene_thr}{threshold for the minimum proportion of significant genes in
+the subnetwork (Default = 0.02) If the number of genes to use as threshold is
+calculated to be < 2 (e.g. 50 signif. genes x 0.01 = 0.5), the threshold number
+is set to 2}
 }
 \value{
 A list of genes in every active subnetwork that has a score greater than
-the `score_quan_thr`th quantile and that has at least `sig_gene_thr` affected genes.
+the `score_quan_thr`th quantile and that contains at least `sig_gene_thr` of significant genes.
 }
 \description{
 Parse Active Subnetwork Search Output File and Filter the Subnetworks
 }
 \examples{
-\dontshow{
-tmp <- filterActiveSnws(system.file("extdata/resultActiveSubnetworkSearch.txt",
-  package = "pathfindR"
-), pathfindR::RA_input$Gene.symbol)
-}
-\dontrun{
-tmp <- filterActiveSnws("path/to/output", significant_genes)
-}
+filtered <- filterActiveSnws(active_snw_path = system.file("extdata/resultActiveSubnetworkSearch.txt",
+                                                    package = "pathfindR"),
+                       sig_genes_vec = pathfindR::RA_input$Gene.symbol)
 }
 \seealso{
 See \code{\link{run_pathfindR}} for the wrapper function of the

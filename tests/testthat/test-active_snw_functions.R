@@ -24,14 +24,6 @@ test_that("`filterActiveSnws()` returns list object", {
                                                 sig_genes_vec = RA_input$Gene.symbol)))
 })
 
-test_that("`sig_genes_vec` in `filterActiveSnws()` works", {
-  tmp_filtered1 <- filterActiveSnws(active_snw_path = sample_path,
-                                    sig_genes_vec = RA_input$Gene.symbol)
-  tmp_filtered2 <- filterActiveSnws(active_snw_path = sample_path,
-                                    sig_genes_vec = RA_input$Gene.symbol[1:100])
-  expect_true(length(tmp_filtered1) > length(tmp_filtered2))
-})
-
 test_that("`score_quan_thr` in `filterActiveSnws()` works", {
   tmp_filtered <- filterActiveSnws(active_snw_path = sample_path,
                                    sig_genes_vec = RA_input$Gene.symbol,
@@ -52,12 +44,12 @@ test_that("`score_quan_thr` in `filterActiveSnws()` works", {
 test_that("`sig_gene_thr` in `filterActiveSnws()` works", {
   tmp_filtered1 <- filterActiveSnws(active_snw_path = sample_path,
                                     sig_genes_vec = RA_input$Gene.symbol,
-                                    sig_gene_thr = 10, # default
+                                    sig_gene_thr = 0.02, # default
                                     score_quan_thr = -1)
 
   tmp_filtered2 <- filterActiveSnws(active_snw_path = sample_path,
                                     sig_genes_vec = RA_input$Gene.symbol,
-                                    sig_gene_thr = 20,
+                                    sig_gene_thr = 0.1,
                                     score_quan_thr = -1)
 
   expect_true(length(tmp_filtered2) < def_smw_len)
@@ -92,7 +84,7 @@ test_that("`filterActiveSnws()` arg checks work", {
   expect_error(filterActiveSnws(active_snw_path = sample_path,
                                 sig_genes_vec = RA_input$Gene.symbol,
                                 sig_gene_thr = -1),
-               "sig_gene_thr` should be >= 0")
+               "`sig_gene_thr` should be in \\[0, 1\\]")
 })
 
 # active_snw_search -------------------------------------------------------

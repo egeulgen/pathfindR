@@ -26,6 +26,7 @@
   - mmmu STRING PIN
   - `myeloma_input` & `myeloma_output`: example mmu input and output data
 - Added the STRING PIN (combined score >= 400)
+- The argument `sig_gene_thr` in subnetwork filtering via `filterActiveSnws()` now serves the threshold proption of significant genes in the active subnetwork. e.g., if there are 100 significant genes and `sig_gene_thr = 0.03`, subnetwork that contain at least 3 (100 x 0.03) significant genes will be accepted for further analysis
 
 ## Minor changes and bug fixes
 - In `hierarchical_term_clustering()`, redefined the distance measure as `1 - kappa statistic`

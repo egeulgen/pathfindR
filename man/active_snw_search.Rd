@@ -33,7 +33,10 @@ Used in the wrapper function (see ?run_pathfindR) (Default = NULL)}
 \item{score_quan_thr}{active subnetwork score quantile threshold (Default = 0.80)
 Must be between 0 and 1 or set to -1 for not filtering}
 
-\item{sig_gene_thr}{threshold for minimum number of affected genes (Default = 10)}
+\item{sig_gene_thr}{threshold for the minimum proportion of significant genes in
+the subnetwork (Default = 0.02) If the number of genes to use as threshold is
+calculated to be < 2 (e.g. 50 signif. genes x 0.01 = 0.5), the threshold number
+is set to 2}
 
 \item{search_method}{algorithm to use when performing active subnetwork
 search. Options are greedy search (GR), simulated annealing (SA) or genetic

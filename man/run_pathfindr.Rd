@@ -14,7 +14,7 @@ run_pathfindR(input, gene_sets = "KEGG", min_gset_size = 10,
   saIter = 10000, gaPop = 400, gaIter = 200, gaThread = 5,
   gaCrossover = 1, gaMut = 0, grMaxDepth = 1, grSearchDepth = 1,
   grOverlap = 0.5, grSubNum = 1000, iterations = 10,
-  n_processes = NULL, score_quan_thr = 0.8, sig_gene_thr = 10,
+  n_processes = NULL, score_quan_thr = 0.8, sig_gene_thr = 0.02,
   plot_enrichment_chart = TRUE, output_dir = "pathfindR_Results",
   list_active_snw_genes = FALSE, silent_option = TRUE)
 }
@@ -105,7 +105,10 @@ automatically (Default == NULL. Gets set to 1 for Genetic Algorithm)}
 \item{score_quan_thr}{active subnetwork score quantile threshold (Default = 0.80)
 Must be between 0 and 1 or set to -1 for not filtering}
 
-\item{sig_gene_thr}{threshold for minimum number of affected genes (Default = 10)}
+\item{sig_gene_thr}{threshold for the minimum proportion of significant genes in
+the subnetwork (Default = 0.02) If the number of genes to use as threshold is
+calculated to be < 2 (e.g. 50 signif. genes x 0.01 = 0.5), the threshold number
+is set to 2}
 
 \item{plot_enrichment_chart}{boolean value. If TRUE, a bubble chart displaying the enrichment
 results is plotted. (default = TRUE)}
