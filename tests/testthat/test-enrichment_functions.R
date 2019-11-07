@@ -2,7 +2,7 @@
 ## Project: pathfindR
 ## Script purpose: Testthat testing script for
 ## enrichment-related functions
-## Date: Oct 30, 2019
+## Date: Nov 7, 2019
 ## Author: Ege Ulgen
 ##################################################
 
@@ -239,7 +239,7 @@ test_that("summarize_enrichment_results() arg checks work", {
                paste0("`enrichment_res` should have exactly ", length(nec_cols), " columns"))
 
   tmp <- as.data.frame(matrix(nrow = 1, ncol = length(nec_cols),
-                              dimnames = list(NULL, letters[1:length(nec_cols)])))
+                              dimnames = list(NULL, letters[seq_along(nec_cols)])))
   expect_error(summarize_enrichment_results(enrichment_res = tmp),
                paste0("`enrichment_res` should have column names ",
                       paste(dQuote(nec_cols), collapse = ", ")))
@@ -253,7 +253,7 @@ test_that("summarize_enrichment_results() arg checks work", {
                paste0("`enrichment_res` should have exactly ", length(nec_cols), " columns"))
 
   tmp <- as.data.frame(matrix(nrow = 1, ncol = length(nec_cols),
-                              dimnames = list(NULL, letters[1:length(nec_cols)])))
+                              dimnames = list(NULL, letters[seq_along(nec_cols)])))
   expect_error(summarize_enrichment_results(enrichment_res = tmp,
                                             list_active_snw_genes = TRUE),
                paste0("`enrichment_res` should have column names ",
