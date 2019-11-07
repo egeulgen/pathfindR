@@ -136,6 +136,11 @@ run_pathfindR <- function(input,
   if (is.null(n_processes))
     n_processes <- parallel::detectCores() - 1
 
+  if (iterations < n_processes) {
+    message("`n_processes` is set to `iterations` because `iterations` < `n_processes`")
+    n_processes <- iterations
+  }
+
   if (!is.logical(use_all_positives)) {
     stop("`use_all_positives` should be either TRUE or FALSE")
   }

@@ -28,6 +28,7 @@ LazyData: true
 SystemRequirements: Java JVM 1.8
 biocViews:
 Imports: DBI,
+    AnnotationDbi,
     doParallel,
     foreach,
     rmarkdown,
@@ -40,9 +41,9 @@ Imports: DBI,
     R.utils,
     magick,
     KEGGREST,
-    KEGGgraph
-Depends: R (>= 3.6),
+    KEGGgraph,
     knitr
+Depends: R (>= 3.6)
 Suggests: 
     testthat (>= 2.1.0),
     covr

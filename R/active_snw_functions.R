@@ -121,14 +121,10 @@ filterActiveSnws <- function(active_snw_path, sig_genes_vec,
 #' @export
 #'
 #' @examples
-#' processed_df <- input_processing(RA_input, 0.05, "GeneMania")
+#' processed_df <- input_processing(RA_input[1:50, ], 0.05, "GeneMania")
 #' GR_snws <- active_snw_search(input_for_search = processed_df,
 #'                              pin_name_path = "GeneMania",
 #'                              search_method = "GR")
-#' SA_snws <- active_snw_search(input_for_search = processed_df,
-#'                            pin_name_path = "GeneMania",
-#'                            search_method = "SA",
-#'                            saTemp0 = 2, saTemp1 = 0.05, saIter = 10)
 active_snw_search <- function(input_for_search,
                               pin_name_path = "Biogrid",
                               snws_file = "active_snws",

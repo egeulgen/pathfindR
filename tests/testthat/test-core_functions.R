@@ -59,8 +59,9 @@ test_that("`run_pathfindR()` works as expected", {
 })
 
 test_that("Expect warning with empty result from `run_pathfindR()`", {
-  expect_warning(res <- run_pathfindR(RA_input[1:3, ],
-                                      iterations = 1),
+  expect_warning(res <- run_pathfindR(RA_input[1:2, ],
+                                      iterations = 1,
+                                      visualize_enriched_terms = FALSE),
                  "Did not find any enriched terms!")
   expect_identical(res, data.frame())
   unlink("pathfindR_Results", recursive = TRUE)

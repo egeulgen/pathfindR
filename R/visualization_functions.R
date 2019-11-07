@@ -290,8 +290,6 @@ visualize_hsa_KEGG <- function(hsa_kegg_ids, input_processed,
          paste(dQuote(nec_cols), collapse = ", "))
   }
 
-  dir.create("term_visualizations", showWarnings = FALSE)
-
   ############ Create change vector
   ### Convert gene symbols into NCBI gene IDs
   tmp <- AnnotationDbi::mget(input_processed$GENE,
@@ -328,6 +326,8 @@ visualize_hsa_KEGG <- function(hsa_kegg_ids, input_processed,
   ### Read logo
   path_logo <- system.file("extdata", "logo.png", package = "pathfindR")
   logo_img <- magick::image_read(path_logo)
+
+  dir.create("term_visualizations", showWarnings = FALSE)
 
   cat("Saving colored pathway diagrams of", length(pw_vis_list), "KEGG pathways\n\n")
   pb <- utils::txtProgressBar(min = 0, max = length(pw_vis_list), style = 3)
@@ -417,11 +417,12 @@ visualize_hsa_KEGG <- function(hsa_kegg_ids, input_processed,
 #' }
 #'
 #' @examples
-#' pw_id <- "hsa00010"
-#' change_vec <- c(-2, 4, 6)
-#' names(change_vec) <- c("hsa:2821", "hsa:226", "hsa:229")
-#'
-#' result <- pathfindR:::color_kegg_pathway(pw_id, change_vec)
+#' \dontrun{
+#'    pw_id <- "hsa00010"
+#'    change_vec <- c(-2, 4, 6)
+#'    names(change_vec) <- c("hsa:2821", "hsa:226", "hsa:229")
+#'    result <- pathfindR:::color_kegg_pathway(pw_id, change_vec)
+#' }
 color_kegg_pathway <- function(pw_id, change_vec, normalize_vals = TRUE,
                                node_cols = NULL, quiet = TRUE) {
   ############ Arg checks

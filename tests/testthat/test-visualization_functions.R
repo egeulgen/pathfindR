@@ -73,8 +73,6 @@ test_that("`visualize_terms()` arg checks work", {
                "the argument `hsa_KEGG` should be either TRUE or FALSE")
 })
 
-
-
 # visualize_term_interactions ---------------------------------------------
 test_that("`visualize_term_interactions()` creates expected png file(s)", {
   expected_out_file <- file.path("term_visualizations",
