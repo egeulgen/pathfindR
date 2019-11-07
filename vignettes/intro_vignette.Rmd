@@ -23,20 +23,25 @@ The functionalities of pathfindR is described in detail in _Ulgen E, Ozisik O, S
 
 # Overview
 
-Our motivation to develop `pathfindR` was that direct enrichment analysis of differential RNA/protein expression or DNA methylation results may not provide the researcher with the full picture. That is to say: enrichment of only the list of significant genes may not be informative enough to explain the underlying disease mechanisms. 
+The observation that motivated us to develop `pathfindR` was that direct enrichment analysis of differential RNA/protein expression or DNA methylation results may not provide the researcher with the full picture. That is to say: enrichment analysis of only a list of significant genes alone may not be informative enough to explain the underlying disease mechanisms. Therefore, we considered leveraging interaction information from a protein-protein interaction network (PIN) to identify distinct active subnetworks and then perform enrichment analyses on these subnetworks.
 
-> An active subnetwork can be defined as a group of interconnected genes in a protein-protein interaction network (PIN) that predominantly consists of significantly altered genes. In other words, active subnetworks define distinct disease-associated sets of interacting genes, whether discovered through the original analysis or discovered because of being in interaction with a significant gene.
+> An active subnetwork can be defined as a group of interconnected genes in a PIN that predominantly consists of significantly altered genes. In other words, active subnetworks define distinct disease-associated sets of interacting genes, whether discovered through the original analysis or discovered because of being in interaction with a significant gene.
 
-We therefore propose to leverage information from a PIN to identify distinct active subnetworks and then perform enrichment analyses on these subnetworks. Mapping the input genes with the associated p values onto the PIN (after processing the input), active subnetwork search is performed. The resulting active subnetworks are then filtered based on their scores and the number of significant genes they contain. These filtered list of active subnetworks are then used for enrichment analyses, i.e. using the genes in each of the active subnetworks, the significantly enriched terms (pathways/gene sets) are identified. Enriched terms with adjusted p values larger than the given threshold are discarded and the lowest adjusted p value (over all active subnetworks) for each term is kept. This process of `active subnetwork search + enrichment analyses` is repeated for a selected number of iterations, performed in parallel. Over all iterations, the lowest and the highest adjusted-p values, as well as number of occurrences over all iterations are reported for each significantly enriched term in the result data frame. An HTML report containing the results is also provided. This active-subnetwork-oriented enrichment approach is demonstrated in the section [Active-subnetwork-oriented Enrichment Analysis] of this vignette.
+The active-subnetwork-oriented enrichment analysis approach of pathfindR can be summarized as follows: Mapping the input genes with the associated p values onto the PIN (after processing the input), active subnetwork search is performed. The resulting active subnetworks are then filtered based on their scores and the number of significant genes they contain. This filtered list of active subnetworks are then used for enrichment analyses, i.e. using the genes in each of the active subnetworks, the significantly enriched terms (pathways/gene sets) are identified. Enriched terms with adjusted p values larger than the given threshold are discarded and the lowest adjusted p value (over all active subnetworks) for each term is kept. This process of `active subnetwork search + enrichment analyses` is repeated for a selected number of iterations, performed in parallel. Over all iterations, the lowest and the highest adjusted-p values, as well as number of occurrences over all iterations are reported for each significantly enriched term in the resulting data frame. An HTML report containing the results is also provided containing links to the visualizations of the enriched terms. This active-subnetwork-oriented enrichment approach is demonstrated in the section [Active-subnetwork-oriented Enrichment Analysis] of this vignette.
 
 The enrichment analysis usually yields a great number of enriched terms whose biological functions are related. Therefore, we implemented two clustering approaches using a pairwise distance matrix based on the kappa statistics between the enriched terms (as proposed by Huang et al. [^1]). Based on this distance metric, the user can perform either hierarchical (default) or fuzzy clustering of the enriched terms. Details of clustering and partitioning of enriched terms are presented in the [Clustering Enriched Terms] section of this vignette.
 
+Other functionalities of pathfindR including:
+
+- agglomerated score calculation per each term (to investigate how a gene set is altered in a given sample)
+- visualization of terms and term-related genes as a graph (to determine the degree of overlap between the enriched terms by identifying shared and/or distinct significant genes) and
+- pathfindR analysis with custom gene sets are also briefly described.
 
 # Active-subnetwork-oriented Enrichment Analysis
 
 <img src="./pathfindr.png" style="max-width:100%;" />
 
-For convenience, we provide  the wrapper function `run_pathfindR()` to be used for the active-subnetwork-oriented enrichment analysis. The input for this function must be a data frame consisting of the following columns: `Gene Symbols`, `Change Values` (optional) and `p values`. The example data frame used in this vignette (`input_df`) is the dataset containing the differentially-expressed genes for the GEO dataset GSE15573 comparing 18 rheumatoid arthritis (RA) patients versus 15 healthy subjects.
+For convenience, we provide  the wrapper function `run_pathfindR()` to be used for the active-subnetwork-oriented enrichment analysis. The input for this function must be a data frame consisting of the columns containing: `Gene Symbols`, `Change Values` (optional) and `p values`. The example data frame used in this vignette (`input_df`) is the dataset containing the differentially-expressed genes for the GEO dataset GSE15573 comparing 18 rheumatoid arthritis (RA) patients versus 15 healthy subjects.
 
 The first 6 rows of the example input data frame are displayed below:
 
@@ -72,7 +77,9 @@ By default, `run_pathfindR()` creates a directory named `"pathfindR_Results"` un
 output_df <- run_pathfindR(input_df, output_dir = "this_is_my_output_directory")
 ```
 
-This creates `"this_is_my_output_directory"` under the current working directory. In essence, this argument is treated as a path so it can be used to create the output directory anwyhere. For example, to create the directory `"my_dir"` under `"~/Desktop"` and run the analysis there, you may run:
+This creates `"this_is_my_output_directory"` under the current working directory.
+
+In essence, this argument is treated as a path so it can be used to create the output directory anwyhere. For example, to create the directory `"my_dir"` under `"~/Desktop"` and run the analysis there, you may run:
 
 ```{r change_out_dir2}
 output_df <- run_pathfindR(input_df, output_dir = "~/Desktop/my_dir")
@@ -98,7 +105,7 @@ output_df <- run_pathfindR(input_df,
                            max_gset_size = 500)
 ```
 
-> Note that increasing the number of terms for enrichment analysis will result in significantly longer run time.
+> Note that increasing the number of terms for enrichment analysis may result in significantly longer run time.
 
 If the user prefers to use another gene set source, the `gene_sets` argument should be set to `"Custom"` and the custom gene sets (list) and the custom gene set descriptions (named vector) should be supplied via the arguments `custom_genes` and `custom_descriptions`, respectively. See `?fetch_gene_set` for more details and [Analysis with Custom Gene Sets] for a simple demonstration.
 
