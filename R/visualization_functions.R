@@ -421,7 +421,7 @@ visualize_hsa_KEGG <- function(hsa_kegg_ids, input_processed,
 #' change_vec <- c(-2, 4, 6)
 #' names(change_vec) <- c("hsa:2821", "hsa:226", "hsa:229")
 #'
-#' result <- color_kegg_pathway(pw_id, change_vec)
+#' result <- pathfindR:::color_kegg_pathway(pw_id, change_vec)
 color_kegg_pathway <- function(pw_id, change_vec, normalize_vals = TRUE,
                                node_cols = NULL, quiet = TRUE) {
   ############ Arg checks

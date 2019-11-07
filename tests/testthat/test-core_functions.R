@@ -10,11 +10,14 @@
 test_that("`run_pathfindR()` works as expected", {
   skip_on_cran()
   ## GR
-  expect_is(run_pathfindR(RA_input,
-                          iterations = 1,
-                          n_processes = 2,
-                          visualize_enriched_terms = FALSE),
-            "data.frame")
+  expect_warning(res <- run_pathfindR(RA_input,
+                                      iterations = 1,
+                                      n_processes = 2,
+                                      visualize_enriched_terms = FALSE),
+    "`n_processes` is set to `iterations` because `iterations` < `n_processes`")
+  expect_is(res, "data.frame")
+  unlink("pathfindR_Results", recursive = TRUE)
+
   expect_is(run_pathfindR(RA_input,
                           iterations = 2,
                           n_processes = 2,
@@ -22,6 +25,7 @@ test_that("`run_pathfindR()` works as expected", {
                           pin_name_path = "GeneMania",
                           plot_enrichment_chart = FALSE),
             "data.frame")
+  unlink("pathfindR_Results", recursive = TRUE)
 
   ## GA - n_processes <- 1 and n_processes <- iterations (iterations < n_processes)
   expected_warns <- c("Did not find any enriched terms!",
@@ -59,6 +63,7 @@ test_that("Expect warning with empty result from `run_pathfindR()`", {
                                       iterations = 1),
                  "Did not find any enriched terms!")
   expect_identical(res, data.frame())
+  unlink("pathfindR_Results", recursive = TRUE)
 })
 
 
