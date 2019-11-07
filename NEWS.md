@@ -1,5 +1,4 @@
-# pathfindR 1.4.0.9012
-## To be released as 1.4.0
+# pathfindR 1.4.0
 
 ## Major Changes
 - Replaced most occurences of "pathway" to "term". This was adapted because "term" reflects the utility of the package better. The enrichment and clustering approaches work with any kind of gene set data (be it pathway gene sets, gene ontology gene sets, motif gene sets etc.) Accordingly:
