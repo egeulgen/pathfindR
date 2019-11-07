@@ -16,7 +16,7 @@ test_that("`run_pathfindR()` works as expected", {
                                       visualize_enriched_terms = FALSE),
     "`n_processes` is set to `iterations` because `iterations` < `n_processes`")
   expect_is(res, "data.frame")
-
+  unlink("pathfindR_Results", recursive = TRUE)
   expect_is(run_pathfindR(RA_input,
                           iterations = 2,
                           n_processes = 2,
@@ -25,7 +25,6 @@ test_that("`run_pathfindR()` works as expected", {
                           plot_enrichment_chart = FALSE),
             "data.frame")
   unlink("pathfindR_Results", recursive = TRUE)
-  unlink("pathfindR_Results(1)", recursive = TRUE)
 
   ## GA - n_processes <- 1 and n_processes <- iterations (iterations < n_processes)
   expected_warns <- c("Did not find any enriched terms!",
@@ -35,6 +34,22 @@ test_that("`run_pathfindR()` works as expected", {
                                search_method = "GA",
                                output_dir = tempdir(check = TRUE)),
                  paste0(paste(expected_warns, collapse = "|")), all = TRUE, perl = TRUE)
+
+  ### output_dir renaming works
+  test_out_dir <- file.path(tempdir(check = TRUE), "TEST")
+  for (i in 1:3) {
+    expect_warning(res <- run_pathfindR(RA_input[1:2, ],
+                                        iterations = 1,
+                                        n_processes = 1,
+                                        visualize_enriched_terms = FALSE,
+                                        output_dir = test_out_dir),
+                   "Did not find any enriched terms!")
+    dir_to_check <- test_out_dir
+    if (i > 1) {
+      dir_to_check <- paste0(dir_to_check, "(", i - 1, ")")
+    }
+    expect_true(dir.exists(dir_to_check))
+  }
 
   skip("will test SA and GA if we can create a suitable (faster and non-empty) test case")
 
