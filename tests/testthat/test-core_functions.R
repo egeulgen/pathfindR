@@ -16,7 +16,6 @@ test_that("`run_pathfindR()` works as expected", {
                                       visualize_enriched_terms = FALSE),
     "`n_processes` is set to `iterations` because `iterations` < `n_processes`")
   expect_is(res, "data.frame")
-  unlink("pathfindR_Results", recursive = TRUE)
 
   expect_is(run_pathfindR(RA_input,
                           iterations = 2,
@@ -26,6 +25,7 @@ test_that("`run_pathfindR()` works as expected", {
                           plot_enrichment_chart = FALSE),
             "data.frame")
   unlink("pathfindR_Results", recursive = TRUE)
+  unlink("pathfindR_Results(1)", recursive = TRUE)
 
   ## GA - n_processes <- 1 and n_processes <- iterations (iterations < n_processes)
   expected_warns <- c("Did not find any enriched terms!",
