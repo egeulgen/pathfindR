@@ -65,12 +65,6 @@ visualize_terms <- function(result_df, input_processed = NULL,
     if (is.null(input_processed)) {
       stop("`input_processed` should be specified when `hsa_KEGG = TRUE`")
     }
-
-    nec_cols <- c("GENE", "CHANGE")
-    if (!all(nec_cols %in% colnames(input_processed))) {
-      stop("`input_processed` should contain the following columns: ",
-           paste(dQuote(nec_cols), collapse = ", "))
-    }
   }
 
   ############ Generate Diagrams
@@ -275,6 +269,26 @@ visualize_hsa_KEGG <- function(hsa_kegg_ids, input_processed,
                                quiet = TRUE,
                                key_gravity = "northeast",
                                logo_gravity = "southeast") {
+  ############ Arg checks
+
+  ### hsa_kegg_ids
+  if (!is.atomic(hsa_kegg_ids)) {
+    stop("`hsa_kegg_ids` should be a vector of hsa KEGG IDs")
+  }
+  if (!all(grepl("^hsa[0-9]{5}$", hsa_kegg_ids))) {
+    stop("`hsa_kegg_ids` should be a vector of valid hsa KEGG IDs")
+  }
+
+  ### input_processed
+  if (!is.data.frame(input_processed)) {
+    stop("`input_processed` should be a data frame")
+  }
+
+  nec_cols <- c("GENE", "CHANGE")
+  if (!all(nec_cols %in% colnames(input_processed))) {
+    stop("`input_processed` should contain the following columns: ",
+         paste(dQuote(nec_cols), collapse = ", "))
+  }
 
   dir.create("term_visualizations", showWarnings = FALSE)
 
@@ -366,10 +380,14 @@ visualize_hsa_KEGG <- function(hsa_kegg_ids, input_processed,
     grDevices::dev.off()
 
     ### Add color key legend
-    final_pw_img <- magick::image_composite(pw_diag,
-                                            magick::image_scale(col_key_legend, "x45"),
-                                            gravity  = key_gravity,
-                                            offset = "+10+10")
+    if (all(change_vec == 1e6)) {
+      final_pw_img <- pw_diag
+    } else {
+      final_pw_img <- magick::image_composite(pw_diag,
+                                              magick::image_scale(col_key_legend, "x45"),
+                                              gravity  = key_gravity,
+                                              offset = "+10+10")
+    }
 
     final_path <- file.path("term_visualizations", basename(f_path))
     magick::image_write(final_pw_img, path = final_path, format = "png")
@@ -407,19 +425,23 @@ visualize_hsa_KEGG <- function(hsa_kegg_ids, input_processed,
 color_kegg_pathway <- function(pw_id, change_vec, normalize_vals = TRUE,
                                node_cols = NULL, quiet = TRUE) {
   ############ Arg checks
+  if (!is.logical(normalize_vals)) {
+    stop("`normalize_vals` should be logical")
+  }
+
   ## check node_cols
   if (!is.null(node_cols)) {
     if (!is.atomic(node_cols)) {
       stop("`node_cols` should be a vector of colors")
     }
 
+    if (!all(change_vec == 1e6) & length(node_cols) != 3) {
+      stop("the length of `node_cols` should be 3")
+    }
+
     isColor <- function(x) {
       tryCatch(is.matrix(grDevices::col2rgb(x)),
                error = function(e) FALSE)
-    }
-
-    if (!all(vals == 1e6) & length(node_cols) != 3) {
-      stop("the length of `node_cols` should be 3")
     }
 
     if (!all(vapply(node_cols, isColor, TRUE))) {
@@ -571,9 +593,6 @@ color_kegg_pathway <- function(pw_id, change_vec, normalize_vals = TRUE,
               all_key_cols = all_key_cols,
               all_brks = all_brks))
 }
-
-
-
 
 #' Create Bubble Chart of Enrichment Results
 #'

@@ -2,21 +2,24 @@
 ## Project: pathfindR
 ## Script purpose: Testthat testing script for
 ## visualization-related functions
-## Date: Oct 30, 2019
+## Date: Nov 7, 2019
 ## Author: Ege Ulgen
 ##################################################
 
 # visualize_terms ---------------------------------------------------------
-input_processed <- suppressMessages(input_processing(RA_input[1:10, ],
-                                                     0.05, "Biogrid"))
-tmp_res <- RA_output[3, ]
+tmp_res <- RA_output[1, ]
+
+tmp_genes <- unlist(c(strsplit(tmp_res$Up_regulated, ", "),
+                      strsplit(tmp_res$Down_regulated, ", ")))
+tmp_input <- RA_input[RA_input$Gene.symbol %in% tmp_genes, ]
+input_processed <- suppressMessages(input_processing(tmp_input, 0.05, "Biogrid"))
+
 
 test_that("`visualize_terms()` creates expected png file(s)", {
 
-  ## hsa KEGG (pathview)
+  ## hsa KEGG
   expected_out_file <- file.path("term_visualizations",
-                                 paste(tmp_res$ID, tmp_res$Term_Description,
-                                       "png", sep = "."))
+                                 paste0(tmp_res$ID, "_pathfindR.png"))
 
   suppressMessages(visualize_terms(result_df = tmp_res,
                                    input_processed = input_processed,
@@ -43,12 +46,13 @@ test_that("`visualize_terms()` creates expected png file(s)", {
   unlink("term_visualizations", recursive = TRUE)
 })
 
+
 test_that("`visualize_terms()` arg checks work", {
   expect_error(visualize_terms(result_df = "INVALID"),
                "`result_df` should be a data frame")
 
   # hsa_KEGG = TRUE
-  nec_cols <- c("ID", "Term_Description")
+  nec_cols <- "ID"
   expect_error(visualize_terms(tmp_res[, -1],
                                hsa_KEGG = TRUE),
                paste0("`result_df` should contain the following columns: ",
@@ -67,20 +71,12 @@ test_that("`visualize_terms()` arg checks work", {
   expect_error(visualize_terms(result_df = tmp_res,
                                hsa_KEGG = "INVALID"),
                "the argument `hsa_KEGG` should be either TRUE or FALSE")
-
-  nec_cols <- c("GENE", "CHANGE")
-
-  expect_error(visualize_terms(result_df = tmp_res,
-                               hsa_KEGG = TRUE,
-                               input_processed = input_processed[, -2]),
-               paste0("`input_processed` should contain the following columns: ",
-                      paste(dQuote(c("GENE", "CHANGE")), collapse = ", ")))
 })
 
 
 
 # visualize_term_interactions ---------------------------------------------
-test_that("`visualize_term_interactions` creates expected png file(s)", {
+test_that("`visualize_term_interactions()` creates expected png file(s)", {
   expected_out_file <- file.path("term_visualizations",
                                  paste0(tmp_res$Term_Description, ".png"))
   expect_null(visualize_term_interactions(tmp_res,
@@ -108,33 +104,76 @@ test_that("`visualize_term_interactions` creates expected png file(s)", {
 })
 
 # visualize_hsa_KEGG ------------------------------------------------------
-test_that("visualize_hsa_KEGG creates expected png file(s)", {
+test_that("`visualize_hsa_KEGG()` creates expected png file(s)", {
   expected_out_file <- file.path("term_visualizations",
-                                 paste(tmp_res$ID, tmp_res$Term_Description,
-                                       "png", sep = "."))
+                                 paste0(tmp_res$ID, "_pathfindR.png"))
 
-  ## Continuous change values
-  genes_df <- input_processed[, c("GENE", "CHANGE")]
-  rownames(genes_df) <- genes_df$GENE
-  genes_df <- genes_df[, -1, drop = FALSE]
-
-  expect_null(suppressMessages(visualize_hsa_KEGG(tmp_res, genes_df)))
+  ###### Continuous change values
+  ### Normalize = TRUE
+  expect_null(visualize_hsa_KEGG(hsa_kegg_ids = tmp_res$ID,
+                                 input_processed = input_processed))
   expect_true(file.exists(expected_out_file))
   unlink("term_visualizations", recursive = TRUE)
 
-  ## Binary change values
-  genes_df$CHANGE <- ifelse(genes_df$CHANGE < 0, -1, 1)
-
-  expect_null(suppressMessages(visualize_hsa_KEGG(tmp_res, genes_df)))
+  ### Normalize = FALSE
+  expect_null(visualize_hsa_KEGG(hsa_kegg_ids = tmp_res$ID,
+                                 input_processed = input_processed,
+                                 normalize_vals = FALSE))
   expect_true(file.exists(expected_out_file))
   unlink("term_visualizations", recursive = TRUE)
 
-  ## Constant change values (if no change values supplied in input)
-  genes_df$CHANGE <- 100
-
-  expect_null(suppressMessages(visualize_hsa_KEGG(tmp_res, genes_df)))
+  ###### Constant change values (if no change values supplied in input)
+  input_processed2 <- input_processed
+  input_processed2$CHANGE <- 1e6
+  expect_null(visualize_hsa_KEGG(hsa_kegg_ids = tmp_res$ID,
+                                 input_processed = input_processed2))
   expect_true(file.exists(expected_out_file))
   unlink("term_visualizations", recursive = TRUE)
+
+  expect_message(visualize_hsa_KEGG(hsa_kegg_ids = tmp_res$ID,
+                                    input_processed = input_processed2,
+                                    node_cols = "red"),
+                 "all `change_vec` values are 1e6, using the first color in `node_cols`")
+  expect_true(file.exists(expected_out_file))
+  unlink("term_visualizations", recursive = TRUE)
+})
+
+test_that("arg checks for `visualize_hsa_KEGG()` work", {
+  expect_error(visualize_hsa_KEGG(hsa_kegg_ids = list(),
+                                  input_processed = input_processed),
+               "`hsa_kegg_ids` should be a vector of hsa KEGG IDs")
+  expect_error(visualize_hsa_KEGG(hsa_kegg_ids = c("X", "Y", "Z"),
+                                  input_processed = input_processed),
+               "`hsa_kegg_ids` should be a vector of valid hsa KEGG IDs")
+
+  expect_error(visualize_hsa_KEGG(hsa_kegg_ids = tmp_res$ID,
+                                  input_processed = list()),
+               "`input_processed` should be a data frame")
+  expect_error(visualize_hsa_KEGG(hsa_kegg_ids = tmp_res$ID,
+                                  input_processed = input_processed[, -2]),
+               paste0("`input_processed` should contain the following columns: ",
+                      paste(dQuote(c("GENE", "CHANGE")), collapse = ", ")))
+
+
+  expect_error(visualize_hsa_KEGG(hsa_kegg_ids = tmp_res$ID,
+                                  input_processed = input_processed,
+                                  normalize_vals = "INVALID"),
+               "`normalize_vals` should be logical")
+
+  expect_error(visualize_hsa_KEGG(hsa_kegg_ids = tmp_res$ID,
+                                  input_processed = input_processed,
+                                  node_cols = list()),
+               "`node_cols` should be a vector of colors")
+  expect_error(visualize_hsa_KEGG(hsa_kegg_ids = tmp_res$ID,
+                                  input_processed = input_processed,
+                                  node_cols = rep("red", 4)),
+               "the length of `node_cols` should be 3")
+  expect_error(visualize_hsa_KEGG(hsa_kegg_ids = tmp_res$ID,
+                                  input_processed = input_processed,
+                                  node_cols = c("red", "#FFFFFF", "INVALID")),
+               "`node_cols` should be a vector of valid colors")
+
+
 })
 
 # enrichment_chart --------------------------------------------------------
