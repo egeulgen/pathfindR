@@ -113,6 +113,12 @@ test_that("`visualize_hsa_KEGG()` creates expected png file(s)", {
   expect_true(file.exists(expected_out_file))
   unlink("term_visualizations", recursive = TRUE)
 
+  expect_null(visualize_hsa_KEGG(hsa_kegg_ids = tmp_res$ID,
+                                 input_processed = input_processed,
+                                 node_cols = c("red", "green", "blue")))
+  expect_true(file.exists(expected_out_file))
+  unlink("term_visualizations", recursive = TRUE)
+
   ### Normalize = FALSE
   expect_null(visualize_hsa_KEGG(hsa_kegg_ids = tmp_res$ID,
                                  input_processed = input_processed,
