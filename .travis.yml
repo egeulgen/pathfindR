@@ -9,6 +9,7 @@ addons:
   apt:
     packages:
       - libudunits2-dev
+      - libmagick++-dev
 
 # for codecov
 r_packages:
