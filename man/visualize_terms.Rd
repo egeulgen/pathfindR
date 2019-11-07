@@ -5,7 +5,7 @@
 \title{Create Diagrams for Enriched Terms}
 \usage{
 visualize_terms(result_df, input_processed = NULL, hsa_KEGG = TRUE,
-  pin_name_path = "Biogrid")
+  pin_name_path = "Biogrid", ...)
 }
 \arguments{
 \item{result_df}{Data frame of enrichment results. Must-have columns for

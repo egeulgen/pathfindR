@@ -39,7 +39,8 @@
 #' visualize_terms(result_df, hsa_KEGG = FALSE, pin_name_path = "IntAct")
 #' }
 visualize_terms <- function(result_df, input_processed = NULL,
-                            hsa_KEGG = TRUE, pin_name_path = "Biogrid") {
+                            hsa_KEGG = TRUE, pin_name_path = "Biogrid",
+                            ...) {
 
   ############ Argument Checks
   if (!is.data.frame(result_df)) {
@@ -121,10 +122,8 @@ visualize_term_interactions <- function(result_df, pin_name_path) {
 
   ## load PIN
   pin_path <- return_pin_path(pin_name_path)
-  pin <- utils::read.delim(
-    file = pin_path,
-    header = FALSE, stringsAsFactors = FALSE
-  )
+  pin <- utils::read.delim(file = pin_path,
+                           header = FALSE, stringsAsFactors = FALSE)
   pin$V2 <- NULL
 
   pin[, 1] <- base::toupper(pin[, 1])
@@ -171,13 +170,10 @@ visualize_term_interactions <- function(result_df, pin_name_path) {
       # and other current_genes
       s_path_genes <- c()
       for (gene in missing_genes) {
-        tmp <- suppressWarnings(igraph::shortest_paths(
-          pin_g,
-          from = which(names(igraph::V(pin_g)) == gene),
-          to = which(names(igraph::V(pin_g)) %in% current_genes),
-          output = "vpath"
-        ))
-
+        tmp <- suppressWarnings(igraph::shortest_paths(pin_g,
+                                                       from = which(names(igraph::V(pin_g)) == gene),
+                                                       to = which(names(igraph::V(pin_g)) %in% current_genes),
+                                                       output = "vpath"))
         tmp <- unique(unlist(lapply(tmp$vpath, function(x) names(x))))
         s_path_genes <- unique(c(s_path_genes, tmp))
       }
@@ -192,52 +188,60 @@ visualize_term_interactions <- function(result_df, pin_name_path) {
       cond2 <- names(igraph::V(g)) %in% down_genes
       cond3 <- names(igraph::V(g)) %in% snw_genes
       igraph::V(g)$color <- ifelse(cond1, "red",
-        ifelse(cond2, "green",
-          ifelse(cond3, "blue", "gray60")
-        )
-      )
+                                   ifelse(cond2, "green",
+                                          ifelse(cond3, "blue", "gray60")))
 
       path_to_png <- file.path("term_visualizations",
                                paste0(current_row$Term_Description, ".png"))
-      grDevices::png(path_to_png, width = 1039, height = 831)
-      # Plot the tree object
-      igraph::plot.igraph(
-        g,
-        layout = igraph::layout.fruchterman.reingold,
-        edge.curved = FALSE,
-        vertex.size = 10,
-        vertex.label.dist = 0,
-        vertex.label.color = "black",
-        asp = FALSE,
-        vertex.label.cex = 0.8,
-        edge.width = 1.2,
-        edge.arrow.mode = 0,
-        main = paste(current_row$Term_Description,
-                     "\n Involved Gene Interactions in", pin_name_path)
-      )
 
-      if (is.null(snw_genes))
+      #### Generate diagram
+      term_diagram <- magick::image_graph(width = 1200, height = 900, res = 100)
+      # Plot the tree object
+      igraph::plot.igraph(g,
+                          layout = igraph::layout.fruchterman.reingold,
+                          edge.curved = FALSE,
+                          vertex.size = 10,
+                          vertex.label.dist = 0,
+                          vertex.label.color = "black",
+                          asp = FALSE,
+                          vertex.label.cex = 0.8,
+                          edge.width = 1.2,
+                          edge.arrow.mode = 0,
+                          main = paste(current_row$Term_Description,
+                                       "\n Involved Gene Interactions in",
+                                       pin_name_path))
+
+      if (is.null(snw_genes)) {
         graphics::legend("topleft",
-                         legend = c(
-                           "Upregulated Input Genes",
-                           "Downregulated Input Genes",
-                           "Other"
-                         ),
+                         legend = c("Upregulated Input Genes",
+                                    "Downregulated Input Genes",
+                                    "Other"),
                          col = c("red", "green", "gray60"),
-                         pch = 19, cex = 1.5, bty = "n"
-        ) else {
-          graphics::legend("topleft",
-                           legend = c(
-                             "Non-input Active Snw. Genes",
-                             "Upregulated Input Genes",
-                             "Downregulated Input Genes",
-                             "Other"
-                           ),
-                           col = c("blue", "red", "green", "gray60"),
-                           pch = 19, cex = 1.5, bty = "n"
-          )
-        }
+                         pch = 19, cex = 1.5, bty = "n")
+      } else {
+        graphics::legend("topleft",
+                         legend = c("Non-input Active Snw. Genes",
+                                    "Upregulated Input Genes",
+                                    "Downregulated Input Genes",
+                                    "Other"),
+                         col = c("blue", "red", "green", "gray60"),
+                         pch = 19, cex = 1.5, bty = "n")
+      }
       grDevices::dev.off()
+
+      #### Add logo to diagram
+      ### Read logo
+      path_logo <- system.file("extdata", "logo.png", package = "pathfindR")
+      logo_img <- magick::image_read(path_logo)
+
+      ### Add logo
+      term_diagram <- magick::image_composite(term_diagram,
+                                              magick::image_scale(logo_img, "x100"),
+                                              gravity = "northeast",
+                                              offset = "+10+10")
+
+      #### Save file
+      magick::image_write(term_diagram, path = path_to_png, format = "png")
     }
   }
 }
