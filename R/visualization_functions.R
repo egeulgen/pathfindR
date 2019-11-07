@@ -9,6 +9,8 @@
 #' @param hsa_KEGG boolean to indicate whether human KEGG gene sets were used for
 #'  enrichment analysis or not (default = \code{TRUE})
 #' @inheritParams return_pin_path
+#' @param ... additional arguments for \code{\link{visualize_hsa_KEGG}} (used
+#' when \code{hsa_kegg = TRUE})
 #'
 #' @return Depending on the argument \code{hsa_KEGG}, creates visualization of
 #'  interactions of genes involved in the list of enriched terms in
@@ -49,7 +51,7 @@ visualize_terms <- function(result_df, input_processed = NULL,
   }
 
   if (hsa_KEGG) {
-    nec_cols <- c("ID", "Term_Description")
+    nec_cols <- "ID"
   } else {
     nec_cols <- c("Term_Description", "Up_regulated", "Down_regulated")
   }
@@ -72,12 +74,9 @@ visualize_terms <- function(result_df, input_processed = NULL,
 
   ############ Generate Diagrams
   if (hsa_KEGG) {
-    ## Prepare input
-    genes_df <- input_processed[, c("GENE", "CHANGE")]
-    rownames(genes_df) <- genes_df$GENE
-    genes_df <- genes_df[, -1, drop = FALSE]
-    visualize_hsa_KEGG(result_df = result_df,
-                       gene_data = genes_df)
+    visualize_hsa_KEGG(hsa_kegg_ids = result_df$ID,
+                       input_processed = input_processed,
+                       ...)
   } else {
     visualize_term_interactions(result_df = result_df,
                                 pin_name_path = pin_name_path)
@@ -155,15 +154,11 @@ visualize_term_interactions <- function(result_df, pin_name_path) {
     }
 
     if (length(current_genes) < 2) {
-      message(paste0(
-        "< 2 genes, skipping visualization of ",
-        current_row$Term_Description
-      ))
+      message(paste0("< 2 genes, skipping visualization of ",
+                     current_row$Term_Description))
     } else {
-      cat(paste0(
-        "Visualizing: ", current_row$Term_Description,
-        paste(rep(" ", 200), collapse = ""), "\r"
-      ))
+      cat("Visualizing:", current_row$Term_Description,
+          paste(rep(" ", 200), collapse = ""), "\r")
 
       ## Find genes without direct interaction
       cond1 <- pin$V1 %in% current_genes
@@ -249,86 +244,331 @@ visualize_term_interactions <- function(result_df, pin_name_path) {
 
 #' Visualize Human KEGG Pathways
 #'
-#' @param result_df Data frame of enrichment results. Must-have columns are: "ID" and
-#'   "Term_Description".
-#' @param gene_data Single column data frame containing change values (e.g.
-#'   log(fold change) values) for significant genes. Row names are gene symbols.
+#' @param hsa_kegg_ids hsa KEGG ids of pathways to be colored and visualized
+#' @param input_processed input data processed via \code{\link{input_processing}}
+#' @inheritParams color_kegg_pathway
+#' @param key_gravity gravity value (character) for the color key legend placement
+#' (see \code{\link[magick]{gravity_types}})
+#' @param logo_gravity gravity value (character) for the logo placement
+#' (see \code{\link[magick]{gravity_types}})
 #'
-#' @return Creates visualizations of the enriched human KEGG pathways with
-#'  the package \code{pathview} and saves them in the folder
-#'  "term_visualizations" under the current working directory.
+#' @return Creates colored visualizations of the enriched human KEGG pathways
+#' and saves them in the folder "term_visualizations" under the current working
+#' directory.
 #'
-#' @import pathview
+#' @seealso See \code{\link{visualize_terms}} for the wrapper function for
+#' creating enriched term diagrams. See \code{\link{run_pathfindR}} for the
+#' wrapper function of the pathfindR enrichment workflow.
+#'
 #' @export
-#' @seealso \code{\link[pathview]{pathview}} for KEGG pathway-based data integration
-#'   and visualization. See \code{\link{visualize_terms}} for the wrapper function
-#'   for creating enriched term diagrams. See \code{\link{run_pathfindR}} for the
-#'   wrapper function of the pathfindR enrichment workflow.
+#'
 #' @examples
 #' \dontrun{
-#' visualize_hsa_KEGG(pathway_table, gene_data)
+#' visualize_hsa_KEGG(hsa_kegg_ids, input_processed)
 #' }
-visualize_hsa_KEGG <- function(result_df, gene_data) {
+visualize_hsa_KEGG <- function(hsa_kegg_ids, input_processed,
+                               normalize_vals = TRUE, node_cols = NULL,
+                               quiet = TRUE,
+                               key_gravity = "northeast",
+                               logo_gravity = "southeast") {
 
-  ## fix KEGG names such as "Glycolysis / Gluconeogenesis"
-  result_df$Term_Description <- gsub("\\/", "-", result_df$Term_Description)
-
-  ## Create visualization output directory
   dir.create("term_visualizations", showWarnings = FALSE)
-  setwd("term_visualizations")
-  on.exit(setwd(".."))
 
-  for (i in base::seq_len(nrow(result_df))) {
-    ## If all change values are 100 (if no change values supplied in input)
-    if (all(gene_data[, 1] == 100)) {
-      pathview::pathview(
-        gene.data = gene_data,
-        gene.idtype = "SYMBOL",
-        pathway.id = result_df$ID[i],
-        species = "hsa",
-        out.suffix = result_df$Term_Description[i],
-        keys.align = "y", kegg.native = TRUE,
-        key.pos = "topright", same.layer = FALSE,
-        discrete = list(gene = TRUE, cpd = TRUE),
-        limit = list(gene = 100, cpd = 100),
-        high = list("#65909A", "red"),
-        node.sum = "mean",
-        both.dirs = list(gene = FALSE, cpd = FALSE),
-        new.signature = FALSE, plot.col.key = FALSE
-      )
-      ## If binary values supplied (must be ordered)
-    } else if (length(unique(gene_data[, 1])) == 2) {
-      ## change to -1 to 1
-      vals <- sort(unique(gene_data[, 1]))
-      gene_data[, 1] <- ifelse(gene_data[, 1] == vals[1], -1, 1)
+  ############ Create change vector
+  ### Convert gene symbols into NCBI gene IDs
+  tmp <- AnnotationDbi::mget(input_processed$GENE,
+                             AnnotationDbi::revmap(org.Hs.eg.db::org.Hs.egSYMBOL),
+                             ifnotfound = NA)
+  input_processed$EG_ID <- unlist(tmp)
 
-      pathview::pathview(
-        gene.data = gene_data,
-        gene.idtype = "SYMBOL",
-        pathway.id = result_df$ID[i],
-        species = "hsa",
-        out.suffix = result_df$Term_Description[i],
-        keys.align = "y", kegg.native = TRUE,
-        key.pos = "topright", same.layer = FALSE,
-        discrete = list(gene = TRUE, cpd = TRUE),
-        bins = list(gene = 2, cpd = 2),
-        new.signature = FALSE
-      )
-      ## If continuous change values supplied (eg. logFC)
-    } else {
-      pathview::pathview(
-        gene.data = gene_data,
-        gene.idtype = "SYMBOL",
-        pathway.id = result_df$ID[i],
-        species = "hsa",
-        out.suffix = result_df$Term_Description[i],
-        keys.align = "y", kegg.native = TRUE,
-        key.pos = "topright", same.layer = FALSE,
-        new.signature = FALSE
-      )
+  ### A rule of thumb for the 'kegg' ID is entrezgene ID for eukaryote species
+  input_processed$KEGG_ID  <- paste0("hsa:", input_processed$EG_ID)
+
+  ############ Fetch all pathway genes, create vector of change values and
+  ############ Generate colored pathway diagrams for each pathway
+  change_vec <- input_processed$CHANGE
+  names(change_vec) <- input_processed$KEGG_ID
+
+  cat("Downloading pathway diagrams of", length(hsa_kegg_ids), "KEGG pathways\n\n")
+  pw_vis_list <- list()
+  pb <- utils::txtProgressBar(min = 0, max = length(hsa_kegg_ids), style = 3)
+  for (i in seq_len(length(hsa_kegg_ids))) {
+    pw_id <- hsa_kegg_ids[i]
+
+    pw_vis_list[[pw_id]] <- color_kegg_pathway(pw_id = pw_id,
+                                               change_vec = change_vec,
+                                               normalize_vals = normalize_vals,
+                                               node_cols = node_cols,
+                                               quiet = quiet)
+
+    utils::setTxtProgressBar(pb, i)
+  }
+  close(pb)
+
+  ############ Add logo and color key legend per each diagram
+
+  ### Read logo
+  path_logo <- system.file("extdata", "logo.png", package = "pathfindR")
+  logo_img <- magick::image_read(path_logo)
+
+  cat("Saving colored pathway diagrams of", length(pw_vis_list), "KEGG pathways\n\n")
+  pb <- utils::txtProgressBar(min = 0, max = length(pw_vis_list), style = 3)
+  for (i in seq_len(length(pw_vis_list))) {
+    ### Read image
+    f_path <- pw_vis_list[[i]]$file_path
+    pw_diag <- magick::image_read(f_path)
+
+    ### Add logo
+    pw_diag <- magick::image_composite(pw_diag,
+                                       magick::image_scale(logo_img, "x90"),
+                                       gravity = logo_gravity,
+                                       offset = "+10+10")
+
+    ### Prep for color keys
+    key_col_df <- data.frame(bin_val = seq_along(pw_vis_list[[i]]$all_key_cols),
+                             color = pw_vis_list[[i]]$all_key_cols,
+                             y_val = 1)
+
+    key_breaks <- pw_vis_list[[i]]$all_brks
+    names(key_breaks) <- seq_along(key_breaks)
+    key_breaks <- c(key_breaks[1], mean(key_breaks[1:6]), key_breaks[6], mean(key_breaks[6:11]), key_breaks[11])
+    brks <- c(.5, 3, 5.5, 8, 10.5)
+
+    ### Generate color legend image
+    col_key_legend <- magick::image_graph(width = 200, height = 90, res = 100)
+    g <- ggplot2::ggplot(key_col_df, ggplot2::aes_(~bin_val, ~y_val))
+    g <- g + ggplot2::geom_tile(fill = key_col_df$color,
+                                colour = "black")
+    g <- g + ggplot2::scale_x_continuous(expand = c(0, 0),
+                                         breaks = brks,
+                                         labels = base::format(key_breaks,
+                                                               digits = 2))
+    g <- g + ggplot2::scale_y_discrete(expand = c(0, 0))
+    g <- g + ggplot2::theme_bw()
+    g <- g + ggplot2::theme(panel.grid.major = ggplot2::element_blank(),
+                            panel.grid.minor = ggplot2::element_blank(),
+                            axis.title.x = ggplot2::element_blank(),
+                            axis.title.y = ggplot2::element_blank(),
+                            axis.ticks = ggplot2::element_line(colour = "black",
+                                                               size = .6),
+                            axis.ticks.length = ggplot2::unit(.2, "cm"),
+                            axis.text.x = ggplot2::element_text(size = 14,
+                                                                face = "bold"),
+                            panel.border = ggplot2::element_rect(colour = "black",
+                                                                 fill = NA,
+                                                                 size = .5),
+                            plot.margin = ggplot2::unit(c(0, .7 , 0, .7), "cm"))
+    print(g)
+    grDevices::dev.off()
+
+    ### Add color key legend
+    final_pw_img <- magick::image_composite(pw_diag,
+                                            magick::image_scale(col_key_legend, "x45"),
+                                            gravity  = key_gravity,
+                                            offset = "+10+10")
+
+    final_path <- file.path("term_visualizations", basename(f_path))
+    magick::image_write(final_pw_img, path = final_path, format = "png")
+
+    utils::setTxtProgressBar(pb, i)
+  }
+  close(pb)
+}
+
+#' Color hsa KEGG pathway
+#'
+#' @param pw_id hsa KEGG pathway id (e.g. hsa05012)
+#' @param change_vec vector of change values, names should be hsa KEGG gene ids
+#' @param normalize_vals should change values be normalized (default = \code{TRUE})
+#' @param node_cols low, middle and high color valus for coloring the pathway nodes
+#' (default = \code{NULL}). If \code{node_cols=NULL}, the low, middle and high color
+#' are set as "green", "gray" and "red". If all change values are 1e6 (in case no
+#' changes are supplied, this dummy value is assigned by
+#' \code{\link{input_processing}}), only one color ("#F38F18" if NULL) is used.
+#' @param quiet If \code{TRUE}, suppress status messages (if any), and the
+#' progress bar while downloading file(s)
+#'
+#' @return list containing: \enumerate{
+#'    \item file_path: path to colored hsa KEGG pathway diagram
+#'    \item all_key_cols: colors used for each change value bin
+#'    \item all_brks: breaks used for separating change values into bins
+#' }
+#'
+#' @examples
+#' pw_id <- "hsa00010"
+#' change_vec <- c(-2, 4, 6)
+#' names(change_vec) <- c("hsa:2821", "hsa:226", "hsa:229")
+#'
+#' result <- color_kegg_pathway(pw_id, change_vec)
+color_kegg_pathway <- function(pw_id, change_vec, normalize_vals = TRUE,
+                               node_cols = NULL, quiet = TRUE) {
+  ############ Arg checks
+  ## check node_cols
+  if (!is.null(node_cols)) {
+    if (!is.atomic(node_cols)) {
+      stop("`node_cols` should be a vector of colors")
+    }
+
+    isColor <- function(x) {
+      tryCatch(is.matrix(grDevices::col2rgb(x)),
+               error = function(e) FALSE)
+    }
+
+    if (!all(vals == 1e6) & length(node_cols) != 3) {
+      stop("the length of `node_cols` should be 3")
+    }
+
+    if (!all(vapply(node_cols, isColor, TRUE))) {
+      stop("`node_cols` should be a vector of valid colors")
     }
   }
+  ############ Set node palette
+  ### if node_cols not supplied, use default color(s)
+  if (!is.null(node_cols)) {
+    if (all(change_vec == 1e6)) {
+      message("all `change_vec` values are 1e6, using the first color in `node_cols`")
+      low_col <- mid_col <- high_col <- node_cols[1]
+    } else {
+      low_col <- node_cols[1]
+      mid_col <- node_cols[2]
+      high_col <- node_cols[3]
+    }
+  } else if (all(change_vec == 1e6)) { ## NO CHANGES SUPPLIED
+    low_col <- mid_col <- high_col <- "#F38F18"
+  } else {
+    low_col <- "green"
+    mid_col <- "gray"
+    high_col <- "red"
+  }
+
+  ############ Summarization for genes that are in the same node
+  ############ and handling of non-input pathway genes
+  ## download KGML to determine gene nodes
+  pwKGML <- tempfile()
+
+  tryCatch({status <- KEGGgraph::retrieveKGML(sub("hsa", "", pw_id),
+                                              organism = "hsa",
+                                              destfile = pwKGML,
+                                              quiet = quiet)},
+           warning = function(w) {
+             message(paste("Warning for :", pw_id))
+             message("Here's the original warning message:")
+             message(w)
+             return(NULL)
+           }, error = function(e) {
+             message(paste("Cannot reach URL, please check your connection:", pw_id))
+             message("Here's the original error message:")
+             message(e)
+             return(NA)
+           }, finally = {
+             invisible(status)
+           })
+
+  current_pw <- KEGGgraph::parseKGML(pwKGML)
+
+  all_nodes <- KEGGgraph::nodes(current_pw)
+  gene_nodes <- list()
+  for (node in all_nodes) {
+    if (KEGGgraph::getType(node) == "gene") {
+      gene_nodes[[KEGGgraph::getEntryID(node)]] <- KEGGgraph::getName(node)
+    }
+  }
+  gene_nodes <- unique(gene_nodes)
+  gene_nodes <- gene_nodes[order(vapply(gene_nodes, length, 1L))]
+
+  ## summarize over all pathway gene nodes
+  ## keeping one unique gene per all nodes
+  input_genes <- names(change_vec)
+  pw_vis_changes <- c()
+  for (i in seq_len(length(gene_nodes))) {
+    node <- gene_nodes[[i]]
+    cond <- input_genes %in% node
+
+    tmp_val <- mean(change_vec[input_genes[cond]])
+
+    if (length(node) != 1) {
+      rest_nodes <- unlist(gene_nodes[-i])
+      chosen_nm <- setdiff(node, rest_nodes)
+    } else {
+      chosen_nm <- node
+    }
+
+    names(tmp_val) <- chosen_nm[!chosen_nm %in% names(pw_vis_changes)][1]
+    pw_vis_changes <- c(pw_vis_changes, tmp_val)
+  }
+
+  ############ Determine node colors
+  vals <- pw_vis_changes[!is.na(pw_vis_changes)]
+  ### Normalization
+  if (!all(vals == 1e6) & normalize_vals) {
+    vals <- 2 * (vals - min(vals)) / diff(range(vals)) - 1
+  }
+
+  ### determine limit
+  lim <- round(max(abs(vals)), 2)
+
+  ### generate low colors
+  low_vals <- vals[vals < 0]
+  low_brks <- seq(from = -lim, to = 0, length.out = 6)
+  low_bins <- cut(low_vals, breaks = low_brks,
+                  ordered_result = TRUE, include.lowest = TRUE)
+  key_col_fn <- grDevices::colorRampPalette(c(low_col, mid_col))
+  low_key_cols <- key_col_fn(5)
+  names(low_key_cols) <- levels(low_bins)
+  names(low_bins) <- names(low_vals)
+
+  ### generate high colors
+  high_vals <- vals[vals > 0]
+  high_brks <- seq(from = 0, to = lim, length.out = 6)
+  high_bins <- cut(high_vals, breaks = high_brks,
+                   ordered_result = TRUE, include.lowest = TRUE)
+  key_col_fn <- grDevices::colorRampPalette(c(mid_col, high_col))
+  high_key_cols <- key_col_fn(5)
+  names(high_key_cols) <- levels(high_bins)
+  names(high_bins) <- names(high_vals)
+
+  all_brks <- c(low_brks, high_brks[-1])
+  all_key_cols <- c(low_key_cols, high_key_cols)
+
+  ############ Label each pw gene with the appropriate color
+  fg_cols <- ifelse(names(pw_vis_changes) %in% names(low_bins),
+                    all_key_cols[low_bins[names(pw_vis_changes)]],
+                    ifelse(names(pw_vis_changes) %in% names(high_bins),
+                           all_key_cols[high_bins[names(pw_vis_changes)]],
+                           "white"))
+
+  bg_cols <- rep("black", length(pw_vis_changes))
+
+  ############ Download colored KEGG pathway diagram
+  fname <- paste0(pw_id, "_pathfindR.png")
+  f_path <- file.path(tempdir(check = TRUE), fname)
+  pw_url <- KEGGREST::color.pathway.by.objects(pw_id, names(pw_vis_changes),
+                                               fg.color.list = fg_cols,
+                                               bg.color.list = bg_cols)
+
+  tryCatch({status <- utils::download.file(url = pw_url,
+                                           destfile = f_path,
+                                           quiet = quiet)},
+           warning = function(w) {
+             message(paste("URL caused a warning:", url))
+             message("Here's the original warning message:")
+             message(w)
+             return(NULL)
+           }, error = function(e) {
+             message(paste("Cannot reach URL, please check your connection:", url))
+             message("Here's the original error message:")
+             message(e)
+             return(NA)
+           }, finally = {
+             invisible(status)
+           })
+
+  return(list(file_path = f_path,
+              all_key_cols = all_key_cols,
+              all_brks = all_brks))
 }
+
+
 
 
 #' Create Bubble Chart of Enrichment Results

@@ -640,7 +640,7 @@ input_processing <- function(input, p_val_threshold,
 
   if (ncol(input) == 2) {
     input <- data.frame(GENE = input[, 1],
-                        CHANGE = rep(100, nrow(input)),
+                        CHANGE = rep(1e6, nrow(input)),
                         P_VALUE = input[, 2])
   }
 

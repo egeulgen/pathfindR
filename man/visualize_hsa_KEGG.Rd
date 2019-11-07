@@ -4,31 +4,47 @@
 \alias{visualize_hsa_KEGG}
 \title{Visualize Human KEGG Pathways}
 \usage{
-visualize_hsa_KEGG(result_df, gene_data)
+visualize_hsa_KEGG(hsa_kegg_ids, input_processed, normalize_vals = TRUE,
+  node_cols = NULL, quiet = TRUE, key_gravity = "northeast",
+  logo_gravity = "southeast")
 }
 \arguments{
-\item{result_df}{Data frame of enrichment results. Must-have columns are: "ID" and
-"Term_Description".}
+\item{hsa_kegg_ids}{hsa KEGG ids of pathways to be colored and visualized}
 
-\item{gene_data}{Single column data frame containing change values (e.g.
-log(fold change) values) for significant genes. Row names are gene symbols.}
+\item{input_processed}{input data processed via \code{\link{input_processing}}}
+
+\item{normalize_vals}{should change values be normalized (default = \code{TRUE})}
+
+\item{node_cols}{low, middle and high color valus for coloring the pathway nodes
+(default = \code{NULL}). If \code{node_cols=NULL}, the low, middle and high color
+are set as "green", "gray" and "red". If all change values are 1e6 (in case no
+changes are supplied, this dummy value is assigned by
+\code{\link{input_processing}}), only one color ("#F38F18" if NULL) is used.}
+
+\item{quiet}{If \code{TRUE}, suppress status messages (if any), and the
+progress bar while downloading file(s)}
+
+\item{key_gravity}{gravity value (character) for the color key legend placement
+(see \code{\link[magick]{gravity_types}})}
+
+\item{logo_gravity}{gravity value (character) for the logo placement
+(see \code{\link[magick]{gravity_types}})}
 }
 \value{
-Creates visualizations of the enriched human KEGG pathways with
- the package \code{pathview} and saves them in the folder
- "term_visualizations" under the current working directory.
+Creates colored visualizations of the enriched human KEGG pathways
+and saves them in the folder "term_visualizations" under the current working
+directory.
 }
 \description{
 Visualize Human KEGG Pathways
 }
 \examples{
 \dontrun{
-visualize_hsa_KEGG(pathway_table, gene_data)
+visualize_hsa_KEGG(hsa_kegg_ids, input_processed)
 }
 }
 \seealso{
-\code{\link[pathview]{pathview}} for KEGG pathway-based data integration
-  and visualization. See \code{\link{visualize_terms}} for the wrapper function
-  for creating enriched term diagrams. See \code{\link{run_pathfindR}} for the
-  wrapper function of the pathfindR enrichment workflow.
+See \code{\link{visualize_terms}} for the wrapper function for
+creating enriched term diagrams. See \code{\link{run_pathfindR}} for the
+wrapper function of the pathfindR enrichment workflow.
 }
