@@ -16,17 +16,6 @@ input_processed <- suppressMessages(input_processing(tmp_input, 0.05, "Biogrid")
 
 
 test_that("`visualize_terms()` creates expected png file(s)", {
-
-  ## hsa KEGG
-  expected_out_file <- file.path("term_visualizations",
-                                 paste0(tmp_res$ID, "_pathfindR.png"))
-
-  suppressMessages(visualize_terms(result_df = tmp_res,
-                                   input_processed = input_processed,
-                                   hsa_KEGG = TRUE))
-  expect_true(file.exists(expected_out_file))
-  unlink("term_visualizations", recursive = TRUE)
-
   ## non-KEGG (visualize_term_interactions)
   expected_out_file <- file.path("term_visualizations",
                                  paste0(tmp_res$Term_Description, ".png"))
@@ -42,6 +31,17 @@ test_that("`visualize_terms()` creates expected png file(s)", {
                                    input_processed = input_processed,
                                    hsa_KEGG = FALSE,
                                    pin_name_path = "GeneMania"))
+  expect_true(file.exists(expected_out_file))
+  unlink("term_visualizations", recursive = TRUE)
+
+  skip_on_cran()
+  ## hsa KEGG
+  expected_out_file <- file.path("term_visualizations",
+                                 paste0(tmp_res$ID, "_pathfindR.png"))
+
+  suppressMessages(visualize_terms(result_df = tmp_res,
+                                   input_processed = input_processed,
+                                   hsa_KEGG = TRUE))
   expect_true(file.exists(expected_out_file))
   unlink("term_visualizations", recursive = TRUE)
 })
@@ -103,6 +103,8 @@ test_that("`visualize_term_interactions()` creates expected png file(s)", {
 
 # visualize_hsa_KEGG ------------------------------------------------------
 test_that("`visualize_hsa_KEGG()` creates expected png file(s)", {
+  skip_on_cran()
+
   expected_out_file <- file.path("term_visualizations",
                                  paste0(tmp_res$ID, "_pathfindR.png"))
 
@@ -176,8 +178,6 @@ test_that("arg checks for `visualize_hsa_KEGG()` work", {
                                   input_processed = input_processed,
                                   node_cols = c("red", "#FFFFFF", "INVALID")),
                "`node_cols` should be a vector of valid colors")
-
-
 })
 
 # enrichment_chart --------------------------------------------------------
