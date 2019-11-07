@@ -490,7 +490,9 @@ fetch_gene_set <- function(gene_sets = "KEGG",
 #' @seealso See \code{\link{run_pathfindR}} for the wrapper function of the
 #'   pathfindR workflow
 #' @examples
+#' \dontrun{
 #' pin_path <- return_pin_path("GeneMania")
+#' }
 return_pin_path <- function(pin_name_path = "Biogrid") {
 
   ## Default PINs

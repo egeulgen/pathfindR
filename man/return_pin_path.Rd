@@ -24,7 +24,9 @@ interactors' gene symbols, column 2 must be a column with all
 rows consisting of "pp".
 }
 \examples{
+\dontrun{
 pin_path <- return_pin_path("GeneMania")
+}
 }
 \seealso{
 See \code{\link{run_pathfindR}} for the wrapper function of the
