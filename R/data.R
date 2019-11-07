@@ -1,10 +1,10 @@
-#' Example Input for Myelome Analysis (Mus Musculus)
+#' Example Input for Myeloma Analysis (Mus Musculus)
 #'
 #' A dataset containing the differentially-expressed genes and adjusted p-values
 #' for the GEO dataset GSE99393. The RNA microarray experiment was perform to
-#' detail the global programme of gene expression underlying polarization of
+#' detail the global program of gene expression underlying polarization of
 #' myeloma-associated macrophages by CSF1R antibody treatment. The samples were
-#' 6 murine bone marrow derived macrophages cocultured with myeloma cells
+#' 6 murine bone marrow derived macrophages co-cultured with myeloma cells
 #' (myeloma-associated  macrophages), 3 of which were treated with CSF1R
 #' antibody (treatment group) and the rest were treated with control IgG
 #' antibody (control group). In this dataset, differentially-expressed genes
@@ -18,14 +18,14 @@
 #' @source \url{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE99393}
 #'
 #' @seealso  \code{\link{myeloma_output}} for the example mmu enrichment output.
-#' \code{\link{run_pathfindR}} for details on the patfindR enrichment analysis.
+#' \code{\link{run_pathfindR}} for details on the pathfindR enrichment analysis.
 "myeloma_input"
 
-#' Example Output for Myelome Analysis (Mus Musculus)
+#' Example Output for Myeloma Analysis (Mus Musculus)
 #'
 #' A dataset containing the results of pathfindR's active-subnetwork-oriented
 #' enrichment workflow performed on the Mus musculus myeloma
-#' differential-expression dataset \code{\link{myeloma_input}}.
+#' differential expression dataset \code{\link{myeloma_input}}.
 #' \emph{Generated on Nov 1, 2019.}
 #'
 #' @format A data frame with 18 rows and 8 columns:
@@ -40,14 +40,14 @@
 #'   \item{Down_regulated}{the down-regulated genes in the input involved in the given term, comma-separated}
 #' }
 #' @seealso \code{\link{myeloma_input}} for the example mmu input.
-#' \code{\link{run_pathfindR}} for details on the patfindR enrichment workflow.
+#' \code{\link{run_pathfindR}} for details on the pathfindR enrichment workflow.
 "myeloma_output"
 
 #' Example Input for pathfindR - Enriched Term Scoring
 #'
 #' A matrix containing the \ifelse{html}{\out{log<sub>2</sub>}}{\eqn{log_2}}-transformed
 #' and quantile-normalized expression values of the differentially-expressed
-#' genes for 18 rheumatoid arthritis (RA) atients and 15 healthy subjects. The
+#' genes for 18 rheumatoid arthritis (RA) patients and 15 healthy subjects. The
 #' matrix contains expression values of  572 significantly
 #' differentially-expressed genes (see \code{\link{RA_input}}) with adj.P.Val <= 0.05.
 #' \emph{Generated on Sep 28, 2019.}
@@ -65,7 +65,7 @@
 #' A dataset containing the differentially-expressed genes along with the
 #' associated \ifelse{html}{\out{log<sub>2</sub>}}{\eqn{log_2}}(fold-change)
 #' values and FDR adjusted p-values for the GEO dataset GSE15573. This microarray
-#' dataset aimed to characterize gene xpression profiles in the peripheral
+#' dataset aimed to characterize gene expression profiles in the peripheral
 #' blood mononuclear cells of 18 rheumatoid arthritis (RA) patients versus 15
 #' healthy subjects. Differentially-expressed genes with adj.P.Val < 0.05 are
 #' presented in this data frame.
@@ -81,7 +81,7 @@
 #' @seealso \code{\link{RA_output}} for the RA example pathfindR enrinchment output
 #' \code{\link{RA_clustered}} for the RA example pathfindR clustering output
 #' \code{\link{RA_exp_mat}} for the RA differentially-expressed genes expression matrix
-#' \code{\link{run_pathfindR}} for details on the patfindR enrichment analysis
+#' \code{\link{run_pathfindR}} for details on the pathfindR enrichment analysis
 "RA_input"
 
 #' Example Output for the pathfindR Enrichment Workflow - Rheumatoid Arthritis
@@ -106,7 +106,7 @@
 #' @seealso \code{\link{RA_input}}  for the RA differentially-expressed genes data frame
 #' \code{\link{RA_clustered}} for the RA example pathfindR clustering output
 #' \code{\link{RA_exp_mat}} for the RA differentially-expressed genes expression matrix
-#' \code{\link{run_pathfindR}} for details on the patfindR enrichment analysis
+#' \code{\link{run_pathfindR}} for details on the pathfindR enrichment analysis
 "RA_output"
 
 #' Example Output for the pathfindR Clustering Workflow - Rheumatoid Arthritis
@@ -138,7 +138,7 @@
 #' @seealso \code{\link{RA_input}}  for the RA differentially-expressed genes data frame
 #' \code{\link{RA_clustered}} for the RA example pathfindR clustering output
 #' \code{\link{RA_exp_mat}} for the RA differentially-expressed genes expression matrix
-#' \code{\link{run_pathfindR}} for details on the patfindR enrichment analysis
+#' \code{\link{run_pathfindR}} for details on the pathfindR enrichment analysis
 #' \code{\link{RA_output}} for the RA example pathfindR enrinchment output
 #' \code{\link{cluster_enriched_terms}} for details on clustering methods
 "RA_clustered"

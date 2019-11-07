@@ -3,7 +3,7 @@
 \docType{data}
 \name{myeloma_output}
 \alias{myeloma_output}
-\title{Example Output for Myelome Analysis (Mus Musculus)}
+\title{Example Output for Myeloma Analysis (Mus Musculus)}
 \format{A data frame with 18 rows and 8 columns:
 \describe{
   \item{ID}{ID of the enriched term}
@@ -21,11 +21,11 @@ myeloma_output
 \description{
 A dataset containing the results of pathfindR's active-subnetwork-oriented
 enrichment workflow performed on the Mus musculus myeloma
-differential-expression dataset \code{\link{myeloma_input}}.
+differential expression dataset \code{\link{myeloma_input}}.
 \emph{Generated on Nov 1, 2019.}
 }
 \seealso{
 \code{\link{myeloma_input}} for the example mmu input.
-\code{\link{run_pathfindR}} for details on the patfindR enrichment workflow.
+\code{\link{run_pathfindR}} for details on the pathfindR enrichment workflow.
 }
 \keyword{datasets}

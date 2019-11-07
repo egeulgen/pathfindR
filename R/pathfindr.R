@@ -19,7 +19,7 @@ Front. Genet. doi:10.3389/fgene.2019.00858
 #' The main aim of the package is to identify active subnetworks in a
 #' protein-protein interaction network using a user-provided list of genes
 #' and associated p values then performing enrichment analyses on the identified
-#' subnetworks, discovering enriched terms (i.e. pathways, ontologies, TF target
+#' subnetworks, discovering enriched terms (i.e. pathways, gene ontology, TF target
 #' gene sets etc.) that possibly underlie the phenotype of interest.
 #'
 #' pathfindR also offers functionalities to cluster the enriched terms and

@@ -122,7 +122,7 @@ the given term with the lowest p value (default = \code{FALSE})}
 \item{silent_option}{boolean value indicating whether to print the messages
 to the console (FALSE) or not (TRUE, this will print to a temp. file) during
 active subnetwork search (default = TRUE). This option was added because
-during parallel runs, the console messages get disorderdly printed.}
+during parallel runs, the console messages get disorderly printed.}
 }
 \value{
 Data frame of pathfindR enrichment results. Columns are: \describe{

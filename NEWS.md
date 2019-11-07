@@ -1,14 +1,14 @@
 # pathfindR 1.4.0
 
 ## Major Changes
-- Replaced most occurences of "pathway" to "term". This was adapted because "term" reflects the utility of the package better. The enrichment and clustering approaches work with any kind of gene set data (be it pathway gene sets, gene ontology gene sets, motif gene sets etc.) Accordingly:
+- Replaced most occurrences of "pathway" to "term". This was adapted because "term" reflects the utility of the package better. The enrichment and clustering approaches work with any kind of gene set data (be it pathway gene sets, gene ontology gene sets, motif gene sets etc.) Accordingly:
   - `DESCRIPTION` was updated
   - The functions `annotate_pathway_DEGs()`, `calculate_pw_scores()`, `cluster_pathways()`, `fuzzy_pw_clustering()`, `hierarchical_pw_clustering()`, `visualize_pw_interactions()` and `visualize_pws()` were renamed to 
   `annotate_term_DEGs()`, `score_terms()`, `cluster_enriched_terms()`, `fuzzy_term_clustering()`, `hierarchical_term_clustering()`, `visualize_term_interactions()` and `visualize_terms()` respectively
   - The Rmd template file for the report `enriched_pathways.Rmd` was renamed to `enriched_terms.Rmd`
   - All the Rmd template files for the report were updated
   - Documentation of each function was updated accordingly
-- Added the visualization fuction `term_gene_graph()`, which creates a graph of enriched terms - involved genes
+- Added the visualization function `term_gene_graph()`, which creates a graph of enriched terms - involved genes
 - Made changes in `enrichment()` and `enrichment_analyses()` to get enrichment results faster
 - Added the function `fetch_gene_set()` for obtaining gene set data more easily
 - Terms in gene sets can now be filtered according to the number of genes a term contains (controlled by `min_gset_size`, `max_gset_size` in `fetch_gene_set()` and `run_pathfindR()`) 
@@ -19,20 +19,20 @@
 - The vignettes were updated
 - Updated all PIN data
 - Improved speed of kappa matrix calculation (`create_kappa_matrix()`)
-- Added vigentte for non-Homo-sapiens organisms
+- Added vignette for non-Homo-sapiens organisms
 - Added Mus musculus (mmu) data:
   - `mmu_kegg_genes` & `mmu_kegg_descriptions`: mmu KEGG gene sets data
-  - mmmu STRING PIN
+  - mmu STRING PIN
   - `myeloma_input` & `myeloma_output`: example mmu input and output data
 - Added the STRING PIN (combined score >= 400)
-- The argument `sig_gene_thr` in subnetwork filtering via `filterActiveSnws()` now serves the threshold proption of significant genes in the active subnetwork. e.g., if there are 100 significant genes and `sig_gene_thr = 0.03`, subnetwork that contain at least 3 (100 x 0.03) significant genes will be accepted for further analysis
+- The argument `sig_gene_thr` in subnetwork filtering via `filterActiveSnws()` now serves the threshold proportion of significant genes in the active subnetwork. e.g., if there are 100 significant genes and `sig_gene_thr = 0.03`, subnetwork that contain at least 3 (100 x 0.03) significant genes will be accepted for further analysis
 - Removed `pathview` dependency by implementing colored pathway diagram visualization function using `KEGGREST` and `KEGGgraph`
 
 ## Minor changes and bug fixes
 - In `hierarchical_term_clustering()`, redefined the distance measure as `1 - kappa statistic`
 - Fixed minor issue in `cluster_graph_vis()` (during the calculations for additional node colors)
 - Removed title from graph visualization of hierarchical clustering in `cluster_graph_vis()`
-- In `active_snw_search()`, unneccessary warnings during active subnetwork search were removed
+- In `active_snw_search()`, unnecessary warnings during active subnetwork search were removed
 - Fixed minor issue in `enrichment_chart()`, supplying fuzzy clustered results no longer raises an error
 - Added new checks in `input_testing()` and `input_processing()` to ensure that both the initial input data frame and the processed input data frame for active subnetwork search contain at least 2 genes (to fix the corner case encountered in issue #17)
 - Fixed minor issue in `enrichment_chart()`, ensuring that bubble sizes displayed in the legend (proportional to # of DEGs) are integers
@@ -55,12 +55,12 @@
 - Created new the visualization function `visualize_pw_interactions`, which creates PNG files visualizing the interactions (in the selected PIN) of genes involved in the given pathways.
 - Added new vignette, describing the step-by-step execution of the pathfindR workflow
 - Changed clustering metric to kappa statistic, created the new clustering related functions `create_kappa_matrix`, `hierarchical_pw_clustering`, `fuzzy_pw_clustering` and `cluster_pathways`.
-- Implemented the new function `cluster_graph_vis` for visualing graph diagrams of clustering results.
+- Implemented the new function `cluster_graph_vis` for visualizing graph diagrams of clustering results.
 
 ## Minor changes and bug fixes
 - Fixed the bug where the arguments `score_quan_thr` and `sig_gene_thr` for `run_pathfindR` were not being utilized.
 - in `run_pathfindR`, added message at the end of run, reporting the number enriched pathways.
-- the function `run_pathfindR` now creates a variable `org_dir` that is the "path/to/original/working/directory". `org_dir` is used in multiple funtions to return to the original working directory if anything fails. This changes the previous behavior where if a function stopped with an error the directory was changed to "..", i.e. the parent directory. This change was adapted so that the user is returned to the original working directory if they supply a recursive output folder (`output_dir`, e.g. "./ALL_RESULTS/RESULT_A"). 
+- the function `run_pathfindR` now creates a variable `org_dir` that is the "path/to/original/working/directory". `org_dir` is used in multiple functions to return to the original working directory if anything fails. This changes the previous behavior where if a function stopped with an error the directory was changed to "..", i.e. the parent directory. This change was adapted so that the user is returned to the original working directory if they supply a recursive output folder (`output_dir`, e.g. "./ALL_RESULTS/RESULT_A"). 
 - in `input_processing`, added the argument `human_genes` to only perform alias symbol conversion when human gene symbols are provided. - Updated the Rmd files used to create the report HTML files
 - Added the data for `GO-All`, all annotations in the GO database (BP+MF+CC)
 - Updated the vignette `pathfindR - An R Package for Pathway Enrichment Analysis Utilizing Active Subnetworks` to reflect the new functionalities.
@@ -69,8 +69,8 @@
 
 # pathfindR 1.2.3
 ## Minor changes and bug fixes
-- in the funtion `plot_scores`, added the argument `label_cases` to indicate whether or not to label the cases in the pathway scoring heatmap plot. Also added the argument `case_control_titles` which allows the user to change the default ‘Case’ and ‘Control’ headers. Also added the arguments `low` and `high` used to change the low and high end colors of the scoring color gradient.
-- in the funtion `plot_scores`, reversed the color gradient to match the coloring scheme used by pathview (i.e. red for positive values, green for negative values)
+- in the function `plot_scores`, added the argument `label_cases` to indicate whether or not to label the cases in the pathway scoring heatmap plot. Also added the argument `case_control_titles` which allows the user to change the default "Case" and "Control" headers. Also added the arguments `low` and `high` used to change the low and high end colors of the scoring color gradient.
+- in the function `plot_scores`, reversed the color gradient to match the coloring scheme used by pathview (i.e. red for positive values, green for negative values)
 - minor change in `parseActiveSnwSearch`, replaced `score_thr` by `score_quan_thr`. This was done so that the scoring filter for active subnetworks could be performed based on the distribution of the current active subnetworks and not using a constant empirical score value threshold.
 - minor change in `parseActiveSnwSearch`, increased `sig_gene_thr` from 2 to 10 as we observed in most of the cases, this resulted in faster runs with comparable results.
 - in `choose_clusters`, added the argument `p_val_threshold` to be used as p value threshold for filtering the enriched pathways prior to clustering.
@@ -92,7 +92,7 @@
 - Added the option to specify a custom gene set when using `run_pathfindR`. For this, the `gene_sets` argument should be set to "Custom" and `custom_genes` and `custom_pathways` should be provided.
 
 ## Minor changes and bug fixes
-- fixed minor bug in `calculate_pw_scores` where if there was one DEG, subseting the experiment matrix failed
+- fixed minor bug in `calculate_pw_scores` where if there was one DEG, subsetting the experiment matrix failed
 - added if condition to check if there were DEGs in `calculate_pw_scores`. If there is none, the pathway is skipped.
 - in `calculate_pw_scores`, if `cases` are provided, the pathways are reordered before plotting the heat map and returning the matrix according to their activity in `cases`. This way, "up" pathways are grouped together, same for "down" pathways.
 - in `calculate_pwd`, if a pathway has perfect overlap with other pathways, change the correlation value with 1 instead of NA.
@@ -115,7 +115,7 @@
 - Added the option `bubble` to plot a bubble chart displaying the enrichment results in `run_pathfindR` using the helper function `enrichment_chart`. To plot the bubble chart set `bubble = TRUE` in `run_pathfindR` or use `enrichment_chart(your_result_df)`. 
 
 ## Minor changes and bug fixes
-- Add the paramater `silent_option` to `run_pathfindR`. When `silent_option == TRUE` (default), the console outputs during active subnetwork search are printed to a file named "console_out.txt". If `silent_option == FALSE`, the output is printed on the screen. Default was set to `TRUE` because multiple console outputs are simultaneously printed when runnning in parallel.
+- Add the parameter `silent_option` to `run_pathfindR`. When `silent_option == TRUE` (default), the console outputs during active subnetwork search are printed to a file named "console_out.txt". If `silent_option == FALSE`, the output is printed on the screen. Default was set to `TRUE` because multiple console outputs are simultaneously printed when running in parallel.
 
 - Added the `list_active_snw_genes` parameter to `run_pathfindR`. When `list_active_snw_genes == TRUE`, the function adds the column `non_DEG_Active_Snw_Genes`, which reports the non-DEG active subnetwork genes for the active subnetwork which was enriched for the given pathway with the lowest p value.
 

@@ -402,7 +402,7 @@ visualize_hsa_KEGG <- function(hsa_kegg_ids, input_processed,
 #' @param pw_id hsa KEGG pathway id (e.g. hsa05012)
 #' @param change_vec vector of change values, names should be hsa KEGG gene ids
 #' @param normalize_vals should change values be normalized (default = \code{TRUE})
-#' @param node_cols low, middle and high color valus for coloring the pathway nodes
+#' @param node_cols low, middle and high color values for coloring the pathway nodes
 #' (default = \code{NULL}). If \code{node_cols=NULL}, the low, middle and high color
 #' are set as "green", "gray" and "red". If all change values are 1e6 (in case no
 #' changes are supplied, this dummy value is assigned by

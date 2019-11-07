@@ -19,7 +19,7 @@ RA_input
 A dataset containing the differentially-expressed genes along with the
 associated \ifelse{html}{\out{log<sub>2</sub>}}{\eqn{log_2}}(fold-change)
 values and FDR adjusted p-values for the GEO dataset GSE15573. This microarray
-dataset aimed to characterize gene xpression profiles in the peripheral
+dataset aimed to characterize gene expression profiles in the peripheral
 blood mononuclear cells of 18 rheumatoid arthritis (RA) patients versus 15
 healthy subjects. Differentially-expressed genes with adj.P.Val < 0.05 are
 presented in this data frame.
@@ -29,6 +29,6 @@ presented in this data frame.
 \code{\link{RA_output}} for the RA example pathfindR enrinchment output
 \code{\link{RA_clustered}} for the RA example pathfindR clustering output
 \code{\link{RA_exp_mat}} for the RA differentially-expressed genes expression matrix
-\code{\link{run_pathfindR}} for details on the patfindR enrichment analysis
+\code{\link{run_pathfindR}} for details on the pathfindR enrichment analysis
 }
 \keyword{datasets}

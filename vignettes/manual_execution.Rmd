@@ -48,7 +48,7 @@ RA_processed <- input_processing(input = RA_input, # the input: in this case, di
                                  convert2alias = TRUE) # boolean indicating whether or not to convert missing symbols to alias symbols in the PIN
 ```
 
-> After checking that the data frame complies with the requirements, `input_processing()` filters the input so that genes with p values larger than `p_val_threshold` are excluded. Next, gene symbols that are not in the PIN are identified and exluded. For human genes, if aliases of these missing gene symbols are found in the PIN, these symbols are converted to the corresponding aliases (controlled by the argument `convert2alias`). This step is performed to best map the input data onto the PIN.
+> After checking that the data frame complies with the requirements, `input_processing()` filters the input so that genes with p values larger than `p_val_threshold` are excluded. Next, gene symbols that are not in the PIN are identified and excluded. For human genes, if aliases of these missing gene symbols are found in the PIN, these symbols are converted to the corresponding aliases (controlled by the argument `convert2alias`). This step is performed to best map the input data onto the PIN.
 
 # Obtain Gene Set Data
 
@@ -106,7 +106,7 @@ for (i in 1:n_iter) {
 
 # Summary of Enrichment Results
 
-We next summarize the enrichent results (in `combined_res`) using `summarize_enrichment_results()` and annotate the involved significant (input) genes in each term using `annotate_term_genes()`.
+We next summarize the enrichment results (in `combined_res`) using `summarize_enrichment_results()` and annotate the involved significant (input) genes in each term using `annotate_term_genes()`.
 
 ```{r post_proc, eval=FALSE}
 ###### Summarize Combined Enrichment Results

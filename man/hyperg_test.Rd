@@ -2,7 +2,7 @@
 % Please edit documentation in R/enrichment_functions.R
 \name{hyperg_test}
 \alias{hyperg_test}
-\title{Hypergeometic Distribution-based Hypothesis Testing}
+\title{Hypergeometric Distribution-based Hypothesis Testing}
 \usage{
 hyperg_test(term_genes, chosen_genes, background_genes)
 }
@@ -18,7 +18,7 @@ genes in the experiment)}
 the p-value as determined using the hypergeometric distribution.
 }
 \description{
-Hypergeometic Distribution-based Hypothesis Testing
+Hypergeometric Distribution-based Hypothesis Testing
 }
 \details{
 To determine whether the \code{chosen_genes} are enriched

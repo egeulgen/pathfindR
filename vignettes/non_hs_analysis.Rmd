@@ -175,7 +175,7 @@ We'll use this path to the custom sif for analysis with `run_pathfindR()`.
 
 ## Input Data
 
-The data used in this vignette (`myeloma_input`) is the data frame of differentially-expressed genes along for the GEO dataset [GSE99393](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE99393). The RNA microarray experiment was perform to detail the global programme of gene expression underlying polarization of myeloma-associated macrophages by CSF1R antibody treatment. The samples are 6 murine bone marrow derived macrophages cocultured with myeloma cells (myeloma-associated macrophages), 3 of which were treated with CSF1R antibody (treatment group) and the rest were treated with control IgG antibody (control group). In `myeloma_input`, 45 differentially-expressed genes with |logFC| >= 2 and FDR <= 0.05 are presented.
+The data used in this vignette (`myeloma_input`) is the data frame of differentially-expressed genes along for the GEO dataset [GSE99393](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE99393). The RNA microarray experiment was perform to detail the global program of gene expression underlying polarization of myeloma-associated macrophages by CSF1R antibody treatment. The samples are 6 murine bone marrow derived macrophages co-cultured with myeloma cells (myeloma-associated macrophages), 3 of which were treated with CSF1R antibody (treatment group) and the rest were treated with control IgG antibody (control group). In `myeloma_input`, 45 differentially-expressed genes with |logFC| >= 2 and FDR <= 0.05 are presented.
 
 ```{r mmu_input_df}
 knitr::kable(head(myeloma_input))
@@ -214,7 +214,7 @@ Because we used a very strict cut-off (logFC >= 2 + FDR <= 0.05), there were onl
 
 ## Built-in Mus musculus Data
 
-For Mus musculus (only), we have provided the necesarry PIN (`mmu_STRING`) and gene set data (`mmu_KEGG`) so you can also run:
+For Mus musculus (only), we have provided the necessary PIN (`mmu_STRING`) and gene set data (`mmu_KEGG`) so you can also run:
 
 ```{r run2, eval=FALSE}
 myeloma_output <- run_pathfindR(input = myeloma_input,

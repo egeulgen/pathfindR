@@ -98,7 +98,7 @@ filterActiveSnws <- function(active_snw_path, sig_genes_vec,
 #' @param silent_option boolean value indicating whether to print the messages
 #' to the console (FALSE) or not (TRUE, this will print to a temp. file) during
 #' active subnetwork search (default = TRUE). This option was added because
-#' during parallel runs, the console messages get disorderdly printed.
+#' during parallel runs, the console messages get disorderly printed.
 #' @param use_all_positives if TRUE: in GA, adds an individual with all positive
 #'  nodes. In SA, initializes candidate solution with all positive nodes. (default = FALSE)
 #' @param geneInitProbs For SA and GA, probability of adding a gene in initial solution (default = 0.1)

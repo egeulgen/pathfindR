@@ -29,6 +29,6 @@ differential-expression data frame \code{\link{RA_input}}. Analysis via
 \code{\link{RA_input}}  for the RA differentially-expressed genes data frame
 \code{\link{RA_clustered}} for the RA example pathfindR clustering output
 \code{\link{RA_exp_mat}} for the RA differentially-expressed genes expression matrix
-\code{\link{run_pathfindR}} for details on the patfindR enrichment analysis
+\code{\link{run_pathfindR}} for details on the pathfindR enrichment analysis
 }
 \keyword{datasets}

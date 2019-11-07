@@ -14,7 +14,7 @@ color_kegg_pathway(pw_id, change_vec, normalize_vals = TRUE,
 
 \item{normalize_vals}{should change values be normalized (default = \code{TRUE})}
 
-\item{node_cols}{low, middle and high color valus for coloring the pathway nodes
+\item{node_cols}{low, middle and high color values for coloring the pathway nodes
 (default = \code{NULL}). If \code{node_cols=NULL}, the low, middle and high color
 are set as "green", "gray" and "red". If all change values are 1e6 (in case no
 changes are supplied, this dummy value is assigned by

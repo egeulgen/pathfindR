@@ -3,7 +3,7 @@
 \docType{data}
 \name{myeloma_input}
 \alias{myeloma_input}
-\title{Example Input for Myelome Analysis (Mus Musculus)}
+\title{Example Input for Myeloma Analysis (Mus Musculus)}
 \format{A data frame with 45 rows and 2 variables: \describe{
   \item{Gene_Symbol}{MGI gene symbols of the differentially-expressed genes}
   \item{FDR}{adjusted p values, via the Benjamini & Hochberg (1995) method}
@@ -17,9 +17,9 @@ myeloma_input
 \description{
 A dataset containing the differentially-expressed genes and adjusted p-values
 for the GEO dataset GSE99393. The RNA microarray experiment was perform to
-detail the global programme of gene expression underlying polarization of
+detail the global program of gene expression underlying polarization of
 myeloma-associated macrophages by CSF1R antibody treatment. The samples were
-6 murine bone marrow derived macrophages cocultured with myeloma cells
+6 murine bone marrow derived macrophages co-cultured with myeloma cells
 (myeloma-associated  macrophages), 3 of which were treated with CSF1R
 antibody (treatment group) and the rest were treated with control IgG
 antibody (control group). In this dataset, differentially-expressed genes
@@ -28,6 +28,6 @@ with |logFC| >= 2 and FDR < 0.05 are presented.
 }
 \seealso{
 \code{\link{myeloma_output}} for the example mmu enrichment output.
-\code{\link{run_pathfindR}} for details on the patfindR enrichment analysis.
+\code{\link{run_pathfindR}} for details on the pathfindR enrichment analysis.
 }
 \keyword{datasets}

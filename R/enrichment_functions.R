@@ -1,4 +1,4 @@
-#' Hypergeometic Distribution-based Hypothesis Testing
+#' Hypergeometric Distribution-based Hypothesis Testing
 #'
 #' @param term_genes vector of genes in the selected term gene set
 #' @param chosen_genes vector containing the set of input genes

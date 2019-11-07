@@ -79,7 +79,7 @@ output_df <- run_pathfindR(input_df, output_dir = "this_is_my_output_directory")
 
 This creates `"this_is_my_output_directory"` under the current working directory.
 
-In essence, this argument is treated as a path so it can be used to create the output directory anwyhere. For example, to create the directory `"my_dir"` under `"~/Desktop"` and run the analysis there, you may run:
+In essence, this argument is treated as a path so it can be used to create the output directory anywhere. For example, to create the directory `"my_dir"` under `"~/Desktop"` and run the analysis there, you may run:
 
 ```{r change_out_dir2}
 output_df <- run_pathfindR(input_df, output_dir = "~/Desktop/my_dir")
@@ -95,7 +95,7 @@ The active-subnetwork-oriented enrichment analyses can be performed on any gene 
 output_df <- run_pathfindR(input_df, gene_sets = "GO-MF")
 ```
 
-By default, `run_pathfindR()` filters the gene sets by including only the terms containing at least 10 and at most 300 genes. To change the default behaviour, you may change `min_gset_size` and `max_gset_size`:
+By default, `run_pathfindR()` filters the gene sets by including only the terms containing at least 10 and at most 300 genes. To change the default behavior, you may change `min_gset_size` and `max_gset_size`:
 
 ```{r change_gset2}
 ## Including more terms for enrichment analysis
@@ -214,7 +214,7 @@ This document contains the table of converted gene symbols. Columns are:
 - Change: the provided change value
 - p-value: the provided adjusted p value
 
-> During input processing, gene symbols that are not in the PIN are identified and exluded. For human genes, if aliases of these missing gene symbols are found in the PIN, these symbols are converted to the corresponding aliases (controlled by the argument `convert2alias`). This step is performed to best map the input data onto the PIN.
+> During input processing, gene symbols that are not in the PIN are identified and excluded. For human genes, if aliases of these missing gene symbols are found in the PIN, these symbols are converted to the corresponding aliases (controlled by the argument `convert2alias`). This step is performed to best map the input data onto the PIN.
 
 The document contains a second table of genes for which **no interactions** were identified after checking for alias symbols (so these could not be used during the analysis).
 
@@ -228,7 +228,7 @@ The wrapper function `cluster_enriched_terms()` can be used to perform clusterin
 
 ## Hierarchical Clustering
 
-By default, `cluster_enriched_terms()` performs hierarchical clustering of the terms (using $1 - \kappa$ as the distance metric). Iterating over $2,3,...n$ clusters (where $n$ is the number of terms), `cluster_enriched_terms()` determines the optimal number of clusters by maximizing the average silhouette width, partiotions the data into this optimal number of clusters and returns a data frame with cluster assignments.
+By default, `cluster_enriched_terms()` performs hierarchical clustering of the terms (using $1 - \kappa$ as the distance metric). Iterating over $2,3,...n$ clusters (where $n$ is the number of terms), `cluster_enriched_terms()` determines the optimal number of clusters by maximizing the average silhouette width, partitions the data into this optimal number of clusters and returns a data frame with cluster assignments.
 
 ```{r hierarchical1, eval=TRUE}
 RA_clustered <- cluster_enriched_terms(RA_output, plot_dend = FALSE)
