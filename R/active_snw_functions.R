@@ -121,7 +121,8 @@ filterActiveSnws <- function(active_snw_path, sig_genes_vec,
 #' @export
 #'
 #' @examples
-#' processed_df <- input_processing(RA_input[1:50, ], 0.05, "GeneMania")
+#' processed_df <- RA_input[1:50, -2]
+#' colnames(processed_df) <- c("GENE", "P_VALUE")
 #' GR_snws <- active_snw_search(input_for_search = processed_df,
 #'                              pin_name_path = "GeneMania",
 #'                              search_method = "GR")
