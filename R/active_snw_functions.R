@@ -22,6 +22,7 @@
 #'                               package = "pathfindR")
 #' filtered <- filterActiveSnws(active_snw_path = path2snw_list,
 #'                              sig_genes_vec = pathfindR::RA_input$Gene.symbol)
+#' unlink("active_snw_search", recursive = TRUE)
 filterActiveSnws <- function(active_snw_path, sig_genes_vec,
                              score_quan_thr = 0.80, sig_gene_thr = 0.02) {
   ## Arg. checks
