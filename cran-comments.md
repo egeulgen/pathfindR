@@ -25,5 +25,7 @@ Possibly mis-spelled words in DESCRIPTION:
   
   The word Omics is actually spelled correctly.
 
+The notes in the previous pre-tests were also corrected.
+
 ## Downstream dependencies
   There are currently no downstream dependencies for this package.
