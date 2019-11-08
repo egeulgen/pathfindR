@@ -30,8 +30,7 @@
 #' of human KEGG diagrams. See \code{\link{visualize_term_interactions}} for the
 #' visualization function that generates diagrams showing the interactions of
 #' input genes in the PIN. See \code{\link{run_pathfindR}} for the wrapper
-#' function of the pathfindR workflow. \code{\link[pathview]{pathview}} for
-#' KEGG pathway-based data integration and visualization.
+#' function of the pathfindR workflow.
 #'
 #' @examples
 #' \dontrun{
