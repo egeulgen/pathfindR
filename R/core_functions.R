@@ -296,10 +296,18 @@ run_pathfindR <- function(input,
   ##### Visualize the Enriched Terms (If human KEGG, KEGG diagram. Otherwise,
   # Interactions of Genes in the PIN)
   if (visualize_enriched_terms) {
-    pathfindR::visualize_terms(result_df = final_res,
-                               input_processed = input_processed,
-                               hsa_KEGG = (gene_sets == "KEGG"),
-                               pin_name_path = pin_name_path)
+    if ((gene_sets == "KEGG")) {
+      pathfindR::visualize_terms(result_df = final_res,
+                                 input_processed = input_processed,
+                                 hsa_KEGG = TRUE,
+                                 pin_name_path = pin_name_path,
+                                 max_to_plot = 10) # downloading the pw. png is slow!!
+    } else {
+      pathfindR::visualize_terms(result_df = final_res,
+                                 input_processed = input_processed,
+                                 hsa_KEGG = ,
+                                 pin_name_path = pin_name_path)
+    }
   }
 
   ############ Create HTML Report

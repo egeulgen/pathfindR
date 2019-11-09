@@ -1,3 +1,10 @@
+# pathfindR 1.4.1.9000
+## Major Changes
+
+## Minor changes and bug fixes
+- Fixed error: when no input genes are present in the enriched hsa KEGG pathway, visualization of the pathway is skipped
+- Added the argument `max_to_plot` to `visualize_hsa_KEGG()`. This argument controls the number of pathways to be visualized (default is NULL, i.e. no filter). This was implemented not to slow down the runtime of `run_pathfindR()` as downloading the png files is very slow.
+
 # pathfindR 1.4.0
 
 ## Major Changes

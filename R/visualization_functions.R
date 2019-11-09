@@ -243,6 +243,9 @@ visualize_term_interactions <- function(result_df, pin_name_path) {
 #'
 #' @param hsa_kegg_ids hsa KEGG ids of pathways to be colored and visualized
 #' @param input_processed input data processed via \code{\link{input_processing}}
+#' @inheritParams max_to_plot The number of hsa kegg pathways (from beginning
+#' until the \code{max_to_plot}th id) to visualize. If NULL, visualizes all
+#' (default = NULL)
 #' @inheritParams color_kegg_pathway
 #' @param key_gravity gravity value (character) for the color key legend placement
 #' (see \code{\link[magick]{gravity_types}})
@@ -263,7 +266,7 @@ visualize_term_interactions <- function(result_df, pin_name_path) {
 #' \dontrun{
 #' visualize_hsa_KEGG(hsa_kegg_ids, input_processed)
 #' }
-visualize_hsa_KEGG <- function(hsa_kegg_ids, input_processed,
+visualize_hsa_KEGG <- function(hsa_kegg_ids, input_processed, max_to_plot = NULL,
                                normalize_vals = TRUE, node_cols = NULL,
                                quiet = TRUE,
                                key_gravity = "northeast",
@@ -288,6 +291,18 @@ visualize_hsa_KEGG <- function(hsa_kegg_ids, input_processed,
     stop("`input_processed` should contain the following columns: ",
          paste(dQuote(nec_cols), collapse = ", "))
   }
+
+  ## max_to_plot
+  if (!is.numeric(max_to_plot)) {
+    stop("`max_to_plot` should be numeric or NULL")
+  }
+
+  if (max_to_plot < 1) {
+    stop("`max_to_plot` should be >=1")
+  }
+
+  ## Select the first `max_to_plot` kegg ids
+  hsa_kegg_ids <- hsa_kegg_ids[1:max_to_plot]
 
   ############ Create change vector
   ### Convert gene symbols into NCBI gene IDs
