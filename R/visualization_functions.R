@@ -331,6 +331,9 @@ visualize_hsa_KEGG <- function(hsa_kegg_ids, input_processed,
   cat("Saving colored pathway diagrams of", length(pw_vis_list), "KEGG pathways\n\n")
   pb <- utils::txtProgressBar(min = 0, max = length(pw_vis_list), style = 3)
   for (i in seq_len(length(pw_vis_list))) {
+
+    if (is.null(pw_vis_list[[i]])) next
+
     ### Read image
     f_path <- pw_vis_list[[i]]$file_path
     pw_diag <- magick::image_read(f_path)
@@ -524,6 +527,9 @@ color_kegg_pathway <- function(pw_id, change_vec, normalize_vals = TRUE,
   }
 
   ############ Determine node colors
+  if (all(is.na(pw_vis_changes))) {
+    return(NULL)
+  }
   vals <- pw_vis_changes[!is.na(pw_vis_changes)]
   ### Normalization
   if (!all(vals == 1e6) & normalize_vals) {
