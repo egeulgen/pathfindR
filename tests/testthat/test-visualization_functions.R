@@ -2,7 +2,7 @@
 ## Project: pathfindR
 ## Script purpose: Testthat testing script for
 ## visualization-related functions
-## Date: Nov 7, 2019
+## Date: Nov 10, 2019
 ## Author: Ege Ulgen
 ##################################################
 

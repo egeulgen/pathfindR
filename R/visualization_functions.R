@@ -293,16 +293,21 @@ visualize_hsa_KEGG <- function(hsa_kegg_ids, input_processed, max_to_plot = NULL
   }
 
   ## max_to_plot
-  if (!is.numeric(max_to_plot)) {
-    stop("`max_to_plot` should be numeric or NULL")
+  if (!is.null(max_to_plot)) {
+    if (!is.numeric(max_to_plot)) {
+      stop("`max_to_plot` should be numeric or NULL")
+    }
+
+    if (max_to_plot < 1) {
+      stop("`max_to_plot` should be >=1")
+    }
   }
 
-  if (max_to_plot < 1) {
-    stop("`max_to_plot` should be >=1")
-  }
 
   ## Select the first `max_to_plot` kegg ids
-  hsa_kegg_ids <- hsa_kegg_ids[1:max_to_plot]
+  if (!is.null(max_to_plot)) {
+    hsa_kegg_ids <- hsa_kegg_ids[1:max_to_plot]
+  }
 
   ############ Create change vector
   ### Convert gene symbols into NCBI gene IDs

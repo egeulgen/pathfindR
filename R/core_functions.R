@@ -305,7 +305,7 @@ run_pathfindR <- function(input,
     } else {
       pathfindR::visualize_terms(result_df = final_res,
                                  input_processed = input_processed,
-                                 hsa_KEGG = ,
+                                 hsa_KEGG = FALSE,
                                  pin_name_path = pin_name_path)
     }
   }
