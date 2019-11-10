@@ -4,9 +4,9 @@
 \alias{visualize_hsa_KEGG}
 \title{Visualize Human KEGG Pathways}
 \usage{
-visualize_hsa_KEGG(hsa_kegg_ids, input_processed, normalize_vals = TRUE,
-  node_cols = NULL, quiet = TRUE, key_gravity = "northeast",
-  logo_gravity = "southeast")
+visualize_hsa_KEGG(hsa_kegg_ids, input_processed, max_to_plot = NULL,
+  normalize_vals = TRUE, node_cols = NULL, quiet = TRUE,
+  key_gravity = "northeast", logo_gravity = "southeast")
 }
 \arguments{
 \item{hsa_kegg_ids}{hsa KEGG ids of pathways to be colored and visualized}
