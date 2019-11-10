@@ -13,6 +13,10 @@ visualize_hsa_KEGG(hsa_kegg_ids, input_processed, max_to_plot = NULL,
 
 \item{input_processed}{input data processed via \code{\link{input_processing}}}
 
+\item{max_to_plot}{The number of hsa kegg pathways (from beginning
+until the \code{max_to_plot}th id) to visualize. If NULL, visualizes all
+(default = NULL)}
+
 \item{normalize_vals}{should change values be normalized (default = \code{TRUE})}
 
 \item{node_cols}{low, middle and high color values for coloring the pathway nodes
