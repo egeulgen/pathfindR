@@ -302,6 +302,8 @@ run_pathfindR <- function(input,
                                  hsa_KEGG = TRUE,
                                  pin_name_path = pin_name_path,
                                  max_to_plot = 10) # downloading the pw. png is slow!!
+      message("By default, the top 10 KEGG pathways are visualized\n",
+      "Please use `visualize_terms()` if you'd like to plot all enriched pathways")
     } else {
       pathfindR::visualize_terms(result_df = final_res,
                                  input_processed = input_processed,
