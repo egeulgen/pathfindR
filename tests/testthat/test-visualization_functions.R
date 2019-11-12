@@ -11,9 +11,7 @@ tmp_res <- RA_output[1, ]
 
 tmp_genes <- unlist(c(strsplit(tmp_res$Up_regulated, ", "),
                       strsplit(tmp_res$Down_regulated, ", ")))
-tmp_input <- RA_input[RA_input$Gene.symbol %in% tmp_genes, ]
-input_processed <- suppressMessages(input_processing(tmp_input, 0.05, "Biogrid"))
-
+input_processed <- suppressMessages(input_processing(RA_input, 0.05, "Biogrid"))
 
 test_that("`visualize_terms()` creates expected png file(s)", {
   ## non-KEGG (visualize_term_interactions)
@@ -142,6 +140,31 @@ test_that("`visualize_hsa_KEGG()` creates expected png file(s)", {
                  "all `change_vec` values are 1e6, using the first color in `node_cols`")
   expect_true(file.exists(expected_out_file))
   unlink("term_visualizations", recursive = TRUE)
+
+
+  ###### max_to_plot works
+  max_n <- 5
+  expected_out_files <- file.path("term_visualizations",
+                                  paste0(RA_output$ID[seq_len(max_n)],
+                                         "_pathfindR.png"))
+  expect_null(visualize_hsa_KEGG(hsa_kegg_ids = RA_output$ID,
+                                 input_processed = input_processed,
+                                 max_to_plot = max_n))
+  expect_true(all(file.exists(expected_out_files)))
+  unlink("term_visualizations", recursive = TRUE)
+
+})
+
+temp_ids <- RA_output$ID[1:3]
+test_that("KEGML download error is handled properly", {
+  temp_ids[2] <- "hsa00000"
+  expected_out_files <- file.path("term_visualizations",
+                                  paste0(temp_ids, "_pathfindR.png"))
+  visualize_hsa_KEGG(hsa_kegg_ids = temp_ids,
+                     input_processed = input_processed)
+
+  expect_equal(file.exists(expected_out_files), c(TRUE, FALSE, TRUE))
+  unlink("term_visualizations", recursive = TRUE)
 })
 
 test_that("arg checks for `visualize_hsa_KEGG()` work", {
@@ -159,6 +182,17 @@ test_that("arg checks for `visualize_hsa_KEGG()` work", {
                                   input_processed = input_processed[, -2]),
                paste0("`input_processed` should contain the following columns: ",
                       paste(dQuote(c("GENE", "CHANGE")), collapse = ", ")))
+
+  expect_error(visualize_hsa_KEGG(hsa_kegg_ids = tmp_res$ID,
+                                  input_processed = input_processed,
+                                  max_to_plot = "INVALID"),
+               "`max_to_plot` should be numeric or NULL")
+  expect_error(visualize_hsa_KEGG(hsa_kegg_ids = tmp_res$ID,
+                                  input_processed = input_processed,
+                                  max_to_plot = 0),
+               "`max_to_plot` should be >=1")
+
+
 
 
   expect_error(visualize_hsa_KEGG(hsa_kegg_ids = tmp_res$ID,
