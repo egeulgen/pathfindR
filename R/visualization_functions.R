@@ -494,24 +494,21 @@ color_kegg_pathway <- function(pw_id, change_vec, normalize_vals = TRUE,
   ############ and handling of non-input pathway genes
   ## download KGML to determine gene nodes
   pwKGML <- tempfile()
+  KGML_URL <- tryCatch({
+    KEGGgraph::retrieveKGML(sub("hsa", "", pw_id),
+                            organism = "hsa",
+                            destfile = pwKGML,
+                            quiet = quiet)
+  }, error = function(e) {
+    message(paste("Cannot download KGML file for:", pw_id))
+    message("Here's the original error message:")
+    message(e)
+    return(NA)
+  })
 
-  tryCatch({status <- KEGGgraph::retrieveKGML(sub("hsa", "", pw_id),
-                                              organism = "hsa",
-                                              destfile = pwKGML,
-                                              quiet = quiet)},
-           warning = function(w) {
-             message(paste("Warning for :", pw_id))
-             message("Here's the original warning message:")
-             message(w)
-             return(NULL)
-           }, error = function(e) {
-             message(paste("Cannot reach URL, please check your connection:", pw_id))
-             message("Here's the original error message:")
-             message(e)
-             return(NA)
-           }, finally = {
-             invisible(status)
-           })
+  if (is.na(KGML_URL) | is.na(file.info(pwKGML)$size)) {
+    return(NULL)
+  }
 
   current_pw <- KEGGgraph::parseKGML(pwKGML)
 
@@ -598,22 +595,21 @@ color_kegg_pathway <- function(pw_id, change_vec, normalize_vals = TRUE,
                                                fg.color.list = fg_cols,
                                                bg.color.list = bg_cols)
 
-  tryCatch({status <- utils::download.file(url = pw_url,
-                                           destfile = f_path,
-                                           quiet = quiet)},
-           warning = function(w) {
-             message(paste("URL caused a warning:", url))
-             message("Here's the original warning message:")
-             message(w)
-             return(NULL)
-           }, error = function(e) {
-             message(paste("Cannot reach URL, please check your connection:", url))
-             message("Here's the original error message:")
-             message(e)
-             return(NA)
-           }, finally = {
-             invisible(status)
-           })
+  dl_stat <- tryCatch({
+    cond <- utils::download.file(url = pw_url,
+                                 destfile = f_path,
+                                 quiet = quiet)
+    cond
+  }, error = function(e) {
+    message(paste("Cannot download PNG file:", pw_url))
+    message("Here's the original error message:")
+    message(e)
+    return(NA)
+  })
+
+  if (is.na(dl_stat)) {
+    return(NULL)
+  }
 
   return(list(file_path = f_path,
               all_key_cols = all_key_cols,
