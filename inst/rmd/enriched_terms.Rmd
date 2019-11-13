@@ -25,10 +25,12 @@ if (params$vis_cond) {
   vis_dir <- normalizePath(vis_dir)
   ## If hsa KEGG visualizations
   if (params$gset == "KEGG") {
-    for(i in 1:nrow(result_df))
-      fpath <- file.path(vis_dir, paste0(result_df[i, 1],"_pathfindR.png")) 
+    for(i in 1:10) {
+      fpath <- file.path(vis_dir, paste0(result_df[i, 1], "_pathfindR.png")) 
       result_df[i, 1] <- create_link(result_df[i, 1], fpath)
       result_df[i, 2] <- create_link(result_df[i, 2], fpath)
+    }
+      
   } else {
     ## If interactions of term-related genes visualizations
     for(i in 1:nrow(result_df)) {
@@ -43,5 +45,5 @@ if (params$vis_cond) {
   }
 }
 
-knitr::kable(result_df, align = "c",table.caption.prefix ="")
+knitr::kable(result_df, align = "c", table.caption.prefix ="")
 ```
