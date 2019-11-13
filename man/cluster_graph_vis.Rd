@@ -4,8 +4,13 @@
 \alias{cluster_graph_vis}
 \title{Graph Visualization of Clustered Enriched Terms}
 \usage{
-cluster_graph_vis(clu_obj, kappa_mat, enrichment_res,
-  kappa_threshold = 0.35, use_description = FALSE)
+cluster_graph_vis(
+  clu_obj,
+  kappa_mat,
+  enrichment_res,
+  kappa_threshold = 0.35,
+  use_description = FALSE
+)
 }
 \arguments{
 \item{clu_obj}{clustering result (either a matrix obtained via

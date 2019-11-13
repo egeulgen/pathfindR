@@ -4,8 +4,7 @@
 \alias{input_processing}
 \title{Process Input}
 \usage{
-input_processing(input, p_val_threshold, pin_name_path,
-  convert2alias = TRUE)
+input_processing(input, p_val_threshold, pin_name_path, convert2alias = TRUE)
 }
 \arguments{
 \item{input}{the input data that pathfindR uses. The input must be a data

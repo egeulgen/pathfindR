@@ -4,9 +4,14 @@
 \alias{cluster_enriched_terms}
 \title{Cluster Enriched Terms}
 \usage{
-cluster_enriched_terms(enrichment_res, method = "hierarchical",
-  plot_clusters_graph = TRUE, use_description = FALSE,
-  use_active_snw_genes = FALSE, ...)
+cluster_enriched_terms(
+  enrichment_res,
+  method = "hierarchical",
+  plot_clusters_graph = TRUE,
+  use_description = FALSE,
+  use_active_snw_genes = FALSE,
+  ...
+)
 }
 \arguments{
 \item{enrichment_res}{data frame of pathfindR enrichment results. Must-have

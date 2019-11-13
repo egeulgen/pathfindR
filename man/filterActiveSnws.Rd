@@ -4,8 +4,12 @@
 \alias{filterActiveSnws}
 \title{Parse Active Subnetwork Search Output File and Filter the Subnetworks}
 \usage{
-filterActiveSnws(active_snw_path, sig_genes_vec, score_quan_thr = 0.8,
-  sig_gene_thr = 0.02)
+filterActiveSnws(
+  active_snw_path,
+  sig_genes_vec,
+  score_quan_thr = 0.8,
+  sig_gene_thr = 0.02
+)
 }
 \arguments{
 \item{active_snw_path}{path to the output of an Active Subnetwork Search.}

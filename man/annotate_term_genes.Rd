@@ -4,8 +4,11 @@
 \alias{annotate_term_genes}
 \title{Annotate the Affected Genes in the Provided Enriched Terms}
 \usage{
-annotate_term_genes(result_df, input_processed,
-  genes_by_term = pathfindR::kegg_genes)
+annotate_term_genes(
+  result_df,
+  input_processed,
+  genes_by_term = pathfindR::kegg_genes
+)
 }
 \arguments{
 \item{result_df}{data frame of enrichment results.

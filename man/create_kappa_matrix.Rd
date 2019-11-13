@@ -4,8 +4,11 @@
 \alias{create_kappa_matrix}
 \title{Create Kappa Statistics Matrix}
 \usage{
-create_kappa_matrix(enrichment_res, use_description = FALSE,
-  use_active_snw_genes = FALSE)
+create_kappa_matrix(
+  enrichment_res,
+  use_description = FALSE,
+  use_active_snw_genes = FALSE
+)
 }
 \arguments{
 \item{enrichment_res}{data frame of pathfindR enrichment results. Must-have

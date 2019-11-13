@@ -4,9 +4,13 @@
 \alias{fetch_gene_set}
 \title{Fetch Gene Set Objects}
 \usage{
-fetch_gene_set(gene_sets = "KEGG", min_gset_size = 10,
-  max_gset_size = 300, custom_genes = NULL,
-  custom_descriptions = NULL)
+fetch_gene_set(
+  gene_sets = "KEGG",
+  min_gset_size = 10,
+  max_gset_size = 300,
+  custom_genes = NULL,
+  custom_descriptions = NULL
+)
 }
 \arguments{
 \item{gene_sets}{Name of the gene sets to be used for enrichment analysis.

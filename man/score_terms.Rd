@@ -4,8 +4,14 @@
 \alias{score_terms}
 \title{Calculate Agglomerated Scores of Enriched Terms for Each Subject}
 \usage{
-score_terms(enrichment_table, exp_mat, cases = NULL,
-  use_description = FALSE, plot_hmap = TRUE, ...)
+score_terms(
+  enrichment_table,
+  exp_mat,
+  cases = NULL,
+  use_description = FALSE,
+  plot_hmap = TRUE,
+  ...
+)
 }
 \arguments{
 \item{enrichment_table}{a data frame that must contain the 3 columns below: \describe{

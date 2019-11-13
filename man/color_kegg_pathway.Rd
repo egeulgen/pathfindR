@@ -4,8 +4,13 @@
 \alias{color_kegg_pathway}
 \title{Color hsa KEGG pathway}
 \usage{
-color_kegg_pathway(pw_id, change_vec, normalize_vals = TRUE,
-  node_cols = NULL, quiet = TRUE)
+color_kegg_pathway(
+  pw_id,
+  change_vec,
+  normalize_vals = TRUE,
+  node_cols = NULL,
+  quiet = TRUE
+)
 }
 \arguments{
 \item{pw_id}{hsa KEGG pathway id (e.g. hsa05012)}

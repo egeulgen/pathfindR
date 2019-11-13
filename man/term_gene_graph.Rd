@@ -4,8 +4,13 @@
 \alias{term_gene_graph}
 \title{Plot Term-Gene Graph}
 \usage{
-term_gene_graph(result_df, num_terms = 10, layout = "auto",
-  use_description = FALSE, node_size = "num_genes")
+term_gene_graph(
+  result_df,
+  num_terms = 10,
+  layout = "auto",
+  use_description = FALSE,
+  node_size = "num_genes"
+)
 }
 \arguments{
 \item{result_df}{A dataframe of pathfindR results that must contain the following columns: \describe{

@@ -4,9 +4,14 @@
 \alias{hierarchical_term_clustering}
 \title{Hierarchical Clustering of Enriched Terms}
 \usage{
-hierarchical_term_clustering(kappa_mat, enrichment_res,
-  use_description = FALSE, clu_method = "average", plot_hmap = FALSE,
-  plot_dend = TRUE)
+hierarchical_term_clustering(
+  kappa_mat,
+  enrichment_res,
+  use_description = FALSE,
+  clu_method = "average",
+  plot_hmap = FALSE,
+  plot_dend = TRUE
+)
 }
 \arguments{
 \item{kappa_mat}{matrix of kappa statistics (output of \code{\link{create_kappa_matrix}})}

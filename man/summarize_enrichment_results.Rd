@@ -4,8 +4,7 @@
 \alias{summarize_enrichment_results}
 \title{Summarize Enrichment Results}
 \usage{
-summarize_enrichment_results(enrichment_res,
-  list_active_snw_genes = FALSE)
+summarize_enrichment_results(enrichment_res, list_active_snw_genes = FALSE)
 }
 \arguments{
 \item{enrichment_res}{a dataframe of combined enrichment results. Columns are: \describe{

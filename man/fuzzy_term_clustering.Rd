@@ -4,8 +4,12 @@
 \alias{fuzzy_term_clustering}
 \title{Heuristic Fuzzy Multiple-linkage Partitioning of Enriched Terms}
 \usage{
-fuzzy_term_clustering(kappa_mat, enrichment_res, kappa_threshold = 0.35,
-  use_description = FALSE)
+fuzzy_term_clustering(
+  kappa_mat,
+  enrichment_res,
+  kappa_threshold = 0.35,
+  use_description = FALSE
+)
 }
 \arguments{
 \item{kappa_mat}{matrix of kappa statistics (output of \code{\link{create_kappa_matrix}})}

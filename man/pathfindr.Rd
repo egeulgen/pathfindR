@@ -3,7 +3,6 @@
 \docType{package}
 \name{pathfindR}
 \alias{pathfindR}
-\alias{pathfindR-package}
 \title{pathfindR: A package for Enrichment Analysis Utilizing Active Subnetworks}
 \description{
 pathfindR is a tool for active-subnetwork-oriented gene set enrichment analysis.

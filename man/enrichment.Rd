@@ -4,10 +4,15 @@
 \alias{enrichment}
 \title{Perform Enrichment Analysis for a Single Gene Set}
 \usage{
-enrichment(input_genes, genes_by_term = pathfindR::kegg_genes,
+enrichment(
+  input_genes,
+  genes_by_term = pathfindR::kegg_genes,
   term_descriptions = pathfindR::kegg_descriptions,
-  adj_method = "bonferroni", enrichment_threshold = 0.05,
-  sig_genes_vec, background_genes)
+  adj_method = "bonferroni",
+  enrichment_threshold = 0.05,
+  sig_genes_vec,
+  background_genes
+)
 }
 \arguments{
 \item{input_genes}{The set of gene symbols to be used for enrichment

@@ -4,9 +4,16 @@
 \alias{plot_scores}
 \title{Plot the Heatmap of Score Matrix of Enriched Terms per Sample}
 \usage{
-plot_scores(score_matrix, cases = NULL, label_samples = TRUE,
-  case_title = "Case", control_title = "Control", low = "green",
-  mid = "black", high = "red")
+plot_scores(
+  score_matrix,
+  cases = NULL,
+  label_samples = TRUE,
+  case_title = "Case",
+  control_title = "Control",
+  low = "green",
+  mid = "black",
+  high = "red"
+)
 }
 \arguments{
 \item{score_matrix}{Matrix of agglomerated enriched term scores per sample. Columns are

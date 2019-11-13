@@ -4,14 +4,30 @@
 \alias{active_snw_search}
 \title{Perform Active Subnetwork Search}
 \usage{
-active_snw_search(input_for_search, pin_name_path = "Biogrid",
-  snws_file = "active_snws", dir_for_parallel_run = NULL,
-  score_quan_thr = 0.8, sig_gene_thr = 0.02, search_method = "GR",
-  silent_option = TRUE, use_all_positives = FALSE,
-  geneInitProbs = 0.1, saTemp0 = 1, saTemp1 = 0.01, saIter = 10000,
-  gaPop = 400, gaIter = 10000, gaThread = 5, gaCrossover = 1,
-  gaMut = 0, grMaxDepth = 1, grSearchDepth = 1, grOverlap = 0.5,
-  grSubNum = 1000)
+active_snw_search(
+  input_for_search,
+  pin_name_path = "Biogrid",
+  snws_file = "active_snws",
+  dir_for_parallel_run = NULL,
+  score_quan_thr = 0.8,
+  sig_gene_thr = 0.02,
+  search_method = "GR",
+  silent_option = TRUE,
+  use_all_positives = FALSE,
+  geneInitProbs = 0.1,
+  saTemp0 = 1,
+  saTemp1 = 0.01,
+  saIter = 10000,
+  gaPop = 400,
+  gaIter = 10000,
+  gaThread = 5,
+  gaCrossover = 1,
+  gaMut = 0,
+  grMaxDepth = 1,
+  grSearchDepth = 1,
+  grOverlap = 0.5,
+  grSubNum = 1000
+)
 }
 \arguments{
 \item{input_for_search}{input the input data that active subnetwork search uses. The input

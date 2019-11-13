@@ -4,8 +4,13 @@
 \alias{enrichment_chart}
 \title{Create Bubble Chart of Enrichment Results}
 \usage{
-enrichment_chart(result_df, top_terms = 10, plot_by_cluster = FALSE,
-  num_bubbles = 4, even_breaks = TRUE)
+enrichment_chart(
+  result_df,
+  top_terms = 10,
+  plot_by_cluster = FALSE,
+  num_bubbles = 4,
+  even_breaks = TRUE
+)
 }
 \arguments{
 \item{result_df}{a data frame that must contain the following columns: \describe{
