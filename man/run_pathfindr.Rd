@@ -14,6 +14,7 @@ run_pathfindR(
   pin_name_path = "Biogrid",
   p_val_threshold = 0.05,
   visualize_enriched_terms = TRUE,
+  max_to_plot = 10,
   convert2alias = TRUE,
   enrichment_threshold = 0.05,
   adj_method = "bonferroni",
@@ -76,6 +77,10 @@ the input data frame. Must a numeric value between 0 and 1. (default = 0.05)}
 
 \item{visualize_enriched_terms}{Boolean value to indicate whether or not to
 create diagrams for enriched terms (default = TRUE)}
+
+\item{max_to_plot}{(necessary only if \code{gene_sets = "KEGG"} and
+\code{visualize_enriched_terms = TRUE}) The number of top hsa kegg pathways
+to visualize. If \code{NULL}, visualizes all (default = 10)}
 
 \item{convert2alias}{boolean to indicate whether or not to convert gene symbols
 in the input that are not found in the PIN to an alias symbol found in the PIN
