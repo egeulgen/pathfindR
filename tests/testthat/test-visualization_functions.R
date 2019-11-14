@@ -157,6 +157,7 @@ test_that("`visualize_hsa_KEGG()` creates expected png file(s)", {
 
 temp_ids <- RA_output$ID[1:3]
 test_that("KEGML download error is handled properly", {
+  skip_on_cran()
   temp_ids[2] <- "hsa00000"
   expected_out_files <- file.path("term_visualizations",
                                   paste0(temp_ids, "_pathfindR.png"))
