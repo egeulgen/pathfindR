@@ -1,7 +1,7 @@
 # pathfindR 1.4.1
 
 ## Major Changes
-- Fixed error in DESCRIPTION: the Java JVM version was corrected to "Java (>= 8.0)"
+- Fixed error in DESCRIPTION: the Java version in SystemRequirements was corrected to "Java (>= 8.0)"
 - The Java version is now checked via rJava
 
 ## Minor changes and bug fixes
