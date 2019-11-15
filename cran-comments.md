@@ -16,7 +16,7 @@ There were no ERRORs or WARNINGs.
 
   If we later need to add more built-in data, we will be creating a separate dataset package (as suggested before).
 
-* Upon the warning of Prof. Brian D. Ripley, the Java version in SystemRequirements was corrected to "Java (>= 8.0)" and the Java version is checked via rJava (as suggested on https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Writing-portable-packages). 
+* Upon the warning of Prof. Brian D. Ripley, the Java version in SystemRequirements was corrected to "Java (>= 8.0)" and the Java version is validated. Upon receiving an error during auto-checks on our last submission attempt, instead of using rJava, we implemented another solution for validating the Java version (adapted from `sparklyr`)
 
 ## Downstream dependencies
   There are currently no downstream dependencies for this package.
