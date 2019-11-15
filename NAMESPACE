@@ -2,6 +2,7 @@
 
 export(active_snw_search)
 export(annotate_term_genes)
+export(check_java_version)
 export(cluster_enriched_terms)
 export(cluster_graph_vis)
 export(create_kappa_matrix)

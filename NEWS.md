@@ -2,7 +2,7 @@
 
 ## Major Changes
 - Fixed error in DESCRIPTION: the Java version in SystemRequirements was corrected to "Java (>= 8.0)"
-- The Java version is now checked via rJava
+- The Java version is now checked
 
 ## Minor changes and bug fixes
 - Fixed behaviour: when no input genes are present in the enriched hsa KEGG pathway, visualization of the pathway is now skipped

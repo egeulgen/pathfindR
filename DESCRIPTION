@@ -49,8 +49,7 @@ Imports: DBI,
     magick,
     KEGGREST,
     KEGGgraph,
-    knitr,
-    rJava
+    knitr
 Depends: R (>= 3.6)
 Suggests: 
     testthat (>= 2.1.0),
