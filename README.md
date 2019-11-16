@@ -16,7 +16,7 @@ downloads](https://cranlogs.r-pkg.org/badges/grand-total/pathfindR)](https://cra
 [![Lifecycle:
 maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![License:
-MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/egeulgen/pathfindR/blob/master/LICENSE.md)
+MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 <!-- badges: end -->
 
 ## Overview
@@ -36,34 +36,44 @@ detailed documentation.
 
 ## Installation
 
-You can install the released version of pathfindR from
-[CRAN](https://CRAN.R-project.org) with:
+You can install the released version of pathfindR from CRAN via:
 
 ``` r
 install.packages("pathfindR")
 ```
 
-And the development version from [GitHub](https://github.com/) with:
+or via [pak](https://pak.r-lib.org/) (this might be preferable given
+`pathfindR`’s Bioconductor dependencies):
 
 ``` r
-install.packages("devtools") # if you have not installed "devtools"
-devtools::install_github("egeulgen/pathfindR")
+install.packages("pak") # if you have not installed "pak"
+pak::pkg_install("pathfindR")
+```
+
+And the development version from GitHub via
+[pak](https://pak.r-lib.org/):
+
+``` r
+install.packages("pak") # if you have not installed "pak"
+pak::pkg_install("egeulgen/pathfindR")
 ```
 
 > **IMPORTANT NOTE** For the active subnetwork search component to work,
-> the user must have [Java](https://www.java.com/en/download/manual.jsp)
+> the user must have [Java (\>= 8.0)](https://www.java.com/en/)
 > installed and path/to/java must be in the PATH environment variable.
 
-We also have docker images available on Docker Hub:
+We also have docker images available on [Docker
+Hub](https://hub.docker.com/repository/docker/egeulgen/pathfindr) and on
+[GitHub](https://github.com/egeulgen/pathfindR/packages):
 
 ``` bash
 # pull image for latest release
 docker pull egeulgen/pathfindr:latest
 
-# pull image for specific version (e.g. 1.3.0)
-docker pull egeulgen/pathfindr:1.3.0
+# pull image for specific version (e.g. 1.4.1)
+docker pull egeulgen/pathfindr:1.4.1
 
-# pull image for development version
+# pull image for latest development version
 docker pull egeulgen/pathfindr:dev
 ```
 
@@ -122,11 +132,11 @@ This wrapper function performs the active-subnetwork-oriented enrichment
 analysis and returns a data frame of enriched terms (as well as
 visualization of enriched terms and an HTML report):
 
-| ID       | Term\_Description         | Fold\_Enrichment | occurrence | lowest\_p | highest\_p | Up\_regulated         | Down\_regulated |
-| :------- | :------------------------ | :--------------: | :--------: | :-------: | :--------: | :-------------------- | :-------------- |
-| hsa03040 | Spliceosome               |      3.0975      |     10     |  2.6e-10  |  3.7e-09   | NDUFA1, NDUFB3, UQCRQ | SNRPB, SF3B2    |
-| hsa05012 | Parkinson disease         |      2.3188      |     10     |  2.7e-08  |  2.7e-08   | COX7C                 | UBE2G1, VDAC1   |
-| hsa00190 | Oxidative phosphorylation |      2.5240      |     10     |  2.9e-08  |  2.9e-08   | DDIT3, NDUFA1         | ATP6V0E2        |
+| ID       | Term\_Description         | Fold\_Enrichment | occurrence | lowest\_p | highest\_p | Up\_regulated         | Down\_regulated        |
+| :------- | :------------------------ | :--------------: | :--------: | :-------: | :--------: | :-------------------- | :--------------------- |
+| hsa03040 | Spliceosome               |      3.0975      |     10     |  1.1e-09  |  3.7e-09   | NDUFA1, NDUFB3, UQCRQ | SNRPB, SF3B2           |
+| hsa00190 | Oxidative phosphorylation |      2.5240      |     10     |  2.9e-08  |  2.9e-08   | COX7C                 | UBE2G1, VDAC1          |
+| hsa05012 | Parkinson disease         |      2.3188      |     10     |  4.9e-08  |  4.9e-08   | DDIT3, NDUFA1         | UBE2G1, VDAC1, SLC25A5 |
 
 <img src="inst/extdata/example_output-1.png" width="100%" />
 

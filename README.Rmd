@@ -34,32 +34,39 @@ See [the pathfindR wiki](https://github.com/egeulgen/pathfindR/wiki) for detaile
 
 ## Installation
 
-You can install the released version of pathfindR from [CRAN](https://CRAN.R-project.org) with:
+You can install the released version of pathfindR from CRAN via:
 
 ```{r installation1, eval=FALSE}
 install.packages("pathfindR")
 ```
 
-And the development version from [GitHub](https://github.com/) with:
+or via [pak](https://pak.r-lib.org/) (this might be preferable given `pathfindR`'s Bioconductor dependencies):
 
 ```{r installation2, eval=FALSE}
-install.packages("devtools") # if you have not installed "devtools"
-devtools::install_github("egeulgen/pathfindR")
+install.packages("pak") # if you have not installed "pak"
+pak::pkg_install("pathfindR")
+```
+
+And the development version from GitHub via [pak](https://pak.r-lib.org/):
+
+```{r installation3, eval=FALSE}
+install.packages("pak") # if you have not installed "pak"
+pak::pkg_install("egeulgen/pathfindR")
 ```
 
 > **IMPORTANT NOTE**
-> For the active subnetwork search component to work, the user must have [Java](https://www.java.com/en/download/manual.jsp) installed and path/to/java must be in the PATH environment variable.
+> For the active subnetwork search component to work, the user must have [Java  (>= 8.0)](https://www.java.com/en/) installed and path/to/java must be in the PATH environment variable.
 
-We also have docker images available on Docker Hub:
+We also have docker images available on [Docker Hub](https://hub.docker.com/repository/docker/egeulgen/pathfindr) and on [GitHub](https://github.com/egeulgen/pathfindR/packages):
 
 ```{bash docker, eval = FALSE}
 # pull image for latest release
 docker pull egeulgen/pathfindr:latest
 
-# pull image for specific version (e.g. 1.3.0)
-docker pull egeulgen/pathfindr:1.3.0
+# pull image for specific version (e.g. 1.4.1)
+docker pull egeulgen/pathfindr:1.4.1
 
-# pull image for development version
+# pull image for latest development version
 docker pull egeulgen/pathfindr:dev
 ```
 
