@@ -1,21 +1,3 @@
-.onAttach <- function(libname, pkgname) {
-  packageStartupMessage(
-    "##############################################################################
-                        Welcome to pathfindR!
-
-Please cite the article below if you use pathfindR in published reseach:
-
-Ulgen E, Ozisik O, Sezerman OU. 2019. pathfindR: An R Package for Comprehensive
-Identification of Enriched Pathways in Omics Data Through Active Subnetworks.
-Front. Genet. doi:10.3389/fgene.2019.00858
-
-##############################################################################"
-  )
-
-  ### Check Java version
-  check_java_version()
-}
-
 #' pathfindR: A package for Enrichment Analysis Utilizing Active Subnetworks
 #'
 #' pathfindR is a tool for active-subnetwork-oriented gene set enrichment analysis.
