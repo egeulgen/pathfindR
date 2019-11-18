@@ -4,7 +4,7 @@
 ## Major Changes
 
 ## Minor changes and bug fixes
-
+- Fixed corner case in `create_kappa_matrix()` when chance is 1, the metric is turned into 0
 
 
 # pathfindR 1.4.1

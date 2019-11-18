@@ -552,6 +552,7 @@ cluster_enriched_terms <- function(enrichment_res,
   kappa_mat <- create_kappa_matrix(enrichment_res = enrichment_res,
                                    use_description = use_description,
                                    use_active_snw_genes = use_active_snw_genes)
+  kappa_mat[is.na(kappa_mat)] <- -1
 
   ### Cluster Terms
   if (method == "hierarchical") {
