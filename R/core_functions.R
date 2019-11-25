@@ -596,10 +596,6 @@ input_testing <- function(input, p_val_threshold = 0.05) {
     stop("There must be at least 2 rows (genes) in the input data frame")
   }
 
-  if (ncol(input) < 2) {
-    stop("There must be at least 2 columns in the input data frame")
-  }
-
   if (!is.numeric(p_val_threshold)) {
     stop("`p_val_threshold` must be a numeric value between 0 and 1")
   }

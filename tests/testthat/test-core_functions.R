@@ -2,7 +2,7 @@
 ## Project: pathfindR
 ## Script purpose: Testthat testing script for
 ## core functions
-## Date: Oct 30, 2019
+## Date: Nov 26, 2019
 ## Author: Ege Ulgen
 ##################################################
 
@@ -342,14 +342,9 @@ test_that("`input_testing()` works", {
                              p_val_threshold = 0.05),
                "the input should have 2 or 3 columns")
 
-
   expect_error(input_testing(input = RA_input[1, ],
                              p_val_threshold = 0.05),
             "There must be at least 2 rows \\(genes\\) in the input data frame")
-
-  expect_error(input_testing(input = RA_input[, 1, drop = FALSE],
-                             p_val_threshold = 0.05),
-               "There must be at least 2 columns in the input data frame")
 
   expect_error(input_testing(input = RA_input,
                              p_val_threshold = "INVALID"),
