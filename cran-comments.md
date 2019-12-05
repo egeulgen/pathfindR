@@ -6,8 +6,8 @@
 ## R CMD check results
 There were no ERRORs or WARNINGs. 
 
-* There was only 1 NOTE:
-  checking installed package size ... NOTE
+* There was only 1 NOTE in local and travis-ci checks:
+* checking installed package size ... NOTE
   installed size is  6.8Mb
   sub-directories of 1Mb or more:
     R      3.1Mb
@@ -16,7 +16,7 @@ There were no ERRORs or WARNINGs.
 
   If we later need to add more built-in data, we will be creating a separate dataset package (as suggested before).
 
-* Upon the warning of Prof. Brian D. Ripley, the Java version in SystemRequirements was corrected to "Java (>= 8.0)" and the Java version is validated. Upon receiving an error during auto-checks on our last submission attempt, instead of using rJava, we implemented another solution for validating the Java version (adapted from `sparklyr`)
+* Upon the warning of Kurt Hornik, with the current r-devel, pathfindR threw an error because it was using `class(.) == *` to check the class of an object, this was fixed by checking the classes more properly.
 
 ## Downstream dependencies
   There are currently no downstream dependencies for this package.
