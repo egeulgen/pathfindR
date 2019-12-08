@@ -4,3 +4,92 @@ template:
     bootswatch: united
 news:
 - one_page: false
+reference:
+  - title: "pathfindR"
+    desc: >
+      pathfindR package
+    contents:
+      - pathfindR
+  - title: "Main functions"
+    desc: >
+      Main functions of pathfindR
+    contents:
+      - run_pathfindR
+      - cluster_enriched_terms
+      - enrichment_chart
+      - score_terms
+      - plot_scores
+      - term_gene_graph
+      - visualize_terms
+      - cluster_graph_vis
+  - title: "Enrichment-related functions"
+    desc: >
+      Active subnetwork search- + Enrichment-related functions
+    contents:
+      - active_snw_search
+      - annotate_term_genes
+      - enrichment
+      - enrichment_analyses
+      - fetch_gene_set
+      - filterActiveSnws
+      - hyperg_test
+      - input_processing
+      - input_testing
+      - return_pin_path
+      - summarize_enrichment_results
+  - title: "Clustering-related functions"
+    desc: >
+      Clustering-related functions
+    contents:
+     - create_kappa_matrix
+     - fuzzy_term_clustering
+     - hierarchical_term_clustering
+  - title: "Visualization functions"
+    desc: >
+      Active subnetwork search- + Enrichment-related functions
+    contents:
+      - color_kegg_pathway
+      - visualize_hsa_KEGG
+      - visualize_term_interactions
+  - title: "Example Data"
+    desc: >
+      Example input/output data
+    contents:
+      - RA_input
+      - RA_exp_mat
+      - RA_output
+      - RA_clustered
+      - custom_result
+      - example_active_snws
+      - myeloma_input
+      - myeloma_output
+  - title: "Gene Sets Data"
+    desc: >
+      Data containing gene sets from various sources
+    contents:
+      - go_all_genes
+      - GO_all_terms_df
+      - biocarta_genes
+      - biocarta_descriptions
+      - kegg_genes
+      - kegg_descriptions
+      - mmu_kegg_genes
+      - mmu_kegg_descriptions
+      - reactome_genes
+      - reactome_descriptions
+  - title: "PIN Data"
+    desc: >
+      Data containing protein-protein interaction networks from various sources
+    contents:
+      - biogrid_adj_list
+      - genemania_adj_list
+      - intact_adj_list
+      - kegg_adj_list
+      - mmu_string_adj_list
+      - string_adj_list
+  - title: "Misc. functions"
+    desc: >
+      Miscellaneous functions to check java version
+    contents:
+      - check_java_version
+      - fetch_java_version
