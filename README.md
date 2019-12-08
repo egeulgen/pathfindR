@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# <img src="inst/extdata/logo.png" align="left" height=150/> pathfindR: An R Package for Enrichment Analysis Utilizing Active Subnetworks
+# <img src="https://github.com/egeulgen/pathfindR/blob/master/inst/extdata/logo.png?raw=true" align="left" height=150/> pathfindR: An R Package for Enrichment Analysis Utilizing Active Subnetworks
 
 <!-- badges: start -->
 
@@ -83,7 +83,8 @@ details.
 
 ## Enrichment Analysis with pathfindR
 
-![pathfindR Enrichment Workflow](./vignettes/pathfindr.png?raw=true
+![pathfindR Enrichment
+Workflow](https://github.com/egeulgen/pathfindR/blob/master/vignettes/pathfindr.png?raw=true
 "pathfindr Enrichment Workflow")
 
 This workflow takes in a data frame consisting of “gene symbols”,
@@ -174,7 +175,7 @@ for more details.
 ## Clustering of the Enriched Terms
 
 ![Enriched Terms Clustering
-Workflow](./vignettes/term_clustering.png?raw=true
+Workflow](https://github.com/egeulgen/pathfindR/blob/master/vignettes/term_clustering.png?raw=true
 "Enriched Terms Clustering Workflow") The wrapper function for this
 workflow is `cluster_enriched_terms()`.
 
@@ -223,7 +224,9 @@ genes are related. The graph also enables determination of the degree of
 overlap between the enriched terms by identifying shared and/or distinct
 significant genes.
 
-![Term-Gene Graph](./vignettes/term_gene.png?raw=true "Term-Gene Graph")
+![Term-Gene
+Graph](https://github.com/egeulgen/pathfindR/blob/master/vignettes/term_gene.png?raw=true
+"Term-Gene Graph")
 
 For more details, see the [wiki
 page](https://github.com/egeulgen/pathfindR/wiki/Term-Gene-Graph).
@@ -231,7 +234,8 @@ page](https://github.com/egeulgen/pathfindR/wiki/Term-Gene-Graph).
 ## Per Sample Enriched Term Scores
 
 ![Agglomerated Scores for all Enriched Terms per
-Sample](./vignettes/score_hmap.png?raw=true "Scoring per Sample")
+Sample](https://github.com/egeulgen/pathfindR/blob/master/vignettes/score_hmap.png?raw=true
+"Scoring per Sample")
 
 The function `score_terms()` can be used to calculate the agglomerated z
 score of each enriched term per sample. This allows the user to
