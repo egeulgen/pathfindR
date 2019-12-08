@@ -110,7 +110,7 @@
   <div class="contents col-md-9">
 <div id="pathfindr-an-r-package-for-enrichment-analysis-utilizing-active-subnetworks" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#pathfindr-an-r-package-for-enrichment-analysis-utilizing-active-subnetworks" class="anchor"></a><img src="inst/extdata/logo.png" align="left" height="150/"> pathfindR: An R Package for Enrichment Analysis Utilizing Active Subnetworks</h1></div>
+<a href="#pathfindr-an-r-package-for-enrichment-analysis-utilizing-active-subnetworks" class="anchor"></a><img src="https://github.com/egeulgen/pathfindR/blob/master/inst/extdata/logo.png?raw=true" align="left" height="150/"> pathfindR: An R Package for Enrichment Analysis Utilizing Active Subnetworks</h1></div>
 <!-- badges: start -->
 
 <div id="overview" class="section level2">
@@ -148,7 +148,7 @@
 <div id="enrichment-analysis-with-pathfindr" class="section level2">
 <h2 class="hasAnchor">
 <a href="#enrichment-analysis-with-pathfindr" class="anchor"></a>Enrichment Analysis with pathfindR</h2>
-<p><img src="./vignettes/pathfindr.png?raw=true%20%22pathfindr%20Enrichment%20Workflow%22" alt="pathfindR Enrichment Workflow"></p>
+<p><img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/pathfindr.png?raw=true%20%22pathfindr%20Enrichment%20Workflow%22" alt="pathfindR Enrichment Workflow"></p>
 <p>This workflow takes in a data frame consisting of “gene symbols”, “change values” (optional) and “associated p values”:</p>
 <table class="table">
 <thead><tr class="header">
@@ -266,7 +266,7 @@
 <div id="clustering-of-the-enriched-terms" class="section level2">
 <h2 class="hasAnchor">
 <a href="#clustering-of-the-enriched-terms" class="anchor"></a>Clustering of the Enriched Terms</h2>
-<p><img src="./vignettes/term_clustering.png?raw=true%20%22Enriched%20Terms%20Clustering%20Workflow%22" alt="Enriched Terms Clustering Workflow"> The wrapper function for this workflow is <code><a href="reference/cluster_enriched_terms.html">cluster_enriched_terms()</a></code>.</p>
+<p><img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/term_clustering.png?raw=true%20%22Enriched%20Terms%20Clustering%20Workflow%22" alt="Enriched Terms Clustering Workflow"> The wrapper function for this workflow is <code><a href="reference/cluster_enriched_terms.html">cluster_enriched_terms()</a></code>.</p>
 <p>This workflow first calculates the pairwise kappa statistics between the enriched terms. The function then performs hierarchical clustering (by default), automatically determines the optimal number of clusters by maximizing the average silhouette width and returns a data frame with cluster assignments.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co"># default settings</span></a>
 <a class="sourceLine" id="cb7-2" data-line-number="2">clustered_df &lt;-<span class="st"> </span><span class="kw"><a href="reference/cluster_enriched_terms.html">cluster_enriched_terms</a></span>(output_df)</a>
@@ -287,13 +287,13 @@
 <h2 class="hasAnchor">
 <a href="#term-gene-graph-visualization" class="anchor"></a>Term-Gene Graph Visualization</h2>
 <p>The function <code><a href="reference/term_gene_graph.html">term_gene_graph()</a></code> (adapted from the Gene-Concept network visualization by the R package <code>enrichplot</code>) can be utilized to visualize which significant genes are involved in the enriched terms. The function creates the term-gene graph, displaying the connections between genes and biological terms (enriched pathways or gene sets). This allows for the investigation of multiple terms to which significant genes are related. The graph also enables determination of the degree of overlap between the enriched terms by identifying shared and/or distinct significant genes.</p>
-<p><img src="./vignettes/term_gene.png?raw=true" title="Term-Gene Graph" alt="Term-Gene Graph"></p>
+<p><img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/term_gene.png?raw=true%20%22Term-Gene%20Graph%22" alt="Term-Gene Graph"></p>
 <p>For more details, see the <a href="https://github.com/egeulgen/pathfindR/wiki/Term-Gene-Graph">wiki page</a>.</p>
 </div>
 <div id="per-sample-enriched-term-scores" class="section level2">
 <h2 class="hasAnchor">
 <a href="#per-sample-enriched-term-scores" class="anchor"></a>Per Sample Enriched Term Scores</h2>
-<p><img src="./vignettes/score_hmap.png?raw=true" title="Scoring per Sample" alt="Agglomerated Scores for all Enriched Terms per Sample"></p>
+<p><img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/score_hmap.png?raw=true%20%22Scoring%20per%20Sample%22" alt="Agglomerated Scores for all Enriched Terms per Sample"></p>
 <p>The function <code><a href="reference/score_terms.html">score_terms()</a></code> can be used to calculate the agglomerated z score of each enriched term per sample. This allows the user to individually examine the scores and infer how a term is overall altered (activated or repressed) in a given sample or a group of samples.</p>
 <p>See the <a href="https://github.com/egeulgen/pathfindR/wiki/Enriched-Term-Scoring">wiki page</a> for more details.</p>
 </div>
