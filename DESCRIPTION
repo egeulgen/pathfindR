@@ -28,7 +28,7 @@ Description: Enrichment analysis enables researchers to uncover mechanisms
     Comprehensive Identification of Enriched Pathways in Omics Data Through 
     Active Subnetworks. Front. Genet. <doi:10.3389/fgene.2019.00858>.
 License: MIT + file LICENSE
-URL: https://github.com/egeulgen/pathfindR
+URL: https://egeulgen.github.io/pathfindR/, https://github.com/egeulgen/pathfindR
 BugReports: https://github.com/egeulgen/pathfindR/issues
 Encoding: UTF-8
 LazyData: true

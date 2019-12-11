@@ -2,6 +2,10 @@ destination: docs
 template:
   params:
     bootswatch: united
+    docsearch:
+      api_key: 7f13d388d59fea08d4add29291ea2896
+      index_name: pathfindr
+url: https://egeulgen.github.io/pathfindR/
 news:
 - one_page: false
 reference:
