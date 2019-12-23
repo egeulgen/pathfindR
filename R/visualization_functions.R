@@ -305,7 +305,7 @@ visualize_hsa_KEGG <- function(hsa_kegg_ids, input_processed, max_to_plot = NULL
 
 
   ## Select the first `max_to_plot` kegg ids
-  if (!is.null(max_to_plot)) {
+  if (!is.null(max_to_plot) & max_to_plot < length(hsa_kegg_ids)) {
     hsa_kegg_ids <- hsa_kegg_ids[1:max_to_plot]
   }
 
@@ -314,7 +314,7 @@ visualize_hsa_KEGG <- function(hsa_kegg_ids, input_processed, max_to_plot = NULL
   tmp <- AnnotationDbi::mget(input_processed$GENE,
                              AnnotationDbi::revmap(org.Hs.eg.db::org.Hs.egSYMBOL),
                              ifnotfound = NA)
-  input_processed$EG_ID <- unlist(tmp)
+  input_processed$EG_ID <- vapply(tmp, function(x) as.character(x[1]), "EGID")
 
   ### A rule of thumb for the 'kegg' ID is entrezgene ID for eukaryote species
   input_processed$KEGG_ID  <- paste0("hsa:", input_processed$EG_ID)
@@ -584,16 +584,31 @@ color_kegg_pathway <- function(pw_id, change_vec, normalize_vals = TRUE,
                     all_key_cols[low_bins[names(pw_vis_changes)]],
                     ifelse(names(pw_vis_changes) %in% names(high_bins),
                            all_key_cols[high_bins[names(pw_vis_changes)]],
-                           "white"))
+                           "#ffffff"))
 
-  bg_cols <- rep("black", length(pw_vis_changes))
+  bg_cols <- rep("#000000", length(pw_vis_changes))
+
 
   ############ Download colored KEGG pathway diagram
+  pw_url <- tryCatch({
+    tmp_url <- KEGGREST::color.pathway.by.objects(pw_id,
+                                                  names(pw_vis_changes),
+                                                  fg.color.list = fg_cols,
+                                                  bg.color.list = bg_cols)
+    tmp_url
+  }, error = function(e) {
+    message(paste("Cannot retrieve PNG url:", pw_id))
+    message("Here's the original error message:")
+    message(e)
+    return(NA)
+  })
+
+  if (is.na(pw_url)) {
+    return(NULL)
+  }
+
   fname <- paste0(pw_id, "_pathfindR.png")
   f_path <- file.path(tempdir(check = TRUE), fname)
-  pw_url <- KEGGREST::color.pathway.by.objects(pw_id, names(pw_vis_changes),
-                                               fg.color.list = fg_cols,
-                                               bg.color.list = bg_cols)
 
   dl_stat <- tryCatch({
     cond <- utils::download.file(url = pw_url,

@@ -1,3 +1,13 @@
+# pathfindR 1.4.3.9000
+## to be released as 1.4.3
+
+## Major Changes
+-
+
+## Minor changes and bug fixes
+- in `visualize_hsa_KEGG()`, fixed the issue where >1 entrez ids were returned for a gene symbol (the first one is kept)
+- in `visualize_hsa_KEGG()`, implemented a tryCatch to avoid any issues when `KEGGREST::color.pathway.by.objects()` might fail
+
 # pathfindR 1.4.2
 
 ## Minor changes and bug fixes
