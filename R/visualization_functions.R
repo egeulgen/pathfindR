@@ -608,18 +608,12 @@ color_kegg_pathway <- function(pw_id, change_vec, normalize_vals = TRUE,
                            "#ffffff"))
   bg_cols <- rep("#000000", length(pw_vis_changes))
 
-    ## if larger than 90, disregard non-input genes
+  ## if larger than 90, disregard non-input genes
   if (length(fg_cols) > 90) {
     keep <- fg_cols != "#ffffff"
     fg_cols <- fg_cols[keep]
     bg_cols <- bg_cols[keep]
     pw_vis_changes <- pw_vis_changes[keep]
-    ## if still larger than 90, keep first 90
-    if (length(fg_cols) > 90) {
-      fg_cols <- fg_cols[1:90]
-      bg_cols <- bg_cols[1:90]
-      pw_vis_changes <- pw_vis_changes[1:90]
-    }
   }
 
   ############ Download colored KEGG pathway diagram
