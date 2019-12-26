@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.3.9000</span>
       </span>
     </div>
 
@@ -151,18 +151,18 @@
 <h1 class="page-header">
 <a href="#pathfindr-1-1" class="anchor"></a>pathfindR 1.1<small> Unreleased </small>
 </h1>
-<div id="major-changes-6" class="section level2">
+<div id="major-changes-7" class="section level2">
 <h2 class="hasAnchor">
-<a href="#major-changes-6" class="anchor"></a>Major changes</h2>
+<a href="#major-changes-7" class="anchor"></a>Major changes</h2>
 <ul>
 <li>Added the <code>gene_sets</code> option in <code>run_pathfindR</code> to chose between different gene sets. Available gene sets are <code>KEGG</code>, <code>Reactome</code>, <code>BioCarta</code> and Gene Ontology gene sets (<code>GO-BP</code>, <code>GO-CC</code> and <code>GO-MF</code>).</li>
 <li>
 <code>cluster_pathways</code> automatically recognizes the ID type and chooses the gene sets accordingly.</li>
 </ul>
 </div>
-<div id="minor-changes-and-bug-fixes-8" class="section level2">
+<div id="minor-changes-and-bug-fixes-9" class="section level2">
 <h2 class="hasAnchor">
-<a href="#minor-changes-and-bug-fixes-8" class="anchor"></a>Minor changes and bug fixes</h2>
+<a href="#minor-changes-and-bug-fixes-9" class="anchor"></a>Minor changes and bug fixes</h2>
 <ul>
 <li>Fixed issue regarding p values &lt; 1e-13. No active subnetworks were found when there were p values &lt; 1e-13. These are now changed to 1e-13 in the function <code>input_processing</code>.</li>
 <li>In <code>input_processing</code>, genes for which no interactions are found in the PIN are now removed before active subnetwork search</li>

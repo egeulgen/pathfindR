@@ -82,7 +82,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.3.9000</span>
       </span>
     </div>
 
@@ -200,7 +200,7 @@ the `score_quan_thr`th quantile and that contains at least `sig_gene_thr` of sig
     <pre class="examples"><div class='input'><span class='no'>path2snw_list</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/resultActiveSubnetworkSearch.txt"</span>,
                               <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"pathfindR"</span>)
 <span class='no'>filtered</span> <span class='kw'>&lt;-</span> <span class='fu'>filterActiveSnws</span>(<span class='kw'>active_snw_path</span> <span class='kw'>=</span> <span class='no'>path2snw_list</span>,
-                             <span class='kw'>sig_genes_vec</span> <span class='kw'>=</span> <span class='kw pkg'>pathfindR</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/pathfindR/man/RA_input.html'>RA_input</a></span>$<span class='no'>Gene.symbol</span>)
+                             <span class='kw'>sig_genes_vec</span> <span class='kw'>=</span> <span class='kw pkg'>pathfindR</span><span class='kw ns'>::</span><span class='no'><a href='https://egeulgen.github.io/pathfindR//reference/RA_input.html'>RA_input</a></span>$<span class='no'>Gene.symbol</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span>(<span class='st'>"active_snw_search"</span>, <span class='kw'>recursive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

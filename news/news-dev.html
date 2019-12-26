@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Visualize Interactions of Genes Involved in the Given Enriched Terms — visualize_term_interactions • pathfindR</title>
+<title>Version dev • pathfindR</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -48,9 +48,7 @@
 
 
 
-<meta property="og:title" content="Visualize Interactions of Genes Involved in the Given Enriched Terms — visualize_term_interactions" />
-<meta property="og:description" content="Visualize Interactions of Genes Involved in the Given Enriched Terms" />
-<meta name="twitter:card" content="summary" />
+<meta property="og:title" content="Version dev" />
 
 
 
@@ -69,7 +67,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-topic">
+    <div class="container template-news">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -145,73 +143,42 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Visualize Interactions of Genes Involved in the Given Enriched Terms</h1>
-    <small class="dont-index">Source: <a href='https://github.com/egeulgen/pathfindR/blob/master/R/visualization_functions.R'><code>R/visualization_functions.R</code></a></small>
-    <div class="hidden name"><code>visualize_term_interactions.Rd</code></div>
+      <h1>Changelog <small>dev</small></h1>
+      
     </div>
 
-    <div class="ref-description">
-    <p>Visualize Interactions of Genes Involved in the Given Enriched Terms</p>
-    </div>
-
-    <pre class="usage"><span class='fu'>visualize_term_interactions</span>(<span class='no'>result_df</span>, <span class='no'>pin_name_path</span>)</pre>
-
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>result_df</th>
-      <td><p>Data frame of enrichment results. Must-have columns
-are: "Term_Description", "Up_regulated" and "Down_regulated"</p></td>
-    </tr>
-    <tr>
-      <th>pin_name_path</th>
-      <td><p>Name of the chosen PIN or path/to/PIN.sif. If PIN name,
-must be one of c("Biogrid", "STRING", "GeneMania", "IntAct", "KEGG", "mmu_STRING"). If
-path/to/PIN.sif, the file must comply with the PIN specifications. (Default = "Biogrid")</p></td>
-    </tr>
-    </table>
-
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>Creates PNG files visualizing the interactions of genes involved
-in the given enriched terms (annotated in the <code>result_df</code>) in the PIN used
-for enrichment analysis (specified by <code>pin_name_path</code>). The PNG files are
-saved in the folder "term_visualizations" under the current working directory.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>The following steps are performed for the visualization of interactions
-of genes involved for each enriched term:</p><ol>
-<li><p>shortest paths between all affected genes are determined (via <code><a href='https://rdrr.io/pkg/igraph/man/aaa-igraph-package.html'>igraph</a></code>)</p></li>
-<li><p>the nodes of all shortest paths are merged</p></li>
-<li><p>the PIN is subsetted using the merged nodes (genes)</p></li>
-<li><p>using the PIN subset, the graph showing the interactions is generated</p></li>
-<li><p>the final graph is visualized using <code><a href='https://rdrr.io/pkg/igraph/man/aaa-igraph-package.html'>igraph</a></code>, colored by changed
-  status (if provided), and is saved as a PNG file.</p></li>
-</ol>
-
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>See <code><a href='visualize_terms.html'>visualize_terms</a></code> for the wrapper function
-  for creating enriched term diagrams. See <code><a href='run_pathfindr.html'>run_pathfindR</a></code> for the
-  wrapper function of the pathfindR enrichment workflow.</p></div>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'>visualize_term_interactions</span>(<span class='no'>result_df</span>, <span class='kw'>pin_name_path</span> <span class='kw'>=</span> <span class='st'>"IntAct"</span>)
-}</div></pre>
+    <div id="pathfindr-1-4-3-9000" class="section level1">
+<h1 class="page-header">
+<a href="#pathfindr-1-4-3-9000" class="anchor"></a>pathfindR 1.4.3.9000<small> Unreleased </small>
+</h1>
+<div id="to-be-released-as-1-4-3" class="section level2">
+<h2 class="hasAnchor">
+<a href="#to-be-released-as-1-4-3" class="anchor"></a>to be released as 1.4.3</h2>
+</div>
+<div id="major-changes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#major-changes" class="anchor"></a>## Major Changes</h2>
+</div>
+<div id="minor-changes-and-bug-fixes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#minor-changes-and-bug-fixes" class="anchor"></a>Minor changes and bug fixes</h2>
+<ul>
+<li>in <code><a href="../reference/visualize_hsa_KEGG.html">visualize_hsa_KEGG()</a></code>, fixed the issue where &gt;1 entrez ids were returned for a gene symbol (the first one is kept)</li>
+<li>in <code><a href="../reference/visualize_hsa_KEGG.html">visualize_hsa_KEGG()</a></code>, implemented a tryCatch to avoid any issues when <code><a href="https://rdrr.io/pkg/KEGGREST/man/mark.pathway.by.objects.html">KEGGREST::color.pathway.by.objects()</a></code> might fail</li>
+</ul>
+</div>
+</div>
   </div>
+
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+    <div id="tocnav">
+      <h2>Contents</h2>
+      <ul class="nav nav-pills nav-stacked">
+        <li><a href="#pathfindr-1-4-3-9000">1.4.3.9000</a></li>
+      </ul>
+    </div>
   </div>
+
 </div>
 
 
