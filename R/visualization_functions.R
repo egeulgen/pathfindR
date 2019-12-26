@@ -305,9 +305,9 @@ visualize_hsa_KEGG <- function(hsa_kegg_ids, input_processed, max_to_plot = NULL
 
 
   ## Select the first `max_to_plot` kegg ids
-  if (!is.null(max_to_plot) & max_to_plot < length(hsa_kegg_ids)) {
-    hsa_kegg_ids <- hsa_kegg_ids[1:max_to_plot]
-  }
+  if (!is.null(max_to_plot))
+    if (max_to_plot < length(hsa_kegg_ids))
+      hsa_kegg_ids <- hsa_kegg_ids[1:max_to_plot]
 
   ############ Create change vector
   ### Convert gene symbols into NCBI gene IDs
@@ -315,6 +315,7 @@ visualize_hsa_KEGG <- function(hsa_kegg_ids, input_processed, max_to_plot = NULL
                              AnnotationDbi::revmap(org.Hs.eg.db::org.Hs.egSYMBOL),
                              ifnotfound = NA)
   input_processed$EG_ID <- vapply(tmp, function(x) as.character(x[1]), "EGID")
+  input_processed <- input_processed[!is.na(input_processed$EG_ID), ]
 
   ### A rule of thumb for the 'kegg' ID is entrezgene ID for eukaryote species
   input_processed$KEGG_ID  <- paste0("hsa:", input_processed$EG_ID)
@@ -523,14 +524,13 @@ color_kegg_pathway <- function(pw_id, change_vec, normalize_vals = TRUE,
   gene_nodes <- gene_nodes[order(vapply(gene_nodes, length, 1L))]
 
   ## summarize over all pathway gene nodes
-  ## keeping one unique gene per all nodes
-  input_genes <- names(change_vec)
+  ## keeping one unique gene per each node
   pw_vis_changes <- c()
   for (i in seq_len(length(gene_nodes))) {
     node <- gene_nodes[[i]]
-    cond <- input_genes %in% node
+    cond <- names(change_vec) %in% node
 
-    tmp_val <- mean(change_vec[input_genes[cond]])
+    tmp_val <- mean(change_vec[cond])
 
     if (length(node) != 1) {
       rest_nodes <- unlist(gene_nodes[-i])
@@ -539,14 +539,35 @@ color_kegg_pathway <- function(pw_id, change_vec, normalize_vals = TRUE,
       chosen_nm <- node
     }
 
-    names(tmp_val) <- chosen_nm[!chosen_nm %in% names(pw_vis_changes)][1]
+    chosen_nm <- chosen_nm[!chosen_nm %in% names(pw_vis_changes)][1]
+    if (is.na(chosen_nm)) {
+      tmp <- node[!node %in% names(pw_vis_changes)]
+      if (length(tmp) == 0)
+        chosen_nm <- node[1]
+      else
+        chosen_nm <- tmp[1]
+    }
+
+    names(tmp_val) <- chosen_nm
     pw_vis_changes <- c(pw_vis_changes, tmp_val)
   }
-
-  ############ Determine node colors
+  ## if no input genes present in chosen pathway
   if (all(is.na(pw_vis_changes))) {
     return(NULL)
   }
+
+  ## average over duplicate node names
+  if (anyDuplicated(names(pw_vis_changes))) {
+    dup_names <- names(pw_vis_changes)[duplicated(names(pw_vis_changes))]
+    for (dup_name in dup_names) {
+      tmp <- mean(pw_vis_changes[names(pw_vis_changes) == dup_name])
+      names(tmp) <- dup_name
+      pw_vis_changes <- pw_vis_changes[names(pw_vis_changes) != dup_name]
+      pw_vis_changes <- c(pw_vis_changes, tmp)
+    }
+  }
+
+  ############ Determine node colors
   vals <- pw_vis_changes[!is.na(pw_vis_changes)]
   ### Normalization
   if (!all(vals == 1e6) & normalize_vals) {
@@ -585,9 +606,21 @@ color_kegg_pathway <- function(pw_id, change_vec, normalize_vals = TRUE,
                     ifelse(names(pw_vis_changes) %in% names(high_bins),
                            all_key_cols[high_bins[names(pw_vis_changes)]],
                            "#ffffff"))
-
   bg_cols <- rep("#000000", length(pw_vis_changes))
 
+    ## if larger than 90, disregard non-input genes
+  if (length(fg_cols) > 90) {
+    keep <- fg_cols != "#ffffff"
+    fg_cols <- fg_cols[keep]
+    bg_cols <- bg_cols[keep]
+    pw_vis_changes <- pw_vis_changes[keep]
+    ## if still larger than 90, keep first 90
+    if (length(fg_cols) > 90) {
+      fg_cols <- fg_cols[1:90]
+      bg_cols <- bg_cols[1:90]
+      pw_vis_changes <- pw_vis_changes[1:90]
+    }
+  }
 
   ############ Download colored KEGG pathway diagram
   pw_url <- tryCatch({

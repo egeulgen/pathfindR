@@ -194,8 +194,6 @@ test_that("arg checks for `visualize_hsa_KEGG()` work", {
                "`max_to_plot` should be >=1")
 
 
-
-
   expect_error(visualize_hsa_KEGG(hsa_kegg_ids = tmp_res$ID,
                                   input_processed = input_processed,
                                   normalize_vals = "INVALID"),
