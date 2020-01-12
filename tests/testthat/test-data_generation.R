@@ -58,11 +58,11 @@ test_that("`get_reactome_gsets()` works", {
 
 # get_gene_sets_list ------------------------------------------------------
 test_that("`get_gene_sets_list()` works", {
-  expect_error(rctm <- get_gene_sets_list("Wiki"),
+  expect_error(gsets <- get_gene_sets_list("Wiki"),
                "As of this version, this function is implemented to get data from KEGG and Reactome only")
 
   skip_on_cran()
-  expect_silent(rctm <- get_gene_sets_list())
+  expect_silent(kegg <- get_gene_sets_list(org_code = "vcn"))
   expect_silent(rctm <- get_gene_sets_list("Reactome"))
 })
 
