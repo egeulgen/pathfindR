@@ -5,12 +5,6 @@
 #'
 #' @return processed PIN data frame (removes self-interactions and
 #' duplicated interactions)
-#'
-#' @examples
-#' toy_pin <- data.frame(Interactor_A = c(LETTERS[1:4], LETTERS[5:8], "Z"),
-#'                       Interactor_B = c(LETTERS[5:8], LETTERS[1:4], "Z"),
-#'                       stringsAsFactors = FALSE)
-#' processed_pin <- pathfindR:::process_pin(toy_pin)
 process_pin <- function(pin_df) {
   ## set stringsAsFactors
   def <- getOption("stringsAsFactors")
@@ -48,6 +42,47 @@ process_pin <- function(pin_df) {
 #' pin_path <- get_biogrid_pin()
 #' }
 get_biogrid_pin <- function(org = "Homo_sapiens", path2pin, release = "LATEST") {
+  # check organism name
+  all_org_names <- c("Anopheles_gambiae_PEST", "Apis_mellifera",
+                     "Arabidopsis_thaliana_Columbia", "Bacillus_subtilis_168",
+                     "Bos_taurus", "Caenorhabditis_elegans",
+                     "Candida_albicans_SC5314", "Canis_familiaris",
+                     "Cavia_porcellus", "Chlamydomonas_reinhardtii",
+                     "Chlorocebus_sabaeus", "Cricetulus_griseus",
+                     "Danio_rerio", "Dictyostelium_discoideum_AX4",
+                     "Drosophila_melanogaster", "Emericella_nidulans_FGSC_A4",
+                     "Equus_caballus", "Escherichia_coli_K12_MC4100_BW2952",
+                     "Escherichia_coli_K12_MG1655", "Escherichia_coli_K12_W3110",
+                     "Escherichia_coli_K12", "Gallus_gallus", "Glycine_max",
+                     "Hepatitus_C_Virus", "Homo_sapiens", "Human_Herpesvirus_1",
+                     "Human_Herpesvirus_2", "Human_Herpesvirus_3",
+                     "Human_Herpesvirus_4", "Human_Herpesvirus_5",
+                     "Human_Herpesvirus_6A", "Human_Herpesvirus_6B",
+                     "Human_Herpesvirus_7", "Human_Herpesvirus_8",
+                     "Human_Immunodeficiency_Virus_1",
+                     "Human_Immunodeficiency_Virus_2", "Human_papillomavirus_10",
+                     "Human_papillomavirus_16", "Human_papillomavirus_6b",
+                     "Leishmania_major_Friedlin", "Macaca_mulatta",
+                     "Meleagris_gallopavo", "Mus_musculus",
+                     "Mycobacterium_tuberculosis_H37Rv",
+                     "Neurospora_crassa_OR74A", "Nicotiana_tomentosiformis",
+                     "Oryctolagus_cuniculus", "Oryza_sativa_Japonica",
+                     "Ovis_aries", "Pan_troglodytes", "Pediculus_humanus",
+                     "Plasmodium_falciparum_3D7", "Rattus_norvegicus",
+                     "Ricinus_communis", "Saccharomyces_cerevisiae_S288c",
+                     "Schizosaccharomyces_pombe_972h",
+                     "Selaginella_moellendorffii",
+                     "Simian_Immunodeficiency_Virus", "Simian_Virus_40",
+                     "Solanum_lycopersicum", "Solanum_tuberosum",
+                     "Streptococcus_pneumoniae_ATCCBAA255",
+                     "Strongylocentrotus_purpuratus", "Sus_scrofa",
+                     "Tobacco_Mosaic_Virus", "Ustilago_maydis_521",
+                     "Vaccinia_Virus", "Vitis_vinifera", "Xenopus_laevis",
+                     "Zea_mays")
+  if (!org %in% all_org_names)
+    stop(paste(org, "is not a valid Biogrid organism.",
+               "Available organisms are listed on: https://wiki.thebiogrid.org/doku.php/statistics"))
+
   # release directort for download
   if (release == "LATEST") {
     rel_dir <- "Latest%20Release"
@@ -66,17 +101,13 @@ get_biogrid_pin <- function(org = "Homo_sapiens", path2pin, release = "LATEST") 
   all_org_files$Organism <- sub("BIOGRID-ORGANISM-", "", all_org_files$Organism)
   all_org_files$Organism <- sub("-.*\\d+$", "", all_org_files$Organism)
 
-  if (!org %in% all_org_files$Organism)
-    stop(paste(org, "is not a valid Biogrid organism.",
-               "Available organisms are listed on: https://wiki.thebiogrid.org/doku.php/statistics"))
-
   org_file <- all_org_files$Name[all_org_files$Organism == org]
 
   # process and save organism PIN file
-  biogrid_df <- read.delim(unz(tmp, org_file),
-                           check.names = FALSE,
-                           colClasses = "character",
-                           stringsAsFactors = FALSE)
+  biogrid_df <- utils::read.delim(unz(tmp, org_file),
+                                  check.names = FALSE,
+                                  colClasses = "character",
+                                  stringsAsFactors = FALSE)
   biogrid_pin <- data.frame(Interactor_A = biogrid_df[, "Official Symbol Interactor A"],
                             Interactor_B = biogrid_df[, "Official Symbol Interactor B"],
                             stringsAsFactors = FALSE)
@@ -217,7 +248,7 @@ get_reactome_gsets <- function() {
   utils::download.file(reactome_url, tmp)
 
   reactome_gmt <- unz(tmp, "ReactomePathways.gmt")
-  result <- pathfindR:::gset_list_from_gmt(reactome_gmt)
+  result <- gset_list_from_gmt(reactome_gmt)
   close(reactome_gmt)
 
   # fix illegal char(s)

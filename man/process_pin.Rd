@@ -17,9 +17,3 @@ duplicated interactions)
 \description{
 Process Data frame of Protein-protein Interactions
 }
-\examples{
-toy_pin <- data.frame(Interactor_A = c(LETTERS[1:4], LETTERS[5:8], "Z"),
-                      Interactor_B = c(LETTERS[5:8], LETTERS[1:4], "Z"),
-                      stringsAsFactors = FALSE)
-processed_pin <- pathfindR:::process_pin(toy_pin)
-}
