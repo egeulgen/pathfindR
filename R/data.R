@@ -157,12 +157,12 @@
 
 #' KEGG Pathways - Descriptions
 #'
-#' A list containing the descriptions for each Homo sapiens KEGG pathway. Names of the
-#' list correspond to the KEGG ID of the pathway. Pathways that did not contain
+#' A named vector containing the descriptions for each Homo sapiens KEGG pathway. Names of the
+#' vector correspond to the KEGG ID of the pathway. Pathways that did not contain
 #' any genes were discarded.
 #' \emph{Generated on Oct 12, 2019.}
 #'
-#' @format vector containing 327 character values, the descriptions for the given
+#' @format named vector containing 327 character values, the descriptions for the given
 #'   pathways.
 "kegg_descriptions"
 
