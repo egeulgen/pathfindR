@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>KEGG Pathways - Descriptions — kegg_descriptions • pathfindR</title>
+<title>Get Gene Sets List — get_gene_sets_list • pathfindR</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -48,11 +48,8 @@
 
 
 
-<meta property="og:title" content="KEGG Pathways - Descriptions — kegg_descriptions" />
-<meta property="og:description" content="A named vector containing the descriptions for each Homo sapiens KEGG pathway. Names of the
-vector correspond to the KEGG ID of the pathway. Pathways that did not contain
-any genes were discarded.
-Generated on Oct 12, 2019." />
+<meta property="og:title" content="Get Gene Sets List — get_gene_sets_list" />
+<meta property="og:description" content="Get Gene Sets List" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -148,31 +145,45 @@ Generated on Oct 12, 2019." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>KEGG Pathways - Descriptions</h1>
-    <small class="dont-index">Source: <a href='https://github.com/egeulgen/pathfindR/blob/master/R/data.R'><code>R/data.R</code></a></small>
-    <div class="hidden name"><code>kegg_descriptions.Rd</code></div>
+    <h1>Get Gene Sets List</h1>
+    <small class="dont-index">Source: <a href='https://github.com/egeulgen/pathfindR/blob/master/R/data_generation.R'><code>R/data_generation.R</code></a></small>
+    <div class="hidden name"><code>get_gene_sets_list.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>A named vector containing the descriptions for each Homo sapiens KEGG pathway. Names of the
-vector correspond to the KEGG ID of the pathway. Pathways that did not contain
-any genes were discarded.
-<em>Generated on Oct 12, 2019.</em></p>
+    <p>Get Gene Sets List</p>
     </div>
 
-    <pre class="usage"><span class='no'>kegg_descriptions</span></pre>
+    <pre class="usage"><span class='fu'>get_gene_sets_list</span>(<span class='kw'>source</span> <span class='kw'>=</span> <span class='st'>"KEGG"</span>, <span class='no'>...</span>)</pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>source</th>
+      <td><p>As of this version, either "KEGG" or "Reactome" (default = "KEGG")</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Additional argument for <code><a href='get_kegg_gsets.html'>get_kegg_gsets</a></code></p></td>
+    </tr>
+    </table>
 
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>named vector containing 327 character values, the descriptions for the given
-  pathways.</p>
+    <p>A list containing 2 elements:</p><ul>
+<li><p>gene_setsA list containing the genes involved in each gene set</p></li>
+<li><p>descriptionsA named vector containing the descriptions for each gene set</p></li>
+</ul><p>. For KEGG, it is possible to choose a specific organism. For a full list
+of all available organisms, see <a href='https://www.genome.jp/kegg/catalog/org_list.html'>https://www.genome.jp/kegg/catalog/org_list.html</a>.
+For Reactome, there is only one pathway gene sets collection.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#format">Format</a></li>
+      <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#value">Value</a></li>
     </ul>
 
   </div>

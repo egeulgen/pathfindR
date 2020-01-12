@@ -79,7 +79,25 @@
     <loc>https://egeulgen.github.io/pathfindR//reference/genemania_adj_list.html</loc>
   </url>
   <url>
+    <loc>https://egeulgen.github.io/pathfindR//reference/get_biogrid_pin.html</loc>
+  </url>
+  <url>
+    <loc>https://egeulgen.github.io/pathfindR//reference/get_gene_sets_list.html</loc>
+  </url>
+  <url>
+    <loc>https://egeulgen.github.io/pathfindR//reference/get_kegg_gsets.html</loc>
+  </url>
+  <url>
+    <loc>https://egeulgen.github.io/pathfindR//reference/get_pin_file.html</loc>
+  </url>
+  <url>
+    <loc>https://egeulgen.github.io/pathfindR//reference/get_reactome_gsets.html</loc>
+  </url>
+  <url>
     <loc>https://egeulgen.github.io/pathfindR//reference/go_all_genes.html</loc>
+  </url>
+  <url>
+    <loc>https://egeulgen.github.io/pathfindR//reference/gset_list_from_gmt.html</loc>
   </url>
   <url>
     <loc>https://egeulgen.github.io/pathfindR//reference/hierarchical_term_clustering.html</loc>
@@ -125,6 +143,9 @@
   </url>
   <url>
     <loc>https://egeulgen.github.io/pathfindR//reference/plot_scores.html</loc>
+  </url>
+  <url>
+    <loc>https://egeulgen.github.io/pathfindR//reference/process_pin.html</loc>
   </url>
   <url>
     <loc>https://egeulgen.github.io/pathfindR//reference/reactome_descriptions.html</loc>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>KEGG Pathways - Descriptions — kegg_descriptions • pathfindR</title>
+<title>Get the Requested Release of BioGRID PIN — get_biogrid_pin • pathfindR</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -48,11 +48,8 @@
 
 
 
-<meta property="og:title" content="KEGG Pathways - Descriptions — kegg_descriptions" />
-<meta property="og:description" content="A named vector containing the descriptions for each Homo sapiens KEGG pathway. Names of the
-vector correspond to the KEGG ID of the pathway. Pathways that did not contain
-any genes were discarded.
-Generated on Oct 12, 2019." />
+<meta property="og:title" content="Get the Requested Release of BioGRID PIN — get_biogrid_pin" />
+<meta property="og:description" content="Get the Requested Release of BioGRID PIN" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -148,31 +145,55 @@ Generated on Oct 12, 2019." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>KEGG Pathways - Descriptions</h1>
-    <small class="dont-index">Source: <a href='https://github.com/egeulgen/pathfindR/blob/master/R/data.R'><code>R/data.R</code></a></small>
-    <div class="hidden name"><code>kegg_descriptions.Rd</code></div>
+    <h1>Get the Requested Release of BioGRID PIN</h1>
+    <small class="dont-index">Source: <a href='https://github.com/egeulgen/pathfindR/blob/master/R/data_generation.R'><code>R/data_generation.R</code></a></small>
+    <div class="hidden name"><code>get_biogrid_pin.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>A named vector containing the descriptions for each Homo sapiens KEGG pathway. Names of the
-vector correspond to the KEGG ID of the pathway. Pathways that did not contain
-any genes were discarded.
-<em>Generated on Oct 12, 2019.</em></p>
+    <p>Get the Requested Release of BioGRID PIN</p>
     </div>
 
-    <pre class="usage"><span class='no'>kegg_descriptions</span></pre>
+    <pre class="usage"><span class='fu'>get_biogrid_pin</span>(<span class='kw'>org</span> <span class='kw'>=</span> <span class='st'>"Homo_sapiens"</span>, <span class='no'>path2pin</span>, <span class='kw'>release</span> <span class='kw'>=</span> <span class='st'>"LATEST"</span>)</pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>org</th>
+      <td><p>organism name. BioGRID naming requires underscores for spaces so
+"Homo sapiens" becomes "Homo_sampiens", "Mus musculus" becomes "Mus_musculus"
+etc. See <a href='https://wiki.thebiogrid.org/doku.php/statistics'>https://wiki.thebiogrid.org/doku.php/statistics</a> for a full
+list of available organisms (default = "Homo_sapiens")</p></td>
+    </tr>
+    <tr>
+      <th>path2pin</th>
+      <td><p>the path of the file to save the PIN data. By default, the
+PIN data is saved in a temporary file</p></td>
+    </tr>
+    <tr>
+      <th>release</th>
+      <td><p>the requested BioGRID release (default = "LATEST")</p></td>
+    </tr>
+    </table>
 
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>named vector containing 327 character values, the descriptions for the given
-  pathways.</p>
+    <p>the path of the file in which the PIN data was saved. If
+<code>path2pin</code> was not supplied by the user, the PIN data is saved in a
+temporary file</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='no'>pin_path</span> <span class='kw'>&lt;-</span> <span class='fu'>get_biogrid_pin</span>()
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#format">Format</a></li>
+      <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#value">Value</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
