@@ -24,4 +24,4 @@ r_packages:
 
 # only report coverage after build is successful
 after_success:
-  - Rscript -e 'covr::codecov()'
+  - travis_wait Rscript -e 'covr::codecov()'
