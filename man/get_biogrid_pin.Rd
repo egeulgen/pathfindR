@@ -2,7 +2,7 @@
 % Please edit documentation in R/data_generation.R
 \name{get_biogrid_pin}
 \alias{get_biogrid_pin}
-\title{Get the Requested Release of BioGRID PIN}
+\title{Get the Requested Release of Organism-specific BioGRID PIN}
 \usage{
 get_biogrid_pin(org = "Homo_sapiens", path2pin, release = "LATEST")
 }
@@ -23,10 +23,5 @@ the path of the file in which the PIN data was saved. If
 temporary file
 }
 \description{
-Get the Requested Release of BioGRID PIN
-}
-\examples{
-\dontrun{
-pin_path <- get_biogrid_pin()
-}
+Get the Requested Release of Organism-specific BioGRID PIN
 }

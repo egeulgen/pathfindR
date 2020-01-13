@@ -22,7 +22,7 @@ process_pin <- function(pin_df) {
   return(pin_df)
 }
 
-#' Get the Requested Release of BioGRID PIN
+#' Get the Requested Release of Organism-specific BioGRID PIN
 #'
 #' @param org organism name. BioGRID naming requires underscores for spaces so
 #' "Homo sapiens" becomes "Homo_sampiens", "Mus musculus" becomes "Mus_musculus"
@@ -35,12 +35,6 @@ process_pin <- function(pin_df) {
 #' @return the path of the file in which the PIN data was saved. If
 #' \code{path2pin} was not supplied by the user, the PIN data is saved in a
 #' temporary file
-#' @export
-#'
-#' @examples
-#' \dontrun{
-#' pin_path <- get_biogrid_pin()
-#' }
 get_biogrid_pin <- function(org = "Homo_sapiens", path2pin, release = "LATEST") {
   # check organism name
   all_org_names <- c("Anopheles_gambiae_PEST", "Apis_mellifera",
@@ -194,7 +188,7 @@ gset_list_from_gmt <- function(path2gmt) {
   return(list(gene_sets = genes_list, descriptions = descriptions_vec))
 }
 
-#' Get Organism-specific KEGG Pathway Gene sets
+#' Get Organism-specific KEGG Pathway Gene Sets
 #'
 #' @param org_code KEGG organism code for the selected organism. For a full list
 #' of all available organisms, see \url{https://www.genome.jp/kegg/catalog/org_list.html}
@@ -203,7 +197,6 @@ gset_list_from_gmt <- function(path2gmt) {
 #' \item{gene_sets}{A list containing the genes involved in each KEGG pathway}
 #' \item{descriptions}{A named vector containing the descriptions for each KEGG pathway}
 #' }
-#' @export
 get_kegg_gsets <- function(org_code = "hsa") {
   # created named list, eg:  path:map00010: "Glycolysis / Gluconeogenesis"
   pathways_list <- KEGGREST::keggList("pathway", org_code)
@@ -233,7 +226,7 @@ get_kegg_gsets <- function(org_code = "hsa") {
   return(result)
 }
 
-#' Get Reactome Pathway Gene sets
+#' Get Reactome Pathway Gene Sets
 #'
 #' @return Gets the latest Reactome pathways gene sets in gmt format. Parses the
 #' gmt file and returns a list containing 2 elements: \itemize{
@@ -241,7 +234,6 @@ get_kegg_gsets <- function(org_code = "hsa") {
 #' \item{descriptions}{A named vector containing the descriptions for each Reactome pathway}
 #' }
 #'
-#' @export
 get_reactome_gsets <- function() {
   tmp <- tempfile()
   reactome_url <- "https://reactome.org/download/current/ReactomePathways.gmt.zip"
@@ -256,23 +248,24 @@ get_reactome_gsets <- function() {
   return(result)
 }
 
-#' Get Gene Sets List
+#' Get Organism-specific Gene Sets List
 #'
 #' @param source As of this version, either "KEGG" or "Reactome" (default = "KEGG")
-#' @param ... Additional argument for \code{\link{get_kegg_gsets}}
+#' @inheritParams get_kegg_gsets
 #'
 #' @return A list containing 2 elements: \itemize{
 #' \item{gene_sets}{A list containing the genes involved in each gene set}
 #' \item{descriptions}{A named vector containing the descriptions for each gene set}
 #' }. For KEGG, it is possible to choose a specific organism. For a full list
 #' of all available organisms, see \url{https://www.genome.jp/kegg/catalog/org_list.html}.
-#' For Reactome, there is only one pathway gene sets collection.
+#' For Reactome, there is only one collection of pathway gene sets.
 #' @export
 #'
-get_gene_sets_list <- function(source = "KEGG", ...) {
+get_gene_sets_list <- function(source = "KEGG", org_code = "hsa") {
   if (source == "KEGG") {
-    return(get_kegg_gsets(...))
+    return(get_kegg_gsets(org_code))
   } else if (source == "Reactome") {
+    message("For Reactome, there is only one collection of pathway gene sets.")
     return(get_reactome_gsets())
   } else {
     stop("As of this version, this function is implemented to get data from KEGG and Reactome only")

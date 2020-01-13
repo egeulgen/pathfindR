@@ -2,14 +2,15 @@
 % Please edit documentation in R/data_generation.R
 \name{get_gene_sets_list}
 \alias{get_gene_sets_list}
-\title{Get Gene Sets List}
+\title{Get Organism-specific Gene Sets List}
 \usage{
-get_gene_sets_list(source = "KEGG", ...)
+get_gene_sets_list(source = "KEGG", org_code = "hsa")
 }
 \arguments{
 \item{source}{As of this version, either "KEGG" or "Reactome" (default = "KEGG")}
 
-\item{...}{Additional argument for \code{\link{get_kegg_gsets}}}
+\item{org_code}{KEGG organism code for the selected organism. For a full list
+of all available organisms, see \url{https://www.genome.jp/kegg/catalog/org_list.html}}
 }
 \value{
 A list containing 2 elements: \itemize{
@@ -17,8 +18,8 @@ A list containing 2 elements: \itemize{
 \item{descriptions}{A named vector containing the descriptions for each gene set}
 }. For KEGG, it is possible to choose a specific organism. For a full list
 of all available organisms, see \url{https://www.genome.jp/kegg/catalog/org_list.html}.
-For Reactome, there is only one pathway gene sets collection.
+For Reactome, there is only one collection of pathway gene sets.
 }
 \description{
-Get Gene Sets List
+Get Organism-specific Gene Sets List
 }

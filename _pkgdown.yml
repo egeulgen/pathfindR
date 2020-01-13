@@ -26,6 +26,12 @@ reference:
       - term_gene_graph
       - visualize_terms
       - cluster_graph_vis
+  - title: "Data Generation"
+    desc: >
+      Functions to generate PIN and gene sets data
+    contents:
+      - get_pin_file
+      - get_gene_sets_list
   - title: "Enrichment-related functions"
     desc: >
       Active subnetwork search- + Enrichment-related functions
@@ -91,15 +97,6 @@ reference:
       - kegg_adj_list
       - mmu_string_adj_list
       - string_adj_list
-  - title: "Data Generation"
-    desc: >
-      Functions to generate PIN and gene sets data
-    contents:
-      - get_pin_file
-      - get_gene_sets_list
-      - get_biogrid_pin
-      - get_kegg_gsets
-      - get_reactome_gsets
   - title: "Misc. functions"
     desc: >
       Miscellaneous functions to check java version

@@ -2,7 +2,7 @@
 % Please edit documentation in R/data_generation.R
 \name{get_kegg_gsets}
 \alias{get_kegg_gsets}
-\title{Get Organism-specific KEGG Pathway Gene sets}
+\title{Get Organism-specific KEGG Pathway Gene Sets}
 \usage{
 get_kegg_gsets(org_code = "hsa")
 }
@@ -17,5 +17,5 @@ list containing 2 elements: \itemize{
 }
 }
 \description{
-Get Organism-specific KEGG Pathway Gene sets
+Get Organism-specific KEGG Pathway Gene Sets
 }

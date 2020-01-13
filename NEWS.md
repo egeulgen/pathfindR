@@ -1,19 +1,23 @@
-# pathfindR 1.4.3.9000
+# pathfindR 1.4.3.9001
 ## to be released as 1.4.3
 
 ## Major Changes
--
+- added the functions `get_pin_file()` and `get_gene_sets_list()` for obtaining organism-specific PIN data and gene sets list, respectively
 
 ## Minor changes and bug fixes
 - in `visualize_hsa_KEGG()`, fixed the issue where >1 entrez ids were returned for a gene symbol (the first one is kept)
 - in `visualize_hsa_KEGG()`, implemented a tryCatch to avoid any issues when `KEGGREST::color.pathway.by.objects()` might fail
 - in `visualize_hsa_KEGG()`, now limiting the number of genes passes onto `KEGGREST::color.pathway.by.objects()` to 90 (because the KEGG API now limits the number?)
 
+***
+
 # pathfindR 1.4.2
 
 ## Minor changes and bug fixes
 - Fixed corner case in `create_kappa_matrix()` when `chance` is 1, the metric is turned into 0
 - Fixed misused `class(.) == *` in `cluster_graph_vis()`
+
+***
 
 # pathfindR 1.4.1
 
@@ -25,6 +29,8 @@
 - Fixed behaviour: when no input genes are present in the enriched hsa KEGG pathway, visualization of the pathway is now skipped
 - Added the argument `max_to_plot` to `visualize_hsa_KEGG()` and to `run_pathfindR()`. This argument controls the number of pathways to be visualized (default is NULL, i.e. no filter). This was implemented not to slow down the runtime of `run_pathfindR()` as downloading the png files is slow.
 - Fixed links to visualizations in `enriched_ters.Rmd`
+
+***
 
 # pathfindR 1.4.0
 
