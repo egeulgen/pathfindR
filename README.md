@@ -31,8 +31,9 @@ Ozisik O, Sezerman OU. 2019. pathfindR: An R Package for Comprehensive
 Identification of Enriched Pathways in Omics Data Through Active
 Subnetworks. Front. Genet. <https://doi.org/10.3389/fgene.2019.00858>*
 
-See [the pathfindR wiki](https://github.com/egeulgen/pathfindR/wiki) for
-detailed documentation.
+For detailed documentation, see [pathfindR’s
+website](https://egeulgen.github.io/pathfindR/) or [the pathfindR
+wiki](https://github.com/egeulgen/pathfindR/wiki).
 
 ## Installation
 
@@ -171,6 +172,11 @@ custom gene set (see `?fetch_gene_set`)
 See the [wiki
 page](https://github.com/egeulgen/pathfindR/wiki/Enrichment%20Documentation)
 for more details.
+
+> As of the latest dev version, pathfindR offers utility functions for
+> obtaining organism-specific PIN data (for now, only BioGRID PINs) and
+> organism-specific gene sets (KEGG and Reactome) data via
+> `get_pin_file()` and `get_gene_sets_list()`, respectively.
 
 ## Clustering of the Enriched Terms
 
