@@ -1,5 +1,5 @@
-# pathfindR 1.4.3.9001
-## to be released as 1.4.3
+# pathfindR 1.5.0.9001
+## to be released as 1.5.0
 
 ## Major Changes
 - added the functions `get_pin_file()` and `get_gene_sets_list()` for obtaining organism-specific PIN data and gene sets list, respectively
