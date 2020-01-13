@@ -63,6 +63,6 @@ test_that("`get_gene_sets_list()` works", {
 
   skip_on_cran()
   expect_silent(kegg <- get_gene_sets_list(org_code = "vcn"))
-  expect_silent(rctm <- get_gene_sets_list("Reactome"))
+  expect_message(rctm <- get_gene_sets_list("Reactome"))
 })
 
