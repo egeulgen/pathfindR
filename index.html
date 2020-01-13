@@ -120,7 +120,7 @@
 <a href="#overview" class="anchor"></a>Overview</h2>
 <p><code>pathfindR</code> is a tool for enrichment analysis via active subnetworks. The package also offers functionalities to cluster the enriched terms and identify representative terms in each cluster, to score the enriched terms per sample and to visualize analysis results.</p>
 <p>The functionalities of pathfindR is described in detail in <em>Ulgen E, Ozisik O, Sezerman OU. 2019. pathfindR: An R Package for Comprehensive Identification of Enriched Pathways in Omics Data Through Active Subnetworks. Front. Genet. <a href="https://doi.org/10.3389/fgene.2019.00858" class="uri">https://doi.org/10.3389/fgene.2019.00858</a></em></p>
-<p>See <a href="https://github.com/egeulgen/pathfindR/wiki">the pathfindR wiki</a> for detailed documentation.</p>
+<p>For detailed documentation, see <a href="https://egeulgen.github.io/pathfindR/">pathfindR’s website</a> or <a href="https://github.com/egeulgen/pathfindR/wiki">the pathfindR wiki</a>.</p>
 </div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
@@ -264,6 +264,9 @@
 <a class="sourceLine" id="cb6-16" data-line-number="16">output_df &lt;-<span class="st"> </span><span class="kw"><a href="reference/run_pathfindr.html">run_pathfindR</a></span>(input_df, <span class="dt">list_active_snw_genes =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p>The available PINs are “Biogrid”, “STRING”, “GeneMania”, “IntAct”, “KEGG” and “mmu_STRING”. The available gene sets are “KEGG”, “Reactome”, “BioCarta”, “GO-All”, “GO-BP”, “GO-CC”, “GO-MF”, and “mmu_KEGG”. You also use a custom PIN (see <code><a href="reference/return_pin_path.html">?return_pin_path</a></code>) or a custom gene set (see <code><a href="reference/fetch_gene_set.html">?fetch_gene_set</a></code>)</p>
 <p>See the <a href="https://github.com/egeulgen/pathfindR/wiki/Enrichment%20Documentation">wiki page</a> for more details.</p>
+<blockquote>
+<p>As of the latest dev version, pathfindR offers utility functions for obtaining organism-specific PIN data (for now, only BioGRID PINs) and organism-specific gene sets (KEGG and Reactome) data via <code><a href="reference/get_pin_file.html">get_pin_file()</a></code> and <code><a href="reference/get_gene_sets_list.html">get_gene_sets_list()</a></code>, respectively.</p>
+</blockquote>
 </div>
 <div id="clustering-of-the-enriched-terms" class="section level2">
 <h2 class="hasAnchor">
