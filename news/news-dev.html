@@ -8,13 +8,6 @@
 
 <title>Version dev • pathfindR</title>
 
-<!-- favicons -->
-<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -80,7 +73,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.3.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0.9001</span>
       </span>
     </div>
 
@@ -147,17 +140,20 @@
       
     </div>
 
-    <div id="pathfindr-1-4-3-9000" class="section level1">
+    <div id="pathfindr-1-5-0-9001" class="section level1">
 <h1 class="page-header">
-<a href="#pathfindr-1-4-3-9000" class="anchor"></a>pathfindR 1.4.3.9000<small> Unreleased </small>
+<a href="#pathfindr-1-5-0-9001" class="anchor"></a>pathfindR 1.5.0.9001<small> Unreleased </small>
 </h1>
-<div id="to-be-released-as-1-4-3" class="section level2">
+<div id="to-be-released-as-1-5-0" class="section level2">
 <h2 class="hasAnchor">
-<a href="#to-be-released-as-1-4-3" class="anchor"></a>to be released as 1.4.3</h2>
+<a href="#to-be-released-as-1-5-0" class="anchor"></a>to be released as 1.5.0</h2>
 </div>
 <div id="major-changes" class="section level2">
 <h2 class="hasAnchor">
-<a href="#major-changes" class="anchor"></a>## Major Changes</h2>
+<a href="#major-changes" class="anchor"></a>Major Changes</h2>
+<ul>
+<li>added the functions <code><a href="../reference/get_pin_file.html">get_pin_file()</a></code> and <code><a href="../reference/get_gene_sets_list.html">get_gene_sets_list()</a></code> for obtaining organism-specific PIN data and gene sets list, respectively</li>
+</ul>
 </div>
 <div id="minor-changes-and-bug-fixes" class="section level2">
 <h2 class="hasAnchor">
@@ -167,6 +163,7 @@
 <li>in <code><a href="../reference/visualize_hsa_KEGG.html">visualize_hsa_KEGG()</a></code>, implemented a tryCatch to avoid any issues when <code><a href="https://rdrr.io/pkg/KEGGREST/man/mark.pathway.by.objects.html">KEGGREST::color.pathway.by.objects()</a></code> might fail</li>
 <li>in <code><a href="../reference/visualize_hsa_KEGG.html">visualize_hsa_KEGG()</a></code>, now limiting the number of genes passes onto <code><a href="https://rdrr.io/pkg/KEGGREST/man/mark.pathway.by.objects.html">KEGGREST::color.pathway.by.objects()</a></code> to 90 (because the KEGG API now limits the number?)</li>
 </ul>
+<hr>
 </div>
 </div>
   </div>
@@ -175,7 +172,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#pathfindr-1-4-3-9000">1.4.3.9000</a></li>
+        <li><a href="#pathfindr-1-5-0-9001">1.5.0.9001</a></li>
       </ul>
     </div>
   </div>

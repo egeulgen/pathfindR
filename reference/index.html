@@ -8,13 +8,6 @@
 
 <title>Function reference • pathfindR</title>
 
-<!-- favicons -->
-<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -80,7 +73,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.3.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0.9001</span>
       </span>
     </div>
 
@@ -223,6 +216,26 @@
           <p><code><a href="cluster_graph_vis.html">cluster_graph_vis()</a></code> </p>
         </td>
         <td><p>Graph Visualization of Clustered Enriched Terms</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-data-generation" class="hasAnchor"><a href="#section-data-generation" class="anchor"></a>Data Generation</h2>
+          <p class="section-desc"><p>Functions to generate PIN and gene sets data</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="get_pin_file.html">get_pin_file()</a></code> </p>
+        </td>
+        <td><p>Get Organism-specific PIN data</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_gene_sets_list.html">get_gene_sets_list()</a></code> </p>
+        </td>
+        <td><p>Get Organism-specific Gene Sets List</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -521,46 +534,8 @@
     </tbody><tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-data-generation" class="hasAnchor"><a href="#section-data-generation" class="anchor"></a>Data Generation</h2>
-          <p class="section-desc"><p>Functions to generate PIN and gene sets data</p></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="get_pin_file.html">get_pin_file()</a></code> </p>
-        </td>
-        <td><p>Get Organism-specific PIN data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_gene_sets_list.html">get_gene_sets_list()</a></code> </p>
-        </td>
-        <td><p>Get Gene Sets List</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_biogrid_pin.html">get_biogrid_pin()</a></code> </p>
-        </td>
-        <td><p>Get the Requested Release of BioGRID PIN</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_kegg_gsets.html">get_kegg_gsets()</a></code> </p>
-        </td>
-        <td><p>Get Organism-specific KEGG Pathway Gene sets</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_reactome_gsets.html">get_reactome_gsets()</a></code> </p>
-        </td>
-        <td><p>Get Reactome Pathway Gene sets</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
           <h2 id="section-misc-functions" class="hasAnchor"><a href="#section-misc-functions" class="anchor"></a>Misc. functions</h2>
-          <p class="section-desc"><p>Miscellaneous functions to check java version</p></p>
+          <p class="section-desc"><p>Miscellaneous functions</p></p>
         </th>
       </tr>
       <tr>
@@ -575,6 +550,36 @@
           <p><code><a href="fetch_java_version.html">fetch_java_version()</a></code> </p>
         </td>
         <td><p>Obtain Java Version</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_biogrid_pin.html">get_biogrid_pin()</a></code> </p>
+        </td>
+        <td><p>Get the Requested Release of Organism-specific BioGRID PIN</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="process_pin.html">process_pin()</a></code> </p>
+        </td>
+        <td><p>Process Data frame of Protein-protein Interactions</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_kegg_gsets.html">get_kegg_gsets()</a></code> </p>
+        </td>
+        <td><p>Get Organism-specific KEGG Pathway Gene Sets</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_reactome_gsets.html">get_reactome_gsets()</a></code> </p>
+        </td>
+        <td><p>Get Reactome Pathway Gene Sets</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gset_list_from_gmt.html">gset_list_from_gmt()</a></code> </p>
+        </td>
+        <td><p>Parse Gene Sets from GMT-format File</p></td>
       </tr>
     </tbody>
     </table>
@@ -585,13 +590,13 @@
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#section-pathfindr">pathfindR</a></li>
       <li><a href="#section-main-functions">Main functions</a></li>
+      <li><a href="#section-data-generation">Data Generation</a></li>
       <li><a href="#section-enrichment-related-functions">Enrichment-related functions</a></li>
       <li><a href="#section-clustering-related-functions">Clustering-related functions</a></li>
       <li><a href="#section-visualization-functions">Visualization functions</a></li>
       <li><a href="#section-example-data">Example Data</a></li>
       <li><a href="#section-gene-sets-data">Gene Sets Data</a></li>
       <li><a href="#section-pin-data">PIN Data</a></li>
-      <li><a href="#section-data-generation">Data Generation</a></li>
       <li><a href="#section-misc-functions">Misc. functions</a></li>
     </ul>
   </div>

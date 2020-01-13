@@ -6,15 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get Gene Sets List — get_gene_sets_list • pathfindR</title>
+<title>Get Organism-specific Gene Sets List — get_gene_sets_list • pathfindR</title>
 
-<!-- favicons -->
-<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -48,8 +41,8 @@
 
 
 
-<meta property="og:title" content="Get Gene Sets List — get_gene_sets_list" />
-<meta property="og:description" content="Get Gene Sets List" />
+<meta property="og:title" content="Get Organism-specific Gene Sets List — get_gene_sets_list" />
+<meta property="og:description" content="Get Organism-specific Gene Sets List" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -82,7 +75,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.3.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0.9001</span>
       </span>
     </div>
 
@@ -145,16 +138,16 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get Gene Sets List</h1>
+    <h1>Get Organism-specific Gene Sets List</h1>
     <small class="dont-index">Source: <a href='https://github.com/egeulgen/pathfindR/blob/master/R/data_generation.R'><code>R/data_generation.R</code></a></small>
     <div class="hidden name"><code>get_gene_sets_list.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Get Gene Sets List</p>
+    <p>Get Organism-specific Gene Sets List</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_gene_sets_list</span>(<span class='kw'>source</span> <span class='kw'>=</span> <span class='st'>"KEGG"</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>get_gene_sets_list</span>(<span class='kw'>source</span> <span class='kw'>=</span> <span class='st'>"KEGG"</span>, <span class='kw'>org_code</span> <span class='kw'>=</span> <span class='st'>"hsa"</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -164,8 +157,9 @@
       <td><p>As of this version, either "KEGG" or "Reactome" (default = "KEGG")</p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>Additional argument for <code><a href='get_kegg_gsets.html'>get_kegg_gsets</a></code></p></td>
+      <th>org_code</th>
+      <td><p>KEGG organism code for the selected organism. For a full list
+of all available organisms, see <a href='https://www.genome.jp/kegg/catalog/org_list.html'>https://www.genome.jp/kegg/catalog/org_list.html</a></p></td>
     </tr>
     </table>
 
@@ -176,7 +170,7 @@
 <li><p>descriptionsA named vector containing the descriptions for each gene set</p></li>
 </ul><p>. For KEGG, it is possible to choose a specific organism. For a full list
 of all available organisms, see <a href='https://www.genome.jp/kegg/catalog/org_list.html'>https://www.genome.jp/kegg/catalog/org_list.html</a>.
-For Reactome, there is only one pathway gene sets collection.</p>
+For Reactome, there is only one collection of pathway gene sets.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
