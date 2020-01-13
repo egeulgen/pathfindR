@@ -52,8 +52,6 @@ fetch_java_version <- function() {
 #' @return only parses and checks whether the java version is >= 1.8
 #'
 #' @details this function was adapted from the CRAN package \code{sparklyr}
-#'
-#' @export
 check_java_version <- function(version = NULL) {
 
   if (is.null(version))
