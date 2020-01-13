@@ -99,7 +99,12 @@ reference:
       - string_adj_list
   - title: "Misc. functions"
     desc: >
-      Miscellaneous functions to check java version
+      Miscellaneous functions
     contents:
       - check_java_version
       - fetch_java_version
+      - get_biogrid_pin
+      - process_pin
+      - get_kegg_gsets
+      - get_reactome_gsets
+      - gset_list_from_gmt
