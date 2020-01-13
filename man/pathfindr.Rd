@@ -13,6 +13,9 @@ subnetworks, discovering enriched terms (i.e. pathways, gene ontology, TF target
 gene sets etc.) that possibly underlie the phenotype of interest.
 }
 \details{
+For analysis on non-Homo sapiens organisms, pathfindR offers utility functions
+for obtaining organism-specific PIN data and organism-specific gene sets data.
+
 pathfindR also offers functionalities to cluster the enriched terms and
 identify representative terms in each cluster, to score the enriched terms
 per sample and to visualize analysis results.
@@ -28,4 +31,6 @@ for enriched terms to investigate how a gene set is altered in a given sample
 See \code{\link{term_gene_graph}} for details on visualizing terms and
 term-related genes as a graph to determine the degree of overlap between the
 enriched terms by identifying shared and/or distinct significant genes
+See \code{\link{get_pin_file}} for obtaining organism-specific PIN data and
+\code{\link{get_gene_sets_list}} for obtaining organism-specific gene sets data
 }
