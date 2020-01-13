@@ -181,8 +181,8 @@ gset_list_from_gmt <- function(path2gmt) {
     return(x[2])
   })
 
-  if (any(vapply(genes_list, length, 1) == 0))
-    genes_list <- genes_list[vapply(genes_list, length, 1) != 0]
+  # remove empty gene sets (if any)
+  genes_list <- genes_list[vapply(genes_list, length, 1) != 0]
   descriptions_vec <- descriptions_vec[names(genes_list)]
 
   return(list(gene_sets = genes_list, descriptions = descriptions_vec))

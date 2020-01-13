@@ -13,7 +13,7 @@ test_that("`run_pathfindR()` works as expected", {
   expect_warning(res <- run_pathfindR(RA_input,
                                       iterations = 1,
                                       n_processes = 2,
-                                      visualize_enriched_terms = FALSE),
+                                      max_to_plot = 1),
     "`n_processes` is set to `iterations` because `iterations` < `n_processes`")
   expect_is(res, "data.frame")
   unlink("pathfindR_Results", recursive = TRUE)
