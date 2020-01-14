@@ -167,17 +167,24 @@ Alternatively, the `fuzzy` clustering method (as described in Huang DW, Sherman 
 clustered_df_fuzzy <- cluster_enriched_terms(output_df, method = "fuzzy")
 ```
 
-## Term-Gene Heatmap
+## Visualization of Enrichment Results
+### Term-Gene Heatmap
 
 The function `term_gene_heatmap()` can be utilized to visualize the heatmap of enriched terms by the involved input genes. This heatmap allows visual identification of the input genes involved in the enriched terms, as well as the common or distinct genes between different terms. If the input data frame (same as in `run_pathfindR()`) is supplied, the tile colors indicate the change values.
 
-![Term-Gene Graph](https://github.com/egeulgen/pathfindR/blob/master/vignettes/hmap.png?raw=true "Term-Gene Heatmap")
+![Term-Gene Heatmap](https://github.com/egeulgen/pathfindR/blob/master/vignettes/hmap.png?raw=true "Term-Gene Heatmap")
 
-## Term-Gene Graph
+### Term-Gene Graph
 
 The function `term_gene_graph()` (adapted from the Gene-Concept network visualization by the R package `enrichplot`) can be utilized to visualize which significant genes are involved in the enriched terms. The function creates the term-gene graph, displaying the connections between genes and biological terms (enriched pathways or gene sets). This allows for the investigation of multiple terms to which significant genes are related. The graph also enables determination of the degree of overlap between the enriched terms by identifying shared and/or distinct significant genes.
 
 ![Term-Gene Graph](https://github.com/egeulgen/pathfindR/blob/master/vignettes/term_gene.png?raw=true "Term-Gene Graph")
+
+### UpSet Plot
+
+UpSet plots are plots of the intersections of sets as a matrix. `UpSet_plot()` creates a ggplot object of an UpSet plot where the x-axis is the UpSet plot of intersections of enriched terms and the main plot is a bar plot of the number of genes in the corresponding intersections (default). If `genes_df` is provided, then the main plot displays the boxplots of change values of the genes within the corresponding intersections.
+
+![UpSet plot](https://github.com/egeulgen/pathfindR/blob/master/vignettes/upset.png?raw=true "UpSet Plot")
 
 ## Per Sample Enriched Term Scores
 

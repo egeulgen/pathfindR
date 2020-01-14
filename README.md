@@ -206,7 +206,9 @@ large gene lists. Genome Biol. 2007;8(9):R183.) can be used:
 clustered_df_fuzzy <- cluster_enriched_terms(output_df, method = "fuzzy")
 ```
 
-## Term-Gene Heatmap
+## Visualization of Enrichment Results
+
+### Term-Gene Heatmap
 
 The function `term_gene_heatmap()` can be utilized to visualize the
 heatmap of enriched terms by the involved input genes. This heatmap
@@ -216,10 +218,10 @@ If the input data frame (same as in `run_pathfindR()`) is supplied, the
 tile colors indicate the change values.
 
 ![Term-Gene
-Graph](https://github.com/egeulgen/pathfindR/blob/master/vignettes/hmap.png?raw=true
+Heatmap](https://github.com/egeulgen/pathfindR/blob/master/vignettes/hmap.png?raw=true
 "Term-Gene Heatmap")
 
-## Term-Gene Graph
+### Term-Gene Graph
 
 The function `term_gene_graph()` (adapted from the Gene-Concept network
 visualization by the R package `enrichplot`) can be utilized to
@@ -234,6 +236,20 @@ significant genes.
 ![Term-Gene
 Graph](https://github.com/egeulgen/pathfindR/blob/master/vignettes/term_gene.png?raw=true
 "Term-Gene Graph")
+
+### UpSet Plot
+
+UpSet plots are plots of the intersections of sets as a matrix.
+`UpSet_plot()` creates a ggplot object of an UpSet plot where the x-axis
+is the UpSet plot of intersections of enriched terms and the main plot
+is a bar plot of the number of genes in the corresponding intersections
+(default). If `genes_df` is provided, then the main plot displays the
+boxplots of change values of the genes within the corresponding
+intersections.
+
+![UpSet
+plot](https://github.com/egeulgen/pathfindR/blob/master/vignettes/upset.png?raw=true
+"UpSet Plot")
 
 ## Per Sample Enriched Term Scores
 

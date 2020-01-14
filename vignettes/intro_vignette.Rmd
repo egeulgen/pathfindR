@@ -315,6 +315,26 @@ By default the node sizes are plotted proportional to the number of genes a term
 term_gene_graph(RA_output, num_terms = 3, node_size = "p_val")
 ```
 
+# UpSet Plot
+
+UpSet plots are plots of the intersections of sets as a matrix. This function creates a ggplot object of an UpSet plot where the x-axis is the UpSet plot of intersections of enriched terms and the main plot is a bar plot of the number of genes in the corresponding intersections (default). If `genes_df` is provided, then the main plot displays the boxplots of change values of the genes within the corresponding intersections.
+
+```{r upset1, eval=TRUE, fig.height=4, fig.width=8}
+UpSet_plot(RA_output)
+```
+
+Again, you may change the number of top terms plotted via `num_terms` (default = 10):
+
+```{r upset2, eval=TRUE, fig.height=4, fig.width=8}
+UpSet_plot(RA_output, num_terms = 25)
+```
+
+Again, to plot using full term names (instead of IDs which is the default), set `use_description = TRUE`:
+
+```{r upset3, eval=TRUE, fig.height=4, fig.width=8}
+UpSet_plot(RA_output, use_description = TRUE)
+```
+
 # Aggregated Term Scores per Sample
 
 The function `score_terms()` can be used to calculate the agglomerated z score of each enriched term per sample. This allows the user to individually examine the scores and infer how a term is overall altered (activated or repressed) in a given sample or a group of samples.

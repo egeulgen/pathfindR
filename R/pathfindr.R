@@ -27,6 +27,8 @@
 #' See \code{\link{term_gene_graph}} for details on visualizing terms and
 #' term-related genes as a graph to determine the degree of overlap between the
 #' enriched terms by identifying shared and/or distinct significant genes
+#' See \code{\link{UpSet_plot}} for details on creating an UpSet plot of the
+#' enriched terms.
 #' See \code{\link{get_pin_file}} for obtaining organism-specific PIN data and
 #' \code{\link{get_gene_sets_list}} for obtaining organism-specific gene sets data
 #' @docType package

@@ -155,9 +155,9 @@ score_terms <- function(enrichment_table, exp_mat, cases = NULL,
 #' samples in the heatmap plot (default = TRUE)
 #' @param case_title Naming of the 'Case' group (as in \code{cases}) (default = "Case")
 #' @param control_title Naming of the 'Control' group (default = "Control")
-#' @param low a string indicating the color of 'low' values in the score coloring gradient (default = 'green')
-#' @param mid a string indicating the color of 'mid' values in the score coloring gradient (default = 'black')
-#' @param high a string indicating the color of 'high' values in the score coloring gradient (default = 'red')
+#' @param low a string indicating the color of 'low' values in the coloring gradient (default = 'green')
+#' @param mid a string indicating the color of 'mid' values in the coloring gradient (default = 'black')
+#' @param high a string indicating the color of 'high' values in the coloring gradient (default = 'red')
 #'
 #' @return A `ggplot2` object containing the heatmap plot. x-axis indicates
 #' the samples. y-axis indicates the enriched terms. "Score" indicates the

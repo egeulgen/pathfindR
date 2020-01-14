@@ -29,11 +29,11 @@ samples in the heatmap plot (default = TRUE)}
 
 \item{control_title}{Naming of the 'Control' group (default = "Control")}
 
-\item{low}{a string indicating the color of 'low' values in the score coloring gradient (default = 'green')}
+\item{low}{a string indicating the color of 'low' values in the coloring gradient (default = 'green')}
 
-\item{mid}{a string indicating the color of 'mid' values in the score coloring gradient (default = 'black')}
+\item{mid}{a string indicating the color of 'mid' values in the coloring gradient (default = 'black')}
 
-\item{high}{a string indicating the color of 'high' values in the score coloring gradient (default = 'red')}
+\item{high}{a string indicating the color of 'high' values in the coloring gradient (default = 'red')}
 }
 \value{
 A `ggplot2` object containing the heatmap plot. x-axis indicates
