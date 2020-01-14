@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0.9002</span>
       </span>
     </div>
 
@@ -664,29 +664,42 @@
 <a class="sourceLine" id="cb28-2" data-line-number="2"><span class="co">#&gt; Using `stress` as default layout</span></a></code></pre></div>
 <p><img src="intro_vignette_files/figure-html/term_gene4-1.png" width="768" style="display: block; margin: auto;"></p>
 </div>
+<div id="upset-plot" class="section level1">
+<h1 class="hasAnchor">
+<a href="#upset-plot" class="anchor"></a>UpSet Plot</h1>
+<p>UpSet plots are plots of the intersections of sets as a matrix. This function creates a ggplot object of an UpSet plot where the x-axis is the UpSet plot of intersections of enriched terms and the main plot is a bar plot of the number of genes in the corresponding intersections (default). If <code>genes_df</code> is provided, then the main plot displays the boxplots of change values of the genes within the corresponding intersections.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="kw"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span>(RA_output)</a></code></pre></div>
+<p><img src="intro_vignette_files/figure-html/upset1-1.png" width="768" style="display: block; margin: auto;"></p>
+<p>Again, you may change the number of top terms plotted via <code>num_terms</code> (default = 10):</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="kw"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span>(RA_output, <span class="dt">num_terms =</span> <span class="dv">25</span>)</a></code></pre></div>
+<p><img src="intro_vignette_files/figure-html/upset2-1.png" width="768" style="display: block; margin: auto;"></p>
+<p>Again, to plot using full term names (instead of IDs which is the default), set <code>use_description = TRUE</code>:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="kw"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span>(RA_output, <span class="dt">use_description =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<p><img src="intro_vignette_files/figure-html/upset3-1.png" width="768" style="display: block; margin: auto;"></p>
+</div>
 <div id="aggregated-term-scores-per-sample" class="section level1">
 <h1 class="hasAnchor">
 <a href="#aggregated-term-scores-per-sample" class="anchor"></a>Aggregated Term Scores per Sample</h1>
 <p>The function <code><a href="../reference/score_terms.html">score_terms()</a></code> can be used to calculate the agglomerated z score of each enriched term per sample. This allows the user to individually examine the scores and infer how a term is overall altered (activated or repressed) in a given sample or a group of samples.</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1">## Vector of "Case" IDs</a>
-<a class="sourceLine" id="cb29-2" data-line-number="2">cases &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"GSM389703"</span>, <span class="st">"GSM389704"</span>, <span class="st">"GSM389706"</span>, <span class="st">"GSM389708"</span>, </a>
-<a class="sourceLine" id="cb29-3" data-line-number="3">           <span class="st">"GSM389711"</span>, <span class="st">"GSM389714"</span>, <span class="st">"GSM389716"</span>, <span class="st">"GSM389717"</span>, </a>
-<a class="sourceLine" id="cb29-4" data-line-number="4">           <span class="st">"GSM389719"</span>, <span class="st">"GSM389721"</span>, <span class="st">"GSM389722"</span>, <span class="st">"GSM389724"</span>, </a>
-<a class="sourceLine" id="cb29-5" data-line-number="5">           <span class="st">"GSM389726"</span>, <span class="st">"GSM389727"</span>, <span class="st">"GSM389730"</span>, <span class="st">"GSM389731"</span>, </a>
-<a class="sourceLine" id="cb29-6" data-line-number="6">           <span class="st">"GSM389733"</span>, <span class="st">"GSM389735"</span>)</a>
-<a class="sourceLine" id="cb29-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb29-8" data-line-number="8">## Calculate scores for representative terms </a>
-<a class="sourceLine" id="cb29-9" data-line-number="9">## and plot heat map using term descriptions</a>
-<a class="sourceLine" id="cb29-10" data-line-number="10">score_matrix &lt;-<span class="st"> </span><span class="kw"><a href="../reference/score_terms.html">score_terms</a></span>(<span class="dt">enrichment_table =</span> RA_clustered[RA_clustered<span class="op">$</span>Status <span class="op">==</span><span class="st"> "Representative"</span>, ],</a>
-<a class="sourceLine" id="cb29-11" data-line-number="11">                            <span class="dt">exp_mat =</span> RA_exp_mat,</a>
-<a class="sourceLine" id="cb29-12" data-line-number="12">                            <span class="dt">cases =</span> cases,</a>
-<a class="sourceLine" id="cb29-13" data-line-number="13">                            <span class="dt">use_description =</span> <span class="ot">TRUE</span>, <span class="co"># default FALSE</span></a>
-<a class="sourceLine" id="cb29-14" data-line-number="14">                            <span class="dt">label_samples =</span> <span class="ot">FALSE</span>, <span class="co"># default = TRUE</span></a>
-<a class="sourceLine" id="cb29-15" data-line-number="15">                            <span class="dt">case_title =</span> <span class="st">"RA"</span>,  <span class="co"># default = "Case"</span></a>
-<a class="sourceLine" id="cb29-16" data-line-number="16">                            <span class="dt">control_title =</span> <span class="st">"Healthy"</span>, <span class="co"># default = "Control"</span></a>
-<a class="sourceLine" id="cb29-17" data-line-number="17">                            <span class="dt">low =</span> <span class="st">"#f7797d"</span>, <span class="co"># default = "green"</span></a>
-<a class="sourceLine" id="cb29-18" data-line-number="18">                            <span class="dt">mid =</span> <span class="st">"#fffde4"</span>, <span class="co"># default = "black"</span></a>
-<a class="sourceLine" id="cb29-19" data-line-number="19">                            <span class="dt">high =</span> <span class="st">"#1f4037"</span>) <span class="co"># default = "red"</span></a></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1">## Vector of "Case" IDs</a>
+<a class="sourceLine" id="cb32-2" data-line-number="2">cases &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"GSM389703"</span>, <span class="st">"GSM389704"</span>, <span class="st">"GSM389706"</span>, <span class="st">"GSM389708"</span>, </a>
+<a class="sourceLine" id="cb32-3" data-line-number="3">           <span class="st">"GSM389711"</span>, <span class="st">"GSM389714"</span>, <span class="st">"GSM389716"</span>, <span class="st">"GSM389717"</span>, </a>
+<a class="sourceLine" id="cb32-4" data-line-number="4">           <span class="st">"GSM389719"</span>, <span class="st">"GSM389721"</span>, <span class="st">"GSM389722"</span>, <span class="st">"GSM389724"</span>, </a>
+<a class="sourceLine" id="cb32-5" data-line-number="5">           <span class="st">"GSM389726"</span>, <span class="st">"GSM389727"</span>, <span class="st">"GSM389730"</span>, <span class="st">"GSM389731"</span>, </a>
+<a class="sourceLine" id="cb32-6" data-line-number="6">           <span class="st">"GSM389733"</span>, <span class="st">"GSM389735"</span>)</a>
+<a class="sourceLine" id="cb32-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb32-8" data-line-number="8">## Calculate scores for representative terms </a>
+<a class="sourceLine" id="cb32-9" data-line-number="9">## and plot heat map using term descriptions</a>
+<a class="sourceLine" id="cb32-10" data-line-number="10">score_matrix &lt;-<span class="st"> </span><span class="kw"><a href="../reference/score_terms.html">score_terms</a></span>(<span class="dt">enrichment_table =</span> RA_clustered[RA_clustered<span class="op">$</span>Status <span class="op">==</span><span class="st"> "Representative"</span>, ],</a>
+<a class="sourceLine" id="cb32-11" data-line-number="11">                            <span class="dt">exp_mat =</span> RA_exp_mat,</a>
+<a class="sourceLine" id="cb32-12" data-line-number="12">                            <span class="dt">cases =</span> cases,</a>
+<a class="sourceLine" id="cb32-13" data-line-number="13">                            <span class="dt">use_description =</span> <span class="ot">TRUE</span>, <span class="co"># default FALSE</span></a>
+<a class="sourceLine" id="cb32-14" data-line-number="14">                            <span class="dt">label_samples =</span> <span class="ot">FALSE</span>, <span class="co"># default = TRUE</span></a>
+<a class="sourceLine" id="cb32-15" data-line-number="15">                            <span class="dt">case_title =</span> <span class="st">"RA"</span>,  <span class="co"># default = "Case"</span></a>
+<a class="sourceLine" id="cb32-16" data-line-number="16">                            <span class="dt">control_title =</span> <span class="st">"Healthy"</span>, <span class="co"># default = "Control"</span></a>
+<a class="sourceLine" id="cb32-17" data-line-number="17">                            <span class="dt">low =</span> <span class="st">"#f7797d"</span>, <span class="co"># default = "green"</span></a>
+<a class="sourceLine" id="cb32-18" data-line-number="18">                            <span class="dt">mid =</span> <span class="st">"#fffde4"</span>, <span class="co"># default = "black"</span></a>
+<a class="sourceLine" id="cb32-19" data-line-number="19">                            <span class="dt">high =</span> <span class="st">"#1f4037"</span>) <span class="co"># default = "red"</span></a></code></pre></div>
 <p><img src="intro_vignette_files/figure-html/scores-1.png" width="768" style="display: block; margin: auto;"></p>
 </div>
 <div id="analysis-with-custom-gene-sets" class="section level1">
@@ -694,33 +707,33 @@
 <a href="#analysis-with-custom-gene-sets" class="anchor"></a>Analysis with Custom Gene Sets</h1>
 <p>It is possible to use <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code> with custom gene sets (including gene sets for non-Homo-sapiens species). Here, we provide an example application of active-subnetwork-oriented enrichment analysis of the target genes of two transcription factors.</p>
 <p>We first load and prepare the gene sets:</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1">## CREB target genes</a>
-<a class="sourceLine" id="cb30-2" data-line-number="2">CREB_target_genes &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/normalizePath.html">normalizePath</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata/CREB.txt"</span>, <span class="dt">package =</span> <span class="st">"pathfindR"</span>))</a>
-<a class="sourceLine" id="cb30-3" data-line-number="3">CREB_target_genes &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(CREB_target_genes)[<span class="op">-</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1</span>, <span class="dv">2</span>)] <span class="co"># skip the first two lines</span></a>
-<a class="sourceLine" id="cb30-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb30-5" data-line-number="5">## MYC target genes</a>
-<a class="sourceLine" id="cb30-6" data-line-number="6">MYC_target_genes &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/normalizePath.html">normalizePath</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata/MYC.txt"</span>, <span class="dt">package =</span> <span class="st">"pathfindR"</span>))</a>
-<a class="sourceLine" id="cb30-7" data-line-number="7">MYC_target_genes &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(MYC_target_genes)[<span class="op">-</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1</span>, <span class="dv">2</span>)] <span class="co"># skip the first two lines</span></a>
-<a class="sourceLine" id="cb30-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb30-9" data-line-number="9">## Prep for use</a>
-<a class="sourceLine" id="cb30-10" data-line-number="10">custom_genes &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">TF1 =</span> CREB_target_genes, <span class="dt">TF2 =</span> MYC_target_genes)</a>
-<a class="sourceLine" id="cb30-11" data-line-number="11">custom_descriptions &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dt">TF1 =</span> <span class="st">"CREB target genes"</span>, <span class="dt">TF2 =</span> <span class="st">"MYC target genes"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1">## CREB target genes</a>
+<a class="sourceLine" id="cb33-2" data-line-number="2">CREB_target_genes &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/normalizePath.html">normalizePath</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata/CREB.txt"</span>, <span class="dt">package =</span> <span class="st">"pathfindR"</span>))</a>
+<a class="sourceLine" id="cb33-3" data-line-number="3">CREB_target_genes &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(CREB_target_genes)[<span class="op">-</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1</span>, <span class="dv">2</span>)] <span class="co"># skip the first two lines</span></a>
+<a class="sourceLine" id="cb33-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb33-5" data-line-number="5">## MYC target genes</a>
+<a class="sourceLine" id="cb33-6" data-line-number="6">MYC_target_genes &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/normalizePath.html">normalizePath</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata/MYC.txt"</span>, <span class="dt">package =</span> <span class="st">"pathfindR"</span>))</a>
+<a class="sourceLine" id="cb33-7" data-line-number="7">MYC_target_genes &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(MYC_target_genes)[<span class="op">-</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1</span>, <span class="dv">2</span>)] <span class="co"># skip the first two lines</span></a>
+<a class="sourceLine" id="cb33-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb33-9" data-line-number="9">## Prep for use</a>
+<a class="sourceLine" id="cb33-10" data-line-number="10">custom_genes &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">TF1 =</span> CREB_target_genes, <span class="dt">TF2 =</span> MYC_target_genes)</a>
+<a class="sourceLine" id="cb33-11" data-line-number="11">custom_descriptions &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dt">TF1 =</span> <span class="st">"CREB target genes"</span>, <span class="dt">TF2 =</span> <span class="st">"MYC target genes"</span>)</a></code></pre></div>
 <p>We next prepare the example input data frame. Because of the way we choose genes, we expect significant enrichment for MYC targets (40 MYC target genes + 10 CREB target genes). Because this is only an example, we also assign each genes random p-values between 0.001 and 0.05.</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">123</span>)</a>
-<a class="sourceLine" id="cb31-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb31-3" data-line-number="3">## Select 40 random genes from MYC gene sets and 10 from CREB gene sets</a>
-<a class="sourceLine" id="cb31-4" data-line-number="4">selected_genes &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(MYC_target_genes, <span class="dv">40</span>)</a>
-<a class="sourceLine" id="cb31-5" data-line-number="5">selected_genes &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(selected_genes, </a>
-<a class="sourceLine" id="cb31-6" data-line-number="6">                    <span class="kw"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(CREB_target_genes, <span class="dv">10</span>))</a>
-<a class="sourceLine" id="cb31-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb31-8" data-line-number="8">## Assign random p value between 0.001 and 0.05 for each selected gene</a>
-<a class="sourceLine" id="cb31-9" data-line-number="9">rand_p_vals &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">0.001</span>, <span class="fl">0.05</span>, <span class="dt">length.out =</span> <span class="dv">5</span>),</a>
-<a class="sourceLine" id="cb31-10" data-line-number="10">                      <span class="dt">size =</span> <span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(selected_genes),</a>
-<a class="sourceLine" id="cb31-11" data-line-number="11">                      <span class="dt">replace =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb31-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb31-13" data-line-number="13">input_df &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="dt">Gene_symbol =</span> selected_genes,</a>
-<a class="sourceLine" id="cb31-14" data-line-number="14">                       <span class="dt">p_val =</span> rand_p_vals)</a>
-<a class="sourceLine" id="cb31-15" data-line-number="15">knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>(<span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(input_df))</a></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">123</span>)</a>
+<a class="sourceLine" id="cb34-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb34-3" data-line-number="3">## Select 40 random genes from MYC gene sets and 10 from CREB gene sets</a>
+<a class="sourceLine" id="cb34-4" data-line-number="4">selected_genes &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(MYC_target_genes, <span class="dv">40</span>)</a>
+<a class="sourceLine" id="cb34-5" data-line-number="5">selected_genes &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(selected_genes, </a>
+<a class="sourceLine" id="cb34-6" data-line-number="6">                    <span class="kw"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(CREB_target_genes, <span class="dv">10</span>))</a>
+<a class="sourceLine" id="cb34-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb34-8" data-line-number="8">## Assign random p value between 0.001 and 0.05 for each selected gene</a>
+<a class="sourceLine" id="cb34-9" data-line-number="9">rand_p_vals &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">0.001</span>, <span class="fl">0.05</span>, <span class="dt">length.out =</span> <span class="dv">5</span>),</a>
+<a class="sourceLine" id="cb34-10" data-line-number="10">                      <span class="dt">size =</span> <span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(selected_genes),</a>
+<a class="sourceLine" id="cb34-11" data-line-number="11">                      <span class="dt">replace =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb34-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb34-13" data-line-number="13">input_df &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="dt">Gene_symbol =</span> selected_genes,</a>
+<a class="sourceLine" id="cb34-14" data-line-number="14">                       <span class="dt">p_val =</span> rand_p_vals)</a>
+<a class="sourceLine" id="cb34-15" data-line-number="15">knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>(<span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(input_df))</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">Gene_symbol</th>
@@ -754,16 +767,16 @@
 </tbody>
 </table>
 <p>Finally, we perform active-subnetwork-oriented enrichment analysis via <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code> using the custom genes as the gene sets:</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1">custom_result &lt;-<span class="st"> </span><span class="kw"><a href="../reference/run_pathfindr.html">run_pathfindR</a></span>(input_df,</a>
-<a class="sourceLine" id="cb32-2" data-line-number="2">                               <span class="dt">gene_sets =</span> <span class="st">"Custom"</span>,</a>
-<a class="sourceLine" id="cb32-3" data-line-number="3">                               <span class="dt">custom_genes =</span> custom_genes,</a>
-<a class="sourceLine" id="cb32-4" data-line-number="4">                               <span class="dt">custom_descriptions =</span> custom_descriptions,</a>
-<a class="sourceLine" id="cb32-5" data-line-number="5">                               <span class="dt">max_gset_size =</span> <span class="ot">Inf</span>, <span class="co"># DO NOT LIMIT GENE SET SIZE</span></a>
-<a class="sourceLine" id="cb32-6" data-line-number="6">                               <span class="dt">iterations =</span> <span class="dv">1</span>, <span class="co"># for demo, setting number of iterations to 1</span></a>
-<a class="sourceLine" id="cb32-7" data-line-number="7">                               <span class="dt">output_dir =</span> <span class="st">"misc/v1.4/CREB_MYC"</span>)</a>
-<a class="sourceLine" id="cb32-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb32-9" data-line-number="9">knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>(custom_result)</a></code></pre></div>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1">knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>(custom_result)</a></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1">custom_result &lt;-<span class="st"> </span><span class="kw"><a href="../reference/run_pathfindr.html">run_pathfindR</a></span>(input_df,</a>
+<a class="sourceLine" id="cb35-2" data-line-number="2">                               <span class="dt">gene_sets =</span> <span class="st">"Custom"</span>,</a>
+<a class="sourceLine" id="cb35-3" data-line-number="3">                               <span class="dt">custom_genes =</span> custom_genes,</a>
+<a class="sourceLine" id="cb35-4" data-line-number="4">                               <span class="dt">custom_descriptions =</span> custom_descriptions,</a>
+<a class="sourceLine" id="cb35-5" data-line-number="5">                               <span class="dt">max_gset_size =</span> <span class="ot">Inf</span>, <span class="co"># DO NOT LIMIT GENE SET SIZE</span></a>
+<a class="sourceLine" id="cb35-6" data-line-number="6">                               <span class="dt">iterations =</span> <span class="dv">1</span>, <span class="co"># for demo, setting number of iterations to 1</span></a>
+<a class="sourceLine" id="cb35-7" data-line-number="7">                               <span class="dt">output_dir =</span> <span class="st">"misc/v1.4/CREB_MYC"</span>)</a>
+<a class="sourceLine" id="cb35-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb35-9" data-line-number="9">knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>(custom_result)</a></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1">knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>(custom_result)</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">ID</th>
@@ -835,6 +848,7 @@
 </li>
       <li><a href="#term-gene-heatmap">Term-Gene Heatmap</a></li>
       <li><a href="#term-gene-graph">Term-Gene Graph</a></li>
+      <li><a href="#upset-plot">UpSet Plot</a></li>
       <li><a href="#aggregated-term-scores-per-sample">Aggregated Term Scores per Sample</a></li>
       <li><a href="#analysis-with-custom-gene-sets">Analysis with Custom Gene Sets</a></li>
       </ul>

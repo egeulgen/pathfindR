@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0.9002</span>
       </span>
     </div>
 
@@ -285,17 +285,27 @@
 <p>Alternatively, the <code>fuzzy</code> clustering method (as described in Huang DW, Sherman BT, Tan Q, et al. The DAVID Gene Functional Classification Tool: a novel biological module-centric algorithm to functionally analyze large gene lists. Genome Biol. 2007;8(9):R183.) can be used:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">clustered_df_fuzzy &lt;-<span class="st"> </span><span class="kw"><a href="reference/cluster_enriched_terms.html">cluster_enriched_terms</a></span>(output_df, <span class="dt">method =</span> <span class="st">"fuzzy"</span>)</a></code></pre></div>
 </div>
-<div id="term-gene-heatmap" class="section level2">
+<div id="visualization-of-enrichment-results" class="section level2">
 <h2 class="hasAnchor">
-<a href="#term-gene-heatmap" class="anchor"></a>Term-Gene Heatmap</h2>
+<a href="#visualization-of-enrichment-results" class="anchor"></a>Visualization of Enrichment Results</h2>
+<div id="term-gene-heatmap" class="section level3">
+<h3 class="hasAnchor">
+<a href="#term-gene-heatmap" class="anchor"></a>Term-Gene Heatmap</h3>
 <p>The function <code><a href="reference/term_gene_heatmap.html">term_gene_heatmap()</a></code> can be utilized to visualize the heatmap of enriched terms by the involved input genes. This heatmap allows visual identification of the input genes involved in the enriched terms, as well as the common or distinct genes between different terms. If the input data frame (same as in <code><a href="reference/run_pathfindr.html">run_pathfindR()</a></code>) is supplied, the tile colors indicate the change values.</p>
-<p><img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/hmap.png?raw=true%20%22Term-Gene%20Heatmap%22" alt="Term-Gene Graph"></p>
+<p><img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/hmap.png?raw=true%20%22Term-Gene%20Heatmap%22" alt="Term-Gene Heatmap"></p>
 </div>
-<div id="term-gene-graph" class="section level2">
-<h2 class="hasAnchor">
-<a href="#term-gene-graph" class="anchor"></a>Term-Gene Graph</h2>
+<div id="term-gene-graph" class="section level3">
+<h3 class="hasAnchor">
+<a href="#term-gene-graph" class="anchor"></a>Term-Gene Graph</h3>
 <p>The function <code><a href="reference/term_gene_graph.html">term_gene_graph()</a></code> (adapted from the Gene-Concept network visualization by the R package <code>enrichplot</code>) can be utilized to visualize which significant genes are involved in the enriched terms. The function creates the term-gene graph, displaying the connections between genes and biological terms (enriched pathways or gene sets). This allows for the investigation of multiple terms to which significant genes are related. The graph also enables determination of the degree of overlap between the enriched terms by identifying shared and/or distinct significant genes.</p>
 <p><img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/term_gene.png?raw=true%20%22Term-Gene%20Graph%22" alt="Term-Gene Graph"></p>
+</div>
+<div id="upset-plot" class="section level3">
+<h3 class="hasAnchor">
+<a href="#upset-plot" class="anchor"></a>UpSet Plot</h3>
+<p>UpSet plots are plots of the intersections of sets as a matrix. <code><a href="reference/UpSet_plot.html">UpSet_plot()</a></code> creates a ggplot object of an UpSet plot where the x-axis is the UpSet plot of intersections of enriched terms and the main plot is a bar plot of the number of genes in the corresponding intersections (default). If <code>genes_df</code> is provided, then the main plot displays the boxplots of change values of the genes within the corresponding intersections.</p>
+<p><img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/upset.png?raw=true%20%22UpSet%20Plot%22" alt="UpSet plot"></p>
+</div>
 </div>
 <div id="per-sample-enriched-term-scores" class="section level2">
 <h2 class="hasAnchor">

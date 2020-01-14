@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>STRING PIN Adjacency List — string_adj_list • pathfindR</title>
+<title>Create UpSet Plot of Enriched Terms — UpSet_plot • pathfindR</title>
 
 
 <!-- jquery -->
@@ -41,12 +41,8 @@
 
 
 
-<meta property="og:title" content="STRING PIN Adjacency List — string_adj_list" />
-<meta property="og:description" content="An adjacency list of vectors containing interactors B for each interactor A
-in the STRING protein-protein interaction network (The designations
-&quot;interactor A&quot; and &quot;interactor B&quot; are arbitrary). Only interactions with a combined
-score &amp;gt;= 800 were kept.
-Generated on Oct 31, 2019." />
+<meta property="og:title" content="Create UpSet Plot of Enriched Terms — UpSet_plot" />
+<meta property="og:description" content="Create UpSet Plot of Enriched Terms" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -142,32 +138,75 @@ Generated on Oct 31, 2019." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>STRING PIN Adjacency List</h1>
-    <small class="dont-index">Source: <a href='https://github.com/egeulgen/pathfindR/blob/master/R/data.R'><code>R/data.R</code></a></small>
-    <div class="hidden name"><code>string_adj_list.Rd</code></div>
+    <h1>Create UpSet Plot of Enriched Terms</h1>
+    <small class="dont-index">Source: <a href='https://github.com/egeulgen/pathfindR/blob/master/R/visualization_functions.R'><code>R/visualization_functions.R</code></a></small>
+    <div class="hidden name"><code>UpSet_plot.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>An adjacency list of vectors containing interactors B for each interactor A
-in the STRING protein-protein interaction network (The designations
-"interactor A" and "interactor B" are arbitrary). Only interactions with a combined
-score &gt;= 800 were kept.
-<em>Generated on Oct 31, 2019.</em></p>
+    <p>Create UpSet Plot of Enriched Terms</p>
     </div>
 
-    <pre class="usage"><span class='no'>string_adj_list</span></pre>
+    <pre class="usage"><span class='fu'>UpSet_plot</span>(<span class='no'>result_df</span>, <span class='no'>genes_df</span>, <span class='kw'>num_terms</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>use_description</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>result_df</th>
+      <td><p>A dataframe of pathfindR results that must contain the following columns:</p><dl class='dl-horizontal'>
+  <dt>Term_Description</dt><dd><p>Description of the enriched term (necessary if <code>use_description = TRUE</code>)</p></dd>
+  <dt>ID</dt><dd><p>ID of the enriched term (necessary if <code>use_description = FALSE</code>)</p></dd>
+  <dt>lowest_p</dt><dd><p>the highest adjusted-p value of the given term over all iterations</p></dd>
+  <dt>Up_regulated</dt><dd><p>the up-regulated genes in the input involved in the given term's gene set, comma-separated</p></dd>
+  <dt>Down_regulated</dt><dd><p>the down-regulated genes in the input involved in the given term's gene set, comma-separated</p></dd>
 
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+</dl></td>
+    </tr>
+    <tr>
+      <th>genes_df</th>
+      <td><p>the input data that was used with <code><a href='run_pathfindr.html'>run_pathfindR</a></code>.
+  It must be a data frame with 3 columns:</p><ol>
+<li><p>Gene Symbol (Gene Symbol)</p></li>
+<li><p>Change value, e.g. log(fold change)</p></li>
+<li><p>p value, e.g. adjusted p value associated with differential expression</p></li>
+</ol><p>The change values in this data frame are used to color the affected genes in the heatmap</p></td>
+    </tr>
+    <tr>
+      <th>num_terms</th>
+      <td><p>Number of top enriched terms to use while creating the plot. Set to <code>NULL</code> to use
+all enriched terms (default = 10)</p></td>
+    </tr>
+    <tr>
+      <th>use_description</th>
+      <td><p>Boolean argument to indicate whether term descriptions
+(in the "Term_Description" column) should be used. (default = <code>FALSE</code>)</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>additional arguments for <code><a href='input_processing.html'>input_processing</a></code> (used if
+<code>genes_df</code> is provided)</p></td>
+    </tr>
+    </table>
 
-    <p>list containing 11934 vectors. Each vector is the set of gene symbols
-of interactors B for each interactor A.</p>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>UpSet plots are plots of the intersections of sets as a matrix. This
+function creates a ggplot object of an UpSet plot where the x-axis is the
+UpSet plot of intersections of enriched terms and the main plot is a bar plot
+of the number of genes in the corresponding intersections (default). If
+<code>genes_df</code> is provided, then the main plot displays the boxplots of
+change values of the genes within the corresponding intersections.</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>UpSet_plot</span>(<span class='no'>RA_output</span>)</div><div class='img'><img src='UpSet_plot-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>UpSet_plot</span>(<span class='no'>RA_output</span>, <span class='no'>RA_input</span>)</div><div class='output co'>#&gt; <span class='message'>Number of genes provided in input: 572</span></div><div class='output co'>#&gt; <span class='message'>Number of genes in input after p-value filtering: 572</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'>Could not find any interactions for 11 (1.92%) genes in the PIN</span></div><div class='output co'>#&gt; <span class='message'>Final number of genes in input: 561</span></div><div class='img'><img src='UpSet_plot-2.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#format">Format</a></li>
+      <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#value">Value</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
