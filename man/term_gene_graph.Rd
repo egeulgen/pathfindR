@@ -2,7 +2,7 @@
 % Please edit documentation in R/visualization_functions.R
 \name{term_gene_graph}
 \alias{term_gene_graph}
-\title{Plot Term-Gene Graph}
+\title{Create Term-Gene Graph}
 \usage{
 term_gene_graph(
   result_df,
@@ -41,7 +41,7 @@ a  \code{\link[ggraph]{ggraph}} object containing the term-gene graph.
  the -log10(lowest p value) (if \code{node_size = "p_val"}).
 }
 \description{
-Plot Term-Gene Graph
+Create Term-Gene Graph
 }
 \details{
 This function (adapted from the Gene-Concept network visualization

@@ -23,6 +23,7 @@ reference:
       - enrichment_chart
       - score_terms
       - plot_scores
+      - term_gene_heatmap
       - term_gene_graph
       - visualize_terms
       - cluster_graph_vis

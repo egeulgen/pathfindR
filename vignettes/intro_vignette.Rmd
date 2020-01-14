@@ -258,23 +258,52 @@ RA_clustered_fuzzy <- cluster_enriched_terms(RA_output, method = "fuzzy")
 
 For details, see `?fuzzy_term_clustering`
 
+# Term-Gene Heatmap
+
+The function `term_gene_heatmap()` can be used to visualize the heatmap of genes that are involved in the enriched terms. This heatmap allows visual identification of the input genes involved in the enriched terms, as well as the common or distinct genes between different terms. If the input data frame (same as in `run_pathfindR()`) is supplied, the tile colors indicate the change values.
+
+By the default, `term_gene_heatmap()` visualizes the heatmap for the top 10 enriched terms:
+
+```{r hmap1, eval=TRUE, fig.height=4, fig.width=8}
+term_gene_heatmap(RA_output)
+```
+
+To plot all of the enriched terms in the enrichment results data frame, set `num_terms = NULL` (not advised due to cluttered visualization):
+
+```{r hmap2, eval=TRUE, fig.height=4, fig.width=8}
+term_gene_heatmap(RA_output, num_terms = NULL)
+```
+
+To plot using full term names (instead of IDs which is the default), set `use_description = TRUE`:
+
+```{r hmap3, eval=TRUE, fig.height=4, fig.width=8}
+term_gene_heatmap(RA_output, use_description = TRUE)
+```
+
+
+As explained above, if you supply the input genes data frame to `term_gene_heatmap()`, the tiles are colored according to the change values:
+
+```{r hmap4, eval=TRUE, fig.height=4, fig.width=8}
+term_gene_heatmap(RA_output, RA_input, use_description = TRUE)
+```
+
 # Term-Gene Graph
 
 The visualization function `term_gene_graph()` (adapted from the "Gene-Concept network visualization" by the R package `enrichplot`) can be utilized to visualize which genes are involved in the enriched terms. The function creates a term-gene graph which shows the connections between genes and biological terms (enriched pathways or gene sets). This allows for the investigation of multiple terms to which significant genes are related. This graph also enables visual determination of the degree of overlap between the enriched terms by identifying shared and/or distinct significant genes.
 
-By default, the function visualizes the term-gene graph for the top 10 enriched pathways:
+By default, the function visualizes the term-gene graph for the top 10 enriched terms:
 
 ```{r term_gene1, eval=TRUE, fig.height=4, fig.width=8}
 term_gene_graph(RA_output)
 ```
 
-To plot all of the enriched terms in a data frame, set `num_terms = NULL` (not advised due to cluttered visualization):
+To plot all of the enriched terms in the enrichment results, set `num_terms = NULL` (not advised due to cluttered visualization):
 
 ```{r term_gene2, eval=TRUE, fig.height=4, fig.width=8}
 term_gene_graph(RA_output, num_terms = NULL)
 ```
 
-To plot using full term names (instead of IDs which is the default), set `use_names = TRUE`:
+To plot using full term names (instead of IDs which is the default), set `use_description = TRUE`:
 
 ```{r term_gene3, eval=TRUE, fig.height=4, fig.width=8}
 term_gene_graph(RA_output, num_terms = 3, use_description = TRUE)

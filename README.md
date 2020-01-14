@@ -78,10 +78,6 @@ docker pull egeulgen/pathfindr:1.4.1
 docker pull egeulgen/pathfindr:dev
 ```
 
-See the [wiki
-page](https://github.com/egeulgen/pathfindR/wiki/Installation) for more
-details.
-
 ## Enrichment Analysis with pathfindR
 
 ![pathfindR Enrichment
@@ -169,10 +165,6 @@ The available PINs are “Biogrid”, “STRING”, “GeneMania”, “IntAct�
 “mmu\_KEGG”. You also use a custom PIN (see `?return_pin_path`) or a
 custom gene set (see `?fetch_gene_set`)
 
-See the [wiki
-page](https://github.com/egeulgen/pathfindR/wiki/Enrichment%20Documentation)
-for more details.
-
 > As of the latest dev version, pathfindR offers utility functions for
 > obtaining organism-specific PIN data (for now, only BioGRID PINs) and
 > organism-specific gene sets (KEGG and Reactome) data via
@@ -214,11 +206,20 @@ large gene lists. Genome Biol. 2007;8(9):R183.) can be used:
 clustered_df_fuzzy <- cluster_enriched_terms(output_df, method = "fuzzy")
 ```
 
-See the [wiki
-page](https://github.com/egeulgen/pathfindR/wiki/Clustering%20Documentation)
-for more details.
+## Term-Gene Heatmap
 
-## Term-Gene Graph Visualization
+The function `term_gene_heatmap()` can be utilized to visualize the
+heatmap of enriched terms by the involved input genes. This heatmap
+allows visual identification of the input genes involved in the enriched
+terms, as well as the common or distinct genes between different terms.
+If the input data frame (same as in `run_pathfindR()`) is supplied, the
+tile colors indicate the change values.
+
+![Term-Gene
+Graph](https://github.com/egeulgen/pathfindR/blob/master/vignettes/hmap.png?raw=true
+"Term-Gene Heatmap")
+
+## Term-Gene Graph
 
 The function `term_gene_graph()` (adapted from the Gene-Concept network
 visualization by the R package `enrichplot`) can be utilized to
@@ -234,9 +235,6 @@ significant genes.
 Graph](https://github.com/egeulgen/pathfindR/blob/master/vignettes/term_gene.png?raw=true
 "Term-Gene Graph")
 
-For more details, see the [wiki
-page](https://github.com/egeulgen/pathfindR/wiki/Term-Gene-Graph).
-
 ## Per Sample Enriched Term Scores
 
 ![Agglomerated Scores for all Enriched Terms per
@@ -247,7 +245,3 @@ The function `score_terms()` can be used to calculate the agglomerated z
 score of each enriched term per sample. This allows the user to
 individually examine the scores and infer how a term is overall altered
 (activated or repressed) in a given sample or a group of samples.
-
-See the [wiki
-page](https://github.com/egeulgen/pathfindR/wiki/Enriched-Term-Scoring)
-for more details.

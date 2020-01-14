@@ -316,10 +316,10 @@ test_that("`term_gene_graph()` produces a ggplot object using the correct data",
   expect_equal(sum(p$data$type == "term"), nrow(RA_output))
 
   # use_description = TRUE
-  expect_is(p2 <- term_gene_graph(RA_output, use_description = TRUE), "ggplot")
-  expect_equal(sum(p2$data$type == "term"), 10)
+  expect_is(p <- term_gene_graph(RA_output, use_description = TRUE), "ggplot")
+  expect_equal(sum(p$data$type == "term"), 10)
 
-  # use_names = "p_val"
+  # node_size = "p_val"
   expect_is(p <- term_gene_graph(RA_output, node_size = "p_val"), "ggplot")
   expect_equal(sum(p$data$type == "term"), 10)
 })
@@ -336,16 +336,83 @@ test_that("`term_gene_graph()` arg checks work", {
                paste0("`node_size` should be one of ",
                       paste(dQuote(val_node_size), collapse = ", ")))
 
+  expect_error(term_gene_graph(result_df = "INVALID"),
+               "`result_df` should be a data frame")
+
   wrong_df <- RA_output[, -c(1, 2)]
   ID_column <- "ID"
-  necessary_cols <- c("Up_regulated", "Down_regulated", "lowest_p", ID_column)
+  necessary_cols <- c(ID_column, "lowest_p", "Up_regulated", "Down_regulated")
   expect_error(term_gene_graph(wrong_df, use_description = FALSE),
                paste(c("All of", paste(necessary_cols, collapse = ", "),
                        "must be present in `results_df`!"), collapse = " "))
 
   ID_column <- "Term_Description"
-  necessary_cols <- c("Up_regulated", "Down_regulated", "lowest_p", ID_column)
+  necessary_cols <- c(ID_column, "lowest_p", "Up_regulated", "Down_regulated")
   expect_error(term_gene_graph(wrong_df, use_description = TRUE),
                paste(c("All of", paste(necessary_cols, collapse = ", "),
                        "must be present in `results_df`!"), collapse = " "))
+})
+
+
+# term_gene_heatmap -------------------------------------------------------
+
+test_that("`term_gene_heatmap()` produces a ggplot object using the correct data", {
+  # Top 10 (default)
+  expect_is(p <- term_gene_heatmap(RA_output), "ggplot")
+  expect_equal(length(unique(p$data$Enriched_Term)), 10)
+  expect_true(all(p$data$Enriched_Term %in% RA_output$ID))
+
+  # Top 3
+  expect_is(p <- term_gene_heatmap(RA_output, num_terms = 3), "ggplot")
+  expect_equal(length(unique(p$data$Enriched_Term)), 3)
+
+  # All terms
+  expect_is(p <- term_gene_heatmap(RA_output, num_terms = NULL), "ggplot")
+  expect_equal(length(unique(p$data$Enriched_Term)), nrow(RA_output))
+
+  # Top 1000, expect to plot top nrow(output)
+  expect_is(p <- term_gene_heatmap(RA_output, num_terms = 1e3), "ggplot")
+  expect_equal(length(unique(p$data$Enriched_Term)), nrow(RA_output))
+
+  # use_description = TRUE
+  expect_is(p <- term_gene_heatmap(RA_output, use_description = TRUE), "ggplot")
+  expect_equal(length(unique(p$data$Enriched_Term)), 10)
+  expect_true(all(p$data$Enriched_Term %in% RA_output$Term_Description))
+
+  # genes_df supplied
+  expect_is(p <- term_gene_heatmap(RA_output, RA_input), "ggplot")
+  expect_equal(length(unique(p$data$Enriched_Term)), 10)
+})
+
+test_that("`term_gene_graph()` arg checks work", {
+  expect_error(term_gene_heatmap(result_df = RA_output,
+                               use_description = "INVALID"),
+               "`use_description` must either be TRUE or FALSE!")
+
+  expect_error(term_gene_heatmap(result_df = "INVALID"),
+               "`result_df` should be a data frame")
+
+  wrong_df <- RA_output[, -c(1, 2)]
+  ID_column <- "ID"
+  nec_cols <- c(ID_column,  "lowest_p", "Up_regulated", "Down_regulated")
+  expect_error(term_gene_heatmap(wrong_df, use_description = FALSE),
+               paste0("`result_df` should have the following columns: ",
+                      paste(dQuote(nec_cols), collapse = ", ")))
+
+  ID_column <- "Term_Description"
+  nec_cols <- c(ID_column,  "lowest_p", "Up_regulated", "Down_regulated")
+  expect_error(term_gene_heatmap(wrong_df, use_description = TRUE),
+               paste0("`result_df` should have the following columns: ",
+                      paste(dQuote(nec_cols), collapse = ", ")))
+
+  expect_error(term_gene_heatmap(result_df = RA_output,
+                                 genes_df = "INVALID"))
+
+  expect_error(term_gene_heatmap(result_df = RA_output,
+                                 num_terms = "INVALID"),
+               "`num_terms` should be numeric or NULL")
+
+  expect_error(term_gene_heatmap(result_df = RA_output,
+                                 num_terms = -1),
+               "`num_terms` should be > 0 or NULL")
 })
