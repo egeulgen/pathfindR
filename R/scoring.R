@@ -213,16 +213,13 @@ plot_scores <- function(score_matrix, cases = NULL, label_samples = TRUE,
   ## transform the matrix
   var_names <- list()
   var_names[["Term"]] <- factor(rownames(score_matrix),
-    levels = rev(rownames(score_matrix))
-  )
+    levels = rev(rownames(score_matrix)))
   var_names[["Sample"]] <- factor(colnames(score_matrix),
-    levels = colnames(score_matrix)
-  )
+    levels = colnames(score_matrix))
 
   score_df <- expand.grid(var_names,
-    KEEP.OUT.ATTRS = FALSE,
-    stringsAsFactors = FALSE
-  )
+                          KEEP.OUT.ATTRS = FALSE,
+                          stringsAsFactors = FALSE)
   scores <- as.vector(score_matrix)
   scores <- data.frame(scores)
   score_df <- cbind(score_df, scores)

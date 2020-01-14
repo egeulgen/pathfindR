@@ -650,8 +650,8 @@ input_testing <- function(input, p_val_threshold = 0.05) {
 #' input_processing(RA_input, 0.05, "KEGG")
 #' }
 #'
-input_processing <- function(input, p_val_threshold,
-                             pin_name_path, convert2alias = TRUE) {
+input_processing <- function(input, p_val_threshold = 0.05,
+                             pin_name_path = "Biogrid", convert2alias = TRUE) {
 
   if (!is.logical(convert2alias)) {
     stop("`convert2alias` should be either TRUE or FALSE")
