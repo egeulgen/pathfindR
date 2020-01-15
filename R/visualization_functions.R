@@ -630,14 +630,31 @@ color_kegg_pathway <- function(pw_id, change_vec, normalize_vals = TRUE,
     return(NA)
   })
 
-  if (is.na(pw_url)) {
+  if (is.na(pw_url))
     return(NULL)
-  }
 
   fname <- paste0(pw_id, "_pathfindR.png")
   f_path <- file.path(tempdir(check = TRUE), fname)
 
-  dl_stat <- tryCatch({
+  dl_stat <- download_kegg_png(pw_url, f_path, quiet)
+
+  if (is.na(dl_stat))
+    return(NULL)
+
+  return(list(file_path = f_path,
+              all_key_cols = all_key_cols,
+              all_brks = all_brks))
+}
+
+#' Download Colored KEGG Diagram PNG
+#'
+#' @param pw_url url to download
+#' @param f_path local path to save the file
+#' @inheritParams color_kegg_pathway
+#'
+#' @return download status
+download_kegg_png <- function(pw_url, f_path, quiet = TRUE) {
+  return(tryCatch({
     cond <- utils::download.file(url = pw_url,
                                  destfile = f_path,
                                  quiet = quiet)
@@ -647,15 +664,7 @@ color_kegg_pathway <- function(pw_id, change_vec, normalize_vals = TRUE,
     message("Here's the original error message:")
     message(e)
     return(NA)
-  })
-
-  if (is.na(dl_stat)) {
-    return(NULL)
-  }
-
-  return(list(file_path = f_path,
-              all_key_cols = all_key_cols,
-              all_brks = all_brks))
+  }))
 }
 
 #' Create Bubble Chart of Enrichment Results

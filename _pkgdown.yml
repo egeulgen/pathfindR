@@ -60,6 +60,7 @@ reference:
       Active subnetwork search- + Enrichment-related functions
     contents:
       - color_kegg_pathway
+      - download_kegg_png
       - visualize_hsa_KEGG
       - visualize_term_interactions
   - title: "Example Data"

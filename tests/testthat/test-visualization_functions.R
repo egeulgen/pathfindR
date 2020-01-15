@@ -296,6 +296,14 @@ test_that("enrichment_chart arg checks work", {
                "`top_terms` must be > 1")
 })
 
+
+# color_kegg_pathway ------------------------------------------------------
+test_that("`color_kegg_pathway()` exceptions are handled properly", {
+  expect_null(suppressWarnings(pathfindR:::color_kegg_pathway(pw_id = "hsa03040", change_vec = NULL)))
+  expect_message(pathfindR:::color_kegg_pathway(pw_id = "hsa11111", change_vec = c()))
+  expect_message(expect_error(suppressWarnings(pathfindR:::download_kegg_png("INVALID", "INVALID"))))
+})
+
 # term_gene_graph ---------------------------------------------------------
 test_that("`term_gene_graph()` produces a ggplot object using the correct data", {
 
