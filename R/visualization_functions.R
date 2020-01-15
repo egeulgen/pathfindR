@@ -1141,7 +1141,6 @@ term_gene_heatmap <- function(result_df, genes_df, num_terms = 10,
 #'
 #' @examples
 #' UpSet_plot(RA_output)
-#' UpSet_plot(RA_output, RA_input)
 UpSet_plot <- function(result_df, genes_df, num_terms = 10,
                        use_description = FALSE,
                        ...) {

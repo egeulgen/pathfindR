@@ -44,5 +44,4 @@ Create UpSet Plot of Enriched Terms
 }
 \examples{
 UpSet_plot(RA_output)
-UpSet_plot(RA_output, RA_input)
 }
