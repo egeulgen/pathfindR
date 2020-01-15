@@ -153,6 +153,8 @@ test_that("`visualize_hsa_KEGG()` creates expected png file(s)", {
   expect_true(all(file.exists(expected_out_files)))
   unlink("term_visualizations", recursive = TRUE)
 
+  visualize_hsa_KEGG(hsa_kegg_ids = c(RA_output$ID[1], "hsa00920"),
+                     input_processed = input_processed)
 })
 
 temp_ids <- RA_output$ID[1:3]
@@ -211,6 +213,13 @@ test_that("arg checks for `visualize_hsa_KEGG()` work", {
                                   input_processed = input_processed,
                                   node_cols = c("red", "#FFFFFF", "INVALID")),
                "`node_cols` should be a vector of valid colors")
+})
+
+# color_kegg_pathway ------------------------------------------------------
+test_that("`color_kegg_pathway()` exceptions are handled properly", {
+  expect_null(suppressWarnings(pathfindR:::color_kegg_pathway(pw_id = "hsa03040", change_vec = NULL)))
+  expect_message(pathfindR:::color_kegg_pathway(pw_id = "hsa11111", change_vec = c()))
+  expect_message(expect_error(suppressWarnings(tmp <- pathfindR:::download_kegg_png("INVALID", "INVALID"))))
 })
 
 # enrichment_chart --------------------------------------------------------
@@ -296,13 +305,6 @@ test_that("enrichment_chart arg checks work", {
                "`top_terms` must be > 1")
 })
 
-
-# color_kegg_pathway ------------------------------------------------------
-test_that("`color_kegg_pathway()` exceptions are handled properly", {
-  expect_null(suppressWarnings(pathfindR:::color_kegg_pathway(pw_id = "hsa03040", change_vec = NULL)))
-  expect_message(pathfindR:::color_kegg_pathway(pw_id = "hsa11111", change_vec = c()))
-  expect_message(expect_error(suppressWarnings(pathfindR:::download_kegg_png("INVALID", "INVALID"))))
-})
 
 # term_gene_graph ---------------------------------------------------------
 test_that("`term_gene_graph()` produces a ggplot object using the correct data", {
