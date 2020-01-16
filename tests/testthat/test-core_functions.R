@@ -261,7 +261,7 @@ test_that("In `fetch_gene_set()`, for 'Custom' gene set, check if the custom obj
 test_that("`fetch_gene_set()` arg checks work", {
   all_gs_opts <- c("KEGG", "Reactome", "BioCarta",
                    "GO-All", "GO-BP", "GO-CC", "GO-MF",
-                   "mmu_KEGG", "Custom")
+                   "cell_markers", "mmu_KEGG", "Custom")
   expect_error(fetch_gene_set(gene_sets = "INVALID"),
                paste0("`gene_sets` should be one of ",
                       paste(dQuote(all_gs_opts), collapse = ", ")))
