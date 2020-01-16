@@ -89,6 +89,8 @@ reference:
       - mmu_kegg_descriptions
       - reactome_genes
       - reactome_descriptions
+      - cell_markers_gsets
+      - cell_markers_descriptions
   - title: "PIN Data"
     desc: >
       Data containing protein-protein interaction networks from various sources

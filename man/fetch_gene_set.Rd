@@ -15,7 +15,7 @@ fetch_gene_set(
 \arguments{
 \item{gene_sets}{Name of the gene sets to be used for enrichment analysis.
 Available gene sets are "KEGG", "Reactome", "BioCarta", "GO-All",
-"GO-BP", "GO-CC", "GO-MF", "mmu_KEGG" or "Custom".
+"GO-BP", "GO-CC", "GO-MF", "cell_markers", "mmu_KEGG" or "Custom".
 If "Custom", the arguments \code{custom_genes} and \code{custom_descriptions}
 must be specified. (Default = "KEGG")}
 

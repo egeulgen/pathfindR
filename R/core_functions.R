@@ -360,7 +360,7 @@ run_pathfindR <- function(input,
 #'
 #' @param gene_sets Name of the gene sets to be used for enrichment analysis.
 #'  Available gene sets are "KEGG", "Reactome", "BioCarta", "GO-All",
-#'  "GO-BP", "GO-CC", "GO-MF", "mmu_KEGG" or "Custom".
+#'  "GO-BP", "GO-CC", "GO-MF", "cell_markers", "mmu_KEGG" or "Custom".
 #'  If "Custom", the arguments \code{custom_genes} and \code{custom_descriptions}
 #'  must be specified. (Default = "KEGG")
 #' @param min_gset_size minimum number of genes a term must contain (default = 10)
@@ -391,6 +391,7 @@ fetch_gene_set <- function(gene_sets = "KEGG",
   ### Argument checks
   all_gs_opts <- c("KEGG", "Reactome", "BioCarta",
                    "GO-All", "GO-BP", "GO-CC", "GO-MF",
+                   "cell_markers",
                    "mmu_KEGG", "Custom")
   if (!gene_sets %in% all_gs_opts) {
     stop("`gene_sets` should be one of ", paste(dQuote(all_gs_opts), collapse = ", "))
@@ -465,12 +466,15 @@ fetch_gene_set <- function(gene_sets = "KEGG",
     } else if (gene_sets == "Reactome") {
       genes_by_term <- pathfindR::reactome_genes
       term_descriptions <- pathfindR::reactome_descriptions
-    } else if(gene_sets == "BioCarta"){
+    } else if (gene_sets == "BioCarta"){
       genes_by_term <- pathfindR::biocarta_genes
       term_descriptions <- pathfindR::biocarta_descriptions
-    } else {
+    } else if (gene_sets == "mmu_KEGG") {
       genes_by_term <- pathfindR::mmu_kegg_genes
       term_descriptions <- pathfindR::mmu_kegg_descriptions
+    } else {
+      genes_by_term <- pathfindR::cell_markers_gsets
+      term_descriptions <- pathfindR::cell_markers_descriptions
     }
   }
 

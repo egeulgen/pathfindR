@@ -161,6 +161,18 @@ test_that("`fetch_gene_set()` can fetch all gene set objects", {
   tmp <- vapply(gset_obj$genes_by_term, length, 1L)
   expect_true(min(tmp) >= 10 & max(tmp) <= 300)
 
+
+  ###### cell_markers
+  expect_is(gset_obj <- fetch_gene_set(gene_sets = "cell_markers",
+                                       min_gset_size = 10,
+                                       max_gset_size = 300),
+            "list")
+  expect_is(gset_obj$genes_by_term, "list")
+  expect_is(gset_obj$term_descriptions, "character")
+  expect_true(length(gset_obj$genes_by_term) == length(gset_obj$term_descriptions))
+  tmp <- vapply(gset_obj$genes_by_term, length, 1L)
+  expect_true(min(tmp) >= 10 & max(tmp) <= 300)
+
   ###### GO-All
   expect_is(gset_obj <- fetch_gene_set(gene_sets = "GO-All",
                                        min_gset_size = 10,
