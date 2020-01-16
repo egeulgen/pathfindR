@@ -4,13 +4,13 @@
 \name{biocarta_descriptions}
 \alias{biocarta_descriptions}
 \title{BioCarta Pathways - Descriptions}
-\format{list containing 314 character values, the descriptions for the given
+\format{named vector containing 314 character values, the descriptions for the given
   pathways.}
 \usage{
 biocarta_descriptions
 }
 \description{
-A list containing the descriptions for each human BioCarta pathway.
+A named vector containing the descriptions for each human BioCarta pathway.
 \emph{Generated on Oct 12, 2019.}
 }
 \keyword{datasets}

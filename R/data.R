@@ -143,6 +143,7 @@
 #' \code{\link{cluster_enriched_terms}} for details on clustering methods
 "RA_clustered"
 
+
 #' KEGG Pathways - Gene Sets
 #'
 #' A list containing the genes involved in each Homo sapiens KEGG pathway. Each element
@@ -181,12 +182,12 @@
 
 #' Mus Musculus KEGG Pathways - Descriptions
 #'
-#' A list containing the descriptions for each Mus musculus KEGG pathway. Names of the
-#' list correspond to the KEGG ID of the pathway. Pathways that did not contain
+#' A named vector containing the descriptions for each Mus musculus KEGG pathway. Names of the
+#' vector correspond to the KEGG ID of the pathway. Pathways that did not contain
 #' any genes were discarded.
 #' \emph{Generated on Oct 28, 2019.}
 #'
-#' @format vector containing 323 character values, the descriptions for the given
+#' @format named vector containing 323 character values, the descriptions for the given
 #'   pathways.
 "mmu_kegg_descriptions"
 
@@ -203,11 +204,11 @@
 
 #' Reactome Pathways - Descriptions
 #'
-#' A list containing the descriptions for each human Reactome pathway. Names of the
-#' list correspond to the Reactome ID of the pathway.
+#' A named vector containing the descriptions for each human Reactome pathway. Names of the
+#' vector correspond to the Reactome ID of the pathway.
 #' \emph{Generated on Oct 12, 2019.}
 #'
-#' @format list containing 2263 character values, the descriptions for the given
+#' @format named vector containing 2263 character values, the descriptions for the given
 #'   pathways.
 "reactome_descriptions"
 
@@ -223,12 +224,40 @@
 
 #' BioCarta Pathways - Descriptions
 #'
-#' A list containing the descriptions for each human BioCarta pathway.
+#' A named vector containing the descriptions for each human BioCarta pathway.
 #' \emph{Generated on Oct 12, 2019.}
 #'
-#' @format list containing 314 character values, the descriptions for the given
+#' @format named vector containing 314 character values, the descriptions for the given
 #'   pathways.
 "biocarta_descriptions"
+
+#' Cell Markers - Gene Sets
+#'
+#' A list containing the sets of genes that are cell markers of different cell
+#' types from different tissues in human. Each element is a vector of cell marker
+#' gene symbols for the given cell type. Names correspond to the Cell Ontology ID
+#' (if available) of the cell type. For more information, refer to the article:
+#' Zhang X, Lan Y, Xu J, et al. CellMarker: a manually curated resource of cell
+#' markers in human and mouse. Nucleic Acids Res. 2019;47(D1):D721-D728.
+#' \emph{Generated on Jan 16, 2020.}
+#'
+#' @format list containing 496 vectors. Each vector corresponds to a cell marker
+#' gene set for a given human cell type.
+"cell_markers_gsets"
+
+#' Cell Markers - Descriptions
+#'
+#' A named vector containing descriptions of different cell types from different
+#' tissues in human. Names of the vectors are Cell Ontology IDs (if available)
+#' of the cell types in the following format: "tissue type, cancer type, cell name"
+#' For more information, refer to the article:
+#' Zhang X, Lan Y, Xu J, et al. CellMarker: a manually curated resource of cell
+#' markers in human and mouse. Nucleic Acids Res. 2019;47(D1):D721-D728.
+#' \emph{Generated on Jan 16, 2020.}
+#'
+#' @format named vector containing 496 character values, the descriptions for
+#' the given human cell types.
+"cell_markers_descriptions"
 
 #' Gene Ontology - All Gene Ontology Gene Sets
 #'
