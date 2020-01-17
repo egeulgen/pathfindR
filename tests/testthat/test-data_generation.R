@@ -84,7 +84,7 @@ test_that("`get_mgsigdb_gsets()` errors work", {
 # get_gene_sets_list ------------------------------------------------------
 test_that("`get_gene_sets_list()` works", {
   expect_error(gsets <- get_gene_sets_list("Wiki"),
-               "As of this version, this function is implemented to get data from KEGG and Reactome only")
+               "As of this version, this function is implemented to get data from KEGG, Reactome and MSigDB only")
 
   skip_on_cran()
   expect_silent(kegg <- get_gene_sets_list(org_code = "vcn"))

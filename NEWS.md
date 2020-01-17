@@ -1,8 +1,9 @@
-# pathfindR 1.5.0.9002
+# pathfindR 1.5.0.9003
 ## to be released as 1.5.0
 
 ## Major Changes
-- added the functions `get_pin_file()` and `get_gene_sets_list()` for obtaining organism-specific PIN data and gene sets list, respectively
+- added the function `get_pin_file()` for obtaining organism-specific PIN data from BioGRID
+- added the function `get_gene_sets_list()` for obtaining organism-specific gene sets list from KEGG, Reactome and MSigDB
 - added the function `term_gene_heatmap()` to create heatmap visualizations of enriched terms and the involved input genes. Rows are enriched terms and columns are involved input genes. If `genes_df` is provided, colors of the tiles indicate the change values
 - added the function `UpSet_plot()` to create UpSet plots of enriched terms
 - added the human cell markers gene sets data `cell_markers_gsets` and `cell_markers_descriptions`
