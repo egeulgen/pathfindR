@@ -2,7 +2,7 @@
 % Please edit documentation in R/data_generation.R
 \name{get_pin_file}
 \alias{get_pin_file}
-\title{Get Organism-specific PIN data}
+\title{Retrieve Organism-specific PIN data}
 \usage{
 get_pin_file(source = "BioGRID", org = "Homo_sapiens", path2pin, ...)
 }
@@ -27,7 +27,7 @@ the path of the file in which the PIN data was saved. If
 temporary file
 }
 \description{
-Get Organism-specific PIN data
+Retrieve Organism-specific PIN data
 }
 \examples{
 \dontrun{

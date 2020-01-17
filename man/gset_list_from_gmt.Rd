@@ -2,7 +2,7 @@
 % Please edit documentation in R/data_generation.R
 \name{gset_list_from_gmt}
 \alias{gset_list_from_gmt}
-\title{Parse Gene Sets from GMT-format File}
+\title{Retrieve Gene Sets from GMT-format File}
 \usage{
 gset_list_from_gmt(path2gmt)
 }
@@ -16,5 +16,5 @@ list containing 2 elements: \itemize{
 }
 }
 \description{
-Parse Gene Sets from GMT-format File
+Retrieve Gene Sets from GMT-format File
 }

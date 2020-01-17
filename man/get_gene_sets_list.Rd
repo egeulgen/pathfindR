@@ -2,15 +2,30 @@
 % Please edit documentation in R/data_generation.R
 \name{get_gene_sets_list}
 \alias{get_gene_sets_list}
-\title{Get Organism-specific Gene Sets List}
+\title{Retrieve Organism-specific Gene Sets List}
 \usage{
-get_gene_sets_list(source = "KEGG", org_code = "hsa")
+get_gene_sets_list(
+  source = "KEGG",
+  org_code = "hsa",
+  species = "Homo sapiens",
+  collection,
+  subcollection = NULL
+)
 }
 \arguments{
-\item{source}{As of this version, either "KEGG" or "Reactome" (default = "KEGG")}
+\item{source}{As of this version, either "KEGG", "Reactome" or "MSigDB" (default = "KEGG")}
 
-\item{org_code}{KEGG organism code for the selected organism. For a full list
+\item{org_code}{(Used for "KEGG" only) KEGG organism code for the selected organism. For a full list
 of all available organisms, see \url{https://www.genome.jp/kegg/catalog/org_list.html}}
+
+\item{species}{(Used for "MSigDB" only) species name, such as Homo sapiens, Mus musculus, etc.
+See \code{\link[msigdbr]{msigdbr_show_species}} for all the species available in
+the msigdbr package}
+
+\item{collection}{(Used for "MSigDB" only) collection. i.e., H, C1, C2, C3, C4, C5, C6, C7.}
+
+\item{subcollection}{(Used for "MSigDB" only)  sub-collection, such as CGP, MIR, BP, etc. (default = NULL,
+i.e. list all gene sets in collection)}
 }
 \value{
 A list containing 2 elements: \itemize{
@@ -21,5 +36,5 @@ of all available organisms, see \url{https://www.genome.jp/kegg/catalog/org_list
 For Reactome, there is only one collection of pathway gene sets.
 }
 \description{
-Get Organism-specific Gene Sets List
+Retrieve Organism-specific Gene Sets List
 }

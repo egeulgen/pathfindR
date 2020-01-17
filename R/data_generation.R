@@ -22,7 +22,7 @@ process_pin <- function(pin_df) {
   return(pin_df)
 }
 
-#' Get the Requested Release of Organism-specific BioGRID PIN
+#' Retrieve the Requested Release of Organism-specific BioGRID PIN
 #'
 #' @param org organism name. BioGRID naming requires underscores for spaces so
 #' "Homo sapiens" becomes "Homo_sampiens", "Mus musculus" becomes "Mus_musculus"
@@ -121,7 +121,7 @@ get_biogrid_pin <- function(org = "Homo_sapiens", path2pin, release = "LATEST") 
   return(path2pin)
 }
 
-#' Get Organism-specific PIN data
+#' Retrieve Organism-specific PIN data
 #'
 #' @param source As of this version, this function is implemented to get data
 #' from "BioGRID" only. This argument (and this wrapper function) was implemented
@@ -147,7 +147,7 @@ get_pin_file <- function(source = "BioGRID", org = "Homo_sapiens", path2pin, ...
 
 }
 
-#' Parse Gene Sets from GMT-format File
+#' Retrieve Gene Sets from GMT-format File
 #'
 #' @param path2gmt path to the gmt file
 #'
@@ -188,7 +188,7 @@ gset_list_from_gmt <- function(path2gmt) {
   return(list(gene_sets = genes_list, descriptions = descriptions_vec))
 }
 
-#' Get Organism-specific KEGG Pathway Gene Sets
+#' Retrieve Organism-specific KEGG Pathway Gene Sets
 #'
 #' @param org_code KEGG organism code for the selected organism. For a full list
 #' of all available organisms, see \url{https://www.genome.jp/kegg/catalog/org_list.html}
@@ -226,7 +226,7 @@ get_kegg_gsets <- function(org_code = "hsa") {
   return(result)
 }
 
-#' Get Reactome Pathway Gene Sets
+#' Retrieve Reactome Pathway Gene Sets
 #'
 #' @return Gets the latest Reactome pathways gene sets in gmt format. Parses the
 #' gmt file and returns a list containing 2 elements: \itemize{
@@ -248,10 +248,71 @@ get_reactome_gsets <- function() {
   return(result)
 }
 
-#' Get Organism-specific Gene Sets List
+#' Retrieve Organism-specific MSigDB Gene Sets
 #'
-#' @param source As of this version, either "KEGG" or "Reactome" (default = "KEGG")
-#' @inheritParams get_kegg_gsets
+#' @param species species name, such as Homo sapiens, Mus musculus, etc.
+#' See \code{\link[msigdbr]{msigdbr_show_species}} for all the species available in
+#' the msigdbr package
+#' @param collection collection. i.e., H, C1, C2, C3, C4, C5, C6, C7.
+#' @param subcollection sub-collection, such as CGP, MIR, BP, etc. (default = NULL,
+#' i.e. list all gene sets in collection)
+#'
+#' @return Retrieves the MSigDB gene sets and returns a list containing 2 elements: \itemize{
+#' \item{gene_sets}{A list containing the genes involved in each of the selected MSigDB gene sets}
+#' \item{descriptions}{A named vector containing the descriptions for each selected MSigDB gene set}
+#' }
+#'
+#' @details this function utilizes the function \code{\link[msigdbr]{msigdbr}}
+#' from the \code{msigdbr} package to retrieve the 'Molecular Signatures Database'
+#' (MSigDB) gene sets (Subramanian et al. 2005 <doi:10.1073/pnas.0506580102>,
+#' Liberzon et al. 2015 <doi:10.1016/j.cels.2015.12.004>).
+#' Available collections are: H: hallmark gene sets, C1: positional gene sets,
+#' C2: curated gene sets, C3: motif gene sets, C4: computational gene sets,
+#' C5: GO gene sets, C6: oncogenic signatures and C7: immunologic signatures
+get_mgsigdb_gsets <- function(species = "Homo sapiens", collection, subcollection = NULL) {
+  # arg check
+  all_collections <- c("H", "C1", "C2", "C3", "C4", "C5", "C6", "C7")
+  if (!collection %in% all_collections)
+    stop("`collection` should be one of ", paste(dQuote(all_collections), collapse = ", "))
+
+  # retrieve msigdbr df
+  msig_df <- msigdbr::msigdbr(species = species,
+                              category = collection,
+                              subcategory = subcollection)
+  # check if df is empty
+  if (nrow(msig_df) == 0)
+    stop(dQuote(paste(c(species, collection, subcollection), collapse = "-")),
+         " returned an empty data frame")
+
+  ### create gene sets list
+  all_gs_ids <- unique(msig_df$gs_id)
+  msig_gsets_list <- list()
+  for (id in all_gs_ids) {
+    sub_df <- msig_df[msig_df$gs_id == id, ]
+    msig_gsets_list[[id]] <- sub_df$gene_symbol
+  }
+  ### create gene sets descriptions
+  msig_gsets_descriptions <- msig_df[, c("gs_name", "gs_id")]
+  msig_gsets_descriptions <- unique(msig_gsets_descriptions)
+  tmp <- msig_gsets_descriptions$gs_id
+  msig_gsets_descriptions <- msig_gsets_descriptions$gs_name
+  names(msig_gsets_descriptions) <- tmp
+
+  result <- list(gene_sets = msig_gsets_list, descriptions = msig_gsets_descriptions)
+  return(result)
+}
+
+#' Retrieve Organism-specific Gene Sets List
+#'
+#' @param source As of this version, either "KEGG", "Reactome" or "MSigDB" (default = "KEGG")
+#' @param org_code (Used for "KEGG" only) KEGG organism code for the selected organism. For a full list
+#' of all available organisms, see \url{https://www.genome.jp/kegg/catalog/org_list.html}
+#' @param species (Used for "MSigDB" only) species name, such as Homo sapiens, Mus musculus, etc.
+#' See \code{\link[msigdbr]{msigdbr_show_species}} for all the species available in
+#' the msigdbr package
+#' @param collection (Used for "MSigDB" only) collection. i.e., H, C1, C2, C3, C4, C5, C6, C7.
+#' @param subcollection (Used for "MSigDB" only)  sub-collection, such as CGP, MIR, BP, etc. (default = NULL,
+#' i.e. list all gene sets in collection)
 #'
 #' @return A list containing 2 elements: \itemize{
 #' \item{gene_sets}{A list containing the genes involved in each gene set}
@@ -261,13 +322,19 @@ get_reactome_gsets <- function() {
 #' For Reactome, there is only one collection of pathway gene sets.
 #' @export
 #'
-get_gene_sets_list <- function(source = "KEGG", org_code = "hsa") {
+get_gene_sets_list <- function(source = "KEGG", org_code = "hsa",
+                               species = "Homo sapiens",
+                               collection, subcollection = NULL) {
   if (source == "KEGG") {
     return(get_kegg_gsets(org_code))
   } else if (source == "Reactome") {
     message("For Reactome, there is only one collection of pathway gene sets.")
     return(get_reactome_gsets())
+  } else if (source == "MSigDB") {
+    return(get_mgsigdb_gsets(species = species,
+                             collection = collection,
+                             subcollection = subcollection))
   } else {
-    stop("As of this version, this function is implemented to get data from KEGG and Reactome only")
+    stop("As of this version, this function is implemented to get data from KEGG, Reactome and MSigDB only")
   }
 }

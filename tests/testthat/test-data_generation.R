@@ -45,7 +45,7 @@ test_that("`get_kegg_gsets() works`", {
   expect_silent(hsa_kegg <- pathfindR:::get_kegg_gsets())
   expect_length(hsa_kegg, 2)
   expect_true(all(names(hsa_kegg) == c("gene_sets", "descriptions")))
-  expect_true(length(hsa_kegg[["gene_sets"]]) == length(hsa_kegg[["descriptions"]]))
+  expect_true(all(names(hsa_kegg[["gene_sets"]] %in% names(hsa_kegg[["descriptions"]]))))
 })
 
 # get_reactome_gsets ------------------------------------------------------
@@ -53,7 +53,32 @@ test_that("`get_reactome_gsets()` works", {
   expect_silent(reactome <- pathfindR:::get_reactome_gsets())
   expect_length(reactome, 2)
   expect_true(all(names(reactome) == c("gene_sets", "descriptions")))
-  expect_true(length(reactome[["gene_sets"]]) == length(reactome[["descriptions"]]))
+  expect_true(all(names(reactome[["gene_sets"]] %in% names(reactome[["descriptions"]]))))
+})
+
+# get_mgsigdb_gsets -------------------------------------------------------
+test_that("`get_mgsigdb_gsets()` works", {
+  expect_silent(hsa_C2_cgp <- pathfindR:::get_mgsigdb_gsets(collection = "C3",
+                                                            subcollection = "MIR"))
+  expect_length(hsa_C2_cgp, 2)
+  expect_true(all(names(hsa_C2_cgp) == c("gene_sets", "descriptions")))
+  expect_true(all(names(hsa_C2_cgp[["gene_sets"]] %in% names(hsa_C2_cgp[["descriptions"]]))))
+})
+
+test_that("`get_mgsigdb_gsets()` errors work", {
+  all_collections <- c("H", "C1", "C2", "C3", "C4", "C5", "C6", "C7")
+  expect_error(pathfindR:::get_mgsigdb_gsets(collection = "INVALID"),
+               paste0("`collection` should be one of ",
+                      paste(dQuote(all_collections), collapse = ", ")))
+
+  species <- "Homo sapiens"
+  collection <- "C2"
+  subcollection <- "INVALID"
+  expect_error(pathfindR:::get_mgsigdb_gsets(species = species,
+                                             collection = collection,
+                                             subcollection = subcollection),
+               paste0(dQuote(paste(c(species, collection, subcollection), collapse = "-")),
+                      " returned an empty data frame"))
 })
 
 # get_gene_sets_list ------------------------------------------------------
@@ -64,5 +89,9 @@ test_that("`get_gene_sets_list()` works", {
   skip_on_cran()
   expect_silent(kegg <- get_gene_sets_list(org_code = "vcn"))
   expect_message(rctm <- get_gene_sets_list("Reactome"))
+  expect_silent(msig <- get_gene_sets_list("MSigDB",
+                                           species = "Mus musculus",
+                                           collection = "C3",
+                                           subcollection = "MIR"))
 })
 

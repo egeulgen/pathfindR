@@ -5,6 +5,7 @@
 - added the functions `get_pin_file()` and `get_gene_sets_list()` for obtaining organism-specific PIN data and gene sets list, respectively
 - added the function `term_gene_heatmap()` to create heatmap visualizations of enriched terms and the involved input genes. Rows are enriched terms and columns are involved input genes. If `genes_df` is provided, colors of the tiles indicate the change values
 - added the function `UpSet_plot()` to create UpSet plots of enriched terms
+- added the human cell markers gene sets data `cell_markers_gsets` and `cell_markers_descriptions`
 
 ## Minor changes and bug fixes
 - in `visualize_hsa_KEGG()`, fixed the issue where >1 entrez ids were returned for a gene symbol (the first one is kept)

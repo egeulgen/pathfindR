@@ -2,7 +2,7 @@
 % Please edit documentation in R/data_generation.R
 \name{get_reactome_gsets}
 \alias{get_reactome_gsets}
-\title{Get Reactome Pathway Gene Sets}
+\title{Retrieve Reactome Pathway Gene Sets}
 \usage{
 get_reactome_gsets()
 }
@@ -14,5 +14,5 @@ gmt file and returns a list containing 2 elements: \itemize{
 }
 }
 \description{
-Get Reactome Pathway Gene Sets
+Retrieve Reactome Pathway Gene Sets
 }
