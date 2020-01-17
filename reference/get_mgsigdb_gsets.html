@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Retrieve the Requested Release of Organism-specific BioGRID PIN — get_biogrid_pin • pathfindR</title>
+<title>Retrieve Organism-specific MSigDB Gene Sets — get_mgsigdb_gsets • pathfindR</title>
 
 
 <!-- jquery -->
@@ -41,8 +41,8 @@
 
 
 
-<meta property="og:title" content="Retrieve the Requested Release of Organism-specific BioGRID PIN — get_biogrid_pin" />
-<meta property="og:description" content="Retrieve the Requested Release of Organism-specific BioGRID PIN" />
+<meta property="og:title" content="Retrieve Organism-specific MSigDB Gene Sets — get_mgsigdb_gsets" />
+<meta property="og:description" content="Retrieve Organism-specific MSigDB Gene Sets" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -138,43 +138,53 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Retrieve the Requested Release of Organism-specific BioGRID PIN</h1>
+    <h1>Retrieve Organism-specific MSigDB Gene Sets</h1>
     <small class="dont-index">Source: <a href='https://github.com/egeulgen/pathfindR/blob/master/R/data_generation.R'><code>R/data_generation.R</code></a></small>
-    <div class="hidden name"><code>get_biogrid_pin.Rd</code></div>
+    <div class="hidden name"><code>get_mgsigdb_gsets.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Retrieve the Requested Release of Organism-specific BioGRID PIN</p>
+    <p>Retrieve Organism-specific MSigDB Gene Sets</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_biogrid_pin</span>(<span class='kw'>org</span> <span class='kw'>=</span> <span class='st'>"Homo_sapiens"</span>, <span class='no'>path2pin</span>, <span class='kw'>release</span> <span class='kw'>=</span> <span class='st'>"LATEST"</span>)</pre>
+    <pre class="usage"><span class='fu'>get_mgsigdb_gsets</span>(<span class='kw'>species</span> <span class='kw'>=</span> <span class='st'>"Homo sapiens"</span>, <span class='no'>collection</span>, <span class='kw'>subcollection</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>org</th>
-      <td><p>organism name. BioGRID naming requires underscores for spaces so
-"Homo sapiens" becomes "Homo_sampiens", "Mus musculus" becomes "Mus_musculus"
-etc. See <a href='https://wiki.thebiogrid.org/doku.php/statistics'>https://wiki.thebiogrid.org/doku.php/statistics</a> for a full
-list of available organisms (default = "Homo_sapiens")</p></td>
+      <th>species</th>
+      <td><p>species name, such as Homo sapiens, Mus musculus, etc.
+See <code><a href='https://rdrr.io/pkg/msigdbr/man/msigdbr_show_species.html'>msigdbr_show_species</a></code> for all the species available in
+the msigdbr package</p></td>
     </tr>
     <tr>
-      <th>path2pin</th>
-      <td><p>the path of the file to save the PIN data. By default, the
-PIN data is saved in a temporary file</p></td>
+      <th>collection</th>
+      <td><p>collection. i.e., H, C1, C2, C3, C4, C5, C6, C7.</p></td>
     </tr>
     <tr>
-      <th>release</th>
-      <td><p>the requested BioGRID release (default = "LATEST")</p></td>
+      <th>subcollection</th>
+      <td><p>sub-collection, such as CGP, MIR, BP, etc. (default = NULL,
+i.e. list all gene sets in collection)</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>the path of the file in which the PIN data was saved. If
-<code>path2pin</code> was not supplied by the user, the PIN data is saved in a
-temporary file</p>
+    <p>Retrieves the MSigDB gene sets and returns a list containing 2 elements:</p><ul>
+<li><p>gene_setsA list containing the genes involved in each of the selected MSigDB gene sets</p></li>
+<li><p>descriptionsA named vector containing the descriptions for each selected MSigDB gene set</p></li>
+</ul>
+
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>this function utilizes the function <code><a href='https://rdrr.io/pkg/msigdbr/man/msigdbr.html'>msigdbr</a></code>
+from the <code>msigdbr</code> package to retrieve the 'Molecular Signatures Database'
+(MSigDB) gene sets (Subramanian et al. 2005 &lt;doi:10.1073/pnas.0506580102&gt;,
+Liberzon et al. 2015 &lt;doi:10.1016/j.cels.2015.12.004&gt;).
+Available collections are: H: hallmark gene sets, C1: positional gene sets,
+C2: curated gene sets, C3: motif gene sets, C4: computational gene sets,
+C5: GO gene sets, C6: oncogenic signatures and C7: immunologic signatures</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -182,6 +192,7 @@ temporary file</p>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
+      <li><a href="#details">Details</a></li>
     </ul>
 
   </div>
