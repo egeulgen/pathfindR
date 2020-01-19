@@ -72,9 +72,6 @@ check_java_version <- function(version = NULL) {
   parsedVersion <- gsub("_", ".", parsedVersion)
   parsedVersion <- gsub("[^0-9.]+", "", parsedVersion)
 
-  if (!is.character(parsedVersion) || nchar(parsedVersion) < 1)
-    stop("Java version detected but couldn't parse version from: ", versionLine)
-
   # ensure Java 1.8 (8) or higher
   if (utils::compareVersion(parsedVersion, "1.8") < 0)
     stop("Java version", parsedVersion, " detected but Java >=8 is required.
