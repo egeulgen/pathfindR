@@ -262,58 +262,21 @@ For details, see `?fuzzy_term_clustering`
 
 The function `term_gene_heatmap()` can be used to visualize the heatmap of genes that are involved in the enriched terms. This heatmap allows visual identification of the input genes involved in the enriched terms, as well as the common or distinct genes between different terms. If the input data frame (same as in `run_pathfindR()`) is supplied, the tile colors indicate the change values.
 
-By the default, `term_gene_heatmap()` visualizes the heatmap for the top 10 enriched terms:
-
 ```{r hmap1, eval=TRUE, fig.height=4, fig.width=8}
 term_gene_heatmap(RA_output)
 ```
 
-To plot all of the enriched terms in the enrichment results data frame, set `num_terms = NULL` (not advised due to cluttered visualization):
-
-```{r hmap2, eval=TRUE, fig.height=4, fig.width=8}
-term_gene_heatmap(RA_output, num_terms = NULL)
-```
-
-To plot using full term names (instead of IDs which is the default), set `use_description = TRUE`:
-
-```{r hmap3, eval=TRUE, fig.height=4, fig.width=8}
-term_gene_heatmap(RA_output, use_description = TRUE)
-```
-
-
-As explained above, if you supply the input genes data frame to `term_gene_heatmap()`, the tiles are colored according to the change values:
-
-```{r hmap4, eval=TRUE, fig.height=4, fig.width=8}
-term_gene_heatmap(RA_output, RA_input, use_description = TRUE)
-```
+See the vignette [Visualization of pathfindR Enrichment Results](visualization_vignette.html) for more details.
 
 # Term-Gene Graph
 
 The visualization function `term_gene_graph()` (adapted from the "Gene-Concept network visualization" by the R package `enrichplot`) can be utilized to visualize which genes are involved in the enriched terms. The function creates a term-gene graph which shows the connections between genes and biological terms (enriched pathways or gene sets). This allows for the investigation of multiple terms to which significant genes are related. This graph also enables visual determination of the degree of overlap between the enriched terms by identifying shared and/or distinct significant genes.
 
-By default, the function visualizes the term-gene graph for the top 10 enriched terms:
-
-```{r term_gene1, eval=TRUE, fig.height=4, fig.width=8}
+```{r graph, eval=TRUE, fig.height=4, fig.width=8}
 term_gene_graph(RA_output)
 ```
 
-To plot all of the enriched terms in the enrichment results, set `num_terms = NULL` (not advised due to cluttered visualization):
-
-```{r term_gene2, eval=TRUE, fig.height=4, fig.width=8}
-term_gene_graph(RA_output, num_terms = NULL)
-```
-
-To plot using full term names (instead of IDs which is the default), set `use_description = TRUE`:
-
-```{r term_gene3, eval=TRUE, fig.height=4, fig.width=8}
-term_gene_graph(RA_output, num_terms = 3, use_description = TRUE)
-```
-
-By default the node sizes are plotted proportional to the number of genes a term contains (`num_genes`). To adjust node sizes using the $-log_{10}$(lowest p values), set `node_size = "p_val"`:
-
-```{r term_gene4, eval=TRUE, fig.height=4, fig.width=8}
-term_gene_graph(RA_output, num_terms = 3, node_size = "p_val")
-```
+See the vignette [Visualization of pathfindR Enrichment Results](visualization_vignette.html) for more details.
 
 # UpSet Plot
 
@@ -323,17 +286,7 @@ UpSet plots are plots of the intersections of sets as a matrix. This function cr
 UpSet_plot(RA_output)
 ```
 
-Again, you may change the number of top terms plotted via `num_terms` (default = 10):
-
-```{r upset2, eval=TRUE, fig.height=4, fig.width=8}
-UpSet_plot(RA_output, num_terms = 25)
-```
-
-Again, to plot using full term names (instead of IDs which is the default), set `use_description = TRUE`:
-
-```{r upset3, eval=TRUE, fig.height=4, fig.width=8}
-UpSet_plot(RA_output, use_description = TRUE)
-```
+See the vignette [Visualization of pathfindR Enrichment Results](visualization_vignette.html) for more details.
 
 # Aggregated Term Scores per Sample
 
