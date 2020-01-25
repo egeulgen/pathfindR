@@ -25,6 +25,7 @@ reference:
       - plot_scores
       - term_gene_heatmap
       - term_gene_graph
+      - UpSet_plot
       - visualize_terms
       - cluster_graph_vis
   - title: "Data Generation"
@@ -35,7 +36,7 @@ reference:
       - get_gene_sets_list
   - title: "Enrichment-related functions"
     desc: >
-      Active subnetwork search- + Enrichment-related functions
+      Active subnetwork search- and Enrichment-related functions
     contents:
       - active_snw_search
       - annotate_term_genes
@@ -57,7 +58,7 @@ reference:
      - hierarchical_term_clustering
   - title: "Visualization functions"
     desc: >
-      Active subnetwork search- + Enrichment-related functions
+      Visualization-related functions
     contents:
       - color_kegg_pathway
       - download_kegg_png
