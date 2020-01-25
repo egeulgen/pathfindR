@@ -5,6 +5,7 @@ articles:
   intro_vignette: intro_vignette.html
   manual_execution: manual_execution.html
   non_hs_analysis: non_hs_analysis.html
+  visualization_vignette: visualization_vignette.html
 urls:
   reference: https://egeulgen.github.io/pathfindR//reference
   article: https://egeulgen.github.io/pathfindR//articles
