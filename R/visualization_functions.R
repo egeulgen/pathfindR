@@ -608,8 +608,8 @@ color_kegg_pathway <- function(pw_id, change_vec, normalize_vals = TRUE,
                            "#ffffff"))
   bg_cols <- rep("#000000", length(pw_vis_changes))
 
-  ## if larger than 90, disregard non-input genes
-  if (length(fg_cols) > 90) {
+  ## if leq than 60, disregard non-input genes
+  if (length(fg_cols) >= 60) {
     keep <- fg_cols != "#ffffff"
     fg_cols <- fg_cols[keep]
     bg_cols <- bg_cols[keep]

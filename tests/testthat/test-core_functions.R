@@ -10,11 +10,10 @@
 test_that("`run_pathfindR()` works as expected", {
   skip_on_cran()
   ## GR
-  expect_warning(res <- run_pathfindR(RA_input,
-                                      iterations = 1,
-                                      n_processes = 2,
-                                      max_to_plot = 1),
-    "`n_processes` is set to `iterations` because `iterations` < `n_processes`")
+  res <- run_pathfindR(RA_input,
+                       iterations = 1,
+                       n_processes = 2,
+                       max_to_plot = 1)
   expect_is(res, "data.frame")
   unlink("pathfindR_Results", recursive = TRUE)
   expect_is(run_pathfindR(RA_input,

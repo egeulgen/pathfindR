@@ -36,7 +36,6 @@ test_that("`visualize_terms()` creates expected png file(s)", {
   ## hsa KEGG
   expected_out_file <- file.path("term_visualizations",
                                  paste0(tmp_res$ID, "_pathfindR.png"))
-
   suppressMessages(visualize_terms(result_df = tmp_res,
                                    input_processed = input_processed,
                                    hsa_KEGG = TRUE))
@@ -165,7 +164,6 @@ test_that("KEGML download error is handled properly", {
                                   paste0(temp_ids, "_pathfindR.png"))
   visualize_hsa_KEGG(hsa_kegg_ids = temp_ids,
                      input_processed = input_processed)
-
   expect_equal(file.exists(expected_out_files), c(TRUE, FALSE, TRUE))
   unlink("term_visualizations", recursive = TRUE)
 })

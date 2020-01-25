@@ -11,7 +11,7 @@
 ## Minor changes and bug fixes
 - in `visualize_hsa_KEGG()`, fixed the issue where >1 entrez ids were returned for a gene symbol (the first one is kept)
 - in `visualize_hsa_KEGG()`, implemented a tryCatch to avoid any issues when `KEGGREST::color.pathway.by.objects()` might fail
-- in `visualize_hsa_KEGG()`, now limiting the number of genes passes onto `KEGGREST::color.pathway.by.objects()` to 90 (because the KEGG API now limits the number?)
+- in `visualize_hsa_KEGG()`, now limiting the number of genes passes onto `KEGGREST::color.pathway.by.objects()` to < 60 (because the KEGG API now limits the number?)
 
 ***
 
