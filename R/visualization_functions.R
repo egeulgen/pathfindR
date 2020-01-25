@@ -654,7 +654,7 @@ color_kegg_pathway <- function(pw_id, change_vec, normalize_vals = TRUE,
 #'
 #' @return download status
 download_kegg_png <- function(pw_url, f_path, quiet = TRUE) {
-  return(tryCatch({
+  res <- tryCatch({
     cond <- utils::download.file(url = pw_url,
                                  destfile = f_path,
                                  quiet = quiet)
@@ -664,7 +664,8 @@ download_kegg_png <- function(pw_url, f_path, quiet = TRUE) {
     message("Here's the original error message:")
     message(e)
     return(NA)
-  }))
+  })
+  return(res)
 }
 
 #' Create Bubble Chart of Enrichment Results
