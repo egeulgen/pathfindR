@@ -65,6 +65,9 @@
       <a href="../articles/non_hs_analysis.html">pathfindR Analysis for non-Homo-sapiens organisms</a>
     </li>
     <li>
+      <a href="../articles/obtain_data.html">Obtaining PIN and Gene Sets Data</a>
+    </li>
+    <li>
       <a href="../articles/visualization_vignette.html">Visualization of pathfindR Enrichment Results</a>
     </li>
   </ul>
@@ -102,7 +105,7 @@
       <h1>Introduction to pathfindR</h1>
                         <h4 class="author">Ege Ulgen</h4>
             
-            <h4 class="date">2020-01-25</h4>
+            <h4 class="date">2020-01-28</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/master/vignettes/intro_vignette.Rmd"><code>vignettes/intro_vignette.Rmd</code></a></small>
       <div class="hidden name"><code>intro_vignette.Rmd</code></div>
@@ -677,6 +680,9 @@
 <div id="analysis-with-custom-gene-sets" class="section level1">
 <h1 class="hasAnchor">
 <a href="#analysis-with-custom-gene-sets" class="anchor"></a>Analysis with Custom Gene Sets</h1>
+<blockquote>
+<p>As of v1.5, pathfindR offers utility functions for obtaining organism-specific PIN data and organism-specific gene sets data via <code><a href="../reference/get_pin_file.html">get_pin_file()</a></code> and <code><a href="../reference/get_gene_sets_list.html">get_gene_sets_list()</a></code>, respectively. See the vignette <a href="obtain_data.html">Obtaining PIN and Gene Sets Data</a> for detailed information on how to gather PIN and gene sets data (for any organism of your choice) for use with pathfindR.</p>
+</blockquote>
 <p>It is possible to use <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code> with custom gene sets (including gene sets for non-Homo-sapiens species). Here, we provide an example application of active-subnetwork-oriented enrichment analysis of the target genes of two transcription factors.</p>
 <p>We first load and prepare the gene sets:</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1">## CREB target genes</a>

@@ -65,6 +65,9 @@
       <a href="../articles/non_hs_analysis.html">pathfindR Analysis for non-Homo-sapiens organisms</a>
     </li>
     <li>
+      <a href="../articles/obtain_data.html">Obtaining PIN and Gene Sets Data</a>
+    </li>
+    <li>
       <a href="../articles/visualization_vignette.html">Visualization of pathfindR Enrichment Results</a>
     </li>
   </ul>
@@ -101,7 +104,7 @@
     <div class="page-header toc-ignore">
       <h1>Visualization of pathfindR Enrichment Results</h1>
             
-            <h4 class="date">2020-01-25</h4>
+            <h4 class="date">2020-01-28</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/master/vignettes/visualization_vignette.Rmd"><code>vignettes/visualization_vignette.Rmd</code></a></small>
       <div class="hidden name"><code>visualization_vignette.Rmd</code></div>
@@ -185,7 +188,7 @@
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span>(RA_output)</a></code></pre></div>
 <p><img src="visualization_vignette_files/figure-html/upset1-1.png" width="768" style="display: block; margin: auto;"></p>
 <p>Again, you may change the number of top terms plotted via <code>num_terms</code> (default = 10):</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span>(RA_output, <span class="dt">num_terms =</span> <span class="dv">25</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span>(RA_output, <span class="dt">num_terms =</span> <span class="dv">5</span>)</a></code></pre></div>
 <p><img src="visualization_vignette_files/figure-html/upset2-1.png" width="768" style="display: block; margin: auto;"></p>
 <p>Again, to plot using full term names (instead of IDs which is the default), set <code>use_description = TRUE</code>:</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span>(RA_output, <span class="dt">use_description =</span> <span class="ot">TRUE</span>)</a></code></pre></div>

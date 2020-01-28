@@ -107,6 +107,9 @@
       <a href="../articles/non_hs_analysis.html">pathfindR Analysis for non-Homo-sapiens organisms</a>
     </li>
     <li>
+      <a href="../articles/obtain_data.html">Obtaining PIN and Gene Sets Data</a>
+    </li>
+    <li>
       <a href="../articles/visualization_vignette.html">Visualization of pathfindR Enrichment Results</a>
     </li>
   </ul>
@@ -174,7 +177,7 @@ of all available organisms, see <a href='https://www.genome.jp/kegg/catalog/org_
       <th>species</th>
       <td><p>(Used for "MSigDB" only) species name, such as Homo sapiens, Mus musculus, etc.
 See <code><a href='https://rdrr.io/pkg/msigdbr/man/msigdbr_show_species.html'>msigdbr_show_species</a></code> for all the species available in
-the msigdbr package</p></td>
+the msigdbr package (default = "Homo sapiens")</p></td>
     </tr>
     <tr>
       <th>collection</th>
@@ -192,8 +195,10 @@ i.e. list all gene sets in collection)</p></td>
     <p>A list containing 2 elements:</p><ul>
 <li><p>gene_setsA list containing the genes involved in each gene set</p></li>
 <li><p>descriptionsA named vector containing the descriptions for each gene set</p></li>
-</ul><p>. For KEGG, it is possible to choose a specific organism. For a full list
-of all available organisms, see <a href='https://www.genome.jp/kegg/catalog/org_list.html'>https://www.genome.jp/kegg/catalog/org_list.html</a>.
+</ul><p>. For "KEGG" and "MSigDB", it is possible to choose a specific organism. For a full list
+of all available KEGG organisms, see <a href='https://www.genome.jp/kegg/catalog/org_list.html'>https://www.genome.jp/kegg/catalog/org_list.html</a>.
+See <code><a href='https://rdrr.io/pkg/msigdbr/man/msigdbr_show_species.html'>msigdbr_show_species</a></code> for all the species available in
+the msigdbr package used for obtaining "MSigDB" gene sets.
 For Reactome, there is only one collection of pathway gene sets.</p>
 
   </div>
