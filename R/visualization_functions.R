@@ -350,74 +350,76 @@ visualize_hsa_KEGG <- function(hsa_kegg_ids, input_processed, max_to_plot = NULL
   dir.create("term_visualizations", showWarnings = FALSE)
 
   cat("Saving colored pathway diagrams of", length(pw_vis_list), "KEGG pathways\n\n")
-  pb <- utils::txtProgressBar(min = 0, max = length(pw_vis_list), style = 3)
-  for (i in seq_len(length(pw_vis_list))) {
+  if (length(pw_vis_list) != 0) {
+    pb <- utils::txtProgressBar(min = 0, max = length(pw_vis_list), style = 3)
+    for (i in seq_len(length(pw_vis_list))) {
 
-    if (is.null(pw_vis_list[[i]])) next
+      if (is.null(pw_vis_list[[i]])) next
 
-    ### Read image
-    f_path <- pw_vis_list[[i]]$file_path
-    pw_diag <- magick::image_read(f_path)
+      ### Read image
+      f_path <- pw_vis_list[[i]]$file_path
+      pw_diag <- magick::image_read(f_path)
 
-    ### Add logo
-    pw_diag <- magick::image_composite(pw_diag,
-                                       magick::image_scale(logo_img, "x90"),
-                                       gravity = logo_gravity,
-                                       offset = "+10+10")
+      ### Add logo
+      pw_diag <- magick::image_composite(pw_diag,
+                                         magick::image_scale(logo_img, "x90"),
+                                         gravity = logo_gravity,
+                                         offset = "+10+10")
 
-    ### Prep for color keys
-    key_col_df <- data.frame(bin_val = seq_along(pw_vis_list[[i]]$all_key_cols),
-                             color = pw_vis_list[[i]]$all_key_cols,
-                             y_val = 1)
+      ### Prep for color keys
+      key_col_df <- data.frame(bin_val = seq_along(pw_vis_list[[i]]$all_key_cols),
+                               color = pw_vis_list[[i]]$all_key_cols,
+                               y_val = 1)
 
-    key_breaks <- pw_vis_list[[i]]$all_brks
-    names(key_breaks) <- seq_along(key_breaks)
-    key_breaks <- c(key_breaks[1], mean(key_breaks[1:6]), key_breaks[6], mean(key_breaks[6:11]), key_breaks[11])
-    brks <- c(.5, 3, 5.5, 8, 10.5)
+      key_breaks <- pw_vis_list[[i]]$all_brks
+      names(key_breaks) <- seq_along(key_breaks)
+      key_breaks <- c(key_breaks[1], mean(key_breaks[1:6]), key_breaks[6], mean(key_breaks[6:11]), key_breaks[11])
+      brks <- c(.5, 3, 5.5, 8, 10.5)
 
-    ### Generate color legend image
-    col_key_legend <- magick::image_graph(width = 200, height = 90, res = 100)
-    g <- ggplot2::ggplot(key_col_df, ggplot2::aes_(~bin_val, ~y_val))
-    g <- g + ggplot2::geom_tile(fill = key_col_df$color,
-                                colour = "black")
-    g <- g + ggplot2::scale_x_continuous(expand = c(0, 0),
-                                         breaks = brks,
-                                         labels = base::format(key_breaks,
-                                                               digits = 2))
-    g <- g + ggplot2::scale_y_discrete(expand = c(0, 0))
-    g <- g + ggplot2::theme_bw()
-    g <- g + ggplot2::theme(panel.grid.major = ggplot2::element_blank(),
-                            panel.grid.minor = ggplot2::element_blank(),
-                            axis.title.x = ggplot2::element_blank(),
-                            axis.title.y = ggplot2::element_blank(),
-                            axis.ticks = ggplot2::element_line(colour = "black",
-                                                               size = .6),
-                            axis.ticks.length = ggplot2::unit(.2, "cm"),
-                            axis.text.x = ggplot2::element_text(size = 14,
-                                                                face = "bold"),
-                            panel.border = ggplot2::element_rect(colour = "black",
-                                                                 fill = NA,
-                                                                 size = .5),
-                            plot.margin = ggplot2::unit(c(0, .7 , 0, .7), "cm"))
-    print(g)
-    grDevices::dev.off()
+      ### Generate color legend image
+      col_key_legend <- magick::image_graph(width = 200, height = 90, res = 100)
+      g <- ggplot2::ggplot(key_col_df, ggplot2::aes_(~bin_val, ~y_val))
+      g <- g + ggplot2::geom_tile(fill = key_col_df$color,
+                                  colour = "black")
+      g <- g + ggplot2::scale_x_continuous(expand = c(0, 0),
+                                           breaks = brks,
+                                           labels = base::format(key_breaks,
+                                                                 digits = 2))
+      g <- g + ggplot2::scale_y_discrete(expand = c(0, 0))
+      g <- g + ggplot2::theme_bw()
+      g <- g + ggplot2::theme(panel.grid.major = ggplot2::element_blank(),
+                              panel.grid.minor = ggplot2::element_blank(),
+                              axis.title.x = ggplot2::element_blank(),
+                              axis.title.y = ggplot2::element_blank(),
+                              axis.ticks = ggplot2::element_line(colour = "black",
+                                                                 size = .6),
+                              axis.ticks.length = ggplot2::unit(.2, "cm"),
+                              axis.text.x = ggplot2::element_text(size = 14,
+                                                                  face = "bold"),
+                              panel.border = ggplot2::element_rect(colour = "black",
+                                                                   fill = NA,
+                                                                   size = .5),
+                              plot.margin = ggplot2::unit(c(0, .7 , 0, .7), "cm"))
+      print(g)
+      grDevices::dev.off()
 
-    ### Add color key legend
-    if (all(change_vec == 1e6)) {
-      final_pw_img <- pw_diag
-    } else {
-      final_pw_img <- magick::image_composite(pw_diag,
-                                              magick::image_scale(col_key_legend, "x45"),
-                                              gravity  = key_gravity,
-                                              offset = "+10+10")
+      ### Add color key legend
+      if (all(change_vec == 1e6)) {
+        final_pw_img <- pw_diag
+      } else {
+        final_pw_img <- magick::image_composite(pw_diag,
+                                                magick::image_scale(col_key_legend, "x45"),
+                                                gravity  = key_gravity,
+                                                offset = "+10+10")
+      }
+
+      final_path <- file.path("term_visualizations", basename(f_path))
+      magick::image_write(final_pw_img, path = final_path, format = "png")
+
+      utils::setTxtProgressBar(pb, i)
     }
-
-    final_path <- file.path("term_visualizations", basename(f_path))
-    magick::image_write(final_pw_img, path = final_path, format = "png")
-
-    utils::setTxtProgressBar(pb, i)
+    close(pb)
   }
-  close(pb)
 }
 
 #' Color hsa KEGG pathway
