@@ -20,7 +20,7 @@ As mentioned in the vignette [Introduction to pathfindR](intro_vignette.html), e
 
 # Preparation of Necessary Data
 
-> As of v1.5, pathfindR offers utility functions for obtaining organism-specific PIN data and organism-specific gene sets data via `get_pin_file()` and `get_gene_sets_list()`, respectively.
+> As of v1.5, pathfindR offers utility functions for obtaining organism-specific PIN data and organism-specific gene sets data via `get_pin_file()` and `get_gene_sets_list()`, respectively. See the vignette [Obtaining PIN and Gene Sets Data](obtain_data.html) for detailed information on how to gather PIN and gene sets data (for any organism of your choice) for use with pathfindR.
 
 For performing non-human active-subnetwork-oriented enrichment analysis, the user needs the following resources:
 

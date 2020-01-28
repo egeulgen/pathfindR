@@ -316,6 +316,8 @@ score_matrix <- score_terms(enrichment_table = RA_clustered[RA_clustered$Status 
 
 # Analysis with Custom Gene Sets
 
+> As of v1.5, pathfindR offers utility functions for obtaining organism-specific PIN data and organism-specific gene sets data via `get_pin_file()` and `get_gene_sets_list()`, respectively. See the vignette [Obtaining PIN and Gene Sets Data](obtain_data.html) for detailed information on how to gather PIN and gene sets data (for any organism of your choice) for use with pathfindR.
+
 It is possible to use `run_pathfindR()` with custom gene sets (including gene sets for non-Homo-sapiens species). Here, we provide an example application of active-subnetwork-oriented enrichment analysis of the target genes of two transcription factors.
 
 We first load and prepare the gene sets:
@@ -373,7 +375,6 @@ knitr::kable(custom_result)
 ```
 
 > It is also possible to run pathfindR using non-human organism annotation. See the vignette [pathfindR Analysis for non-Homo-sapiens organisms](non_hs_analysis.html)
-
 
 [^1]: Huang DW, Sherman BT, Tan Q, et al. The DAVID Gene Functional Classification Tool: a novel biological module-centric algorithm to functionally analyze large gene lists. Genome Biol. 2007;8(9):R183.
 

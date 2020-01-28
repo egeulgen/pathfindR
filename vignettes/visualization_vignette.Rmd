@@ -116,7 +116,7 @@ UpSet_plot(RA_output)
 Again, you may change the number of top terms plotted via `num_terms` (default = 10):
 
 ```{r upset2}
-UpSet_plot(RA_output, num_terms = 25)
+UpSet_plot(RA_output, num_terms = 5)
 ```
 
 Again, to plot using full term names (instead of IDs which is the default), set `use_description = TRUE`:

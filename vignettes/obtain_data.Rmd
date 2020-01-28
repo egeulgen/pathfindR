@@ -1,0 +1,109 @@
+---
+title: "Obtaining PIN and Gene Sets Data"
+output: rmarkdown::html_vignette
+date: "`r Sys.Date()`"
+vignette: >
+  %\VignetteIndexEntry{Obtaining PIN and Gene Sets Data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
+```
+
+# Get PIN File
+
+For retrieving the PIN file for an organism of your choice, you may use the function `get_pin_file()`. As of this version, the only source for PIN data is "BioGRID".
+
+By default, the function downloads the PIN data from BioGRID and processes it, saves it in a temporary file and returns the path: 
+
+```{r}
+## the default organism is "Homo_sapiens"
+path_to_pin_file <- get_pin_file()
+```
+
+You can retrieve the PIN data for the organism of your choice, by setting the `org` argument:
+
+```{r}
+## retrieving PIN data for "Gallus_gallus"
+path_to_pin_file <- get_pin_file(org = "Gallus_gallus")
+```
+
+You may also supply a `path/to/PIN/file` to save the PIN file for later use (in this case, the path you supply will be returned):
+
+```{r}
+## saving the "Homo_sapiens" PIN as "/path/to/PIN/file"
+path_to_pin_file <- get_pin_file(path2pin = "/path/to/PIN/file")
+```
+
+You may also retrieve a specific version of BioGRID via setting the `release` argument:
+
+```{r}
+## retrieving PIN data for "Mus_musculus" from BioGRID release 3.5.179
+path_to_pin_file <- get_pin_file(org = "Mus_musculus", 
+                                 release = "3.5.179")
+```
+
+# Get Gene Sets List
+
+To retrieve organism-specific gene sets list, you may use the function `get_gene_sets_list()`. The available sources for gene sets are "KEGG", "Reactome" and "MSigDB". The function retrieves the gene sets data from the source and processes it into a list of two objects used by pathfindR for active-subnetwork-oriented enrichment analysis:
+1. **gene_sets** A list containing the genes involved in each gene set
+2. **descriptions** A named vector containing the descriptions for each gene set
+
+By default, `get_gene_sets_list()` obtains "KEGG" gene sets for "hsa".
+
+## KEGG Pathway Gene Sets
+
+To obtain the gene sets list of the KEGG pathways for an organism of your choice, use the KEGG organism code for the selected organism. For a full list of all available organisms, see [here](https://www.genome.jp/kegg/catalog/org_list.html).
+
+```{r}
+## obtaining KEGG pathway gene sets for Rattus norvegicus (rno)
+gsets_list <- get_gene_sets_list(org_code = "rno")
+```
+
+## Reactome Pathway Gene Sets
+
+For obtaining Reactome pathway gene sets, set the `source` argument to "Reactome". This downloads the most current Reactome pathways in gmt format and processes it into the list object that pathfindR uses:
+
+```{r}
+gsets_list <- get_gene_sets_list(source = "Reactome")
+```
+
+For Reactome, there is only one collection of pathway gene sets.
+
+## MSigDB Gene Sets
+
+Using `msigdbr`, `pathfindR` can retrive all MSigDB gene sets. For this, set the `source` argument to "MSigDB" and the `collection` argument to the desired MSigDB collection (one of H, C1, C2, C3, C4, C5, C6, C7):
+
+```{r}
+gsets_list <- get_gene_sets_list(source = "MSigDB",
+                                 collection = "C2")
+```
+
+The default organism for MSigDB is "Homo sapiens", you may obtain the gene sets data for another organism by setting the `species` argument:
+
+```{r}
+## obtaining C5 gene sets data for "Drosophila melanogaster"
+gsets_list <- get_gene_sets_list(source = "MSigDB",
+                                 species = "Drosophila melanogaster",
+                                 collection = "C5")
+```
+
+```{r, eval=TRUE}
+## see msigdbr::msigdbr_show_species() for all available organisms
+msigdbr::msigdbr_show_species()
+```
+
+You may also obtain the gene sets for a subcollection by setting the `subcollection` argument:
+
+```{r}
+## obtaining C3 - MIR: microRNA targets
+gsets_list <- get_gene_sets_list(source = "MSigDB",
+                                 collection = "C3",
+                                 subcollection = "MIR")
+```

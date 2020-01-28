@@ -309,7 +309,7 @@ get_mgsigdb_gsets <- function(species = "Homo sapiens", collection, subcollectio
 #' of all available organisms, see \url{https://www.genome.jp/kegg/catalog/org_list.html}
 #' @param species (Used for "MSigDB" only) species name, such as Homo sapiens, Mus musculus, etc.
 #' See \code{\link[msigdbr]{msigdbr_show_species}} for all the species available in
-#' the msigdbr package
+#' the msigdbr package (default = "Homo sapiens")
 #' @param collection (Used for "MSigDB" only) collection. i.e., H, C1, C2, C3, C4, C5, C6, C7.
 #' @param subcollection (Used for "MSigDB" only)  sub-collection, such as CGP, MIR, BP, etc. (default = NULL,
 #' i.e. list all gene sets in collection)
@@ -317,8 +317,10 @@ get_mgsigdb_gsets <- function(species = "Homo sapiens", collection, subcollectio
 #' @return A list containing 2 elements: \itemize{
 #' \item{gene_sets}{A list containing the genes involved in each gene set}
 #' \item{descriptions}{A named vector containing the descriptions for each gene set}
-#' }. For KEGG, it is possible to choose a specific organism. For a full list
-#' of all available organisms, see \url{https://www.genome.jp/kegg/catalog/org_list.html}.
+#' }. For "KEGG" and "MSigDB", it is possible to choose a specific organism. For a full list
+#' of all available KEGG organisms, see \url{https://www.genome.jp/kegg/catalog/org_list.html}.
+#' See \code{\link[msigdbr]{msigdbr_show_species}} for all the species available in
+#' the msigdbr package used for obtaining "MSigDB" gene sets.
 #' For Reactome, there is only one collection of pathway gene sets.
 #' @export
 #'
