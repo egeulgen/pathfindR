@@ -35,6 +35,10 @@ fetch_java_version <- function() {
     java <- Sys.which("java")
   }
 
+  if (java == "")
+    stop("Java version not detected. Please download and install Java from ",
+         dQuote("https://www.java.com/en/"))
+
   version <- system2(java, "-version", stderr = TRUE, stdout = TRUE)
   if (length(version) < 1) {
     stop("Java version not detected. Please download and install Java from ",
