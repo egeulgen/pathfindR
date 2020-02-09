@@ -10,6 +10,9 @@
     <loc>https://egeulgen.github.io/pathfindR//reference/RA_clustered.html</loc>
   </url>
   <url>
+    <loc>https://egeulgen.github.io/pathfindR//reference/RA_comparison_output.html</loc>
+  </url>
+  <url>
     <loc>https://egeulgen.github.io/pathfindR//reference/RA_exp_mat.html</loc>
   </url>
   <url>
@@ -53,6 +56,12 @@
   </url>
   <url>
     <loc>https://egeulgen.github.io/pathfindR//reference/color_kegg_pathway.html</loc>
+  </url>
+  <url>
+    <loc>https://egeulgen.github.io/pathfindR//reference/combine_pathfindR_results.html</loc>
+  </url>
+  <url>
+    <loc>https://egeulgen.github.io/pathfindR//reference/combined_results_graph.html</loc>
   </url>
   <url>
     <loc>https://egeulgen.github.io/pathfindR//reference/create_kappa_matrix.html</loc>

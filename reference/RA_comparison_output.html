@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create Term-Gene Graph — term_gene_graph • pathfindR</title>
+<title>Second Example Output for the pathfindR Enrichment Workflow — RA_comparison_output • pathfindR</title>
 
 
 <!-- jquery -->
@@ -41,8 +41,12 @@
 
 
 
-<meta property="og:title" content="Create Term-Gene Graph — term_gene_graph" />
-<meta property="og:description" content="Create Term-Gene Graph" />
+<meta property="og:title" content="Second Example Output for the pathfindR Enrichment Workflow — RA_comparison_output" />
+<meta property="og:description" content="The data frame containing the results of pathfindR's active-subnetwork-oriented
+enrichment workflow performed on the rheumatoid arthritis dataset GSE84074
+https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE84074. Analysis via
+run_pathfindR was performed using the default settings.
+Generated on Feb 9, 2020." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -144,86 +148,49 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create Term-Gene Graph</h1>
-    <small class="dont-index">Source: <a href='https://github.com/egeulgen/pathfindR/blob/master/R/visualization_functions.R'><code>R/visualization_functions.R</code></a></small>
-    <div class="hidden name"><code>term_gene_graph.Rd</code></div>
+    <h1>Second Example Output for the pathfindR Enrichment Workflow</h1>
+    <small class="dont-index">Source: <a href='https://github.com/egeulgen/pathfindR/blob/master/R/data.R'><code>R/data.R</code></a></small>
+    <div class="hidden name"><code>RA_comparison_output.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Create Term-Gene Graph</p>
+    <p>The data frame containing the results of pathfindR's active-subnetwork-oriented
+enrichment workflow performed on the rheumatoid arthritis dataset GSE84074
+<a href='https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE84074'>https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE84074</a>. Analysis via
+<code>run_pathfindR</code> was performed using the default settings.
+<em>Generated on Feb 9, 2020.</em></p>
     </div>
 
-    <pre class="usage"><span class='fu'>term_gene_graph</span>(
-  <span class='no'>result_df</span>,
-  <span class='kw'>num_terms</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>layout</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
-  <span class='kw'>use_description</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>node_size</span> <span class='kw'>=</span> <span class='st'>"num_genes"</span>
-)</pre>
+    <pre class="usage"><span class='no'>RA_comparison_output</span></pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>result_df</th>
-      <td><p>A dataframe of pathfindR results that must contain the following columns:</p><dl class='dl-horizontal'>
-  <dt>Term_Description</dt><dd><p>Description of the enriched term (necessary if <code>use_description = TRUE</code>)</p></dd>
-  <dt>ID</dt><dd><p>ID of the enriched term (necessary if <code>use_description = FALSE</code>)</p></dd>
+
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+
+    <p>A data frame with 35 rows and 8 columns:</p><dl class='dl-horizontal'>
+  <dt>ID</dt><dd><p>ID of the enriched term</p></dd>
+  <dt>Term_Description</dt><dd><p>Description of the enriched term</p></dd>
+  <dt>Fold_Enrichment</dt><dd><p>Fold enrichment value for the enriched term</p></dd>
+  <dt>occurrence</dt><dd><p>the number of iterations that the given term was found to enriched over all iterations</p></dd>
   <dt>lowest_p</dt><dd><p>the lowest adjusted-p value of the given term over all iterations</p></dd>
-  <dt>Up_regulated</dt><dd><p>the up-regulated genes in the input involved in the given term's gene set, comma-separated</p></dd>
-  <dt>Down_regulated</dt><dd><p>the down-regulated genes in the input involved in the given term's gene set, comma-separated</p></dd>
+  <dt>highest_p</dt><dd><p>the highest adjusted-p value of the given term over all iterations</p></dd>
+  <dt>Up_regulated</dt><dd><p>the up-regulated genes in the input involved in the given term, comma-separated</p></dd>
+  <dt>Down_regulated</dt><dd><p>the down-regulated genes in the input involved in the given term, comma-separated</p></dd>
 
-</dl></td>
-    </tr>
-    <tr>
-      <th>num_terms</th>
-      <td><p>Number of top enriched terms to use while creating the graph. Set to <code>NULL</code> to use
-all enriched terms (default = 10, i.e. top 10 terms)</p></td>
-    </tr>
-    <tr>
-      <th>layout</th>
-      <td><p>The type of layout to create (see <code><a href='https://ggraph.data-imaginist.com/reference/ggraph.html'>ggraph</a></code> for details. Default = "auto")</p></td>
-    </tr>
-    <tr>
-      <th>use_description</th>
-      <td><p>Boolean argument to indicate whether term descriptions
-(in the "Term_Description" column) should be used. (default = <code>FALSE</code>)</p></td>
-    </tr>
-    <tr>
-      <th>node_size</th>
-      <td><p>Argument to indicate whether to use number of significant genes ("num_genes")
-or the -log10(lowest p value) ("p_val") for adjusting the node sizes (default = "num_genes")</p></td>
-    </tr>
-    </table>
+</dl>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <div class='dont-index'><p><code><a href='RA_input.html'>RA_input</a></code>  for the RA differentially-expressed genes data frame
+<code><a href='RA_output.html'>RA_output</a></code> for the RA example pathfindR enrinchment output
+<code><a href='RA_clustered.html'>RA_clustered</a></code> for the RA example pathfindR clustering output
+<code><a href='RA_exp_mat.html'>RA_exp_mat</a></code> for the RA differentially-expressed genes expression matrix
+<code><a href='run_pathfindr.html'>run_pathfindR</a></code> for details on the pathfindR enrichment analysis</p></div>
 
-    <p>a  <code><a href='https://ggraph.data-imaginist.com/reference/ggraph.html'>ggraph</a></code> object containing the term-gene graph.
- Each node corresponds to an enriched term (beige), an up-regulated gene (green)
- or a down-regulated gene (red). An edge between a term and a gene indicates
- that the given term involves the gene. Size of a term node is proportional
- to either the number of genes (if <code>node_size = "num_genes"</code>) or
- the -log10(lowest p value) (if <code>node_size = "p_val"</code>).</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>This function (adapted from the Gene-Concept network visualization
-by the R package <code>enrichplot</code>) can be utilized to visualize which input
-genes are involved in the enriched terms as a graph. The term-gene graph
-shows the links between genes and biological terms and allows for the
-investigation of multiple terms to which significant genes are related. The
-graph also enables determination of the overlap between the enriched terms
-by identifying shared and distinct significant term-related genes.</p>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>term_gene_graph</span>(<span class='no'>RA_output</span>)</div><div class='output co'>#&gt; <span class='message'>Using `stress` as default layout</span></div><div class='input'><span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>term_gene_graph</span>(<span class='no'>RA_output</span>, <span class='kw'>num_terms</span> <span class='kw'>=</span> <span class='fl'>5</span>)</div><div class='output co'>#&gt; <span class='message'>Using `stress` as default layout</span></div><div class='input'><span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>term_gene_graph</span>(<span class='no'>RA_output</span>, <span class='kw'>node_size</span> <span class='kw'>=</span> <span class='st'>"p_val"</span>)</div><div class='output co'>#&gt; <span class='message'>Using `stress` as default layout</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#examples">Examples</a></li>
+      <li><a href="#format">Format</a></li>
+      <li><a href="#see-also">See also</a></li>
     </ul>
 
   </div>
