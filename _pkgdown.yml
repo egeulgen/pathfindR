@@ -34,6 +34,12 @@ reference:
     contents:
       - get_pin_file
       - get_gene_sets_list
+  - title: "Comparison of 2 pathfindR Results"
+    desc: >
+      Functions to compare 2 different pathfindR results
+    contents:
+      - combine_pathfindR_results
+      - combined_results_graph
   - title: "Enrichment-related functions"
     desc: >
       Active subnetwork search- and Enrichment-related functions
@@ -72,6 +78,7 @@ reference:
       - RA_exp_mat
       - RA_output
       - RA_clustered
+      - RA_comparison_output
       - custom_result
       - example_active_snws
       - myeloma_input
