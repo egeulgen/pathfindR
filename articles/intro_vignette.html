@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0.9004</span>
       </span>
     </div>
 
@@ -105,7 +105,7 @@
       <h1>Introduction to pathfindR</h1>
                         <h4 class="author">Ege Ulgen</h4>
             
-            <h4 class="date">2020-02-09</h4>
+            <h4 class="date">2020-02-20</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/master/vignettes/intro_vignette.Rmd"><code>vignettes/intro_vignette.Rmd</code></a></small>
       <div class="hidden name"><code>intro_vignette.Rmd</code></div>
@@ -677,6 +677,28 @@
 <a class="sourceLine" id="cb24-19" data-line-number="19">                            <span class="dt">high =</span> <span class="st">"#1f4037"</span>) <span class="co"># default = "red"</span></a></code></pre></div>
 <p><img src="intro_vignette_files/figure-html/scores-1.png" width="768" style="display: block; margin: auto;"></p>
 </div>
+<div id="comparison-of-2-pathfindr-results" class="section level1">
+<h1 class="hasAnchor">
+<a href="#comparison-of-2-pathfindr-results" class="anchor"></a>Comparison of 2 pathfindR Results</h1>
+<p>The function <code><a href="../reference/combine_pathfindR_results.html">combine_pathfindR_results()</a></code> allows combination of two pathfindR active-subnetwork-oriented enrichment analysis results for investigating common and distinct terms between the groups. Below is an example for comparing two different results using rheumatoid arthritis-related data (<code>RA_output</code> and <code>RA_comparison_output</code>).</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1">combined_df &lt;-<span class="st"> </span><span class="kw"><a href="../reference/combine_pathfindR_results.html">combine_pathfindR_results</a></span>(<span class="dt">result_A =</span> RA_output, </a>
+<a class="sourceLine" id="cb25-2" data-line-number="2">                                         <span class="dt">result_B =</span> RA_comparison_output)</a></code></pre></div>
+<p>By default, <code><a href="../reference/combine_pathfindR_results.html">combine_pathfindR_results()</a></code> plots the term-gene graph for the common terms in the combined results. For not plotting the graph, set <code>plot_common = FALSE</code>.</p>
+<p>The function <code><a href="../reference/combined_results_graph.html">combined_results_graph()</a></code> can be used to create this graph (using only selected terms etc.) later on. By default, the function creates the graph using all common terms:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw"><a href="../reference/combined_results_graph.html">combined_results_graph</a></span>(combined_df)</a></code></pre></div>
+<p>By supplying a vector of selected terms to the <code>selected_terms</code> arguments, you may plot the term-gene graph for the selected terms:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="kw"><a href="../reference/combined_results_graph.html">combined_results_graph</a></span>(combined_df, </a>
+<a class="sourceLine" id="cb27-2" data-line-number="2">                       <span class="dt">selected_terms =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"hsa04144"</span>, <span class="st">"hsa04141"</span>, <span class="st">"hsa04140"</span>))</a></code></pre></div>
+<p>By default, <code><a href="../reference/combined_results_graph.html">combined_results_graph()</a></code> creates the graph using term IDs. To use term descriptions instead, set <code>use_description = TRUE</code>:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="kw"><a href="../reference/combined_results_graph.html">combined_results_graph</a></span>(combined_df, </a>
+<a class="sourceLine" id="cb28-2" data-line-number="2">                       <span class="dt">use_description =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb28-3" data-line-number="3">                       <span class="dt">selected_terms =</span> combined_df<span class="op">$</span>Term_Description[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>])</a></code></pre></div>
+<p>For changing the layout of the graph (<code>"auto"</code> by default), you may use the <code>layout</code> argument.</p>
+<p>For changing how the sizes of the term nodes are determined, you may use the <code>node_size</code> argument. The options are <code>"num_genes"</code> (default) and <code>"p_val"</code> for using the number of significant genes in the term and the -log10(p) value of the term, respectively:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="kw"><a href="../reference/combined_results_graph.html">combined_results_graph</a></span>(combined_df, </a>
+<a class="sourceLine" id="cb29-2" data-line-number="2">                       <span class="dt">selected_terms =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"hsa04144"</span>, <span class="st">"hsa04141"</span>, <span class="st">"hsa04140"</span>),</a>
+<a class="sourceLine" id="cb29-3" data-line-number="3">                       <span class="dt">node_size =</span> <span class="st">"p_val"</span>)</a></code></pre></div>
+</div>
 <div id="analysis-with-custom-gene-sets" class="section level1">
 <h1 class="hasAnchor">
 <a href="#analysis-with-custom-gene-sets" class="anchor"></a>Analysis with Custom Gene Sets</h1>
@@ -685,33 +707,33 @@
 </blockquote>
 <p>It is possible to use <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code> with custom gene sets (including gene sets for non-Homo-sapiens species). Here, we provide an example application of active-subnetwork-oriented enrichment analysis of the target genes of two transcription factors.</p>
 <p>We first load and prepare the gene sets:</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1">## CREB target genes</a>
-<a class="sourceLine" id="cb25-2" data-line-number="2">CREB_target_genes &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/normalizePath.html">normalizePath</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata/CREB.txt"</span>, <span class="dt">package =</span> <span class="st">"pathfindR"</span>))</a>
-<a class="sourceLine" id="cb25-3" data-line-number="3">CREB_target_genes &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(CREB_target_genes)[<span class="op">-</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1</span>, <span class="dv">2</span>)] <span class="co"># skip the first two lines</span></a>
-<a class="sourceLine" id="cb25-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb25-5" data-line-number="5">## MYC target genes</a>
-<a class="sourceLine" id="cb25-6" data-line-number="6">MYC_target_genes &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/normalizePath.html">normalizePath</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata/MYC.txt"</span>, <span class="dt">package =</span> <span class="st">"pathfindR"</span>))</a>
-<a class="sourceLine" id="cb25-7" data-line-number="7">MYC_target_genes &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(MYC_target_genes)[<span class="op">-</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1</span>, <span class="dv">2</span>)] <span class="co"># skip the first two lines</span></a>
-<a class="sourceLine" id="cb25-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb25-9" data-line-number="9">## Prep for use</a>
-<a class="sourceLine" id="cb25-10" data-line-number="10">custom_genes &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">TF1 =</span> CREB_target_genes, <span class="dt">TF2 =</span> MYC_target_genes)</a>
-<a class="sourceLine" id="cb25-11" data-line-number="11">custom_descriptions &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dt">TF1 =</span> <span class="st">"CREB target genes"</span>, <span class="dt">TF2 =</span> <span class="st">"MYC target genes"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1">## CREB target genes</a>
+<a class="sourceLine" id="cb30-2" data-line-number="2">CREB_target_genes &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/normalizePath.html">normalizePath</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata/CREB.txt"</span>, <span class="dt">package =</span> <span class="st">"pathfindR"</span>))</a>
+<a class="sourceLine" id="cb30-3" data-line-number="3">CREB_target_genes &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(CREB_target_genes)[<span class="op">-</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1</span>, <span class="dv">2</span>)] <span class="co"># skip the first two lines</span></a>
+<a class="sourceLine" id="cb30-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb30-5" data-line-number="5">## MYC target genes</a>
+<a class="sourceLine" id="cb30-6" data-line-number="6">MYC_target_genes &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/normalizePath.html">normalizePath</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata/MYC.txt"</span>, <span class="dt">package =</span> <span class="st">"pathfindR"</span>))</a>
+<a class="sourceLine" id="cb30-7" data-line-number="7">MYC_target_genes &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(MYC_target_genes)[<span class="op">-</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1</span>, <span class="dv">2</span>)] <span class="co"># skip the first two lines</span></a>
+<a class="sourceLine" id="cb30-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb30-9" data-line-number="9">## Prep for use</a>
+<a class="sourceLine" id="cb30-10" data-line-number="10">custom_genes &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">TF1 =</span> CREB_target_genes, <span class="dt">TF2 =</span> MYC_target_genes)</a>
+<a class="sourceLine" id="cb30-11" data-line-number="11">custom_descriptions &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dt">TF1 =</span> <span class="st">"CREB target genes"</span>, <span class="dt">TF2 =</span> <span class="st">"MYC target genes"</span>)</a></code></pre></div>
 <p>We next prepare the example input data frame. Because of the way we choose genes, we expect significant enrichment for MYC targets (40 MYC target genes + 10 CREB target genes). Because this is only an example, we also assign each genes random p-values between 0.001 and 0.05.</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">123</span>)</a>
-<a class="sourceLine" id="cb26-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb26-3" data-line-number="3">## Select 40 random genes from MYC gene sets and 10 from CREB gene sets</a>
-<a class="sourceLine" id="cb26-4" data-line-number="4">selected_genes &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(MYC_target_genes, <span class="dv">40</span>)</a>
-<a class="sourceLine" id="cb26-5" data-line-number="5">selected_genes &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(selected_genes, </a>
-<a class="sourceLine" id="cb26-6" data-line-number="6">                    <span class="kw"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(CREB_target_genes, <span class="dv">10</span>))</a>
-<a class="sourceLine" id="cb26-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb26-8" data-line-number="8">## Assign random p value between 0.001 and 0.05 for each selected gene</a>
-<a class="sourceLine" id="cb26-9" data-line-number="9">rand_p_vals &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">0.001</span>, <span class="fl">0.05</span>, <span class="dt">length.out =</span> <span class="dv">5</span>),</a>
-<a class="sourceLine" id="cb26-10" data-line-number="10">                      <span class="dt">size =</span> <span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(selected_genes),</a>
-<a class="sourceLine" id="cb26-11" data-line-number="11">                      <span class="dt">replace =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb26-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb26-13" data-line-number="13">input_df &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="dt">Gene_symbol =</span> selected_genes,</a>
-<a class="sourceLine" id="cb26-14" data-line-number="14">                       <span class="dt">p_val =</span> rand_p_vals)</a>
-<a class="sourceLine" id="cb26-15" data-line-number="15">knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>(<span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(input_df))</a></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">123</span>)</a>
+<a class="sourceLine" id="cb31-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb31-3" data-line-number="3">## Select 40 random genes from MYC gene sets and 10 from CREB gene sets</a>
+<a class="sourceLine" id="cb31-4" data-line-number="4">selected_genes &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(MYC_target_genes, <span class="dv">40</span>)</a>
+<a class="sourceLine" id="cb31-5" data-line-number="5">selected_genes &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(selected_genes, </a>
+<a class="sourceLine" id="cb31-6" data-line-number="6">                    <span class="kw"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(CREB_target_genes, <span class="dv">10</span>))</a>
+<a class="sourceLine" id="cb31-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb31-8" data-line-number="8">## Assign random p value between 0.001 and 0.05 for each selected gene</a>
+<a class="sourceLine" id="cb31-9" data-line-number="9">rand_p_vals &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">0.001</span>, <span class="fl">0.05</span>, <span class="dt">length.out =</span> <span class="dv">5</span>),</a>
+<a class="sourceLine" id="cb31-10" data-line-number="10">                      <span class="dt">size =</span> <span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(selected_genes),</a>
+<a class="sourceLine" id="cb31-11" data-line-number="11">                      <span class="dt">replace =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb31-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb31-13" data-line-number="13">input_df &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="dt">Gene_symbol =</span> selected_genes,</a>
+<a class="sourceLine" id="cb31-14" data-line-number="14">                       <span class="dt">p_val =</span> rand_p_vals)</a>
+<a class="sourceLine" id="cb31-15" data-line-number="15">knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>(<span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(input_df))</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">Gene_symbol</th>
@@ -745,16 +767,16 @@
 </tbody>
 </table>
 <p>Finally, we perform active-subnetwork-oriented enrichment analysis via <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code> using the custom genes as the gene sets:</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1">custom_result &lt;-<span class="st"> </span><span class="kw"><a href="../reference/run_pathfindr.html">run_pathfindR</a></span>(input_df,</a>
-<a class="sourceLine" id="cb27-2" data-line-number="2">                               <span class="dt">gene_sets =</span> <span class="st">"Custom"</span>,</a>
-<a class="sourceLine" id="cb27-3" data-line-number="3">                               <span class="dt">custom_genes =</span> custom_genes,</a>
-<a class="sourceLine" id="cb27-4" data-line-number="4">                               <span class="dt">custom_descriptions =</span> custom_descriptions,</a>
-<a class="sourceLine" id="cb27-5" data-line-number="5">                               <span class="dt">max_gset_size =</span> <span class="ot">Inf</span>, <span class="co"># DO NOT LIMIT GENE SET SIZE</span></a>
-<a class="sourceLine" id="cb27-6" data-line-number="6">                               <span class="dt">iterations =</span> <span class="dv">1</span>, <span class="co"># for demo, setting number of iterations to 1</span></a>
-<a class="sourceLine" id="cb27-7" data-line-number="7">                               <span class="dt">output_dir =</span> <span class="st">"misc/v1.4/CREB_MYC"</span>)</a>
-<a class="sourceLine" id="cb27-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb27-9" data-line-number="9">knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>(custom_result)</a></code></pre></div>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1">knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>(custom_result)</a></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1">custom_result &lt;-<span class="st"> </span><span class="kw"><a href="../reference/run_pathfindr.html">run_pathfindR</a></span>(input_df,</a>
+<a class="sourceLine" id="cb32-2" data-line-number="2">                               <span class="dt">gene_sets =</span> <span class="st">"Custom"</span>,</a>
+<a class="sourceLine" id="cb32-3" data-line-number="3">                               <span class="dt">custom_genes =</span> custom_genes,</a>
+<a class="sourceLine" id="cb32-4" data-line-number="4">                               <span class="dt">custom_descriptions =</span> custom_descriptions,</a>
+<a class="sourceLine" id="cb32-5" data-line-number="5">                               <span class="dt">max_gset_size =</span> <span class="ot">Inf</span>, <span class="co"># DO NOT LIMIT GENE SET SIZE</span></a>
+<a class="sourceLine" id="cb32-6" data-line-number="6">                               <span class="dt">iterations =</span> <span class="dv">1</span>, <span class="co"># for demo, setting number of iterations to 1</span></a>
+<a class="sourceLine" id="cb32-7" data-line-number="7">                               <span class="dt">output_dir =</span> <span class="st">"misc/v1.4/CREB_MYC"</span>)</a>
+<a class="sourceLine" id="cb32-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb32-9" data-line-number="9">knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>(custom_result)</a></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1">knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>(custom_result)</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">ID</th>
@@ -828,6 +850,7 @@
       <li><a href="#term-gene-graph">Term-Gene Graph</a></li>
       <li><a href="#upset-plot">UpSet Plot</a></li>
       <li><a href="#aggregated-term-scores-per-sample">Aggregated Term Scores per Sample</a></li>
+      <li><a href="#comparison-of-2-pathfindr-results">Comparison of 2 pathfindR Results</a></li>
       <li><a href="#analysis-with-custom-gene-sets">Analysis with Custom Gene Sets</a></li>
       </ul>
 </div>
