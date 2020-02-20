@@ -19,7 +19,7 @@ maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www
 MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 <!-- badges: end -->
 
-## Overview
+# Overview
 
 `pathfindR` is a tool for enrichment analysis via active subnetworks.
 The package also offers functionalities to cluster the enriched terms
@@ -35,7 +35,7 @@ For detailed documentation, see [pathfindR’s
 website](https://egeulgen.github.io/pathfindR/) or [the pathfindR
 wiki](https://github.com/egeulgen/pathfindR/wiki).
 
-## Installation
+# Installation
 
 You can install the released version of pathfindR from CRAN via:
 
@@ -78,7 +78,7 @@ docker pull egeulgen/pathfindr:1.4.1
 docker pull egeulgen/pathfindr:dev
 ```
 
-## Enrichment Analysis with pathfindR
+# Enrichment Analysis with pathfindR
 
 ![pathfindR Enrichment
 Workflow](https://github.com/egeulgen/pathfindR/blob/master/vignettes/pathfindr.png?raw=true
@@ -130,13 +130,9 @@ This wrapper function performs the active-subnetwork-oriented enrichment
 analysis and returns a data frame of enriched terms (as well as
 visualization of enriched terms and an HTML report):
 
-| ID       | Term\_Description         | Fold\_Enrichment | occurrence | lowest\_p | highest\_p | Up\_regulated         | Down\_regulated        |
-| :------- | :------------------------ | :--------------: | :--------: | :-------: | :--------: | :-------------------- | :--------------------- |
-| hsa03040 | Spliceosome               |      3.0975      |     10     |  1.1e-09  |  3.7e-09   | NDUFA1, NDUFB3, UQCRQ | SNRPB, SF3B2           |
-| hsa00190 | Oxidative phosphorylation |      2.5240      |     10     |  2.9e-08  |  2.9e-08   | COX7C                 | UBE2G1, VDAC1          |
-| hsa05012 | Parkinson disease         |      2.3188      |     10     |  4.9e-08  |  4.9e-08   | DDIT3, NDUFA1         | UBE2G1, VDAC1, SLC25A5 |
-
-<img src="inst/extdata/example_output-1.png" width="100%" />
+![pathfindR Enrichment
+Chart](https://github.com/egeulgen/pathfindR/blob/master/vignettes/enrichment_chart.png?raw=true
+"Enrichment Chart")
 
 Some useful arguments are:
 
@@ -170,7 +166,7 @@ custom gene set (see `?fetch_gene_set`)
 > organism-specific gene sets (KEGG and Reactome) data via
 > `get_pin_file()` and `get_gene_sets_list()`, respectively.
 
-## Clustering of the Enriched Terms
+# Clustering of the Enriched Terms
 
 ![Enriched Terms Clustering
 Workflow](https://github.com/egeulgen/pathfindR/blob/master/vignettes/term_clustering.png?raw=true
@@ -206,9 +202,9 @@ large gene lists. Genome Biol. 2007;8(9):R183.) can be used:
 clustered_df_fuzzy <- cluster_enriched_terms(output_df, method = "fuzzy")
 ```
 
-## Visualization of Enrichment Results
+# Visualization of Enrichment Results
 
-### Term-Gene Heatmap
+## Term-Gene Heatmap
 
 The function `term_gene_heatmap()` can be utilized to visualize the
 heatmap of enriched terms by the involved input genes. This heatmap
@@ -221,7 +217,7 @@ tile colors indicate the change values.
 Heatmap](https://github.com/egeulgen/pathfindR/blob/master/vignettes/hmap.png?raw=true
 "Term-Gene Heatmap")
 
-### Term-Gene Graph
+## Term-Gene Graph
 
 The function `term_gene_graph()` (adapted from the Gene-Concept network
 visualization by the R package `enrichplot`) can be utilized to
@@ -237,7 +233,7 @@ significant genes.
 Graph](https://github.com/egeulgen/pathfindR/blob/master/vignettes/term_gene.png?raw=true
 "Term-Gene Graph")
 
-### UpSet Plot
+## UpSet Plot
 
 UpSet plots are plots of the intersections of sets as a matrix.
 `UpSet_plot()` creates a ggplot object of an UpSet plot where the x-axis
@@ -251,7 +247,7 @@ intersections.
 plot](https://github.com/egeulgen/pathfindR/blob/master/vignettes/upset.png?raw=true
 "UpSet Plot")
 
-## Per Sample Enriched Term Scores
+# Per Sample Enriched Term Scores
 
 ![Agglomerated Scores for all Enriched Terms per
 Sample](https://github.com/egeulgen/pathfindR/blob/master/vignettes/score_hmap.png?raw=true
@@ -261,3 +257,29 @@ The function `score_terms()` can be used to calculate the agglomerated z
 score of each enriched term per sample. This allows the user to
 individually examine the scores and infer how a term is overall altered
 (activated or repressed) in a given sample or a group of samples.
+
+# Comparison of 2 pathfindR Results
+
+The function `combine_pathfindR_results()` allows combination of two
+pathfindR active-subnetwork-oriented enrichment analysis results for
+investigating common and distinct terms between the groups. Below is an
+example for comparing two different results using rheumatoid
+arthritis-related data.
+
+``` r
+combined_df <- combine_pathfindR_results(result_A = RA_output, 
+                                         result_B = RA_comparison_output)
+```
+
+By default, `combine_pathfindR_results()` plots the term-gene graph for
+the common terms in the combined results. The function
+`combined_results_graph()` can be used to create this graph (using only
+selected terms etc.) later on.
+
+``` r
+combined_results_graph(combined_df, selected_terms = c("hsa04144", "hsa04141", "hsa04140"))
+```
+
+![Combined Results
+Graph](https://github.com/egeulgen/pathfindR/blob/master/vignettes/combined_graph.png?raw=true
+"Combined Results Graph")

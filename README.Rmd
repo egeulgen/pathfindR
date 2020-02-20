@@ -24,7 +24,7 @@ suppressPackageStartupMessages(library(pathfindR))
 <!-- badges: end -->
 
 
-## Overview
+# Overview
 
 `pathfindR` is a tool for enrichment analysis via active subnetworks. The package also offers functionalities to cluster the enriched terms and identify representative terms in each cluster, to score the enriched terms per sample and to visualize analysis results.
     
@@ -32,7 +32,7 @@ The functionalities of pathfindR is described in detail in _Ulgen E, Ozisik O, S
 
 For detailed documentation, see [pathfindR's website](https://egeulgen.github.io/pathfindR/) or [the pathfindR wiki](https://github.com/egeulgen/pathfindR/wiki).
 
-## Installation
+# Installation
 
 You can install the released version of pathfindR from CRAN via:
 
@@ -70,7 +70,7 @@ docker pull egeulgen/pathfindr:1.4.1
 docker pull egeulgen/pathfindr:dev
 ```
 
-## Enrichment Analysis with pathfindR
+# Enrichment Analysis with pathfindR
 
 ![pathfindR Enrichment Workflow](https://github.com/egeulgen/pathfindR/blob/master/vignettes/pathfindr.png?raw=true "pathfindr Enrichment Workflow")
 
@@ -99,7 +99,7 @@ output_df <- run_pathfindR(input_df)
 
 This wrapper function performs the active-subnetwork-oriented enrichment analysis and returns a data frame of enriched terms (as well as visualization of enriched terms and an HTML report):
 
-```{r example_output, echo=FALSE}
+```{r example_output, echo=FALSE, eval=FALSE}
 tmp <- RA_output[1:3, ]
 tmp$Up_regulated[1] <- "NDUFA1, NDUFB3, UQCRQ"
 tmp$Up_regulated[2] <- "COX7C"
@@ -114,6 +114,8 @@ tmp$highest_p <- format(tmp$highest_p, scientific = TRUE, digits = 2)
 knitr::kable(tmp, align = c("l", "l", "c", "c", "c", "c", "l", "l"))
 enrichment_chart(RA_output)
 ```
+
+![pathfindR Enrichment Chart](https://github.com/egeulgen/pathfindR/blob/master/vignettes/enrichment_chart.png?raw=true "Enrichment Chart")
 
 Some useful arguments are:
 
@@ -140,7 +142,7 @@ The available PINs are "Biogrid", "STRING", "GeneMania", "IntAct", "KEGG" and "m
 
 > As of the latest dev version, pathfindR offers utility functions for obtaining organism-specific PIN data (for now, only BioGRID PINs) and organism-specific gene sets (KEGG and Reactome) data via `get_pin_file()` and `get_gene_sets_list()`, respectively.
 
-## Clustering of the Enriched Terms
+# Clustering of the Enriched Terms
 
 ![Enriched Terms Clustering Workflow](https://github.com/egeulgen/pathfindR/blob/master/vignettes/term_clustering.png?raw=true "Enriched Terms Clustering Workflow")
 The wrapper function for this workflow is `cluster_enriched_terms()`.
@@ -167,27 +169,44 @@ Alternatively, the `fuzzy` clustering method (as described in Huang DW, Sherman 
 clustered_df_fuzzy <- cluster_enriched_terms(output_df, method = "fuzzy")
 ```
 
-## Visualization of Enrichment Results
-### Term-Gene Heatmap
+# Visualization of Enrichment Results
+## Term-Gene Heatmap
 
 The function `term_gene_heatmap()` can be utilized to visualize the heatmap of enriched terms by the involved input genes. This heatmap allows visual identification of the input genes involved in the enriched terms, as well as the common or distinct genes between different terms. If the input data frame (same as in `run_pathfindR()`) is supplied, the tile colors indicate the change values.
 
 ![Term-Gene Heatmap](https://github.com/egeulgen/pathfindR/blob/master/vignettes/hmap.png?raw=true "Term-Gene Heatmap")
 
-### Term-Gene Graph
+## Term-Gene Graph
 
 The function `term_gene_graph()` (adapted from the Gene-Concept network visualization by the R package `enrichplot`) can be utilized to visualize which significant genes are involved in the enriched terms. The function creates the term-gene graph, displaying the connections between genes and biological terms (enriched pathways or gene sets). This allows for the investigation of multiple terms to which significant genes are related. The graph also enables determination of the degree of overlap between the enriched terms by identifying shared and/or distinct significant genes.
 
 ![Term-Gene Graph](https://github.com/egeulgen/pathfindR/blob/master/vignettes/term_gene.png?raw=true "Term-Gene Graph")
 
-### UpSet Plot
+## UpSet Plot
 
 UpSet plots are plots of the intersections of sets as a matrix. `UpSet_plot()` creates a ggplot object of an UpSet plot where the x-axis is the UpSet plot of intersections of enriched terms and the main plot is a bar plot of the number of genes in the corresponding intersections (default). If `genes_df` is provided, then the main plot displays the boxplots of change values of the genes within the corresponding intersections.
 
 ![UpSet plot](https://github.com/egeulgen/pathfindR/blob/master/vignettes/upset.png?raw=true "UpSet Plot")
 
-## Per Sample Enriched Term Scores
+# Per Sample Enriched Term Scores
 
 ![Agglomerated Scores for all Enriched Terms per Sample](https://github.com/egeulgen/pathfindR/blob/master/vignettes/score_hmap.png?raw=true "Scoring per Sample")
  
 The function `score_terms()` can be used to calculate the agglomerated z score of each enriched term per sample. This allows the user to individually examine the scores and infer how a term is overall altered (activated or repressed) in a given sample or a group of samples.
+
+# Comparison of 2 pathfindR Results
+
+The function `combine_pathfindR_results()` allows combination of two pathfindR active-subnetwork-oriented enrichment analysis results for investigating common and distinct terms between the groups. Below is an example for comparing two different results using rheumatoid arthritis-related data.
+
+```{r compare2res, eval=FALSE}
+combined_df <- combine_pathfindR_results(result_A = RA_output, 
+                                         result_B = RA_comparison_output)
+```
+
+By default, `combine_pathfindR_results()` plots the term-gene graph for the common terms in the combined results. The function `combined_results_graph()` can be used to create this graph (using only selected terms etc.) later on.
+
+```{r compare_graph, eval=FALSE}
+combined_results_graph(combined_df, selected_terms = c("hsa04144", "hsa04141", "hsa04140"))
+```
+
+![Combined Results Graph](https://github.com/egeulgen/pathfindR/blob/master/vignettes/combined_graph.png?raw=true "Combined Results Graph")
