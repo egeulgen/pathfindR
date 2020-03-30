@@ -77,7 +77,9 @@ combine_pathfindR_results <- function(result_A, result_B, plot_common = TRUE) {
 #' @export
 #'
 #' @examples
-#' combined_results <- combined_results <- combine_pathfindR_results(RA_output, RA_comparison_output, plot_common = FALSE)
+#' combined_results <- combine_pathfindR_results(RA_output,
+#'                                               RA_comparison_output,
+#'                                               plot_common = FALSE)
 #' g <- combined_results_graph(combined_results, selected_terms = sample(combined_results$ID, 3))
 combined_results_graph <- function(combined_df, selected_terms = "common",
                                    use_description = FALSE,
