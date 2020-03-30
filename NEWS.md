@@ -1,15 +1,17 @@
-# pathfindR 1.5.0.9004
+# pathfindR 1.5.0.9005
 ## to be released as 1.5.0
 
 ## Major Changes
+- add the new vignette "Comparing Two pathfindR Results" that briefly describes how different pathfindR results can be compared
 - added the functions `combine_pathfindR_results()` and `combined_results_graph()` for comparison of 2 pathfindR results and term-gene graph of the combined results, respectively
-- added the function `get_pin_file()` for obtaining organism-specific PIN data from BioGRID
+- added the function `get_pin_file()` for obtaining organism-specific PIN data (only from BioGRID for now)
 - added the function `get_gene_sets_list()` for obtaining organism-specific gene sets list from KEGG, Reactome and MSigDB
 - added the function `term_gene_heatmap()` to create heatmap visualizations of enriched terms and the involved input genes. Rows are enriched terms and columns are involved input genes. If `genes_df` is provided, colors of the tiles indicate the change values
 - added the function `UpSet_plot()` to create UpSet plots of enriched terms
 - added the human cell markers gene sets data `cell_markers_gsets` and `cell_markers_descriptions`
 
 ## Minor changes and bug fixes
+- added the output data `RA_comparison_output` of pathfindR results on a RA-related dataset (GSE84074)
 - in `visualize_hsa_KEGG()`, fixed the issue where >1 entrez ids were returned for a gene symbol (the first one is kept)
 - in `visualize_hsa_KEGG()`, implemented a tryCatch to avoid any issues when `KEGGREST::color.pathway.by.objects()` might fail
 - in `visualize_hsa_KEGG()`, now limiting the number of genes passes onto `KEGGREST::color.pathway.by.objects()` to < 60 (because the KEGG API now limits the number?)
