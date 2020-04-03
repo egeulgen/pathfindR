@@ -578,6 +578,8 @@ color_kegg_pathway <- function(pw_id, change_vec, normalize_vals = TRUE,
 
   ### determine limit
   lim <- round(max(abs(vals)), 2)
+  ### if no vals exist set lim to 1 maybe raise a warning also
+  lim <- ifelse(is.na(lim), 1, lim)
 
   ### generate low colors
   low_vals <- vals[vals < 0]
@@ -659,6 +661,7 @@ download_kegg_png <- function(pw_url, f_path, quiet = TRUE) {
   res <- tryCatch({
     cond <- utils::download.file(url = pw_url,
                                  destfile = f_path,
+                                 mode = "wb",
                                  quiet = quiet)
     cond
   }, error = function(e) {
