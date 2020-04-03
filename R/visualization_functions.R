@@ -659,6 +659,7 @@ download_kegg_png <- function(pw_url, f_path, quiet = TRUE) {
   res <- tryCatch({
     cond <- utils::download.file(url = pw_url,
                                  destfile = f_path,
+                                 method = "wb",
                                  quiet = quiet)
     cond
   }, error = function(e) {
