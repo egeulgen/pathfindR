@@ -175,7 +175,7 @@
 <ul>
 <li>Fixed the bug where the arguments <code>score_quan_thr</code> and <code>sig_gene_thr</code> for <code>run_pathfindR</code> were not being utilized.</li>
 <li>in <code>run_pathfindR</code>, added message at the end of run, reporting the number enriched pathways.</li>
-<li>the function <code>run_pathfindR</code> now creates a variable <code>org_dir</code> that is the âpath/to/original/working/directoryâ. <code>org_dir</code> is used in multiple functions to return to the original working directory if anything fails. This changes the previous behavior where if a function stopped with an error the directory was changed to â..â, i.e.Â the parent directory. This change was adapted so that the user is returned to the original working directory if they supply a recursive output folder (<code>output_dir</code>, e.g.Â â./ALL_RESULTS/RESULT_Aâ).</li>
+<li>the function <code>run_pathfindR</code> now creates a variable <code>org_dir</code> that is the “path/to/original/working/directory”. <code>org_dir</code> is used in multiple functions to return to the original working directory if anything fails. This changes the previous behavior where if a function stopped with an error the directory was changed to “..”, i.e. the parent directory. This change was adapted so that the user is returned to the original working directory if they supply a recursive output folder (<code>output_dir</code>, e.g. “./ALL_RESULTS/RESULT_A”).</li>
 <li>in <code>input_processing</code>, added the argument <code>human_genes</code> to only perform alias symbol conversion when human gene symbols are provided. - Updated the Rmd files used to create the report HTML files</li>
 <li>Added the data for <code>GO-All</code>, all annotations in the GO database (BP+MF+CC)</li>
 <li>Updated the vignette <code>pathfindR - An R Package for Pathway Enrichment Analysis Utilizing Active Subnetworks</code> to reflect the new functionalities.</li>
@@ -200,7 +200,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

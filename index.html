@@ -131,14 +131,14 @@
 <a href="#overview" class="anchor"></a>Overview</h1>
 <p><code>pathfindR</code> is a tool for enrichment analysis via active subnetworks. The package also offers functionalities to cluster the enriched terms and identify representative terms in each cluster, to score the enriched terms per sample and to visualize analysis results.</p>
 <p>The functionalities of pathfindR is described in detail in <em>Ulgen E, Ozisik O, Sezerman OU. 2019. pathfindR: An R Package for Comprehensive Identification of Enriched Pathways in Omics Data Through Active Subnetworks. Front. Genet. <a href="https://doi.org/10.3389/fgene.2019.00858" class="uri">https://doi.org/10.3389/fgene.2019.00858</a></em></p>
-<p>For detailed documentation, see <a href="https://egeulgen.github.io/pathfindR/">pathfindRâs website</a> or <a href="https://github.com/egeulgen/pathfindR/wiki">the pathfindR wiki</a>.</p>
+<p>For detailed documentation, see <a href="https://egeulgen.github.io/pathfindR/">pathfindR’s website</a> or <a href="https://github.com/egeulgen/pathfindR/wiki">the pathfindR wiki</a>.</p>
 </div>
 <div id="installation" class="section level1">
 <h1 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h1>
 <p>You can install the released version of pathfindR from CRAN via:</p>
 <div class="sourceCode" id="cb1"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"pathfindR"</span>)</pre></div>
-<p>or via <a href="https://pak.r-lib.org/">pak</a> (this might be preferable given <code>pathfindR</code>âs Bioconductor dependencies):</p>
+<p>or via <a href="https://pak.r-lib.org/">pak</a> (this might be preferable given <code>pathfindR</code>’s Bioconductor dependencies):</p>
 <div class="sourceCode" id="cb2"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"pak"</span>) <span class="co"># if you have not installed "pak"</span>
 <span class="kw pkg">pak</span><span class="kw ns">::</span><span class="fu">pkg_install</span>(<span class="st">"pathfindR"</span>)</pre></div>
 <p>And the development version from GitHub via <a href="https://pak.r-lib.org/">pak</a>:</p>
@@ -161,7 +161,7 @@
 <h1 class="hasAnchor">
 <a href="#enrichment-analysis-with-pathfindr" class="anchor"></a>Enrichment Analysis with pathfindR</h1>
 <p><img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/pathfindr.png?raw=true%20%22pathfindr%20Enrichment%20Workflow%22" alt="pathfindR Enrichment Workflow"></p>
-<p>This workflow takes in a data frame consisting of âgene symbolsâ, âchange valuesâ (optional) and âassociated p valuesâ:</p>
+<p>This workflow takes in a data frame consisting of “gene symbols”, “change values” (optional) and “associated p values”:</p>
 <table class="table">
 <thead><tr class="header">
 <th align="left">Gene_symbol</th>
@@ -195,7 +195,7 @@
 <blockquote>
 <p>An active subnetwork can be defined as a group of interconnected genes in a protein-protein interaction network (PIN) that predominantly consists of significantly altered genes. In other words, active subnetworks define distinct disease-associated sets of interacting genes, whether discovered through the original analysis or discovered because of being in interaction with a significant gene.</p>
 </blockquote>
-<p>These filtered list of active subnetworks are then used for enrichment analyses, i.e.Â using the genes in each of the active subnetworks, the significantly enriched terms (pathways/gene sets) are identified. Enriched terms with adjusted p values larger than the given threshold are discarded and the lowest adjusted p value (over all active subnetworks) for each term is kept. This process of <code>active subnetwork search + enrichment analyses</code> is repeated for a selected number of iterations, performed in parallel. Over all iterations, the lowest and the highest adjusted-p values, as well as number of occurrences over all iterations are reported for each significantly enriched term.</p>
+<p>These filtered list of active subnetworks are then used for enrichment analyses, i.e. using the genes in each of the active subnetworks, the significantly enriched terms (pathways/gene sets) are identified. Enriched terms with adjusted p values larger than the given threshold are discarded and the lowest adjusted p value (over all active subnetworks) for each term is kept. This process of <code>active subnetwork search + enrichment analyses</code> is repeated for a selected number of iterations, performed in parallel. Over all iterations, the lowest and the highest adjusted-p values, as well as number of occurrences over all iterations are reported for each significantly enriched term.</p>
 <p>This workflow can be run using the function <code><a href="reference/run_pathfindr.html">run_pathfindR()</a></code>:</p>
 <div class="sourceCode" id="cb5"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">pathfindR</span>)
 <span class="no">output_df</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/run_pathfindr.html">run_pathfindR</a></span>(<span class="no">input_df</span>)</pre></div>
@@ -218,7 +218,7 @@
 
 <span class="co"># report the non-significant active subnetwork genes (for later analyses)</span>
 <span class="no">output_df</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/run_pathfindr.html">run_pathfindR</a></span>(<span class="no">input_df</span>, <span class="kw">list_active_snw_genes</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></div>
-<p>The available PINs are âBiogridâ, âSTRINGâ, âGeneManiaâ, âIntActâ, âKEGGâ and âmmu_STRINGâ. The available gene sets are âKEGGâ, âReactomeâ, âBioCartaâ, âGO-Allâ, âGO-BPâ, âGO-CCâ, âGO-MFâ, and âmmu_KEGGâ. You also use a custom PIN (see <code><a href="reference/return_pin_path.html">?return_pin_path</a></code>) or a custom gene set (see <code><a href="reference/fetch_gene_set.html">?fetch_gene_set</a></code>)</p>
+<p>The available PINs are “Biogrid”, “STRING”, “GeneMania”, “IntAct”, “KEGG” and “mmu_STRING”. The available gene sets are “KEGG”, “Reactome”, “BioCarta”, “GO-All”, “GO-BP”, “GO-CC”, “GO-MF”, and “mmu_KEGG”. You also use a custom PIN (see <code><a href="reference/return_pin_path.html">?return_pin_path</a></code>) or a custom gene set (see <code><a href="reference/fetch_gene_set.html">?fetch_gene_set</a></code>)</p>
 <blockquote>
 <p>As of the latest dev version, pathfindR offers utility functions for obtaining organism-specific PIN data (for now, only BioGRID PINs) and organism-specific gene sets (KEGG and Reactome) data via <code><a href="reference/get_pin_file.html">get_pin_file()</a></code> and <code><a href="reference/get_gene_sets_list.html">get_gene_sets_list()</a></code>, respectively.</p>
 </blockquote>
@@ -239,7 +239,7 @@
 
 <span class="co"># change agglomeration method (default = "average") for hierarchical clustering</span>
 <span class="no">clustered_df</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/cluster_enriched_terms.html">cluster_enriched_terms</a></span>(<span class="no">output_df</span>, <span class="kw">clu_method</span> <span class="kw">=</span> <span class="st">"centroid"</span>)</pre></div>
-<p>Alternatively, the <code>fuzzy</code> clustering method (as described in Huang DW, Sherman BT, Tan Q, et al.Â The DAVID Gene Functional Classification Tool: a novel biological module-centric algorithm to functionally analyze large gene lists. Genome Biol. 2007;8(9):R183.) can be used:</p>
+<p>Alternatively, the <code>fuzzy</code> clustering method (as described in Huang DW, Sherman BT, Tan Q, et al. The DAVID Gene Functional Classification Tool: a novel biological module-centric algorithm to functionally analyze large gene lists. Genome Biol. 2007;8(9):R183.) can be used:</p>
 <div class="sourceCode" id="cb8"><pre class="r"><span class="no">clustered_df_fuzzy</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/cluster_enriched_terms.html">cluster_enriched_terms</a></span>(<span class="no">output_df</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"fuzzy"</span>)</pre></div>
 </div>
 <div id="visualization-of-enrichment-results" class="section level1">
@@ -343,7 +343,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>
