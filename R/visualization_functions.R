@@ -765,8 +765,10 @@ enrichment_chart <- function(result_df,
   result_df$Term_Description <- factor(result_df$Term_Description,
           levels = rev(unique(result_df$Term_Description)))
 
+  log_p <- -log10(result_df$lowest_p)
+
   g <- ggplot2::ggplot(result_df, ggplot2::aes_(~Fold_Enrichment, ~Term_Description))
-  g <- g + ggplot2::geom_point(ggplot2::aes(color = -log10(result_df$lowest_p),
+  g <- g + ggplot2::geom_point(ggplot2::aes(color = log_p,
                                             size = num_genes), na.rm = TRUE)
   g <- g + ggplot2::theme_bw()
   g <- g + ggplot2::theme(axis.text.x = ggplot2::element_text(size = 10),
