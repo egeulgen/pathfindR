@@ -353,9 +353,6 @@ visualize_hsa_KEGG <- function(hsa_kegg_ids, input_processed, max_to_plot = NULL
   if (length(pw_vis_list) != 0) {
     pb <- utils::txtProgressBar(min = 0, max = length(pw_vis_list), style = 3)
     for (i in seq_len(length(pw_vis_list))) {
-
-      if (is.null(pw_vis_list[[i]])) next
-
       ### Read image
       f_path <- pw_vis_list[[i]]$file_path
       pw_diag <- magick::image_read(f_path)
@@ -615,9 +612,6 @@ color_kegg_pathway <- function(pw_id, change_vec, normalize_vals = TRUE,
                                KEGG_gene_ids = names(pw_vis_changes),
                                fg_cols = fg_cols,
                                bg_cols = bg_cols)
-
-  if (is.na(pw_url))
-    return(NULL)
 
   fname <- paste0(pw_id, "_pathfindR.png")
   f_path <- file.path(tempdir(check = TRUE), fname)
