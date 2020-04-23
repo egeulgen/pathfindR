@@ -1050,10 +1050,19 @@ term_gene_heatmap <- function(result_df, genes_df, num_terms = 10,
                     which(colnames(result_df) == "Up_regulated"))
   down_genes <- apply(result_df, 1, parse_genes,
                       which(colnames(result_df) == "Down_regulated"))
+
+  if (length(down_genes) == 0) {
+    down_genes <- rep(NA, nrow(result_df))
+  }
+  if (length(up_genes) == 0) {
+    up_genes <- rep(NA, nrow(result_df))
+  }
+
   names(up_genes) <- names(down_genes) <- result_df[, ID_column]
 
   ############ Create terms-by-genes matrix and order
   all_genes <- unique(c(unlist(up_genes), unlist(down_genes)))
+  all_genes <- all_genes[!is.na(all_genes)]
   all_terms <- result_df[, ID_column]
 
   term_genes_mat <- matrix(0,
@@ -1063,6 +1072,7 @@ term_gene_heatmap <- function(result_df, genes_df, num_terms = 10,
   for (i in seq_len(nrow(term_genes_mat))) {
     current_term <- rownames(term_genes_mat)[i]
     current_genes <- c(up_genes[[current_term]], down_genes[[current_term]])
+    current_genes <- current_genes[!is.na(current_genes)]
     term_genes_mat[i, match(current_genes, colnames(term_genes_mat))] <- 1
   }
 

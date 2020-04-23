@@ -374,6 +374,12 @@ test_that("`term_gene_heatmap()` produces a ggplot object using the correct data
   expect_is(p <- term_gene_heatmap(RA_output, num_terms = 3), "ggplot")
   expect_equal(length(unique(p$data$Enriched_Term)), 3)
 
+  # No genes in "Down_regulated"
+  res_df <- RA_output
+  res_df$Down_regulated <- ""
+  expect_is(p <- term_gene_heatmap(RA_output, num_terms = 3), "ggplot")
+  expect_equal(length(unique(p$data$Enriched_Term)), 3)
+
   # All terms
   expect_is(p <- term_gene_heatmap(RA_output, num_terms = NULL), "ggplot")
   expect_equal(length(unique(p$data$Enriched_Term)), nrow(RA_output))
