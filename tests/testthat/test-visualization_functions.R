@@ -154,6 +154,16 @@ test_that("`visualize_hsa_KEGG()` creates expected png file(s)", {
 
   visualize_hsa_KEGG(hsa_kegg_ids = c(RA_output$ID[1], "hsa00920"),
                      input_processed = input_processed)
+
+  ###### skips NULL
+  temp_res <- RA_output[1:2, ]
+  temp_res$ID[1] <- "hsa12345"
+  expect_null(visualize_hsa_KEGG(hsa_kegg_ids = temp_res$ID,
+                                 input_processed = input_processed))
+  expect_true(file.exists(file.path("term_visualizations",
+                                    paste0(temp_res$ID[2],
+                                           "_pathfindR.png"))))
+  unlink("term_visualizations", recursive = TRUE)
 })
 
 temp_ids <- RA_output$ID[1:3]
@@ -217,7 +227,14 @@ test_that("arg checks for `visualize_hsa_KEGG()` work", {
 test_that("`color_kegg_pathway()` exceptions are handled properly", {
   expect_null(suppressWarnings(pathfindR:::color_kegg_pathway(pw_id = "hsa03040", change_vec = NULL)))
   expect_message(pathfindR:::color_kegg_pathway(pw_id = "hsa11111", change_vec = c()))
-  expect_message(expect_error(suppressWarnings(tmp <- pathfindR:::download_kegg_png("INVALID", "INVALID"))))
+
+  expect_message(tmp <- pathfindR:::obtain_KEGGML_URL("INVAID", tempfile()))
+  expect_message(tmp2 <- pathfindR:::obtain_colored_url("INVALID", "INVALID", "white", "white"))
+  expect_message(tmp3 <- suppressWarnings(pathfindR:::download_kegg_png("INVALID", tempfile())))
+
+  expect_true(is.na(tmp))
+  expect_true(is.na(tmp2))
+  expect_true(is.na(tmp3))
 })
 
 # enrichment_chart --------------------------------------------------------

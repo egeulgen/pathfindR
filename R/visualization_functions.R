@@ -497,17 +497,7 @@ color_kegg_pathway <- function(pw_id, change_vec, normalize_vals = TRUE,
   ############ and handling of non-input pathway genes
   ## download KGML to determine gene nodes
   pwKGML <- tempfile()
-  KGML_URL <- tryCatch({
-    KEGGgraph::retrieveKGML(sub("hsa", "", pw_id),
-                            organism = "hsa",
-                            destfile = pwKGML,
-                            quiet = quiet)
-  }, error = function(e) {
-    message(paste("Cannot download KGML file for:", pw_id))
-    message("Here's the original error message:")
-    message(e)
-    return(NA)
-  })
+  KGML_URL <- obtain_KEGGML_URL(pw_id, pwKGML, quiet)
 
   if (is.na(KGML_URL) | is.na(file.info(pwKGML)$size)) {
     return(NULL)
@@ -621,18 +611,10 @@ color_kegg_pathway <- function(pw_id, change_vec, normalize_vals = TRUE,
   }
 
   ############ Download colored KEGG pathway diagram
-  pw_url <- tryCatch({
-    tmp_url <- KEGGREST::color.pathway.by.objects(pw_id,
-                                                  names(pw_vis_changes),
-                                                  fg.color.list = fg_cols,
-                                                  bg.color.list = bg_cols)
-    tmp_url
-  }, error = function(e) {
-    message(paste("Cannot retrieve PNG url:", pw_id))
-    message("Here's the original error message:")
-    message(e)
-    return(NA)
-  })
+  pw_url <- obtain_colored_url(pw_id = pw_id,
+                               KEGG_gene_ids = names(pw_vis_changes),
+                               fg_cols = fg_cols,
+                               bg_cols = bg_cols)
 
   if (is.na(pw_url))
     return(NULL)
@@ -650,6 +632,54 @@ color_kegg_pathway <- function(pw_id, change_vec, normalize_vals = TRUE,
               all_brks = all_brks))
 }
 
+
+#' Obtain KGML file for a KEGG pathway (hsa)
+#'
+#' @param pw_id KEGG pathway ID
+#' @param pwKGML destination file
+#' @inheritParams color_kegg_pathway
+#'
+#' @return KGML URL
+obtain_KEGGML_URL <- function(pw_id, pwKGML, quiet = TRUE) {
+  KGML_URL <- tryCatch({
+    utils::download.file(url = KEGGgraph::getKGMLurl(pathwayid = sub("hsa", "", pw_id),
+                                                     organism = "hsa"),
+                         destfile = pwKGML,
+                         quiet = quiet)
+  }, error = function(e) {
+    message(paste("Cannot download KGML file for:", pw_id))
+    message("Here's the original error message:")
+    message(e$message)
+    return(NA)
+  })
+  return(KGML_URL)
+}
+
+
+#' Obtain URL for a KEGG pathway diagram with a given set of genes marked
+#'
+#' @param pw_id KEGG pathway ID
+#' @param KEGG_gene_ids KEGG gene IDs for marking
+#' @param fg_cols colors for the text and border
+#' @param bg_cols background colors of the objects in a pathway diagram.
+#'
+#' @return download status
+obtain_colored_url <- function(pw_id, KEGG_gene_ids, fg_cols, bg_cols) {
+  pw_url <- tryCatch({
+    KEGGREST::color.pathway.by.objects(pathway.id = pw_id,
+                                       object.id.list = KEGG_gene_ids,
+                                       fg.color.list = fg_cols,
+                                       bg.color.list = bg_cols)
+  }, error = function(e) {
+    message(paste("Cannot retrieve PNG url:", pw_id))
+    message("Here's the original error message:")
+    message(e$message)
+    return(NA)
+  })
+  return(pw_url)
+}
+
+
 #' Download Colored KEGG Diagram PNG
 #'
 #' @param pw_url url to download
@@ -659,15 +689,14 @@ color_kegg_pathway <- function(pw_id, change_vec, normalize_vals = TRUE,
 #' @return download status
 download_kegg_png <- function(pw_url, f_path, quiet = TRUE) {
   res <- tryCatch({
-    cond <- utils::download.file(url = pw_url,
-                                 destfile = f_path,
-                                 mode = "wb",
-                                 quiet = quiet)
-    cond
+    utils::download.file(url = pw_url,
+                         destfile = f_path,
+                         mode = "wb",
+                         quiet = quiet)
   }, error = function(e) {
     message(paste("Cannot download PNG file:", pw_url))
     message("Here's the original error message:")
-    message(e)
+    message(e$message)
     return(NA)
   })
   return(res)
