@@ -184,7 +184,7 @@ The function `term_gene_graph()` (adapted from the Gene-Concept network visualiz
 
 ## UpSet Plot
 
-UpSet plots are plots of the intersections of sets as a matrix. `UpSet_plot()` creates a ggplot object of an UpSet plot where the x-axis is the UpSet plot of intersections of enriched terms and the main plot is a bar plot of the number of genes in the corresponding intersections (default). If `genes_df` is provided, then the main plot displays the boxplots of change values of the genes within the corresponding intersections.
+UpSet plots are plots of the intersections of sets as a matrix. This function creates a ggplot object of an UpSet plot where the x-axis is the UpSet plot of intersections of enriched terms. By default (i.e., `method = "heatmap"`), the main plot is a heatmap of genes at the corresponding intersections, colored by up/down regulation (if `genes_df` is provided, colored by change values). If `method = "barplot"`, the main plot is bar plots of the number of genes at the corresponding intersections. Finally, if `method = "boxplot"` and `genes_df` is provided, then the main plot displays the boxplots of change values of the genes at the corresponding intersections.
 
 ![UpSet plot](https://github.com/egeulgen/pathfindR/blob/master/vignettes/upset.png?raw=true "UpSet Plot")
 
