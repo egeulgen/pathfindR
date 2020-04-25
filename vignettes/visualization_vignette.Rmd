@@ -105,12 +105,18 @@ term_gene_graph(RA_output, num_terms = 3, node_size = "p_val")
 
 See `?term_gene_graph` for more details.
 
-## `UpSet_plot()`: UpSet Plot of Enriched Terms
+## `UpSet_plot()`: UpSet Plots of Enriched Terms
 
-UpSet plots are plots of the intersections of sets as a matrix. `UpSet_plot()` creates a ggplot object of an UpSet plot where the x-axis is the UpSet plot of intersections of enriched terms and the main plot is a bar plot of the number of genes in the corresponding intersections (default).
+UpSet plots are plots of the intersections of sets as a matrix. `UpSet_plot()` creates a ggplot object of an UpSet plot where the x-axis is the UpSet plot of intersections of enriched terms. By deault (`method = "heatmap"`), the main plot is a heatmap of genes at the corresponding intersections, colored by up/down regulation:
 
 ```{r upset1}
 UpSet_plot(RA_output)
+```
+
+If genes_df is provided, the heatmap tiles are colored by change values:
+
+```{r upset1}
+UpSet_plot(RA_output, genes_df = RA_input)
 ```
 
 Again, you may change the number of top terms plotted via `num_terms` (default = 10):
@@ -125,10 +131,16 @@ Again, to plot using full term names (instead of IDs which is the default), set 
 UpSet_plot(RA_output, use_description = TRUE)
 ```
 
-If `genes_df` is provided, then the main plot displays the boxplots of change values of the genes within the corresponding intersections:
+If `method = "barplot"`, the main plot is a bar plots of the number of genes in the corresponding intersections:
 
 ```{r upset4}
-UpSet_plot(RA_output, RA_input, use_description = TRUE)
+UpSet_plot(RA_output, method = "barplot")
+```
+
+If `method = "boxplot"` and if `genes_df` is provided, then the main plot displays the boxplots of change values of the genes within the corresponding intersections:
+
+```{r upset5}
+UpSet_plot(RA_output, RA_input, method = "boxplot")
 ```
 
 See `?UpSet_plot` for more details.
