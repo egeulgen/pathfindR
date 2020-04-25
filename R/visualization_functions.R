@@ -1269,14 +1269,12 @@ UpSet_plot <- function(result_df, genes_df, num_terms = 10,
   term_genes_df$Symbol <- factor(term_genes_df$Symbol,
                                  levels = rev(names(sort(table(term_genes_df$Symbol)))))
 
+  plot_df <- data.frame(Term = I(split(term_genes_df$Enriched_Term,
+                                       term_genes_df$Symbol)))
   if (missing(genes_df)) {
-    plot_df <- data.frame(Term = I(split(term_genes_df$Enriched_Term,
-                                         term_genes_df$Symbol)))
     g <- ggplot2::ggplot(plot_df, ggplot2::aes_(x = ~Term))
     g <- g + ggplot2::geom_bar()
   } else {
-    plot_df <- data.frame(Term = I(split(term_genes_df$Enriched_Term,
-                                         term_genes_df$Symbol)))
     plot_df$Value <- genes_df$CHANGE[match(names(plot_df$Term), genes_df$GENE)]
     g <- ggplot2::ggplot(plot_df, ggplot2::aes_(x = ~Term, y = ~Value))
     g <- g + ggplot2::geom_boxplot()
