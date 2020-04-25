@@ -1171,18 +1171,25 @@ term_gene_heatmap <- function(result_df, genes_df, num_terms = 10,
 #' Create UpSet Plot of Enriched Terms
 #'
 #' @inheritParams term_gene_heatmap
+#' @param method the option for producing the plot. Options include "heatmap",
+#' "boxplot" and "barplot". (default = "heatmap")
 #'
 #' @return UpSet plots are plots of the intersections of sets as a matrix. This
 #' function creates a ggplot object of an UpSet plot where the x-axis is the
-#' UpSet plot of intersections of enriched terms and the main plot is a bar plot
-#' of the number of genes in the corresponding intersections (default). If
-#' \code{genes_df} is provided, then the main plot displays the boxplots of
-#' change values of the genes within the corresponding intersections.
+#' UpSet plot of intersections of enriched terms. By default (i.e.
+#' \code{method = "heatmap"}) the main plot is a heatmap of genes at the
+#' corresponding intersections, colored by up/down regulation (if
+#' \code{genes_df} is provided, colored by change values). If
+#' \code{method = "barplot"}, the main plot is bar plots of the number of genes
+#' at the corresponding intersections. Finally, if \code{method = "boxplot"} and
+#' if \code{genes_df} is provided, then the main plot displays the boxplots of
+#' change values of the genes at the corresponding intersections.
 #' @export
 #'
 #' @examples
 #' UpSet_plot(RA_output)
 UpSet_plot <- function(result_df, genes_df, num_terms = 10,
+                       method = "heatmap",
                        use_description = FALSE,
                        ...) {
   ############ Arg checks
@@ -1211,6 +1218,10 @@ UpSet_plot <- function(result_df, genes_df, num_terms = 10,
     if (num_terms < 1)
       stop("`num_terms` should be > 0 or NULL")
   }
+
+  valid_opts <- c("heatmap", "boxplot", "barplot")
+  if (!method %in% valid_opts)
+    stop("`method` should be one of`", paste(dQuote(valid_opts), collapse = ", "))
 
   ########## Init prep steps
   result_df <- result_df[order(result_df$lowest_p), ]
@@ -1269,18 +1280,42 @@ UpSet_plot <- function(result_df, genes_df, num_terms = 10,
   term_genes_df$Symbol <- factor(term_genes_df$Symbol,
                                  levels = rev(names(sort(table(term_genes_df$Symbol)))))
 
-  plot_df <- data.frame(Term = I(split(term_genes_df$Enriched_Term,
-                                       term_genes_df$Symbol)))
-  if (missing(genes_df)) {
-    g <- ggplot2::ggplot(plot_df, ggplot2::aes_(x = ~Term))
-    g <- g + ggplot2::geom_bar()
-  } else {
+  terms_lists <- split(term_genes_df$Enriched_Term, term_genes_df$Symbol)
+
+  plot_df <- data.frame(Gene = names(terms_lists),
+                        Term = I(terms_lists),
+                        Up_Down = ifelse(names(terms_lists) %in% unlist(up_genes), "up", "down"))
+
+  if (method == "heatmap") {
+    if (missing(genes_df)) {
+      g <- ggplot2::ggplot(plot_df, ggplot2::aes_(x = ~Term, y = ~Gene, fill = ~Up_Down), color = "white")
+      g <- g + ggplot2::geom_tile()
+      g <- g + ggplot2::scale_fill_manual(values = c("green", "red"))
+    } else {
+      plot_df$Value <- genes_df$CHANGE[match(names(plot_df$Term), genes_df$GENE)]
+      g <- ggplot2::ggplot(plot_df, ggplot2::aes_(x = ~Term, y = ~Gene, fill = ~Value), color = "white")
+      g <- g + ggplot2::geom_tile()
+      g <- g + ggplot2::scale_fill_gradient2(low = "red", mid = "black", high = "green")
+    }
+    g <- g + ggplot2::theme_minimal()
+    g <- g + ggplot2::theme(axis.title = ggplot2::element_blank(),
+                            panel.grid.major = ggplot2::element_blank(),
+                            panel.grid.minor = ggplot2::element_blank(),
+                            legend.title = ggplot2::element_blank())
+
+  } else if (method == "boxplot") {
+    if (missing(genes_df))
+      stop("For `method = boxplot`, you must provide `genes_df`")
+
     plot_df$Value <- genes_df$CHANGE[match(names(plot_df$Term), genes_df$GENE)]
     g <- ggplot2::ggplot(plot_df, ggplot2::aes_(x = ~Term, y = ~Value))
     g <- g + ggplot2::geom_boxplot()
     g <- g + ggplot2::geom_jitter(width = .1)
+  } else {
+    g <- ggplot2::ggplot(plot_df, ggplot2::aes_(x = ~Term))
+    g <- g + ggplot2::geom_bar()
   }
-  g <- g + ggplot2::xlab(NULL) + ggplot2::ylab(NULL)
+
   g <- g + ggupset::scale_x_upset(order_by =
                                     ifelse(missing(genes_df), "freq", "degree"))
   return(g)
