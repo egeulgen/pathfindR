@@ -4,8 +4,10 @@
 \name{biocarta_descriptions}
 \alias{biocarta_descriptions}
 \title{BioCarta Pathways - Descriptions}
-\format{named vector containing 314 character values, the descriptions for the given
-  pathways.}
+\format{
+named vector containing 314 character values, the descriptions for the given
+  pathways.
+}
 \usage{
 biocarta_descriptions
 }

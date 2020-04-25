@@ -4,8 +4,10 @@
 \name{biogrid_adj_list}
 \alias{biogrid_adj_list}
 \title{BioGRID PIN Adjacency List}
-\format{list containing 15231 vectors. Each vector is the set of gene symbols
-of interactors B for each interactor A.}
+\format{
+list containing 15231 vectors. Each vector is the set of gene symbols
+of interactors B for each interactor A.
+}
 \usage{
 biogrid_adj_list
 }

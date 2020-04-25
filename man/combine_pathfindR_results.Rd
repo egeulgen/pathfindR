@@ -7,9 +7,9 @@
 combine_pathfindR_results(result_A, result_B, plot_common = TRUE)
 }
 \arguments{
-\item{result_A}{data frame of first pathfindR enrichment results.}
+\item{result_A}{data frame of first pathfindR enrichment results}
 
-\item{result_B}{data frame of second pathfindR enrichment results.}
+\item{result_B}{data frame of second pathfindR enrichment results}
 
 \item{plot_common}{boolean to indicate whether or not to plot the term-gene
 graph of the common terms (default=\code{TRUE})}

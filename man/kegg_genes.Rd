@@ -4,8 +4,10 @@
 \name{kegg_genes}
 \alias{kegg_genes}
 \title{KEGG Pathways - Gene Sets}
-\format{list containing 327 vectors of gene symbols. Each vector corresponds
-  to a pathway.}
+\format{
+list containing 327 vectors of gene symbols. Each vector corresponds
+  to a pathway.
+}
 \usage{
 kegg_genes
 }

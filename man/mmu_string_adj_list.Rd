@@ -4,8 +4,10 @@
 \name{mmu_string_adj_list}
 \alias{mmu_string_adj_list}
 \title{Mus musculus STRING PIN Adjacency List}
-\format{list containing 11217 vectors. Each vector is the set of gene symbols
-of interactors B for each interactor A.}
+\format{
+list containing 11217 vectors. Each vector is the set of gene symbols
+of interactors B for each interactor A.
+}
 \usage{
 mmu_string_adj_list
 }

@@ -1,7 +1,7 @@
 #' Combine 2 pathfindR Results
 #'
-#' @param result_A data frame of first pathfindR enrichment results.
-#' @param result_B data frame of second pathfindR enrichment results.
+#' @param result_A data frame of first pathfindR enrichment results
+#' @param result_B data frame of second pathfindR enrichment results
 #' @param plot_common boolean to indicate whether or not to plot the term-gene
 #' graph of the common terms (default=\code{TRUE})
 #'

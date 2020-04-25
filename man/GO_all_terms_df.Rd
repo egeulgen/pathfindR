@@ -4,11 +4,13 @@
 \name{GO_all_terms_df}
 \alias{GO_all_terms_df}
 \title{Gene Ontology - All Gene Ontology Descriptions}
-\format{data frame containing 14586 rows and 3 columns. Columns are \describe{
+\format{
+data frame containing 14586 rows and 3 columns. Columns are \describe{
 \item{GO_ID}{ID of the GO term}
 \item{GO_term}{Description the GO term}
 \item{Category}{Category of the GO term (i.e., "Component", "Function" or "Process")}
-}}
+}
+}
 \usage{
 GO_all_terms_df
 }

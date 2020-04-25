@@ -4,8 +4,10 @@
 \name{intact_adj_list}
 \alias{intact_adj_list}
 \title{IntAct PIN Adjacency List}
-\format{list containing 15057 vectors. Each vector is the set of gene symbols
-of interactors B for each interactor A.}
+\format{
+list containing 15057 vectors. Each vector is the set of gene symbols
+of interactors B for each interactor A.
+}
 \usage{
 intact_adj_list
 }

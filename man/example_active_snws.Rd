@@ -4,8 +4,10 @@
 \name{example_active_snws}
 \alias{example_active_snws}
 \title{Example Active Subnetworks}
-\format{list containing 112 vectors. Each vector is the set of genes for the
-given active subnetwork.}
+\format{
+list containing 112 vectors. Each vector is the set of genes for the
+given active subnetwork.
+}
 \usage{
 example_active_snws
 }

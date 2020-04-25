@@ -4,7 +4,8 @@
 \name{RA_clustered}
 \alias{RA_clustered}
 \title{Example Output for the pathfindR Clustering Workflow - Rheumatoid Arthritis}
-\format{A data frame with 95 rows and 10 columns:
+\format{
+A data frame with 95 rows and 10 columns:
 \describe{
   \item{ID}{ID of the enriched term}
   \item{Term_Description}{Description of the enriched term}
@@ -16,7 +17,8 @@
   \item{Down_regulated}{the down-regulated genes in the input involved in the given term, comma-separated}
   \item{Cluster}{the cluster to which the enriched term is assigned}
   \item{Status}{whether the enriched term is the "Representative" term in its cluster or only a "Member"}
-}}
+}
+}
 \usage{
 RA_clustered
 }

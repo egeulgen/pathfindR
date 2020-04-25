@@ -4,8 +4,10 @@
 \name{string_adj_list}
 \alias{string_adj_list}
 \title{STRING PIN Adjacency List}
-\format{list containing 11934 vectors. Each vector is the set of gene symbols
-of interactors B for each interactor A.}
+\format{
+list containing 11934 vectors. Each vector is the set of gene symbols
+of interactors B for each interactor A.
+}
 \usage{
 string_adj_list
 }

@@ -4,8 +4,10 @@
 \name{cell_markers_gsets}
 \alias{cell_markers_gsets}
 \title{Cell Markers - Gene Sets}
-\format{list containing 496 vectors. Each vector corresponds to a cell marker
-gene set for a given human cell type.}
+\format{
+list containing 496 vectors. Each vector corresponds to a cell marker
+gene set for a given human cell type.
+}
 \usage{
 cell_markers_gsets
 }

@@ -4,7 +4,9 @@
 \name{custom_result}
 \alias{custom_result}
 \title{Custom Gene Set Enrichment Results}
-\format{data frame containing 2 rows and 8 columns. Each row is a gene set (the TF target gene sets).}
+\format{
+data frame containing 2 rows and 8 columns. Each row is a gene set (the TF target gene sets).
+}
 \usage{
 custom_result
 }

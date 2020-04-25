@@ -4,8 +4,10 @@
 \name{genemania_adj_list}
 \alias{genemania_adj_list}
 \title{GeneMania PIN Adjacency List}
-\format{list containing 12345 vectors. Each vector is the set of gene symbols
-of interactors B for each interactor A.}
+\format{
+list containing 12345 vectors. Each vector is the set of gene symbols
+of interactors B for each interactor A.
+}
 \usage{
 genemania_adj_list
 }

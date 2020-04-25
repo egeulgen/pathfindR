@@ -4,8 +4,10 @@
 \name{reactome_genes}
 \alias{reactome_genes}
 \title{Reactome Pathways - Gene Sets}
-\format{list containing 2263 vectors of gene symbols. Each vector corresponds
-  to a pathway.}
+\format{
+list containing 2263 vectors of gene symbols. Each vector corresponds
+  to a pathway.
+}
 \usage{
 reactome_genes
 }

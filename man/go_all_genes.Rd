@@ -4,8 +4,10 @@
 \name{go_all_genes}
 \alias{go_all_genes}
 \title{Gene Ontology - All Gene Ontology Gene Sets}
-\format{list containing 14586 vectors of gene symbols. Each vector corresponds
-  to a gene set.}
+\format{
+list containing 14586 vectors of gene symbols. Each vector corresponds
+  to a gene set.
+}
 \usage{
 go_all_genes
 }

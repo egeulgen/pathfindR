@@ -4,7 +4,8 @@
 \name{myeloma_output}
 \alias{myeloma_output}
 \title{Example Output for Myeloma Analysis (Mus Musculus)}
-\format{A data frame with 18 rows and 8 columns:
+\format{
+A data frame with 18 rows and 8 columns:
 \describe{
   \item{ID}{ID of the enriched term}
   \item{Term_Description}{Description of the enriched term}
@@ -14,7 +15,8 @@
   \item{highest_p}{the highest adjusted-p value of the given term over all iterations}
   \item{Up_regulated}{the up-regulated genes in the input involved in the given term, comma-separated}
   \item{Down_regulated}{the down-regulated genes in the input involved in the given term, comma-separated}
-}}
+}
+}
 \usage{
 myeloma_output
 }

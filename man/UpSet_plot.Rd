@@ -4,7 +4,14 @@
 \alias{UpSet_plot}
 \title{Create UpSet Plot of Enriched Terms}
 \usage{
-UpSet_plot(result_df, genes_df, num_terms = 10, use_description = FALSE, ...)
+UpSet_plot(
+  result_df,
+  genes_df,
+  num_terms = 10,
+  method = "heatmap",
+  use_description = FALSE,
+  ...
+)
 }
 \arguments{
 \item{result_df}{A dataframe of pathfindR results that must contain the following columns: \describe{
@@ -24,6 +31,9 @@ UpSet_plot(result_df, genes_df, num_terms = 10, use_description = FALSE, ...)
 
 \item{num_terms}{Number of top enriched terms to use while creating the plot. Set to \code{NULL} to use
 all enriched terms (default = 10)}
+
+\item{method}{the method for producing the plot. Options include "heatmap",
+"boxplot" and "barplot". (default = "heatmap")}
 
 \item{use_description}{Boolean argument to indicate whether term descriptions
 (in the "Term_Description" column) should be used. (default = \code{FALSE})}

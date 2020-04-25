@@ -4,11 +4,13 @@
 \name{RA_input}
 \alias{RA_input}
 \title{Example Input for the pathfindR Enrichment Workflow - Rheumatoid Arthritis}
-\format{A data frame with 572 rows and 3 variables: \describe{
+\format{
+A data frame with 572 rows and 3 variables: \describe{
   \item{Gene.symbol}{HGNC gene symbols of the differentially-expressed genes}
   \item{logFC}{\ifelse{html}{\out{log<sub>2</sub>}}{\eqn{log_2}}(fold-change) values}
   \item{adj.P.Val}{adjusted p values, via the Benjamini & Hochberg (1995) method}
-}}
+}
+}
 \source{
 \url{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE15573}
 }

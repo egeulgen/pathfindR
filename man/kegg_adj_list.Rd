@@ -4,8 +4,10 @@
 \name{kegg_adj_list}
 \alias{kegg_adj_list}
 \title{KEGG PIN Adjacency List}
-\format{list containing 4507 vectors. Each vector is the set of gene symbols
-of interactors B for each interactor A.}
+\format{
+list containing 4507 vectors. Each vector is the set of gene symbols
+of interactors B for each interactor A.
+}
 \usage{
 kegg_adj_list
 }

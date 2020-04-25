@@ -4,8 +4,10 @@
 \name{mmu_kegg_descriptions}
 \alias{mmu_kegg_descriptions}
 \title{Mus Musculus KEGG Pathways - Descriptions}
-\format{named vector containing 323 character values, the descriptions for the given
-  pathways.}
+\format{
+named vector containing 323 character values, the descriptions for the given
+  pathways.
+}
 \usage{
 mmu_kegg_descriptions
 }

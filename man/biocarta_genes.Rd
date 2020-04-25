@@ -4,8 +4,10 @@
 \name{biocarta_genes}
 \alias{biocarta_genes}
 \title{BioCarta Pathways - Gene Sets}
-\format{list containing 314 vectors of gene symbols. Each vector corresponds
-  to a gene set.}
+\format{
+list containing 314 vectors of gene symbols. Each vector corresponds
+  to a gene set.
+}
 \usage{
 biocarta_genes
 }

@@ -57,5 +57,5 @@ Depends: R (>= 3.6)
 Suggests: 
     testthat (>= 2.1.0),
     covr
-RoxygenNote: 7.0.0
+RoxygenNote: 7.1.0
 VignetteBuilder: knitr

@@ -4,8 +4,10 @@
 \name{reactome_descriptions}
 \alias{reactome_descriptions}
 \title{Reactome Pathways - Descriptions}
-\format{named vector containing 2263 character values, the descriptions for the given
-  pathways.}
+\format{
+named vector containing 2263 character values, the descriptions for the given
+  pathways.
+}
 \usage{
 reactome_descriptions
 }

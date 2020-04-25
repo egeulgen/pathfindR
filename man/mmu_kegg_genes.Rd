@@ -4,8 +4,10 @@
 \name{mmu_kegg_genes}
 \alias{mmu_kegg_genes}
 \title{Mus Musculus KEGG Pathways - Gene Sets}
-\format{list containing 323 vectors of gene symbols. Each vector corresponds
-  to a pathway.}
+\format{
+list containing 323 vectors of gene symbols. Each vector corresponds
+  to a pathway.
+}
 \usage{
 mmu_kegg_genes
 }
