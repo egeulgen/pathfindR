@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0.9006</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0.9007</span>
       </span>
     </div>
 
@@ -260,7 +260,7 @@
 <div id="upset-plot" class="section level2">
 <h2 class="hasAnchor">
 <a href="#upset-plot" class="anchor"></a>UpSet Plot</h2>
-<p>UpSet plots are plots of the intersections of sets as a matrix. <code><a href="reference/UpSet_plot.html">UpSet_plot()</a></code> creates a ggplot object of an UpSet plot where the x-axis is the UpSet plot of intersections of enriched terms and the main plot is a bar plot of the number of genes in the corresponding intersections (default). If <code>genes_df</code> is provided, then the main plot displays the boxplots of change values of the genes within the corresponding intersections.</p>
+<p>UpSet plots are plots of the intersections of sets as a matrix. This function creates a ggplot object of an UpSet plot where the x-axis is the UpSet plot of intersections of enriched terms. By default (i.e., <code>method = "heatmap"</code>), the main plot is a heatmap of genes at the corresponding intersections, colored by up/down regulation (if <code>genes_df</code> is provided, colored by change values). If <code>method = "barplot"</code>, the main plot is bar plots of the number of genes at the corresponding intersections. Finally, if <code>method = "boxplot"</code> and <code>genes_df</code> is provided, then the main plot displays the boxplots of change values of the genes at the corresponding intersections.</p>
 <p><img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/upset.png?raw=true%20%22UpSet%20Plot%22" alt="UpSet plot"></p>
 </div>
 </div>

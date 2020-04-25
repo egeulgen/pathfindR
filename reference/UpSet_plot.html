@@ -78,7 +78,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0.9006</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0.9007</span>
       </span>
     </div>
 
@@ -159,14 +159,21 @@
     <p>Create UpSet Plot of Enriched Terms</p>
     </div>
 
-    <pre class="usage"><span class='fu'>UpSet_plot</span>(<span class='no'>result_df</span>, <span class='no'>genes_df</span>, <span class='kw'>num_terms</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>use_description</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>UpSet_plot</span>(
+  <span class='no'>result_df</span>,
+  <span class='no'>genes_df</span>,
+  <span class='kw'>num_terms</span> <span class='kw'>=</span> <span class='fl'>10</span>,
+  <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"heatmap"</span>,
+  <span class='kw'>use_description</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>result_df</th>
-      <td><p>A dataframe of pathfindR results that must contain the following columns:</p><dl'>
+      <td><p>A dataframe of pathfindR results that must contain the following columns:</p><dl>
   <dt>Term_Description</dt><dd><p>Description of the enriched term (necessary if <code>use_description = TRUE</code>)</p></dd>
   <dt>ID</dt><dd><p>ID of the enriched term (necessary if <code>use_description = FALSE</code>)</p></dd>
   <dt>lowest_p</dt><dd><p>the highest adjusted-p value of the given term over all iterations</p></dd>
@@ -190,6 +197,11 @@
 all enriched terms (default = 10)</p></td>
     </tr>
     <tr>
+      <th>method</th>
+      <td><p>the option for producing the plot. Options include "heatmap",
+"boxplot" and "barplot". (default = "heatmap")</p></td>
+    </tr>
+    <tr>
       <th>use_description</th>
       <td><p>Boolean argument to indicate whether term descriptions
 (in the "Term_Description" column) should be used. (default = <code>FALSE</code>)</p></td>
@@ -205,10 +217,14 @@ all enriched terms (default = 10)</p></td>
 
     <p>UpSet plots are plots of the intersections of sets as a matrix. This
 function creates a ggplot object of an UpSet plot where the x-axis is the
-UpSet plot of intersections of enriched terms and the main plot is a bar plot
-of the number of genes in the corresponding intersections (default). If
-<code>genes_df</code> is provided, then the main plot displays the boxplots of
-change values of the genes within the corresponding intersections.</p>
+UpSet plot of intersections of enriched terms. By default (i.e.
+<code>method = "heatmap"</code>) the main plot is a heatmap of genes at the
+corresponding intersections, colored by up/down regulation (if
+<code>genes_df</code> is provided, colored by change values). If
+<code>method = "barplot"</code>, the main plot is bar plots of the number of genes
+at the corresponding intersections. Finally, if <code>method = "boxplot"</code> and
+if <code>genes_df</code> is provided, then the main plot displays the boxplots of
+change values of the genes at the corresponding intersections.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>UpSet_plot</span>(<span class='no'>RA_output</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: `as.tibble()` is deprecated as of tibble 2.0.0.</span>
