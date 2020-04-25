@@ -1221,7 +1221,7 @@ UpSet_plot <- function(result_df, genes_df, num_terms = 10,
 
   valid_opts <- c("heatmap", "boxplot", "barplot")
   if (!method %in% valid_opts)
-    stop("`method` should be one of`", paste(dQuote(valid_opts), collapse = ", "))
+    stop("`method` should be one of` ", paste(dQuote(valid_opts), collapse = ", "))
 
   ########## Init prep steps
   result_df <- result_df[order(result_df$lowest_p), ]

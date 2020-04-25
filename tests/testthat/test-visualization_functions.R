@@ -470,8 +470,11 @@ test_that("`UpSet_plot()` produces a ggplot object", {
   # use_description = TRUE
   expect_is(p <- UpSet_plot(RA_output, use_description = TRUE), "ggplot")
 
-  # genes_df supplied
+  # Other visualization types
   expect_is(p <- UpSet_plot(RA_output, RA_input), "ggplot")
+  expect_is(p <- UpSet_plot(RA_output, RA_input, method = "boxplot"), "ggplot")
+  expect_is(p <- UpSet_plot(RA_output, method = "barplot"), "ggplot")
+
 })
 
 test_that("`UpSet_plot()` arg checks work", {
@@ -505,4 +508,13 @@ test_that("`UpSet_plot()` arg checks work", {
   expect_error(UpSet_plot(result_df = RA_output,
                           num_terms = -1),
                "`num_terms` should be > 0 or NULL")
+
+  valid_opts <- c("heatmap", "boxplot", "barplot")
+  expect_error(UpSet_plot(result_df = RA_output,
+                          method = "INVALID"),
+               paste("`method` should be one of`", paste(dQuote(valid_opts), collapse = ", ")))
+
+  expect_error(UpSet_plot(result_df = RA_output,
+                          method = "boxplot"),
+               "For `method = boxplot`, you must provide `genes_df`")
 })
