@@ -184,9 +184,6 @@ visualize_term_interactions <- function(result_df, pin_name_path) {
                                    ifelse(cond2, "green",
                                           ifelse(cond3, "blue", "gray60")))
 
-      path_to_png <- file.path("term_visualizations",
-                               paste0(current_row$Term_Description, ".png"))
-
       #### Generate diagram
       term_diagram <- magick::image_graph(width = 1200, height = 900, res = 100)
       # Plot the tree object
@@ -232,6 +229,11 @@ visualize_term_interactions <- function(result_df, pin_name_path) {
                                               magick::image_scale(logo_img, "x100"),
                                               gravity = "northeast",
                                               offset = "+10+10")
+
+      current_row$Term_Description <- gsub("\\s", "_", current_row$Term_Description)
+      current_row$Term_Description <- gsub("\\:", "_", current_row$Term_Description)
+      path_to_png <- file.path("term_visualizations",
+                               paste0(current_row$Term_Description, ".png"))
 
       #### Save file
       magick::image_write(term_diagram, path = path_to_png, format = "png")
