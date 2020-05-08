@@ -1140,6 +1140,13 @@ term_gene_heatmap <- function(result_df, genes_df, num_terms = 10,
         term_genes_df$value[i] <- genes_df$CHANGE[genes_df$GENE == term_genes_df$Symbol[i]]
       }
     }
+  } else {
+    for (i in seq_len(nrow(term_genes_df))) {
+      if (!is.na(term_genes_df$value[i])) {
+        term_genes_df$value[i] <- ifelse(term_genes_df$Symbol[i] %in% unlist(up_genes), "up", "down")
+      }
+    }
+
   }
   g <- ggplot2::ggplot(bg_df, ggplot2::aes_(x = ~Symbol, y = ~Enriched_Term))
   g <- g + ggplot2::geom_tile(fill = "white", color = "white")
@@ -1159,9 +1166,8 @@ term_gene_heatmap <- function(result_df, genes_df, num_terms = 10,
   if (!missing(genes_df)) {
     g <- g + ggplot2::scale_fill_gradient2(low = low, mid = mid, high = high, na.value = "white")
   } else {
-    g <- g + ggplot2::scale_fill_continuous(low = "gray60", high = "gray60", na.value = "white")
+    g <- g + ggplot2::scale_fill_manual(values = c("green", "red"), na.value ="white")
   }
-  g
   return(g)
 }
 
