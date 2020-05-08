@@ -1165,9 +1165,6 @@ term_gene_heatmap <- function(result_df, genes_df, num_terms = 10,
   return(g)
 }
 
-# result_df <- pathfindR::RA_output
-# num_terms = 10
-# use_description = FALSE
 
 #' Create UpSet Plot of Enriched Terms
 #'
