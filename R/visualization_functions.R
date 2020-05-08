@@ -1129,8 +1129,8 @@ term_gene_heatmap <- function(result_df, genes_df, num_terms = 10,
   term_genes_df <- cbind(term_genes_df, value)
   term_genes_df$value[term_genes_df$value == 0] <- NA
 
-  bg_df <- expand.grid(all_terms, all_genes)
-  colnames(bg_df) <- c("Enriched_Term", "Symbol")
+  bg_df <- expand.grid(Enriched_Term = all_terms,
+                       Symbol = all_genes)
   bg_df$Enriched_Term <- factor(bg_df$Enriched_Term, levels = rev(rownames(term_genes_mat)))
   bg_df$Symbol <- factor(bg_df$Symbol, levels = colnames(term_genes_mat))
 
@@ -1162,11 +1162,11 @@ term_gene_heatmap <- function(result_df, genes_df, num_terms = 10,
                           panel.grid.minor.y = ggplot2::element_blank(),
                           panel.background = ggplot2::element_rect(fill="#ffffff"))
   g <- g + ggplot2::geom_tile(data = term_genes_df,
-                              ggplot2::aes_(fill = ~value), color = "white")
+                              ggplot2::aes_(fill = ~value), color = "gray60")
   if (!missing(genes_df)) {
     g <- g + ggplot2::scale_fill_gradient2(low = low, mid = mid, high = high, na.value = "white")
   } else {
-    g <- g + ggplot2::scale_fill_manual(values = c("green", "red"), na.value ="white")
+    g <- g + ggplot2::scale_fill_manual(values = c(low, high), na.value ="white")
   }
   return(g)
 }
@@ -1273,7 +1273,7 @@ UpSet_plot <- function(result_df, genes_df, num_terms = 10,
   ### Transform the matrix
   var_names <- list()
   var_names[["Enriched_Term"]] <- factor(rownames(term_genes_mat),
-                                         levels = rev(rownames(term_genes_mat)))
+                                         levels = rownames(term_genes_mat))
   var_names[["Symbol"]] <- factor(colnames(term_genes_mat),
                                   levels = colnames(term_genes_mat))
 
@@ -1288,25 +1288,30 @@ UpSet_plot <- function(result_df, genes_df, num_terms = 10,
 
   ### Order according to frequencies
   term_genes_df$Enriched_Term <- factor(term_genes_df$Enriched_Term,
-                                        levels = rev(names(sort(table(term_genes_df$Enriched_Term)))))
+                                        levels = names(sort(table(term_genes_df$Enriched_Term), decreasing = TRUE)))
   term_genes_df$Symbol <- factor(term_genes_df$Symbol,
                                  levels = rev(names(sort(table(term_genes_df$Symbol)))))
 
-  terms_lists <- split(term_genes_df$Enriched_Term, term_genes_df$Symbol)
+  terms_lists <- rev(split(term_genes_df$Enriched_Term, term_genes_df$Symbol))
 
   plot_df <- data.frame(Gene = names(terms_lists),
                         Term = I(terms_lists),
-                        Up_Down = ifelse(names(terms_lists) %in% unlist(up_genes), "up", "down"))
+                        Up_Down = ifelse(names(terms_lists) %in% unlist(up_genes), "up", "down"),
+                        stringsAsFactors = FALSE)
+
+  bg_df <- expand.grid(Gene = unique(plot_df$Gene),
+                       Term = unique(plot_df$Term))
 
   if (method == "heatmap") {
+    g <- ggplot2::ggplot(bg_df, ggplot2::aes_(x = ~Term, y = ~Gene))
+    g <- g + ggplot2::geom_tile(fill = "white", color = "gray60")
+
     if (missing(genes_df)) {
-      g <- ggplot2::ggplot(plot_df, ggplot2::aes_(x = ~Term, y = ~Gene, fill = ~Up_Down), color = "white")
-      g <- g + ggplot2::geom_tile()
+      g <- g + ggplot2::geom_tile(data = plot_df, ggplot2::aes_(x = ~Term, y = ~Gene, fill = ~Up_Down), color = "gray60")
       g <- g + ggplot2::scale_fill_manual(values = c("green", "red"))
     } else {
       plot_df$Value <- genes_df$CHANGE[match(names(plot_df$Term), genes_df$GENE)]
-      g <- ggplot2::ggplot(plot_df, ggplot2::aes_(x = ~Term, y = ~Gene, fill = ~Value), color = "white")
-      g <- g + ggplot2::geom_tile()
+      g <- g + ggplot2::geom_tile(data = plot_df, ggplot2::aes_(x = ~Term, y = ~Gene, fill = ~Value), color = "gray60")
       g <- g + ggplot2::scale_fill_gradient2(low = "red", mid = "black", high = "green")
     }
     g <- g + ggplot2::theme_minimal()
@@ -1329,6 +1334,7 @@ UpSet_plot <- function(result_df, genes_df, num_terms = 10,
   }
 
   g <- g + ggupset::scale_x_upset(order_by =
-                                    ifelse(missing(genes_df), "freq", "degree"))
+                                    ifelse(missing(genes_df), "freq", "degree"),
+                                  reverse = !missing(genes_df))
   return(g)
 }
