@@ -1195,6 +1195,7 @@ term_gene_heatmap <- function(result_df, genes_df, num_terms = 10,
 UpSet_plot <- function(result_df, genes_df, num_terms = 10,
                        method = "heatmap",
                        use_description = FALSE,
+                       low = "green", mid = "black", high = "red",
                        ...) {
   ############ Arg checks
   if (!is.logical(use_description)) {
@@ -1308,11 +1309,11 @@ UpSet_plot <- function(result_df, genes_df, num_terms = 10,
 
     if (missing(genes_df)) {
       g <- g + ggplot2::geom_tile(data = plot_df, ggplot2::aes_(x = ~Term, y = ~Gene, fill = ~Up_Down), color = "gray60")
-      g <- g + ggplot2::scale_fill_manual(values = c("green", "red"))
+      g <- g + ggplot2::scale_fill_manual(values = c(low, high))
     } else {
       plot_df$Value <- genes_df$CHANGE[match(names(plot_df$Term), genes_df$GENE)]
       g <- g + ggplot2::geom_tile(data = plot_df, ggplot2::aes_(x = ~Term, y = ~Gene, fill = ~Value), color = "gray60")
-      g <- g + ggplot2::scale_fill_gradient2(low = "red", mid = "black", high = "green")
+      g <- g + ggplot2::scale_fill_gradient2(low = low, mid = mid, high = high)
     }
     g <- g + ggplot2::theme_minimal()
     g <- g + ggplot2::theme(axis.title = ggplot2::element_blank(),
