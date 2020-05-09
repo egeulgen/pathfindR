@@ -108,7 +108,7 @@
       <h1 data-toc-skip>Introduction to pathfindR</h1>
                         <h4 class="author">Ege Ulgen</h4>
             
-            <h4 class="date">2020-04-28</h4>
+            <h4 class="date">2020-05-09</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/master/vignettes/intro_vignette.Rmd"><code>vignettes/intro_vignette.Rmd</code></a></small>
       <div class="hidden name"><code>intro_vignette.Rmd</code></div>
@@ -652,12 +652,7 @@
 <h1 class="hasAnchor">
 <a href="#upset-plot" class="anchor"></a>UpSet Plot</h1>
 <p>UpSet plots are plots of the intersections of sets as a matrix. This function creates a ggplot object of an UpSet plot where the x-axis is the UpSet plot of intersections of enriched terms. By default (i.e., <code>method = "heatmap"</code>), the main plot is a heatmap of genes at the corresponding intersections, colored by up/down regulation (if <code>genes_df</code> is provided, colored by change values). If <code>method = "barplot"</code>, the main plot is bar plots of the number of genes at the corresponding intersections. Finally, if <code>method = "boxplot"</code> and <code>genes_df</code> is provided, then the main plot displays the boxplots of change values of the genes at the corresponding intersections.</p>
-<div class="sourceCode" id="cb23"><html><body><pre class="r"><span class="fu"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span>(<span class="no">RA_output</span>)
-<span class="co">#&gt; Warning: `as.tibble()` is deprecated as of tibble 2.0.0.</span>
-<span class="co">#&gt; Please use `as_tibble()` instead.</span>
-<span class="co">#&gt; The signature and semantics have changed, see `?as_tibble`.</span>
-<span class="co">#&gt; This warning is displayed once every 8 hours.</span>
-<span class="co">#&gt; Call `lifecycle::last_warnings()` to see where this warning was generated.</span></pre></body></html></div>
+<div class="sourceCode" id="cb23"><html><body><pre class="r"><span class="fu"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span>(<span class="no">RA_output</span>)</pre></body></html></div>
 <p><img src="intro_vignette_files/figure-html/upset1-1.png" width="768" style="display: block; margin: auto;"></p>
 <p>See the vignette <a href="visualization_vignette.html">Visualization of pathfindR Enrichment Results</a> for more details.</p>
 </div>

@@ -107,7 +107,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Visualization of pathfindR Enrichment Results</h1>
             
-            <h4 class="date">2020-04-28</h4>
+            <h4 class="date">2020-05-09</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/master/vignettes/visualization_vignette.Rmd"><code>vignettes/visualization_vignette.Rmd</code></a></small>
       <div class="hidden name"><code>visualization_vignette.Rmd</code></div>
@@ -188,12 +188,7 @@
 <h2 class="hasAnchor">
 <a href="#upset_plot-upset-plots-of-enriched-terms" class="anchor"></a><code>UpSet_plot()</code>: UpSet Plots of Enriched Terms</h2>
 <p>UpSet plots are plots of the intersections of sets as a matrix. <code><a href="../reference/UpSet_plot.html">UpSet_plot()</a></code> creates a ggplot object of an UpSet plot where the x-axis is the UpSet plot of intersections of enriched terms. By deault (<code>method = "heatmap"</code>), the main plot is a heatmap of genes at the corresponding intersections, colored by up/down regulation:</p>
-<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="fu"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span>(<span class="no">RA_output</span>)
-<span class="co">#&gt; Warning: `as.tibble()` is deprecated as of tibble 2.0.0.</span>
-<span class="co">#&gt; Please use `as_tibble()` instead.</span>
-<span class="co">#&gt; The signature and semantics have changed, see `?as_tibble`.</span>
-<span class="co">#&gt; This warning is displayed once every 8 hours.</span>
-<span class="co">#&gt; Call `lifecycle::last_warnings()` to see where this warning was generated.</span></pre></body></html></div>
+<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="fu"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span>(<span class="no">RA_output</span>)</pre></body></html></div>
 <p><img src="visualization_vignette_files/figure-html/upset1-1.png" width="768" style="display: block; margin: auto;"></p>
 <p>If genes_df is provided, the heatmap tiles are colored by change values:</p>
 <div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="fu"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span>(<span class="no">RA_output</span>, <span class="kw">genes_df</span> <span class="kw">=</span> <span class="no">RA_input</span>)
