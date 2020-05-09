@@ -37,6 +37,7 @@ biocViews:
 Imports: DBI,
     AnnotationDbi,
     Rcpp,
+    ps,
     doParallel,
     foreach,
     rmarkdown,
