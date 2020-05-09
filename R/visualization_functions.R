@@ -619,12 +619,10 @@ color_kegg_pathway <- function(pw_id, change_vec, normalize_vals = TRUE,
 
   dl_stat <- download_kegg_png(pw_url, f_path, quiet)
 
-  if (is.na(dl_stat))
-    return(NULL)
-
-  return(list(file_path = f_path,
-              all_key_cols = all_key_cols,
-              all_brks = all_brks))
+  if (!is.na(dl_stat))
+    return(list(file_path = f_path,
+                all_key_cols = all_key_cols,
+                all_brks = all_brks))
 }
 
 
