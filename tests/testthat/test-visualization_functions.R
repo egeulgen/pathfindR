@@ -475,7 +475,7 @@ test_that("`UpSet_plot()` produces a ggplot object", {
   # No genes in "Up_regulated"
   res_df <- RA_output
   res_df$Up_regulated <- ""
-  expect_is(p <- term_gene_heatmap(UpSet_plot, num_terms = 3), "ggplot")
+  expect_is(p <- UpSet_plot(res_df, num_terms = 3), "ggplot")
 
   # use_description = TRUE
   expect_is(p <- UpSet_plot(RA_output, use_description = TRUE), "ggplot")
