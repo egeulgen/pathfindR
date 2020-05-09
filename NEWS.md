@@ -1,4 +1,4 @@
-# pathfindR 1.5.0.9007
+# pathfindR 1.5.0.9008
 ## to be released as 1.5.0
 
 ## Major Changes
@@ -15,6 +15,7 @@
 - in `visualize_hsa_KEGG()`, fixed the issue where >1 entrez ids were returned for a gene symbol (the first one is kept)
 - in `visualize_hsa_KEGG()`, implemented a tryCatch to avoid any issues when `KEGGREST::color.pathway.by.objects()` might fail
 - in `visualize_hsa_KEGG()`, now limiting the number of genes passes onto `KEGGREST::color.pathway.by.objects()` to < 60 (because the KEGG API now limits the number?)
+- changed default visualization in `term_gene_heatmap()` (i.e. when `genes_df` is not provided) to binary colored heatmap (by default, "green" and "red", controlled by `low` and `high`) by up-/down- regulation status
 
 ***
 

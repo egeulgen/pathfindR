@@ -1,7 +1,7 @@
 Package: pathfindR
 Type: Package
 Title: Enrichment Analysis Utilizing Active Subnetworks
-Version: 1.5.0.9007
+Version: 1.5.0.9008
 Authors@R: c(person("Ege", "Ulgen",
                     role = "cre", 
                     email = "egeulgen@gmail.com",
