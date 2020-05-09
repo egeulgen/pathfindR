@@ -10,6 +10,9 @@ UpSet_plot(
   num_terms = 10,
   method = "heatmap",
   use_description = FALSE,
+  low = "green",
+  mid = "black",
+  high = "red",
   ...
 )
 }
@@ -37,6 +40,12 @@ all enriched terms (default = 10)}
 
 \item{use_description}{Boolean argument to indicate whether term descriptions
 (in the "Term_Description" column) should be used. (default = \code{FALSE})}
+
+\item{low}{a string indicating the color of 'low' values in the coloring gradient (default = 'green')}
+
+\item{mid}{a string indicating the color of 'mid' values in the coloring gradient (default = 'black')}
+
+\item{high}{a string indicating the color of 'high' values in the coloring gradient (default = 'red')}
 
 \item{...}{additional arguments for \code{\link{input_processing}} (used if
 \code{genes_df} is provided)}
