@@ -36,8 +36,6 @@ SystemRequirements: Java (>= 8.0)
 biocViews:
 Imports: DBI,
     AnnotationDbi,
-    Rcpp,
-    ps,
     doParallel,
     foreach,
     rmarkdown,
