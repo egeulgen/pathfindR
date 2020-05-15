@@ -232,7 +232,7 @@ run_pathfindR <- function(input,
   ## Prep for parallel run
   message("## Performing Active Subnetwork Search and Enrichment")
   # Initiate the clusters
-  cl <- parallel::makeCluster(n_processes)
+  cl <- parallel::makeCluster(n_processes, setup_strategy = "sequential")
   doParallel::registerDoParallel(cl)
 
   dirs <- c()
