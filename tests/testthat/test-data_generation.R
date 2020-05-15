@@ -2,7 +2,7 @@
 ## Project: pathfindR
 ## Script purpose: Testthat testing script for
 ## data generation functions
-## Date: Jan 12, 2020
+## Date: May 15, 2020
 ## Author: Ege Ulgen
 ##################################################
 
@@ -59,7 +59,7 @@ test_that("`get_reactome_gsets()` works", {
 # get_mgsigdb_gsets -------------------------------------------------------
 test_that("`get_mgsigdb_gsets()` works", {
   expect_silent(hsa_C2_cgp <- pathfindR:::get_mgsigdb_gsets(collection = "C3",
-                                                            subcollection = "MIR"))
+                                                            subcollection = "MIR:MIR_Legacy"))
   expect_length(hsa_C2_cgp, 2)
   expect_true(all(names(hsa_C2_cgp) == c("gene_sets", "descriptions")))
   expect_true(all(names(hsa_C2_cgp[["gene_sets"]] %in% names(hsa_C2_cgp[["descriptions"]]))))

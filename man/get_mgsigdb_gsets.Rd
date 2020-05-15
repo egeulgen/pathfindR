@@ -13,7 +13,7 @@ the msigdbr package}
 
 \item{collection}{collection. i.e., H, C1, C2, C3, C4, C5, C6, C7.}
 
-\item{subcollection}{sub-collection, such as CGP, MIR, BP, etc. (default = NULL,
+\item{subcollection}{sub-collection, such as CGP, BP, etc. (default = NULL,
 i.e. list all gene sets in collection)}
 }
 \value{

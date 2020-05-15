@@ -254,7 +254,7 @@ get_reactome_gsets <- function() {
 #' See \code{\link[msigdbr]{msigdbr_show_species}} for all the species available in
 #' the msigdbr package
 #' @param collection collection. i.e., H, C1, C2, C3, C4, C5, C6, C7.
-#' @param subcollection sub-collection, such as CGP, MIR, BP, etc. (default = NULL,
+#' @param subcollection sub-collection, such as CGP, BP, etc. (default = NULL,
 #' i.e. list all gene sets in collection)
 #'
 #' @return Retrieves the MSigDB gene sets and returns a list containing 2 elements: \itemize{
