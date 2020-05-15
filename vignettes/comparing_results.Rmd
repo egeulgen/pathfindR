@@ -42,7 +42,7 @@ By default, `combined_results_graph()` creates the graph using term IDs. To use 
 ```{r compare_graph3}
 combined_results_graph(combined_df, 
                        use_description = TRUE,
-                       selected_terms = combined_df$Term_Description[1:3])
+                       selected_terms = combined_df$Term_Description[1:4])
 ```
 
 For changing the layout of the graph (`"auto"` by default), you may use the `layout` argument.
