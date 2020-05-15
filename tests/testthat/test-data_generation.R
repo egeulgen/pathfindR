@@ -92,6 +92,6 @@ test_that("`get_gene_sets_list()` works", {
   expect_silent(msig <- get_gene_sets_list("MSigDB",
                                            species = "Mus musculus",
                                            collection = "C3",
-                                           subcollection = "MIR"))
+                                           subcollection = "MIR:MIR_Legacy"))
 })
 
