@@ -687,7 +687,6 @@
 <p>The function <code><a href="../reference/combine_pathfindR_results.html">combine_pathfindR_results()</a></code> allows combination of two pathfindR active-subnetwork-oriented enrichment analysis results for investigating common and distinct terms between the groups. Below is an example for comparing results using two different rheumatoid arthritis-related data sets(<code>RA_output</code> and <code>RA_comparison_output</code>).</p>
 <div class="sourceCode" id="cb25"><html><body><pre class="r"><span class="no">combined_df</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/combine_pathfindR_results.html">combine_pathfindR_results</a></span>(<span class="kw">result_A</span> <span class="kw">=</span> <span class="no">RA_output</span>,
                                          <span class="kw">result_B</span> <span class="kw">=</span> <span class="no">RA_comparison_output</span>)
-<span class="co">#&gt; Using `stress` as default layout</span>
 <span class="co">#&gt; You may run `combined_results_graph()` to create visualizations of combined term-gene graphs of selected terms</span></pre></body></html></div>
 <p><img src="intro_vignette_files/figure-html/compare2res-1.png" width="768" style="display: block; margin: auto;"></p>
 <p>For more details, see the vignette <a href="comparing_results.html">Comparing Two pathfindR Results</a></p>

@@ -118,18 +118,15 @@
 <p>The function <code><a href="../reference/combine_pathfindR_results.html">combine_pathfindR_results()</a></code> allows combination of two pathfindR active-subnetwork-oriented enrichment analysis results for investigating common and distinct terms between the groups. Below is an example for comparing results using two different rheumatoid arthritis-related data sets (<code>RA_output</code> and <code>RA_comparison_output</code>).</p>
 <div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="no">combined_df</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/combine_pathfindR_results.html">combine_pathfindR_results</a></span>(<span class="kw">result_A</span> <span class="kw">=</span> <span class="no">RA_output</span>,
                                          <span class="kw">result_B</span> <span class="kw">=</span> <span class="no">RA_comparison_output</span>)
-<span class="co">#&gt; Using `stress` as default layout</span>
 <span class="co">#&gt; You may run `combined_results_graph()` to create visualizations of combined term-gene graphs of selected terms</span></pre></body></html></div>
 <p><img src="comparing_results_files/figure-html/compare2res-1.png" width="700"></p>
 <p>By default, <code><a href="../reference/combine_pathfindR_results.html">combine_pathfindR_results()</a></code> plots the term-gene graph for the common terms in the combined results. For not plotting the graph, set <code>plot_common = FALSE</code>.</p>
 <p>The function <code><a href="../reference/combined_results_graph.html">combined_results_graph()</a></code> can be used to create this graph (using only selected terms etc.) later on. By default, the function creates the graph using all common terms:</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="../reference/combined_results_graph.html">combined_results_graph</a></span>(<span class="no">combined_df</span>)
-<span class="co">#&gt; Using `stress` as default layout</span></pre></body></html></div>
+<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="../reference/combined_results_graph.html">combined_results_graph</a></span>(<span class="no">combined_df</span>)</pre></body></html></div>
 <p><img src="comparing_results_files/figure-html/compare_graph1-1.png" width="700"></p>
 <p>By supplying a vector of selected terms to the <code>selected_terms</code> arguments, you may plot the term-gene graph for the selected terms:</p>
 <div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="../reference/combined_results_graph.html">combined_results_graph</a></span>(<span class="no">combined_df</span>,
-                       <span class="kw">selected_terms</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"hsa04144"</span>, <span class="st">"hsa04141"</span>, <span class="st">"hsa04140"</span>))
-<span class="co">#&gt; Using `stress` as default layout</span></pre></body></html></div>
+                       <span class="kw">selected_terms</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"hsa04144"</span>, <span class="st">"hsa04141"</span>, <span class="st">"hsa04140"</span>))</pre></body></html></div>
 <p><img src="comparing_results_files/figure-html/compare_graph2-1.png" width="700"></p>
 <p>By default, <code><a href="../reference/combined_results_graph.html">combined_results_graph()</a></code> creates the graph using term IDs. To use term descriptions instead, set <code>use_description = TRUE</code>:</p>
 <div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="../reference/combined_results_graph.html">combined_results_graph</a></span>(<span class="no">combined_df</span>,
@@ -141,8 +138,7 @@
 <p>For changing how the sizes of the term nodes are determined, you may use the <code>node_size</code> argument. The options are <code>"num_genes"</code> (default) and <code>"p_val"</code> for using the number of significant genes in the term and the -log10(p) value of the term, respectively:</p>
 <div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="../reference/combined_results_graph.html">combined_results_graph</a></span>(<span class="no">combined_df</span>,
                        <span class="kw">selected_terms</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"hsa04144"</span>, <span class="st">"hsa04141"</span>, <span class="st">"hsa04140"</span>),
-                       <span class="kw">node_size</span> <span class="kw">=</span> <span class="st">"p_val"</span>)
-<span class="co">#&gt; Using `stress` as default layout</span></pre></body></html></div>
+                       <span class="kw">node_size</span> <span class="kw">=</span> <span class="st">"p_val"</span>)</pre></body></html></div>
 <p><img src="comparing_results_files/figure-html/compare_graph4-1.png" width="700"></p>
   </div>
 
