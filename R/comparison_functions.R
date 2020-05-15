@@ -193,6 +193,8 @@ combined_results_graph <- function(combined_df, selected_terms = "common",
                                                     ifelse(down_cond, "red", "gray")))))
 
   ### Create graph
+  if (length(selected_terms) < 4)
+    layout <- "stress"
   p <- ggraph::ggraph(g, layout = layout)
   p <- p + ggraph::geom_edge_link(alpha = .8, colour = "darkgrey")
   p <- p + ggraph::geom_node_point(ggplot2::aes_(color = ~ I(color), size = ~size))
