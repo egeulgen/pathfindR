@@ -2,7 +2,7 @@
 ## Project: pathfindR
 ## Script purpose: Testthat testing script for
 ## core functions
-## Date: Nov 26, 2019
+## Date: May 21, 2020
 ## Author: Ege Ulgen
 ##################################################
 
@@ -217,11 +217,11 @@ test_that("`fetch_gene_set()` can fetch all gene set objects", {
   expect_true(min(tmp) >= 10 & max(tmp) <= 300)
 
   ###### Custom
-  fetch_gene_set(gene_sets = "Custom",
-                 min_gset_size = 10,
-                 max_gset_size = 300,
-                 custom_genes = kegg_genes,
-                 custom_descriptions = kegg_descriptions)
+  gset_obj <- fetch_gene_set(gene_sets = "Custom",
+                             min_gset_size = 10,
+                             max_gset_size = 300,
+                             custom_genes = kegg_genes,
+                             custom_descriptions = kegg_descriptions)
   expect_is(gset_obj$genes_by_term, "list")
   expect_is(gset_obj$term_descriptions, "character")
   expect_true(length(gset_obj$genes_by_term) == length(gset_obj$term_descriptions))
@@ -292,7 +292,7 @@ test_that("`fetch_gene_set()` arg checks work", {
 
 # return_pin_path ---------------------------------------------------------
 test_that("`return_pin_path()` returns the absolute path to PIN file", {
-
+  skip_on_cran()
   # default PINs
   expect_true(file.exists(return_pin_path("Biogrid")))
   expect_true(file.exists(return_pin_path("STRING")))
@@ -386,6 +386,7 @@ test_that("`input_testing()` works", {
 
 # input_processing --------------------------------------------------------
 test_that("`input_processing()` works", {
+  skip_on_cran()
   # full df
   expect_is(tmp <- input_processing(input = RA_input,
                                     p_val_threshold = 0.05,

@@ -2,7 +2,7 @@
 ## Project: pathfindR
 ## Script purpose: Testthat testing script for
 ## data generation functions
-## Date: May 15, 2020
+## Date: May 21, 2020
 ## Author: Ege Ulgen
 ##################################################
 
@@ -50,6 +50,7 @@ test_that("`get_kegg_gsets() works`", {
 
 # get_reactome_gsets ------------------------------------------------------
 test_that("`get_reactome_gsets()` works", {
+  skip_on_cran()
   expect_silent(reactome <- pathfindR:::get_reactome_gsets())
   expect_length(reactome, 2)
   expect_true(all(names(reactome) == c("gene_sets", "descriptions")))
@@ -58,6 +59,7 @@ test_that("`get_reactome_gsets()` works", {
 
 # get_mgsigdb_gsets -------------------------------------------------------
 test_that("`get_mgsigdb_gsets()` works", {
+  skip_on_cran()
   expect_silent(hsa_C2_cgp <- pathfindR:::get_mgsigdb_gsets(collection = "C3",
                                                             subcollection = "MIR:MIR_Legacy"))
   expect_length(hsa_C2_cgp, 2)
@@ -70,7 +72,7 @@ test_that("`get_mgsigdb_gsets()` errors work", {
   expect_error(pathfindR:::get_mgsigdb_gsets(collection = "INVALID"),
                paste0("`collection` should be one of ",
                       paste(dQuote(all_collections), collapse = ", ")))
-
+  skip_on_cran()
   species <- "Homo sapiens"
   collection <- "C2"
   subcollection <- "INVALID"

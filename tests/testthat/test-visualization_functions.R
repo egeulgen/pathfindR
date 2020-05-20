@@ -2,7 +2,7 @@
 ## Project: pathfindR
 ## Script purpose: Testthat testing script for
 ## visualization-related functions
-## Date: Nov 10, 2019
+## Date: May 21, 2019
 ## Author: Ege Ulgen
 ##################################################
 
@@ -72,6 +72,7 @@ test_that("`visualize_terms()` arg checks work", {
 
 # visualize_term_interactions ---------------------------------------------
 test_that("`visualize_term_interactions()` creates expected png file(s)", {
+  skip_on_cran()
   expected_out_file <- file.path("term_visualizations",
                                  paste0(tmp_res$Term_Description, ".png"))
   expect_null(visualize_term_interactions(tmp_res,
