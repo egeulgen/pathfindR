@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0.9009</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0</span>
       </span>
     </div>
 
@@ -108,7 +108,7 @@
       <h1 data-toc-skip>pathfindR Analysis for non-Homo-sapiens organisms</h1>
                         <h4 class="author">Ege Ulgen</h4>
             
-            <h4 class="date">2020-05-15</h4>
+            <h4 class="date">2020-05-20</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/master/vignettes/non_hs_analysis.Rmd"><code>vignettes/non_hs_analysis.Rmd</code></a></small>
       <div class="hidden name"><code>non_hs_analysis.Rmd</code></div>
@@ -131,53 +131,42 @@
 </ul>
 <p>After obtaining and processing these data for use, the user can run pathfindR using custom parameters.</p>
 <blockquote>
-<p>Important Note: Because the non-human organism-specific PIN will likely contain less interactions than the Homo sapiens PIN, pathfindR may result in less (or even no) enriched terms!</p>
+<p>Important Note: Because the non-human organism-specific PIN will likely contain less interactions than the Homo sapiens PIN, pathfindR may result in less (or even no) enriched terms.</p>
 </blockquote>
 <div id="obtain-organism-specific-gene-sets" class="section level2">
 <h2 class="hasAnchor">
 <a href="#obtain-organism-specific-gene-sets" class="anchor"></a>Obtain Organism-specific Gene Sets</h2>
-<p>We first obtain the most up-to-date M.musculus (KEGG identifier: mmu) KEGG Gene Sets using the R package <code>KEGGREST</code>.</p>
+<p>We can obtain the up-to-date M.musculus (KEGG identifier: mmu) KEGG Pathway Gene Sets using the function <code><a href="../reference/get_gene_sets_list.html">get_gene_sets_list()</a></code>:</p>
 <blockquote>
 <p>If using another organism, all you have to do is to replace “mmu” with the KEGG organism code in the related arguments in this vignette.</p>
 </blockquote>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">KEGGREST</span>)
-<span class="co">#### Obtain list of M.musculus pathways</span>
-<span class="no">mmu_kegg_descriptions</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/KEGGREST/man/keggList.html">keggList</a></span>(<span class="st">"pathway"</span>, <span class="st">"mmu"</span>)
+<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="no">gsets_list</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/get_gene_sets_list.html">get_gene_sets_list</a></span>(<span class="kw">source</span> <span class="kw">=</span> <span class="st">"KEGG"</span>,
+                                 <span class="kw">org_code</span> <span class="kw">=</span> <span class="st">"mmu"</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="no">gsets_list</span>)
+<span class="co">#&gt; [1] "gene_sets"    "descriptions"</span></pre></body></html></div>
+<p>This returns a list containing 2 objects named: <code>gene_sets</code> containing sets of genes of each pathway and <code>desriptions</code> containing the description of each pathway.</p>
+<p>The M.musculus KEGG gene set data <code>mmu_kegg_genes</code> and <code>mmu_kegg_descriptions</code> are already provided in pathfindR. For other organisms, the user may wish to save the data as RDS files for future use:</p>
+<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">mmu_kegg_genes</span> <span class="kw">&lt;-</span> <span class="no">gsets_list</span>$<span class="no">gene_sets</span>
+<span class="no">mmu_kegg_descriptions</span> <span class="kw">&lt;-</span> <span class="no">gsets_list</span>$<span class="no">descriptions</span>
 
-<span class="co"># Shorten descriptions</span>
-<span class="no">mmu_kegg_descriptions</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">sub</a></span>(<span class="st">" - Mus musculus \\(mouse\\)"</span>, <span class="st">""</span>, <span class="no">mmu_kegg_descriptions</span>)
-
-<span class="co"># Turn the identifiers into KEGG-style pathway identifiers (org_id#####)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="no">mmu_kegg_descriptions</span>) <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">sub</a></span>(<span class="st">"path:"</span>, <span class="st">""</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="no">mmu_kegg_descriptions</span>))
-
-<span class="co">#### Obtain and parse genes per each pathway</span>
-<span class="no">mmu_kegg_genes</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="no">mmu_kegg_descriptions</span>), <span class="kw">function</span>(<span class="no">pwid</span>){
-  <span class="no">pw</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/KEGGREST/man/keggGet.html">keggGet</a></span>(<span class="no">pwid</span>)
-  <span class="no">pw</span> <span class="kw">&lt;-</span> <span class="no">pw</span><span class="kw">[[</span><span class="fl">1</span>]]$<span class="no">GENE</span>[<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">FALSE</span>, <span class="fl">TRUE</span>)] <span class="co"># get gene symbols, not descriptions</span>
-  <span class="no">pw</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">sub</a></span>(<span class="st">";.+"</span>, <span class="st">""</span>, <span class="no">pw</span>) <span class="co"># discard any remaining description</span>
-  <span class="no">pw</span> <span class="kw">&lt;-</span> <span class="no">pw</span>[<span class="fu"><a href="https://rdrr.io/r/base/grep.html">grep</a></span>(<span class="st">"^[A-Za-z0-9_-]+(\\@)?$"</span>, <span class="no">pw</span>)] <span class="co"># remove any mistaken lines that cannot be gene symbols</span>
-  <span class="no">pw</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="no">pw</span>) <span class="co"># keep unique symbols</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="no">pw</span>)
-})
-
-<span class="co">#### Filter terms to exclude those with 0 genes (metabolic pathways)</span>
-<span class="no">mmu_kegg_genes</span> <span class="kw">&lt;-</span> <span class="no">mmu_kegg_genes</span>[<span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span>(<span class="no">mmu_kegg_genes</span>, <span class="no">length</span>) <span class="kw">!=</span> <span class="fl">0</span>]
-<span class="no">mmu_kegg_descriptions</span> <span class="kw">&lt;-</span> <span class="no">mmu_kegg_descriptions</span>[<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="no">mmu_kegg_descriptions</span>) <span class="kw">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="no">mmu_kegg_genes</span>)]</pre></body></html></div>
-<p>The M.musculus KEGG pathway gene set data <code>mmu_kegg_genes</code> and <code>mmu_kegg_descriptions</code> are already provided in pathfindR. For other organisms, the user may wish to save the gene set objects as RDS files for future use:</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="co">## Save both as RDS files for later use</span>
+<span class="co">## Save both as RDS files for later use</span>
 <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span>(<span class="no">mmu_kegg_genes</span>, <span class="st">"mmu_kegg_genes.RDS"</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span>(<span class="no">mmu_kegg_descriptions</span>, <span class="st">"mmu_kegg_descriptions.RDS"</span>)</pre></body></html></div>
 <p>These can be later loaded via:</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">mmu_kegg_genes</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span>(<span class="st">"mmu_kegg_genes.RDS"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">mmu_kegg_genes</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span>(<span class="st">"mmu_kegg_genes.RDS"</span>)
+<span class="no">mmu_kegg_descriptions</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span>(<span class="st">"mmu_kegg_descriptions.RDS"</span>)</pre></body></html></div>
+<blockquote>
+<p>The function <code><a href="../reference/get_gene_sets_list.html">get_gene_sets_list()</a></code> can also be used to obtain gene sets data from other sources. See the vignette <a href="obtain_data.html">Obtaining PIN and Gene Sets Data</a> for more detail.</p>
+</blockquote>
 </div>
 <div id="obtain-organism-specific-protein-protein-interaction-network" class="section level2">
 <h2 class="hasAnchor">
 <a href="#obtain-organism-specific-protein-protein-interaction-network" class="anchor"></a>Obtain Organism-specific Protein-protein Interaction Network</h2>
-<p>We recommend obtaining the organism-specific protein-protein interaction network (PIN) from <a href="https://stringdb-static.org/cgi/download.pl">STRING</a>. You may choose the organism of your choice and find the PIN on the downloads page with the description “protein network data (scored links between proteins)”. When processing, we recommend filtering the interactions using a link score threshold (e.g. 800).</p>
-<p>Alternatively, you obtain the organism-specific PIN from <a href="https://downloads.thebiogrid.org/BioGRID">BioGRID</a>. Under “Current-Release”, download <code>BIOGRID-ORGANISM-X.X.X.tab2.zip</code>. This contains PIN data for a large number of organisms. The data the user needs is named as <code>BIOGRID-ORGANISM-YOUR_ORGANISM-X.X.X.tab.txt</code> (e.g. BIOGRID-ORGANISM-Mus_musculus-3.5.169.tab.txt).</p>
+<p>You may use the function <code><a href="../reference/get_pin_file.html">get_pin_file()</a></code> to obtain organism-specific BioGRID PIN data (see the vignette <a href="obtain_data.html">Obtaining PIN and Gene Sets Data</a>)</p>
 <blockquote>
-<p>Note that BioGRID PINs are smaller for non-H.sapiens organisms and that this in turn results in less or no significantly enriched terms with pathfindR analysis.</p>
+<p>Note that BioGRID PINs are smaller for non-H.sapiens organisms and this, in turn, results in less or no significantly enriched terms with pathfindR analysis.</p>
 </blockquote>
+<p>Here, we demonsrate obtaining the organism-specific protein-protein interaction network (PIN) from <a href="https://stringdb-static.org/cgi/download.pl">STRING</a>. You may choose the organism of your choice and find the PIN on the downloads page with the description “protein network data (scored links between proteins)”. When processing, we recommend filtering the interactions using a link score threshold (e.g. 800).</p>
 <p>Regardless of the resource, the raw PIN data should be processed to a SIF file, each interactor should be specified with their gene symbols. The first 3 interactions from an example SIF file is provided below:</p>
 <table class="table"><tbody>
 <tr class="odd">
@@ -231,7 +220,9 @@
 </table>
 <p>Since the interactors are Ensembl peptide IDs, we’ll need to convert them to MGI symbols for use with pathfindR. This can be achieved via <code>biomaRt</code> or any other conversion method you prefer:</p>
 <div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">biomaRt</span>)
+
 <span class="no">mmu_ensembl</span> <span class="kw">&lt;-</span> <span class="fu">useMart</span>(<span class="st">"ensembl"</span>, <span class="kw">dataset</span> <span class="kw">=</span> <span class="st">"mmusculus_gene_ensembl"</span>)
+
 <span class="no">converted</span> <span class="kw">&lt;-</span> <span class="fu">getBM</span>(<span class="kw">attributes</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"ensembl_peptide_id"</span>, <span class="st">"mgi_symbol"</span>),
                    <span class="kw">filters</span> <span class="kw">=</span> <span class="st">"ensembl_peptide_id"</span>,
                    <span class="kw">values</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span>(<span class="no">mmu_string_pin</span>)),
@@ -269,13 +260,14 @@
 <span class="no">mmu_string_pin</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">A</span> <span class="kw">=</span> <span class="no">mmu_string_pin</span>[, <span class="fl">1</span>],
                              <span class="kw">pp</span> <span class="kw">=</span> <span class="st">"pp"</span>,
                              <span class="kw">B</span> <span class="kw">=</span> <span class="no">mmu_string_pin</span>[, <span class="fl">2</span>])</pre></body></html></div>
-<p>Finally we save the gene symbol PIN as a SIF file named “mmusculusPIN.sif” under the temporary directory (i.e. <code><a href="https://rdrr.io/r/base/tempfile.html">tempdir()</a></code>):</p>
+<p>Finally, we save the gene symbol PIN as a SIF file named “mmusculusPIN.sif” under the temporary directory (i.e. <code><a href="https://rdrr.io/r/base/tempfile.html">tempdir()</a></code>):</p>
 <div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">path2SIF</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"mmusculusPIN.sif"</span>)
 <span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.table</a></span>(<span class="no">mmu_string_pin</span>,
             <span class="kw">file</span> <span class="kw">=</span> <span class="no">path2SIF</span>,
             <span class="kw">col.names</span> <span class="kw">=</span> <span class="fl">FALSE</span>,
             <span class="kw">row.names</span> <span class="kw">=</span> <span class="fl">FALSE</span>,
-            <span class="kw">sep</span> <span class="kw">=</span> <span class="st">"\t"</span>)
+            <span class="kw">sep</span> <span class="kw">=</span> <span class="st">"\t"</span>,
+            <span class="kw">quote</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
 <span class="no">path2SIF</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/normalizePath.html">normalizePath</a></span>(<span class="no">path2SIF</span>)</pre></body></html></div>
 <p>We’ll use this path to the custom sif for analysis with <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code>.</p>
 <blockquote>
@@ -531,12 +523,12 @@
 </tr>
 </tbody>
 </table>
-<p>Because we used a very strict cut-off (logFC &gt;= 2 + FDR &lt;= 0.05), there were only 18 enriched KEGG pathways. However, the pathways identified here significantly related to the pathways identified in the original publication by Wang et al.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>.</p>
+<p>Because we used a very strict cut-off (logFC &gt;= 2 + FDR &lt;= 0.05), there were only 18 enriched KEGG pathways. However, the pathways identified here are significantly related to the pathways identified in the original publication by Wang et al.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>.</p>
 </div>
 <div id="built-in-mus-musculus-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#built-in-mus-musculus-data" class="anchor"></a>Built-in Mus musculus Data</h2>
-<p>For Mus musculus (only), we have provided the necessary PIN (<code>mmu_STRING</code>) and gene set data (<code>mmu_KEGG</code>) so you can also run:</p>
+<p>As aforementioned, for Mus musculus (only), we have provided the necessary PIN (<code>mmu_STRING</code>) and gene set data (<code>mmu_KEGG</code>) so you can also run:</p>
 <div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">myeloma_output</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindr.html">run_pathfindR</a></span>(<span class="kw">input</span> <span class="kw">=</span> <span class="no">myeloma_input</span>,
                                 <span class="kw">convert2alias</span> <span class="kw">=</span> <span class="fl">FALSE</span>,
                                 <span class="kw">gene_sets</span> <span class="kw">=</span> <span class="st">"mmu_KEGG"</span>,

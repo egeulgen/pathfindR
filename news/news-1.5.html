@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Obtain Java Version — fetch_java_version • pathfindR</title>
+<title>Version 1.5 • pathfindR</title>
 
 
 <!-- jquery -->
@@ -45,8 +45,7 @@
 
 
 
-<meta property="og:title" content="Obtain Java Version — fetch_java_version" />
-<meta property="og:description" content="Obtain Java Version" />
+<meta property="og:title" content="Version 1.5" />
 
 
 
@@ -65,7 +64,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-topic">
+    <div class="container template-news">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -150,31 +149,52 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Obtain Java Version</h1>
-    <small class="dont-index">Source: <a href='https://github.com/egeulgen/pathfindR/blob/master/R/zzz.R'><code>R/zzz.R</code></a></small>
-    <div class="hidden name"><code>fetch_java_version.Rd</code></div>
+      <h1 data-toc-skip>Changelog <small>1.5</small></h1>
+      
     </div>
 
-    <div class="ref-description">
-    <p>Obtain Java Version</p>
-    </div>
-
-    <pre class="usage"><span class='fu'>fetch_java_version</span>()</pre>
-
-
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>character vector containing the output of "java -version"</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>this function was adapted from the CRAN package <code>sparklyr</code></p>
-
+    <div id="pathfindr-150" class="section level1">
+<h1 class="page-header" data-toc-text="1.5.0">
+<a href="#pathfindr-150" class="anchor"></a>pathfindR 1.5.0<small> Unreleased </small>
+</h1>
+<div id="major-changes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#major-changes" class="anchor"></a>Major Changes</h2>
+<ul>
+<li>add the new vignette “Comparing Two pathfindR Results” that briefly describes how different pathfindR results can be compared</li>
+<li>added the functions <code><a href="../reference/combine_pathfindR_results.html">combine_pathfindR_results()</a></code> and <code><a href="../reference/combined_results_graph.html">combined_results_graph()</a></code> for comparison of 2 pathfindR results and term-gene graph of the combined results, respectively</li>
+<li>added the function <code><a href="../reference/get_pin_file.html">get_pin_file()</a></code> for obtaining organism-specific PIN data (only from BioGRID for now)</li>
+<li>added the function <code><a href="../reference/get_gene_sets_list.html">get_gene_sets_list()</a></code> for obtaining organism-specific gene sets list from KEGG, Reactome and MSigDB</li>
+<li>added the function <code><a href="../reference/term_gene_heatmap.html">term_gene_heatmap()</a></code> to create heatmap visualizations of enriched terms and the involved input genes. Rows are enriched terms and columns are involved input genes. If <code>genes_df</code> is provided, colors of the tiles indicate the change values</li>
+<li>added the function <code><a href="../reference/UpSet_plot.html">UpSet_plot()</a></code> to create UpSet plots of enriched terms</li>
+<li>added the human cell markers gene sets data <code>cell_markers_gsets</code> and <code>cell_markers_descriptions</code>
+</li>
+</ul>
+</div>
+<div id="minor-changes-and-bug-fixes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#minor-changes-and-bug-fixes" class="anchor"></a>Minor changes and bug fixes</h2>
+<ul>
+<li>fixed an issue regarding <code><a href="https://rdrr.io/r/parallel/makeCluster.html">parallel::makeCluster()</a></code> in <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code> (<a href='https://github.com/egeulgen/pathfindR/issues/45'>#45</a>)</li>
+<li>fixed save-related issue in <code><a href="../reference/download_kegg_png.html">download_kegg_png()</a></code> (<a href='https://github.com/egeulgen/pathfindR/issues/37'>#37</a>, <a href='https://github.com/rix133'>@rix133</a>)</li>
+<li>added the output data <code>RA_comparison_output</code> of pathfindR results on another RA-related dataset (GSE84074)</li>
+<li>in <code><a href="../reference/visualize_hsa_KEGG.html">visualize_hsa_KEGG()</a></code>, fixed the issue where &gt;1 entrez ids were returned for a gene symbol (the first one is kept)</li>
+<li>in <code><a href="../reference/visualize_hsa_KEGG.html">visualize_hsa_KEGG()</a></code>, implemented a tryCatch to avoid any issues when <code><a href="https://rdrr.io/pkg/KEGGREST/man/mark.pathway.by.objects.html">KEGGREST::color.pathway.by.objects()</a></code> might fail (<a href='https://github.com/egeulgen/pathfindR/issues/28'>#28</a>)</li>
+<li>in <code><a href="../reference/visualize_hsa_KEGG.html">visualize_hsa_KEGG()</a></code>, now limiting the number of genes passes onto <code><a href="https://rdrr.io/pkg/KEGGREST/man/mark.pathway.by.objects.html">KEGGREST::color.pathway.by.objects()</a></code> to &lt; 60 (because the KEGG API now limits the number?)</li>
+<li>changed default visualization in <code><a href="../reference/term_gene_heatmap.html">term_gene_heatmap()</a></code> (i.e. when <code>genes_df</code> is not provided) to binary colored heatmap (by default, “green” and “red”, controlled by <code>low</code> and <code>high</code>) by up-/down- regulation status</li>
+<li>update the vignette “pathfindR Analysis for non-Homo-sapiens organisms” to reflect new data generation functions <code><a href="../reference/get_pin_file.html">get_pin_file()</a></code> and <code><a href="../reference/get_gene_sets_list.html">get_gene_sets_list()</a></code> and fixed a minor issue in the vignette (<a href='https://github.com/egeulgen/pathfindR/issues/46'>#46</a>)</li>
+</ul>
+<hr>
+</div>
+</div>
   </div>
+
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
     </nav>
   </div>
+
 </div>
 
 
