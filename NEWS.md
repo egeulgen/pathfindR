@@ -1,5 +1,4 @@
-# pathfindR 1.5.0.9009
-## to be released as 1.5.0
+# pathfindR 1.5.0
 
 ## Major Changes
 - add the new vignette "Comparing Two pathfindR Results" that briefly describes how different pathfindR results can be compared
@@ -11,11 +10,14 @@
 - added the human cell markers gene sets data `cell_markers_gsets` and `cell_markers_descriptions`
 
 ## Minor changes and bug fixes
-- added the output data `RA_comparison_output` of pathfindR results on a RA-related dataset (GSE84074)
+- fixed an issue regarding `parallel::makeCluster()` in `run_pathfindR()` (#45)
+- fixed save-related issue in `download_kegg_png()` (#37, @rix133)
+- added the output data `RA_comparison_output` of pathfindR results on another RA-related dataset (GSE84074)
 - in `visualize_hsa_KEGG()`, fixed the issue where >1 entrez ids were returned for a gene symbol (the first one is kept)
-- in `visualize_hsa_KEGG()`, implemented a tryCatch to avoid any issues when `KEGGREST::color.pathway.by.objects()` might fail
+- in `visualize_hsa_KEGG()`, implemented a tryCatch to avoid any issues when `KEGGREST::color.pathway.by.objects()` might fail (#28)
 - in `visualize_hsa_KEGG()`, now limiting the number of genes passes onto `KEGGREST::color.pathway.by.objects()` to < 60 (because the KEGG API now limits the number?)
 - changed default visualization in `term_gene_heatmap()` (i.e. when `genes_df` is not provided) to binary colored heatmap (by default, "green" and "red", controlled by `low` and `high`) by up-/down- regulation status
+- update the vignette "pathfindR Analysis for non-Homo-sapiens organisms" to reflect new data generation functions `get_pin_file()` and `get_gene_sets_list()` and fixed a minor issue in the vignette (#46)
 
 ***
 
