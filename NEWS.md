@@ -36,7 +36,7 @@
 - The Java version is now checked
 
 ## Minor changes and bug fixes
-- Fixed behaviour: when no input genes are present in the enriched hsa KEGG pathway, visualization of the pathway is now skipped
+- Fixed behavior: when no input genes are present in the enriched hsa KEGG pathway, visualization of the pathway is now skipped
 - Added the argument `max_to_plot` to `visualize_hsa_KEGG()` and to `run_pathfindR()`. This argument controls the number of pathways to be visualized (default is NULL, i.e. no filter). This was implemented not to slow down the runtime of `run_pathfindR()` as downloading the png files is slow.
 - Fixed links to visualizations in `enriched_ters.Rmd`
 

@@ -78,7 +78,7 @@ For Reactome, there is only one collection of pathway gene sets.
 
 ## MSigDB Gene Sets
 
-Using `msigdbr`, `pathfindR` can retrive all MSigDB gene sets. For this, set the `source` argument to "MSigDB" and the `collection` argument to the desired MSigDB collection (one of H, C1, C2, C3, C4, C5, C6, C7):
+Using `msigdbr`, `pathfindR` can retrieve all MSigDB gene sets. For this, set the `source` argument to "MSigDB" and the `collection` argument to the desired MSigDB collection (one of H, C1, C2, C3, C4, C5, C6, C7):
 
 ```{r}
 gsets_list <- get_gene_sets_list(source = "MSigDB",

@@ -28,7 +28,7 @@ presented in this data frame.
 \emph{Generated on Nov 1, 2019.}
 }
 \seealso{
-\code{\link{RA_output}} for the RA example pathfindR enrinchment output
+\code{\link{RA_output}} for the RA example pathfindR enrichment output
 \code{\link{RA_clustered}} for the RA example pathfindR clustering output
 \code{\link{RA_exp_mat}} for the RA differentially-expressed genes expression matrix
 \code{\link{run_pathfindR}} for details on the pathfindR enrichment analysis

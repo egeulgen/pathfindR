@@ -161,10 +161,10 @@ The available PINs are “Biogrid”, “STRING”, “GeneMania”, “IntAct�
 “mmu\_KEGG”. You also use a custom PIN (see `?return_pin_path`) or a
 custom gene set (see `?fetch_gene_set`)
 
-> As of the latest dev version, pathfindR offers utility functions for
-> obtaining organism-specific PIN data (for now, only BioGRID PINs) and
-> organism-specific gene sets (KEGG and Reactome) data via
-> `get_pin_file()` and `get_gene_sets_list()`, respectively.
+> As of the latest development version, pathfindR offers utility
+> functions for obtaining organism-specific PIN data (for now, only
+> BioGRID PINs) and organism-specific gene sets (KEGG and Reactome) data
+> via `get_pin_file()` and `get_gene_sets_list()`, respectively.
 
 # Clustering of the Enriched Terms
 

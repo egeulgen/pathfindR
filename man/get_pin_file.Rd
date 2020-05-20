@@ -12,7 +12,7 @@ from "BioGRID" only. This argument (and this wrapper function) was implemented
 for future utility}
 
 \item{org}{organism name. BioGRID naming requires underscores for spaces so
-"Homo sapiens" becomes "Homo_sampiens", "Mus musculus" becomes "Mus_musculus"
+"Homo sapiens" becomes "Homo_sapiens", "Mus musculus" becomes "Mus_musculus"
 etc. See \url{https://wiki.thebiogrid.org/doku.php/statistics} for a full
 list of available organisms (default = "Homo_sapiens")}
 

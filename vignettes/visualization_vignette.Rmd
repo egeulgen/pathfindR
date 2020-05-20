@@ -107,7 +107,7 @@ See `?term_gene_graph` for more details.
 
 ## `UpSet_plot()`: UpSet Plots of Enriched Terms
 
-UpSet plots are plots of the intersections of sets as a matrix. `UpSet_plot()` creates a ggplot object of an UpSet plot where the x-axis is the UpSet plot of intersections of enriched terms. By deault (`method = "heatmap"`), the main plot is a heatmap of genes at the corresponding intersections, colored by up/down regulation:
+UpSet plots are plots of the intersections of sets as a matrix. `UpSet_plot()` creates a ggplot object of an UpSet plot where the x-axis is the UpSet plot of intersections of enriched terms. By default (`method = "heatmap"`), the main plot is a heatmap of genes at the corresponding intersections, colored by up/down regulation:
 
 ```{r upset1}
 UpSet_plot(RA_output)

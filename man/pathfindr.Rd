@@ -28,7 +28,7 @@ terms clustering to define clusters of biologically-related terms
 See \code{\link{score_terms}} for details on agglomerated score calculation
 for enriched terms to investigate how a gene set is altered in a given sample
 (or in cases vs. controls)
-See \code{\link{term_gene_heatmap}} for details on visaulization of the heatmap
+See \code{\link{term_gene_heatmap}} for details on visualization of the heatmap
 of enriched terms by involved genes
 See \code{\link{term_gene_graph}} for details on visualizing terms and
 term-related genes as a graph to determine the degree of overlap between the

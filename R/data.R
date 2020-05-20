@@ -56,7 +56,7 @@
 #' @source \url{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE15573}
 #'
 #' @seealso \code{\link{RA_input}}  for the RA differentially-expressed genes data frame
-#' \code{\link{RA_output}} for the RA example pathfindR enrinchment output
+#' \code{\link{RA_output}} for the RA example pathfindR enrichment output
 #' \code{\link{score_terms}} for details on calculating agglomerated scores of enriched terms
 "RA_exp_mat"
 
@@ -78,7 +78,7 @@
 #' }
 #' @source \url{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE15573}
 #'
-#' @seealso \code{\link{RA_output}} for the RA example pathfindR enrinchment output
+#' @seealso \code{\link{RA_output}} for the RA example pathfindR enrichment output
 #' \code{\link{RA_clustered}} for the RA example pathfindR clustering output
 #' \code{\link{RA_exp_mat}} for the RA differentially-expressed genes expression matrix
 #' \code{\link{run_pathfindR}} for details on the pathfindR enrichment analysis
@@ -139,7 +139,7 @@
 #' \code{\link{RA_clustered}} for the RA example pathfindR clustering output
 #' \code{\link{RA_exp_mat}} for the RA differentially-expressed genes expression matrix
 #' \code{\link{run_pathfindR}} for details on the pathfindR enrichment analysis
-#' \code{\link{RA_output}} for the RA example pathfindR enrinchment output
+#' \code{\link{RA_output}} for the RA example pathfindR enrichment output
 #' \code{\link{cluster_enriched_terms}} for details on clustering methods
 "RA_clustered"
 
@@ -163,7 +163,7 @@
 #'   \item{Down_regulated}{the down-regulated genes in the input involved in the given term, comma-separated}
 #' }
 #' @seealso \code{\link{RA_input}}  for the RA differentially-expressed genes data frame
-#' \code{\link{RA_output}} for the RA example pathfindR enrinchment output
+#' \code{\link{RA_output}} for the RA example pathfindR enrichment output
 #' \code{\link{RA_clustered}} for the RA example pathfindR clustering output
 #' \code{\link{RA_exp_mat}} for the RA differentially-expressed genes expression matrix
 #' \code{\link{run_pathfindR}} for details on the pathfindR enrichment analysis
