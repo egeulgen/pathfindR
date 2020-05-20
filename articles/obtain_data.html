@@ -156,7 +156,7 @@
 <div id="msigdb-gene-sets" class="section level2">
 <h2 class="hasAnchor">
 <a href="#msigdb-gene-sets" class="anchor"></a>MSigDB Gene Sets</h2>
-<p>Using <code>msigdbr</code>, <code>pathfindR</code> can retrive all MSigDB gene sets. For this, set the <code>source</code> argument to “MSigDB” and the <code>collection</code> argument to the desired MSigDB collection (one of H, C1, C2, C3, C4, C5, C6, C7):</p>
+<p>Using <code>msigdbr</code>, <code>pathfindR</code> can retrieve all MSigDB gene sets. For this, set the <code>source</code> argument to “MSigDB” and the <code>collection</code> argument to the desired MSigDB collection (one of H, C1, C2, C3, C4, C5, C6, C7):</p>
 <div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">gsets_list</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/get_gene_sets_list.html">get_gene_sets_list</a></span>(<span class="kw">source</span> <span class="kw">=</span> <span class="st">"MSigDB"</span>,
                                  <span class="kw">collection</span> <span class="kw">=</span> <span class="st">"C2"</span>)</pre></body></html></div>
 <p>The default organism for MSigDB is “Homo sapiens”, you may obtain the gene sets data for another organism by setting the <code>species</code> argument:</p>
