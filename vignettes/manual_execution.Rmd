@@ -11,7 +11,8 @@ vignette: >
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(collapse = TRUE,
-                      comment = "#>")
+                      comment = "#>",
+                      eval = FALSE)
 ```
 
 This vignette walks through each step of the pathfindR active-subnetwork-oriented pathway enrichment analysis. For most purposes, the wrapper function `run_pathfindR()` can be used to perform this analysis from start to end. For users who wish to have further control over the enrichment workflow, this vignette will be more useful.
@@ -23,7 +24,7 @@ This vignette walks through each step of the pathfindR active-subnetwork-oriente
 
 We first need to load the package and the input data to be used for analysis. The input must be a data frame consisting of the following columns: `Gene Symbols`, `Change Values` (optional) and `p values`. The example data frame used in this vignette (`RA_input`) is the dataset containing the differentially-expressed genes for the GEO dataset GSE15573 comparing 18 rheumatoid arthritis (RA) patients versus 15 healthy subjects.
 
-```{r init_steps}
+```{r init_steps, eval=TRUE}
 suppressPackageStartupMessages(library(pathfindR))
 data(RA_input)
 head(RA_input, 3)
@@ -74,7 +75,7 @@ To perform these steps manually, we utilize the function `active_snw_search()` f
 
 [^1]: Here we are using a regular `for` loop. In the wrapper function `run_pathfindR()`, however, a parallel loop (via the package `foreach`) is used.
 
-```{r snw_search, eval=FALSE}
+```{r snw_search}
 n_iter <- 15 ## number of iterations
 combined_res <- NULL ## to store the result of each iteration
 
@@ -108,7 +109,7 @@ for (i in 1:n_iter) {
 
 We next summarize the enrichment results (in `combined_res`) using `summarize_enrichment_results()` and annotate the involved significant (input) genes in each term using `annotate_term_genes()`.
 
-```{r post_proc, eval=FALSE}
+```{r post_proc}
 ###### Summarize Combined Enrichment Results
 summarized_df <- summarize_enrichment_results(combined_res, 
                                               list_active_snw_genes = TRUE)
@@ -123,7 +124,7 @@ final_res <- annotate_term_genes(result_df = summarized_df,
 
 We can visualize each enriched term diagram using `visualize_terms()`. In this case, these will be graphs of interactions of pathway-involved genes for each pathway. See `?visualize_terms` for more details.
 
-```{r vis_pws, eval=FALSE}
+```{r vis_pws}
 visualize_terms(result_df = final_res, 
                 hsa_KEGG = FALSE, # boolean to indicate whether human KEGG gene sets were used for enrichment analysis or not
                 pin_name_path = "Biogrid")
@@ -133,7 +134,7 @@ visualize_terms(result_df = final_res,
 
 We can also create a graphical summary of the top 10 enrichment results using `enrichment_chart()`:
 
-```{r enr_chart, eval=FALSE}
+```{r enr_chart}
 enrichment_chart(final_res[1:10, ])
 ```
 

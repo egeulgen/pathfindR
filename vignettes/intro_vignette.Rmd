@@ -187,13 +187,11 @@ knitr::kable(head(RA_output, 2))
 
 By default, `run_pathfindR()` also produces a graphical summary of enrichment results for top 10 enriched terms, which can also be later produced by `enrichment_chart()`:
 
-```{r encrichment_plot, eval=TRUE, echo=FALSE}
-enrichment_chart(RA_output)
-```
+<img src="./enrichment_chart.png" style="max-width:100%;" />
 
 You may also disable plotting this chart by setting `plot_enrichment_chart=FALSE` and later produce this plot via the function `enrichment_chart()`:
 
-```{r encrichment_plot_shown, eval=FALSE}
+```{r encrichment_plot_shown}
 # change number of top terms plotted (default = 10)
 enrichment_chart(result_df = RA_output, 
                  top_terms = 15)
@@ -232,8 +230,11 @@ The wrapper function `cluster_enriched_terms()` can be used to perform clusterin
 
 By default, `cluster_enriched_terms()` performs hierarchical clustering of the terms (using $1 - \kappa$ as the distance metric). Iterating over $2,3,...n$ clusters (where $n$ is the number of terms), `cluster_enriched_terms()` determines the optimal number of clusters by maximizing the average silhouette width, partitions the data into this optimal number of clusters and returns a data frame with cluster assignments.
 
+```{r hierarchical0}
+RA_clustered <- cluster_enriched_terms(RA_output, plot_dend = FALSE, plot_clusters_graph = FALSE)
+```
+
 ```{r hierarchical1, eval=TRUE}
-RA_clustered <- cluster_enriched_terms(RA_output, plot_dend = FALSE)
 ## First 2 rows of clustered data frame
 knitr::kable(head(RA_clustered, 2))
 ## The representative terms
@@ -254,7 +255,7 @@ For details, see `?hierarchical_term_clustering`
 
 Alternatively, the `fuzzy` clustering method (as described by Huang et al.[^1]) can be used:
 
-```{r fuzzy, eval=TRUE, fig.height=4, fig.width=8}
+```{r fuzzy}
 RA_clustered_fuzzy <- cluster_enriched_terms(RA_output, method = "fuzzy")
 ```
 
@@ -264,9 +265,11 @@ For details, see `?fuzzy_term_clustering`
 
 The function `term_gene_heatmap()` can be used to visualize the heatmap of genes that are involved in the enriched terms. This heatmap allows visual identification of the input genes involved in the enriched terms, as well as the common or distinct genes between different terms. If the input data frame (same as in `run_pathfindR()`) is supplied, the tile colors indicate the change values.
 
-```{r hmap1, eval=TRUE, fig.height=4, fig.width=8}
-term_gene_heatmap(RA_output)
+```{r hmap1}
+term_gene_heatmap(result_df = RA_output, genes_df = RA_input)
 ```
+
+<img src="./hmap.png" style="max-width:100%;" />
 
 See the vignette [Visualization of pathfindR Enrichment Results](visualization_vignette.html) for more details.
 
@@ -274,9 +277,11 @@ See the vignette [Visualization of pathfindR Enrichment Results](visualization_v
 
 The visualization function `term_gene_graph()` (adapted from the "Gene-Concept network visualization" by the R package `enrichplot`) can be utilized to visualize which genes are involved in the enriched terms. The function creates a term-gene graph which shows the connections between genes and biological terms (enriched pathways or gene sets). This allows for the investigation of multiple terms to which significant genes are related. This graph also enables visual determination of the degree of overlap between the enriched terms by identifying shared and/or distinct significant genes.
 
-```{r graph, eval=TRUE, fig.height=4, fig.width=8}
-term_gene_graph(RA_output)
+```{r term_gene_graph}
+term_gene_graph(result_df = RA_output, use_description = TRUE)
 ```
+
+<img src="./term_gene.png" style="max-width:100%;" />
 
 See the vignette [Visualization of pathfindR Enrichment Results](visualization_vignette.html) for more details.
 
@@ -284,9 +289,11 @@ See the vignette [Visualization of pathfindR Enrichment Results](visualization_v
 
 UpSet plots are plots of the intersections of sets as a matrix. This function creates a ggplot object of an UpSet plot where the x-axis is the UpSet plot of intersections of enriched terms. By default (i.e., `method = "heatmap"`), the main plot is a heatmap of genes at the corresponding intersections, colored by up/down regulation (if `genes_df` is provided, colored by change values). If `method = "barplot"`, the main plot is bar plots of the number of genes at the corresponding intersections. Finally, if `method = "boxplot"` and `genes_df` is provided, then the main plot displays the boxplots of change values of the genes at the corresponding intersections.
 
-```{r upset1, eval=TRUE, fig.height=4, fig.width=8}
-UpSet_plot(RA_output)
+```{r upset}
+UpSet_plot(result_df = RA_output, genes_df = RA_input)
 ```
+
+<img src="./upset.png" style="max-width:100%;" />
 
 See the vignette [Visualization of pathfindR Enrichment Results](visualization_vignette.html) for more details.
 
@@ -322,7 +329,8 @@ The function `combine_pathfindR_results()` allows combination of two pathfindR a
 
 ```{r compare2res, eval=TRUE, fig.height=4, fig.width=8}
 combined_df <- combine_pathfindR_results(result_A = RA_output, 
-                                         result_B = RA_comparison_output)
+                                         result_B = RA_comparison_output, 
+                                         plot_common = FALSE)
 ```
 
 For more details, see the vignette [Comparing Two pathfindR Results](comparing_results.html)
@@ -383,7 +391,7 @@ custom_result <- run_pathfindR(input_df,
 knitr::kable(custom_result)
 ```
 
-```{r custom_result1, eval=TRUE}
+```{r custom_result1, eval=TRUE, echo=FALSE}
 knitr::kable(custom_result)
 ```
 

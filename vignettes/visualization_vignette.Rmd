@@ -23,13 +23,15 @@ suppressPackageStartupMessages(library(pathfindR))
 
 `enrichment_chart` generates a bubble chart. The x-axis corresponds to fold enrichment values while the y-axis indicates the enriched terms. Size of the bubble indicates the number of significant genes in the given enriched term. Color indicates the -log10(lowest-p) value. The closer the color is to red, the more significant the enrichment is.
 
-```{r enr_chart, fig.height=8, fig.width=8}
+```{r enr_chart, eval=FALSE}
 enrichment_chart(RA_output)
 ```
 
+<img src="./enrichment_chart.png" style="max-width:100%;" />
+
 By default, the bubble chart is generated for the top 10 terms. This can be controlled by the `top_terms` argument:
 
-```{r enr_chart2, fig.height=8, fig.width=8}
+```{r enr_chart2, eval=FALSE}
 ## change top_terms
 enrichment_chart(RA_output, top_terms = 3)
 
@@ -55,7 +57,7 @@ term_gene_heatmap(RA_output)
 
 By default, the heatmap is generated for the top 10 terms. This can be controlled by the `num_terms` argument:
 
-```{r hmap2}
+```{r hmap2, eval=FALSE}
 term_gene_heatmap(RA_output, num_terms = 3)
 
 ## set null for displaying all terms
@@ -64,15 +66,17 @@ term_gene_heatmap(RA_output, num_terms = NULL)
 
 By default, the term ids are used. For using full descriptions, set `use_description = TRUE`
 
-```{r hmap3}
+```{r hmap3, eval=FALSE}
 term_gene_heatmap(RA_output, use_description = TRUE)
 ```
 
 If the input data frame (same as in `run_pathfindR()`) is supplied, the tile colors indicate the change values:
 
-```{r hmap4}
-term_gene_heatmap(RA_output, RA_input, use_description = TRUE)
+```{r hmap4, eval=FALSE}
+term_gene_heatmap(result_df = RA_output, genes_df = RA_input)
 ```
+
+<img src="./hmap.png" style="max-width:100%;" />
 
 See `?term_gene_heatmap` for more details.
 
@@ -87,19 +91,21 @@ term_gene_graph(RA_output)
 
 To plot all of the enriched terms in the enrichment results, set `num_terms = NULL` (not advised due to cluttered visualization):
 
-```{r term_gene2}
+```{r term_gene2, eval=FALSE}
 term_gene_graph(RA_output, num_terms = NULL)
 ```
 
 To plot using full term names (instead of IDs which is the default), set `use_description = TRUE`:
 
-```{r term_gene3}
+```{r term_gene3, eval=FALSE}
 term_gene_graph(RA_output, num_terms = 3, use_description = TRUE)
 ```
 
+<img src="./term_gene.png" style="max-width:100%;" />
+
 By default the node sizes are plotted proportional to the number of genes a term contains (`num_genes`). To adjust node sizes using the $-log_{10}$(lowest p values), set `node_size = "p_val"`:
 
-```{r term_gene4}
+```{r term_gene4, eval=FALSE}
 term_gene_graph(RA_output, num_terms = 3, node_size = "p_val")
 ```
 
@@ -115,31 +121,33 @@ UpSet_plot(RA_output)
 
 If genes_df is provided, the heatmap tiles are colored by change values:
 
-```{r upset2}
+```{r upset2, eval=FALSE}
 UpSet_plot(RA_output, genes_df = RA_input)
 ```
 
+<img src="./upset.png" style="max-width:100%;" />
+
 Again, you may change the number of top terms plotted via `num_terms` (default = 10):
 
-```{r upset3}
+```{r upset3, eval=FALSE}
 UpSet_plot(RA_output, num_terms = 5)
 ```
 
 Again, to plot using full term names (instead of IDs which is the default), set `use_description = TRUE`:
 
-```{r upset4}
+```{r upset4, eval=FALSE}
 UpSet_plot(RA_output, use_description = TRUE)
 ```
 
 If `method = "barplot"`, the main plot is a bar plots of the number of genes in the corresponding intersections:
 
-```{r upset5}
+```{r upset5, eval=FALSE}
 UpSet_plot(RA_output, method = "barplot")
 ```
 
 If `method = "boxplot"` and if `genes_df` is provided, then the main plot displays the boxplots of change values of the genes within the corresponding intersections:
 
-```{r upset6}
+```{r upset6, eval=FALSE}
 UpSet_plot(RA_output, RA_input, method = "boxplot")
 ```
 
