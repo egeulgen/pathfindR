@@ -8,13 +8,18 @@ There were no ERRORs or WARNINGs.
 
 There was 1 NOTE:
 * checking installed package size ... NOTE
-  installed size is  8.3Mb
+  installed size is  7.3Mb
   sub-directories of 1Mb or more:
     data   1.3Mb
-    doc    3.8Mb
+    doc    2.8Mb
     R      2.7Mb
-
-  As suggested before, if we later need to add more built-in data, we will be creating a separate dataset package .
+  
+  As requested, we reduced the check time and the size of the package. However, 
+  we could not eliminate or furtherr reduce the size of some data. The remaining 
+  large data are protein-protein interaction networks, needed to run the active 
+  subnetwork search (the core functionality) so we could not eliminate those 
+  over-sized files. As suggested before, if we later need to add more built-in 
+  data, we will be creating a separate dataset package.
 
 ## Downstream dependencies
   There are currently no downstream dependencies for this package.
