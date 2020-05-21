@@ -108,7 +108,7 @@
       <h1 data-toc-skip>Introduction to pathfindR</h1>
                         <h4 class="author">Ege Ulgen</h4>
             
-            <h4 class="date">2020-05-20</h4>
+            <h4 class="date">2020-05-21</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/master/vignettes/intro_vignette.Rmd"><code>vignettes/intro_vignette.Rmd</code></a></small>
       <div class="hidden name"><code>intro_vignette.Rmd</code></div>
@@ -320,7 +320,7 @@
 </tbody>
 </table>
 <p>By default, <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code> also produces a graphical summary of enrichment results for top 10 enriched terms, which can also be later produced by <code><a href="../reference/enrichment_chart.html">enrichment_chart()</a></code>:</p>
-<p><img src="intro_vignette_files/figure-html/encrichment_plot-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="enrichment_chart.png" style="max-width:100%;"></p>
 <p>You may also disable plotting this chart by setting <code>plot_enrichment_chart=FALSE</code> and later produce this plot via the function <code><a href="../reference/enrichment_chart.html">enrichment_chart()</a></code>:</p>
 <div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="co"># change number of top terms plotted (default = 10)</span>
 <span class="fu"><a href="../reference/enrichment_chart.html">enrichment_chart</a></span>(<span class="kw">result_df</span> <span class="kw">=</span> <span class="no">RA_output</span>,
@@ -356,9 +356,7 @@
 <h2 class="hasAnchor">
 <a href="#hierarchical-clustering" class="anchor"></a>Hierarchical Clustering</h2>
 <p>By default, <code><a href="../reference/cluster_enriched_terms.html">cluster_enriched_terms()</a></code> performs hierarchical clustering of the terms (using <span class="math inline">\(1 - \kappa\)</span> as the distance metric). Iterating over <span class="math inline">\(2,3,...n\)</span> clusters (where <span class="math inline">\(n\)</span> is the number of terms), <code><a href="../reference/cluster_enriched_terms.html">cluster_enriched_terms()</a></code> determines the optimal number of clusters by maximizing the average silhouette width, partitions the data into this optimal number of clusters and returns a data frame with cluster assignments.</p>
-<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="no">RA_clustered</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/cluster_enriched_terms.html">cluster_enriched_terms</a></span>(<span class="no">RA_output</span>, <span class="kw">plot_dend</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
-<span class="co">#&gt; The maximum average silhouette width was 0.25 for k = 15</span></pre></body></html></div>
-<p><img src="intro_vignette_files/figure-html/hierarchical1-1.png" width="672" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="no">RA_clustered</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/cluster_enriched_terms.html">cluster_enriched_terms</a></span>(<span class="no">RA_output</span>, <span class="kw">plot_dend</span> <span class="kw">=</span> <span class="fl">FALSE</span>, <span class="kw">plot_clusters_graph</span> <span class="kw">=</span> <span class="fl">FALSE</span>)</pre></body></html></div>
 <div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="co">## First 2 rows of clustered data frame</span>
 <span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>(<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">RA_clustered</span>, <span class="fl">2</span>))</pre></body></html></div>
 <table class="table">
@@ -627,7 +625,6 @@
 <a href="#heuristic-fuzzy-multiple-linkage-partitioning" class="anchor"></a>Heuristic Fuzzy Multiple-linkage Partitioning</h2>
 <p>Alternatively, the <code>fuzzy</code> clustering method (as described by Huang et al.<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a>) can be used:</p>
 <div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="no">RA_clustered_fuzzy</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/cluster_enriched_terms.html">cluster_enriched_terms</a></span>(<span class="no">RA_output</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"fuzzy"</span>)</pre></body></html></div>
-<p><img src="intro_vignette_files/figure-html/fuzzy-1.png" width="768" style="display: block; margin: auto;"></p>
 <p>For details, see <code><a href="../reference/fuzzy_term_clustering.html">?fuzzy_term_clustering</a></code></p>
 </div>
 </div>
@@ -635,25 +632,24 @@
 <h1 class="hasAnchor">
 <a href="#term-gene-heatmap" class="anchor"></a>Term-Gene Heatmap</h1>
 <p>The function <code><a href="../reference/term_gene_heatmap.html">term_gene_heatmap()</a></code> can be used to visualize the heatmap of genes that are involved in the enriched terms. This heatmap allows visual identification of the input genes involved in the enriched terms, as well as the common or distinct genes between different terms. If the input data frame (same as in <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code>) is supplied, the tile colors indicate the change values.</p>
-<div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="fu"><a href="../reference/term_gene_heatmap.html">term_gene_heatmap</a></span>(<span class="no">RA_output</span>)</pre></body></html></div>
-<p><img src="intro_vignette_files/figure-html/hmap1-1.png" width="768" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="fu"><a href="../reference/term_gene_heatmap.html">term_gene_heatmap</a></span>(<span class="kw">result_df</span> <span class="kw">=</span> <span class="no">RA_output</span>, <span class="kw">genes_df</span> <span class="kw">=</span> <span class="no">RA_input</span>)</pre></body></html></div>
+<p><img src="hmap.png" style="max-width:100%;"></p>
 <p>See the vignette <a href="visualization_vignette.html">Visualization of pathfindR Enrichment Results</a> for more details.</p>
 </div>
 <div id="term-gene-graph" class="section level1">
 <h1 class="hasAnchor">
 <a href="#term-gene-graph" class="anchor"></a>Term-Gene Graph</h1>
 <p>The visualization function <code><a href="../reference/term_gene_graph.html">term_gene_graph()</a></code> (adapted from the “Gene-Concept network visualization” by the R package <code>enrichplot</code>) can be utilized to visualize which genes are involved in the enriched terms. The function creates a term-gene graph which shows the connections between genes and biological terms (enriched pathways or gene sets). This allows for the investigation of multiple terms to which significant genes are related. This graph also enables visual determination of the degree of overlap between the enriched terms by identifying shared and/or distinct significant genes.</p>
-<div class="sourceCode" id="cb22"><html><body><pre class="r"><span class="fu"><a href="../reference/term_gene_graph.html">term_gene_graph</a></span>(<span class="no">RA_output</span>)
-<span class="co">#&gt; Using `stress` as default layout</span></pre></body></html></div>
-<p><img src="intro_vignette_files/figure-html/graph-1.png" width="768" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb22"><html><body><pre class="r"><span class="fu"><a href="../reference/term_gene_graph.html">term_gene_graph</a></span>(<span class="kw">result_df</span> <span class="kw">=</span> <span class="no">RA_output</span>, <span class="kw">use_description</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
+<p><img src="term_gene.png" style="max-width:100%;"></p>
 <p>See the vignette <a href="visualization_vignette.html">Visualization of pathfindR Enrichment Results</a> for more details.</p>
 </div>
 <div id="upset-plot" class="section level1">
 <h1 class="hasAnchor">
 <a href="#upset-plot" class="anchor"></a>UpSet Plot</h1>
 <p>UpSet plots are plots of the intersections of sets as a matrix. This function creates a ggplot object of an UpSet plot where the x-axis is the UpSet plot of intersections of enriched terms. By default (i.e., <code>method = "heatmap"</code>), the main plot is a heatmap of genes at the corresponding intersections, colored by up/down regulation (if <code>genes_df</code> is provided, colored by change values). If <code>method = "barplot"</code>, the main plot is bar plots of the number of genes at the corresponding intersections. Finally, if <code>method = "boxplot"</code> and <code>genes_df</code> is provided, then the main plot displays the boxplots of change values of the genes at the corresponding intersections.</p>
-<div class="sourceCode" id="cb23"><html><body><pre class="r"><span class="fu"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span>(<span class="no">RA_output</span>)</pre></body></html></div>
-<p><img src="intro_vignette_files/figure-html/upset1-1.png" width="768" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb23"><html><body><pre class="r"><span class="fu"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span>(<span class="kw">result_df</span> <span class="kw">=</span> <span class="no">RA_output</span>, <span class="kw">genes_df</span> <span class="kw">=</span> <span class="no">RA_input</span>)</pre></body></html></div>
+<p><img src="upset.png" style="max-width:100%;"></p>
 <p>See the vignette <a href="visualization_vignette.html">Visualization of pathfindR Enrichment Results</a> for more details.</p>
 </div>
 <div id="aggregated-term-scores-per-sample" class="section level1">
@@ -686,9 +682,9 @@
 <a href="#comparison-of-2-pathfindr-results" class="anchor"></a>Comparison of 2 pathfindR Results</h1>
 <p>The function <code><a href="../reference/combine_pathfindR_results.html">combine_pathfindR_results()</a></code> allows combination of two pathfindR active-subnetwork-oriented enrichment analysis results for investigating common and distinct terms between the groups. Below is an example for comparing results using two different rheumatoid arthritis-related data sets(<code>RA_output</code> and <code>RA_comparison_output</code>).</p>
 <div class="sourceCode" id="cb25"><html><body><pre class="r"><span class="no">combined_df</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/combine_pathfindR_results.html">combine_pathfindR_results</a></span>(<span class="kw">result_A</span> <span class="kw">=</span> <span class="no">RA_output</span>,
-                                         <span class="kw">result_B</span> <span class="kw">=</span> <span class="no">RA_comparison_output</span>)
+                                         <span class="kw">result_B</span> <span class="kw">=</span> <span class="no">RA_comparison_output</span>,
+                                         <span class="kw">plot_common</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
 <span class="co">#&gt; You may run `combined_results_graph()` to create visualizations of combined term-gene graphs of selected terms</span></pre></body></html></div>
-<p><img src="intro_vignette_files/figure-html/compare2res-1.png" width="768" style="display: block; margin: auto;"></p>
 <p>For more details, see the vignette <a href="comparing_results.html">Comparing Two pathfindR Results</a></p>
 </div>
 <div id="analysis-with-custom-gene-sets" class="section level1">
@@ -768,7 +764,6 @@
                                <span class="kw">output_dir</span> <span class="kw">=</span> <span class="st">"misc/v1.4/CREB_MYC"</span>)
 
 <span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>(<span class="no">custom_result</span>)</pre></body></html></div>
-<div class="sourceCode" id="cb29"><html><body><pre class="r"><span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>(<span class="no">custom_result</span>)</pre></body></html></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">ID</th>

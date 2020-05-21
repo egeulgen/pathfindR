@@ -108,7 +108,7 @@
       <h1 data-toc-skip>Step-by-Step Execution of the pathfindR Enrichment Workflow</h1>
                         <h4 class="author">Ege Ulgen</h4>
             
-            <h4 class="date">2020-05-20</h4>
+            <h4 class="date">2020-05-21</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/master/vignettes/manual_execution.Rmd"><code>vignettes/manual_execution.Rmd</code></a></small>
       <div class="hidden name"><code>manual_execution.Rmd</code></div>
@@ -147,12 +147,7 @@
 <div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">RA_processed</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/input_processing.html">input_processing</a></span>(<span class="kw">input</span> <span class="kw">=</span> <span class="no">RA_input</span>, <span class="co"># the input: in this case, differential expression results</span>
                                  <span class="kw">p_val_threshold</span> <span class="kw">=</span> <span class="fl">0.05</span>, <span class="co"># p value threshold to filter significant genes</span>
                                  <span class="kw">pin_name_path</span>  <span class="kw">=</span> <span class="st">"Biogrid"</span>, <span class="co"># the name of the PIN to use for active subnetwork search</span>
-                                 <span class="kw">convert2alias</span> <span class="kw">=</span> <span class="fl">TRUE</span>) <span class="co"># boolean indicating whether or not to convert missing symbols to alias symbols in the PIN</span>
-<span class="co">#&gt; Number of genes provided in input: 572</span>
-<span class="co">#&gt; Number of genes in input after p-value filtering: 572</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Could not find any interactions for 11 (1.92%) genes in the PIN</span>
-<span class="co">#&gt; Final number of genes in input: 561</span></pre></body></html></div>
+                                 <span class="kw">convert2alias</span> <span class="kw">=</span> <span class="fl">TRUE</span>) <span class="co"># boolean indicating whether or not to convert missing symbols to alias symbols in the PIN</span></pre></body></html></div>
 <blockquote>
 <p>After checking that the data frame complies with the requirements, <code><a href="../reference/input_processing.html">input_processing()</a></code> filters the input so that genes with p values larger than <code>p_val_threshold</code> are excluded. Next, gene symbols that are not in the PIN are identified and excluded. For human genes, if aliases of these missing gene symbols are found in the PIN, these symbols are converted to the corresponding aliases (controlled by the argument <code>convert2alias</code>). This step is performed to best map the input data onto the PIN.</p>
 </blockquote>

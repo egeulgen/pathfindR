@@ -108,7 +108,7 @@
       <h1 data-toc-skip>pathfindR Analysis for non-Homo-sapiens organisms</h1>
                         <h4 class="author">Ege Ulgen</h4>
             
-            <h4 class="date">2020-05-20</h4>
+            <h4 class="date">2020-05-21</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/master/vignettes/non_hs_analysis.Rmd"><code>vignettes/non_hs_analysis.Rmd</code></a></small>
       <div class="hidden name"><code>non_hs_analysis.Rmd</code></div>
@@ -141,9 +141,7 @@
 <p>If using another organism, all you have to do is to replace “mmu” with the KEGG organism code in the related arguments in this vignette.</p>
 </blockquote>
 <div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="no">gsets_list</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/get_gene_sets_list.html">get_gene_sets_list</a></span>(<span class="kw">source</span> <span class="kw">=</span> <span class="st">"KEGG"</span>,
-                                 <span class="kw">org_code</span> <span class="kw">=</span> <span class="st">"mmu"</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="no">gsets_list</span>)
-<span class="co">#&gt; [1] "gene_sets"    "descriptions"</span></pre></body></html></div>
+                                 <span class="kw">org_code</span> <span class="kw">=</span> <span class="st">"mmu"</span>)</pre></body></html></div>
 <p>This returns a list containing 2 objects named: <code>gene_sets</code> containing sets of genes of each pathway and <code>desriptions</code> containing the description of each pathway.</p>
 <p>The M.musculus KEGG gene set data <code>mmu_kegg_genes</code> and <code>mmu_kegg_descriptions</code> are already provided in pathfindR. For other organisms, the user may wish to save the data as RDS files for future use:</p>
 <div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">mmu_kegg_genes</span> <span class="kw">&lt;-</span> <span class="no">gsets_list</span>$<span class="no">gene_sets</span>

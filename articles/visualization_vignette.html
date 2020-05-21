@@ -107,7 +107,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Visualization of pathfindR Enrichment Results</h1>
             
-            <h4 class="date">2020-05-20</h4>
+            <h4 class="date">2020-05-21</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/master/vignettes/visualization_vignette.Rmd"><code>vignettes/visualization_vignette.Rmd</code></a></small>
       <div class="hidden name"><code>visualization_vignette.Rmd</code></div>
@@ -123,17 +123,15 @@
 <a href="#enrichment_chart-bubble-chart-of-enrichment-results" class="anchor"></a><code>enrichment_chart()</code>: Bubble Chart of Enrichment Results</h2>
 <p><code>enrichment_chart</code> generates a bubble chart. The x-axis corresponds to fold enrichment values while the y-axis indicates the enriched terms. Size of the bubble indicates the number of significant genes in the given enriched term. Color indicates the -log10(lowest-p) value. The closer the color is to red, the more significant the enrichment is.</p>
 <div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="../reference/enrichment_chart.html">enrichment_chart</a></span>(<span class="no">RA_output</span>)</pre></body></html></div>
-<p><img src="visualization_vignette_files/figure-html/enr_chart-1.png" width="768" style="display: block; margin: auto;"></p>
+<p><img src="enrichment_chart.png" style="max-width:100%;"></p>
 <p>By default, the bubble chart is generated for the top 10 terms. This can be controlled by the <code>top_terms</code> argument:</p>
 <div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="co">## change top_terms</span>
-<span class="fu"><a href="../reference/enrichment_chart.html">enrichment_chart</a></span>(<span class="no">RA_output</span>, <span class="kw">top_terms</span> <span class="kw">=</span> <span class="fl">3</span>)</pre></body></html></div>
-<p><img src="visualization_vignette_files/figure-html/enr_chart2-1.png" width="768" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r">
+<span class="fu"><a href="../reference/enrichment_chart.html">enrichment_chart</a></span>(<span class="no">RA_output</span>, <span class="kw">top_terms</span> <span class="kw">=</span> <span class="fl">3</span>)
+
 <span class="co">## set null for displaying all terms</span>
 <span class="fu"><a href="../reference/enrichment_chart.html">enrichment_chart</a></span>(<span class="no">RA_output</span>, <span class="kw">top_terms</span> <span class="kw">=</span> <span class="kw">NULL</span>)</pre></body></html></div>
-<p><img src="visualization_vignette_files/figure-html/enr_chart2-2.png" width="768" style="display: block; margin: auto;"></p>
 <p>If the enrichment results were clustered, setting <code>plot_by_cluster == TRUE</code> will result in the enriched terms to be grouped by clusters:</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="../reference/enrichment_chart.html">enrichment_chart</a></span>(<span class="no">RA_clustered</span>, <span class="kw">plot_by_cluster</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="../reference/enrichment_chart.html">enrichment_chart</a></span>(<span class="no">RA_clustered</span>, <span class="kw">plot_by_cluster</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
 <p><img src="visualization_vignette_files/figure-html/enr_chart3-1.png" width="768" style="display: block; margin: auto;"></p>
 <p>See <code><a href="../reference/enrichment_chart.html">?enrichment_chart</a></code> for more details.</p>
 </div>
@@ -141,78 +139,53 @@
 <h2 class="hasAnchor">
 <a href="#term_gene_heatmap-terms-by-genes-heatmap" class="anchor"></a><code>term_gene_heatmap()</code>: Terms by Genes Heatmap</h2>
 <p><code><a href="../reference/term_gene_heatmap.html">term_gene_heatmap()</a></code> is used to create a heatmap where rows are enriched terms and columns are involved input genes. This heatmap allows visual identification of the input genes involved in the enriched terms, as well as the common or distinct genes between different terms.</p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="../reference/term_gene_heatmap.html">term_gene_heatmap</a></span>(<span class="no">RA_output</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="../reference/term_gene_heatmap.html">term_gene_heatmap</a></span>(<span class="no">RA_output</span>)</pre></body></html></div>
 <p><img src="visualization_vignette_files/figure-html/hmap-1.png" width="768" style="display: block; margin: auto;"></p>
 <p>By default, the heatmap is generated for the top 10 terms. This can be controlled by the <code>num_terms</code> argument:</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="fu"><a href="../reference/term_gene_heatmap.html">term_gene_heatmap</a></span>(<span class="no">RA_output</span>, <span class="kw">num_terms</span> <span class="kw">=</span> <span class="fl">3</span>)</pre></body></html></div>
-<p><img src="visualization_vignette_files/figure-html/hmap2-1.png" width="768" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r">
+<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="../reference/term_gene_heatmap.html">term_gene_heatmap</a></span>(<span class="no">RA_output</span>, <span class="kw">num_terms</span> <span class="kw">=</span> <span class="fl">3</span>)
+
 <span class="co">## set null for displaying all terms</span>
 <span class="fu"><a href="../reference/term_gene_heatmap.html">term_gene_heatmap</a></span>(<span class="no">RA_output</span>, <span class="kw">num_terms</span> <span class="kw">=</span> <span class="kw">NULL</span>)</pre></body></html></div>
-<p><img src="visualization_vignette_files/figure-html/hmap2-2.png" width="768" style="display: block; margin: auto;"></p>
 <p>By default, the term ids are used. For using full descriptions, set <code>use_description = TRUE</code></p>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="fu"><a href="../reference/term_gene_heatmap.html">term_gene_heatmap</a></span>(<span class="no">RA_output</span>, <span class="kw">use_description</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
-<p><img src="visualization_vignette_files/figure-html/hmap3-1.png" width="768" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="fu"><a href="../reference/term_gene_heatmap.html">term_gene_heatmap</a></span>(<span class="no">RA_output</span>, <span class="kw">use_description</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
 <p>If the input data frame (same as in <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code>) is supplied, the tile colors indicate the change values:</p>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="fu"><a href="../reference/term_gene_heatmap.html">term_gene_heatmap</a></span>(<span class="no">RA_output</span>, <span class="no">RA_input</span>, <span class="kw">use_description</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
-<span class="co">#&gt; Number of genes provided in input: 572</span>
-<span class="co">#&gt; Number of genes in input after p-value filtering: 572</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Could not find any interactions for 11 (1.92%) genes in the PIN</span>
-<span class="co">#&gt; Final number of genes in input: 561</span></pre></body></html></div>
-<p><img src="visualization_vignette_files/figure-html/hmap4-1.png" width="768" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="fu"><a href="../reference/term_gene_heatmap.html">term_gene_heatmap</a></span>(<span class="kw">result_df</span> <span class="kw">=</span> <span class="no">RA_output</span>, <span class="kw">genes_df</span> <span class="kw">=</span> <span class="no">RA_input</span>)</pre></body></html></div>
+<p><img src="hmap.png" style="max-width:100%;"></p>
 <p>See <code><a href="../reference/term_gene_heatmap.html">?term_gene_heatmap</a></code> for more details.</p>
 </div>
 <div id="term_gene_graph-term-gene-graph" class="section level2">
 <h2 class="hasAnchor">
 <a href="#term_gene_graph-term-gene-graph" class="anchor"></a><code>term_gene_graph()</code>: Term-Gene Graph</h2>
 <p>The function <code><a href="../reference/term_gene_graph.html">term_gene_graph()</a></code> (adapted from the Gene-Concept network visualization by the R package <code>enrichplot</code>) can be utilized to visualize which significant genes are involved in the enriched terms. The function creates the term-gene graph, displaying the connections between genes and biological terms (enriched pathways or gene sets). This allows for the investigation of multiple terms to which significant genes are related. The graph also enables determination of the degree of overlap between the enriched terms by identifying shared and/or distinct significant genes. By default, the function visualizes the term-gene graph for the top 10 enriched terms:</p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="fu"><a href="../reference/term_gene_graph.html">term_gene_graph</a></span>(<span class="no">RA_output</span>)
+<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="fu"><a href="../reference/term_gene_graph.html">term_gene_graph</a></span>(<span class="no">RA_output</span>)
 <span class="co">#&gt; Using `stress` as default layout</span></pre></body></html></div>
 <p><img src="visualization_vignette_files/figure-html/term_gene1-1.png" width="768" style="display: block; margin: auto;"></p>
 <p>To plot all of the enriched terms in the enrichment results, set <code>num_terms = NULL</code> (not advised due to cluttered visualization):</p>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="fu"><a href="../reference/term_gene_graph.html">term_gene_graph</a></span>(<span class="no">RA_output</span>, <span class="kw">num_terms</span> <span class="kw">=</span> <span class="kw">NULL</span>)
-<span class="co">#&gt; Using `stress` as default layout</span></pre></body></html></div>
-<p><img src="visualization_vignette_files/figure-html/term_gene2-1.png" width="768" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="fu"><a href="../reference/term_gene_graph.html">term_gene_graph</a></span>(<span class="no">RA_output</span>, <span class="kw">num_terms</span> <span class="kw">=</span> <span class="kw">NULL</span>)</pre></body></html></div>
 <p>To plot using full term names (instead of IDs which is the default), set <code>use_description = TRUE</code>:</p>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="fu"><a href="../reference/term_gene_graph.html">term_gene_graph</a></span>(<span class="no">RA_output</span>, <span class="kw">num_terms</span> <span class="kw">=</span> <span class="fl">3</span>, <span class="kw">use_description</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
-<span class="co">#&gt; Using `stress` as default layout</span></pre></body></html></div>
-<p><img src="visualization_vignette_files/figure-html/term_gene3-1.png" width="768" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="fu"><a href="../reference/term_gene_graph.html">term_gene_graph</a></span>(<span class="no">RA_output</span>, <span class="kw">num_terms</span> <span class="kw">=</span> <span class="fl">3</span>, <span class="kw">use_description</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
+<p><img src="term_gene.png" style="max-width:100%;"></p>
 <p>By default the node sizes are plotted proportional to the number of genes a term contains (<code>num_genes</code>). To adjust node sizes using the <span class="math inline">\(-log_{10}\)</span>(lowest p values), set <code>node_size = "p_val"</code>:</p>
-<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="fu"><a href="../reference/term_gene_graph.html">term_gene_graph</a></span>(<span class="no">RA_output</span>, <span class="kw">num_terms</span> <span class="kw">=</span> <span class="fl">3</span>, <span class="kw">node_size</span> <span class="kw">=</span> <span class="st">"p_val"</span>)
-<span class="co">#&gt; Using `stress` as default layout</span></pre></body></html></div>
-<p><img src="visualization_vignette_files/figure-html/term_gene4-1.png" width="768" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="fu"><a href="../reference/term_gene_graph.html">term_gene_graph</a></span>(<span class="no">RA_output</span>, <span class="kw">num_terms</span> <span class="kw">=</span> <span class="fl">3</span>, <span class="kw">node_size</span> <span class="kw">=</span> <span class="st">"p_val"</span>)</pre></body></html></div>
 <p>See <code><a href="../reference/term_gene_graph.html">?term_gene_graph</a></code> for more details.</p>
 </div>
 <div id="upset_plot-upset-plots-of-enriched-terms" class="section level2">
 <h2 class="hasAnchor">
 <a href="#upset_plot-upset-plots-of-enriched-terms" class="anchor"></a><code>UpSet_plot()</code>: UpSet Plots of Enriched Terms</h2>
 <p>UpSet plots are plots of the intersections of sets as a matrix. <code><a href="../reference/UpSet_plot.html">UpSet_plot()</a></code> creates a ggplot object of an UpSet plot where the x-axis is the UpSet plot of intersections of enriched terms. By default (<code>method = "heatmap"</code>), the main plot is a heatmap of genes at the corresponding intersections, colored by up/down regulation:</p>
-<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="fu"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span>(<span class="no">RA_output</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="fu"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span>(<span class="no">RA_output</span>)</pre></body></html></div>
 <p><img src="visualization_vignette_files/figure-html/upset1-1.png" width="768" style="display: block; margin: auto;"></p>
 <p>If genes_df is provided, the heatmap tiles are colored by change values:</p>
-<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="fu"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span>(<span class="no">RA_output</span>, <span class="kw">genes_df</span> <span class="kw">=</span> <span class="no">RA_input</span>)
-<span class="co">#&gt; Number of genes provided in input: 572</span>
-<span class="co">#&gt; Number of genes in input after p-value filtering: 572</span>
-<span class="co">#&gt; Could not find any interactions for 11 (1.92%) genes in the PIN</span>
-<span class="co">#&gt; Final number of genes in input: 561</span></pre></body></html></div>
-<p><img src="visualization_vignette_files/figure-html/upset2-1.png" width="768" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="fu"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span>(<span class="no">RA_output</span>, <span class="kw">genes_df</span> <span class="kw">=</span> <span class="no">RA_input</span>)</pre></body></html></div>
+<p><img src="upset.png" style="max-width:100%;"></p>
 <p>Again, you may change the number of top terms plotted via <code>num_terms</code> (default = 10):</p>
-<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="fu"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span>(<span class="no">RA_output</span>, <span class="kw">num_terms</span> <span class="kw">=</span> <span class="fl">5</span>)</pre></body></html></div>
-<p><img src="visualization_vignette_files/figure-html/upset3-1.png" width="768" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="fu"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span>(<span class="no">RA_output</span>, <span class="kw">num_terms</span> <span class="kw">=</span> <span class="fl">5</span>)</pre></body></html></div>
 <p>Again, to plot using full term names (instead of IDs which is the default), set <code>use_description = TRUE</code>:</p>
-<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="fu"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span>(<span class="no">RA_output</span>, <span class="kw">use_description</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
-<p><img src="visualization_vignette_files/figure-html/upset4-1.png" width="768" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="fu"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span>(<span class="no">RA_output</span>, <span class="kw">use_description</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
 <p>If <code>method = "barplot"</code>, the main plot is a bar plots of the number of genes in the corresponding intersections:</p>
-<div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="fu"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span>(<span class="no">RA_output</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"barplot"</span>)</pre></body></html></div>
-<p><img src="visualization_vignette_files/figure-html/upset5-1.png" width="768" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="fu"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span>(<span class="no">RA_output</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"barplot"</span>)</pre></body></html></div>
 <p>If <code>method = "boxplot"</code> and if <code>genes_df</code> is provided, then the main plot displays the boxplots of change values of the genes within the corresponding intersections:</p>
-<div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="fu"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span>(<span class="no">RA_output</span>, <span class="no">RA_input</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"boxplot"</span>)
-<span class="co">#&gt; Number of genes provided in input: 572</span>
-<span class="co">#&gt; Number of genes in input after p-value filtering: 572</span>
-<span class="co">#&gt; Could not find any interactions for 11 (1.92%) genes in the PIN</span>
-<span class="co">#&gt; Final number of genes in input: 561</span></pre></body></html></div>
-<p><img src="visualization_vignette_files/figure-html/upset6-1.png" width="768" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="fu"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span>(<span class="no">RA_output</span>, <span class="no">RA_input</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"boxplot"</span>)</pre></body></html></div>
 <p>See <code><a href="../reference/UpSet_plot.html">?UpSet_plot</a></code> for more details.</p>
 </div>
   </div>
