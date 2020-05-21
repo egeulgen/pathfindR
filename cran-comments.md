@@ -15,7 +15,7 @@ There was 1 NOTE:
     R      2.7Mb
   
   As requested, we reduced the check time and the size of the package. However, 
-  we could not eliminate or furtherr reduce the size of some data. The remaining 
+  we could not eliminate or further reduce the size of some data. The remaining 
   large data are protein-protein interaction networks, needed to run the active 
   subnetwork search (the core functionality) so we could not eliminate those 
   over-sized files. As suggested before, if we later need to add more built-in 
