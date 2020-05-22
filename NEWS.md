@@ -1,4 +1,5 @@
-# pathfindR 1.5.0
+# pathfindR 1.5.0.9010
+## to be released as 1.5.0
 
 ## Major Changes
 - add the new vignette "Comparing Two pathfindR Results" that briefly describes how different pathfindR results can be compared
