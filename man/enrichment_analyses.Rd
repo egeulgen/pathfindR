@@ -8,8 +8,8 @@ enrichment_analyses(
   snws,
   sig_genes_vec,
   pin_name_path = "Biogrid",
-  genes_by_term = pathfindR::kegg_genes,
-  term_descriptions = pathfindR::kegg_descriptions,
+  genes_by_term = pathfindR.data::kegg_genes,
+  term_descriptions = pathfindR.data::kegg_descriptions,
   adj_method = "bonferroni",
   enrichment_threshold = 0.05,
   list_active_snw_genes = FALSE

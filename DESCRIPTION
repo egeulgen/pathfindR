@@ -52,7 +52,8 @@ Imports: DBI,
     KEGGREST,
     KEGGgraph,
     knitr
-Depends: R (>= 4.0)
+Depends: pathfindR.data,
+    R (>= 4.0),
 Suggests: 
     testthat (>= 2.3.2),
     covr

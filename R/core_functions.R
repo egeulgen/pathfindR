@@ -438,9 +438,9 @@ fetch_gene_set <- function(gene_sets = "KEGG",
   ### Built-in Gene Sets
   ## GO gene sets
   if (grepl("^GO", gene_sets)) {
-    genes_by_term <- pathfindR::go_all_genes
+    genes_by_term <- pathfindR.data::go_all_genes
 
-    GO_df <- GO_all_terms_df
+    GO_df <- pathfindR.data:::GO_all_terms_df
     term_descriptions <- GO_df$GO_term
     names(term_descriptions) <- GO_df$GO_ID
 
@@ -461,20 +461,20 @@ fetch_gene_set <- function(gene_sets = "KEGG",
     ## non-GO (KEGG, Reactome, BioCarta, mmu_KEGG)
   } else {
     if (gene_sets == "KEGG") {
-      genes_by_term <- pathfindR::kegg_genes
-      term_descriptions <- pathfindR::kegg_descriptions
+      genes_by_term <- pathfindR.data::kegg_genes
+      term_descriptions <- pathfindR.data::kegg_descriptions
     } else if (gene_sets == "Reactome") {
-      genes_by_term <- pathfindR::reactome_genes
-      term_descriptions <- pathfindR::reactome_descriptions
+      genes_by_term <- pathfindR.data::reactome_genes
+      term_descriptions <- pathfindR.data::reactome_descriptions
     } else if (gene_sets == "BioCarta"){
-      genes_by_term <- pathfindR::biocarta_genes
-      term_descriptions <- pathfindR::biocarta_descriptions
+      genes_by_term <- pathfindR.data::biocarta_genes
+      term_descriptions <- pathfindR.data::biocarta_descriptions
     } else if (gene_sets == "mmu_KEGG") {
-      genes_by_term <- pathfindR::mmu_kegg_genes
-      term_descriptions <- pathfindR::mmu_kegg_descriptions
+      genes_by_term <- pathfindR.data::mmu_kegg_genes
+      term_descriptions <- pathfindR.data::mmu_kegg_descriptions
     } else {
-      genes_by_term <- pathfindR::cell_markers_gsets
-      term_descriptions <- pathfindR::cell_markers_descriptions
+      genes_by_term <- pathfindR.data::cell_markers_gsets
+      term_descriptions <- pathfindR.data::cell_markers_descriptions
     }
   }
 
@@ -522,7 +522,7 @@ return_pin_path <- function(pin_name_path = "Biogrid") {
     if (!file.exists(path)) {
 
       adj_list <- utils::getFromNamespace(paste0(tolower(pin_name_path), "_adj_list"),
-                                          ns = "pathfindR")
+                                          ns = "pathfindR.data")
 
       pin_df <- lapply(seq_along(adj_list),
                        function(i, nm, val) data.frame(base::toupper(nm[[i]]),
@@ -808,7 +808,7 @@ input_processing <- function(input, p_val_threshold = 0.05,
 #'                                         input_processed = example_gene_data)
 annotate_term_genes <- function(result_df,
                                 input_processed,
-                                genes_by_term = pathfindR::kegg_genes) {
+                                genes_by_term = pathfindR.data::kegg_genes) {
   ### Argument checks
   if(!is.data.frame(result_df)) {
     stop("`result_df` should be a data frame")

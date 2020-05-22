@@ -6,8 +6,8 @@
 \usage{
 enrichment(
   input_genes,
-  genes_by_term = pathfindR::kegg_genes,
-  term_descriptions = pathfindR::kegg_descriptions,
+  genes_by_term = pathfindR.data::kegg_genes,
+  term_descriptions = pathfindR.data::kegg_descriptions,
   adj_method = "bonferroni",
   enrichment_threshold = 0.05,
   sig_genes_vec,
@@ -47,7 +47,7 @@ Perform Enrichment Analysis for a Single Gene Set
 \examples{
 enrichment(input_genes = c("PER1", "PER2", "CRY1", "CREB1"),
            sig_genes_vec = "PER1",
-           background_genes = unlist(kegg_genes))
+           background_genes = unlist(pathfindR.data::kegg_genes))
 }
 \seealso{
 \code{\link[stats]{p.adjust}} for adjustment of p values. See

@@ -36,8 +36,7 @@ Parse Active Subnetwork Search Output File and Filter the Subnetworks
 path2snw_list <- system.file("extdata/resultActiveSubnetworkSearch.txt",
                               package = "pathfindR")
 filtered <- filterActiveSnws(active_snw_path = path2snw_list,
-                             sig_genes_vec = pathfindR::RA_input$Gene.symbol)
-unlink("active_snw_search", recursive = TRUE)
+                             sig_genes_vec = RA_input$Gene.symbol)
 }
 \seealso{
 See \code{\link{run_pathfindR}} for the wrapper function of the

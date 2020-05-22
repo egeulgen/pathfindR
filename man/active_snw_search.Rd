@@ -105,4 +105,6 @@ colnames(processed_df) <- c("GENE", "P_VALUE")
 GR_snws <- active_snw_search(input_for_search = processed_df,
                              pin_name_path = "KEGG",
                              search_method = "GR")
+# clean-up
+unlink("active_snw_search", recursive = TRUE)
 }

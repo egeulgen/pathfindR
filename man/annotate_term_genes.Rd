@@ -7,7 +7,7 @@
 annotate_term_genes(
   result_df,
   input_processed,
-  genes_by_term = pathfindR::kegg_genes
+  genes_by_term = pathfindR.data::kegg_genes
 )
 }
 \arguments{

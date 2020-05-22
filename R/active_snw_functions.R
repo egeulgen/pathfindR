@@ -21,8 +21,7 @@
 #' path2snw_list <- system.file("extdata/resultActiveSubnetworkSearch.txt",
 #'                               package = "pathfindR")
 #' filtered <- filterActiveSnws(active_snw_path = path2snw_list,
-#'                              sig_genes_vec = pathfindR::RA_input$Gene.symbol)
-#' unlink("active_snw_search", recursive = TRUE)
+#'                              sig_genes_vec = RA_input$Gene.symbol)
 filterActiveSnws <- function(active_snw_path, sig_genes_vec,
                              score_quan_thr = 0.80, sig_gene_thr = 0.02) {
   ## Arg. checks
@@ -127,6 +126,8 @@ filterActiveSnws <- function(active_snw_path, sig_genes_vec,
 #' GR_snws <- active_snw_search(input_for_search = processed_df,
 #'                              pin_name_path = "KEGG",
 #'                              search_method = "GR")
+#' # clean-up
+#' unlink("active_snw_search", recursive = TRUE)
 active_snw_search <- function(input_for_search,
                               pin_name_path = "Biogrid",
                               snws_file = "active_snws",
