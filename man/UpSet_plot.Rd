@@ -30,7 +30,7 @@ UpSet_plot(
   \item Gene Symbol (Gene Symbol)
   \item Change value, e.g. log(fold change) (optional)
   \item p value, e.g. adjusted p value associated with differential expression
-} The change values in this data frame are used to color the affected genes in the heatmap}
+} The change values in this data frame are used to color the affected genes}
 
 \item{num_terms}{Number of top enriched terms to use while creating the plot. Set to \code{NULL} to use
 all enriched terms (default = 10)}

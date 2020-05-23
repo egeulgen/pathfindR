@@ -1006,7 +1006,7 @@ term_gene_graph <- function(result_df, num_terms = 10,
 #'   \item Gene Symbol (Gene Symbol)
 #'   \item Change value, e.g. log(fold change) (optional)
 #'   \item p value, e.g. adjusted p value associated with differential expression
-#' } The change values in this data frame are used to color the affected genes in the heatmap
+#' } The change values in this data frame are used to color the affected genes
 #' @param num_terms Number of top enriched terms to use while creating the plot. Set to \code{NULL} to use
 #'  all enriched terms (default = 10)
 #' @inheritParams term_gene_graph

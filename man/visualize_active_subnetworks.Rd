@@ -21,7 +21,7 @@ visualize_active_subnetworks(
   \item Gene Symbol (Gene Symbol)
   \item Change value, e.g. log(fold change) (optional)
   \item p value, e.g. adjusted p value associated with differential expression
-} The change values in this data frame are used to color the affected genes in the heatmap}
+} The change values in this data frame are used to color the affected genes}
 
 \item{pin_name_path}{Name of the chosen PIN or path/to/PIN.sif. If PIN name,
 must be one of c("Biogrid", "STRING", "GeneMania", "IntAct", "KEGG", "mmu_STRING"). If
