@@ -270,13 +270,6 @@ filterActiveSnws <- function(active_snw_path, sig_genes_vec,
 #' subnetworks. Green nodes are down-regulated genes, reds are up-regulated genes
 #' and yellows are non-input genes
 #' @export
-#'
-#' @examples
-#' path2snw_list <- system.file("extdata/resultActiveSubnetworkSearch.txt",
-#'                               package = "pathfindR")
-#' g_list <- visualize_active_subnetworks(active_snw_path = path2snw_list,
-#'                                        genes_df = RA_input[1:20, ],
-#'                                        num_snws = 3)
 visualize_active_subnetworks <- function(active_snw_path, genes_df,
                                          pin_name_path = "Biogrid",
                                          num_snws,
