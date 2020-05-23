@@ -3,6 +3,7 @@
 
 ## Major Changes
 - created separate package `pathfindR.data` for storing pathfindR data
+- added the function `visualize_active_subnetworks()` for visualizing graphs of active subnetworks
 - add the new vignette "Comparing Two pathfindR Results" that briefly describes how different pathfindR results can be compared
 - added the functions `combine_pathfindR_results()` and `combined_results_graph()` for comparison of 2 pathfindR results and term-gene graph of the combined results, respectively
 - added the function `get_pin_file()` for obtaining organism-specific PIN data (only from BioGRID for now)
