@@ -45,6 +45,7 @@ Visualize Active Subnetworks
 \examples{
 path2snw_list <- system.file("extdata/resultActiveSubnetworkSearch.txt",
                               package = "pathfindR")
-# using subset of input genes for faster example
-g_list <- visualize_active_subnetworks(path2snw_list, RA_input[1:50, ])
+g_list <- visualize_active_subnetworks(active_snw_path = path2snw_list,
+                                       genes_df = RA_input[1:20, ],
+                                       num_snws = 3)
 }

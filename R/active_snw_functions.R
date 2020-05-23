@@ -274,8 +274,9 @@ filterActiveSnws <- function(active_snw_path, sig_genes_vec,
 #' @examples
 #' path2snw_list <- system.file("extdata/resultActiveSubnetworkSearch.txt",
 #'                               package = "pathfindR")
-#' # using subset of input genes for faster example
-#' g_list <- visualize_active_subnetworks(path2snw_list, RA_input[1:50, ])
+#' g_list <- visualize_active_subnetworks(active_snw_path = path2snw_list,
+#'                                        genes_df = RA_input[1:20, ],
+#'                                        num_snws = 3)
 visualize_active_subnetworks <- function(active_snw_path, genes_df,
                                          pin_name_path = "Biogrid",
                                          num_snws,
@@ -302,7 +303,7 @@ visualize_active_subnetworks <- function(active_snw_path, genes_df,
   pin[, 2] <- base::toupper(pin[, 2])
 
   # load snws file
-  all_snws <- readLines(snws_file)
+  all_snws <- readLines(active_snw_path)
   if (length(all_snws) == 0)
     return(NULL)
 
