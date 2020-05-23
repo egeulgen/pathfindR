@@ -2,90 +2,9 @@
 ## Project: pathfindR
 ## Script purpose: Testthat testing script for
 ## active subnetwork search functions
-## Date: Oct 29, 2019
+## Date: May 23, 2019
 ## Author: Ege Ulgen
 ##################################################
-
-# filterActiveSnws --------------------------------------------------------
-sample_path <- system.file("extdata/resultActiveSubnetworkSearch.txt",
-                           package = "pathfindR")
-def_smw_len <- 1000
-
-test_that("`filterActiveSnws()` returns list object", {
-  tmp_filtered <- filterActiveSnws(active_snw_path = sample_path,
-                                   sig_genes_vec = RA_input$Gene.symbol)
-  expect_is(tmp_filtered, "list")
-  expect_is(tmp_filtered[[1]], "character")
-
-  # empty file case
-  empty_path <- file.path(tempdir(), "empty.txt")
-  file.create(empty_path)
-  expect_null(suppressWarnings(filterActiveSnws(active_snw_path = empty_path,
-                                                sig_genes_vec = RA_input$Gene.symbol)))
-})
-
-test_that("`score_quan_thr` in `filterActiveSnws()` works", {
-  tmp_filtered <- filterActiveSnws(active_snw_path = sample_path,
-                                   sig_genes_vec = RA_input$Gene.symbol,
-                                   score_quan_thr = -1,
-                                   sig_gene_thr = 0)
-  expect_length(tmp_filtered, def_smw_len)
-
-  for (q_thr in seq(.1, 1, by = .1)) {
-    tmp_filtered <- filterActiveSnws(active_snw_path = sample_path,
-                                     sig_genes_vec = RA_input$Gene.symbol,
-                                     score_quan_thr = q_thr,
-                                     sig_gene_thr = 0)
-    exp_len <- def_smw_len * (1 - q_thr)
-    expect_length(tmp_filtered, as.integer(exp_len + .5))
-  }
-})
-
-test_that("`sig_gene_thr` in `filterActiveSnws()` works", {
-  tmp_filtered1 <- filterActiveSnws(active_snw_path = sample_path,
-                                    sig_genes_vec = RA_input$Gene.symbol,
-                                    sig_gene_thr = 0.02, # default
-                                    score_quan_thr = -1)
-
-  tmp_filtered2 <- filterActiveSnws(active_snw_path = sample_path,
-                                    sig_genes_vec = RA_input$Gene.symbol,
-                                    sig_gene_thr = 0.1,
-                                    score_quan_thr = -1)
-
-  expect_true(length(tmp_filtered2) < def_smw_len)
-  expect_true(length(tmp_filtered1) > length(tmp_filtered2))
-})
-
-test_that("`filterActiveSnws()` arg checks work", {
-  expect_error(filterActiveSnws(active_snw_path = "this/is/not/a/path"),
-               "The active subnetwork file does not exist! Check the `active_snw_path` argument")
-
-  expect_error(filterActiveSnws(active_snw_path = sample_path,
-                                sig_genes_vec = list()),
-               "`sig_genes_vec` should be a vector")
-
-  expect_error(filterActiveSnws(active_snw_path = sample_path,
-                                sig_genes_vec = RA_input$Gene.symbol,
-                                score_quan_thr = "INVALID"),
-               "`score_quan_thr` should be numeric")
-  expect_error(filterActiveSnws(active_snw_path = sample_path,
-                                sig_genes_vec = RA_input$Gene.symbol,
-                                score_quan_thr = -2),
-               "`score_quan_thr` should be in \\[0, 1\\] or -1 \\(if not filtering\\)")
-  expect_error(filterActiveSnws(active_snw_path = sample_path,
-                                sig_genes_vec = RA_input$Gene.symbol,
-                                score_quan_thr = 2),
-               "`score_quan_thr` should be in \\[0, 1\\] or -1 \\(if not filtering\\)")
-
-  expect_error(filterActiveSnws(active_snw_path = sample_path,
-                                sig_genes_vec = RA_input$Gene.symbol,
-                                sig_gene_thr = "INVALID"),
-               "`sig_gene_thr` should be numeric")
-  expect_error(filterActiveSnws(active_snw_path = sample_path,
-                                sig_genes_vec = RA_input$Gene.symbol,
-                                sig_gene_thr = -1),
-               "`sig_gene_thr` should be in \\[0, 1\\]")
-})
 
 # active_snw_search -------------------------------------------------------
 input_df1 <- suppressMessages(input_processing(RA_input[1:100, ],
@@ -182,4 +101,108 @@ test_that("`active_snw_search()` arg checks work", {
   expect_error(active_snw_search(input_for_search = input_df2,
                                  use_all_positives = "INVALID"),
                "`use_all_positives` should be either TRUE or FALSE")
+})
+
+# filterActiveSnws --------------------------------------------------------
+sample_path <- system.file("extdata/resultActiveSubnetworkSearch.txt",
+                           package = "pathfindR")
+def_smw_len <- 1000
+
+test_that("`filterActiveSnws()` returns list object", {
+  tmp_filtered <- filterActiveSnws(active_snw_path = sample_path,
+                                   sig_genes_vec = RA_input$Gene.symbol)
+  expect_is(tmp_filtered, "list")
+  expect_is(tmp_filtered[[1]], "character")
+
+  # empty file case
+  empty_path <- file.path(tempdir(), "empty.txt")
+  file.create(empty_path)
+  expect_null(suppressWarnings(filterActiveSnws(active_snw_path = empty_path,
+                                                sig_genes_vec = RA_input$Gene.symbol)))
+})
+
+test_that("`score_quan_thr` in `filterActiveSnws()` works", {
+  tmp_filtered <- filterActiveSnws(active_snw_path = sample_path,
+                                   sig_genes_vec = RA_input$Gene.symbol,
+                                   score_quan_thr = -1,
+                                   sig_gene_thr = 0)
+  expect_length(tmp_filtered, def_smw_len)
+
+  for (q_thr in seq(.1, 1, by = .1)) {
+    tmp_filtered <- filterActiveSnws(active_snw_path = sample_path,
+                                     sig_genes_vec = RA_input$Gene.symbol,
+                                     score_quan_thr = q_thr,
+                                     sig_gene_thr = 0)
+    exp_len <- def_smw_len * (1 - q_thr)
+    expect_length(tmp_filtered, as.integer(exp_len + .5))
+  }
+})
+
+test_that("`sig_gene_thr` in `filterActiveSnws()` works", {
+  tmp_filtered1 <- filterActiveSnws(active_snw_path = sample_path,
+                                    sig_genes_vec = RA_input$Gene.symbol,
+                                    sig_gene_thr = 0.02, # default
+                                    score_quan_thr = -1)
+
+  tmp_filtered2 <- filterActiveSnws(active_snw_path = sample_path,
+                                    sig_genes_vec = RA_input$Gene.symbol,
+                                    sig_gene_thr = 0.1,
+                                    score_quan_thr = -1)
+
+  expect_true(length(tmp_filtered2) < def_smw_len)
+  expect_true(length(tmp_filtered1) > length(tmp_filtered2))
+})
+
+test_that("`filterActiveSnws()` arg checks work", {
+  expect_error(filterActiveSnws(active_snw_path = "this/is/not/a/path"),
+               "The active subnetwork file does not exist! Check the `active_snw_path` argument")
+
+  expect_error(filterActiveSnws(active_snw_path = sample_path,
+                                sig_genes_vec = list()),
+               "`sig_genes_vec` should be a vector")
+
+  expect_error(filterActiveSnws(active_snw_path = sample_path,
+                                sig_genes_vec = RA_input$Gene.symbol,
+                                score_quan_thr = "INVALID"),
+               "`score_quan_thr` should be numeric")
+  expect_error(filterActiveSnws(active_snw_path = sample_path,
+                                sig_genes_vec = RA_input$Gene.symbol,
+                                score_quan_thr = -2),
+               "`score_quan_thr` should be in \\[0, 1\\] or -1 \\(if not filtering\\)")
+  expect_error(filterActiveSnws(active_snw_path = sample_path,
+                                sig_genes_vec = RA_input$Gene.symbol,
+                                score_quan_thr = 2),
+               "`score_quan_thr` should be in \\[0, 1\\] or -1 \\(if not filtering\\)")
+
+  expect_error(filterActiveSnws(active_snw_path = sample_path,
+                                sig_genes_vec = RA_input$Gene.symbol,
+                                sig_gene_thr = "INVALID"),
+               "`sig_gene_thr` should be numeric")
+  expect_error(filterActiveSnws(active_snw_path = sample_path,
+                                sig_genes_vec = RA_input$Gene.symbol,
+                                sig_gene_thr = -1),
+               "`sig_gene_thr` should be in \\[0, 1\\]")
+})
+
+
+# visualize_active_subnetworks --------------------------------------------
+sample_path <- system.file("extdata/resultActiveSubnetworkSearch.txt",
+                           package = "pathfindR")
+def_smw_len <- 1000
+
+test_that("`visualize_active_subnetworks()` returns list of ggraph objects", {
+  # empty file case
+  empty_path <- file.path(tempdir(), "empty.txt")
+  file.create(empty_path)
+  expect_null(visualize_active_subnetworks(active_snw_path = empty_path,
+                                           genes_df = RA_input[1:5,]))
+
+  expect_error(visualize_active_subnetworks(active_snw_path = "this/is/not/a/path"),
+               "The active subnetwork file does not exist! Check the `active_snw_path` argument")
+
+  skip_on_cran()
+  g_list <- visualize_active_subnetworks(sample_path, RA_input[1:5, ])
+  expect_is(g_list, "list")
+  expect_is(g_list[[1]], "ggraph")
+  expect_equal(length(g_list), def_smw_len)
 })
