@@ -28,6 +28,7 @@ reference:
       - UpSet_plot
       - visualize_terms
       - cluster_graph_vis
+      - visualize_active_subnetworks
   - title: "Data Generation"
     desc: >
       Functions to generate PIN and gene sets data
