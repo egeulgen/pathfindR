@@ -8,7 +8,7 @@ combined_results_graph(
   combined_df,
   selected_terms = "common",
   use_description = FALSE,
-  layout = "auto",
+  layout = "stress",
   node_size = "num_genes"
 )
 }
