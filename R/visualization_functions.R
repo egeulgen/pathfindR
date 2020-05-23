@@ -840,7 +840,7 @@ enrichment_chart <- function(result_df,
 #' }
 #' @param num_terms Number of top enriched terms to use while creating the graph. Set to \code{NULL} to use
 #'  all enriched terms (default = 10, i.e. top 10 terms)
-#' @param layout The type of layout to create (see \code{\link[ggraph]{ggraph}} for details. Default = "auto")
+#' @param layout The type of layout to create (see \code{\link[ggraph]{ggraph}} for details. Default = "stress")
 #' @param use_description Boolean argument to indicate whether term descriptions
 #'  (in the "Term_Description" column) should be used. (default = \code{FALSE})
 #' @param node_size Argument to indicate whether to use number of significant genes ("num_genes")
@@ -869,7 +869,7 @@ enrichment_chart <- function(result_df,
 #' p <- term_gene_graph(RA_output, num_terms = 5)
 #' p <- term_gene_graph(RA_output, node_size = "p_val")
 term_gene_graph <- function(result_df, num_terms = 10,
-                            layout = "auto", use_description = FALSE,
+                            layout = "stress", use_description = FALSE,
                             node_size = "num_genes") {
 
   ############ Argument Checks
@@ -1004,7 +1004,7 @@ term_gene_graph <- function(result_df, num_terms = 10,
 #' @param genes_df the input data that was used with \code{\link{run_pathfindR}}.
 #'   It must be a data frame with 3 columns: \enumerate{
 #'   \item Gene Symbol (Gene Symbol)
-#'   \item Change value, e.g. log(fold change)
+#'   \item Change value, e.g. log(fold change) (optional)
 #'   \item p value, e.g. adjusted p value associated with differential expression
 #' } The change values in this data frame are used to color the affected genes in the heatmap
 #' @param num_terms Number of top enriched terms to use while creating the plot. Set to \code{NULL} to use

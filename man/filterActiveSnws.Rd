@@ -12,7 +12,7 @@ filterActiveSnws(
 )
 }
 \arguments{
-\item{active_snw_path}{path to the output of an Active Subnetwork Search.}
+\item{active_snw_path}{path to the output of an Active Subnetwork Search}
 
 \item{sig_genes_vec}{vector of significant gene symbols. In the scope of this
 package, these are the input genes that were used for active subnetwork search}

@@ -27,7 +27,7 @@ term_gene_heatmap(
 \item{genes_df}{the input data that was used with \code{\link{run_pathfindR}}.
   It must be a data frame with 3 columns: \enumerate{
   \item Gene Symbol (Gene Symbol)
-  \item Change value, e.g. log(fold change)
+  \item Change value, e.g. log(fold change) (optional)
   \item p value, e.g. adjusted p value associated with differential expression
 } The change values in this data frame are used to color the affected genes in the heatmap}
 

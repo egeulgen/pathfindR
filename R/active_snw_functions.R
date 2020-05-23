@@ -1,6 +1,6 @@
 #' Parse Active Subnetwork Search Output File and Filter the Subnetworks
 #'
-#' @param active_snw_path path to the output of an Active Subnetwork Search.
+#' @param active_snw_path path to the output of an Active Subnetwork Search
 #' @param sig_genes_vec vector of significant gene symbols. In the scope of this
 #'   package, these are the input genes that were used for active subnetwork search
 #' @param score_quan_thr active subnetwork score quantile threshold (Default = 0.80)

@@ -22,7 +22,7 @@ common terms are used. (default = "common")}
 \item{use_description}{Boolean argument to indicate whether term descriptions
 (in the "Term_Description" column) should be used. (default = \code{FALSE})}
 
-\item{layout}{The type of layout to create (see \code{\link[ggraph]{ggraph}} for details. Default = "auto")}
+\item{layout}{The type of layout to create (see \code{\link[ggraph]{ggraph}} for details. Default = "stress")}
 
 \item{node_size}{Argument to indicate whether to use number of significant genes ("num_genes")
 or the -log10(lowest p value) ("p_val") for adjusting the node sizes (default = "num_genes")}
