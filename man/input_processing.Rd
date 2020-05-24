@@ -43,8 +43,8 @@ Process Input
 }
 \examples{
 \dontshow{
-input_processing(RA_input[1:20, ], 0.05, "KEGG")
-input_processing(RA_input[1:20, ], 0.05, "KEGG", convert2alias = FALSE)
+input_processing(RA_input[1:5, ], 0.05, "KEGG")
+input_processing(RA_input[1:5, ], 0.05, "KEGG", convert2alias = FALSE)
 }
 \dontrun{
 input_processing(RA_input, 0.05, "KEGG")

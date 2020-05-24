@@ -45,6 +45,9 @@ Visualize Active Subnetworks
 \examples{
 path2snw_list <- system.file("extdata/resultActiveSubnetworkSearch.txt",
                               package = "pathfindR")
+# visualize top 2 active subnetworks
 g_list <- visualize_active_subnetworks(active_snw_path = path2snw_list,
-                                       genes_df = RA_input[1:5, ])
+                                       genes_df = RA_input[1:5, ],
+                                       pin_name_path = "KEGG",
+                                       num_snws = 2)
 }
