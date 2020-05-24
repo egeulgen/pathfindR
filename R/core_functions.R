@@ -646,14 +646,11 @@ input_testing <- function(input, p_val_threshold = 0.05) {
 #'   pathfindR workflow
 #'
 #' @examples
-#' \dontshow{
-#' input_processing(RA_input[1:5, ], 0.05, "KEGG")
-#' input_processing(RA_input[1:5, ], 0.05, "KEGG", convert2alias = FALSE)
-#' }
-#' \dontrun{
-#' input_processing(RA_input, 0.05, "KEGG")
-#' }
-#'
+#' processed_df <- input_processing(input = RA_input[1:5, ],
+#'                                  pin_name_path = "KEGG")
+#' processed_df <- input_processing(input = RA_input[1:10, ],
+#'                                  pin_name_path = "KEGG",
+#'                                  convert2alias = FALSE)
 input_processing <- function(input, p_val_threshold = 0.05,
                              pin_name_path = "Biogrid", convert2alias = TRUE) {
 
