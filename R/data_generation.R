@@ -138,8 +138,8 @@ get_pin_file <- function(source = "BioGRID", org = "Homo_sapiens", path2pin, ...
   if (source != "BioGRID")
     stop("As of this version, this function is implemented to get data from BioGRID only")
 
-  get_biogrid_pin(org = org, path2pin = path2pin, ...)
-
+  path2pin <- get_biogrid_pin(org = org, path2pin = path2pin, ...)
+  return(path2pin)
 }
 
 #' Retrieve Gene Sets from GMT-format File
