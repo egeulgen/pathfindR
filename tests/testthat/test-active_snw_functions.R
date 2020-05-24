@@ -2,12 +2,12 @@
 ## Project: pathfindR
 ## Script purpose: Testthat testing script for
 ## active subnetwork search functions
-## Date: May 23, 2019
+## Date: May 24, 2020
 ## Author: Ege Ulgen
 ##################################################
 
 # active_snw_search -------------------------------------------------------
-input_df1 <- suppressMessages(input_processing(RA_input[1:100, ],
+input_df1 <- suppressMessages(input_processing(RA_input[1:10, ],
                                                p_val_threshold = 0.05,
                                                pin_name_path = "Biogrid"))
 input_df2 <- suppressMessages(input_processing(RA_input[1:3, ],
@@ -16,16 +16,14 @@ input_df2 <- suppressMessages(input_processing(RA_input[1:3, ],
 
 test_that("`active_snw_search()` returns list object", {
   # Expect > 0 active snws
-  expect_message(snw_list <- active_snw_search(input_for_search = input_df1,
-                                               pin_name_path = "Biogrid"),
+  expect_message(snw_list <- active_snw_search(input_for_search = input_df1),
                  "Found [1-9]\\d* active subnetworks")
   expect_is(snw_list, "list")
   expect_is(snw_list[[1]], "character")
   unlink("active_snw_search", recursive = TRUE)
 
   # Expect no active snws
-  expect_message(snw_list <- active_snw_search(input_for_search = input_df2,
-                                               pin_name_path = "Biogrid"),
+  expect_message(snw_list <- active_snw_search(input_for_search = input_df2),
                  "Found 0 active subnetworks")
   expect_identical(snw_list, list())
   unlink("active_snw_search", recursive = TRUE)
@@ -33,7 +31,6 @@ test_that("`active_snw_search()` returns list object", {
   # dir_for_parallel_run works?
   dir.create("dummy_dir")
   expect_message(snw_list <- active_snw_search(input_for_search = input_df1,
-                                               pin_name_path = "Biogrid",
                                                dir_for_parallel_run = "dummy_dir"),
                  "Found [1-9]\\d* active subnetworks")
   expect_true(file.exists("dummy_dir/active_snw_search/active_snws.txt"))
@@ -41,6 +38,7 @@ test_that("`active_snw_search()` returns list object", {
 })
 
 test_that("All search methods for `active_snw_search()` work", {
+  skip_on_cran()
   ## GR
   expect_message(snw_list <- active_snw_search(input_for_search = input_df1,
                                                pin_name_path = "Biogrid",
@@ -52,7 +50,7 @@ test_that("All search methods for `active_snw_search()` work", {
 
   skip("will test SA and GA if we can create a suitable (faster and non-empty) test case")
   ## SA
-  expect_message(snw_list <- active_snw_search(input_for_search = input_df1[1:100, ],
+  expect_message(snw_list <- active_snw_search(input_for_search = input_df1,
                                                pin_name_path = "Biogrid",
                                                search_method = "SA"),
                  "Found [1-9]\\d* active subnetworks")

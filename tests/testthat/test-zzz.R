@@ -1,3 +1,11 @@
+##################################################
+## Project: pathfindR
+## Script purpose: Testthat testing script for
+## java-check-related functions
+## Date: May 24, 2020
+## Author: Ege Ulgen
+##################################################
+
 test_that("`fetch_java_version()` works", {
   expect_is(fetch_java_version(), "character")
 })

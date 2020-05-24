@@ -28,7 +28,6 @@ test_that("`create_kappa_matrix()` arg checks works", {
                                    use_active_snw_genes = "INVALID"),
                "`use_active_snw_genes` should be TRUE or FALSE")
 
-
   expect_error(create_kappa_matrix("INVALID"),
                "`enrichment_res` should be a data frame of enrichment results")
   expect_error(create_kappa_matrix(RA_output[1, ]),

@@ -2,7 +2,7 @@
 ## Project: pathfindR
 ## Script purpose: Testthat testing script for
 ## visualization-related functions
-## Date: May 21, 2019
+## Date: May 24, 2020
 ## Author: Ege Ulgen
 ##################################################
 
@@ -14,7 +14,7 @@ tmp_genes <- unlist(c(strsplit(tmp_res$Up_regulated, ", "),
 input_processed <- suppressMessages(input_processing(RA_input, 0.05, "Biogrid"))
 
 test_that("`visualize_terms()` creates expected png file(s)", {
-  ## non-KEGG (visualize_term_interactions)
+  ## non-hsa-KEGG (visualize_term_interactions)
   expected_out_file <- file.path("term_visualizations",
                                  paste0(tmp_res$Term_Description, ".png"))
   suppressMessages(visualize_terms(result_df = tmp_res,
@@ -241,7 +241,7 @@ test_that("`color_kegg_pathway()` exceptions are handled properly", {
 # enrichment_chart --------------------------------------------------------
 test_that("enrichment_chart produces a ggplot object with correct labels", {
 
-  # default
+  # default - top 10
   expect_is(g <- enrichment_chart(RA_output), "ggplot")
   expect_equal(ggplot2::quo_name(g$mapping$x), "Fold_Enrichment")
   expect_equal(ggplot2::quo_name(g$mapping$y), "Term_Description")
@@ -334,12 +334,12 @@ test_that("`term_gene_graph()` produces a ggplot object using the correct data",
   expect_equal(sum(p$data$type == "term"), 3)
 
   # All terms
-  expect_is(p <- term_gene_graph(RA_output, num_terms = NULL), "ggplot")
-  expect_equal(sum(p$data$type == "term"), nrow(RA_output))
+  expect_is(p <- term_gene_graph(RA_output[1:15, ], num_terms = NULL), "ggplot")
+  expect_equal(sum(p$data$type == "term"), 15)
 
   # Top 1000, expect to plot top nrow(output)
-  expect_is(p <- term_gene_graph(RA_output, num_terms = 1e3), "ggplot")
-  expect_equal(sum(p$data$type == "term"), nrow(RA_output))
+  expect_is(p <- term_gene_graph(RA_output[1:15, ], num_terms = 1e3), "ggplot")
+  expect_equal(sum(p$data$type == "term"), 15)
 
   # use_description = TRUE
   expect_is(p <- term_gene_graph(RA_output, use_description = TRUE), "ggplot")
@@ -393,24 +393,24 @@ test_that("`term_gene_heatmap()` produces a ggplot object using the correct data
   expect_equal(length(unique(p$data$Enriched_Term)), 3)
 
   # No genes in "Down_regulated"
-  res_df <- RA_output
+  res_df <- RA_output[1:3, ]
   res_df$Down_regulated <- ""
-  expect_is(p <- term_gene_heatmap(res_df, num_terms = 3), "ggplot")
+  expect_is(p <- term_gene_heatmap(res_df), "ggplot")
   expect_equal(length(unique(p$data$Enriched_Term)), 3)
 
   # No genes in "Up_regulated"
-  res_df <- RA_output
+  res_df <- RA_output[1:3, ]
   res_df$Up_regulated <- ""
-  expect_is(p <- term_gene_heatmap(res_df, num_terms = 3), "ggplot")
+  expect_is(p <- term_gene_heatmap(res_df), "ggplot")
   expect_equal(length(unique(p$data$Enriched_Term)), 3)
 
   # All terms
-  expect_is(p <- term_gene_heatmap(RA_output, num_terms = NULL), "ggplot")
-  expect_equal(length(unique(p$data$Enriched_Term)), nrow(RA_output))
+  expect_is(p <- term_gene_heatmap(RA_output[1:15, ], num_terms = NULL), "ggplot")
+  expect_equal(length(unique(p$data$Enriched_Term)), 15)
 
   # Top 1000, expect to plot top nrow(output)
-  expect_is(p <- term_gene_heatmap(RA_output, num_terms = 1e3), "ggplot")
-  expect_equal(length(unique(p$data$Enriched_Term)), nrow(RA_output))
+  expect_is(p <- term_gene_heatmap(RA_output[1:15, ], num_terms = 1e3), "ggplot")
+  expect_equal(length(unique(p$data$Enriched_Term)), 15)
 
   # use_description = TRUE
   expect_is(p <- term_gene_heatmap(RA_output, use_description = TRUE), "ggplot")
@@ -418,8 +418,7 @@ test_that("`term_gene_heatmap()` produces a ggplot object using the correct data
   expect_true(all(p$data$Enriched_Term %in% RA_output$Term_Description))
 
   # genes_df supplied
-  expect_is(p <- term_gene_heatmap(RA_output, RA_input), "ggplot")
-  expect_equal(length(unique(p$data$Enriched_Term)), 10)
+  expect_is(p <- term_gene_heatmap(RA_output[1:3, ], RA_input), "ggplot")
 })
 
 test_that("`term_gene_graph()` arg checks work", {
@@ -466,7 +465,7 @@ test_that("`UpSet_plot()` produces a ggplot object", {
   expect_is(p <- UpSet_plot(RA_output, num_terms = 3), "ggplot")
 
   # All terms
-  expect_is(p <- UpSet_plot(RA_output, num_terms = NULL), "ggplot")
+  expect_is(p <- UpSet_plot(RA_output[1:15, ], num_terms = NULL), "ggplot")
 
   # No genes in "Down_regulated"
   res_df <- RA_output
@@ -482,10 +481,9 @@ test_that("`UpSet_plot()` produces a ggplot object", {
   expect_is(p <- UpSet_plot(RA_output, use_description = TRUE), "ggplot")
 
   # Other visualization types
-  expect_is(p <- UpSet_plot(RA_output, RA_input), "ggplot")
-  expect_is(p <- UpSet_plot(RA_output, RA_input, method = "boxplot"), "ggplot")
-  expect_is(p <- UpSet_plot(RA_output, method = "barplot"), "ggplot")
-
+  expect_is(p <- UpSet_plot(RA_output[1:3, ], RA_input[1:10, ]), "ggplot")
+  expect_is(p <- UpSet_plot(RA_output[1:3, ], RA_input[1:10, ], method = "boxplot"), "ggplot")
+  expect_is(p <- UpSet_plot(RA_output[1:3, ], method = "barplot"), "ggplot")
 })
 
 test_that("`UpSet_plot()` arg checks work", {

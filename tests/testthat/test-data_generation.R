@@ -2,7 +2,7 @@
 ## Project: pathfindR
 ## Script purpose: Testthat testing script for
 ## data generation functions
-## Date: May 21, 2020
+## Date: May 24, 2020
 ## Author: Ege Ulgen
 ##################################################
 
@@ -10,8 +10,8 @@
 test_that("`get_biogrid_pin()` returns a path to a valid PIN file", {
   skip_on_cran()
   # Latest release
-  pin_path <- pathfindR:::get_biogrid_pin()
-  pin_df <- read.delim(pin_path, header = FALSE, stringsAsFactors = FALSE)
+  pin_path <- pathfindR:::get_biogrid_pin(org="Pan_troglodytes")
+  pin_df <- read.delim(pin_path, header = FALSE)
   expect_true(ncol(pin_df) == 3)
   expect_true(all(pin_df[, 2] == "pp"))
 })
@@ -33,7 +33,7 @@ test_that("`get_pin_file()` works", {
   pin_path <- get_pin_file(source = "BioGRID",
                            org = "Pan_troglodytes",
                            release = "3.5.179")
-  pin_df <- read.delim(pin_path, header = FALSE, stringsAsFactors = FALSE)
+  pin_df <- read.delim(pin_path, header = FALSE)
   expect_true(ncol(pin_df) == 3)
   expect_true(all(pin_df[, 2] == "pp"))
 })

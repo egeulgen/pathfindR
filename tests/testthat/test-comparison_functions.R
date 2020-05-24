@@ -2,18 +2,23 @@
 ## Project: pathfindR
 ## Script purpose: Testthat testing script for
 ## visualization-related functions
-## Date: Feb 9, 2020
+## Date: May 24, 2020
 ## Author: Ege Ulgen
 ##################################################
 
+input_df_A <- RA_output[1:10, ]
+input_df_B <- RA_comparison_output[1:10, ]
+# sum(input_df_A$ID %in% input_df_B$ID) != 0
+
 # combine_pathfindR_results -----------------------------------------------
 test_that("`combine_pathfindR_results()` works", {
-  expect_is(combined <- combine_pathfindR_results(RA_output, RA_comparison_output),
+  expect_is(combined <- combine_pathfindR_results(input_df_A, input_df_B),
             "data.frame")
+  expect_true(nrow(combined) <= nrow(input_df_A) + nrow(input_df_B))
 })
 
 # combined_results_graph --------------------------------------------------
-combined_df <- combine_pathfindR_results(RA_output, RA_comparison_output, plot_common = FALSE)
+combined_df <- combine_pathfindR_results(input_df_A, input_df_B, plot_common = FALSE)
 
 test_that("`combined_results_graph()` produces a ggplot object using the correct data", {
   # Common Terms, default

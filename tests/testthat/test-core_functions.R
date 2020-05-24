@@ -2,7 +2,7 @@
 ## Project: pathfindR
 ## Script purpose: Testthat testing script for
 ## core functions
-## Date: May 21, 2020
+## Date: May 24, 2020
 ## Author: Ege Ulgen
 ##################################################
 
@@ -10,18 +10,20 @@
 test_that("`run_pathfindR()` works as expected", {
   skip_on_cran()
   ## GR
-  res <- run_pathfindR(RA_input,
+  res <- run_pathfindR(RA_input[1:100, ],
                        iterations = 1,
                        n_processes = 2,
                        max_to_plot = 1)
   expect_is(res, "data.frame")
   unlink("pathfindR_Results", recursive = TRUE)
-  expect_is(run_pathfindR(RA_input,
+
+  expect_is(run_pathfindR(RA_input[1:100, ],
                           iterations = 2,
                           n_processes = 2,
                           gene_sets = "BioCarta",
                           pin_name_path = "GeneMania",
-                          plot_enrichment_chart = FALSE),
+                          plot_enrichment_chart = FALSE,
+                          visualize_enriched_terms = FALSE),
             "data.frame")
   unlink("pathfindR_Results", recursive = TRUE)
 
@@ -53,22 +55,24 @@ test_that("`run_pathfindR()` works as expected", {
   skip("will test SA and GA if we can create a suitable (faster and non-empty) test case")
 
   ## SA
-  expect_is(run_pathfindR(RA_input,
+  expect_is(run_pathfindR(RA_input[1:50, ],
                           iterations = 1,
                           gene_sets = "GO-BP",
                           pin_name_path = "GeneMania",
                           search_method = "SA",
                           visualize_enriched_terms = FALSE,
-                          plot_enrichment_chart = FALSE),
+                          plot_enrichment_chart = FALSE,
+                          output_dir = tempdir(check = TRUE)),
             "data.frame")
 
   ## GA
-  expect_is(run_pathfindR(RA_input,
+  expect_is(run_pathfindR(RA_input[1:50, ],
                           gene_sets = "GO-BP",
                           pin_name_path = "GeneMania",
                           search_method = "GA",
                           visualize_enriched_terms = FALSE,
-                          plot_enrichment_chart = FALSE),
+                          plot_enrichment_chart = FALSE,
+                          output_dir = tempdir(check = TRUE)),
             "data.frame")
 })
 
@@ -111,7 +115,6 @@ test_that("`run_pathfindR()` arg checks work", {
 
   expect_error(run_pathfindR(RA_input, n_processes = 0),
                "`n_processes` should be > 1")
-
 })
 
 # fetch_gene_set ----------------------------------------------------------
@@ -218,15 +221,15 @@ test_that("`fetch_gene_set()` can fetch all gene set objects", {
 
   ###### Custom
   gset_obj <- fetch_gene_set(gene_sets = "Custom",
-                             min_gset_size = 10,
-                             max_gset_size = 300,
+                             min_gset_size = 20,
+                             max_gset_size = 200,
                              custom_genes = kegg_genes,
                              custom_descriptions = kegg_descriptions)
   expect_is(gset_obj$genes_by_term, "list")
   expect_is(gset_obj$term_descriptions, "character")
   expect_true(length(gset_obj$genes_by_term) == length(gset_obj$term_descriptions))
   tmp <- vapply(gset_obj$genes_by_term, length, 1L)
-  expect_true(min(tmp) >= 10 & max(tmp) <= 300)
+  expect_true(min(tmp) >= 20 & max(tmp) <= 200)
 })
 
 test_that("min/max_gset_size args in `fetch_gene_set()` correctly filter gene sets", {
@@ -301,7 +304,7 @@ test_that("`return_pin_path()` returns the absolute path to PIN file", {
   expect_true(file.exists(return_pin_path("KEGG")))
   expect_true(file.exists(return_pin_path("mmu_STRING")))
 
-  # convert to uppercase works
+  # custom PIN
   custom_pin <- read.delim(return_pin_path("GeneMania"),
                            header = FALSE,
                            stringsAsFactors = FALSE)
@@ -313,9 +316,11 @@ test_that("`return_pin_path()` returns the absolute path to PIN file", {
                      sep = "\t",
                      row.names = FALSE, col.names = FALSE, quote = FALSE)
   expect_true(file.exists(return_pin_path(custom_sif_path)))
+  # convert to uppercase works
+  upper_case_custom <- read.delim(return_pin_path(custom_sif_path), header = FALSE)
+  expect_true(all(toupper(upper_case_custom[, 1]) == upper_case_custom[, 1]))
+  expect_true(all(toupper(upper_case_custom[, 3]) == upper_case_custom[, 3]))
 
-  # custom PIN
-  expect_true(file.exists(return_pin_path(custom_sif_path)))
 
   # invalid custom PIN - wrong format
   invalid_sif_path <- system.file(paste0("extdata/MYC.txt"),
@@ -387,8 +392,7 @@ test_that("`input_testing()` works", {
 # input_processing --------------------------------------------------------
 test_that("`input_processing()` works", {
   skip_on_cran()
-  # full df
-  expect_is(tmp <- input_processing(input = RA_input,
+  expect_is(tmp <- input_processing(input = RA_input[1:5, ],
                                     p_val_threshold = 0.05,
                                     pin_name_path = "Biogrid",
                                     convert2alias = TRUE),
@@ -396,35 +400,36 @@ test_that("`input_processing()` works", {
   expect_true(ncol(tmp) == 4)
   expect_true(nrow(tmp) <= nrow(RA_input))
 
-  expect_is(input_processing(RA_input[1:10, ],
+  expect_is(input_processing(RA_input[1:5, ],
                              p_val_threshold = 0.01,
                              pin_name_path = "Biogrid",
                              convert2alias = FALSE),
             "data.frame")
 
   # no change values provided
-  input2 <- RA_input[, -2]
-  expect_is(suppressWarnings(input_processing(input2,
-                                              p_val_threshold = 0.05,
-                                              pin_name_path = "Biogrid",
-                                              convert2alias = TRUE)),
-    "data.frame")
+  input2 <- RA_input[1:5, -2]
+  expect_is(tmp <- suppressWarnings(input_processing(input2,
+                                                     p_val_threshold = 0.05,
+                                                     pin_name_path = "Biogrid",
+                                                     convert2alias = TRUE)),
+            "data.frame")
+  expect_true(all(tmp$CHANGE == 1e6))
 
   # multiple mapping
-  input_m <- RA_input
+  input_m <- RA_input[1:5, ]
   input_m$Gene.symbol[1] <- "GIG24"
   input_m$Gene.symbol[2] <- "ACT"
   input_m$Gene.symbol[3] <- "AACT"
   input_m$Gene.symbol[4] <- "GIG25"
-  expect_is(input_processing(input_m,
-                             p_val_threshold = 0.05,
-                             pin_name_path = "Biogrid",
-                             convert2alias = TRUE),
+  expect_is(tmp <- input_processing(input_m,
+                                    p_val_threshold = 0.05,
+                                    pin_name_path = "Biogrid",
+                                    convert2alias = TRUE),
             "data.frame")
 })
 
 test_that("`input_processing()` errors and warnings work", {
-  input2 <- RA_input[1:10, ]
+  input2 <- RA_input[1:5, ]
   input2$Gene.symbol <- as.factor(input2$Gene.symbol)
   expect_warning(input_processing(input2,
                                   p_val_threshold = 0.05,
@@ -444,7 +449,7 @@ test_that("`input_processing()` errors and warnings work", {
                                   pin_name_path = "Biogrid"),
                  "Duplicated genes found! The lowest p value for each gene was selected")
 
-  tmp_input <- RA_input[1:10, ]
+  tmp_input <- RA_input[1:3, ]
   tmp_input$adj.P.Val <- 1e-15
   expect_message(tmp <- input_processing(tmp_input,
                                          p_val_threshold = 5e-2,
@@ -474,9 +479,9 @@ test_that("`input_processing()` errors and warnings work", {
 })
 
 # annotate_term_genes -----------------------------------------------------
-example_gene_data <- RA_input[1:50, ]
+example_gene_data <- RA_input[1:10, ]
 colnames(example_gene_data) <- c("GENE", "CHANGE", "P_VALUE")
-tmp_res <- RA_output[, -c(7, 8)]
+tmp_res <- RA_output[1:5, -c(7, 8)]
 
 test_that("`annotate_term_genes()` adds input genes for each term", {
   expect_is(annotated_result <- annotate_term_genes(result_df = tmp_res,

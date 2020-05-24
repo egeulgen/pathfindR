@@ -2,7 +2,7 @@
 ## Project: pathfindR
 ## Script purpose: Testthat testing script for
 ## enrichment-related functions
-## Date: Nov 7, 2019
+## Date: May 24, 2020
 ## Author: Ege Ulgen
 ##################################################
 
@@ -157,9 +157,9 @@ test_that("`enrichment()` arg checks work", {
 
 
 # enrichment_analyses -----------------------------------------------------
-tmp <- fetch_gene_set()
-tmp_gset_genes <- tmp$genes_by_term
-tmp_gset_desc <- tmp$term_descriptions
+tmp_gset_genes <- tmp_gset_obj$genes_by_term
+tmp_gset_desc <- tmp_gset_obj$term_descriptions
+
 
 test_that("`enrichment_analyses()` returns a data frame", {
 
@@ -259,3 +259,4 @@ test_that("summarize_enrichment_results() arg checks work", {
                paste0("`enrichment_res` should have column names ",
                       paste(dQuote(nec_cols), collapse = ", ")))
 })
+

@@ -2,7 +2,7 @@
 ## Project: pathfindR
 ## Script purpose: Testthat testing script for
 ## agglomerated term scoring functions
-## Date: Oct 20, 2019
+## Date: May 24, 2019
 ## Author: Ege Ulgen
 ##################################################
 
@@ -68,7 +68,7 @@ test_that("`score_terms()` arg checks work", {
 
 # plot_scores -------------------------------------------------------------
 test_that("`plot_scores()` creates term score heatmap ggplot object with correct labels", {
-  score_mat <- score_terms(RA_output, RA_exp_mat, plot_hmap = FALSE)
+  score_mat <- score_terms(RA_output[1:3, ], RA_exp_mat, plot_hmap = FALSE)
 
   # default
   g <- plot_scores(score_mat)
