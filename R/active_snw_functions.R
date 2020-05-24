@@ -270,6 +270,12 @@ filterActiveSnws <- function(active_snw_path, sig_genes_vec,
 #' subnetworks. Green nodes are down-regulated genes, reds are up-regulated genes
 #' and yellows are non-input genes
 #' @export
+#'
+#' @examples
+#' path2snw_list <- system.file("extdata/resultActiveSubnetworkSearch.txt",
+#'                               package = "pathfindR")
+#' g_list <- visualize_active_subnetworks(active_snw_path = path2snw_list,
+#'                                        genes_df = RA_input[1:5, ])
 visualize_active_subnetworks <- function(active_snw_path, genes_df,
                                          pin_name_path = "Biogrid",
                                          num_snws,
@@ -279,21 +285,6 @@ visualize_active_subnetworks <- function(active_snw_path, genes_df,
   active_snw_path <- suppressWarnings(normalizePath(active_snw_path))
   if (!file.exists(active_snw_path))
     stop("The active subnetwork file does not exist! Check the `active_snw_path` argument")
-
-  # process input data frame
-  processed_input <- input_processing(genes_df,
-                                      pin_name_path = pin_name_path,
-                                      ...)
-
-  # load PIN data
-  ## load PIN
-  pin_path <- return_pin_path(pin_name_path)
-  pin <- utils::read.delim(file = pin_path,
-                           header = FALSE, stringsAsFactors = FALSE)
-  pin$V2 <- NULL
-
-  pin[, 1] <- base::toupper(pin[, 1])
-  pin[, 2] <- base::toupper(pin[, 2])
 
   # load snws file
   all_snws <- readLines(active_snw_path)
@@ -312,7 +303,22 @@ visualize_active_subnetworks <- function(active_snw_path, genes_df,
   if (missing(num_snws))
     num_snws <- length(subnetworks)
 
+  # process input data frame
+  processed_input <- input_processing(genes_df,
+                                      pin_name_path = pin_name_path,
+                                      ...)
 
+  # load PIN data
+  ## load PIN
+  pin_path <- return_pin_path(pin_name_path)
+  pin <- utils::read.delim(file = pin_path,
+                           header = FALSE, stringsAsFactors = FALSE)
+  pin$V2 <- NULL
+
+  pin[, 1] <- base::toupper(pin[, 1])
+  pin[, 2] <- base::toupper(pin[, 2])
+
+  # create graphs
   graphs_list <- list()
   for (idx in seq_len(num_snws)) {
     snw <- subnetworks[[idx]]
