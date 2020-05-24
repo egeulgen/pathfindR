@@ -6,11 +6,6 @@
 #' @return processed PIN data frame (removes self-interactions and
 #' duplicated interactions)
 process_pin <- function(pin_df) {
-  ## set stringsAsFactors
-  def <- getOption("stringsAsFactors")
-  options(stringsAsFactors = TRUE)
-  on.exit(options(stringsAsFactors = def))
-
   # remove self-interactions
   pin_df <- pin_df[pin_df$Interactor_A != pin_df$Interactor_B, ]
 
