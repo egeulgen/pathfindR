@@ -10,6 +10,8 @@ visualize_active_subnetworks(
   pin_name_path = "Biogrid",
   num_snws,
   layout = "stress",
+  score_quan_thr = 0.8,
+  sig_gene_thr = 0.02,
   ...
 )
 }
@@ -32,6 +34,14 @@ you want to visualize all subnetworks)}
 
 \item{layout}{The type of layout to create (see \code{\link[ggraph]{ggraph}} for details. Default = "stress")}
 
+\item{score_quan_thr}{active subnetwork score quantile threshold (Default = 0.80)
+Must be between 0 and 1 or set to -1 for not filtering}
+
+\item{sig_gene_thr}{threshold for the minimum proportion of significant genes in
+the subnetwork (Default = 0.02) If the number of genes to use as threshold is
+calculated to be < 2 (e.g. 50 signif. genes x 0.01 = 0.5), the threshold number
+is set to 2}
+
 \item{...}{additional arguments for \code{\link{input_processing}}}
 }
 \value{
@@ -47,7 +57,7 @@ path2snw_list <- system.file("extdata/resultActiveSubnetworkSearch.txt",
                               package = "pathfindR")
 # visualize top 2 active subnetworks
 g_list <- visualize_active_subnetworks(active_snw_path = path2snw_list,
-                                       genes_df = RA_input[1:5, ],
+                                       genes_df = RA_input[1:10, ],
                                        pin_name_path = "KEGG",
                                        num_snws = 2)
 }

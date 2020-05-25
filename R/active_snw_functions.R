@@ -281,40 +281,34 @@ filterActiveSnws <- function(active_snw_path, sig_genes_vec,
 #'                               package = "pathfindR")
 #' # visualize top 2 active subnetworks
 #' g_list <- visualize_active_subnetworks(active_snw_path = path2snw_list,
-#'                                        genes_df = RA_input[1:5, ],
+#'                                        genes_df = RA_input[1:10, ],
 #'                                        pin_name_path = "KEGG",
 #'                                        num_snws = 2)
 visualize_active_subnetworks <- function(active_snw_path, genes_df,
                                          pin_name_path = "Biogrid",
                                          num_snws,
                                          layout = "stress",
+                                         score_quan_thr = 0.8,
+                                         sig_gene_thr = 0.02,
                                          ...) {
-
-  active_snw_path <- suppressWarnings(normalizePath(active_snw_path))
-  if (!file.exists(active_snw_path))
-    stop("The active subnetwork file does not exist! Check the `active_snw_path` argument")
-
-  # load snws file
-  all_snws <- readLines(active_snw_path)
-  if (length(all_snws) == 0)
-    return(NULL)
-
-  score_vec <- c()
-  subnetworks <- list()
-  for (i in base::seq_len(length(all_snws))) {
-    snw <- all_snws[[i]]
-    snw <- unlist(strsplit(snw, "\\s"))
-    score_vec <- c(score_vec, as.numeric(snw[1]))
-    subnetworks[[i]] <- snw[-1]
-  }
-
-  if (missing(num_snws))
-    num_snws <- length(subnetworks)
-
   # process input data frame
   processed_input <- input_processing(genes_df,
                                       pin_name_path = pin_name_path,
                                       ...)
+
+  # parse and filter active subnetworks
+  active_snw_list <- filterActiveSnws(active_snw_path = active_snw_path,
+                                      sig_genes_vec = processed_input$GENE,
+                                      score_quan_thr = score_quan_thr,
+                                      sig_gene_thr = sig_gene_thr)
+  if (is.null(active_snw_list) | length(active_snw_list$scores) == 0)
+    return(NULL)
+
+  score_vec <- active_snw_list$scores
+  subnetworks <- active_snw_list$subnetworks
+
+  if (missing(num_snws))
+    num_snws <- length(subnetworks)
 
   # load PIN data
   ## load PIN
