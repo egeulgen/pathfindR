@@ -310,6 +310,9 @@ visualize_active_subnetworks <- function(active_snw_path, genes_df,
   if (missing(num_snws))
     num_snws <- length(subnetworks)
 
+  if (num_snws > length(subnetworks))
+    num_snws <- length(subnetworks)
+
   # load PIN data
   ## load PIN
   pin_path <- return_pin_path(pin_name_path)

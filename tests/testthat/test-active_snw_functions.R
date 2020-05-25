@@ -2,7 +2,7 @@
 ## Project: pathfindR
 ## Script purpose: Testthat testing script for
 ## active subnetwork search functions
-## Date: May 24, 2020
+## Date: May 25, 2020
 ## Author: Ege Ulgen
 ##################################################
 
@@ -110,8 +110,12 @@ test_that("`filterActiveSnws()` returns list object", {
   tmp_filtered <- filterActiveSnws(active_snw_path = sample_path,
                                    sig_genes_vec = RA_input$Gene.symbol)
   expect_is(tmp_filtered, "list")
-  expect_is(tmp_filtered[[1]], "character")
-  expect_true(length(tmp_filtered) <= example_snws_len)
+  expect_length(tmp_filtered, 2)
+  expect_is(tmp_filtered$subnetworks, "list")
+  expect_is(tmp_filtered$scores, "numeric")
+
+  expect_is(tmp_filtered$subnetworks[[1]], "character")
+  expect_true(length(tmp_filtered$subnetworks) <= example_snws_len)
 
   # empty file case
   empty_path <- file.path(tempdir(), "empty.txt")
@@ -125,7 +129,7 @@ test_that("`score_quan_thr` in `filterActiveSnws()` works", {
                                    sig_genes_vec = RA_input$Gene.symbol,
                                    score_quan_thr = -1,
                                    sig_gene_thr = 0)
-  expect_length(tmp_filtered, example_snws_len)
+  expect_length(tmp_filtered$subnetworks, example_snws_len)
 
   for (q_thr in seq(.1, 1, by = .1)) {
     tmp_filtered <- filterActiveSnws(active_snw_path = sample_path,
@@ -133,7 +137,7 @@ test_that("`score_quan_thr` in `filterActiveSnws()` works", {
                                      score_quan_thr = q_thr,
                                      sig_gene_thr = 0)
     exp_len <- example_snws_len * (1 - q_thr)
-    expect_length(tmp_filtered, as.integer(exp_len + .5))
+    expect_length(tmp_filtered$subnetworks, as.integer(exp_len + .5))
   }
 })
 
@@ -148,8 +152,8 @@ test_that("`sig_gene_thr` in `filterActiveSnws()` works", {
                                     sig_gene_thr = 0.1,
                                     score_quan_thr = -1)
 
-  expect_true(length(tmp_filtered2) < example_snws_len)
-  expect_true(length(tmp_filtered1) > length(tmp_filtered2))
+  expect_true(length(tmp_filtered2$subnetworks) < example_snws_len)
+  expect_true(length(tmp_filtered1$subnetworks) > length(tmp_filtered2$subnetworks))
 })
 
 test_that("`filterActiveSnws()` arg checks work", {
@@ -192,21 +196,17 @@ test_that("`visualize_active_subnetworks()` returns list of ggraph objects", {
   expect_null(visualize_active_subnetworks(active_snw_path = empty_path,
                                            genes_df = RA_input[1:5,]))
 
-  # invalid file case
-  expect_error(visualize_active_subnetworks(active_snw_path = "this/is/not/a/valid/path"),
-               "The active subnetwork file does not exist! Check the `active_snw_path` argument")
-
   skip_on_cran()
   # default
-  input_df <- RA_input[1:5, ]
+  input_df <- RA_input[1:10, ]
   g_list <- visualize_active_subnetworks(sample_path, input_df)
   expect_is(g_list, "list")
   expect_is(g_list[[1]], "ggraph")
-  expect_equal(length(g_list), example_snws_len)
+  expect_true(length(g_list) <= example_snws_len)
 
   # set `num_snws` to 3
   g_list <- visualize_active_subnetworks(sample_path, input_df, num_snws = 3)
   expect_is(g_list, "list")
   expect_is(g_list[[1]], "ggraph")
-  expect_equal(length(g_list), 3)
+  expect_length(g_list, 3)
 })
