@@ -1,5 +1,4 @@
-# pathfindR 1.5.0.9010
-## to be released as 1.5.0
+# pathfindR 1.5.0
 
 ## Major Changes
 - created separate package `pathfindR.data` for storing pathfindR data
