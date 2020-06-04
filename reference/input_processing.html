@@ -211,32 +211,10 @@ in the input that are not found in the PIN to an alias symbol found in the PIN
   pathfindR workflow</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># \dontshow{</span>
-<span class='fu'>input_processing</span>(<span class='no'>RA_input</span>[<span class='fl'>1</span>:<span class='fl'>20</span>, ], <span class='fl'>0.05</span>, <span class='st'>"KEGG"</span>)</div><div class='output co'>#&gt; <span class='message'>Number of genes provided in input: 20</span></div><div class='output co'>#&gt; <span class='message'>Number of genes in input after p-value filtering: 20</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'>Could not find any interactions for 8 (40%) genes in the PIN</span></div><div class='output co'>#&gt; <span class='message'>Final number of genes in input: 12</span></div><div class='output co'>#&gt;    old_GENE     GENE     CHANGE      P_VALUE
-#&gt; 1   FAM110A      F10 -0.6939359 3.408699e-06
-#&gt; 3    S100A8      MIF  1.5448338 3.466386e-05
-#&gt; 4    S100A9   S100A9  1.0280904 2.262617e-04
-#&gt; 6  ARHGAP17 ARHGAP17 -0.6919330 2.708081e-04
-#&gt; 7     NUP62    NUP62 -0.8216320 2.708081e-04
-#&gt; 8     MYL6B    MYL6B  0.2790078 4.006813e-04
-#&gt; 11     KLF2     KLF2 -0.4734862 4.512990e-04
-#&gt; 12    RUNX3    RUNX3 -0.9341854 4.512990e-04
-#&gt; 14      TXN      TXN  1.0707134 5.608094e-04
-#&gt; 18      GNE      GNE -0.4718260 6.330627e-04
-#&gt; 19    GDPD3    GDPD3  0.5655699 6.330627e-04
-#&gt; 20    NUP93    NUP93 -0.4655986 6.330627e-04</div><div class='input'><span class='fu'>input_processing</span>(<span class='no'>RA_input</span>[<span class='fl'>1</span>:<span class='fl'>20</span>, ], <span class='fl'>0.05</span>, <span class='st'>"KEGG"</span>, <span class='kw'>convert2alias</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='message'>Number of genes provided in input: 20</span></div><div class='output co'>#&gt; <span class='message'>Number of genes in input after p-value filtering: 20</span></div><div class='output co'>#&gt; <span class='message'>Could not find any interactions for 11 (55%) genes in the PIN</span></div><div class='output co'>#&gt; <span class='message'>Final number of genes in input: 9</span></div><div class='output co'>#&gt;    old_GENE     GENE     CHANGE      P_VALUE
-#&gt; 6  ARHGAP17 ARHGAP17 -0.6919330 0.0002708081
-#&gt; 7     NUP62    NUP62 -0.8216320 0.0002708081
-#&gt; 8     MYL6B    MYL6B  0.2790078 0.0004006813
-#&gt; 11     KLF2     KLF2 -0.4734862 0.0004512990
-#&gt; 12    RUNX3    RUNX3 -0.9341854 0.0004512990
-#&gt; 14      TXN      TXN  1.0707134 0.0005608094
-#&gt; 18      GNE      GNE -0.4718260 0.0006330627
-#&gt; 19    GDPD3    GDPD3  0.5655699 0.0006330627
-#&gt; 20    NUP93    NUP93 -0.4655986 0.0006330627</div><div class='input'><span class='co'># }</span>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'>input_processing</span>(<span class='no'>RA_input</span>, <span class='fl'>0.05</span>, <span class='st'>"KEGG"</span>)
-}</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>processed_df</span> <span class='kw'>&lt;-</span> <span class='fu'>input_processing</span>(<span class='kw'>input</span> <span class='kw'>=</span> <span class='no'>RA_input</span>[<span class='fl'>1</span>:<span class='fl'>5</span>, ],
+                                 <span class='kw'>pin_name_path</span> <span class='kw'>=</span> <span class='st'>"KEGG"</span>)</div><div class='output co'>#&gt; <span class='message'>Number of genes provided in input: 5</span></div><div class='output co'>#&gt; <span class='message'>Number of genes in input after p-value filtering: 5</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'>Could not find any interactions for 2 (40%) genes in the PIN</span></div><div class='output co'>#&gt; <span class='message'>Final number of genes in input: 3</span></div><div class='input'><span class='no'>processed_df</span> <span class='kw'>&lt;-</span> <span class='fu'>input_processing</span>(<span class='kw'>input</span> <span class='kw'>=</span> <span class='no'>RA_input</span>[<span class='fl'>1</span>:<span class='fl'>10</span>, ],
+                                 <span class='kw'>pin_name_path</span> <span class='kw'>=</span> <span class='st'>"KEGG"</span>,
+                                 <span class='kw'>convert2alias</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='message'>Number of genes provided in input: 10</span></div><div class='output co'>#&gt; <span class='message'>Number of genes in input after p-value filtering: 10</span></div><div class='output co'>#&gt; <span class='message'>Could not find any interactions for 7 (70%) genes in the PIN</span></div><div class='output co'>#&gt; <span class='message'>Final number of genes in input: 3</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -4,24 +4,6 @@
     <loc>https://egeulgen.github.io/pathfindR//index.html</loc>
   </url>
   <url>
-    <loc>https://egeulgen.github.io/pathfindR//reference/GO_all_terms_df.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR//reference/RA_clustered.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR//reference/RA_comparison_output.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR//reference/RA_exp_mat.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR//reference/RA_input.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR//reference/RA_output.html</loc>
-  </url>
-  <url>
     <loc>https://egeulgen.github.io/pathfindR//reference/UpSet_plot.html</loc>
   </url>
   <url>
@@ -29,21 +11,6 @@
   </url>
   <url>
     <loc>https://egeulgen.github.io/pathfindR//reference/annotate_term_genes.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR//reference/biocarta_descriptions.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR//reference/biocarta_genes.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR//reference/biogrid_adj_list.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR//reference/cell_markers_descriptions.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR//reference/cell_markers_gsets.html</loc>
   </url>
   <url>
     <loc>https://egeulgen.github.io/pathfindR//reference/check_java_version.html</loc>
@@ -67,9 +34,6 @@
     <loc>https://egeulgen.github.io/pathfindR//reference/create_kappa_matrix.html</loc>
   </url>
   <url>
-    <loc>https://egeulgen.github.io/pathfindR//reference/custom_result.html</loc>
-  </url>
-  <url>
     <loc>https://egeulgen.github.io/pathfindR//reference/download_kegg_png.html</loc>
   </url>
   <url>
@@ -82,9 +46,6 @@
     <loc>https://egeulgen.github.io/pathfindR//reference/enrichment_chart.html</loc>
   </url>
   <url>
-    <loc>https://egeulgen.github.io/pathfindR//reference/example_active_snws.html</loc>
-  </url>
-  <url>
     <loc>https://egeulgen.github.io/pathfindR//reference/fetch_gene_set.html</loc>
   </url>
   <url>
@@ -95,9 +56,6 @@
   </url>
   <url>
     <loc>https://egeulgen.github.io/pathfindR//reference/fuzzy_term_clustering.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR//reference/genemania_adj_list.html</loc>
   </url>
   <url>
     <loc>https://egeulgen.github.io/pathfindR//reference/get_biogrid_pin.html</loc>
@@ -118,9 +76,6 @@
     <loc>https://egeulgen.github.io/pathfindR//reference/get_reactome_gsets.html</loc>
   </url>
   <url>
-    <loc>https://egeulgen.github.io/pathfindR//reference/go_all_genes.html</loc>
-  </url>
-  <url>
     <loc>https://egeulgen.github.io/pathfindR//reference/gset_list_from_gmt.html</loc>
   </url>
   <url>
@@ -134,33 +89,6 @@
   </url>
   <url>
     <loc>https://egeulgen.github.io/pathfindR//reference/input_testing.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR//reference/intact_adj_list.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR//reference/kegg_adj_list.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR//reference/kegg_descriptions.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR//reference/kegg_genes.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR//reference/mmu_kegg_descriptions.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR//reference/mmu_kegg_genes.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR//reference/mmu_string_adj_list.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR//reference/myeloma_input.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR//reference/myeloma_output.html</loc>
   </url>
   <url>
     <loc>https://egeulgen.github.io/pathfindR//reference/obtain_KEGGML_URL.html</loc>
@@ -178,12 +106,6 @@
     <loc>https://egeulgen.github.io/pathfindR//reference/process_pin.html</loc>
   </url>
   <url>
-    <loc>https://egeulgen.github.io/pathfindR//reference/reactome_descriptions.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR//reference/reactome_genes.html</loc>
-  </url>
-  <url>
     <loc>https://egeulgen.github.io/pathfindR//reference/return_pin_path.html</loc>
   </url>
   <url>
@@ -193,9 +115,6 @@
     <loc>https://egeulgen.github.io/pathfindR//reference/score_terms.html</loc>
   </url>
   <url>
-    <loc>https://egeulgen.github.io/pathfindR//reference/string_adj_list.html</loc>
-  </url>
-  <url>
     <loc>https://egeulgen.github.io/pathfindR//reference/summarize_enrichment_results.html</loc>
   </url>
   <url>
@@ -203,6 +122,9 @@
   </url>
   <url>
     <loc>https://egeulgen.github.io/pathfindR//reference/term_gene_heatmap.html</loc>
+  </url>
+  <url>
+    <loc>https://egeulgen.github.io/pathfindR//reference/visualize_active_subnetworks.html</loc>
   </url>
   <url>
     <loc>https://egeulgen.github.io/pathfindR//reference/visualize_hsa_KEGG.html</loc>

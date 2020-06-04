@@ -171,7 +171,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>active_snw_path</th>
-      <td><p>path to the output of an Active Subnetwork Search.</p></td>
+      <td><p>path to the output of an Active Subnetwork Search</p></td>
     </tr>
     <tr>
       <th>sig_genes_vec</th>
@@ -194,8 +194,10 @@ is set to 2</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list of genes in every active subnetwork that has a score greater than
-the `score_quan_thr`th quantile and that contains at least `sig_gene_thr` of significant genes.</p>
+    <p>A list containing <code>subnetworks</code>: a list of of genes in every
+active subnetwork that has a score greater than the <code>score_quan_thr</code>th
+quantile and that contains at least <code>sig_gene_thr</code> of significant genes
+and <code>scores</code> the score of each filtered active subnetwork</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>See <code><a href='run_pathfindr.html'>run_pathfindR</a></code> for the wrapper function of the
@@ -205,8 +207,7 @@ the `score_quan_thr`th quantile and that contains at least `sig_gene_thr` of sig
     <pre class="examples"><div class='input'><span class='no'>path2snw_list</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/resultActiveSubnetworkSearch.txt"</span>,
                               <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"pathfindR"</span>)
 <span class='no'>filtered</span> <span class='kw'>&lt;-</span> <span class='fu'>filterActiveSnws</span>(<span class='kw'>active_snw_path</span> <span class='kw'>=</span> <span class='no'>path2snw_list</span>,
-                             <span class='kw'>sig_genes_vec</span> <span class='kw'>=</span> <span class='kw pkg'>pathfindR</span><span class='kw ns'>::</span><span class='no'><a href='RA_input.html'>RA_input</a></span>$<span class='no'>Gene.symbol</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span>(<span class='st'>"active_snw_search"</span>, <span class='kw'>recursive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div></pre>
+                             <span class='kw'>sig_genes_vec</span> <span class='kw'>=</span> <span class='no'>RA_input</span>$<span class='no'>Gene.symbol</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -307,7 +307,8 @@ the `score_quan_thr`th quantile and that has at least `sig_gene_thr` affected ge
 <span class='no'>GR_snws</span> <span class='kw'>&lt;-</span> <span class='fu'>active_snw_search</span>(<span class='kw'>input_for_search</span> <span class='kw'>=</span> <span class='no'>processed_df</span>,
                              <span class='kw'>pin_name_path</span> <span class='kw'>=</span> <span class='st'>"KEGG"</span>,
                              <span class='kw'>search_method</span> <span class='kw'>=</span> <span class='st'>"GR"</span>)</div><div class='output co'>#&gt; <span class='message'>Found 1 active subnetworks</span>
-#&gt; <span class='message'></span></div></pre>
+#&gt; <span class='message'></span></div><div class='input'><span class='co'># clean-up</span>
+<span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span>(<span class='st'>"active_snw_search"</span>, <span class='kw'>recursive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

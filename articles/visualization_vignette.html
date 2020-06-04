@@ -107,7 +107,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Visualization of pathfindR Enrichment Results</h1>
             
-            <h4 class="date">2020-05-22</h4>
+            <h4 class="date">2020-06-04</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/master/vignettes/visualization_vignette.Rmd"><code>vignettes/visualization_vignette.Rmd</code></a></small>
       <div class="hidden name"><code>visualization_vignette.Rmd</code></div>
@@ -157,8 +157,7 @@
 <h2 class="hasAnchor">
 <a href="#term_gene_graph-term-gene-graph" class="anchor"></a><code>term_gene_graph()</code>: Term-Gene Graph</h2>
 <p>The function <code><a href="../reference/term_gene_graph.html">term_gene_graph()</a></code> (adapted from the Gene-Concept network visualization by the R package <code>enrichplot</code>) can be utilized to visualize which significant genes are involved in the enriched terms. The function creates the term-gene graph, displaying the connections between genes and biological terms (enriched pathways or gene sets). This allows for the investigation of multiple terms to which significant genes are related. The graph also enables determination of the degree of overlap between the enriched terms by identifying shared and/or distinct significant genes. By default, the function visualizes the term-gene graph for the top 10 enriched terms:</p>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="fu"><a href="../reference/term_gene_graph.html">term_gene_graph</a></span>(<span class="no">RA_output</span>)
-<span class="co">#&gt; Using `stress` as default layout</span></pre></body></html></div>
+<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="fu"><a href="../reference/term_gene_graph.html">term_gene_graph</a></span>(<span class="no">RA_output</span>)</pre></body></html></div>
 <p><img src="visualization_vignette_files/figure-html/term_gene1-1.png" width="768" style="display: block; margin: auto;"></p>
 <p>To plot all of the enriched terms in the enrichment results, set <code>num_terms = NULL</code> (not advised due to cluttered visualization):</p>
 <div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="fu"><a href="../reference/term_gene_graph.html">term_gene_graph</a></span>(<span class="no">RA_output</span>, <span class="kw">num_terms</span> <span class="kw">=</span> <span class="kw">NULL</span>)</pre></body></html></div>

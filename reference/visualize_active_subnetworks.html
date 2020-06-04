@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Annotate the Affected Genes in the Provided Enriched Terms — annotate_term_genes • pathfindR</title>
+<title>Visualize Active Subnetworks — visualize_active_subnetworks • pathfindR</title>
 
 
 <!-- jquery -->
@@ -45,8 +45,8 @@
 
 
 
-<meta property="og:title" content="Annotate the Affected Genes in the Provided Enriched Terms — annotate_term_genes" />
-<meta property="og:description" content="Function to annotate the involved affected (input) genes in each term." />
+<meta property="og:title" content="Visualize Active Subnetworks — visualize_active_subnetworks" />
+<meta property="og:description" content="Visualize Active Subnetworks" />
 
 
 
@@ -150,55 +150,89 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Annotate the Affected Genes in the Provided Enriched Terms</h1>
-    <small class="dont-index">Source: <a href='https://github.com/egeulgen/pathfindR/blob/master/R/core_functions.R'><code>R/core_functions.R</code></a></small>
-    <div class="hidden name"><code>annotate_term_genes.Rd</code></div>
+    <h1>Visualize Active Subnetworks</h1>
+    <small class="dont-index">Source: <a href='https://github.com/egeulgen/pathfindR/blob/master/R/active_snw_functions.R'><code>R/active_snw_functions.R</code></a></small>
+    <div class="hidden name"><code>visualize_active_subnetworks.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Function to annotate the involved affected (input) genes in each term.</p>
+    <p>Visualize Active Subnetworks</p>
     </div>
 
-    <pre class="usage"><span class='fu'>annotate_term_genes</span>(
-  <span class='no'>result_df</span>,
-  <span class='no'>input_processed</span>,
-  <span class='kw'>genes_by_term</span> <span class='kw'>=</span> <span class='kw pkg'>pathfindR.data</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/pathfindR.data/man/kegg_genes.html'>kegg_genes</a></span>
+    <pre class="usage"><span class='fu'>visualize_active_subnetworks</span>(
+  <span class='no'>active_snw_path</span>,
+  <span class='no'>genes_df</span>,
+  <span class='kw'>pin_name_path</span> <span class='kw'>=</span> <span class='st'>"Biogrid"</span>,
+  <span class='no'>num_snws</span>,
+  <span class='kw'>layout</span> <span class='kw'>=</span> <span class='st'>"stress"</span>,
+  <span class='kw'>score_quan_thr</span> <span class='kw'>=</span> <span class='fl'>0.8</span>,
+  <span class='kw'>sig_gene_thr</span> <span class='kw'>=</span> <span class='fl'>0.02</span>,
+  <span class='no'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>result_df</th>
-      <td><p>data frame of enrichment results.
-The only must-have column is "ID".</p></td>
+      <th>active_snw_path</th>
+      <td><p>path to the output of an Active Subnetwork Search</p></td>
     </tr>
     <tr>
-      <th>input_processed</th>
-      <td><p>input data processed via <code><a href='input_processing.html'>input_processing</a></code></p></td>
+      <th>genes_df</th>
+      <td><p>the input data that was used with <code><a href='run_pathfindr.html'>run_pathfindR</a></code>.
+  It must be a data frame with 3 columns:</p><ol>
+<li><p>Gene Symbol (Gene Symbol)</p></li>
+<li><p>Change value, e.g. log(fold change) (optional)</p></li>
+<li><p>p value, e.g. adjusted p value associated with differential expression</p></li>
+</ol><p>The change values in this data frame are used to color the affected genes</p></td>
     </tr>
     <tr>
-      <th>genes_by_term</th>
-      <td><p>List that contains genes for each gene set. Names of
-this list are gene set IDs (default = kegg_genes)</p></td>
+      <th>pin_name_path</th>
+      <td><p>Name of the chosen PIN or path/to/PIN.sif. If PIN name,
+must be one of c("Biogrid", "STRING", "GeneMania", "IntAct", "KEGG", "mmu_STRING"). If
+path/to/PIN.sif, the file must comply with the PIN specifications. (Default = "Biogrid")</p></td>
+    </tr>
+    <tr>
+      <th>num_snws</th>
+      <td><p>number of top subnetworks to be visualized (leave blank if
+you want to visualize all subnetworks)</p></td>
+    </tr>
+    <tr>
+      <th>layout</th>
+      <td><p>The type of layout to create (see <code><a href='https://ggraph.data-imaginist.com/reference/ggraph.html'>ggraph</a></code> for details. Default = "stress")</p></td>
+    </tr>
+    <tr>
+      <th>score_quan_thr</th>
+      <td><p>active subnetwork score quantile threshold (Default = 0.80)
+Must be between 0 and 1 or set to -1 for not filtering</p></td>
+    </tr>
+    <tr>
+      <th>sig_gene_thr</th>
+      <td><p>threshold for the minimum proportion of significant genes in
+the subnetwork (Default = 0.02) If the number of genes to use as threshold is
+calculated to be &lt; 2 (e.g. 50 signif. genes x 0.01 = 0.5), the threshold number
+is set to 2</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>additional arguments for <code><a href='input_processing.html'>input_processing</a></code></p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The original data frame with two additional columns:</p><dl>
-  <dt>Up_regulated</dt><dd><p>the up-regulated genes in the input involved in the given term's gene set, comma-separated</p></dd>
-  <dt>Down_regulated</dt><dd><p>the down-regulated genes in the input involved in the given term's gene set, comma-separated</p></dd>
-
-</dl>
-
+    <p>a list of ggplot objects of graph visualizations of identified active
+subnetworks. Green nodes are down-regulated genes, reds are up-regulated genes
+and yellows are non-input genes</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>example_gene_data</span> <span class='kw'>&lt;-</span> <span class='no'>RA_input</span>
-<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>example_gene_data</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"GENE"</span>, <span class='st'>"CHANGE"</span>, <span class='st'>"P_VALUE"</span>)
-
-<span class='no'>annotated_result</span> <span class='kw'>&lt;-</span> <span class='fu'>annotate_term_genes</span>(<span class='kw'>result_df</span> <span class='kw'>=</span> <span class='no'>RA_output</span>,
-                                        <span class='kw'>input_processed</span> <span class='kw'>=</span> <span class='no'>example_gene_data</span>)</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>path2snw_list</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/resultActiveSubnetworkSearch.txt"</span>,
+                              <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"pathfindR"</span>)
+<span class='co'># visualize top 2 active subnetworks</span>
+<span class='no'>g_list</span> <span class='kw'>&lt;-</span> <span class='fu'>visualize_active_subnetworks</span>(<span class='kw'>active_snw_path</span> <span class='kw'>=</span> <span class='no'>path2snw_list</span>,
+                                       <span class='kw'>genes_df</span> <span class='kw'>=</span> <span class='no'>RA_input</span>[<span class='fl'>1</span>:<span class='fl'>10</span>, ],
+                                       <span class='kw'>pin_name_path</span> <span class='kw'>=</span> <span class='st'>"KEGG"</span>,
+                                       <span class='kw'>num_snws</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='message'>Number of genes provided in input: 10</span></div><div class='output co'>#&gt; <span class='message'>Number of genes in input after p-value filtering: 10</span></div><div class='output co'>#&gt; <span class='message'>Could not find any interactions for 4 (40%) genes in the PIN</span></div><div class='output co'>#&gt; <span class='message'>Final number of genes in input: 6</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

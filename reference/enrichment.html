@@ -161,8 +161,8 @@
 
     <pre class="usage"><span class='fu'>enrichment</span>(
   <span class='no'>input_genes</span>,
-  <span class='kw'>genes_by_term</span> <span class='kw'>=</span> <span class='kw pkg'>pathfindR</span><span class='kw ns'>::</span><span class='no'><a href='kegg_genes.html'>kegg_genes</a></span>,
-  <span class='kw'>term_descriptions</span> <span class='kw'>=</span> <span class='kw pkg'>pathfindR</span><span class='kw ns'>::</span><span class='no'><a href='kegg_descriptions.html'>kegg_descriptions</a></span>,
+  <span class='kw'>genes_by_term</span> <span class='kw'>=</span> <span class='kw pkg'>pathfindR.data</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/pathfindR.data/man/kegg_genes.html'>kegg_genes</a></span>,
+  <span class='kw'>term_descriptions</span> <span class='kw'>=</span> <span class='kw pkg'>pathfindR.data</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/pathfindR.data/man/kegg_descriptions.html'>kegg_descriptions</a></span>,
   <span class='kw'>adj_method</span> <span class='kw'>=</span> <span class='st'>"bonferroni"</span>,
   <span class='kw'>enrichment_threshold</span> <span class='kw'>=</span> <span class='fl'>0.05</span>,
   <span class='no'>sig_genes_vec</span>,
@@ -224,7 +224,7 @@ the background genes are taken as all genes in the PIN
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>enrichment</span>(<span class='kw'>input_genes</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"PER1"</span>, <span class='st'>"PER2"</span>, <span class='st'>"CRY1"</span>, <span class='st'>"CREB1"</span>),
            <span class='kw'>sig_genes_vec</span> <span class='kw'>=</span> <span class='st'>"PER1"</span>,
-           <span class='kw'>background_genes</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/unlist.html'>unlist</a></span>(<span class='no'>kegg_genes</span>))</div><div class='output co'>#&gt;                ID      Term_Description Fold_Enrichment      p_value
+           <span class='kw'>background_genes</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/unlist.html'>unlist</a></span>(<span class='kw pkg'>pathfindR.data</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/pathfindR.data/man/kegg_genes.html'>kegg_genes</a></span>))</div><div class='output co'>#&gt;                ID      Term_Description Fold_Enrichment      p_value
 #&gt; hsa04710 hsa04710      Circadian rhythm        948.9677 1.008498e-12
 #&gt; hsa04713 hsa04713 Circadian entrainment        303.2784 1.386722e-07
 #&gt;                 adj_p non_Signif_Snw_Genes
