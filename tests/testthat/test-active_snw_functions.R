@@ -2,12 +2,12 @@
 ## Project: pathfindR
 ## Script purpose: Testthat testing script for
 ## active subnetwork search functions
-## Date: May 25, 2020
+## Date: June 4, 2020
 ## Author: Ege Ulgen
 ##################################################
 
 # active_snw_search -------------------------------------------------------
-input_df1 <- suppressMessages(input_processing(RA_input[1:10, ],
+input_df1 <- suppressMessages(input_processing(RA_input[1:100, ],
                                                p_val_threshold = 0.05,
                                                pin_name_path = "Biogrid"))
 input_df2 <- suppressMessages(input_processing(RA_input[1:3, ],
