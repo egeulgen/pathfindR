@@ -3,6 +3,9 @@
 
 ## Major Changes
 
+## Minor changes and bug fixes
+- Fixed issue in `check_java_version()` where java version 14 could not be parsed (#49)
+
 ***
 
 # pathfindR 1.5.0
