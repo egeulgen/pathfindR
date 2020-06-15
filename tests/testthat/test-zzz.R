@@ -2,7 +2,7 @@
 ## Project: pathfindR
 ## Script purpose: Testthat testing script for
 ## java-check-related functions
-## Date: May 24, 2020
+## Date: June 15, 2020
 ## Author: Ege Ulgen
 ##################################################
 
@@ -27,6 +27,13 @@ test_that("`check_java_version()` works with 1.8", {
     c("java version \"1.8.0_144\"",
       "Java(TM) SE Runtime Environment (build 1.8.0_000-000)",
       "Java HotSpot(TM) 64-Bit Server VM (build 00.000-000, mixed mode)")))
+})
+
+test_that("`check_java_version()` works with 14", {
+  expect_null(check_java_version(
+    c('java version "14" 2020-03-17',
+      "Java(TM) SE Runtime Environment (build 14+36-1461)",
+      "Java HotSpot(TM) 64-Bit Server VM (build 14+36-1461, mixed mode, sharing)")))
 })
 
 test_that("`check_java_version()` fails with 1.7", {

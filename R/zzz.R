@@ -69,8 +69,14 @@ check_java_version <- function(version = NULL) {
   # transform to usable R version string
   vers_string <- strsplit(versionLine, "\\s+", perl = TRUE)[[1]]
   vers_string <- vers_string[grepl("[0-9]+\\.[0-9]+\\.[0-9]+", vers_string, perl = TRUE)]
-  if (length(vers_string) != 1)
-    stop("Java version detected but couldn't parse version from: ", versionLine)
+  if (length(vers_string) != 1) {
+    vers_string <- strsplit(versionLine, "\\s+", perl = TRUE)[[1]]
+    vers_string <- vers_string[grepl("[0-9]+", vers_string, perl = TRUE)]
+    vers_string <- vers_string[!grepl("-", vers_string)]
+
+    if (length(vers_string) != 1)
+      stop("Java version detected but couldn't parse version from: ", versionLine)
+  }
 
   parsedVersion <- gsub("^\"|\"$", "", vers_string)
   parsedVersion <- gsub("_", ".", parsedVersion)
