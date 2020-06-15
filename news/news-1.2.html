@@ -167,9 +167,9 @@
 <li><p>Added the option <code>bubble</code> to plot a bubble chart displaying the enrichment results in <code>run_pathfindR</code> using the helper function <code>enrichment_chart</code>. To plot the bubble chart set <code>bubble = TRUE</code> in <code>run_pathfindR</code> or use <code><a href="../reference/enrichment_chart.html">enrichment_chart(your_result_df)</a></code>.</p></li>
 </ul>
 </div>
-<div id="minor-changes-and-bug-fixes-8" class="section level2">
+<div id="minor-changes-and-bug-fixes-9" class="section level2">
 <h2 class="hasAnchor">
-<a href="#minor-changes-and-bug-fixes-8" class="anchor"></a>Minor changes and bug fixes</h2>
+<a href="#minor-changes-and-bug-fixes-9" class="anchor"></a>Minor changes and bug fixes</h2>
 <ul>
 <li><p>Add the parameter <code>silent_option</code> to <code>run_pathfindR</code>. When <code>silent_option == TRUE</code> (default), the console outputs during active subnetwork search are printed to a file named “console_out.txt”. If <code>silent_option == FALSE</code>, the output is printed on the screen. Default was set to <code>TRUE</code> because multiple console outputs are simultaneously printed when running in parallel.</p></li>
 <li><p>Added the <code>list_active_snw_genes</code> parameter to <code>run_pathfindR</code>. When <code>list_active_snw_genes == TRUE</code>, the function adds the column <code>non_DEG_Active_Snw_Genes</code>, which reports the non-DEG active subnetwork genes for the active subnetwork which was enriched for the given pathway with the lowest p value.</p></li>
@@ -192,9 +192,9 @@
 <li>Added the option to specify a custom gene set when using <code>run_pathfindR</code>. For this, the <code>gene_sets</code> argument should be set to “Custom” and <code>custom_genes</code> and <code>custom_pathways</code> should be provided.</li>
 </ul>
 </div>
-<div id="minor-changes-and-bug-fixes-7" class="section level2">
+<div id="minor-changes-and-bug-fixes-8" class="section level2">
 <h2 class="hasAnchor">
-<a href="#minor-changes-and-bug-fixes-7" class="anchor"></a>Minor changes and bug fixes</h2>
+<a href="#minor-changes-and-bug-fixes-8" class="anchor"></a>Minor changes and bug fixes</h2>
 <ul>
 <li>fixed minor bug in <code>calculate_pw_scores</code> where if there was one DEG, subsetting the experiment matrix failed</li>
 <li>added if condition to check if there were DEGs in <code>calculate_pw_scores</code>. If there is none, the pathway is skipped.</li>
@@ -219,7 +219,7 @@
 <ul>
 <li>
 <p>fixed issue related to the package <code>pathview</code>.</p>
-<h2 id="minor-changes-and-bug-fixes-6">Minor changes and bug fixes</h2>
+<h2 id="minor-changes-and-bug-fixes-7">Minor changes and bug fixes</h2>
 </li>
 <li><p>in the function <code>choose_clusters</code>, added option to use pathway names instead of pathway ids when visualizing the clustering dendrogram and heatmap.</p></li>
 </ul>
@@ -230,9 +230,9 @@
 <h1 class="page-header" data-toc-text="1.2.3">
 <a href="#pathfindr-123" class="anchor"></a>pathfindR 1.2.3<small> 2018-10-26 </small>
 </h1>
-<div id="minor-changes-and-bug-fixes-5" class="section level2">
+<div id="minor-changes-and-bug-fixes-6" class="section level2">
 <h2 class="hasAnchor">
-<a href="#minor-changes-and-bug-fixes-5" class="anchor"></a>Minor changes and bug fixes</h2>
+<a href="#minor-changes-and-bug-fixes-6" class="anchor"></a>Minor changes and bug fixes</h2>
 <ul>
 <li>in the function <code>plot_scores</code>, added the argument <code>label_cases</code> to indicate whether or not to label the cases in the pathway scoring heatmap plot. Also added the argument <code>case_control_titles</code> which allows the user to change the default “Case” and “Control” headers. Also added the arguments <code>low</code> and <code>high</code> used to change the low and high end colors of the scoring color gradient.</li>
 <li>in the function <code>plot_scores</code>, reversed the color gradient to match the coloring scheme used by pathview (i.e. red for positive values, green for negative values)</li>
