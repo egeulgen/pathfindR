@@ -294,8 +294,8 @@ run_pathfindR <- function(input,
 
   ##### Annotate Involved Sig. Genes by up/down-regulation status
   final_res <- pathfindR::annotate_term_genes(result_df = final_res,
-                                             input_processed = input_processed,
-                                             genes_by_term = genes_by_term)
+                                              input_processed = input_processed,
+                                              genes_by_term = genes_by_term)
 
   ##### Visualize the Enriched Terms (If human KEGG, KEGG diagram. Otherwise,
   # Interactions of Genes in the PIN)
