@@ -210,7 +210,8 @@ combined_results_graph <- function(combined_df, selected_terms = "common",
                    "Up gene" = "green",
                    "Down gene" = "red",
                    "Conflicting gene" = "gray")
-  p <- p + ggplot2::scale_colour_manual(values = vertex_cols)
+  p <- p + ggplot2::scale_colour_manual(values = vertex_cols,
+                                        name = NULL)
   p <- p + ggplot2::ggtitle("Combined Terms Graph")
   p <- p + ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
   return(p)
