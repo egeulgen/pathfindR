@@ -184,18 +184,18 @@ combined_results_graph <- function(combined_df, selected_terms = "common",
   missing_B <- !cond_up_B & !cond_down_B
 
   up_cond <- (cond_up_A & cond_up_B) | (missing_A & cond_up_B) | (cond_up_A & missing_B)
-  down_cond <- cond_down_A & cond_down_B | (missing_A & cond_down_B) | (cond_down_A & missing_B)
+  down_cond <- (cond_down_A & cond_down_B) | (missing_A & cond_down_B) | (cond_down_A & missing_B)
 
-  igraph::V(g)$color <- ifelse(igraph::V(g)$type == "common term", "#FCCA46",
-                               ifelse(igraph::V(g)$type == "A-only term", "#9FB8AD",
-                                      ifelse(igraph::V(g)$type == "B-only term", "#619B8A",
-                                             ifelse(up_cond, "green",
-                                                    ifelse(down_cond, "red", "gray")))))
+  igraph::V(g)$for_coloring <- ifelse(igraph::V(g)$type == "common term", "Common term",
+                                      ifelse(igraph::V(g)$type == "A-only term", "A-only term",
+                                             ifelse(igraph::V(g)$type == "B-only term", "B-only term",
+                                                    ifelse(up_cond, "Up gene",
+                                                           ifelse(down_cond, "Down gene", "Conflicting gene")))))
 
   ### Create graph
   p <- ggraph::ggraph(g, layout = layout)
   p <- p + ggraph::geom_edge_link(alpha = .8, colour = "darkgrey")
-  p <- p + ggraph::geom_node_point(ggplot2::aes_(color = ~ I(color), size = ~size))
+  p <- p + ggraph::geom_node_point(ggplot2::aes_(color = ~for_coloring, size = ~size))
   p <- p + ggplot2::scale_size(range = c(5, 10),
                                breaks = round(seq(round(min(igraph::V(g)$size)),
                                                   round(max(igraph::V(g)$size)),
@@ -204,15 +204,13 @@ combined_results_graph <- function(combined_df, selected_terms = "common",
   p <- p + ggplot2::theme_void()
   p <- p + ggraph::geom_node_text(ggplot2::aes_(label = ~name), nudge_y = .2)
 
-  cols <- unique(igraph::V(g)$color)
-  lbls <- ifelse(cols == "#FCCA46", "Common term",
-                 ifelse(cols == "#9FB8AD", "A-only term",
-                        ifelse(cols == "#619B8A", "B-only term",
-                               ifelse(cols == "green", "Up gene",
-                                      ifelse(cols == "red", "Down gene", "Conflicting gene")))))
-  p <- p + ggplot2::scale_colour_manual(values = cols,
-                                        name = NULL,
-                                        labels = lbls)
+  vertex_cols <- c("Common term" = "#FCCA46",
+                   "A-only term" = "#9FB8AD",
+                   "B-only term" = "#619B8A",
+                   "Up gene" = "green",
+                   "Down gene" = "red",
+                   "Conflicting gene" = "gray")
+  p <- p + ggplot2::scale_colour_manual(values = vertex_cols)
   p <- p + ggplot2::ggtitle("Combined Terms Graph")
   p <- p + ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
   return(p)
