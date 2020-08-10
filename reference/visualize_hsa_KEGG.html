@@ -78,7 +78,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1.9001</span>
       </span>
     </div>
 
@@ -160,14 +160,14 @@
     </div>
 
     <pre class="usage"><span class='fu'>visualize_hsa_KEGG</span>(
-  <span class='no'>hsa_kegg_ids</span>,
-  <span class='no'>input_processed</span>,
-  <span class='kw'>max_to_plot</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>normalize_vals</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>node_cols</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>key_gravity</span> <span class='kw'>=</span> <span class='st'>"northeast"</span>,
-  <span class='kw'>logo_gravity</span> <span class='kw'>=</span> <span class='st'>"southeast"</span>
+  <span class='kw'>hsa_kegg_ids</span>,
+  <span class='kw'>input_processed</span>,
+  max_to_plot = <span class='kw'>NULL</span>,
+  normalize_vals = <span class='fl'>TRUE</span>,
+  node_cols = <span class='kw'>NULL</span>,
+  quiet = <span class='fl'>TRUE</span>,
+  key_gravity = <span class='st'>"northeast"</span>,
+  logo_gravity = <span class='st'>"southeast"</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -224,12 +224,12 @@ directory.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>See <code><a href='visualize_terms.html'>visualize_terms</a></code> for the wrapper function for
-creating enriched term diagrams. See <code><a href='run_pathfindr.html'>run_pathfindR</a></code> for the
+creating enriched term diagrams. See <code><a href='run_pathfindR.html'>run_pathfindR</a></code> for the
 wrapper function of the pathfindR enrichment workflow.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'>visualize_hsa_KEGG</span>(<span class='no'>hsa_kegg_ids</span>, <span class='no'>input_processed</span>)
+    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'>visualize_hsa_KEGG</span>(<span class='kw'>hsa_kegg_ids</span>, <span class='kw'>input_processed</span>)
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

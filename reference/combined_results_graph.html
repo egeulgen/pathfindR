@@ -78,7 +78,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1.9001</span>
       </span>
     </div>
 
@@ -160,11 +160,11 @@
     </div>
 
     <pre class="usage"><span class='fu'>combined_results_graph</span>(
-  <span class='no'>combined_df</span>,
-  <span class='kw'>selected_terms</span> <span class='kw'>=</span> <span class='st'>"common"</span>,
-  <span class='kw'>use_description</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>layout</span> <span class='kw'>=</span> <span class='st'>"stress"</span>,
-  <span class='kw'>node_size</span> <span class='kw'>=</span> <span class='st'>"num_genes"</span>
+  <span class='kw'>combined_df</span>,
+  selected_terms = <span class='st'>"common"</span>,
+  use_description = <span class='fl'>FALSE</span>,
+  layout = <span class='st'>"stress"</span>,
+  node_size = <span class='st'>"num_genes"</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -208,9 +208,9 @@ or the -log10(lowest p value) ("p_val") for adjusting the node sizes (default = 
  the -log10(lowest p value) (if <code>node_size = "p_val"</code>).</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>combined_results</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='combine_pathfindR_results.html'>combine_pathfindR_results</a></span>(<span class='no'>RA_output</span>,
-                                              <span class='no'>RA_comparison_output</span>,
-                                              <span class='kw'>plot_common</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='message'>You may run `combined_results_graph()` to create visualizations of combined term-gene graphs of selected terms</span></div><div class='input'><span class='no'>g</span> <span class='kw'>&lt;-</span> <span class='fu'>combined_results_graph</span>(<span class='no'>combined_results</span>, <span class='kw'>selected_terms</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='no'>combined_results</span>$<span class='no'>ID</span>, <span class='fl'>3</span>))</div></pre>
+    <pre class="examples"><div class='input'><span class='kw'>combined_results</span> <span class='op'>&lt;-</span> <span class='fu'><a href='combine_pathfindR_results.html'>combine_pathfindR_results</a></span>(<span class='kw'>RA_output</span>,
+                                              <span class='kw'>RA_comparison_output</span>,
+                                              plot_common = <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='message'>You may run `combined_results_graph()` to create visualizations of combined term-gene graphs of selected terms</span></div><div class='input'><span class='kw'>g</span> <span class='op'>&lt;-</span> <span class='fu'>combined_results_graph</span>(<span class='kw'>combined_results</span>, selected_terms = <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='kw'>combined_results</span><span class='op'>$</span><span class='kw'>ID</span>, <span class='fl'>3</span>))</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

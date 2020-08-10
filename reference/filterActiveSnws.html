@@ -78,7 +78,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1.9001</span>
       </span>
     </div>
 
@@ -160,10 +160,10 @@
     </div>
 
     <pre class="usage"><span class='fu'>filterActiveSnws</span>(
-  <span class='no'>active_snw_path</span>,
-  <span class='no'>sig_genes_vec</span>,
-  <span class='kw'>score_quan_thr</span> <span class='kw'>=</span> <span class='fl'>0.8</span>,
-  <span class='kw'>sig_gene_thr</span> <span class='kw'>=</span> <span class='fl'>0.02</span>
+  <span class='kw'>active_snw_path</span>,
+  <span class='kw'>sig_genes_vec</span>,
+  score_quan_thr = <span class='fl'>0.8</span>,
+  sig_gene_thr = <span class='fl'>0.02</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -200,14 +200,14 @@ quantile and that contains at least <code>sig_gene_thr</code> of significant gen
 and <code>scores</code> the score of each filtered active subnetwork</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>See <code><a href='run_pathfindr.html'>run_pathfindR</a></code> for the wrapper function of the
+    <div class='dont-index'><p>See <code><a href='run_pathfindR.html'>run_pathfindR</a></code> for the wrapper function of the
   pathfindR enrichment workflow</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>path2snw_list</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/resultActiveSubnetworkSearch.txt"</span>,
-                              <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"pathfindR"</span>)
-<span class='no'>filtered</span> <span class='kw'>&lt;-</span> <span class='fu'>filterActiveSnws</span>(<span class='kw'>active_snw_path</span> <span class='kw'>=</span> <span class='no'>path2snw_list</span>,
-                             <span class='kw'>sig_genes_vec</span> <span class='kw'>=</span> <span class='no'>RA_input</span>$<span class='no'>Gene.symbol</span>)</div></pre>
+    <pre class="examples"><div class='input'><span class='kw'>path2snw_list</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/resultActiveSubnetworkSearch.txt"</span>,
+                              package = <span class='st'>"pathfindR"</span>)
+<span class='kw'>filtered</span> <span class='op'>&lt;-</span> <span class='fu'>filterActiveSnws</span>(active_snw_path = <span class='kw'>path2snw_list</span>,
+                             sig_genes_vec = <span class='kw'>RA_input</span><span class='op'>$</span><span class='kw'>Gene.symbol</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

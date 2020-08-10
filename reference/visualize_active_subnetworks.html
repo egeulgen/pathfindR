@@ -78,7 +78,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1.9001</span>
       </span>
     </div>
 
@@ -160,14 +160,14 @@
     </div>
 
     <pre class="usage"><span class='fu'>visualize_active_subnetworks</span>(
-  <span class='no'>active_snw_path</span>,
-  <span class='no'>genes_df</span>,
-  <span class='kw'>pin_name_path</span> <span class='kw'>=</span> <span class='st'>"Biogrid"</span>,
-  <span class='no'>num_snws</span>,
-  <span class='kw'>layout</span> <span class='kw'>=</span> <span class='st'>"stress"</span>,
-  <span class='kw'>score_quan_thr</span> <span class='kw'>=</span> <span class='fl'>0.8</span>,
-  <span class='kw'>sig_gene_thr</span> <span class='kw'>=</span> <span class='fl'>0.02</span>,
-  <span class='no'>...</span>
+  <span class='kw'>active_snw_path</span>,
+  <span class='kw'>genes_df</span>,
+  pin_name_path = <span class='st'>"Biogrid"</span>,
+  <span class='kw'>num_snws</span>,
+  layout = <span class='st'>"stress"</span>,
+  score_quan_thr = <span class='fl'>0.8</span>,
+  sig_gene_thr = <span class='fl'>0.02</span>,
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -179,7 +179,7 @@
     </tr>
     <tr>
       <th>genes_df</th>
-      <td><p>the input data that was used with <code><a href='run_pathfindr.html'>run_pathfindR</a></code>.
+      <td><p>the input data that was used with <code><a href='run_pathfindR.html'>run_pathfindR</a></code>.
   It must be a data frame with 3 columns:</p><ol>
 <li><p>Gene Symbol (Gene Symbol)</p></li>
 <li><p>Change value, e.g. log(fold change) (optional)</p></li>
@@ -226,13 +226,13 @@ subnetworks. Green nodes are down-regulated genes, reds are up-regulated genes
 and yellows are non-input genes</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>path2snw_list</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/resultActiveSubnetworkSearch.txt"</span>,
-                              <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"pathfindR"</span>)
+    <pre class="examples"><div class='input'><span class='kw'>path2snw_list</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/resultActiveSubnetworkSearch.txt"</span>,
+                              package = <span class='st'>"pathfindR"</span>)
 <span class='co'># visualize top 2 active subnetworks</span>
-<span class='no'>g_list</span> <span class='kw'>&lt;-</span> <span class='fu'>visualize_active_subnetworks</span>(<span class='kw'>active_snw_path</span> <span class='kw'>=</span> <span class='no'>path2snw_list</span>,
-                                       <span class='kw'>genes_df</span> <span class='kw'>=</span> <span class='no'>RA_input</span>[<span class='fl'>1</span>:<span class='fl'>10</span>, ],
-                                       <span class='kw'>pin_name_path</span> <span class='kw'>=</span> <span class='st'>"KEGG"</span>,
-                                       <span class='kw'>num_snws</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='message'>Number of genes provided in input: 10</span></div><div class='output co'>#&gt; <span class='message'>Number of genes in input after p-value filtering: 10</span></div><div class='output co'>#&gt; <span class='message'>Could not find any interactions for 4 (40%) genes in the PIN</span></div><div class='output co'>#&gt; <span class='message'>Final number of genes in input: 6</span></div></pre>
+<span class='kw'>g_list</span> <span class='op'>&lt;-</span> <span class='fu'>visualize_active_subnetworks</span>(active_snw_path = <span class='kw'>path2snw_list</span>,
+                                       genes_df = <span class='kw'>RA_input</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, ],
+                                       pin_name_path = <span class='st'>"KEGG"</span>,
+                                       num_snws = <span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='message'>Number of genes provided in input: 10</span></div><div class='output co'>#&gt; <span class='message'>Number of genes in input after p-value filtering: 10</span></div><div class='output co'>#&gt; <span class='message'>Could not find any interactions for 4 (40%) genes in the PIN</span></div><div class='output co'>#&gt; <span class='message'>Final number of genes in input: 6</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

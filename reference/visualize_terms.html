@@ -78,7 +78,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1.9001</span>
       </span>
     </div>
 
@@ -160,11 +160,11 @@
     </div>
 
     <pre class="usage"><span class='fu'>visualize_terms</span>(
-  <span class='no'>result_df</span>,
-  <span class='kw'>input_processed</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>hsa_KEGG</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>pin_name_path</span> <span class='kw'>=</span> <span class='st'>"Biogrid"</span>,
-  <span class='no'>...</span>
+  <span class='kw'>result_df</span>,
+  input_processed = <span class='kw'>NULL</span>,
+  hsa_KEGG = <span class='fl'>TRUE</span>,
+  pin_name_path = <span class='st'>"Biogrid"</span>,
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -217,13 +217,13 @@ algorithm) and are visualized (colored by change status) using igraph.</p>
     <div class='dont-index'><p>See <code><a href='visualize_hsa_KEGG.html'>visualize_hsa_KEGG</a></code> for the visualization function
 of human KEGG diagrams. See <code><a href='visualize_term_interactions.html'>visualize_term_interactions</a></code> for the
 visualization function that generates diagrams showing the interactions of
-input genes in the PIN. See <code><a href='run_pathfindr.html'>run_pathfindR</a></code> for the wrapper
+input genes in the PIN. See <code><a href='run_pathfindR.html'>run_pathfindR</a></code> for the wrapper
 function of the pathfindR workflow.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'>visualize_terms</span>(<span class='no'>result_df</span>, <span class='no'>input_processed</span>)
-<span class='fu'>visualize_terms</span>(<span class='no'>result_df</span>, <span class='kw'>hsa_KEGG</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>pin_name_path</span> <span class='kw'>=</span> <span class='st'>"IntAct"</span>)
+    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'>visualize_terms</span>(<span class='kw'>result_df</span>, <span class='kw'>input_processed</span>)
+<span class='fu'>visualize_terms</span>(<span class='kw'>result_df</span>, hsa_KEGG = <span class='fl'>FALSE</span>, pin_name_path = <span class='st'>"IntAct"</span>)
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

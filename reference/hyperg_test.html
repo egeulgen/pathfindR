@@ -78,7 +78,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1.9001</span>
       </span>
     </div>
 
@@ -159,7 +159,7 @@
     <p>Hypergeometric Distribution-based Hypothesis Testing</p>
     </div>
 
-    <pre class="usage"><span class='fu'>hyperg_test</span>(<span class='no'>term_genes</span>, <span class='no'>chosen_genes</span>, <span class='no'>background_genes</span>)</pre>
+    <pre class="usage"><span class='fu'>hyperg_test</span>(<span class='kw'>term_genes</span>, <span class='kw'>chosen_genes</span>, <span class='kw'>background_genes</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -190,7 +190,7 @@ hypergeometric distribution is assumed and the appropriate p value
 (the value under the right tail) is calculated and returned.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>hyperg_test</span>(<span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>5</span>], <span class='no'>letters</span>[<span class='fl'>2</span>:<span class='fl'>5</span>], <span class='no'>letters</span>)</div><div class='output co'>#&gt; [1] 0.0003344482</div><div class='input'><span class='fu'>hyperg_test</span>(<span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>5</span>], <span class='no'>letters</span>[<span class='fl'>2</span>:<span class='fl'>10</span>], <span class='no'>letters</span>)</div><div class='output co'>#&gt; [1] 0.03447856</div><div class='input'><span class='fu'>hyperg_test</span>(<span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>5</span>], <span class='no'>letters</span>[<span class='fl'>2</span>:<span class='fl'>13</span>], <span class='no'>letters</span>)</div><div class='output co'>#&gt; [1] 0.1173913</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>hyperg_test</span>(<span class='kw'>letters</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>], <span class='kw'>letters</span>[<span class='fl'>2</span><span class='op'>:</span><span class='fl'>5</span>], <span class='kw'>letters</span>)</div><div class='output co'>#&gt; [1] 0.0003344482</div><div class='input'><span class='fu'>hyperg_test</span>(<span class='kw'>letters</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>], <span class='kw'>letters</span>[<span class='fl'>2</span><span class='op'>:</span><span class='fl'>10</span>], <span class='kw'>letters</span>)</div><div class='output co'>#&gt; [1] 0.03447856</div><div class='input'><span class='fu'>hyperg_test</span>(<span class='kw'>letters</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>], <span class='kw'>letters</span>[<span class='fl'>2</span><span class='op'>:</span><span class='fl'>13</span>], <span class='kw'>letters</span>)</div><div class='output co'>#&gt; [1] 0.1173913</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

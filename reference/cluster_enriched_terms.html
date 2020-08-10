@@ -78,7 +78,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1.9001</span>
       </span>
     </div>
 
@@ -160,12 +160,12 @@
     </div>
 
     <pre class="usage"><span class='fu'>cluster_enriched_terms</span>(
-  <span class='no'>enrichment_res</span>,
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"hierarchical"</span>,
-  <span class='kw'>plot_clusters_graph</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>use_description</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>use_active_snw_genes</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>...</span>
+  <span class='kw'>enrichment_res</span>,
+  method = <span class='st'>"hierarchical"</span>,
+  plot_clusters_graph = <span class='fl'>TRUE</span>,
+  use_description = <span class='fl'>FALSE</span>,
+  use_active_snw_genes = <span class='fl'>FALSE</span>,
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -225,10 +225,10 @@ See <code><a href='fuzzy_term_clustering.html'>fuzzy_term_clustering</a></code> 
 See <code><a href='cluster_graph_vis.html'>cluster_graph_vis</a></code> for graph visualization of clustering.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>example_clustered</span> <span class='kw'>&lt;-</span> <span class='fu'>cluster_enriched_terms</span>(<span class='no'>RA_output</span>[<span class='fl'>1</span>:<span class='fl'>3</span>, ],
-  <span class='kw'>plot_clusters_graph</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='message'>The maximum average silhouette width was 0.47 for k = 2 </span>
-#&gt; <span class='message'></span></div><div class='img'><img src='cluster_enriched_terms-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='no'>example_clustered</span> <span class='kw'>&lt;-</span> <span class='fu'>cluster_enriched_terms</span>(<span class='no'>RA_output</span>[<span class='fl'>1</span>:<span class='fl'>3</span>, ],
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"fuzzy"</span>, <span class='kw'>plot_clusters_graph</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div></pre>
+    <pre class="examples"><div class='input'><span class='kw'>example_clustered</span> <span class='op'>&lt;-</span> <span class='fu'>cluster_enriched_terms</span>(<span class='kw'>RA_output</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, ],
+  plot_clusters_graph = <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='message'>The maximum average silhouette width was 0.47 for k = 2 </span>
+#&gt; <span class='message'></span></div><div class='img'><img src='cluster_enriched_terms-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='kw'>example_clustered</span> <span class='op'>&lt;-</span> <span class='fu'>cluster_enriched_terms</span>(<span class='kw'>RA_output</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, ],
+  method = <span class='st'>"fuzzy"</span>, plot_clusters_graph = <span class='fl'>FALSE</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

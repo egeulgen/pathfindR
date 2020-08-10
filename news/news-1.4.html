@@ -77,7 +77,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1.9001</span>
       </span>
     </div>
 
@@ -175,7 +175,7 @@
 <li>Added the visualization function <code><a href="../reference/term_gene_graph.html">term_gene_graph()</a></code>, which creates a graph of enriched terms - involved genes</li>
 <li>Made changes in <code><a href="../reference/enrichment.html">enrichment()</a></code> and <code><a href="../reference/enrichment_analyses.html">enrichment_analyses()</a></code> to get enrichment results faster</li>
 <li>Added the function <code><a href="../reference/fetch_gene_set.html">fetch_gene_set()</a></code> for obtaining gene set data more easily</li>
-<li>Terms in gene sets can now be filtered according to the number of genes a term contains (controlled by <code>min_gset_size</code>, <code>max_gset_size</code> in <code><a href="../reference/fetch_gene_set.html">fetch_gene_set()</a></code> and <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code>)</li>
+<li>Terms in gene sets can now be filtered according to the number of genes a term contains (controlled by <code>min_gset_size</code>, <code>max_gset_size</code> in <code><a href="../reference/fetch_gene_set.html">fetch_gene_set()</a></code> and <code><a href="../reference/run_pathfindR.html">run_pathfindR()</a></code>)</li>
 <li>Added the argument <code>gaCrossover</code> during active subnetwork search which controls the probability of a crossover in GA (default = 1, i.e. always perform crossover)</li>
 <li>Added unit tests using <code>testthat</code>
 </li>
@@ -217,7 +217,7 @@
 <li>Updated the logo</li>
 <li>Minor fix in <code><a href="../reference/term_gene_graph.html">term_gene_graph()</a></code> (create the igraph object as an undirected graph for better auto layout)</li>
 <li>Minor fix in <code><a href="../reference/visualize_term_interactions.html">visualize_term_interactions()</a></code>. The legend no longer displays “Non-input Active Snw. Genes” if they were not provided</li>
-<li>The argument <code>human_genes</code> in <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code> and <code><a href="../reference/input_processing.html">input_processing()</a></code> was renamed as <code>convert2alias</code>
+<li>The argument <code>human_genes</code> in <code><a href="../reference/run_pathfindR.html">run_pathfindR()</a></code> and <code><a href="../reference/input_processing.html">input_processing()</a></code> was renamed as <code>convert2alias</code>
 </li>
 <li>The gene symbols in the input data frame, the PIN and the gene sets are now turned into uppercase (for obtaining the best overlap)</li>
 <li>Added the argument <code>top_terms</code> to <code><a href="../reference/enrichment_chart.html">enrichment_chart()</a></code>, controlling the number top enriched terms to plot (default is 10)</li>
@@ -243,7 +243,7 @@
 <a href="#minor-changes-and-bug-fixes-3" class="anchor"></a>Minor changes and bug fixes</h2>
 <ul>
 <li>Fixed behavior: when no input genes are present in the enriched hsa KEGG pathway, visualization of the pathway is now skipped</li>
-<li>Added the argument <code>max_to_plot</code> to <code><a href="../reference/visualize_hsa_KEGG.html">visualize_hsa_KEGG()</a></code> and to <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code>. This argument controls the number of pathways to be visualized (default is NULL, i.e. no filter). This was implemented not to slow down the runtime of <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code> as downloading the png files is slow.</li>
+<li>Added the argument <code>max_to_plot</code> to <code><a href="../reference/visualize_hsa_KEGG.html">visualize_hsa_KEGG()</a></code> and to <code><a href="../reference/run_pathfindR.html">run_pathfindR()</a></code>. This argument controls the number of pathways to be visualized (default is NULL, i.e. no filter). This was implemented not to slow down the runtime of <code><a href="../reference/run_pathfindR.html">run_pathfindR()</a></code> as downloading the png files is slow.</li>
 <li>Fixed links to visualizations in <code>enriched_ters.Rmd</code>
 </li>
 </ul>

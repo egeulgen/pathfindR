@@ -78,7 +78,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1.9001</span>
       </span>
     </div>
 
@@ -160,14 +160,14 @@
     </div>
 
     <pre class="usage"><span class='fu'>plot_scores</span>(
-  <span class='no'>score_matrix</span>,
-  <span class='kw'>cases</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>label_samples</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>case_title</span> <span class='kw'>=</span> <span class='st'>"Case"</span>,
-  <span class='kw'>control_title</span> <span class='kw'>=</span> <span class='st'>"Control"</span>,
-  <span class='kw'>low</span> <span class='kw'>=</span> <span class='st'>"green"</span>,
-  <span class='kw'>mid</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
-  <span class='kw'>high</span> <span class='kw'>=</span> <span class='st'>"red"</span>
+  <span class='kw'>score_matrix</span>,
+  cases = <span class='kw'>NULL</span>,
+  label_samples = <span class='fl'>TRUE</span>,
+  case_title = <span class='st'>"Case"</span>,
+  control_title = <span class='st'>"Control"</span>,
+  low = <span class='st'>"green"</span>,
+  mid = <span class='st'>"black"</span>,
+  high = <span class='st'>"red"</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -218,8 +218,8 @@ score of the term in a given sample. If <code>cases</code> are provided, the plo
 divided into 2 facets, named by <code>case_title</code> and <code>control_title</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>score_mat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='score_terms.html'>score_terms</a></span>(<span class='no'>RA_output</span>, <span class='no'>RA_exp_mat</span>, <span class='kw'>plot_hmap</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='no'>hmap</span> <span class='kw'>&lt;-</span> <span class='fu'>plot_scores</span>(<span class='no'>score_mat</span>)</div></pre>
+    <pre class="examples"><div class='input'><span class='kw'>score_mat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='score_terms.html'>score_terms</a></span>(<span class='kw'>RA_output</span>, <span class='kw'>RA_exp_mat</span>, plot_hmap = <span class='fl'>FALSE</span>)
+<span class='kw'>hmap</span> <span class='op'>&lt;-</span> <span class='fu'>plot_scores</span>(<span class='kw'>score_mat</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

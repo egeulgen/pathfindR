@@ -78,7 +78,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1.9001</span>
       </span>
     </div>
 
@@ -159,7 +159,7 @@
     <p>Combine 2 pathfindR Results</p>
     </div>
 
-    <pre class="usage"><span class='fu'>combine_pathfindR_results</span>(<span class='no'>result_A</span>, <span class='no'>result_B</span>, <span class='kw'>plot_common</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>combine_pathfindR_results</span>(<span class='kw'>result_A</span>, <span class='kw'>result_B</span>, plot_common = <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -202,7 +202,7 @@ graph of the common terms (default=<code>TRUE</code>)</p></td>
 </dl><p>By default, the function also displays the term-gene graph of the common terms</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>combined_results</span> <span class='kw'>&lt;-</span> <span class='fu'>combine_pathfindR_results</span>(<span class='no'>RA_output</span>, <span class='no'>RA_comparison_output</span>)</div><div class='output co'>#&gt; <span class='message'>You may run `combined_results_graph()` to create visualizations of combined term-gene graphs of selected terms</span></div><div class='img'><img src='combine_pathfindR_results-1.png' alt='' width='700' height='433' /></div></pre>
+    <pre class="examples"><div class='input'><span class='kw'>combined_results</span> <span class='op'>&lt;-</span> <span class='fu'>combine_pathfindR_results</span>(<span class='kw'>RA_output</span>, <span class='kw'>RA_comparison_output</span>)</div><div class='output co'>#&gt; <span class='message'>You may run `combined_results_graph()` to create visualizations of combined term-gene graphs of selected terms</span></div><div class='img'><img src='combine_pathfindR_results-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

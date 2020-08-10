@@ -78,7 +78,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1.9001</span>
       </span>
     </div>
 
@@ -160,28 +160,28 @@
     </div>
 
     <pre class="usage"><span class='fu'>active_snw_search</span>(
-  <span class='no'>input_for_search</span>,
-  <span class='kw'>pin_name_path</span> <span class='kw'>=</span> <span class='st'>"Biogrid"</span>,
-  <span class='kw'>snws_file</span> <span class='kw'>=</span> <span class='st'>"active_snws"</span>,
-  <span class='kw'>dir_for_parallel_run</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>score_quan_thr</span> <span class='kw'>=</span> <span class='fl'>0.8</span>,
-  <span class='kw'>sig_gene_thr</span> <span class='kw'>=</span> <span class='fl'>0.02</span>,
-  <span class='kw'>search_method</span> <span class='kw'>=</span> <span class='st'>"GR"</span>,
-  <span class='kw'>silent_option</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>use_all_positives</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>geneInitProbs</span> <span class='kw'>=</span> <span class='fl'>0.1</span>,
-  <span class='kw'>saTemp0</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>saTemp1</span> <span class='kw'>=</span> <span class='fl'>0.01</span>,
-  <span class='kw'>saIter</span> <span class='kw'>=</span> <span class='fl'>10000</span>,
-  <span class='kw'>gaPop</span> <span class='kw'>=</span> <span class='fl'>400</span>,
-  <span class='kw'>gaIter</span> <span class='kw'>=</span> <span class='fl'>10000</span>,
-  <span class='kw'>gaThread</span> <span class='kw'>=</span> <span class='fl'>5</span>,
-  <span class='kw'>gaCrossover</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>gaMut</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>grMaxDepth</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>grSearchDepth</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>grOverlap</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
-  <span class='kw'>grSubNum</span> <span class='kw'>=</span> <span class='fl'>1000</span>
+  <span class='kw'>input_for_search</span>,
+  pin_name_path = <span class='st'>"Biogrid"</span>,
+  snws_file = <span class='st'>"active_snws"</span>,
+  dir_for_parallel_run = <span class='kw'>NULL</span>,
+  score_quan_thr = <span class='fl'>0.8</span>,
+  sig_gene_thr = <span class='fl'>0.02</span>,
+  search_method = <span class='st'>"GR"</span>,
+  silent_option = <span class='fl'>TRUE</span>,
+  use_all_positives = <span class='fl'>FALSE</span>,
+  geneInitProbs = <span class='fl'>0.1</span>,
+  saTemp0 = <span class='fl'>1</span>,
+  saTemp1 = <span class='fl'>0.01</span>,
+  saIter = <span class='fl'>10000</span>,
+  gaPop = <span class='fl'>400</span>,
+  gaIter = <span class='fl'>10000</span>,
+  gaThread = <span class='fl'>5</span>,
+  gaCrossover = <span class='fl'>1</span>,
+  gaMut = <span class='fl'>0</span>,
+  grMaxDepth = <span class='fl'>1</span>,
+  grSearchDepth = <span class='fl'>1</span>,
+  grOverlap = <span class='fl'>0.5</span>,
+  grSubNum = <span class='fl'>1000</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -302,13 +302,13 @@ nodes. In SA, initializes candidate solution with all positive nodes. (default =
 the `score_quan_thr`th quantile and that has at least `sig_gene_thr` affected genes.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>processed_df</span> <span class='kw'>&lt;-</span> <span class='no'>RA_input</span>[<span class='fl'>1</span>:<span class='fl'>15</span>, -<span class='fl'>2</span>]
-<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>processed_df</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"GENE"</span>, <span class='st'>"P_VALUE"</span>)
-<span class='no'>GR_snws</span> <span class='kw'>&lt;-</span> <span class='fu'>active_snw_search</span>(<span class='kw'>input_for_search</span> <span class='kw'>=</span> <span class='no'>processed_df</span>,
-                             <span class='kw'>pin_name_path</span> <span class='kw'>=</span> <span class='st'>"KEGG"</span>,
-                             <span class='kw'>search_method</span> <span class='kw'>=</span> <span class='st'>"GR"</span>)</div><div class='output co'>#&gt; <span class='message'>Found 1 active subnetworks</span>
+    <pre class="examples"><div class='input'><span class='kw'>processed_df</span> <span class='op'>&lt;-</span> <span class='kw'>RA_input</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>15</span>, <span class='op'>-</span><span class='fl'>2</span>]
+<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='kw'>processed_df</span>) <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"GENE"</span>, <span class='st'>"P_VALUE"</span>)
+<span class='kw'>GR_snws</span> <span class='op'>&lt;-</span> <span class='fu'>active_snw_search</span>(input_for_search = <span class='kw'>processed_df</span>,
+                             pin_name_path = <span class='st'>"KEGG"</span>,
+                             search_method = <span class='st'>"GR"</span>)</div><div class='output co'>#&gt; <span class='message'>Found 1 active subnetworks</span>
 #&gt; <span class='message'></span></div><div class='input'><span class='co'># clean-up</span>
-<span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span>(<span class='st'>"active_snw_search"</span>, <span class='kw'>recursive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div></pre>
+<span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span>(<span class='st'>"active_snw_search"</span>, recursive = <span class='fl'>TRUE</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
