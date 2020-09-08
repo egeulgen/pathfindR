@@ -306,9 +306,11 @@ the `score_quan_thr`th quantile and that has at least `sig_gene_thr` affected ge
 <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='kw'>processed_df</span>) <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"GENE"</span>, <span class='st'>"P_VALUE"</span>)
 <span class='kw'>GR_snws</span> <span class='op'>&lt;-</span> <span class='fu'>active_snw_search</span>(input_for_search = <span class='kw'>processed_df</span>,
                              pin_name_path = <span class='st'>"KEGG"</span>,
-                             search_method = <span class='st'>"GR"</span>)</div><div class='output co'>#&gt; <span class='message'>Found 1 active subnetworks</span>
+                             search_method = <span class='st'>"GR"</span>)
+</div><div class='output co'>#&gt; <span class='message'>Found 1 active subnetworks</span>
 #&gt; <span class='message'></span></div><div class='input'><span class='co'># clean-up</span>
-<span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span>(<span class='st'>"active_snw_search"</span>, recursive = <span class='fl'>TRUE</span>)</div></pre>
+<span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span>(<span class='st'>"active_snw_search"</span>, recursive = <span class='fl'>TRUE</span>)
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -324,7 +326,7 @@ the `score_quan_thr`th quantile and that has at least `sig_gene_thr` affected ge
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.9000.</p>
 </div>
 
       </footer>
