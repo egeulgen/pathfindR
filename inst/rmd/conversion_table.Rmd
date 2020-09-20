@@ -14,7 +14,7 @@ knitr::opts_chunk$set(echo = FALSE)
 ## Table of Converted Gene Symbols
 ```{r converted_tbl, table1, comment=NA}
 genes_df <- params$df
-colnames(genes_df) <- c("Old Symbol", "New Symbol", "Change", "p-value")
+colnames(genes_df) <- c("Old Symbol", "Converted Symbol", "Change", "p-value")
 genes_df <- genes_df[genes_df[, 1] != genes_df[, 2], ]
 knitr::kable(genes_df, align = "c", table.caption.prefix ="")
 ```
