@@ -151,7 +151,7 @@ output_df <- run_pathfindR(input_df, search_method = "GA")
 
 ### Other Arguments 
 
-Because the active subnetwork search algorithms are stochastic, `run_pathfindR()` iterates the active subnetwork identification and enrichment steps multiple times (by default 10 times). To change this number, set `iterations`:
+Because the active subnetwork search algorithms are stochastic, `run_pathfindR()` may be set to iterate the active subnetwork identification and enrichment steps multiple times (by default 1 time). To change this number, set `iterations`:
 
 ```{r change_n_iters}
 output_df <- run_pathfindR(input_df, iterations = 25) 
@@ -160,8 +160,8 @@ output_df <- run_pathfindR(input_df, iterations = 25)
 `run_pathfindR()` uses a parallel loop (using the package `foreach`) for performing these iterations in parallel. By default, the number of processes to be used is determined automatically. To override, change `n_processes`:
 
 ``` {r change_n_proc}
-# n_processes defaults to (number of detected cores - 1)
-output_df <- run_pathfindR(input_df, n_processes = 2)
+# if not set, n_processes defaults to (number of detected cores - 1)
+output_df <- run_pathfindR(input_df, iterations = 5, n_processes = 2)
 ```
 
 ## Output
@@ -385,7 +385,6 @@ custom_result <- run_pathfindR(input_df,
                                custom_genes = custom_genes,
                                custom_descriptions = custom_descriptions,
                                max_gset_size = Inf, # DO NOT LIMIT GENE SET SIZE
-                               iterations = 1, # for demo, setting number of iterations to 1
                                output_dir = "misc/v1.4/CREB_MYC")
 
 knitr::kable(custom_result)
