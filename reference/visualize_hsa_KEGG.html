@@ -78,19 +78,13 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0.9002</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -159,16 +153,16 @@
     <p>Visualize Human KEGG Pathways</p>
     </div>
 
-    <pre class="usage"><span class='fu'>visualize_hsa_KEGG</span>(
-  <span class='kw'>hsa_kegg_ids</span>,
-  <span class='kw'>input_processed</span>,
-  max_to_plot = <span class='kw'>NULL</span>,
-  normalize_vals = <span class='fl'>TRUE</span>,
-  node_cols = <span class='kw'>NULL</span>,
-  quiet = <span class='fl'>TRUE</span>,
-  key_gravity = <span class='st'>"northeast"</span>,
-  logo_gravity = <span class='st'>"southeast"</span>
-)</pre>
+    <pre class="usage"><span class='fu'>visualize_hsa_KEGG</span><span class='op'>(</span>
+  <span class='va'>hsa_kegg_ids</span>,
+  <span class='va'>input_processed</span>,
+  max_to_plot <span class='op'>=</span> <span class='cn'>NULL</span>,
+  normalize_vals <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  node_cols <span class='op'>=</span> <span class='cn'>NULL</span>,
+  quiet <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  key_gravity <span class='op'>=</span> <span class='st'>"northeast"</span>,
+  logo_gravity <span class='op'>=</span> <span class='st'>"southeast"</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -228,9 +222,9 @@ creating enriched term diagrams. See <code><a href='run_pathfindR.html'>run_path
 wrapper function of the pathfindR enrichment workflow.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'>visualize_hsa_KEGG</span>(<span class='kw'>hsa_kegg_ids</span>, <span class='kw'>input_processed</span>)
-}
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='fu'>visualize_hsa_KEGG</span><span class='op'>(</span><span class='va'>hsa_kegg_ids</span>, <span class='va'>input_processed</span><span class='op'>)</span>
+<span class='op'>}</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -78,19 +78,13 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0.9002</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -159,13 +153,13 @@
     <p>Create Diagrams for Enriched Terms</p>
     </div>
 
-    <pre class="usage"><span class='fu'>visualize_terms</span>(
-  <span class='kw'>result_df</span>,
-  input_processed = <span class='kw'>NULL</span>,
-  hsa_KEGG = <span class='fl'>TRUE</span>,
-  pin_name_path = <span class='st'>"Biogrid"</span>,
-  <span class='kw'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>visualize_terms</span><span class='op'>(</span>
+  <span class='va'>result_df</span>,
+  input_processed <span class='op'>=</span> <span class='cn'>NULL</span>,
+  hsa_KEGG <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  pin_name_path <span class='op'>=</span> <span class='st'>"Biogrid"</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -221,10 +215,10 @@ input genes in the PIN. See <code><a href='run_pathfindR.html'>run_pathfindR</a>
 function of the pathfindR workflow.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'>visualize_terms</span>(<span class='kw'>result_df</span>, <span class='kw'>input_processed</span>)
-<span class='fu'>visualize_terms</span>(<span class='kw'>result_df</span>, hsa_KEGG = <span class='fl'>FALSE</span>, pin_name_path = <span class='st'>"IntAct"</span>)
-}
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='fu'>visualize_terms</span><span class='op'>(</span><span class='va'>result_df</span>, <span class='va'>input_processed</span><span class='op'>)</span>
+<span class='fu'>visualize_terms</span><span class='op'>(</span><span class='va'>result_df</span>, hsa_KEGG <span class='op'>=</span> <span class='cn'>FALSE</span>, pin_name_path <span class='op'>=</span> <span class='st'>"IntAct"</span><span class='op'>)</span>
+<span class='op'>}</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

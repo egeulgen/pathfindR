@@ -78,19 +78,13 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0.9002</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -159,14 +153,14 @@
     <p>Hierarchical Clustering of Enriched Terms</p>
     </div>
 
-    <pre class="usage"><span class='fu'>hierarchical_term_clustering</span>(
-  <span class='kw'>kappa_mat</span>,
-  <span class='kw'>enrichment_res</span>,
-  use_description = <span class='fl'>FALSE</span>,
-  clu_method = <span class='st'>"average"</span>,
-  plot_hmap = <span class='fl'>FALSE</span>,
-  plot_dend = <span class='fl'>TRUE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>hierarchical_term_clustering</span><span class='op'>(</span>
+  <span class='va'>kappa_mat</span>,
+  <span class='va'>enrichment_res</span>,
+  use_description <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  clu_method <span class='op'>=</span> <span class='st'>"average"</span>,
+  plot_hmap <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  plot_dend <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -218,10 +212,10 @@ the clustering dendrogram is cut into k = 2, 3, ..., n - 1 clusters
 determined as the k value which yields the highest average silhouette width.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'>hierarchical_term_clustering</span>(<span class='kw'>kappa_mat</span>, <span class='kw'>enrichment_res</span>)
-<span class='fu'>hierarchical_term_clustering</span>(<span class='kw'>kappa_mat</span>, <span class='kw'>enrichment_res</span>, method = <span class='st'>"complete"</span>)
-}
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='fu'>hierarchical_term_clustering</span><span class='op'>(</span><span class='va'>kappa_mat</span>, <span class='va'>enrichment_res</span><span class='op'>)</span>
+<span class='fu'>hierarchical_term_clustering</span><span class='op'>(</span><span class='va'>kappa_mat</span>, <span class='va'>enrichment_res</span>, method <span class='op'>=</span> <span class='st'>"complete"</span><span class='op'>)</span>
+<span class='op'>}</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

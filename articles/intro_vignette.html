@@ -33,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0.9002</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
@@ -108,7 +102,7 @@
       <h1 data-toc-skip>Introduction to pathfindR</h1>
                         <h4 class="author">Ege Ulgen</h4>
             
-            <h4 class="date">2020-09-21</h4>
+            <h4 class="date">2020-10-02</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/master/vignettes/intro_vignette.Rmd"><code>vignettes/intro_vignette.Rmd</code></a></small>
       <div class="hidden name"><code>intro_vignette.Rmd</code></div>
@@ -142,9 +136,8 @@
 <p>For convenience, we provide the wrapper function <code><a href="../reference/run_pathfindR.html">run_pathfindR()</a></code> to be used for the active-subnetwork-oriented enrichment analysis. The input for this function must be a data frame consisting of the columns containing: <code>Gene Symbols</code>, <code>Change Values</code> (optional) and <code>p values</code>. The example data frame used in this vignette (<code>input_df</code>) is the dataset containing the differentially-expressed genes for the GEO dataset GSE15573 comparing 18 rheumatoid arthritis (RA) patients versus 15 healthy subjects.</p>
 <p>The first 6 rows of the example input data frame are displayed below:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://egeulgen.github.io/pathfindR">pathfindR</a></span>)
-<span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>(<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw">RA_input</span>))
-</pre></div>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://egeulgen.github.io/pathfindR/">pathfindR</a></span><span class="op">)</span>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">RA_input</span><span class="op">)</span><span class="op">)</span></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">Gene.symbol</th>
@@ -189,8 +182,7 @@
 </blockquote>
 <p>Executing the workflow is straightforward (but does typically take several minutes):</p>
 <div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="kw">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindR.html">run_pathfindR</a></span>(<span class="kw">input_df</span>)
-</pre></div>
+<span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindR.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span><span class="op">)</span></pre></div>
 <div id="useful-arguments" class="section level2">
 <h2 class="hasAnchor">
 <a href="#useful-arguments" class="anchor"></a>Useful arguments</h2>
@@ -200,21 +192,18 @@
 <a href="#filtering-input-genes" class="anchor"></a>Filtering Input Genes</h3>
 <p>By default, <code><a href="../reference/run_pathfindR.html">run_pathfindR()</a></code> uses the input genes with p-values &lt; 0.05. To change this threshold, use <code>p_val_threshold</code>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="kw">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindR.html">run_pathfindR</a></span>(<span class="kw">input_df</span>, p_val_threshold = <span class="fl">0.01</span>)
-</pre></div>
+<span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindR.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, p_val_threshold <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></pre></div>
 </div>
 <div id="output-directory" class="section level3">
 <h3 class="hasAnchor">
 <a href="#output-directory" class="anchor"></a>Output Directory</h3>
 <p>By default, <code><a href="../reference/run_pathfindR.html">run_pathfindR()</a></code> creates a directory named <code>"pathfindR_Results"</code> under the current working directory for writing the output files. To change the output directory, use <code>output_dir</code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="kw">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindR.html">run_pathfindR</a></span>(<span class="kw">input_df</span>, output_dir = <span class="st">"this_is_my_output_directory"</span>)
-</pre></div>
+<span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindR.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, output_dir <span class="op">=</span> <span class="st">"this_is_my_output_directory"</span><span class="op">)</span></pre></div>
 <p>This creates <code>"this_is_my_output_directory"</code> under the current working directory.</p>
 <p>In essence, this argument is treated as a path so it can be used to create the output directory anywhere. For example, to create the directory <code>"my_dir"</code> under <code>"~/Desktop"</code> and run the analysis there, you may run:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="kw">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindR.html">run_pathfindR</a></span>(<span class="kw">input_df</span>, output_dir = <span class="st">"~/Desktop/my_dir"</span>)
-</pre></div>
+<span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindR.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, output_dir <span class="op">=</span> <span class="st">"~/Desktop/my_dir"</span><span class="op">)</span></pre></div>
 <blockquote>
 <p>Note: If the output directory (e.g. <code>"my_dir"</code>) already exists, <code><a href="../reference/run_pathfindR.html">run_pathfindR()</a></code> creates and works under <code>"my_dir(1)"</code>. If that exists also exists, it creates <code>"my_dir(2)"</code> and so on. This was intentionally implemented so that any previous pathfindR results are not overwritten.</p>
 </blockquote>
@@ -224,16 +213,14 @@
 <a href="#gene-sets-for-enrichment" class="anchor"></a>Gene Sets for Enrichment</h3>
 <p>The active-subnetwork-oriented enrichment analyses can be performed on any gene sets (biological pathways, gene ontology terms, transcription factor target genes, miRNA target genes etc.). The available gene sets in pathfindR are “KEGG”, “Reactome”, “BioCarta”, “GO-All”, “GO-BP”, “GO-CC” and “GO-MF” (all for Homo sapiens). For changing the default gene sets for enrichment analysis (hsa KEGG pathways), use the argument <code>gene_sets</code></p>
 <div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="kw">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindR.html">run_pathfindR</a></span>(<span class="kw">input_df</span>, gene_sets = <span class="st">"GO-MF"</span>)
-</pre></div>
+<span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindR.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, gene_sets <span class="op">=</span> <span class="st">"GO-MF"</span><span class="op">)</span></pre></div>
 <p>By default, <code><a href="../reference/run_pathfindR.html">run_pathfindR()</a></code> filters the gene sets by including only the terms containing at least 10 and at most 300 genes. To change the default behavior, you may change <code>min_gset_size</code> and <code>max_gset_size</code>:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit">
 <span class="co">## Including more terms for enrichment analysis</span>
-<span class="kw">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindR.html">run_pathfindR</a></span>(<span class="kw">input_df</span>, 
-                           gene_sets = <span class="st">"GO-MF"</span>,
-                           min_gset_size = <span class="fl">5</span>,
-                           max_gset_size = <span class="fl">500</span>)
-</pre></div>
+<span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindR.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, 
+                           gene_sets <span class="op">=</span> <span class="st">"GO-MF"</span>,
+                           min_gset_size <span class="op">=</span> <span class="fl">5</span>,
+                           max_gset_size <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></pre></div>
 <blockquote>
 <p>Note that increasing the number of terms for enrichment analysis may result in significantly longer run time.</p>
 </blockquote>
@@ -245,23 +232,20 @@
 <a href="#filtering-enriched-terms-by-adjusted-p-values" class="anchor"></a>Filtering Enriched Terms by Adjusted-p Values</h3>
 <p>By default, <code><a href="../reference/run_pathfindR.html">run_pathfindR()</a></code> adjusts the enrichment p values via the “bonferroni” method and filters the enriched terms by adjusted-p value &lt; 0.05. To change this adjustment method and the threshold, set <code>adj_method</code> and <code>enrichment_threshold</code>, respectively:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="kw">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindR.html">run_pathfindR</a></span>(<span class="kw">input_df</span>, 
-                           adj_method = <span class="st">"fdr"</span>,
-                           enrichment_threshold = <span class="fl">0.01</span>)
-</pre></div>
+<span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindR.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, 
+                           adj_method <span class="op">=</span> <span class="st">"fdr"</span>,
+                           enrichment_threshold <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></pre></div>
 </div>
 <div id="protein-protein-interaction-network" class="section level3">
 <h3 class="hasAnchor">
 <a href="#protein-protein-interaction-network" class="anchor"></a>Protein-protein Interaction Network</h3>
 <p>For the active subnetwork search process, a protein-protein interaction network (PIN) is used. <code><a href="../reference/run_pathfindR.html">run_pathfindR()</a></code> maps the input genes onto this PIN and identifies active subnetworks which are then be used for enrichment analyses. To change the default PIN (“Biogrid”), use the <code>pin_name_path</code> argument:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="kw">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindR.html">run_pathfindR</a></span>(<span class="kw">input_df</span>, pin_name_path = <span class="st">"IntAct"</span>)
-</pre></div>
+<span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindR.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, pin_name_path <span class="op">=</span> <span class="st">"IntAct"</span><span class="op">)</span></pre></div>
 <p>The <code>pin_name_path</code> argument can be one of “Biogrid”, “STRING”, “GeneMania”, “IntAct”, “KEGG”, “mmu_STRING” or it can be the path to a custom PIN file provided by the user.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit">
 <span class="co"># to use an external PIN of your choice</span>
-<span class="kw">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindR.html">run_pathfindR</a></span>(<span class="kw">input_df</span>, pin_name_path = <span class="st">"/path/to/myPIN.sif"</span>)
-</pre></div>
+<span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindR.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, pin_name_path <span class="op">=</span> <span class="st">"/path/to/myPIN.sif"</span><span class="op">)</span></pre></div>
 <blockquote>
 <p>NOTE: the PIN is also used for generating the background genes (in this case, all unique genes in the PIN) during hypergeometric-distribution-based tests in enrichment analyses. Therefore, a large PIN will generally result in better results.</p>
 </blockquote>
@@ -272,23 +256,20 @@
 <p>Currently, there are three algorithms implemented in pathfindR for active subnetwork search: Greedy Algorithm (default, based on Ideker et al. <a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>), Simulated Annealing Algorithm (based on Ideker et al. <a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>) and Genetic Algorithm (based on Ozisik et al. <a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>). For a detailed discussion on which algorithm to use see <a href="https://github.com/egeulgen/pathfindR/wiki/Active-subnetwork-oriented-Enrichment-Documentation#selecting-the-active-subnetwork-search-algorithm">this wiki entry</a></p>
 <div class="sourceCode" id="cb11"><pre class="downlit">
 <span class="co"># for simulated annealing:</span>
-<span class="kw">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindR.html">run_pathfindR</a></span>(<span class="kw">input_df</span>, search_method = <span class="st">"SA"</span>)
+<span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindR.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, search_method <span class="op">=</span> <span class="st">"SA"</span><span class="op">)</span>
 <span class="co"># for genetic algorithm:</span>
-<span class="kw">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindR.html">run_pathfindR</a></span>(<span class="kw">input_df</span>, search_method = <span class="st">"GA"</span>)
-</pre></div>
+<span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindR.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, search_method <span class="op">=</span> <span class="st">"GA"</span><span class="op">)</span></pre></div>
 </div>
 <div id="other-arguments" class="section level3">
 <h3 class="hasAnchor">
 <a href="#other-arguments" class="anchor"></a>Other Arguments</h3>
-<p>Because the active subnetwork search algorithms are stochastic, <code><a href="../reference/run_pathfindR.html">run_pathfindR()</a></code> iterates the active subnetwork identification and enrichment steps multiple times (by default 10 times). To change this number, set <code>iterations</code>:</p>
+<p>Because the active subnetwork search algorithms are stochastic, <code><a href="../reference/run_pathfindR.html">run_pathfindR()</a></code> may be set to iterate the active subnetwork identification and enrichment steps multiple times (by default 1 time). To change this number, set <code>iterations</code>:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit">
-<span class="kw">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindR.html">run_pathfindR</a></span>(<span class="kw">input_df</span>, iterations = <span class="fl">25</span>) 
-</pre></div>
+<span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindR.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, iterations <span class="op">=</span> <span class="fl">25</span><span class="op">)</span> </pre></div>
 <p><code><a href="../reference/run_pathfindR.html">run_pathfindR()</a></code> uses a parallel loop (using the package <code>foreach</code>) for performing these iterations in parallel. By default, the number of processes to be used is determined automatically. To override, change <code>n_processes</code>:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit">
-<span class="co"># n_processes defaults to (number of detected cores - 1)</span>
-<span class="kw">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindR.html">run_pathfindR</a></span>(<span class="kw">input_df</span>, n_processes = <span class="fl">2</span>)
-</pre></div>
+<span class="co"># if not set, n_processes defaults to (number of detected cores - 1)</span>
+<span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindR.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, iterations <span class="op">=</span> <span class="fl">5</span>, n_processes <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></pre></div>
 </div>
 </div>
 <div id="output" class="section level2">
@@ -311,18 +292,17 @@
 </ul>
 <p>The first 2 rows of the output data frame of the example analysis on the rheumatoid arthritis gene-level differential expression input data (<code>RA_input</code>) is shown below:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit">
-<span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>(<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw">RA_output</span>, <span class="fl">2</span>))
-</pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">RA_output</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></pre></div>
 <table class="table">
 <colgroup>
 <col width="4%">
-<col width="11%">
-<col width="7%">
+<col width="21%">
+<col width="8%">
 <col width="5%">
 <col width="4%">
-<col width="4%">
-<col width="29%">
-<col width="33%">
+<col width="5%">
+<col width="22%">
+<col width="28%">
 </colgroup>
 <thead><tr class="header">
 <th align="left">ID</th>
@@ -336,24 +316,24 @@
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">hsa03040</td>
-<td align="left">Spliceosome</td>
-<td align="right">3.097503</td>
+<td align="left">hsa04714</td>
+<td align="left">Thermogenesis</td>
+<td align="right">2.503010</td>
 <td align="right">10</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="left">SF3B6, LSM3, BUD31</td>
-<td align="left">SNRPB, SF3B2, U2AF2, PUF60, DDX23, EIF4A3, HNRNPA1, PCBP1, SRSF8, SRSF5</td>
+<td align="right">1e-07</td>
+<td align="right">1e-07</td>
+<td align="left">NDUFA1, NDUFB3, UQCRQ, COX6A1, COX7A2, COX7C</td>
+<td align="left">ADCY7, CREB1, KDM1A, SMARCA4, ACTG1, ACTB, ARID1A, MTOR</td>
 </tr>
 <tr class="even">
-<td align="left">hsa00190</td>
-<td align="left">Oxidative phosphorylation</td>
-<td align="right">2.523970</td>
+<td align="left">hsa04130</td>
+<td align="left">SNARE interactions in vesicular transport</td>
+<td align="right">4.529257</td>
 <td align="right">10</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="left">NDUFA1, NDUFB3, UQCRQ, COX6A1, COX7A2, COX7C, ATP6V1D, ATP6V0E1</td>
-<td align="left">ATP6V0E2</td>
+<td align="right">1e-07</td>
+<td align="right">1e-07</td>
+<td align="left">STX6</td>
+<td align="left">STX2, BET1L, SNAP23</td>
 </tr>
 </tbody>
 </table>
@@ -362,9 +342,8 @@
 <p>You may also disable plotting this chart by setting <code>plot_enrichment_chart=FALSE</code> and later produce this plot via the function <code><a href="../reference/enrichment_chart.html">enrichment_chart()</a></code>:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit">
 <span class="co"># change number of top terms plotted (default = 10)</span>
-<span class="fu"><a href="../reference/enrichment_chart.html">enrichment_chart</a></span>(result_df = <span class="kw">RA_output</span>, 
-                 top_terms = <span class="fl">15</span>)
-</pre></div>
+<span class="fu"><a href="../reference/enrichment_chart.html">enrichment_chart</a></span><span class="op">(</span>result_df <span class="op">=</span> <span class="va">RA_output</span>, 
+                 top_terms <span class="op">=</span> <span class="fl">15</span><span class="op">)</span></pre></div>
 </div>
 <div id="html-report" class="section level3">
 <h3 class="hasAnchor">
@@ -397,22 +376,20 @@
 <a href="#hierarchical-clustering" class="anchor"></a>Hierarchical Clustering</h2>
 <p>By default, <code><a href="../reference/cluster_enriched_terms.html">cluster_enriched_terms()</a></code> performs hierarchical clustering of the terms (using <span class="math inline">\(1 - \kappa\)</span> as the distance metric). Iterating over <span class="math inline">\(2,3,...n\)</span> clusters (where <span class="math inline">\(n\)</span> is the number of terms), <code><a href="../reference/cluster_enriched_terms.html">cluster_enriched_terms()</a></code> determines the optimal number of clusters by maximizing the average silhouette width, partitions the data into this optimal number of clusters and returns a data frame with cluster assignments.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit">
-<span class="kw">RA_clustered</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cluster_enriched_terms.html">cluster_enriched_terms</a></span>(<span class="kw">RA_output</span>, plot_dend = <span class="fl">FALSE</span>, plot_clusters_graph = <span class="fl">FALSE</span>)
-</pre></div>
+<span class="va">RA_clustered</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cluster_enriched_terms.html">cluster_enriched_terms</a></span><span class="op">(</span><span class="va">RA_output</span>, plot_dend <span class="op">=</span> <span class="cn">FALSE</span>, plot_clusters_graph <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></pre></div>
 <div class="sourceCode" id="cb17"><pre class="downlit">
 <span class="co">## First 2 rows of clustered data frame</span>
-<span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>(<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw">RA_clustered</span>, <span class="fl">2</span>))
-</pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">RA_clustered</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></pre></div>
 <table class="table">
 <colgroup>
-<col width="3%">
-<col width="10%">
-<col width="6%">
 <col width="4%">
-<col width="3%">
+<col width="19%">
+<col width="7%">
 <col width="4%">
-<col width="26%">
-<col width="30%">
+<col width="4%">
+<col width="4%">
+<col width="20%">
+<col width="25%">
 <col width="3%">
 <col width="6%">
 </colgroup>
@@ -430,26 +407,26 @@
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">hsa03040</td>
-<td align="left">Spliceosome</td>
-<td align="right">3.097503</td>
+<td align="left">hsa04714</td>
+<td align="left">Thermogenesis</td>
+<td align="right">2.503010</td>
 <td align="right">10</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="left">SF3B6, LSM3, BUD31</td>
-<td align="left">SNRPB, SF3B2, U2AF2, PUF60, DDX23, EIF4A3, HNRNPA1, PCBP1, SRSF8, SRSF5</td>
+<td align="right">1e-07</td>
+<td align="right">1e-07</td>
+<td align="left">NDUFA1, NDUFB3, UQCRQ, COX6A1, COX7A2, COX7C</td>
+<td align="left">ADCY7, CREB1, KDM1A, SMARCA4, ACTG1, ACTB, ARID1A, MTOR</td>
 <td align="right">1</td>
 <td align="left">Representative</td>
 </tr>
 <tr class="even">
-<td align="left">hsa00190</td>
-<td align="left">Oxidative phosphorylation</td>
-<td align="right">2.523970</td>
+<td align="left">hsa04130</td>
+<td align="left">SNARE interactions in vesicular transport</td>
+<td align="right">4.529257</td>
 <td align="right">10</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="left">NDUFA1, NDUFB3, UQCRQ, COX6A1, COX7A2, COX7C, ATP6V1D, ATP6V0E1</td>
-<td align="left">ATP6V0E2</td>
+<td align="right">1e-07</td>
+<td align="right">1e-07</td>
+<td align="left">STX6</td>
+<td align="left">STX2, BET1L, SNAP23</td>
 <td align="right">2</td>
 <td align="left">Representative</td>
 </tr>
@@ -457,19 +434,18 @@
 </table>
 <div class="sourceCode" id="cb18"><pre class="downlit">
 <span class="co">## The representative terms</span>
-<span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>(<span class="kw">RA_clustered</span>[<span class="kw">RA_clustered</span><span class="op">$</span><span class="kw">Status</span> <span class="op">==</span> <span class="st">"Representative"</span>, ])
-</pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">RA_clustered</span><span class="op">[</span><span class="va">RA_clustered</span><span class="op">$</span><span class="va">Status</span> <span class="op">==</span> <span class="st">"Representative"</span>, <span class="op">]</span><span class="op">)</span></pre></div>
 <table class="table">
 <colgroup>
 <col width="1%">
 <col width="3%">
 <col width="16%">
 <col width="5%">
-<col width="4%">
 <col width="3%">
 <col width="3%">
-<col width="23%">
-<col width="30%">
+<col width="3%">
+<col width="21%">
+<col width="33%">
 <col width="2%">
 <col width="5%">
 </colgroup>
@@ -489,197 +465,847 @@
 <tbody>
 <tr class="odd">
 <td align="left">1</td>
-<td align="left">hsa03040</td>
-<td align="left">Spliceosome</td>
-<td align="right">3.097503</td>
+<td align="left">hsa04714</td>
+<td align="left">Thermogenesis</td>
+<td align="right">2.5030105</td>
 <td align="right">10</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="left">SF3B6, LSM3, BUD31</td>
-<td align="left">SNRPB, SF3B2, U2AF2, PUF60, DDX23, EIF4A3, HNRNPA1, PCBP1, SRSF8, SRSF5</td>
+<td align="right">0.0000001</td>
+<td align="right">0.0000001</td>
+<td align="left">NDUFA1, NDUFB3, UQCRQ, COX6A1, COX7A2, COX7C</td>
+<td align="left">ADCY7, CREB1, KDM1A, SMARCA4, ACTG1, ACTB, ARID1A, MTOR</td>
 <td align="right">1</td>
 <td align="left">Representative</td>
 </tr>
 <tr class="even">
 <td align="left">2</td>
+<td align="left">hsa04130</td>
+<td align="left">SNARE interactions in vesicular transport</td>
+<td align="right">4.5292572</td>
+<td align="right">10</td>
+<td align="right">0.0000001</td>
+<td align="right">0.0000001</td>
+<td align="left">STX6</td>
+<td align="left">STX2, BET1L, SNAP23</td>
+<td align="right">2</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="odd">
+<td align="left">3</td>
 <td align="left">hsa00190</td>
 <td align="left">Oxidative phosphorylation</td>
-<td align="right">2.523970</td>
+<td align="right">2.9760827</td>
 <td align="right">10</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
+<td align="right">0.0000001</td>
+<td align="right">0.0000001</td>
 <td align="left">NDUFA1, NDUFB3, UQCRQ, COX6A1, COX7A2, COX7C, ATP6V1D, ATP6V0E1</td>
 <td align="left">ATP6V0E2</td>
-<td align="right">2</td>
+<td align="right">3</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="even">
+<td align="left">4</td>
+<td align="left">hsa04064</td>
+<td align="left">NF-kappa B signaling pathway</td>
+<td align="right">2.9306958</td>
+<td align="right">10</td>
+<td align="right">0.0000001</td>
+<td align="right">0.0000001</td>
+<td align="left">LY96</td>
+<td align="left">PRKCQ, CARD11, TICAM1, IKBKB, PARP1, UBE2I, CSNK2A2</td>
+<td align="right">4</td>
 <td align="left">Representative</td>
 </tr>
 <tr class="odd">
 <td align="left">5</td>
 <td align="left">hsa03410</td>
 <td align="left">Base excision repair</td>
-<td align="right">4.801491</td>
-<td align="right">4</td>
-<td align="right">0.0000002</td>
-<td align="right">0.0000002</td>
+<td align="right">5.6615715</td>
+<td align="right">1</td>
+<td align="right">0.0000001</td>
+<td align="right">0.0000001</td>
 <td align="left">POLE4</td>
 <td align="left">MUTYH, APEX2, POLD2, PARP1</td>
-<td align="right">3</td>
-<td align="left">Representative</td>
-</tr>
-<tr class="even">
-<td align="left">7</td>
-<td align="left">hsa04064</td>
-<td align="left">NF-kappa B signaling pathway</td>
-<td align="right">2.535187</td>
-<td align="right">10</td>
-<td align="right">0.0000003</td>
-<td align="right">0.0000003</td>
-<td align="left">LY96</td>
-<td align="left">PRKCQ, CARD11, TICAM1, IKBKB, UBE2I, CSNK2A2, PARP1</td>
-<td align="right">4</td>
-<td align="left">Representative</td>
-</tr>
-<tr class="odd">
-<td align="left">11</td>
-<td align="left">hsa03010</td>
-<td align="left">Ribosome</td>
-<td align="right">1.459401</td>
-<td align="right">10</td>
-<td align="right">0.0000053</td>
-<td align="right">0.0000053</td>
-<td align="left">MRPS18C, RPS24, MRPL33, RPL26, RPL31, RPL39</td>
-<td align="left">RPLP2</td>
 <td align="right">5</td>
 <td align="left">Representative</td>
 </tr>
 <tr class="even">
-<td align="left">13</td>
-<td align="left">hsa03013</td>
-<td align="left">RNA transport</td>
-<td align="right">2.406823</td>
+<td align="left">6</td>
+<td align="left">hsa03040</td>
+<td align="left">Spliceosome</td>
+<td align="right">3.6077876</td>
 <td align="right">10</td>
-<td align="right">0.0000065</td>
-<td align="right">0.0000877</td>
-<td align="left">NUP214</td>
-<td align="left">NUP62, NUP93, RANGAP1, UBE2I, SUMO3, GEMIN4, EIF2S3, EIF2B1, EIF4A3, RNPS1, SRRM1</td>
+<td align="right">0.0000001</td>
+<td align="right">0.0000174</td>
+<td align="left">SF3B6, LSM3, BUD31</td>
+<td align="left">SNRPB, SF3B2, U2AF2, PUF60, SNU13, DDX23, EIF4A3, HNRNPA1, PCBP1, SRSF8, SRSF5</td>
 <td align="right">6</td>
 <td align="left">Representative</td>
 </tr>
 <tr class="odd">
-<td align="left">14</td>
-<td align="left">hsa05418</td>
-<td align="left">Fluid shear stress and atherosclerosis</td>
-<td align="right">2.296365</td>
+<td align="left">7</td>
+<td align="left">hsa05012</td>
+<td align="left">Parkinson disease</td>
+<td align="right">2.4475789</td>
 <td align="right">10</td>
-<td align="right">0.0000072</td>
-<td align="right">0.0000072</td>
-<td align="left">GSTO1, TXN, MMP9</td>
-<td align="left">CALM3, CALM1, KLF2, ACTB, ACTG1, IKBKB, SUMO3</td>
+<td align="right">0.0000001</td>
+<td align="right">0.0000001</td>
+<td align="left">DDIT3, NDUFA1, NDUFB3, UQCRQ, COX6A1, COX7A2, COX7C, TXN</td>
+<td align="left">UBE2G1, PSMD7, CALM3, CALM1, VDAC1, SLC25A5, TUBB</td>
 <td align="right">7</td>
 <td align="left">Representative</td>
 </tr>
 <tr class="even">
-<td align="left">15</td>
-<td align="left">hsa04921</td>
-<td align="left">Oxytocin signaling pathway</td>
-<td align="right">2.200683</td>
+<td align="left">11</td>
+<td align="left">hsa03013</td>
+<td align="left">RNA transport</td>
+<td align="right">2.5769912</td>
 <td align="right">10</td>
-<td align="right">0.0000094</td>
-<td align="right">0.0000094</td>
-<td align="left">MYL6B, MYL6</td>
-<td align="left">EEF2K, EEF2, CALM3, CALM1, NFATC3, ACTB, ACTG1, ADCY7</td>
+<td align="right">0.0000021</td>
+<td align="right">0.0000708</td>
+<td align="left">NUP214</td>
+<td align="left">NUP62, NUP93, RANGAP1, UBE2I, SUMO3, GEMIN4, EIF2S3, EIF2B1, EIF4A3, RNPS1, SRRM1</td>
 <td align="right">8</td>
 <td align="left">Representative</td>
 </tr>
 <tr class="odd">
-<td align="left">20</td>
-<td align="left">hsa04130</td>
-<td align="left">SNARE interactions in vesicular transport</td>
-<td align="right">4.660271</td>
-<td align="right">2</td>
-<td align="right">0.0000498</td>
-<td align="right">0.0000498</td>
-<td align="left">STX6, STX10</td>
-<td align="left">STX2, BET1L, SNAP23</td>
+<td align="left">12</td>
+<td align="left">hsa04659</td>
+<td align="left">Th17 cell differentiation</td>
+<td align="right">3.1726165</td>
+<td align="right">10</td>
+<td align="right">0.0000026</td>
+<td align="right">0.0000026</td>
+<td align="left"></td>
+<td align="left">MTOR, JAK1, HLA-DPA1, NFATC3, PRKCQ, IKBKB, GATA3, IL27RA, IL2RB</td>
 <td align="right">9</td>
 <td align="left">Representative</td>
 </tr>
 <tr class="even">
-<td align="left">21</td>
-<td align="left">hsa05230</td>
-<td align="left">Central carbon metabolism in cancer</td>
-<td align="right">1.864108</td>
+<td align="left">13</td>
+<td align="left">hsa04722</td>
+<td align="left">Neurotrophin signaling pathway</td>
+<td align="right">2.8499775</td>
 <td align="right">10</td>
-<td align="right">0.0000586</td>
-<td align="right">0.0000586</td>
-<td align="left">HK3</td>
-<td align="left">PDHA1, PDHB, MTOR</td>
+<td align="right">0.0000044</td>
+<td align="right">0.0000066</td>
+<td align="left"></td>
+<td align="left">SH2B3, CRKL, FASLG, CALM3, CALM1, ABL1, MAGED1, IRAK2, IKBKB</td>
 <td align="right">10</td>
 <td align="left">Representative</td>
 </tr>
 <tr class="odd">
-<td align="left">24</td>
-<td align="left">hsa05202</td>
-<td align="left">Transcriptional misregulation in cancer</td>
-<td align="right">1.909026</td>
+<td align="left">14</td>
+<td align="left">hsa03430</td>
+<td align="left">Mismatch repair</td>
+<td align="right">4.8738746</td>
 <td align="right">10</td>
-<td align="right">0.0000827</td>
-<td align="right">0.0062386</td>
-<td align="left">MMP9, DDIT3</td>
-<td align="left">HDAC1, SIN3A, BCL11B, SLC45A3, EWSR1, IL2RB, TAF15, ASPSCR1</td>
+<td align="right">0.0000048</td>
+<td align="right">0.0361642</td>
+<td align="left"></td>
+<td align="left">MLH1, RPA1, POLD2</td>
 <td align="right">11</td>
 <td align="left">Representative</td>
 </tr>
 <tr class="even">
-<td align="left">27</td>
-<td align="left">hsa05203</td>
-<td align="left">Viral carcinogenesis</td>
-<td align="right">1.545846</td>
+<td align="left">15</td>
+<td align="left">hsa05167</td>
+<td align="left">Kaposi sarcoma-associated herpesvirus infection</td>
+<td align="right">1.9666511</td>
 <td align="right">10</td>
-<td align="right">0.0001095</td>
-<td align="right">0.0001095</td>
-<td align="left">GTF2B</td>
-<td align="left">CREB1, JAK1, SCRIB, RBL2, HDAC1, DNAJA3, SRF</td>
+<td align="right">0.0000099</td>
+<td align="right">0.0000099</td>
+<td align="left"></td>
+<td align="left">TICAM1, JAK1, ZFP36, IKBKB, GNB1, MTOR, CALM3, CALM1, NFATC3, CREB1</td>
 <td align="right">12</td>
 <td align="left">Representative</td>
 </tr>
 <tr class="odd">
-<td align="left">40</td>
-<td align="left">hsa03050</td>
-<td align="left">Proteasome</td>
-<td align="right">1.473946</td>
+<td align="left">16</td>
+<td align="left">hsa04630</td>
+<td align="left">JAK-STAT signaling pathway</td>
+<td align="right">1.4280142</td>
 <td align="right">10</td>
-<td align="right">0.0011416</td>
-<td align="right">0.0011416</td>
+<td align="right">0.0000185</td>
+<td align="right">0.0000185</td>
 <td align="left"></td>
-<td align="left">PSMD7, PSMB10</td>
+<td align="left">IL2RB, IL10RA, IL27RA, JAK1, PIAS3, MTOR</td>
 <td align="right">13</td>
 <td align="left">Representative</td>
 </tr>
 <tr class="even">
-<td align="left">82</td>
-<td align="left">hsa00330</td>
-<td align="left">Arginine and proline metabolism</td>
-<td align="right">4.045511</td>
-<td align="right">4</td>
-<td align="right">0.0250696</td>
-<td align="right">0.0250696</td>
-<td align="left">ARG1</td>
-<td align="left">CKB, ALDH9A1, CNDP2, PYCR2, GOT1</td>
+<td align="left">17</td>
+<td align="left">hsa04931</td>
+<td align="left">Insulin resistance</td>
+<td align="right">1.3968737</td>
+<td align="right">10</td>
+<td align="right">0.0000229</td>
+<td align="right">0.0000229</td>
+<td align="left"></td>
+<td align="left">MTOR, IKBKB, PRKCQ, CREB1</td>
 <td align="right">14</td>
 <td align="left">Representative</td>
 </tr>
 <tr class="odd">
+<td align="left">19</td>
+<td align="left">hsa05230</td>
+<td align="left">Central carbon metabolism in cancer</td>
+<td align="right">2.1661665</td>
+<td align="right">10</td>
+<td align="right">0.0000312</td>
+<td align="right">0.0150590</td>
+<td align="left">HK3</td>
+<td align="left">PDHA1, PDHB, MTOR</td>
+<td align="right">15</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="even">
+<td align="left">20</td>
+<td align="left">hsa04210</td>
+<td align="left">Apoptosis</td>
+<td align="right">1.9375156</td>
+<td align="right">10</td>
+<td align="right">0.0000436</td>
+<td align="right">0.0000436</td>
+<td align="left">DDIT3</td>
+<td align="left">FASLG, ACTG1, ACTB, PARP1, DFFB, IKBKB</td>
+<td align="right">16</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="odd">
+<td align="left">21</td>
+<td align="left">hsa05203</td>
+<td align="left">Viral carcinogenesis</td>
+<td align="right">1.8227498</td>
+<td align="right">10</td>
+<td align="right">0.0000467</td>
+<td align="right">0.0000467</td>
+<td align="left">GTF2B</td>
+<td align="left">CREB1, JAK1, SCRIB, RBL2, HDAC1, DNAJA3, SRF</td>
+<td align="right">17</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="even">
+<td align="left">22</td>
+<td align="left">hsa05130</td>
+<td align="left">Pathogenic Escherichia coli infection</td>
+<td align="right">2.3724680</td>
+<td align="right">10</td>
+<td align="right">0.0000722</td>
+<td align="right">0.0001086</td>
+<td align="left">TLR5, GAPDH, CLDN9</td>
+<td align="left">ARF1, ACTG1, ACTB, SLC9A3R1, TUBB, ABL1, ITGB1, IKBKB, FASLG</td>
+<td align="right">18</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="odd">
+<td align="left">23</td>
+<td align="left">hsa03010</td>
+<td align="left">Ribosome</td>
+<td align="right">1.7208197</td>
+<td align="right">10</td>
+<td align="right">0.0000787</td>
+<td align="right">0.0007479</td>
+<td align="left">MRPS18C, RPS24, MRPL33, RPL26, RPL31, RPL39</td>
+<td align="left">RPLP2</td>
+<td align="right">19</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="even">
+<td align="left">24</td>
+<td align="left">hsa05131</td>
+<td align="left">Shigellosis</td>
+<td align="right">2.8334689</td>
+<td align="right">10</td>
+<td align="right">0.0001162</td>
+<td align="right">0.0003993</td>
+<td align="left">HK3, TLR5, CBX3, RRAGD</td>
+<td align="left">ITGB1, CRKL, ACTG1, ACTB, PFN1, ARF1, VDAC1, IKBKB, PRKCQ, PIK3R4, MTOR, FNBP1</td>
+<td align="right">20</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="odd">
+<td align="left">28</td>
+<td align="left">hsa05132</td>
+<td align="left">Salmonella infection</td>
+<td align="right">2.4792853</td>
+<td align="right">10</td>
+<td align="right">0.0002072</td>
+<td align="right">0.0008457</td>
+<td align="left">DYNLT1, STX10, TLR6, LY96, TLR5, GAPDH, TXN</td>
+<td align="left">DYNC1H1, RAB9A, PFN1, ACTG1, ACTB, ARF1, IKBKB</td>
+<td align="right">21</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="even">
+<td align="left">29</td>
+<td align="left">hsa04110</td>
+<td align="left">Cell cycle</td>
+<td align="right">1.5067085</td>
+<td align="right">10</td>
+<td align="right">0.0002381</td>
+<td align="right">0.0003318</td>
+<td align="left"></td>
+<td align="left">RBL2, ABL1, HDAC1, CDKN1C, ANAPC1</td>
+<td align="right">22</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="odd">
+<td align="left">30</td>
+<td align="left">hsa05166</td>
+<td align="left">Human T-cell leukemia virus 1 infection</td>
+<td align="right">2.3887178</td>
+<td align="right">10</td>
+<td align="right">0.0002695</td>
+<td align="right">0.0094105</td>
+<td align="left"></td>
+<td align="left">TRRAP, NFATC3, IL2RB, JAK1, VDAC1, SLC25A5, ANAPC1, IKBKB, ZFP36, ADCY7, HLA-DPA1, SRF, ETS1, CREB1</td>
+<td align="right">23</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="even">
+<td align="left">31</td>
+<td align="left">hsa04140</td>
+<td align="left">Autophagy</td>
+<td align="right">1.6607276</td>
+<td align="right">1</td>
+<td align="right">0.0004660</td>
+<td align="right">0.0004660</td>
+<td align="left">IGBP1, RRAGD</td>
+<td align="left">MTOR, PIK3R4, UVRAG, PRKCQ</td>
+<td align="right">24</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="odd">
+<td align="left">32</td>
+<td align="left">hsa04150</td>
+<td align="left">mTOR signaling pathway</td>
+<td align="right">1.7322159</td>
+<td align="right">10</td>
+<td align="right">0.0005233</td>
+<td align="right">0.0007285</td>
+<td align="left">ATP6V1D, RRAGD</td>
+<td align="left">WDR59, MTOR, TELO2, LPIN1, IKBKB</td>
+<td align="right">25</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="even">
+<td align="left">34</td>
+<td align="left">hsa04530</td>
+<td align="left">Tight junction</td>
+<td align="right">2.4107337</td>
+<td align="right">10</td>
+<td align="right">0.0005808</td>
+<td align="right">0.0095933</td>
+<td align="left">CLDN9, MYL6B, MYL6</td>
+<td align="left">ARHGAP17, SCRIB, TJAP1, SLC9A3R1, ACTG1, ACTB, ITGB1</td>
+<td align="right">26</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="odd">
+<td align="left">35</td>
+<td align="left">hsa04660</td>
+<td align="left">T cell receptor signaling pathway</td>
+<td align="right">1.8498204</td>
+<td align="right">10</td>
+<td align="right">0.0006897</td>
+<td align="right">0.0006897</td>
+<td align="left"></td>
+<td align="left">LCP2, NFATC3, PRKCQ, CARD11, IKBKB</td>
+<td align="right">27</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="even">
+<td align="left">36</td>
+<td align="left">hsa00020</td>
+<td align="left">Citrate cycle (TCA cycle)</td>
+<td align="right">3.7366372</td>
+<td align="right">10</td>
+<td align="right">0.0007560</td>
+<td align="right">0.0011981</td>
+<td align="left"></td>
+<td align="left">MDH2, PDHA1, PDHB</td>
+<td align="right">28</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="odd">
+<td align="left">37</td>
+<td align="left">hsa03050</td>
+<td align="left">Proteasome</td>
+<td align="right">1.6607276</td>
+<td align="right">10</td>
+<td align="right">0.0007802</td>
+<td align="right">0.0015209</td>
+<td align="left"></td>
+<td align="left">PSMD7, PSMB10</td>
+<td align="right">29</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="even">
+<td align="left">38</td>
+<td align="left">hsa05215</td>
+<td align="left">Prostate cancer</td>
+<td align="right">1.5408813</td>
+<td align="right">10</td>
+<td align="right">0.0008795</td>
+<td align="right">0.0008795</td>
+<td align="left">MMP9</td>
+<td align="left">CREB1, IKBKB, MTOR</td>
+<td align="right">30</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="odd">
+<td align="left">39</td>
+<td align="left">hsa05135</td>
+<td align="left">Yersinia infection</td>
+<td align="right">2.3353982</td>
+<td align="right">10</td>
+<td align="right">0.0008831</td>
+<td align="right">0.0031944</td>
+<td align="left"></td>
+<td align="left">ITGB1, CRKL, ACTG1, ACTB, IKBKB, TICAM1, LCP2, NFATC3</td>
+<td align="right">31</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="even">
+<td align="left">40</td>
+<td align="left">hsa04922</td>
+<td align="left">Glucagon signaling pathway</td>
+<td align="right">1.8316849</td>
+<td align="right">10</td>
+<td align="right">0.0010751</td>
+<td align="right">0.0010751</td>
+<td align="left"></td>
+<td align="left">CREB1, CALM3, CALM1, PDHA1, PDHB</td>
+<td align="right">32</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="odd">
+<td align="left">41</td>
+<td align="left">hsa05164</td>
+<td align="left">Influenza A</td>
+<td align="right">1.9899251</td>
+<td align="right">10</td>
+<td align="right">0.0011487</td>
+<td align="right">0.0016024</td>
+<td align="left"></td>
+<td align="left">IKBKB, TICAM1, JAK1, HLA-DPA1, FASLG, VDAC1, SLC25A5, ACTG1, ACTB</td>
+<td align="right">33</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="even">
+<td align="left">43</td>
+<td align="left">hsa03420</td>
+<td align="left">Nucleotide excision repair</td>
+<td align="right">4.0615621</td>
+<td align="right">10</td>
+<td align="right">0.0013233</td>
+<td align="right">0.0013233</td>
+<td align="left">GTF2H5, POLE4</td>
+<td align="left">XPC, RPA1, POLD2</td>
+<td align="right">34</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="odd">
+<td align="left">44</td>
+<td align="left">hsa05418</td>
+<td align="left">Fluid shear stress and atherosclerosis</td>
+<td align="right">2.7077081</td>
+<td align="right">10</td>
+<td align="right">0.0015240</td>
+<td align="right">0.0015240</td>
+<td align="left">GSTO1, TXN, MMP9</td>
+<td align="left">CALM3, CALM1, KLF2, ACTG1, ACTB, IKBKB, SUMO3</td>
+<td align="right">35</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="even">
+<td align="left">46</td>
+<td align="left">hsa05416</td>
+<td align="left">Viral myocarditis</td>
+<td align="right">2.4910914</td>
+<td align="right">10</td>
+<td align="right">0.0018715</td>
+<td align="right">0.0312328</td>
+<td align="left"></td>
+<td align="left">ABL1, ACTG1, ACTB, HLA-DPA1</td>
+<td align="right">36</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="odd">
+<td align="left">47</td>
+<td align="left">hsa04921</td>
+<td align="left">Oxytocin signaling pathway</td>
+<td align="right">2.5419300</td>
+<td align="right">10</td>
+<td align="right">0.0019582</td>
+<td align="right">0.0019582</td>
+<td align="left">MYL6B, MYL6</td>
+<td align="left">EEF2K, EEF2, CALM3, CALM1, NFATC3, ACTG1, ACTB, ADCY7</td>
+<td align="right">37</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="even">
+<td align="left">48</td>
+<td align="left">hsa04621</td>
+<td align="left">NOD-like receptor signaling pathway</td>
+<td align="right">1.3188131</td>
+<td align="right">10</td>
+<td align="right">0.0020956</td>
+<td align="right">0.0097568</td>
+<td align="left">CAMP, TXN</td>
+<td align="left">IKBKB, VDAC1, JAK1, TICAM1</td>
+<td align="right">38</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="odd">
+<td align="left">49</td>
+<td align="left">hsa04145</td>
+<td align="left">Phagosome</td>
+<td align="right">2.7220536</td>
+<td align="right">10</td>
+<td align="right">0.0021779</td>
+<td align="right">0.0182450</td>
+<td align="left">ATP6V1D, ATP6V0E1, TLR6, NCF4</td>
+<td align="left">ACTG1, ACTB, HLA-DPA1, ATP6V0E2, DYNC1H1, TUBB, ITGB1</td>
+<td align="right">39</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="even">
+<td align="left">51</td>
+<td align="left">hsa04919</td>
+<td align="left">Thyroid hormone signaling pathway</td>
+<td align="right">2.1980219</td>
+<td align="right">10</td>
+<td align="right">0.0028594</td>
+<td align="right">0.0028594</td>
+<td align="left"></td>
+<td align="left">SIN3A, HDAC1, MED24, ATP2A2, MTOR, ACTG1, ACTB</td>
+<td align="right">40</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="odd">
+<td align="left">55</td>
+<td align="left">hsa04371</td>
+<td align="left">Apelin signaling pathway</td>
+<td align="right">1.9519746</td>
+<td align="right">10</td>
+<td align="right">0.0031782</td>
+<td align="right">0.0031782</td>
+<td align="left"></td>
+<td align="left">ADCY7, GNB1, CALM3, CALM1, MTOR, PIK3R4, KLF2</td>
+<td align="right">41</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="even">
+<td align="left">58</td>
+<td align="left">hsa05202</td>
+<td align="left">Transcriptional misregulation in cancer</td>
+<td align="right">2.1851679</td>
+<td align="right">10</td>
+<td align="right">0.0035608</td>
+<td align="right">0.0433105</td>
+<td align="left">MMP9, DDIT3</td>
+<td align="left">HDAC1, SIN3A, BCL11B, SLC45A3, EWSR1, IL2RB, TAF15, ASPSCR1</td>
+<td align="right">42</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="odd">
+<td align="left">60</td>
+<td align="left">hsa05225</td>
+<td align="left">Hepatocellular carcinoma</td>
+<td align="right">1.5662551</td>
+<td align="right">10</td>
+<td align="right">0.0040828</td>
+<td align="right">0.0040828</td>
+<td align="left">GSTO1</td>
+<td align="left">MTOR, ACTG1, ACTB, ARID1A, SMARCA4, BRD7</td>
+<td align="right">43</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="even">
+<td align="left">61</td>
+<td align="left">hsa03022</td>
+<td align="left">Basal transcription factors</td>
+<td align="right">4.1518191</td>
+<td align="right">1</td>
+<td align="right">0.0041451</td>
+<td align="right">0.0041451</td>
+<td align="left">GTF2B, GTF2H5</td>
+<td align="left">TAF1L, TAF4, TAF15</td>
+<td align="right">44</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="odd">
+<td align="left">63</td>
+<td align="left">hsa05017</td>
+<td align="left">Spinocerebellar ataxia</td>
+<td align="right">1.8817597</td>
+<td align="right">7</td>
+<td align="right">0.0050547</td>
+<td align="right">0.0496908</td>
+<td align="left">GTF2B</td>
+<td align="left">VDAC1, SLC25A5, PSMD7, ATP2A2, MTOR, PIK3R4</td>
+<td align="right">45</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="even">
+<td align="left">66</td>
+<td align="left">hsa05169</td>
+<td align="left">Epstein-Barr virus infection</td>
+<td align="right">1.3013164</td>
+<td align="right">10</td>
+<td align="right">0.0067253</td>
+<td align="right">0.0067253</td>
+<td align="left"></td>
+<td align="left">HLA-DPA1, IKBKB, JAK1, PSMD7, SIN3A, HDAC1, RUNX3</td>
+<td align="right">46</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="odd">
+<td align="left">68</td>
+<td align="left">hsa03015</td>
+<td align="left">mRNA surveillance pathway</td>
+<td align="right">2.4369373</td>
+<td align="right">10</td>
+<td align="right">0.0067903</td>
+<td align="right">0.0086149</td>
+<td align="left">PPP2R3C</td>
+<td align="left">EIF4A3, RNPS1, SRRM1, WDR33, DAZAP1</td>
+<td align="right">47</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="even">
+<td align="left">71</td>
+<td align="left">hsa05133</td>
+<td align="left">Pertussis</td>
+<td align="right">3.4416395</td>
+<td align="right">10</td>
+<td align="right">0.0074274</td>
+<td align="right">0.0107669</td>
+<td align="left">LY96</td>
+<td align="left">ITGB1, CALM3, CALM1, CFL1, TICAM1, IRF1</td>
+<td align="right">48</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="odd">
+<td align="left">75</td>
+<td align="left">hsa05220</td>
+<td align="left">Chronic myeloid leukemia</td>
+<td align="right">1.9666511</td>
+<td align="right">10</td>
+<td align="right">0.0089957</td>
+<td align="right">0.0089957</td>
+<td align="left"></td>
+<td align="left">ABL1, CRKL, IKBKB, HDAC1</td>
+<td align="right">49</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="even">
+<td align="left">76</td>
+<td align="left">hsa04120</td>
+<td align="left">Ubiquitin mediated proteolysis</td>
+<td align="right">1.6364834</td>
+<td align="right">10</td>
+<td align="right">0.0095822</td>
+<td align="right">0.0223077</td>
+<td align="left">TRIP12</td>
+<td align="left">UBE2G1, UBE2I, HERC1, PIAS3, ANAPC1</td>
+<td align="right">50</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="odd">
+<td align="left">81</td>
+<td align="left">hsa04657</td>
+<td align="left">IL-17 signaling pathway</td>
+<td align="right">1.6607276</td>
+<td align="right">10</td>
+<td align="right">0.0149285</td>
+<td align="right">0.0178590</td>
+<td align="left">S100A8, S100A9, MMP9</td>
+<td align="left">IKBKB</td>
+<td align="right">51</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="even">
+<td align="left">83</td>
+<td align="left">hsa05142</td>
+<td align="left">Chagas disease</td>
+<td align="right">1.4653479</td>
+<td align="right">1</td>
+<td align="right">0.0179240</td>
+<td align="right">0.0179240</td>
+<td align="left">TLR6</td>
+<td align="left">TICAM1, IKBKB, FASLG</td>
+<td align="right">52</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="odd">
 <td align="left">85</td>
+<td align="left">hsa04068</td>
+<td align="left">FoxO signaling pathway</td>
+<td align="right">1.4483090</td>
+<td align="right">10</td>
+<td align="right">0.0186510</td>
+<td align="right">0.0435586</td>
+<td align="left"></td>
+<td align="left">IKBKB, RBL2, FASLG, KLF2, S1PR1</td>
+<td align="right">53</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="even">
+<td align="left">87</td>
+<td align="left">hsa05160</td>
+<td align="left">Hepatitis C</td>
+<td align="right">1.4558327</td>
+<td align="right">10</td>
+<td align="right">0.0196959</td>
+<td align="right">0.0255529</td>
+<td align="left">CLDN9</td>
+<td align="left">CD81, TICAM1, IKBKB, JAK1, FASLG</td>
+<td align="right">54</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="odd">
+<td align="left">88</td>
+<td align="left">hsa04625</td>
+<td align="left">C-type lectin receptor signaling pathway</td>
+<td align="right">2.2197845</td>
+<td align="right">10</td>
+<td align="right">0.0210611</td>
+<td align="right">0.0251855</td>
+<td align="left">CLEC4D</td>
+<td align="left">CALM3, CALM1, NFATC3, IKBKB, IRF1</td>
+<td align="right">55</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="even">
+<td align="left">90</td>
+<td align="left">hsa04211</td>
+<td align="left">Longevity regulating pathway</td>
+<td align="right">1.2595406</td>
+<td align="right">10</td>
+<td align="right">0.0322028</td>
+<td align="right">0.0322028</td>
+<td align="left"></td>
+<td align="left">ADCY7, CREB1, MTOR</td>
+<td align="right">56</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="odd">
+<td align="left">92</td>
+<td align="left">hsa04390</td>
+<td align="left">Hippo signaling pathway</td>
+<td align="right">0.9898377</td>
+<td align="right">5</td>
+<td align="right">0.0339038</td>
+<td align="right">0.0339038</td>
+<td align="left"></td>
+<td align="left">SCRIB, SMAD7, ACTG1, ACTB</td>
+<td align="right">57</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="even">
+<td align="left">93</td>
+<td align="left">hsa05162</td>
+<td align="left">Measles</td>
+<td align="right">1.6246249</td>
+<td align="right">10</td>
+<td align="right">0.0359192</td>
+<td align="right">0.0359192</td>
+<td align="left"></td>
+<td align="left">IKBKB, CSNK2A2, JAK1, RAB9A, FASLG, IL2RB</td>
+<td align="right">58</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="odd">
+<td align="left">94</td>
 <td align="left">hsa04141</td>
 <td align="left">Protein processing in endoplasmic reticulum</td>
-<td align="right">1.211077</td>
-<td align="right">1</td>
-<td align="right">0.0270073</td>
-<td align="right">0.0270073</td>
+<td align="right">1.3925356</td>
+<td align="right">10</td>
+<td align="right">0.0360158</td>
+<td align="right">0.0485527</td>
 <td align="left">CKAP4, DDIT3</td>
 <td align="left">DDOST, EDEM1, PDIA4, UBE2G1</td>
-<td align="right">15</td>
+<td align="right">59</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="even">
+<td align="left">96</td>
+<td align="left">hsa04380</td>
+<td align="left">Osteoclast differentiation</td>
+<td align="right">1.5189582</td>
+<td align="right">10</td>
+<td align="right">0.0378284</td>
+<td align="right">0.0452012</td>
+<td align="left">NCF4</td>
+<td align="left">IKBKB, LCP2, CREB1, JAK1</td>
+<td align="right">60</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="odd">
+<td align="left">99</td>
+<td align="left">hsa04650</td>
+<td align="left">Natural killer cell mediated cytotoxicity</td>
+<td align="right">0.5931170</td>
+<td align="right">9</td>
+<td align="right">0.0406276</td>
+<td align="right">0.0406276</td>
+<td align="left"></td>
+<td align="left">LCP2, FASLG</td>
+<td align="right">61</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="even">
+<td align="left">100</td>
+<td align="left">hsa04218</td>
+<td align="left">Cellular senescence</td>
+<td align="right">1.9285869</td>
+<td align="right">6</td>
+<td align="right">0.0407392</td>
+<td align="right">0.0472612</td>
+<td align="left"></td>
+<td align="left">RBL2, MTOR, ETS1, CALM3, CALM1, NFATC3, SLC25A5, VDAC1</td>
+<td align="right">62</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="odd">
+<td align="left">101</td>
+<td align="left">hsa04350</td>
+<td align="left">TGF-beta signaling pathway</td>
+<td align="right">0.8396937</td>
+<td align="right">10</td>
+<td align="right">0.0420663</td>
+<td align="right">0.0420663</td>
+<td align="left"></td>
+<td align="left">SMAD7, TGIF2</td>
+<td align="right">63</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="even">
+<td align="left">102</td>
+<td align="left">hsa05210</td>
+<td align="left">Colorectal cancer</td>
+<td align="right">1.3034781</td>
+<td align="right">3</td>
+<td align="right">0.0430477</td>
+<td align="right">0.0430477</td>
+<td align="left"></td>
+<td align="left">RALGDS, MLH1, MTOR</td>
+<td align="right">64</td>
+<td align="left">Representative</td>
+</tr>
+<tr class="odd">
+<td align="left">104</td>
+<td align="left">hsa00670</td>
+<td align="left">One carbon pool by folate</td>
+<td align="right">4.1518191</td>
+<td align="right">1</td>
+<td align="right">0.0480427</td>
+<td align="right">0.0480427</td>
+<td align="left"></td>
+<td align="left">SHMT1, ATIC</td>
+<td align="right">65</td>
 <td align="left">Representative</td>
 </tr>
 </tbody>
@@ -687,9 +1313,8 @@
 <p>After clustering, you may again plot the summary enrichment chart and display the enriched terms by clusters:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit">
 <span class="co"># plotting only selected clusters for better visualization</span>
-<span class="kw">RA_selected</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span>(<span class="kw">RA_clustered</span>, <span class="kw">Cluster</span> <span class="op">%in%</span> <span class="fl">5</span><span class="op">:</span><span class="fl">7</span>)
-<span class="fu"><a href="../reference/enrichment_chart.html">enrichment_chart</a></span>(<span class="kw">RA_selected</span>, plot_by_cluster = <span class="fl">TRUE</span>)
-</pre></div>
+<span class="va">RA_selected</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">RA_clustered</span>, <span class="va">Cluster</span> <span class="op">%in%</span> <span class="fl">5</span><span class="op">:</span><span class="fl">7</span><span class="op">)</span>
+<span class="fu"><a href="../reference/enrichment_chart.html">enrichment_chart</a></span><span class="op">(</span><span class="va">RA_selected</span>, plot_by_cluster <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></pre></div>
 <p><img src="intro_vignette_files/figure-html/hierarchical2-1.png" width="672" style="display: block; margin: auto;"></p>
 <p>For details, see <code><a href="../reference/hierarchical_term_clustering.html">?hierarchical_term_clustering</a></code></p>
 </div>
@@ -698,8 +1323,7 @@
 <a href="#heuristic-fuzzy-multiple-linkage-partitioning" class="anchor"></a>Heuristic Fuzzy Multiple-linkage Partitioning</h2>
 <p>Alternatively, the <code>fuzzy</code> clustering method (as described by Huang et al.<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a>) can be used:</p>
 <div class="sourceCode" id="cb20"><pre class="downlit">
-<span class="kw">RA_clustered_fuzzy</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cluster_enriched_terms.html">cluster_enriched_terms</a></span>(<span class="kw">RA_output</span>, method = <span class="st">"fuzzy"</span>)
-</pre></div>
+<span class="va">RA_clustered_fuzzy</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cluster_enriched_terms.html">cluster_enriched_terms</a></span><span class="op">(</span><span class="va">RA_output</span>, method <span class="op">=</span> <span class="st">"fuzzy"</span><span class="op">)</span></pre></div>
 <p>For details, see <code><a href="../reference/fuzzy_term_clustering.html">?fuzzy_term_clustering</a></code></p>
 </div>
 </div>
@@ -708,8 +1332,7 @@
 <a href="#term-gene-heatmap" class="anchor"></a>Term-Gene Heatmap</h1>
 <p>The function <code><a href="../reference/term_gene_heatmap.html">term_gene_heatmap()</a></code> can be used to visualize the heatmap of genes that are involved in the enriched terms. This heatmap allows visual identification of the input genes involved in the enriched terms, as well as the common or distinct genes between different terms. If the input data frame (same as in <code><a href="../reference/run_pathfindR.html">run_pathfindR()</a></code>) is supplied, the tile colors indicate the change values.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit">
-<span class="fu"><a href="../reference/term_gene_heatmap.html">term_gene_heatmap</a></span>(result_df = <span class="kw">RA_output</span>, genes_df = <span class="kw">RA_input</span>)
-</pre></div>
+<span class="fu"><a href="../reference/term_gene_heatmap.html">term_gene_heatmap</a></span><span class="op">(</span>result_df <span class="op">=</span> <span class="va">RA_output</span>, genes_df <span class="op">=</span> <span class="va">RA_input</span><span class="op">)</span></pre></div>
 <p><img src="hmap.png" style="max-width:100%;"></p>
 <p>See the vignette <a href="visualization_vignette.html">Visualization of pathfindR Enrichment Results</a> for more details.</p>
 </div>
@@ -718,8 +1341,7 @@
 <a href="#term-gene-graph" class="anchor"></a>Term-Gene Graph</h1>
 <p>The visualization function <code><a href="../reference/term_gene_graph.html">term_gene_graph()</a></code> (adapted from the “Gene-Concept network visualization” by the R package <code>enrichplot</code>) can be utilized to visualize which genes are involved in the enriched terms. The function creates a term-gene graph which shows the connections between genes and biological terms (enriched pathways or gene sets). This allows for the investigation of multiple terms to which significant genes are related. This graph also enables visual determination of the degree of overlap between the enriched terms by identifying shared and/or distinct significant genes.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit">
-<span class="fu"><a href="../reference/term_gene_graph.html">term_gene_graph</a></span>(result_df = <span class="kw">RA_output</span>, use_description = <span class="fl">TRUE</span>)
-</pre></div>
+<span class="fu"><a href="../reference/term_gene_graph.html">term_gene_graph</a></span><span class="op">(</span>result_df <span class="op">=</span> <span class="va">RA_output</span>, use_description <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></pre></div>
 <p><img src="term_gene.png" style="max-width:100%;"></p>
 <p>See the vignette <a href="visualization_vignette.html">Visualization of pathfindR Enrichment Results</a> for more details.</p>
 </div>
@@ -728,8 +1350,7 @@
 <a href="#upset-plot" class="anchor"></a>UpSet Plot</h1>
 <p>UpSet plots are plots of the intersections of sets as a matrix. This function creates a ggplot object of an UpSet plot where the x-axis is the UpSet plot of intersections of enriched terms. By default (i.e., <code>method = "heatmap"</code>), the main plot is a heatmap of genes at the corresponding intersections, colored by up/down regulation (if <code>genes_df</code> is provided, colored by change values). If <code>method = "barplot"</code>, the main plot is bar plots of the number of genes at the corresponding intersections. Finally, if <code>method = "boxplot"</code> and <code>genes_df</code> is provided, then the main plot displays the boxplots of change values of the genes at the corresponding intersections.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit">
-<span class="fu"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span>(result_df = <span class="kw">RA_output</span>, genes_df = <span class="kw">RA_input</span>)
-</pre></div>
+<span class="fu"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span><span class="op">(</span>result_df <span class="op">=</span> <span class="va">RA_output</span>, genes_df <span class="op">=</span> <span class="va">RA_input</span><span class="op">)</span></pre></div>
 <p><img src="upset.png" style="max-width:100%;"></p>
 <p>See the vignette <a href="visualization_vignette.html">Visualization of pathfindR Enrichment Results</a> for more details.</p>
 </div>
@@ -739,25 +1360,24 @@
 <p>The function <code><a href="../reference/score_terms.html">score_terms()</a></code> can be used to calculate the agglomerated z score of each enriched term per sample. This allows the user to individually examine the scores and infer how a term is overall altered (activated or repressed) in a given sample or a group of samples.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit">
 <span class="co">## Vector of "Case" IDs</span>
-<span class="kw">cases</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"GSM389703"</span>, <span class="st">"GSM389704"</span>, <span class="st">"GSM389706"</span>, <span class="st">"GSM389708"</span>, 
+<span class="va">cases</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"GSM389703"</span>, <span class="st">"GSM389704"</span>, <span class="st">"GSM389706"</span>, <span class="st">"GSM389708"</span>, 
            <span class="st">"GSM389711"</span>, <span class="st">"GSM389714"</span>, <span class="st">"GSM389716"</span>, <span class="st">"GSM389717"</span>, 
            <span class="st">"GSM389719"</span>, <span class="st">"GSM389721"</span>, <span class="st">"GSM389722"</span>, <span class="st">"GSM389724"</span>, 
            <span class="st">"GSM389726"</span>, <span class="st">"GSM389727"</span>, <span class="st">"GSM389730"</span>, <span class="st">"GSM389731"</span>, 
-           <span class="st">"GSM389733"</span>, <span class="st">"GSM389735"</span>)
+           <span class="st">"GSM389733"</span>, <span class="st">"GSM389735"</span><span class="op">)</span>
 
 <span class="co">## Calculate scores for representative terms </span>
 <span class="co">## and plot heat map using term descriptions</span>
-<span class="kw">score_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/score_terms.html">score_terms</a></span>(enrichment_table = <span class="kw">RA_clustered</span>[<span class="kw">RA_clustered</span><span class="op">$</span><span class="kw">Status</span> <span class="op">==</span> <span class="st">"Representative"</span>, ],
-                            exp_mat = <span class="kw">RA_exp_mat</span>,
-                            cases = <span class="kw">cases</span>,
-                            use_description = <span class="fl">TRUE</span>, <span class="co"># default FALSE</span>
-                            label_samples = <span class="fl">FALSE</span>, <span class="co"># default = TRUE</span>
-                            case_title = <span class="st">"RA"</span>,  <span class="co"># default = "Case"</span>
-                            control_title = <span class="st">"Healthy"</span>, <span class="co"># default = "Control"</span>
-                            low = <span class="st">"#f7797d"</span>, <span class="co"># default = "green"</span>
-                            mid = <span class="st">"#fffde4"</span>, <span class="co"># default = "black"</span>
-                            high = <span class="st">"#1f4037"</span>) <span class="co"># default = "red"</span>
-</pre></div>
+<span class="va">score_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/score_terms.html">score_terms</a></span><span class="op">(</span>enrichment_table <span class="op">=</span> <span class="va">RA_clustered</span><span class="op">[</span><span class="va">RA_clustered</span><span class="op">$</span><span class="va">Status</span> <span class="op">==</span> <span class="st">"Representative"</span>, <span class="op">]</span>,
+                            exp_mat <span class="op">=</span> <span class="va">RA_exp_mat</span>,
+                            cases <span class="op">=</span> <span class="va">cases</span>,
+                            use_description <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># default FALSE</span>
+                            label_samples <span class="op">=</span> <span class="cn">FALSE</span>, <span class="co"># default = TRUE</span>
+                            case_title <span class="op">=</span> <span class="st">"RA"</span>,  <span class="co"># default = "Case"</span>
+                            control_title <span class="op">=</span> <span class="st">"Healthy"</span>, <span class="co"># default = "Control"</span>
+                            low <span class="op">=</span> <span class="st">"#f7797d"</span>, <span class="co"># default = "green"</span>
+                            mid <span class="op">=</span> <span class="st">"#fffde4"</span>, <span class="co"># default = "black"</span>
+                            high <span class="op">=</span> <span class="st">"#1f4037"</span><span class="op">)</span> <span class="co"># default = "red"</span></pre></div>
 <p><img src="intro_vignette_files/figure-html/scores-1.png" width="768" style="display: block; margin: auto;"></p>
 </div>
 <div id="comparison-of-2-pathfindr-results" class="section level1">
@@ -765,11 +1385,10 @@
 <a href="#comparison-of-2-pathfindr-results" class="anchor"></a>Comparison of 2 pathfindR Results</h1>
 <p>The function <code><a href="../reference/combine_pathfindR_results.html">combine_pathfindR_results()</a></code> allows combination of two pathfindR active-subnetwork-oriented enrichment analysis results for investigating common and distinct terms between the groups. Below is an example for comparing results using two different rheumatoid arthritis-related data sets(<code>RA_output</code> and <code>RA_comparison_output</code>).</p>
 <div class="sourceCode" id="cb25"><pre class="downlit">
-<span class="kw">combined_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/combine_pathfindR_results.html">combine_pathfindR_results</a></span>(result_A = <span class="kw">RA_output</span>, 
-                                         result_B = <span class="kw">RA_comparison_output</span>, 
-                                         plot_common = <span class="fl">FALSE</span>)
-<span class="co">#&gt; You may run `combined_results_graph()` to create visualizations of combined term-gene graphs of selected terms</span>
-</pre></div>
+<span class="va">combined_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/combine_pathfindR_results.html">combine_pathfindR_results</a></span><span class="op">(</span>result_A <span class="op">=</span> <span class="va">RA_output</span>, 
+                                         result_B <span class="op">=</span> <span class="va">RA_comparison_output</span>, 
+                                         plot_common <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="co">#&gt; You may run `combined_results_graph()` to create visualizations of combined term-gene graphs of selected terms</span></pre></div>
 <p>For more details, see the vignette <a href="comparing_results.html">Comparing Two pathfindR Results</a></p>
 </div>
 <div id="analysis-with-custom-gene-sets" class="section level1">
@@ -782,35 +1401,33 @@
 <p>We first load and prepare the gene sets:</p>
 <div class="sourceCode" id="cb26"><pre class="downlit">
 <span class="co">## CREB target genes</span>
-<span class="kw">CREB_target_genes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/normalizePath.html">normalizePath</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata/CREB.txt"</span>, package = <span class="st">"pathfindR"</span>))
-<span class="kw">CREB_target_genes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(<span class="kw">CREB_target_genes</span>)[<span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">2</span>)] <span class="co"># skip the first two lines</span>
+<span class="va">CREB_target_genes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/normalizePath.html">normalizePath</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata/CREB.txt"</span>, package <span class="op">=</span> <span class="st">"pathfindR"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">CREB_target_genes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span><span class="op">(</span><span class="va">CREB_target_genes</span><span class="op">)</span><span class="op">[</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">]</span> <span class="co"># skip the first two lines</span>
 
 <span class="co">## MYC target genes</span>
-<span class="kw">MYC_target_genes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/normalizePath.html">normalizePath</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata/MYC.txt"</span>, package = <span class="st">"pathfindR"</span>))
-<span class="kw">MYC_target_genes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(<span class="kw">MYC_target_genes</span>)[<span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">2</span>)] <span class="co"># skip the first two lines</span>
+<span class="va">MYC_target_genes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/normalizePath.html">normalizePath</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata/MYC.txt"</span>, package <span class="op">=</span> <span class="st">"pathfindR"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">MYC_target_genes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span><span class="op">(</span><span class="va">MYC_target_genes</span><span class="op">)</span><span class="op">[</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">]</span> <span class="co"># skip the first two lines</span>
 
 <span class="co">## Prep for use</span>
-<span class="kw">custom_genes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(TF1 = <span class="kw">CREB_target_genes</span>, TF2 = <span class="kw">MYC_target_genes</span>)
-<span class="kw">custom_descriptions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(TF1 = <span class="st">"CREB target genes"</span>, TF2 = <span class="st">"MYC target genes"</span>)
-</pre></div>
+<span class="va">custom_genes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>TF1 <span class="op">=</span> <span class="va">CREB_target_genes</span>, TF2 <span class="op">=</span> <span class="va">MYC_target_genes</span><span class="op">)</span>
+<span class="va">custom_descriptions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>TF1 <span class="op">=</span> <span class="st">"CREB target genes"</span>, TF2 <span class="op">=</span> <span class="st">"MYC target genes"</span><span class="op">)</span></pre></div>
 <p>We next prepare the example input data frame. Because of the way we choose genes, we expect significant enrichment for MYC targets (40 MYC target genes + 10 CREB target genes). Because this is only an example, we also assign each genes random p-values between 0.001 and 0.05.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">123</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span>
 
 <span class="co">## Select 40 random genes from MYC gene sets and 10 from CREB gene sets</span>
-<span class="kw">selected_genes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="kw">MYC_target_genes</span>, <span class="fl">40</span>)
-<span class="kw">selected_genes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">selected_genes</span>, 
-                    <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="kw">CREB_target_genes</span>, <span class="fl">10</span>))
+<span class="va">selected_genes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="va">MYC_target_genes</span>, <span class="fl">40</span><span class="op">)</span>
+<span class="va">selected_genes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">selected_genes</span>, 
+                    <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="va">CREB_target_genes</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span>
 
 <span class="co">## Assign random p value between 0.001 and 0.05 for each selected gene</span>
-<span class="kw">rand_p_vals</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">0.001</span>, <span class="fl">0.05</span>, length.out = <span class="fl">5</span>),
-                      size = <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="kw">selected_genes</span>),
-                      replace = <span class="fl">TRUE</span>)
+<span class="va">rand_p_vals</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0.001</span>, <span class="fl">0.05</span>, length.out <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>,
+                      size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">selected_genes</span><span class="op">)</span>,
+                      replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
-<span class="kw">input_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(Gene_symbol = <span class="kw">selected_genes</span>,
-                       p_val = <span class="kw">rand_p_vals</span>)
-<span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>(<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw">input_df</span>))
-</pre></div>
+<span class="va">input_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>Gene_symbol <span class="op">=</span> <span class="va">selected_genes</span>,
+                       p_val <span class="op">=</span> <span class="va">rand_p_vals</span><span class="op">)</span>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">input_df</span><span class="op">)</span><span class="op">)</span></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">Gene_symbol</th>
@@ -845,22 +1462,20 @@
 </table>
 <p>Finally, we perform active-subnetwork-oriented enrichment analysis via <code><a href="../reference/run_pathfindR.html">run_pathfindR()</a></code> using the custom genes as the gene sets:</p>
 <div class="sourceCode" id="cb28"><pre class="downlit">
-<span class="kw">custom_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindR.html">run_pathfindR</a></span>(<span class="kw">input_df</span>,
-                               gene_sets = <span class="st">"Custom"</span>,
-                               custom_genes = <span class="kw">custom_genes</span>,
-                               custom_descriptions = <span class="kw">custom_descriptions</span>,
-                               max_gset_size = <span class="fl">Inf</span>, <span class="co"># DO NOT LIMIT GENE SET SIZE</span>
-                               iterations = <span class="fl">1</span>, <span class="co"># for demo, setting number of iterations to 1</span>
-                               output_dir = <span class="st">"misc/v1.4/CREB_MYC"</span>)
+<span class="va">custom_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindR.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>,
+                               gene_sets <span class="op">=</span> <span class="st">"Custom"</span>,
+                               custom_genes <span class="op">=</span> <span class="va">custom_genes</span>,
+                               custom_descriptions <span class="op">=</span> <span class="va">custom_descriptions</span>,
+                               max_gset_size <span class="op">=</span> <span class="cn">Inf</span>, <span class="co"># DO NOT LIMIT GENE SET SIZE</span>
+                               output_dir <span class="op">=</span> <span class="st">"misc/v1.4/CREB_MYC"</span><span class="op">)</span>
 
-<span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>(<span class="kw">custom_result</span>)
-</pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">custom_result</span><span class="op">)</span></pre></div>
 <table class="table">
 <colgroup>
 <col width="1%">
 <col width="4%">
 <col width="4%">
-<col width="3%">
+<col width="2%">
 <col width="2%">
 <col width="2%">
 <col width="77%">
@@ -880,20 +1495,20 @@
 <tr class="odd">
 <td align="left">TF2</td>
 <td align="left">MYC target genes</td>
-<td align="right">15.13311</td>
+<td align="right">17.82888</td>
 <td align="right">1</td>
-<td align="right">0.00e+00</td>
-<td align="right">0.00e+00</td>
-<td align="left">AGRP, ATP6V1C1, C19orf54, CD3EAP, CNPY3, EPB41, FOXD3, FXR1, GLA, HNRNPD, HOXA7, IL1RAPL1, KDM6A, LONP1, LTBR, MDN1, MICU1, NET1, NEUROD6, NMNAT2, NOL6, NUDC, PEPD, PKN1, PSMB3, RPS19, RPS28, RRS1, SLC9A5, SMC3, STC2, TESK2, TNPO2, TOPORS, TPM2, TSSK3, WBP2, ZBTB8OS, ZFYVE26, ZHX2</td>
+<td align="right">0.0000000</td>
+<td align="right">0.0000000</td>
+<td align="left">AGRP, ATP6V1C1, C19orf54, CD3EAP, CGREF1, CNPY3, EPB41, FOXD3, FXR1, GLA, HNRNPD, HOXA7, IL1RAPL1, KDM6A, LONP1, LTBR, MDN1, MICU1, NET1, NEUROD6, NMNAT2, NOL6, NUDC, PEPD, PKN1, PSMB3, RPS19, RPS28, RRS1, SLC9A5, SMC3, STC2, TESK2, TNPO2, TOPORS, TPM2, TSSK3, WBP2, ZBTB8OS, ZFYVE26, ZHX2</td>
 <td align="left"></td>
 </tr>
 <tr class="even">
 <td align="left">TF1</td>
 <td align="left">CREB target genes</td>
-<td align="right">17.34580</td>
+<td align="right">19.94835</td>
 <td align="right">1</td>
-<td align="right">5.02e-05</td>
-<td align="right">5.02e-05</td>
+<td align="right">0.0008582</td>
+<td align="right">0.0008582</td>
 <td align="left">BRAF, DIO2, ELAVL1, EPB41, FAM65A, FOXD3, NEUROD6, NOC4L, NUPL2, PPP1R15A, SYNGR3, TIPRL</td>
 <td align="left"></td>
 </tr>

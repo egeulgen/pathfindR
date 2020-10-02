@@ -48,18 +48,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0.9002</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
@@ -138,18 +132,15 @@
 <a href="#installation" class="anchor"></a>Installation</h1>
 <p>You can install the released version of pathfindR from CRAN via:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"pathfindR"</span>)
-</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"pathfindR"</span><span class="op">)</span></pre></div>
 <p>or via <a href="https://pak.r-lib.org/">pak</a> (this might be preferable given <code>pathfindR</code>’s Bioconductor dependencies):</p>
 <div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"pak"</span>) <span class="co"># if you have not installed "pak"</span>
-<span class="kw">pak</span>::<span class="fu">pkg_install</span>(<span class="st">"pathfindR"</span>)
-</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"pak"</span><span class="op">)</span> <span class="co"># if you have not installed "pak"</span>
+<span class="fu">pak</span><span class="fu">::</span><span class="fu">pkg_install</span><span class="op">(</span><span class="st">"pathfindR"</span><span class="op">)</span></pre></div>
 <p>And the development version from GitHub via <a href="https://pak.r-lib.org/">pak</a>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"pak"</span>) <span class="co"># if you have not installed "pak"</span>
-<span class="kw">pak</span>::<span class="fu">pkg_install</span>(<span class="st">"egeulgen/pathfindR"</span>)
-</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"pak"</span><span class="op">)</span> <span class="co"># if you have not installed "pak"</span>
+<span class="fu">pak</span><span class="fu">::</span><span class="fu">pkg_install</span><span class="op">(</span><span class="st">"egeulgen/pathfindR"</span><span class="op">)</span></pre></div>
 <blockquote>
 <p><strong>IMPORTANT NOTE</strong> For the active subnetwork search component to work, the user must have <a href="https://www.java.com/en/">Java (&gt;= 8.0)</a> installed and path/to/java must be in the PATH environment variable.</p>
 </blockquote>
@@ -204,30 +195,28 @@
 <p>These filtered list of active subnetworks are then used for enrichment analyses, i.e. using the genes in each of the active subnetworks, the significantly enriched terms (pathways/gene sets) are identified. Enriched terms with adjusted p values larger than the given threshold are discarded and the lowest adjusted p value (over all active subnetworks) for each term is kept. This process of <code>active subnetwork search + enrichment analyses</code> is repeated for a selected number of iterations, performed in parallel. Over all iterations, the lowest and the highest adjusted-p values, as well as number of occurrences over all iterations are reported for each significantly enriched term.</p>
 <p>This workflow can be run using the function <code><a href="reference/run_pathfindR.html">run_pathfindR()</a></code>:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://egeulgen.github.io/pathfindR">pathfindR</a></span>)
-<span class="kw">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindR.html">run_pathfindR</a></span>(<span class="kw">input_df</span>)
-</pre></div>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://egeulgen.github.io/pathfindR/">pathfindR</a></span><span class="op">)</span>
+<span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindR.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span><span class="op">)</span></pre></div>
 <p>This wrapper function performs the active-subnetwork-oriented enrichment analysis and returns a data frame of enriched terms (as well as visualization of enriched terms and an HTML report):</p>
 <p><img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/enrichment_chart.png?raw=true%20%22Enrichment%20Chart%22" alt="pathfindR Enrichment Chart"></p>
 <p>Some useful arguments are:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit">
 <span class="co"># change the output directory</span>
-<span class="kw">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindR.html">run_pathfindR</a></span>(<span class="kw">input_df</span>, output_dir = <span class="st">"/top/secret/results"</span>)
+<span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindR.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, output_dir <span class="op">=</span> <span class="st">"/top/secret/results"</span><span class="op">)</span>
 
 <span class="co"># change the gene sets used for analysis (default = "KEGG")</span>
-<span class="kw">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindR.html">run_pathfindR</a></span>(<span class="kw">input_df</span>, gene_sets = <span class="st">"GO-MF"</span>)
+<span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindR.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, gene_sets <span class="op">=</span> <span class="st">"GO-MF"</span><span class="op">)</span>
 
 <span class="co"># change the PIN for active subnetwork search (default = Biogrid)</span>
-<span class="kw">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindR.html">run_pathfindR</a></span>(<span class="kw">input_df</span>, pin_name_path = <span class="st">"IntAct"</span>)
+<span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindR.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, pin_name_path <span class="op">=</span> <span class="st">"IntAct"</span><span class="op">)</span>
 <span class="co"># or use an external PIN of your choice</span>
-<span class="kw">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindR.html">run_pathfindR</a></span>(<span class="kw">input_df</span>, pin_name_path = <span class="st">"/path/to/myPIN.sif"</span>)
+<span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindR.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, pin_name_path <span class="op">=</span> <span class="st">"/path/to/myPIN.sif"</span><span class="op">)</span>
 
 <span class="co"># change the number of iterations (default = 10)</span>
-<span class="kw">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindR.html">run_pathfindR</a></span>(<span class="kw">input_df</span>, iterations = <span class="fl">25</span>) 
+<span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindR.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, iterations <span class="op">=</span> <span class="fl">25</span><span class="op">)</span> 
 
 <span class="co"># report the non-significant active subnetwork genes (for later analyses)</span>
-<span class="kw">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindR.html">run_pathfindR</a></span>(<span class="kw">input_df</span>, list_active_snw_genes = <span class="fl">TRUE</span>)
-</pre></div>
+<span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindR.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, list_active_snw_genes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></pre></div>
 <p>The available PINs are “Biogrid”, “STRING”, “GeneMania”, “IntAct”, “KEGG” and “mmu_STRING”. The available gene sets are “KEGG”, “Reactome”, “BioCarta”, “GO-All”, “GO-BP”, “GO-CC”, “GO-MF”, and “mmu_KEGG”. You also use a custom PIN (see <code><a href="reference/return_pin_path.html">?return_pin_path</a></code>) or a custom gene set (see <code><a href="reference/fetch_gene_set.html">?fetch_gene_set</a></code>)</p>
 <blockquote>
 <p>As of the latest development version, pathfindR offers utility functions for obtaining organism-specific PIN data (for now, only BioGRID PINs) and organism-specific gene sets (KEGG and Reactome) data via <code><a href="reference/get_pin_file.html">get_pin_file()</a></code> and <code><a href="reference/get_gene_sets_list.html">get_gene_sets_list()</a></code>, respectively.</p>
@@ -240,21 +229,19 @@
 <p>This workflow first calculates the pairwise kappa statistics between the enriched terms. The function then performs hierarchical clustering (by default), automatically determines the optimal number of clusters by maximizing the average silhouette width and returns a data frame with cluster assignments.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit">
 <span class="co"># default settings</span>
-<span class="kw">clustered_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cluster_enriched_terms.html">cluster_enriched_terms</a></span>(<span class="kw">output_df</span>)
+<span class="va">clustered_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cluster_enriched_terms.html">cluster_enriched_terms</a></span><span class="op">(</span><span class="va">output_df</span><span class="op">)</span>
 
 <span class="co"># display the heatmap of hierarchical clustering</span>
-<span class="kw">clustered_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cluster_enriched_terms.html">cluster_enriched_terms</a></span>(<span class="kw">output_df</span>, plot_hmap = <span class="fl">TRUE</span>)
+<span class="va">clustered_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cluster_enriched_terms.html">cluster_enriched_terms</a></span><span class="op">(</span><span class="va">output_df</span>, plot_hmap <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="co"># display the dendrogram and automatically-determined clusters</span>
-<span class="kw">clustered_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cluster_enriched_terms.html">cluster_enriched_terms</a></span>(<span class="kw">output_df</span>, plot_dend = <span class="fl">TRUE</span>)
+<span class="va">clustered_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cluster_enriched_terms.html">cluster_enriched_terms</a></span><span class="op">(</span><span class="va">output_df</span>, plot_dend <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="co"># change agglomeration method (default = "average") for hierarchical clustering</span>
-<span class="kw">clustered_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cluster_enriched_terms.html">cluster_enriched_terms</a></span>(<span class="kw">output_df</span>, clu_method = <span class="st">"centroid"</span>)
-</pre></div>
+<span class="va">clustered_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cluster_enriched_terms.html">cluster_enriched_terms</a></span><span class="op">(</span><span class="va">output_df</span>, clu_method <span class="op">=</span> <span class="st">"centroid"</span><span class="op">)</span></pre></div>
 <p>Alternatively, the <code>fuzzy</code> clustering method (as described in Huang DW, Sherman BT, Tan Q, et al. The DAVID Gene Functional Classification Tool: a novel biological module-centric algorithm to functionally analyze large gene lists. Genome Biol. 2007;8(9):R183.) can be used:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="kw">clustered_df_fuzzy</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cluster_enriched_terms.html">cluster_enriched_terms</a></span>(<span class="kw">output_df</span>, method = <span class="st">"fuzzy"</span>)
-</pre></div>
+<span class="va">clustered_df_fuzzy</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cluster_enriched_terms.html">cluster_enriched_terms</a></span><span class="op">(</span><span class="va">output_df</span>, method <span class="op">=</span> <span class="st">"fuzzy"</span><span class="op">)</span></pre></div>
 </div>
 <div id="visualization-of-enrichment-results" class="section level1">
 <h1 class="hasAnchor">
@@ -289,13 +276,11 @@
 <a href="#comparison-of-2-pathfindr-results" class="anchor"></a>Comparison of 2 pathfindR Results</h1>
 <p>The function <code><a href="reference/combine_pathfindR_results.html">combine_pathfindR_results()</a></code> allows combination of two pathfindR active-subnetwork-oriented enrichment analysis results for investigating common and distinct terms between the groups. Below is an example for comparing two different results using rheumatoid arthritis-related data.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="kw">combined_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/combine_pathfindR_results.html">combine_pathfindR_results</a></span>(result_A = <span class="kw">RA_output</span>, 
-                                         result_B = <span class="kw">RA_comparison_output</span>)
-</pre></div>
+<span class="va">combined_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/combine_pathfindR_results.html">combine_pathfindR_results</a></span><span class="op">(</span>result_A <span class="op">=</span> <span class="va">RA_output</span>, 
+                                         result_B <span class="op">=</span> <span class="va">RA_comparison_output</span><span class="op">)</span></pre></div>
 <p>By default, <code><a href="reference/combine_pathfindR_results.html">combine_pathfindR_results()</a></code> plots the term-gene graph for the common terms in the combined results. The function <code><a href="reference/combined_results_graph.html">combined_results_graph()</a></code> can be used to create this graph (using only selected terms etc.) later on.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="fu"><a href="reference/combined_results_graph.html">combined_results_graph</a></span>(<span class="kw">combined_df</span>, selected_terms = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"hsa04144"</span>, <span class="st">"hsa04141"</span>, <span class="st">"hsa04140"</span>))
-</pre></div>
+<span class="fu"><a href="reference/combined_results_graph.html">combined_results_graph</a></span><span class="op">(</span><span class="va">combined_df</span>, selected_terms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"hsa04144"</span>, <span class="st">"hsa04141"</span>, <span class="st">"hsa04140"</span><span class="op">)</span><span class="op">)</span></pre></div>
 <p><img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/combined_graph.png?raw=true%20%22Combined%20Results%20Graph%22" alt="Combined Results Graph"></p>
 </div>
 

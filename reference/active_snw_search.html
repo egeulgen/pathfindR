@@ -78,19 +78,13 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0.9002</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -159,30 +153,30 @@
     <p>Perform Active Subnetwork Search</p>
     </div>
 
-    <pre class="usage"><span class='fu'>active_snw_search</span>(
-  <span class='kw'>input_for_search</span>,
-  pin_name_path = <span class='st'>"Biogrid"</span>,
-  snws_file = <span class='st'>"active_snws"</span>,
-  dir_for_parallel_run = <span class='kw'>NULL</span>,
-  score_quan_thr = <span class='fl'>0.8</span>,
-  sig_gene_thr = <span class='fl'>0.02</span>,
-  search_method = <span class='st'>"GR"</span>,
-  silent_option = <span class='fl'>TRUE</span>,
-  use_all_positives = <span class='fl'>FALSE</span>,
-  geneInitProbs = <span class='fl'>0.1</span>,
-  saTemp0 = <span class='fl'>1</span>,
-  saTemp1 = <span class='fl'>0.01</span>,
-  saIter = <span class='fl'>10000</span>,
-  gaPop = <span class='fl'>400</span>,
-  gaIter = <span class='fl'>10000</span>,
-  gaThread = <span class='fl'>5</span>,
-  gaCrossover = <span class='fl'>1</span>,
-  gaMut = <span class='fl'>0</span>,
-  grMaxDepth = <span class='fl'>1</span>,
-  grSearchDepth = <span class='fl'>1</span>,
-  grOverlap = <span class='fl'>0.5</span>,
-  grSubNum = <span class='fl'>1000</span>
-)</pre>
+    <pre class="usage"><span class='fu'>active_snw_search</span><span class='op'>(</span>
+  <span class='va'>input_for_search</span>,
+  pin_name_path <span class='op'>=</span> <span class='st'>"Biogrid"</span>,
+  snws_file <span class='op'>=</span> <span class='st'>"active_snws"</span>,
+  dir_for_parallel_run <span class='op'>=</span> <span class='cn'>NULL</span>,
+  score_quan_thr <span class='op'>=</span> <span class='op'>-</span><span class='fl'>1</span>,
+  sig_gene_thr <span class='op'>=</span> <span class='fl'>0.02</span>,
+  search_method <span class='op'>=</span> <span class='st'>"GR"</span>,
+  silent_option <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  use_all_positives <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  geneInitProbs <span class='op'>=</span> <span class='fl'>0.1</span>,
+  saTemp0 <span class='op'>=</span> <span class='fl'>1</span>,
+  saTemp1 <span class='op'>=</span> <span class='fl'>0.01</span>,
+  saIter <span class='op'>=</span> <span class='fl'>10000</span>,
+  gaPop <span class='op'>=</span> <span class='fl'>400</span>,
+  gaIter <span class='op'>=</span> <span class='fl'>10000</span>,
+  gaThread <span class='op'>=</span> <span class='fl'>5</span>,
+  gaCrossover <span class='op'>=</span> <span class='fl'>1</span>,
+  gaMut <span class='op'>=</span> <span class='fl'>0</span>,
+  grMaxDepth <span class='op'>=</span> <span class='fl'>1</span>,
+  grSearchDepth <span class='op'>=</span> <span class='fl'>1</span>,
+  grOverlap <span class='op'>=</span> <span class='fl'>0.5</span>,
+  grSubNum <span class='op'>=</span> <span class='fl'>1000</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -214,8 +208,8 @@ Used in the wrapper function (see ?run_pathfindR) (Default = NULL)</p></td>
     </tr>
     <tr>
       <th>score_quan_thr</th>
-      <td><p>active subnetwork score quantile threshold (Default = 0.80)
-Must be between 0 and 1 or set to -1 for not filtering</p></td>
+      <td><p>active subnetwork score quantile threshold. Must be
+between 0 and 1 or set to -1 for not filtering. (Default = -1)</p></td>
     </tr>
     <tr>
       <th>sig_gene_thr</th>
@@ -302,14 +296,15 @@ nodes. In SA, initializes candidate solution with all positive nodes. (default =
 the `score_quan_thr`th quantile and that has at least `sig_gene_thr` affected genes.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>processed_df</span> <span class='op'>&lt;-</span> <span class='kw'>RA_input</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>15</span>, <span class='op'>-</span><span class='fl'>2</span>]
-<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='kw'>processed_df</span>) <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"GENE"</span>, <span class='st'>"P_VALUE"</span>)
-<span class='kw'>GR_snws</span> <span class='op'>&lt;-</span> <span class='fu'>active_snw_search</span>(input_for_search = <span class='kw'>processed_df</span>,
-                             pin_name_path = <span class='st'>"KEGG"</span>,
-                             search_method = <span class='st'>"GR"</span>)
+    <pre class="examples"><div class='input'><span class='va'>processed_df</span> <span class='op'>&lt;-</span> <span class='va'>RA_input</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>15</span>, <span class='op'>-</span><span class='fl'>2</span><span class='op'>]</span>
+<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>processed_df</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"GENE"</span>, <span class='st'>"P_VALUE"</span><span class='op'>)</span>
+<span class='va'>GR_snws</span> <span class='op'>&lt;-</span> <span class='fu'>active_snw_search</span><span class='op'>(</span>input_for_search <span class='op'>=</span> <span class='va'>processed_df</span>,
+                             pin_name_path <span class='op'>=</span> <span class='st'>"KEGG"</span>,
+                             search_method <span class='op'>=</span> <span class='st'>"GR"</span>,
+                             score_quan_thr <span class='op'>=</span> <span class='fl'>0.8</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Found 1 active subnetworks</span>
 #&gt; <span class='message'></span></div><div class='input'><span class='co'># clean-up</span>
-<span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span>(<span class='st'>"active_snw_search"</span>, recursive = <span class='fl'>TRUE</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span><span class='op'>(</span><span class='st'>"active_snw_search"</span>, recursive <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

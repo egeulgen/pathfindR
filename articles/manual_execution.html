@@ -33,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0.9002</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
@@ -108,7 +102,7 @@
       <h1 data-toc-skip>Step-by-Step Execution of the pathfindR Enrichment Workflow</h1>
                         <h4 class="author">Ege Ulgen</h4>
             
-            <h4 class="date">2020-09-21</h4>
+            <h4 class="date">2020-10-02</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/master/vignettes/manual_execution.Rmd"><code>vignettes/manual_execution.Rmd</code></a></small>
       <div class="hidden name"><code>manual_execution.Rmd</code></div>
@@ -124,14 +118,13 @@
 <a href="#load-the-package-and-prepare-the-input-data-frame" class="anchor"></a>Load the package and prepare the input data frame</h1>
 <p>We first need to load the package and the input data to be used for analysis. The input must be a data frame consisting of the following columns: <code>Gene Symbols</code>, <code>Change Values</code> (optional) and <code>p values</code>. The example data frame used in this vignette (<code>RA_input</code>) is the dataset containing the differentially-expressed genes for the GEO dataset GSE15573 comparing 18 rheumatoid arthritis (RA) patients versus 15 healthy subjects.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/message.html">suppressPackageStartupMessages</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://egeulgen.github.io/pathfindR">pathfindR</a></span>))
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="kw">RA_input</span>)
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw">RA_input</span>, <span class="fl">3</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/message.html">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://egeulgen.github.io/pathfindR/">pathfindR</a></span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">RA_input</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">RA_input</span>, <span class="fl">3</span><span class="op">)</span>
 <span class="co">#&gt;   Gene.symbol      logFC    adj.P.Val</span>
 <span class="co">#&gt; 1     FAM110A -0.6939359 3.408699e-06</span>
 <span class="co">#&gt; 2      RNASE2  1.3535040 1.008499e-05</span>
-<span class="co">#&gt; 3      S100A8  1.5448338 3.466386e-05</span>
-</pre></div>
+<span class="co">#&gt; 3      S100A8  1.5448338 3.466386e-05</span></pre></div>
 </div>
 <div id="the-protein-protein-interaction-network-pin" class="section level1">
 <h1 class="hasAnchor">
@@ -147,11 +140,10 @@
 <a href="#process-input-data" class="anchor"></a>Process input data</h1>
 <p>We next need to process the input data for use in analysis via <code><a href="../reference/input_processing.html">input_processing()</a></code>:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="kw">RA_processed</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/input_processing.html">input_processing</a></span>(input = <span class="kw">RA_input</span>, <span class="co"># the input: in this case, differential expression results</span>
-                                 p_val_threshold = <span class="fl">0.05</span>, <span class="co"># p value threshold to filter significant genes</span>
-                                 pin_name_path  = <span class="st">"Biogrid"</span>, <span class="co"># the name of the PIN to use for active subnetwork search</span>
-                                 convert2alias = <span class="fl">TRUE</span>) <span class="co"># boolean indicating whether or not to convert missing symbols to alias symbols in the PIN</span>
-</pre></div>
+<span class="va">RA_processed</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/input_processing.html">input_processing</a></span><span class="op">(</span>input <span class="op">=</span> <span class="va">RA_input</span>, <span class="co"># the input: in this case, differential expression results</span>
+                                 p_val_threshold <span class="op">=</span> <span class="fl">0.05</span>, <span class="co"># p value threshold to filter significant genes</span>
+                                 pin_name_path  <span class="op">=</span> <span class="st">"Biogrid"</span>, <span class="co"># the name of the PIN to use for active subnetwork search</span>
+                                 convert2alias <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># boolean indicating whether or not to convert missing symbols to alias symbols in the PIN</span></pre></div>
 <blockquote>
 <p>After checking that the data frame complies with the requirements, <code><a href="../reference/input_processing.html">input_processing()</a></code> filters the input so that genes with p values larger than <code>p_val_threshold</code> are excluded. Next, gene symbols that are not in the PIN are identified and excluded. For human genes, if aliases of these missing gene symbols are found in the PIN, these symbols are converted to the corresponding aliases (controlled by the argument <code>convert2alias</code>). This step is performed to best map the input data onto the PIN.</p>
 </blockquote>
@@ -162,12 +154,11 @@
 <p>We obtain the necessary gene sets for enrichment analyses using <code><a href="../reference/fetch_gene_set.html">fetch_gene_set()</a></code>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
 <span class="co"># using "BioCarta" as our gene sets for enrichment</span>
-<span class="kw">biocarta_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_gene_set.html">fetch_gene_set</a></span>(gene_sets = <span class="st">"BioCarta"</span>,
-                                min_gset_size = <span class="fl">10</span>,
-                                max_gset_size = <span class="fl">300</span>)
-<span class="kw">biocarta_gsets</span> <span class="op">&lt;-</span> <span class="kw">biocarta_list</span>[[<span class="fl">1</span>]]
-<span class="kw">biocarta_descriptions</span> <span class="op">&lt;-</span> <span class="kw">biocarta_list</span>[[<span class="fl">2</span>]]
-</pre></div>
+<span class="va">biocarta_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_gene_set.html">fetch_gene_set</a></span><span class="op">(</span>gene_sets <span class="op">=</span> <span class="st">"BioCarta"</span>,
+                                min_gset_size <span class="op">=</span> <span class="fl">10</span>,
+                                max_gset_size <span class="op">=</span> <span class="fl">300</span><span class="op">)</span>
+<span class="va">biocarta_gsets</span> <span class="op">&lt;-</span> <span class="va">biocarta_list</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>
+<span class="va">biocarta_descriptions</span> <span class="op">&lt;-</span> <span class="va">biocarta_list</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></pre></div>
 <blockquote>
 <p>The available gene sets in pathfindR are “KEGG”, “Reactome”, “BioCarta”, “GO-All”, “GO-BP”, “GO-CC” and “GO-MF”. If the user prefers to use another gene set source, the <code>gene_sets</code> argument should be set to <code>"Custom"</code> and the custom gene sets (list) and the custom gene set descriptions (named vector) should be supplied via the arguments <code>custom_genes</code> and <code>custom_descriptions</code>, respectively. See <code><a href="../reference/fetch_gene_set.html">?fetch_gene_set</a></code> for more details.</p>
 </blockquote>
@@ -176,36 +167,35 @@
 <h1 class="hasAnchor">
 <a href="#active-subnetwork-search-and-enrichment-analyses" class="anchor"></a>Active Subnetwork Search and Enrichment Analyses</h1>
 <p>As outlined in the vignette <a href="intro_vignette.html">Introduction to pathfindR</a>, <code><a href="../reference/run_pathfindR.html">run_pathfindR()</a></code> initially identifies and filters active subnetworks, then performs enrichment analyses on these subnetworks and summarize the results.</p>
-<p>To perform these steps manually, we utilize the function <code><a href="../reference/active_snw_search.html">active_snw_search()</a></code> for identifying and filtering active subnetworks and the function <code><a href="../reference/enrichment_analyses.html">enrichment_analyses()</a></code> for obtaining enriched terms using these subnetworks. Because the active subnetwork search algorithms are stochastic, we suggest iterating these subnetwork identification and enrichment steps multiple times <a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>:</p>
+<p>To perform these steps manually, we utilize the function <code><a href="../reference/active_snw_search.html">active_snw_search()</a></code> for identifying and filtering active subnetworks and the function <code><a href="../reference/enrichment_analyses.html">enrichment_analyses()</a></code> for obtaining enriched terms using these subnetworks. Because the active subnetwork search algorithms are stochastic, we suggest iterating these subnetwork identification and enrichment steps multiple times (especially for “SA”)<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="kw">n_iter</span> <span class="op">&lt;-</span> <span class="fl">15</span> <span class="co">## number of iterations</span>
-<span class="kw">combined_res</span> <span class="op">&lt;-</span> <span class="kw">NULL</span> <span class="co">## to store the result of each iteration</span>
+<span class="va">n_iter</span> <span class="op">&lt;-</span> <span class="fl">10</span> <span class="co">## number of iterations</span>
+<span class="va">combined_res</span> <span class="op">&lt;-</span> <span class="cn">NULL</span> <span class="co">## to store the result of each iteration</span>
 
-<span class="co">for</span> (<span class="kw">i</span> <span class="co">in</span> <span class="fl">1</span><span class="op">:</span><span class="kw">n_iter</span>) {
+<span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">n_iter</span><span class="op">)</span> <span class="op">{</span>
   
   <span class="co">###### Active Subnetwork Search</span>
-  <span class="kw">snws_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"active_snws_"</span>, <span class="kw">i</span>) <span class="co"># Name of output file</span>
-  <span class="kw">active_snws</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/active_snw_search.html">active_snw_search</a></span>(input_for_search = <span class="kw">RA_processed</span>, 
-                                   pin_name_path = <span class="st">"Biogrid"</span>, 
-                                   snws_file = <span class="kw">snws_file</span>,
-                                   score_quan_thr = <span class="fl">0.8</span>, <span class="co"># you may tweak these arguments for optimal filtering of subnetworks</span>
-                                   sig_gene_thr = <span class="fl">0.02</span>, <span class="co"># you may tweak these arguments for optimal filtering of subnetworks</span>
-                                   search_method = <span class="st">"GR"</span>)
+  <span class="va">snws_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"active_snws_"</span>, <span class="va">i</span><span class="op">)</span> <span class="co"># Name of output file</span>
+  <span class="va">active_snws</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/active_snw_search.html">active_snw_search</a></span><span class="op">(</span>input_for_search <span class="op">=</span> <span class="va">RA_processed</span>, 
+                                   pin_name_path <span class="op">=</span> <span class="st">"Biogrid"</span>, 
+                                   snws_file <span class="op">=</span> <span class="va">snws_file</span>,
+                                   score_quan_thr <span class="op">=</span> <span class="fl">0.8</span>, <span class="co"># you may tweak these arguments for optimal filtering of subnetworks</span>
+                                   sig_gene_thr <span class="op">=</span> <span class="fl">0.02</span>, <span class="co"># you may tweak these arguments for optimal filtering of subnetworks</span>
+                                   search_method <span class="op">=</span> <span class="st">"GR"</span><span class="op">)</span>
   
   <span class="co">###### Enrichment Analyses</span>
-  <span class="kw">current_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/enrichment_analyses.html">enrichment_analyses</a></span>(snws = <span class="kw">active_snws</span>,
-                                     input_genes = <span class="kw">RA_processed</span><span class="op">$</span><span class="kw">GENE</span>,
-                                     pin_name_path = <span class="st">"Biogrid"</span>, 
-                                     genes_by_term = <span class="kw">biocarta_gsets</span>,
-                                     term_descriptions = <span class="kw">biocarta_descriptions</span>,
-                                     adj_method = <span class="st">"bonferroni"</span>,
-                                     enrichment_threshold = <span class="fl">0.05</span>,
-                                     list_active_snw_genes = <span class="fl">TRUE</span>) <span class="co"># listing the non-input active snw genes in output</span>
+  <span class="va">current_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/enrichment_analyses.html">enrichment_analyses</a></span><span class="op">(</span>snws <span class="op">=</span> <span class="va">active_snws</span>,
+                                     input_genes <span class="op">=</span> <span class="va">RA_processed</span><span class="op">$</span><span class="va">GENE</span>,
+                                     pin_name_path <span class="op">=</span> <span class="st">"Biogrid"</span>, 
+                                     genes_by_term <span class="op">=</span> <span class="va">biocarta_gsets</span>,
+                                     term_descriptions <span class="op">=</span> <span class="va">biocarta_descriptions</span>,
+                                     adj_method <span class="op">=</span> <span class="st">"bonferroni"</span>,
+                                     enrichment_threshold <span class="op">=</span> <span class="fl">0.05</span>,
+                                     list_active_snw_genes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># listing the non-input active snw genes in output</span>
   
   <span class="co">###### Combine results via `rbind`</span>
-  <span class="kw">combined_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span>(<span class="kw">combined_res</span>, <span class="kw">current_res</span>)
-}
-</pre></div>
+  <span class="va">combined_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">combined_res</span>, <span class="va">current_res</span><span class="op">)</span>
+<span class="op">}</span></pre></div>
 </div>
 <div id="summary-of-enrichment-results" class="section level1">
 <h1 class="hasAnchor">
@@ -213,29 +203,26 @@
 <p>We next summarize the enrichment results (in <code>combined_res</code>) using <code><a href="../reference/summarize_enrichment_results.html">summarize_enrichment_results()</a></code> and annotate the involved significant (input) genes in each term using <code><a href="../reference/annotate_term_genes.html">annotate_term_genes()</a></code>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit">
 <span class="co">###### Summarize Combined Enrichment Results</span>
-<span class="kw">summarized_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/summarize_enrichment_results.html">summarize_enrichment_results</a></span>(<span class="kw">combined_res</span>, 
-                                              list_active_snw_genes = <span class="fl">TRUE</span>)
+<span class="va">summarized_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/summarize_enrichment_results.html">summarize_enrichment_results</a></span><span class="op">(</span><span class="va">combined_res</span>, 
+                                              list_active_snw_genes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="co">###### Annotate Affected Genes Involved in Each Enriched Term</span>
-<span class="kw">final_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/annotate_term_genes.html">annotate_term_genes</a></span>(result_df = <span class="kw">summarized_df</span>, 
-                                 input_processed = <span class="kw">RA_processed</span>, 
-                                 genes_by_term = <span class="kw">biocarta_gsets</span>)
-</pre></div>
+<span class="va">final_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/annotate_term_genes.html">annotate_term_genes</a></span><span class="op">(</span>result_df <span class="op">=</span> <span class="va">summarized_df</span>, 
+                                 input_processed <span class="op">=</span> <span class="va">RA_processed</span>, 
+                                 genes_by_term <span class="op">=</span> <span class="va">biocarta_gsets</span><span class="op">)</span></pre></div>
 </div>
 <div id="visualizations" class="section level1">
 <h1 class="hasAnchor">
 <a href="#visualizations" class="anchor"></a>Visualizations</h1>
 <p>We can visualize each enriched term diagram using <code><a href="../reference/visualize_terms.html">visualize_terms()</a></code>. In this case, these will be graphs of interactions of pathway-involved genes for each pathway. See <code><a href="../reference/visualize_terms.html">?visualize_terms</a></code> for more details.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="fu"><a href="../reference/visualize_terms.html">visualize_terms</a></span>(result_df = <span class="kw">final_res</span>, 
-                hsa_KEGG = <span class="fl">FALSE</span>, <span class="co"># boolean to indicate whether human KEGG gene sets were used for enrichment analysis or not</span>
-                pin_name_path = <span class="st">"Biogrid"</span>)
-</pre></div>
+<span class="fu"><a href="../reference/visualize_terms.html">visualize_terms</a></span><span class="op">(</span>result_df <span class="op">=</span> <span class="va">final_res</span>, 
+                hsa_KEGG <span class="op">=</span> <span class="cn">FALSE</span>, <span class="co"># boolean to indicate whether human KEGG gene sets were used for enrichment analysis or not</span>
+                pin_name_path <span class="op">=</span> <span class="st">"Biogrid"</span><span class="op">)</span></pre></div>
 <p><img src="example_interaction_vis.png" style="max-width:100%;"></p>
 <p>We can also create a graphical summary of the top 10 enrichment results using <code><a href="../reference/enrichment_chart.html">enrichment_chart()</a></code>:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="fu"><a href="../reference/enrichment_chart.html">enrichment_chart</a></span>(<span class="kw">final_res</span>[<span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, ])
-</pre></div>
+<span class="fu"><a href="../reference/enrichment_chart.html">enrichment_chart</a></span><span class="op">(</span><span class="va">final_res</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">]</span><span class="op">)</span></pre></div>
 <p><img src="man_enrichment_chart.png" style="max-width:100%;"></p>
 <p>The x-axis corresponds to fold enrichment values while the y-axis indicates the enriched terms. The size of each bubble indicates the number of significant genes in the given enriched term. Color indicates the -log10(lowest-p) value. The closer the color is to red, the more significant the enrichment is.</p>
 </div>
