@@ -21,7 +21,7 @@ test_that("`run_pathfindR()` works as expected", {
 
   expect_is(run_pathfindR(RA_input[1:100, ],
                           iterations = 2,
-                          n_processes = 3,
+                          n_processes = 5,
                           gene_sets = "BioCarta",
                           pin_name_path = "GeneMania",
                           plot_enrichment_chart = FALSE,
@@ -30,11 +30,12 @@ test_that("`run_pathfindR()` works as expected", {
             "data.frame")
 
   ## GA - n_processes <- 1 and n_processes <- iterations (iterations < n_processes)
-  expected_warns <- c("Did not find any enriched terms!",
-                      "`iterations` is set to 1 because `search_method = \"GA\"",
-                      "`n_processes` is set to `iterations` because `iterations` < `n_processes`")
+  expected_warns <- c("search_method` 'GA' is deprecated; please use 'GR' or 'SA' instead",
+                      "Did not find any enriched terms!",
+                      "`iterations` is set to 1 because `search_method = \"GA\"")
   expect_warning(run_pathfindR(RA_input[1:2, ],
                                search_method = "GA",
+                               iterations = 2,
                                output_dir = tempdir(check = TRUE)),
                  paste0(paste(expected_warns, collapse = "|")), all = TRUE, perl = TRUE)
 
@@ -110,7 +111,7 @@ test_that("`run_pathfindR()` arg checks work", {
                "`iterations` should be a positive integer")
 
   expect_error(run_pathfindR(RA_input, iterations = 0),
-               "`iterations` should be > 1")
+               "`iterations` should be >= 1")
 
   expect_error(run_pathfindR(RA_input, n_processes = "INVALID"),
                "`n_processes` should be either NULL or a positive integer")
