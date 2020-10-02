@@ -2,30 +2,32 @@
 ## Project: pathfindR
 ## Script purpose: Testthat testing script for
 ## core functions
-## Date: May 24, 2020
+## Date: Oct 2, 2020
 ## Author: Ege Ulgen
 ##################################################
 
 # run_pathfindR -----------------------------------------------------------
 test_that("`run_pathfindR()` works as expected", {
   skip_on_cran()
+
+  out_dir <- file.path(tempdir(check = TRUE), "pathfindR_results")
   ## GR
   res <- run_pathfindR(RA_input[1:100, ],
                        iterations = 1,
                        n_processes = 2,
-                       max_to_plot = 1)
+                       max_to_plot = 1,
+                       output_dir = out_dir)
   expect_is(res, "data.frame")
-  unlink("pathfindR_Results", recursive = TRUE)
 
   expect_is(run_pathfindR(RA_input[1:100, ],
                           iterations = 2,
-                          n_processes = 2,
+                          n_processes = 3,
                           gene_sets = "BioCarta",
                           pin_name_path = "GeneMania",
                           plot_enrichment_chart = FALSE,
-                          visualize_enriched_terms = FALSE),
+                          visualize_enriched_terms = FALSE,
+                          output_dir = out_dir),
             "data.frame")
-  unlink("pathfindR_Results", recursive = TRUE)
 
   ## GA - n_processes <- 1 and n_processes <- iterations (iterations < n_processes)
   expected_warns <- c("Did not find any enriched terms!",
@@ -79,10 +81,10 @@ test_that("`run_pathfindR()` works as expected", {
 test_that("Expect warning with empty result from `run_pathfindR()`", {
   expect_warning(res <- run_pathfindR(RA_input[1:2, ],
                                       iterations = 1,
-                                      visualize_enriched_terms = FALSE),
+                                      visualize_enriched_terms = FALSE,
+                                      output_dir = tempdir(check = TRUE)),
                  "Did not find any enriched terms!")
   expect_identical(res, data.frame())
-  unlink("pathfindR_Results", recursive = TRUE)
 })
 
 

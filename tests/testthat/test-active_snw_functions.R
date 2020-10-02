@@ -2,7 +2,7 @@
 ## Project: pathfindR
 ## Script purpose: Testthat testing script for
 ## active subnetwork search functions
-## Date: June 4, 2020
+## Date: Oct 2, 2020
 ## Author: Ege Ulgen
 ##################################################
 
@@ -20,6 +20,7 @@ test_that("`active_snw_search()` returns list object", {
                  "Found [1-9]\\d* active subnetworks")
   expect_is(snw_list, "list")
   expect_is(snw_list[[1]], "character")
+  expect_true(length(snw_list) > 0)
   unlink("active_snw_search", recursive = TRUE)
 
   # Expect no active snws
@@ -29,12 +30,12 @@ test_that("`active_snw_search()` returns list object", {
   unlink("active_snw_search", recursive = TRUE)
 
   # dir_for_parallel_run works?
-  dir.create("dummy_dir")
+  dummy_dir <- file.path(tempdir(check = TRUE), "dummy_dir")
+  dir.create(dummy_dir)
   expect_message(snw_list <- active_snw_search(input_for_search = input_df1,
-                                               dir_for_parallel_run = "dummy_dir"),
+                                               dir_for_parallel_run = dummy_dir),
                  "Found [1-9]\\d* active subnetworks")
-  expect_true(file.exists("dummy_dir/active_snw_search/active_snws.txt"))
-  unlink("dummy_dir", recursive = TRUE)
+  expect_true(file.exists(file.path(dummy_dir, "active_snw_search/active_snws.txt")))
 })
 
 test_that("All search methods for `active_snw_search()` work", {
