@@ -46,8 +46,8 @@ path/to/PIN.sif, the file must comply with the PIN specifications. (Default = "B
 \item{dir_for_parallel_run}{(previously created) directory for a parallel run iteration.
 Used in the wrapper function (see ?run_pathfindR) (Default = NULL)}
 
-\item{score_quan_thr}{active subnetwork score quantile threshold (Default = 0.80)
-Must be between 0 and 1 or set to -1 for not filtering}
+\item{score_quan_thr}{active subnetwork score quantile threshold. Must be
+between 0 and 1 or set to -1 for not filtering. (Default = -1)}
 
 \item{sig_gene_thr}{threshold for the minimum proportion of significant genes in
 the subnetwork (Default = 0.02) If the number of genes to use as threshold is

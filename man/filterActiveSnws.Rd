@@ -7,7 +7,7 @@
 filterActiveSnws(
   active_snw_path,
   sig_genes_vec,
-  score_quan_thr = 0.8,
+  score_quan_thr = -1,
   sig_gene_thr = 0.02
 )
 }
@@ -17,8 +17,8 @@ filterActiveSnws(
 \item{sig_genes_vec}{vector of significant gene symbols. In the scope of this
 package, these are the input genes that were used for active subnetwork search}
 
-\item{score_quan_thr}{active subnetwork score quantile threshold (Default = 0.80)
-Must be between 0 and 1 or set to -1 for not filtering}
+\item{score_quan_thr}{active subnetwork score quantile threshold. Must be
+between 0 and 1 or set to -1 for not filtering. (Default = -1)}
 
 \item{sig_gene_thr}{threshold for the minimum proportion of significant genes in
 the subnetwork (Default = 0.02) If the number of genes to use as threshold is
