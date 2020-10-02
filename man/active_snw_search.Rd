@@ -9,7 +9,7 @@ active_snw_search(
   pin_name_path = "Biogrid",
   snws_file = "active_snws",
   dir_for_parallel_run = NULL,
-  score_quan_thr = 0.8,
+  score_quan_thr = -1,
   sig_gene_thr = 0.02,
   search_method = "GR",
   silent_option = TRUE,
