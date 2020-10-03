@@ -35,11 +35,12 @@ test_that("`run_pathfindR()` works as expected", {
   expected_warns <- c("search_method` 'GA' is deprecated; please use 'GR' or 'SA' instead",
                       "Did not find any enriched terms!",
                       "`iterations` is set to 1 because `search_method = \"GA\"")
-  expect_warning(run_pathfindR(RA_input[1:2, ],
+  expect_warning(run_pathfindR(RA_input[3:4, ],
                                search_method = "GA",
                                iterations = 2,
                                score_quan_thr = 0.8,
-                               output_dir = tempdir(check = TRUE),
+                               pin_name_path = "KEGG",
+                               output_dir = file.path(tempdir(), "GA_example"),
                                visualize_enriched_terms = FALSE),
                  paste0(paste(expected_warns, collapse = "|")), all = TRUE, perl = TRUE)
 
@@ -313,7 +314,7 @@ test_that("`return_pin_path()` returns the absolute path to PIN file", {
   expect_true(file.exists(return_pin_path("mmu_STRING")))
 
   # custom PIN
-  custom_pin <- read.delim(return_pin_path("GeneMania"),
+  custom_pin <- read.delim(return_pin_path("KEGG"),
                            header = FALSE,
                            stringsAsFactors = FALSE)
   custom_pin <- custom_pin[1:10,]
@@ -402,15 +403,15 @@ test_that("`input_processing()` works", {
   skip_on_cran()
   expect_is(tmp <- input_processing(input = RA_input[1:5, ],
                                     p_val_threshold = 0.05,
-                                    pin_name_path = "Biogrid",
+                                    pin_name_path = "KEGG",
                                     convert2alias = TRUE),
             "data.frame")
   expect_true(ncol(tmp) == 4)
   expect_true(nrow(tmp) <= nrow(RA_input))
 
-  expect_is(input_processing(RA_input[1:5, ],
+  expect_is(input_processing(RA_input[5:10, ],
                              p_val_threshold = 0.01,
-                             pin_name_path = "Biogrid",
+                             pin_name_path = "KEGG",
                              convert2alias = FALSE),
             "data.frame")
 
