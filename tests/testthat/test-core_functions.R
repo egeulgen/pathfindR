@@ -2,7 +2,7 @@
 ## Project: pathfindR
 ## Script purpose: Testthat testing script for
 ## core functions
-## Date: Oct 2, 2020
+## Date: Oct 3 2020
 ## Author: Ege Ulgen
 ##################################################
 
@@ -15,6 +15,7 @@ test_that("`run_pathfindR()` works as expected", {
   res <- run_pathfindR(RA_input[1:100, ],
                        iterations = 1,
                        n_processes = 2,
+                       score_quan_thr = 0.8,
                        max_to_plot = 1,
                        output_dir = out_dir)
   expect_is(res, "data.frame")
@@ -24,6 +25,7 @@ test_that("`run_pathfindR()` works as expected", {
                           n_processes = 5,
                           gene_sets = "BioCarta",
                           pin_name_path = "GeneMania",
+                          score_quan_thr = 0.8,
                           plot_enrichment_chart = FALSE,
                           visualize_enriched_terms = FALSE,
                           output_dir = out_dir),
@@ -36,6 +38,7 @@ test_that("`run_pathfindR()` works as expected", {
   expect_warning(run_pathfindR(RA_input[1:2, ],
                                search_method = "GA",
                                iterations = 2,
+                               score_quan_thr = 0.8,
                                output_dir = tempdir(check = TRUE)),
                  paste0(paste(expected_warns, collapse = "|")), all = TRUE, perl = TRUE)
 
