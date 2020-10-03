@@ -12,15 +12,15 @@ test_that("`run_pathfindR()` works as expected", {
 
   out_dir <- file.path(tempdir(check = TRUE), "pathfindR_results")
   ## GR
-  res <- run_pathfindR(RA_input[1:100, ],
-                       iterations = 1,
-                       n_processes = 2,
-                       score_quan_thr = 0.8,
-                       max_to_plot = 1,
-                       output_dir = out_dir)
-  expect_is(res, "data.frame")
+  expect_is(run_pathfindR(RA_input[1:50, ],
+                          iterations = 1,
+                          n_processes = 2,
+                          score_quan_thr = 0.8,
+                          max_to_plot = 1,
+                          output_dir = out_dir),
+            "data.frame")
 
-  expect_is(run_pathfindR(RA_input[1:100, ],
+  expect_is(run_pathfindR(RA_input[1:50, ],
                           iterations = 2,
                           n_processes = 5,
                           gene_sets = "BioCarta",
@@ -39,7 +39,8 @@ test_that("`run_pathfindR()` works as expected", {
                                search_method = "GA",
                                iterations = 2,
                                score_quan_thr = 0.8,
-                               output_dir = tempdir(check = TRUE)),
+                               output_dir = tempdir(check = TRUE),
+                               visualize_enriched_terms = FALSE),
                  paste0(paste(expected_warns, collapse = "|")), all = TRUE, perl = TRUE)
 
   ### output_dir renaming works
