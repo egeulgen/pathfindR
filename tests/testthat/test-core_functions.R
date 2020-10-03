@@ -48,6 +48,7 @@ test_that("`run_pathfindR()` works as expected", {
     expect_warning(res <- run_pathfindR(RA_input[1:2, ],
                                         iterations = 1,
                                         n_processes = 1,
+                                        score_quan_thr = 0.8,
                                         visualize_enriched_terms = FALSE,
                                         output_dir = test_out_dir),
                    "Did not find any enriched terms!")
