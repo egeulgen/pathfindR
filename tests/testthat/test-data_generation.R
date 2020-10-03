@@ -79,8 +79,7 @@ test_that("`get_mgsigdb_gsets()` errors work", {
   expect_error(pathfindR:::get_mgsigdb_gsets(species = species,
                                              collection = collection,
                                              subcollection = subcollection),
-               paste0(dQuote(paste(c(species, collection, subcollection), collapse = "-")),
-                      " returned an empty data frame"))
+               "unknown subcategory")
 })
 
 # get_gene_sets_list ------------------------------------------------------

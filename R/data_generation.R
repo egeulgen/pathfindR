@@ -274,10 +274,6 @@ get_mgsigdb_gsets <- function(species = "Homo sapiens", collection, subcollectio
   msig_df <- msigdbr::msigdbr(species = species,
                               category = collection,
                               subcategory = subcollection)
-  # check if df is empty
-  if (nrow(msig_df) == 0)
-    stop(dQuote(paste(c(species, collection, subcollection), collapse = "-")),
-         " returned an empty data frame")
 
   ### create gene sets list
   all_gs_ids <- unique(msig_df$gs_id)
