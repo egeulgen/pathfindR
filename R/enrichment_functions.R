@@ -195,6 +195,7 @@ enrichment <- function(input_genes,
 #'   \item{Fold_Enrichment}{Fold enrichment value for the enriched term}
 #'   \item{p_value}{p value of enrichment}
 #'   \item{adj_p}{adjusted p value of enrichment}
+#'   \item{support}{the support (proportion of active subnetworks leading to enrichment over all subnetworks) for the gene set}
 #'   \item{non_Signif_Snw_Genes (OPTIONAL)}{the non-significant active subnetwork genes, comma-separated}
 #' }
 #'
@@ -242,11 +243,27 @@ enrichment_analyses <- function(snws,
                           sig_genes_vec = sig_genes_vec,
                           background_genes = background_genes))
 
+  ### indices for snw.s
+  if (length(enrichment_res) != 0) {
+    for (i in 1:length(enrichment_res)) {
+      if (!is.null(enrichment_res[[i]])) {
+        enrichment_res[[i]]$snw_idx <- i
+      }
+    }
+  }
+
   ############ Combine Enrichments Results for All Subnetworks
   enrichment_res <- Reduce(rbind, enrichment_res)
 
   ############ Process if non-empty
   if (!is.null(enrichment_res)) {
+
+    ## calculate support values
+    support <- tapply(enrichment_res$snw_idx, enrichment_res$ID, length)
+    support <- support / length(snws)
+    enrichment_res$support <- support[match(enrichment_res$ID, names(support))]
+    enrichment_res$snw_idx <- NULL
+
     ## delete non_Signif_Snw_Genes if list_active_snw_genes == FALSE
     if (!list_active_snw_genes) {
       enrichment_res$non_Signif_Snw_Genes <- NULL
@@ -278,6 +295,7 @@ enrichment_analyses <- function(snws,
 #'   \item{Term_Description}{Description of the enriched term}
 #'   \item{Fold_Enrichment}{Fold enrichment value for the enriched term}
 #'   \item{occurrence}{the number of iterations that the given term was found to enriched over all iterations}
+#'   \item{support}{the median support (proportion of active subnetworks leading to enrichment within an iteration) over all iterations}
 #'   \item{lowest_p}{the lowest adjusted-p value of the given term over all iterations}
 #'   \item{highest_p}{the highest adjusted-p value of the given term over all iterations}
 #'   \item{non_Signif_Snw_Genes (OPTIONAL)}{the non-significant active subnetwork genes, comma-separated}
@@ -295,7 +313,7 @@ summarize_enrichment_results <- function(enrichment_res,
     stop("`list_active_snw_genes` should be either TRUE or FALSE")
   }
 
-  nec_cols <- c("ID", "Term_Description", "Fold_Enrichment", "p_value", "adj_p")
+  nec_cols <- c("ID", "Term_Description", "Fold_Enrichment", "p_value", "adj_p", "support")
   if (list_active_snw_genes) {
     nec_cols <- c(nec_cols, "non_Signif_Snw_Genes")
   }
@@ -308,16 +326,17 @@ summarize_enrichment_results <- function(enrichment_res,
     stop("`enrichment_res` should have exactly ", length(nec_cols), " columns")
   }
 
-  if (!all(nec_cols == colnames(enrichment_res))) {
+  if (!all(nec_cols %in% colnames(enrichment_res))) {
     stop("`enrichment_res` should have column names ",
          paste(dQuote(nec_cols), collapse = ", "))
   }
 
-  ## Annotate lowest p, highest p and occurrence
+  ## Annotate lowest p, highest p, occurrence and median support
   final_res <- enrichment_res
   lowest_p <- tapply(enrichment_res$adj_p, enrichment_res$ID, min)
   highest_p <- tapply(enrichment_res$adj_p, enrichment_res$ID, max)
   occurrence <- tapply(enrichment_res$adj_p, enrichment_res$ID, length)
+  support <- tapply(enrichment_res$support, enrichment_res$ID, stats::median)
 
   matched_idx <- match(final_res$ID, names(lowest_p))
   final_res$lowest_p <- as.numeric(lowest_p[matched_idx])
@@ -328,9 +347,12 @@ summarize_enrichment_results <- function(enrichment_res,
   matched_idx <- match(final_res$ID, names(occurrence))
   final_res$occurrence <- as.numeric(occurrence[matched_idx])
 
+  matched_idx <- match(final_res$ID, names(support))
+  final_res$support <- as.numeric(support[matched_idx])
+
   ## reorder columns
   keep <- c("ID", "Term_Description", "Fold_Enrichment",
-            "occurrence", "lowest_p", "highest_p")
+            "occurrence", "support", "lowest_p", "highest_p")
   if (list_active_snw_genes) {
     keep <- c(keep, "non_Signif_Snw_Genes")
   }

@@ -2,7 +2,7 @@
 ## Project: pathfindR
 ## Script purpose: Testthat testing script for
 ## enrichment-related functions
-## Date: May 24, 2020
+## Date: Oct 5, 2020
 ## Author: Ege Ulgen
 ##################################################
 
@@ -211,7 +211,7 @@ test_that("`summarize_enrichment_results()` returns summarized enrichment result
   # default
   expect_is(tmp <- summarize_enrichment_results(enrichment_res = combined_res[, -6]),
             "data.frame")
-  expect_equal(ncol(tmp), 6)
+  expect_equal(ncol(tmp), 7)
   expect_false("non_Signif_Snw_Genes" %in% colnames(tmp))
   expect_true(nrow(tmp) <= nrow(combined_res))
 
@@ -219,7 +219,7 @@ test_that("`summarize_enrichment_results()` returns summarized enrichment result
   expect_is(tmp <- summarize_enrichment_results(enrichment_res = combined_res,
                                                 list_active_snw_genes = TRUE),
             "data.frame")
-  expect_equal(ncol(tmp), 7)
+  expect_equal(ncol(tmp), 8)
   expect_true("non_Signif_Snw_Genes" %in% colnames(tmp))
   expect_true(nrow(tmp) <= nrow(combined_res))
 })
@@ -233,7 +233,7 @@ test_that("summarize_enrichment_results() arg checks work", {
                "`enrichment_res` should be a data frame")
 
   # list_active_snw_genes = FALSE
-  nec_cols <- c("ID", "Term_Description", "Fold_Enrichment", "p_value", "adj_p")
+  nec_cols <- c("ID", "Term_Description", "Fold_Enrichment", "p_value", "adj_p", "support")
 
   expect_error(summarize_enrichment_results(enrichment_res = data.frame()),
                paste0("`enrichment_res` should have exactly ", length(nec_cols), " columns"))
@@ -245,7 +245,7 @@ test_that("summarize_enrichment_results() arg checks work", {
                       paste(dQuote(nec_cols), collapse = ", ")))
 
   # list_active_snw_genes = TRUE
-  nec_cols <- c("ID", "Term_Description", "Fold_Enrichment", "p_value", "adj_p",
+  nec_cols <- c("ID", "Term_Description", "Fold_Enrichment", "p_value", "adj_p", "support",
                 "non_Signif_Snw_Genes")
 
   expect_error(summarize_enrichment_results(enrichment_res = data.frame(),
@@ -259,4 +259,3 @@ test_that("summarize_enrichment_results() arg checks work", {
                paste0("`enrichment_res` should have column names ",
                       paste(dQuote(nec_cols), collapse = ", ")))
 })
-

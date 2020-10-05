@@ -1,8 +1,9 @@
-# pathfindR 1.6.0.9002
+# pathfindR 1.6.0.9003
 
 ## Major Changes
 - In `run_pathfindR()`, as "GR" (the default active subnetwork search method) provides nearly identical results in each iteration, the default `iterations` is set to 1
 - In `filterActiveSnws()`, `run_pathindR()`, `active_snw_search` and `visualize_active_subnetworks()`, the argument `score_quan_thr` is set to -1 (i.e. not filtering based on subnetwork score)
+- added the column 'support' (the proportion of active subnetworks leading to enrichment over all subnetworks)
 
 ## Minor changes and bug fixes
 - "GA" for `search_method` is now deprecated. We plan to remove this option in v2.0

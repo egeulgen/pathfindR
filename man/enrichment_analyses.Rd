@@ -48,6 +48,7 @@ a dataframe of combined enrichment results. Columns are: \describe{
   \item{Fold_Enrichment}{Fold enrichment value for the enriched term}
   \item{p_value}{p value of enrichment}
   \item{adj_p}{adjusted p value of enrichment}
+  \item{support}{the support (proportion of active subnetworks leading to enrichment over all subnetworks) for the gene set}
   \item{non_Signif_Snw_Genes (OPTIONAL)}{the non-significant active subnetwork genes, comma-separated}
 }
 }

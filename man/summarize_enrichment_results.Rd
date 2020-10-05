@@ -26,6 +26,7 @@ a dataframe of summarized enrichment results (over multiple iterations). Columns
   \item{Term_Description}{Description of the enriched term}
   \item{Fold_Enrichment}{Fold enrichment value for the enriched term}
   \item{occurrence}{the number of iterations that the given term was found to enriched over all iterations}
+  \item{support}{the median support (proportion of active subnetworks leading to enrichment within an iteration) over all iterations}
   \item{lowest_p}{the lowest adjusted-p value of the given term over all iterations}
   \item{highest_p}{the highest adjusted-p value of the given term over all iterations}
   \item{non_Signif_Snw_Genes (OPTIONAL)}{the non-significant active subnetwork genes, comma-separated}
