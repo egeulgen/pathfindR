@@ -52,7 +52,7 @@ active_snw_search <- function(input_for_search,
                               pin_name_path = "Biogrid",
                               snws_file = "active_snws",
                               dir_for_parallel_run = NULL,
-                              score_quan_thr = -1, sig_gene_thr = 0.02,
+                              score_quan_thr = 0.8, sig_gene_thr = 0.02,
                               search_method = "GR",
                               silent_option = TRUE,
                               use_all_positives = FALSE,
@@ -182,7 +182,7 @@ active_snw_search <- function(input_for_search,
 #' @param sig_genes_vec vector of significant gene symbols. In the scope of this
 #'   package, these are the input genes that were used for active subnetwork search
 #' @param score_quan_thr active subnetwork score quantile threshold. Must be
-#' between 0 and 1 or set to -1 for not filtering. (Default = -1)
+#' between 0 and 1 or set to -1 for not filtering. (Default = 0.8)
 #' @param sig_gene_thr threshold for the minimum proportion of significant genes in
 #' the subnetwork (Default = 0.02) If the number of genes to use as threshold is
 #' calculated to be < 2 (e.g. 50 signif. genes x 0.01 = 0.5), the threshold number
@@ -203,7 +203,7 @@ active_snw_search <- function(input_for_search,
 #' filtered <- filterActiveSnws(active_snw_path = path2snw_list,
 #'                              sig_genes_vec = RA_input$Gene.symbol)
 filterActiveSnws <- function(active_snw_path, sig_genes_vec,
-                             score_quan_thr = -1, sig_gene_thr = 0.02) {
+                             score_quan_thr = 0.8, sig_gene_thr = 0.02) {
   ## Arg. checks
   active_snw_path <- suppressWarnings(normalizePath(active_snw_path))
 
@@ -289,7 +289,7 @@ visualize_active_subnetworks <- function(active_snw_path, genes_df,
                                          pin_name_path = "Biogrid",
                                          num_snws,
                                          layout = "stress",
-                                         score_quan_thr = -1,
+                                         score_quan_thr = 0.8,
                                          sig_gene_thr = 0.02,
                                          ...) {
   # process input data frame

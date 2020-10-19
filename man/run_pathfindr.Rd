@@ -34,7 +34,7 @@ run_pathfindR(
   grSubNum = 1000,
   iterations = 1,
   n_processes = NULL,
-  score_quan_thr = -1,
+  score_quan_thr = 0.8,
   sig_gene_thr = 0.02,
   plot_enrichment_chart = TRUE,
   output_dir = "pathfindR_Results",
@@ -131,7 +131,7 @@ used by foreach. If not specified, the function determines this
 automatically (Default == NULL. Gets set to 1 for Genetic Algorithm)}
 
 \item{score_quan_thr}{active subnetwork score quantile threshold. Must be
-between 0 and 1 or set to -1 for not filtering. (Default = -1)}
+between 0 and 1 or set to -1 for not filtering. (Default = 0.8)}
 
 \item{sig_gene_thr}{threshold for the minimum proportion of significant genes in
 the subnetwork (Default = 0.02) If the number of genes to use as threshold is

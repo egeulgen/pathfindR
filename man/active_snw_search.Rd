@@ -9,7 +9,7 @@ active_snw_search(
   pin_name_path = "Biogrid",
   snws_file = "active_snws",
   dir_for_parallel_run = NULL,
-  score_quan_thr = -1,
+  score_quan_thr = 0.8,
   sig_gene_thr = 0.02,
   search_method = "GR",
   silent_option = TRUE,
@@ -47,7 +47,7 @@ path/to/PIN.sif, the file must comply with the PIN specifications. (Default = "B
 Used in the wrapper function (see ?run_pathfindR) (Default = NULL)}
 
 \item{score_quan_thr}{active subnetwork score quantile threshold. Must be
-between 0 and 1 or set to -1 for not filtering. (Default = -1)}
+between 0 and 1 or set to -1 for not filtering. (Default = 0.8)}
 
 \item{sig_gene_thr}{threshold for the minimum proportion of significant genes in
 the subnetwork (Default = 0.02) If the number of genes to use as threshold is
