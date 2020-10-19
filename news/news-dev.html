@@ -77,7 +77,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0.9004</span>
       </span>
     </div>
 
@@ -147,24 +147,22 @@
       
     </div>
 
-    <div id="pathfindr-1609003" class="section level1">
-<h1 class="page-header" data-toc-text="1.6.0.9003">
-<a href="#pathfindr-1609003" class="anchor"></a>pathfindR 1.6.0.9003<small> Unreleased </small>
+    <div id="pathfindr-1609004" class="section level1">
+<h1 class="page-header" data-toc-text="1.6.0.9004">
+<a href="#pathfindr-1609004" class="anchor"></a>pathfindR 1.6.0.9004<small> Unreleased </small>
 </h1>
 <div id="major-changes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#major-changes" class="anchor"></a>Major Changes</h2>
 <ul>
 <li>In <code><a href="../reference/run_pathfindR.html">run_pathfindR()</a></code>, as “GR” (the default active subnetwork search method) provides nearly identical results in each iteration, the default <code>iterations</code> is set to 1</li>
-<li>In <code><a href="../reference/filterActiveSnws.html">filterActiveSnws()</a></code>, <code>run_pathindR()</code>, <code>active_snw_search</code> and <code><a href="../reference/visualize_active_subnetworks.html">visualize_active_subnetworks()</a></code>, the argument <code>score_quan_thr</code> is set to -1 (i.e. not filtering based on subnetwork score)</li>
-<li>added the column ‘support’ (the proportion of active subnetworks leading to enrichment over all subnetworks)</li>
+<li>added the column ‘support’ (the proportion of active subnetworks leading to enrichment over all subnetworks) in the output</li>
 </ul>
 </div>
 <div id="minor-changes-and-bug-fixes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#minor-changes-and-bug-fixes" class="anchor"></a>Minor changes and bug fixes</h2>
 <ul>
-<li>“GA” for <code>search_method</code> is now deprecated. We plan to remove this option in v2.0</li>
 <li>changed old argument in the “Step-by-Step Execution of the pathfindR Enrichment Workflow” vignette</li>
 </ul>
 <hr>

@@ -78,7 +78,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0.9004</span>
       </span>
     </div>
 
@@ -183,7 +183,7 @@
   grSubNum <span class='op'>=</span> <span class='fl'>1000</span>,
   iterations <span class='op'>=</span> <span class='fl'>1</span>,
   n_processes <span class='op'>=</span> <span class='cn'>NULL</span>,
-  score_quan_thr <span class='op'>=</span> <span class='op'>-</span><span class='fl'>1</span>,
+  score_quan_thr <span class='op'>=</span> <span class='fl'>0.8</span>,
   sig_gene_thr <span class='op'>=</span> <span class='fl'>0.02</span>,
   plot_enrichment_chart <span class='op'>=</span> <span class='cn'>TRUE</span>,
   output_dir <span class='op'>=</span> <span class='st'>"pathfindR_Results"</span>,
@@ -342,7 +342,7 @@ automatically (Default == NULL. Gets set to 1 for Genetic Algorithm)</p></td>
     <tr>
       <th>score_quan_thr</th>
       <td><p>active subnetwork score quantile threshold. Must be
-between 0 and 1 or set to -1 for not filtering. (Default = -1)</p></td>
+between 0 and 1 or set to -1 for not filtering. (Default = 0.8)</p></td>
     </tr>
     <tr>
       <th>sig_gene_thr</th>

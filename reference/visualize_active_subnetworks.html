@@ -78,7 +78,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0.9004</span>
       </span>
     </div>
 
@@ -159,7 +159,7 @@
   pin_name_path <span class='op'>=</span> <span class='st'>"Biogrid"</span>,
   <span class='va'>num_snws</span>,
   layout <span class='op'>=</span> <span class='st'>"stress"</span>,
-  score_quan_thr <span class='op'>=</span> <span class='op'>-</span><span class='fl'>1</span>,
+  score_quan_thr <span class='op'>=</span> <span class='fl'>0.8</span>,
   sig_gene_thr <span class='op'>=</span> <span class='fl'>0.02</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
@@ -198,7 +198,7 @@ you want to visualize all subnetworks)</p></td>
     <tr>
       <th>score_quan_thr</th>
       <td><p>active subnetwork score quantile threshold. Must be
-between 0 and 1 or set to -1 for not filtering. (Default = -1)</p></td>
+between 0 and 1 or set to -1 for not filtering. (Default = 0.8)</p></td>
     </tr>
     <tr>
       <th>sig_gene_thr</th>
