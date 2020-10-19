@@ -6,7 +6,6 @@
 - added the column 'support' (the proportion of active subnetworks leading to enrichment over all subnetworks)
 
 ## Minor changes and bug fixes
-- "GA" for `search_method` is now deprecated. We plan to remove this option in v2.0
 - changed old argument in the "Step-by-Step Execution of the pathfindR Enrichment Workflow" vignette
 
 ***

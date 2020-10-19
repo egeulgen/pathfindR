@@ -32,8 +32,7 @@ test_that("`run_pathfindR()` works as expected", {
             "data.frame")
 
   ## GA - n_processes <- 1 and n_processes <- iterations (iterations < n_processes)
-  expected_warns <- c("search_method` 'GA' is deprecated; please use 'GR' or 'SA' instead",
-                      "Did not find any enriched terms!",
+  expected_warns <- c("Did not find any enriched terms!",
                       "`iterations` is set to 1 because `search_method = \"GA\"")
   expect_warning(run_pathfindR(RA_input[3:4, ],
                                search_method = "GA",

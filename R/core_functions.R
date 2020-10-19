@@ -116,11 +116,6 @@ run_pathfindR <- function(input,
          paste(dQuote(valid_mets), collapse = ", "))
   }
 
-  if (search_method == "GA") {
-    warning("`search_method` 'GA' is deprecated; please use 'GR' or 'SA' instead.",
-            call. = FALSE)
-  }
-
   ## If search_method is GA, set iterations as 1
   if (search_method == "GA") {
     warning("`iterations` is set to 1 because `search_method = \"GA\"`",
