@@ -1,4 +1,4 @@
-# pathfindR 1.6.0.9004
+# pathfindR 1.6.0.9005
 
 ## Major Changes
 - In `run_pathfindR()`, as "GR" (the default active subnetwork search method) provides nearly identical results in each iteration, the default `iterations` is set to 1
@@ -6,6 +6,7 @@
 
 ## Minor changes and bug fixes
 - changed old argument in the "Step-by-Step Execution of the pathfindR Enrichment Workflow" vignette
+- fixed an issue in `visualize_term_interactions()` where the file name was too long, it was causing an error on Windows. Limited to 100 characters
 
 ***
 
