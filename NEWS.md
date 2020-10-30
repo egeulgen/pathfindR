@@ -6,7 +6,7 @@
 
 ## Minor changes and bug fixes
 - changed old argument in the "Step-by-Step Execution of the pathfindR Enrichment Workflow" vignette
-- fixed an issue in `visualize_term_interactions()` where the file name was too long, it was causing an error on Windows. Limited to 100 characters
+- fixed an issue in `visualize_term_interactions()` where the file name was too long, it was causing an error on Windows. Limited to 100 characters (#58)
 
 ***
 
