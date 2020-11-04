@@ -2,7 +2,7 @@
 ## Project: pathfindR
 ## Script purpose: Testthat testing script for
 ## enriched term clustering functions
-## Date: Oct 29, 2019
+## Date: Nov 4, 2020
 ## Author: Ege Ulgen
 ##################################################
 
@@ -77,7 +77,7 @@ test_that("`create_kappa_matrix()` arg checks works", {
 })
 
 # hierarchical_term_clustering --------------------------------------------
-test_that("H`hierarchical_term_clustering()` returns integer vector", {
+test_that("`hierarchical_term_clustering()` returns integer vector", {
   enrichment_res <- RA_output[1:5, ]
   kappa_mat <- create_kappa_matrix(enrichment_res)
 
@@ -87,6 +87,20 @@ test_that("H`hierarchical_term_clustering()` returns integer vector", {
                                          enrichment_res,
                                          plot_hmap = TRUE),
             "integer")
+})
+
+test_that("For `hierarchical_term_clustering()`, `num_clusters` works", {
+  enrichment_res <- RA_output[1:5, ]
+  kappa_mat <- create_kappa_matrix(enrichment_res)
+
+  expect_is(res <- hierarchical_term_clustering(kappa_mat, enrichment_res, num_clusters = 3),
+            "integer")
+  expect_equal(max(res), 3)
+
+  expect_is(res <- hierarchical_term_clustering(kappa_mat, enrichment_res, num_clusters = 4),
+            "integer")
+  expect_equal(max(res), 4)
+
 })
 
 test_that("Consistent `hierarchical_term_clustering()` results", {

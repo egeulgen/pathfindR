@@ -119,6 +119,9 @@ create_kappa_matrix <- function(enrichment_res,
 #'
 #' @param kappa_mat matrix of kappa statistics (output of \code{\link{create_kappa_matrix}})
 #' @inheritParams create_kappa_matrix
+#' @param num_clusters number of clusters to be formed (default = \code{NULL}).
+#' If \code{NULL}, the optimal number of clusters is determined as the number
+#' which yields the highest average silhouette width.
 #' @param clu_method the agglomeration method to be used
 #' (default = "average", see \code{\link[stats]{hclust}})
 #' @param plot_hmap boolean to indicate whether to plot the kappa statistics
@@ -127,11 +130,12 @@ create_kappa_matrix <- function(enrichment_res,
 #' dendrogram partitioned into the optimal number of clusters (default = TRUE)
 #'
 #' @details The function initially performs hierarchical clustering
-#' of the enriched terms in `enrichment_res` using the kappa statistics
-#' (defining the distance as `1 - kappa_statistic`). Next,
+#' of the enriched terms in \code{enrichment_res} using the kappa statistics
+#' (defining the distance as \code{1 - kappa_statistic}). Next,
 #' the clustering dendrogram is cut into k = 2, 3, ..., n - 1 clusters
 #' (where n is the number of terms). The optimal number of clusters is
 #' determined as the k value which yields the highest average silhouette width.
+#' (if \code{num_clusters} not specified)
 #'
 #' @return a vector of clusters for each enriched term in the enrichment results.
 #' @export
@@ -143,6 +147,7 @@ create_kappa_matrix <- function(enrichment_res,
 #' }
 hierarchical_term_clustering <- function(kappa_mat,
                                          enrichment_res,
+                                         num_clusters = NULL,
                                          use_description = FALSE,
                                          clu_method = "average",
                                          plot_hmap = FALSE, plot_dend = TRUE) {
@@ -193,23 +198,28 @@ hierarchical_term_clustering <- function(kappa_mat,
     )
   }
 
-  ### Choose optimal k
-  kmax <- nrow(kappa_mat2) - 1
-  avg_sils <- c()
-  for (i in 2:kmax) {
-    avg_sils <- c(avg_sils, fpc::cluster.stats(stats::as.dist(1 - kappa_mat2),
-      stats::cutree(clu, k = i),
-      silhouette = TRUE
-    )$avg.silwidth)
+  ### Choose optimal k if not specified
+  if (is.null(num_clusters)) {
+    kmax <- nrow(kappa_mat2) - 1
+    avg_sils <- c()
+    for (i in 2:kmax) {
+      avg_sils <- c(avg_sils, fpc::cluster.stats(stats::as.dist(1 - kappa_mat2),
+                                                 stats::cutree(clu, k = i),
+                                                 silhouette = TRUE
+      )$avg.silwidth)
+    }
+
+    k_opt <- (2:kmax)[which.max(avg_sils)]
+
+    message(paste(
+      "The maximum average silhouette width was",
+      round(max(avg_sils), 2),
+      "for k =", k_opt, "\n\n"
+    ))
+  } else {
+    k_opt = num_clusters
   }
 
-  k_opt <- (2:kmax)[which.max(avg_sils)]
-
-  message(paste(
-    "The maximum average silhouette width was",
-    round(max(avg_sils), 2),
-    "for k =", k_opt, "\n\n"
-  ))
 
   if (plot_dend) {
     plot(clu)

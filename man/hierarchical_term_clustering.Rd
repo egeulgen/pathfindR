@@ -7,6 +7,7 @@
 hierarchical_term_clustering(
   kappa_mat,
   enrichment_res,
+  num_clusters = NULL,
   use_description = FALSE,
   clu_method = "average",
   plot_hmap = FALSE,
@@ -21,6 +22,10 @@ columns are "Term_Description" (if \code{use_description = TRUE}) or "ID"
 (if \code{use_description = FALSE}), "Down_regulated", and "Up_regulated".
 If \code{use_active_snw_genes = TRUE}, "non_Signif_Snw_Genes" must also be
 provided.}
+
+\item{num_clusters}{number of clusters to be formed (default = \code{NULL}).
+If \code{NULL}, the optimal number of clusters is determined as the number
+which yields the highest average silhouette width.}
 
 \item{use_description}{Boolean argument to indicate whether term descriptions
 (in the "Term_Description" column) should be used. (default = \code{FALSE})}
@@ -42,11 +47,12 @@ Hierarchical Clustering of Enriched Terms
 }
 \details{
 The function initially performs hierarchical clustering
-of the enriched terms in `enrichment_res` using the kappa statistics
-(defining the distance as `1 - kappa_statistic`). Next,
+of the enriched terms in \code{enrichment_res} using the kappa statistics
+(defining the distance as \code{1 - kappa_statistic}). Next,
 the clustering dendrogram is cut into k = 2, 3, ..., n - 1 clusters
 (where n is the number of terms). The optimal number of clusters is
 determined as the k value which yields the highest average silhouette width.
+(if \code{num_clusters} not specified)
 }
 \examples{
 \dontrun{
