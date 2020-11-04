@@ -78,7 +78,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0.9006</span>
       </span>
     </div>
 
@@ -156,6 +156,7 @@
     <pre class="usage"><span class='fu'>hierarchical_term_clustering</span><span class='op'>(</span>
   <span class='va'>kappa_mat</span>,
   <span class='va'>enrichment_res</span>,
+  num_clusters <span class='op'>=</span> <span class='cn'>NULL</span>,
   use_description <span class='op'>=</span> <span class='cn'>FALSE</span>,
   clu_method <span class='op'>=</span> <span class='st'>"average"</span>,
   plot_hmap <span class='op'>=</span> <span class='cn'>FALSE</span>,
@@ -176,6 +177,12 @@ columns are "Term_Description" (if <code>use_description = TRUE</code>) or "ID"
 (if <code>use_description = FALSE</code>), "Down_regulated", and "Up_regulated".
 If <code>use_active_snw_genes = TRUE</code>, "non_Signif_Snw_Genes" must also be
 provided.</p></td>
+    </tr>
+    <tr>
+      <th>num_clusters</th>
+      <td><p>number of clusters to be formed (default = <code>NULL</code>).
+If <code>NULL</code>, the optimal number of clusters is determined as the number
+which yields the highest average silhouette width.</p></td>
     </tr>
     <tr>
       <th>use_description</th>
@@ -205,11 +212,12 @@ dendrogram partitioned into the optimal number of clusters (default = TRUE)</p><
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The function initially performs hierarchical clustering
-of the enriched terms in `enrichment_res` using the kappa statistics
-(defining the distance as `1 - kappa_statistic`). Next,
+of the enriched terms in <code>enrichment_res</code> using the kappa statistics
+(defining the distance as <code>1 - kappa_statistic</code>). Next,
 the clustering dendrogram is cut into k = 2, 3, ..., n - 1 clusters
 (where n is the number of terms). The optimal number of clusters is
-determined as the k value which yields the highest average silhouette width.</p>
+determined as the k value which yields the highest average silhouette width.
+(if <code>num_clusters</code> not specified)</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
