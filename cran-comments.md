@@ -4,9 +4,7 @@
 * win-builder (devel and release)
 
 ## R CMD check results
-There were no ERRORs, WARNINGs or NOTEs:
-
-  This submission to update pathfindR to v1.6.0.
+  There were no ERRORs, WARNINGs or NOTEs.
 
 ## Downstream dependencies
   There are currently no downstream dependencies for this package.
