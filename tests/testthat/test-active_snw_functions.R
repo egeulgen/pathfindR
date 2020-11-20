@@ -24,7 +24,8 @@ test_that("`active_snw_search()` returns list object", {
   unlink("active_snw_search", recursive = TRUE)
 
   # Expect no active snws
-  expect_message(snw_list <- active_snw_search(input_for_search = input_df2),
+  expect_message(snw_list <- active_snw_search(input_for_search = input_df2,
+                                               sig_gene_thr = 1),
                  "Found 0 active subnetworks")
   expect_identical(snw_list, list())
   unlink("active_snw_search", recursive = TRUE)
@@ -205,8 +206,8 @@ test_that("`visualize_active_subnetworks()` returns list of ggraph objects", {
   expect_is(g_list[[1]], "ggraph")
   expect_true(length(g_list) <= example_snws_len)
 
-  # set `num_snws` to 3
-  g_list <- visualize_active_subnetworks(sample_path, input_df, num_snws = 3)
+  # set `num_snws` to larger than actual number
+  g_list <- visualize_active_subnetworks(sample_path, input_df, num_snws = 21)
   expect_is(g_list, "list")
   expect_is(g_list[[1]], "ggraph")
   expect_length(g_list, 3)

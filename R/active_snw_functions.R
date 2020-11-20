@@ -166,11 +166,16 @@ active_snw_search <- function(input_for_search,
               to = snws_file)
 
   ############ Parse and filter active subnetworks
-  filtred_snws <- pathfindR::filterActiveSnws(active_snw_path  = snws_file,
+  filtered_snws <- pathfindR::filterActiveSnws(active_snw_path  = snws_file,
                                               sig_genes_vec = input_for_search$GENE,
                                               score_quan_thr = score_quan_thr,
                                               sig_gene_thr = sig_gene_thr)
-  snws <- filtred_snws$subnetworks
+
+  if (is.null(filtered_snws)) {
+    snws <- list()
+  } else {
+    snws <- filtered_snws$subnetworks
+  }
   message(paste0("Found ", length(snws), " active subnetworks\n\n"))
 
   return(snws)
