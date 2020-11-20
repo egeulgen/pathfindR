@@ -2,7 +2,7 @@
 ## Project: pathfindR
 ## Script purpose: Testthat testing script for
 ## active subnetwork search functions
-## Date: Oct 2, 2020
+## Date: Nov 20, 2020
 ## Author: Ege Ulgen
 ##################################################
 
@@ -10,7 +10,7 @@
 input_df1 <- suppressMessages(input_processing(RA_input[1:100, ],
                                                p_val_threshold = 0.05,
                                                pin_name_path = "Biogrid"))
-input_df2 <- suppressMessages(input_processing(RA_input[1:3, ],
+input_df2 <- suppressMessages(input_processing(RA_input[1:2, ],
                                                p_val_threshold = 0.05,
                                                pin_name_path = "Biogrid"))
 
