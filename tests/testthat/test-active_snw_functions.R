@@ -120,7 +120,7 @@ test_that("`filterActiveSnws()` returns list object", {
   expect_true(length(tmp_filtered$subnetworks) <= example_snws_len)
 
   # empty file case
-  empty_path <- file.path(tempdir(), "empty.txt")
+  empty_path <- file.path(tempdir(check = TRUE), "empty.txt")
   file.create(empty_path)
   expect_null(suppressWarnings(filterActiveSnws(active_snw_path = empty_path,
                                                 sig_genes_vec = RA_input$Gene.symbol)))
@@ -193,7 +193,7 @@ test_that("`filterActiveSnws()` arg checks work", {
 # visualize_active_subnetworks --------------------------------------------
 test_that("`visualize_active_subnetworks()` returns list of ggraph objects", {
   # empty file case
-  empty_path <- file.path(tempdir(), "empty.txt")
+  empty_path <- file.path(tempdir(check = TRUE), "empty.txt")
   file.create(empty_path)
   expect_null(visualize_active_subnetworks(active_snw_path = empty_path,
                                            genes_df = RA_input[1:5,]))
