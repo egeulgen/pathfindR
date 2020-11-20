@@ -25,12 +25,12 @@ process_pin <- function(pin_df) {
 #' list of available organisms (default = "Homo_sapiens")
 #' @param path2pin the path of the file to save the PIN data. By default, the
 #' PIN data is saved in a temporary file
-#' @param release the requested BioGRID release (default = "LATEST")
+#' @param release the requested BioGRID release (default = "4.2.191")
 #'
 #' @return the path of the file in which the PIN data was saved. If
 #' \code{path2pin} was not supplied by the user, the PIN data is saved in a
 #' temporary file
-get_biogrid_pin <- function(org = "Homo_sapiens", path2pin, release = "LATEST") {
+get_biogrid_pin <- function(org = "Homo_sapiens", path2pin, release = "4.2.191") {
   # check organism name
   all_org_names <- c("Anopheles_gambiae_PEST", "Apis_mellifera",
                      "Arabidopsis_thaliana_Columbia", "Bacillus_subtilis_168",
@@ -72,17 +72,14 @@ get_biogrid_pin <- function(org = "Homo_sapiens", path2pin, release = "LATEST") 
     stop(paste(org, "is not a valid Biogrid organism.",
                "Available organisms are listed on: https://wiki.thebiogrid.org/doku.php/statistics"))
 
-  # release directort for download
-  if (release == "LATEST") {
-    rel_dir <- "Latest%20Release"
-  } else {
-    rel_dir <- paste0("Release%20Archive/BIOGRID-", release)
-  }
+  # release directory for download
+  rel_dir <- paste0("BIOGRID-", release)
+
   # download tab2 format organism files
   tmp <- tempfile()
   fname <- paste0("BIOGRID-ORGANISM-", release, ".tab2")
-  biogrid_url <- paste0("http://thebiogrid.org/downloads/archives/", rel_dir, "/", fname, ".zip")
-  utils::download.file(biogrid_url, tmp)
+  biogrid_url <- paste0("https://downloads.thebiogrid.org/Download/BioGRID/Release-Archive/", rel_dir, "/", fname, ".zip")
+  utils::download.file(biogrid_url, tmp, method = "wget", quiet = TRUE)
 
   # parse organism names
   all_org_files <- utils::unzip(tmp, list = TRUE)

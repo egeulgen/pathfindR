@@ -3,6 +3,7 @@
 ## Major Changes
 - In `run_pathfindR()`, as "GR" (the default active subnetwork search method) provides nearly identical results in each iteration, the default `iterations` is set to 1
 - added the column 'support' (the proportion of active subnetworks leading to enrichment over all subnetworks) in the output
+- updated the download URL in `get_biogrid_pin()` as BioGRID updated the URL for download
 
 ## Minor changes and bug fixes
 - changed old argument in the "Step-by-Step Execution of the pathfindR Enrichment Workflow" vignette
