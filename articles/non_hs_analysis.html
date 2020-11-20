@@ -161,7 +161,7 @@
 <blockquote>
 <p>Note that BioGRID PINs are smaller for non-H.sapiens organisms and this, in turn, results in less or no significantly enriched terms with pathfindR analysis.</p>
 </blockquote>
-<p>Here, we demonstrate obtaining the organism-specific protein-protein interaction network (PIN) from <a href="https://stringdb-static.org/cgi/download.pl">STRING</a>. You may choose the organism of your choice and find the PIN on the downloads page with the description “protein network data (scored links between proteins)”. When processing, we recommend filtering the interactions using a link score threshold (e.g. 800).</p>
+<p>Here, we demonstrate obtaining the organism-specific protein-protein interaction network (PIN) from <a href="https://string-db.org/">STRING</a>. You may choose the organism of your choice and find the PIN on the downloads page with the description “protein network data (scored links between proteins)”. When processing, we recommend filtering the interactions using a link score threshold (e.g. 800).</p>
 <p>Regardless of the resource, the raw PIN data should be processed to a SIF file, each interactor should be specified with their gene symbols. The first 3 interactions from an example SIF file is provided below:</p>
 <table class="table"><tbody>
 <tr class="odd">
@@ -334,12 +334,13 @@
 <table class="table">
 <colgroup>
 <col width="5%">
-<col width="34%">
-<col width="8%">
+<col width="26%">
+<col width="9%">
 <col width="6%">
 <col width="5%">
 <col width="5%">
-<col width="26%">
+<col width="5%">
+<col width="27%">
 <col width="8%">
 </colgroup>
 <thead><tr class="header">
@@ -347,6 +348,7 @@
 <th align="left">Term_Description</th>
 <th align="right">Fold_Enrichment</th>
 <th align="right">occurrence</th>
+<th align="right">support</th>
 <th align="right">lowest_p</th>
 <th align="right">highest_p</th>
 <th align="left">Up_regulated</th>
@@ -354,240 +356,176 @@
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">mmu04657</td>
-<td align="left">IL-17 signaling pathway</td>
-<td align="right">16.088282</td>
-<td align="right">10</td>
-<td align="right">0.0000006</td>
-<td align="right">0.0016999</td>
-<td align="left">Cxcl10, Ccl12, Il1b</td>
+<td align="left">mmu04060</td>
+<td align="left">Cytokine-cytokine receptor interaction</td>
+<td align="right">12.061372</td>
+<td align="right">1</td>
+<td align="right">0.1666667</td>
+<td align="right">0.0000066</td>
+<td align="right">0.0000066</td>
+<td align="left">Ccl8, Ccl12, Cxcl10, Il15, Il1b, Tnfsf10, Lifr</td>
 <td align="left"></td>
 </tr>
 <tr class="even">
 <td align="left">mmu04668</td>
 <td align="left">TNF signaling pathway</td>
 <td align="right">16.895070</td>
-<td align="right">10</td>
-<td align="right">0.0000015</td>
+<td align="right">1</td>
+<td align="right">0.1666667</td>
+<td align="right">0.0000217</td>
 <td align="right">0.0000217</td>
 <td align="left">Ccl12, Cxcl10, Il1b, Il15</td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left">mmu04061</td>
-<td align="left">Viral protein interaction with cytokine and cytokine receptor</td>
-<td align="right">21.694805</td>
-<td align="right">1</td>
-<td align="right">0.0000026</td>
-<td align="right">0.0000026</td>
-<td align="left">Ccl8, Ccl12, Cxcl10, Tnfsf10</td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left">mmu04060</td>
-<td align="left">Cytokine-cytokine receptor interaction</td>
-<td align="right">12.061372</td>
-<td align="right">10</td>
-<td align="right">0.0000066</td>
-<td align="right">0.0000546</td>
-<td align="left">Ccl8, Ccl12, Cxcl10, Il15, Il1b, Tnfsf10, Lifr</td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">mmu05164</td>
-<td align="left">Influenza A</td>
-<td align="right">11.500861</td>
-<td align="right">10</td>
-<td align="right">0.0000069</td>
-<td align="right">0.0005685</td>
-<td align="left">Il1b, Ccl12, Cxcl10, Tnfsf10</td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left">mmu04062</td>
-<td align="left">Chemokine signaling pathway</td>
-<td align="right">7.781832</td>
-<td align="right">1</td>
-<td align="right">0.0000520</td>
-<td align="right">0.0000520</td>
-<td align="left">Cxcl10, Ccl12, Ccl8</td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">mmu05144</td>
-<td align="left">Malaria</td>
-<td align="right">19.886905</td>
-<td align="right">1</td>
-<td align="right">0.0000524</td>
-<td align="right">0.0000524</td>
-<td align="left">Ccl12, Il1b</td>
-<td align="left"></td>
-</tr>
-<tr class="even">
 <td align="left">mmu04625</td>
 <td align="left">C-type lectin receptor signaling pathway</td>
 <td align="right">13.257936</td>
-<td align="right">10</td>
+<td align="right">1</td>
+<td align="right">0.0833333</td>
 <td align="right">0.0001550</td>
 <td align="right">0.0001550</td>
 <td align="left">Il1b, Clec4n, Clec4e</td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">mmu04623</td>
-<td align="left">Cytosolic DNA-sensing pathway</td>
-<td align="right">16.179177</td>
-<td align="right">10</td>
-<td align="right">0.0002453</td>
-<td align="right">0.0004891</td>
-<td align="left">Cxcl10, Il1b</td>
 <td align="left"></td>
 </tr>
 <tr class="even">
 <td align="left">mmu00230</td>
 <td align="left">Purine metabolism</td>
 <td align="right">7.231602</td>
-<td align="right">10</td>
+<td align="right">1</td>
+<td align="right">0.0833333</td>
 <td align="right">0.0002845</td>
 <td align="right">0.0002845</td>
 <td align="left">Gda, Pde3b</td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left">mmu05323</td>
-<td align="left">Rheumatoid arthritis</td>
-<td align="right">16.649502</td>
-<td align="right">10</td>
-<td align="right">0.0003094</td>
-<td align="right">0.0015326</td>
-<td align="left">Il15, Il1b, Ccl12</td>
-<td align="left"></td>
-</tr>
-<tr class="even">
 <td align="left">mmu04217</td>
 <td align="left">Necroptosis</td>
 <td align="right">6.867420</td>
-<td align="right">10</td>
+<td align="right">1</td>
+<td align="right">0.0833333</td>
 <td align="right">0.0003326</td>
 <td align="right">0.0003326</td>
 <td align="left">Il1b, Tnfsf10</td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
-<td align="left">mmu04933</td>
-<td align="left">AGE-RAGE signaling pathway in diabetic complications</td>
-<td align="right">9.451202</td>
-<td align="right">1</td>
-<td align="right">0.0005034</td>
-<td align="right">0.0005034</td>
-<td align="left">Ccl12, Il1b</td>
-<td align="left"></td>
-</tr>
 <tr class="even">
-<td align="left">mmu05142</td>
-<td align="left">Chagas disease</td>
-<td align="right">9.267684</td>
+<td align="left">mmu04623</td>
+<td align="left">Cytosolic DNA-sensing pathway</td>
+<td align="right">16.179177</td>
 <td align="right">1</td>
-<td align="right">0.0005342</td>
-<td align="right">0.0005342</td>
-<td align="left">Ccl12, Il1b</td>
+<td align="right">0.0833333</td>
+<td align="right">0.0004891</td>
+<td align="right">0.0004891</td>
+<td align="left">Cxcl10, Il1b</td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left">mmu04630</td>
-<td align="left">JAK-STAT signaling pathway</td>
-<td align="right">5.785281</td>
-<td align="right">10</td>
-<td align="right">0.0005582</td>
-<td align="right">0.0108629</td>
-<td align="left">Il15, Lifr</td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left">mmu05135</td>
-<td align="left">Yersinia infection</td>
-<td align="right">7.516311</td>
+<td align="left">mmu05164</td>
+<td align="left">Influenza A</td>
+<td align="right">11.500861</td>
 <td align="right">1</td>
-<td align="right">0.0010056</td>
-<td align="right">0.0010056</td>
-<td align="left">Il1b, Ccl12</td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">mmu04620</td>
-<td align="left">Toll-like receptor signaling pathway</td>
-<td align="right">9.740525</td>
-<td align="right">10</td>
-<td align="right">0.0011427</td>
-<td align="right">0.0022732</td>
-<td align="left">Il1b, Cxcl10</td>
+<td align="right">0.2500000</td>
+<td align="right">0.0005685</td>
+<td align="right">0.0005685</td>
+<td align="left">Il1b, Ccl12, Cxcl10, Tnfsf10</td>
 <td align="left"></td>
 </tr>
 <tr class="even">
 <td align="left">mmu05132</td>
 <td align="left">Salmonella infection</td>
 <td align="right">4.481556</td>
-<td align="right">10</td>
+<td align="right">1</td>
+<td align="right">0.0833333</td>
 <td align="right">0.0012058</td>
 <td align="right">0.0012058</td>
 <td align="left">Il1b, Tnfsf10</td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left">mmu05418</td>
-<td align="left">Fluid shear stress and atherosclerosis</td>
-<td align="right">6.675325</td>
+<td align="left">mmu05323</td>
+<td align="left">Rheumatoid arthritis</td>
+<td align="right">16.649502</td>
 <td align="right">1</td>
-<td align="right">0.0014380</td>
-<td align="right">0.0014380</td>
-<td align="left">Ccl12, Il1b</td>
+<td align="right">0.1666667</td>
+<td align="right">0.0015326</td>
+<td align="right">0.0015326</td>
+<td align="left">Il15, Il1b, Ccl12</td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">mmu04621</td>
-<td align="left">NOD-like receptor signaling pathway</td>
-<td align="right">11.431993</td>
-<td align="right">10</td>
-<td align="right">0.0022943</td>
-<td align="right">0.0195262</td>
-<td align="left">Il1b, Ccl12, Gbp2, Gbp7</td>
+<td align="left">mmu04657</td>
+<td align="left">IL-17 signaling pathway</td>
+<td align="right">16.088282</td>
+<td align="right">1</td>
+<td align="right">0.2500000</td>
+<td align="right">0.0016999</td>
+<td align="right">0.0016999</td>
+<td align="left">Cxcl10, Ccl12, Il1b</td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left">mmu05163</td>
-<td align="left">Human cytomegalovirus infection</td>
-<td align="right">4.027728</td>
+<td align="left">mmu04620</td>
+<td align="left">Toll-like receptor signaling pathway</td>
+<td align="right">9.740525</td>
 <td align="right">1</td>
-<td align="right">0.0065666</td>
-<td align="right">0.0065666</td>
-<td align="left">Il1b, Ccl12</td>
+<td align="right">0.1666667</td>
+<td align="right">0.0022732</td>
+<td align="right">0.0022732</td>
+<td align="left">Il1b, Cxcl10</td>
 <td align="left"></td>
 </tr>
 <tr class="even">
 <td align="left">mmu00760</td>
 <td align="left">Nicotinate and nicotinamide metabolism</td>
 <td align="right">12.238095</td>
-<td align="right">10</td>
+<td align="right">1</td>
+<td align="right">0.0833333</td>
 <td align="right">0.0075047</td>
 <td align="right">0.0075047</td>
 <td align="left">Art2b</td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
+<td align="left">mmu04630</td>
+<td align="left">JAK-STAT signaling pathway</td>
+<td align="right">5.785281</td>
+<td align="right">1</td>
+<td align="right">0.0833333</td>
+<td align="right">0.0108629</td>
+<td align="right">0.0108629</td>
+<td align="left">Il15, Lifr</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
 <td align="left">mmu05134</td>
 <td align="left">Legionellosis</td>
 <td align="right">8.089588</td>
-<td align="right">10</td>
+<td align="right">1</td>
+<td align="right">0.0833333</td>
 <td align="right">0.0173113</td>
 <td align="right">0.0173113</td>
 <td align="left">Il1b</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">mmu04621</td>
+<td align="left">NOD-like receptor signaling pathway</td>
+<td align="right">11.431993</td>
+<td align="right">1</td>
+<td align="right">0.0833333</td>
+<td align="right">0.0195262</td>
+<td align="right">0.0195262</td>
+<td align="left">Il1b, Ccl12, Gbp2, Gbp7</td>
 <td align="left"></td>
 </tr>
 <tr class="even">
 <td align="left">mmu05143</td>
 <td align="left">African trypanosomiasis</td>
 <td align="right">13.636735</td>
-<td align="right">9</td>
+<td align="right">1</td>
+<td align="right">0.0833333</td>
 <td align="right">0.0299877</td>
 <td align="right">0.0299877</td>
 <td align="left">Il1b</td>
@@ -597,7 +535,8 @@
 <td align="left">mmu04012</td>
 <td align="left">ErbB signaling pathway</td>
 <td align="right">5.820557</td>
-<td align="right">10</td>
+<td align="right">1</td>
+<td align="right">0.1666667</td>
 <td align="right">0.0335621</td>
 <td align="right">0.0335621</td>
 <td align="left">Nrg1</td>
@@ -607,7 +546,8 @@
 <td align="left">mmu04672</td>
 <td align="left">Intestinal immune network for IgA production</td>
 <td align="right">11.363946</td>
-<td align="right">9</td>
+<td align="right">1</td>
+<td align="right">0.0833333</td>
 <td align="right">0.0433333</td>
 <td align="right">0.0433333</td>
 <td align="left">Il15</td>
