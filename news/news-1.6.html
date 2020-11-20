@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create Diagrams for Enriched Terms — visualize_terms • pathfindR</title>
+<title>Version 1.6 • pathfindR</title>
 
 
 <!-- jquery -->
@@ -45,8 +45,7 @@
 
 
 
-<meta property="og:title" content="Create Diagrams for Enriched Terms — visualize_terms" />
-<meta property="og:description" content="Create Diagrams for Enriched Terms" />
+<meta property="og:title" content="Version 1.6" />
 
 
 
@@ -65,7 +64,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-topic">
+    <div class="container template-news">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -144,88 +143,40 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create Diagrams for Enriched Terms</h1>
-    <small class="dont-index">Source: <a href='https://github.com/egeulgen/pathfindR/blob/master/R/visualization_functions.R'><code>R/visualization_functions.R</code></a></small>
-    <div class="hidden name"><code>visualize_terms.Rd</code></div>
+      <h1 data-toc-skip>Changelog <small>1.6</small></h1>
+      
     </div>
 
-    <div class="ref-description">
-    <p>Create Diagrams for Enriched Terms</p>
-    </div>
-
-    <pre class="usage"><span class='fu'>visualize_terms</span><span class='op'>(</span>
-  <span class='va'>result_df</span>,
-  input_processed <span class='op'>=</span> <span class='cn'>NULL</span>,
-  hsa_KEGG <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  pin_name_path <span class='op'>=</span> <span class='st'>"Biogrid"</span>,
-  <span class='va'>...</span>
-<span class='op'>)</span></pre>
-
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>result_df</th>
-      <td><p>Data frame of enrichment results. Must-have columns for
- KEGG human pathway diagrams (<code>hsa_kegg = TRUE</code>) are: "ID" and "Term_Description".
- Must-have columns for the rest are: "Term_Description", "Up_regulated" and
-"Down_regulated"</p></td>
-    </tr>
-    <tr>
-      <th>input_processed</th>
-      <td><p>input data processed via <code><a href='input_processing.html'>input_processing</a></code>,
-not necessary when <code>hsa_KEGG = FALSE</code></p></td>
-    </tr>
-    <tr>
-      <th>hsa_KEGG</th>
-      <td><p>boolean to indicate whether human KEGG gene sets were used for
-enrichment analysis or not (default = <code>TRUE</code>)</p></td>
-    </tr>
-    <tr>
-      <th>pin_name_path</th>
-      <td><p>Name of the chosen PIN or path/to/PIN.sif. If PIN name,
-must be one of c("Biogrid", "STRING", "GeneMania", "IntAct", "KEGG", "mmu_STRING"). If
-path/to/PIN.sif, the file must comply with the PIN specifications. (Default = "Biogrid")</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>additional arguments for <code><a href='visualize_hsa_KEGG.html'>visualize_hsa_KEGG</a></code> (used
-when <code>hsa_kegg = TRUE</code>)</p></td>
-    </tr>
-    </table>
-
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>Depending on the argument <code>hsa_KEGG</code>, creates visualization of
- interactions of genes involved in the list of enriched terms in
- <code>result_df</code> and saves them in the folder "term_visualizations" under
- the current working directory.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>For <code>hsa_KEGG = TRUE</code>, KEGG human pathway diagrams are created,
-affected nodes colored by up/down regulation status.
-For other gene sets, interactions of affected genes are determined (via a shortest-path
-algorithm) and are visualized (colored by change status) using igraph.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>See <code><a href='visualize_hsa_KEGG.html'>visualize_hsa_KEGG</a></code> for the visualization function
-of human KEGG diagrams. See <code><a href='visualize_term_interactions.html'>visualize_term_interactions</a></code> for the
-visualization function that generates diagrams showing the interactions of
-input genes in the PIN. See <code><a href='run_pathfindR.html'>run_pathfindR</a></code> for the wrapper
-function of the pathfindR workflow.</p></div>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='fu'>visualize_terms</span><span class='op'>(</span><span class='va'>result_df</span>, <span class='va'>input_processed</span><span class='op'>)</span>
-<span class='fu'>visualize_terms</span><span class='op'>(</span><span class='va'>result_df</span>, hsa_KEGG <span class='op'>=</span> <span class='cn'>FALSE</span>, pin_name_path <span class='op'>=</span> <span class='st'>"IntAct"</span><span class='op'>)</span>
-<span class='op'>}</span>
-</div></pre>
+    <div id="pathfindr-160" class="section level1">
+<h1 class="page-header" data-toc-text="1.6.0">
+<a href="#pathfindr-160" class="anchor"></a>pathfindR 1.6.0<small> Unreleased </small>
+</h1>
+<div id="major-changes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#major-changes" class="anchor"></a>Major Changes</h2>
+<ul>
+<li>In <code><a href="../reference/run_pathfindR.html">run_pathfindR()</a></code>, as “GR” (the default active subnetwork search method) provides nearly identical results in each iteration, the default <code>iterations</code> is set to 1</li>
+<li>added the column ‘support’ (the proportion of active subnetworks leading to enrichment over all subnetworks) in the output</li>
+</ul>
+</div>
+<div id="minor-changes-and-bug-fixes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#minor-changes-and-bug-fixes" class="anchor"></a>Minor changes and bug fixes</h2>
+<ul>
+<li>changed old argument in the “Step-by-Step Execution of the pathfindR Enrichment Workflow” vignette</li>
+<li>fixed an issue in <code><a href="../reference/visualize_term_interactions.html">visualize_term_interactions()</a></code> where the file name was too long, it was causing an error on Windows. Limited to 100 characters (<a href='https://github.com/egeulgen/pathfindR/issues/58'>#58</a>)</li>
+</ul>
+<hr>
+</div>
+</div>
   </div>
+
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
     </nav>
   </div>
+
 </div>
 
 
