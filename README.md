@@ -6,7 +6,7 @@
 <!-- badges: start -->
 
 [![Travis-CI Build
-Status](https://travis-ci.org/egeulgen/pathfindR.svg?branch=master)](https://travis-ci.org/egeulgen/pathfindR)
+Status](https://travis-ci.com/egeulgen/pathfindR.svg?branch=master)](https://travis-ci.com/egeulgen/pathfindR)
 [![Codecov test
 coverage](https://codecov.io/gh/egeulgen/pathfindR/branch/master/graph/badge.svg)](https://codecov.io/gh/egeulgen/pathfindR)
 [![CRAN
