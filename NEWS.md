@@ -1,4 +1,4 @@
-# pathfindR 1.6.0.9006
+# pathfindR 1.6.0
 
 ## Major Changes
 - In `run_pathfindR()`, as "GR" (the default active subnetwork search method) provides nearly identical results in each iteration, the default `iterations` is set to 1
