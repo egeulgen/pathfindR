@@ -4,8 +4,8 @@
 * win-builder (devel and release)
 
 ## R CMD check results
-  There were no ERRORs, WARNINGs or NOTEs. Previous pre-test errors for this
-  submission were fixed.
+  There were no ERRORs, WARNINGs or NOTEs. Previous pre-test NOTE (detritus in 
+  the temp directory) was fixed.
 
 ## Downstream dependencies
   There are currently no downstream dependencies for this package.
