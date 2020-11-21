@@ -217,7 +217,7 @@ hierarchical_term_clustering <- function(kappa_mat,
       "for k =", k_opt, "\n\n"
     ))
   } else {
-    k_opt = num_clusters
+    k_opt <- num_clusters
   }
 
 

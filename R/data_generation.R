@@ -151,7 +151,7 @@ gset_list_from_gmt <- function(path2gmt) {
   gmt_lines <- readLines(path2gmt)
 
   ## Genes list
-  genes_list <- sapply(gmt_lines, function(x) {
+  genes_list <- lapply(gmt_lines, function(x) {
     x <- unlist(strsplit(x, "\t"))
     x <- unique(x[3:length(x)])
     return(x)
@@ -163,15 +163,15 @@ gset_list_from_gmt <- function(path2gmt) {
   }, "a")
 
   ## Decriptions vector
-  descriptions_vec <- sapply(gmt_lines, function(x) {
+  descriptions_vec <- vapply(gmt_lines, function(x) {
     x <- unlist(strsplit(x, "\t"))
     return(x[1])
-  })
+  }, "a")
 
-  names(descriptions_vec) <- sapply(gmt_lines, function(x) {
+  names(descriptions_vec) <- vapply(gmt_lines, function(x) {
     x <- unlist(strsplit(x, "\t"))
     return(x[2])
-  })
+  }, "a")
 
   # remove empty gene sets (if any)
   genes_list <- genes_list[vapply(genes_list, length, 1) != 0]
@@ -197,7 +197,7 @@ get_kegg_gsets <- function(org_code = "hsa") {
   pathway_codes <- sub("path:", "", names(pathways_list))
 
   # parse pathway genes
-  genes_by_pathway <- sapply(pathway_codes, function(pwid) {
+  genes_by_pathway <- lapply(pathway_codes, function(pwid) {
     pw <- KEGGREST::keggGet(pwid)
     pw <- pw[[1]]$GENE[c(FALSE, TRUE)] ## get gene symbols
     pw <- sub(";.+", "", pw) ## discard any description
@@ -205,6 +205,8 @@ get_kegg_gsets <- function(org_code = "hsa") {
     pw <- unique(pw) ## keep unique genes
     pw
   })
+
+  names(genes_by_pathway) <- pathway_codes
 
   # remove empty gene sets (metabolic pathways)
   kegg_genes <- genes_by_pathway[vapply(genes_by_pathway, length, 1) != 0]

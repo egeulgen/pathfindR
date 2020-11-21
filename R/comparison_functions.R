@@ -36,11 +36,11 @@ combine_pathfindR_results <- function(result_A, result_B, plot_common = TRUE) {
 
   ### Calculate combined p values
   combined_df$combined_p <- NA
-  for (i in 1:nrow(combined_df)) {
+  for (i in seq_len(nrow(combined_df))) {
     p_vec <- c(combined_df$lowest_p_A[i], combined_df$lowest_p_B[i])
     p_vec <- p_vec[!is.na(p_vec)]
     combined_df$combined_p[i] <- stats::pchisq(q = sum(log(p_vec)) * -2,
-                                               df = length(p_vec)*2,
+                                               df = length(p_vec) * 2,
                                                lower.tail = FALSE)
   }
   ### Indicate intersection status

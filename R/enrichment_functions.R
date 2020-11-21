@@ -245,7 +245,7 @@ enrichment_analyses <- function(snws,
 
   ### indices for snw.s
   if (length(enrichment_res) != 0) {
-    for (i in 1:length(enrichment_res)) {
+    for (i in seq_len(length(enrichment_res))) {
       if (!is.null(enrichment_res[[i]])) {
         enrichment_res[[i]]$snw_idx <- i
       }
