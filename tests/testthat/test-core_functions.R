@@ -70,7 +70,7 @@ test_that("`run_pathfindR()` works as expected", {
                           search_method = "SA",
                           visualize_enriched_terms = FALSE,
                           plot_enrichment_chart = FALSE,
-                          output_dir = tempdir(check = TRUE)),
+                          output_dir = out_dir),
             "data.frame")
 
   ## GA
@@ -80,7 +80,7 @@ test_that("`run_pathfindR()` works as expected", {
                           search_method = "GA",
                           visualize_enriched_terms = FALSE,
                           plot_enrichment_chart = FALSE,
-                          output_dir = tempdir(check = TRUE)),
+                          output_dir = out_dir),
             "data.frame")
 })
 
@@ -88,7 +88,7 @@ test_that("Expect warning with empty result from `run_pathfindR()`", {
   expect_warning(res <- run_pathfindR(RA_input[1:2, ],
                                       iterations = 1,
                                       visualize_enriched_terms = FALSE,
-                                      output_dir = tempdir(check = TRUE)),
+                                      output_dir = file.path(tempdir(check = TRUE), "pathfindR_results")),
                  "Did not find any enriched terms!")
   expect_identical(res, data.frame())
 })
