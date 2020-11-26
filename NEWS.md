@@ -1,3 +1,7 @@
+# pathfindR (development version)
+
+***
+
 # pathfindR 1.6.0
 
 ## Major Changes
