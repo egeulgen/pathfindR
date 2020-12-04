@@ -2,7 +2,7 @@
 ## Project: pathfindR
 ## Script purpose: Testthat testing script for
 ## active subnetwork search functions
-## Date: Nov 20, 2020
+## Date: Dec 4, 2020
 ## Author: Ege Ulgen
 ##################################################
 
@@ -15,6 +15,7 @@ input_df2 <- suppressMessages(input_processing(RA_input[1:2, ],
                                                pin_name_path = "Biogrid"))
 
 test_that("`active_snw_search()` returns list object", {
+  skip_on_cran()
   # Expect > 0 active snws
   expect_message(snw_list <- active_snw_search(input_for_search = input_df1),
                  "Found [1-9]\\d* active subnetworks")
@@ -109,6 +110,7 @@ sample_path <- system.file("extdata/resultActiveSubnetworkSearch.txt",
 example_snws_len <- 20
 
 test_that("`filterActiveSnws()` returns list object", {
+  skip_on_cran()
   tmp_filtered <- filterActiveSnws(active_snw_path = sample_path,
                                    sig_genes_vec = RA_input$Gene.symbol)
   expect_is(tmp_filtered, "list")
@@ -127,6 +129,7 @@ test_that("`filterActiveSnws()` returns list object", {
 })
 
 test_that("`score_quan_thr` in `filterActiveSnws()` works", {
+  skip_on_cran()
   tmp_filtered <- filterActiveSnws(active_snw_path = sample_path,
                                    sig_genes_vec = RA_input$Gene.symbol,
                                    score_quan_thr = -1,
@@ -144,6 +147,7 @@ test_that("`score_quan_thr` in `filterActiveSnws()` works", {
 })
 
 test_that("`sig_gene_thr` in `filterActiveSnws()` works", {
+  skip_on_cran()
   tmp_filtered1 <- filterActiveSnws(active_snw_path = sample_path,
                                     sig_genes_vec = RA_input$Gene.symbol,
                                     sig_gene_thr = 0.02, # default
@@ -188,7 +192,6 @@ test_that("`filterActiveSnws()` arg checks work", {
                                 sig_gene_thr = -1),
                "`sig_gene_thr` should be in \\[0, 1\\]")
 })
-
 
 # visualize_active_subnetworks --------------------------------------------
 test_that("`visualize_active_subnetworks()` returns list of ggraph objects", {

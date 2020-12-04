@@ -2,7 +2,7 @@
 ## Project: pathfindR
 ## Script purpose: Testthat testing script for
 ## data generation functions
-## Date: May 24, 2020
+## Date: Dec 4, 2020
 ## Author: Ege Ulgen
 ##################################################
 
@@ -95,4 +95,3 @@ test_that("`get_gene_sets_list()` works", {
                                            collection = "C3",
                                            subcollection = "MIR:MIR_Legacy"))
 })
-

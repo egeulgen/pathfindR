@@ -2,7 +2,7 @@
 ## Project: pathfindR
 ## Script purpose: Testthat testing script for
 ## visualization-related functions
-## Date: May 24, 2020
+## Date: Dec 4, 2020
 ## Author: Ege Ulgen
 ##################################################
 
@@ -14,6 +14,8 @@ tmp_genes <- unlist(c(strsplit(tmp_res$Up_regulated, ", "),
 input_processed <- suppressMessages(input_processing(RA_input, 0.05, "Biogrid"))
 
 test_that("`visualize_terms()` creates expected png file(s)", {
+  skip_on_cran()
+
   ## non-hsa-KEGG (visualize_term_interactions)
   expected_out_file <- file.path("term_visualizations",
                                  paste0(tmp_res$Term_Description, ".png"))
@@ -24,7 +26,6 @@ test_that("`visualize_terms()` creates expected png file(s)", {
   expect_true(file.exists(expected_out_file))
   unlink("term_visualizations", recursive = TRUE)
 
-
   suppressMessages(visualize_terms(result_df = tmp_res,
                                    input_processed = input_processed,
                                    hsa_KEGG = FALSE,
@@ -32,7 +33,6 @@ test_that("`visualize_terms()` creates expected png file(s)", {
   expect_true(file.exists(expected_out_file))
   unlink("term_visualizations", recursive = TRUE)
 
-  skip_on_cran()
   ## hsa KEGG
   expected_out_file <- file.path("term_visualizations",
                                  paste0(tmp_res$ID, "_pathfindR.png"))
@@ -240,7 +240,7 @@ test_that("`color_kegg_pathway()` exceptions are handled properly", {
 
 # enrichment_chart --------------------------------------------------------
 test_that("enrichment_chart produces a ggplot object with correct labels", {
-
+  skip_on_cran()
   # default - top 10
   expect_is(g <- enrichment_chart(RA_output), "ggplot")
   expect_equal(ggplot2::quo_name(g$mapping$x), "Fold_Enrichment")
@@ -321,10 +321,9 @@ test_that("enrichment_chart arg checks work", {
                "`top_terms` must be > 1")
 })
 
-
 # term_gene_graph ---------------------------------------------------------
 test_that("`term_gene_graph()` produces a ggplot object using the correct data", {
-
+  skip_on_cran()
   # Top 10 (default)
   expect_is(p <- term_gene_graph(RA_output), "ggplot")
   expect_equal(sum(p$data$type == "term"), 10)
@@ -379,10 +378,9 @@ test_that("`term_gene_graph()` arg checks work", {
                        "must be present in `results_df`!"), collapse = " "))
 })
 
-
 # term_gene_heatmap -------------------------------------------------------
-
 test_that("`term_gene_heatmap()` produces a ggplot object using the correct data", {
+  skip_on_cran()
   # Top 10 (default)
   expect_is(p <- term_gene_heatmap(RA_output), "ggplot")
   expect_equal(length(unique(p$data$Enriched_Term)), 10)
@@ -454,10 +452,9 @@ test_that("`term_gene_graph()` arg checks work", {
                "`num_terms` should be > 0 or NULL")
 })
 
-
 # UpSet_plot --------------------------------------------------------------
-
 test_that("`UpSet_plot()` produces a ggplot object", {
+  skip_on_cran()
   # Top 10 (default)
   expect_is(p <- UpSet_plot(RA_output), "ggplot")
 
