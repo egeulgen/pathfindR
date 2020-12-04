@@ -123,8 +123,8 @@
 <div id="overview" class="section level1">
 <h1 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h1>
-<p><code>pathfindR</code> is a tool for enrichment analysis via active subnetworks. The package also offers functionalities to cluster the enriched terms and identify representative terms in each cluster, to score the enriched terms per sample and to visualize analysis results.</p>
-<p>The functionalities of pathfindR is described in detail in <em>Ulgen E, Ozisik O, Sezerman OU. 2019. pathfindR: An R Package for Comprehensive Identification of Enriched Pathways in Omics Data Through Active Subnetworks. Front. Genet. <a href="https://doi.org/10.3389/fgene.2019.00858" class="uri">https://doi.org/10.3389/fgene.2019.00858</a></em></p>
+<p><code>pathfindR</code> is a tool for enrichment analysis via active subnetworks. The package also offers functionalities to cluster the enriched terms and identify representative terms in each cluster, score the enriched terms per sample, and visualize analysis results. As of the latest version, the package also allows comparison of two pathfindR results.</p>
+<p>The functionalities of pathfindR are described in detail in <em>Ulgen E, Ozisik O, Sezerman OU. 2019. pathfindR: An R Package for Comprehensive Identification of Enriched Pathways in Omics Data Through Active Subnetworks. Front. Genet. <a href="https://doi.org/10.3389/fgene.2019.00858" class="uri">https://doi.org/10.3389/fgene.2019.00858</a></em></p>
 <p>For detailed documentation, see <a href="https://egeulgen.github.io/pathfindR/">pathfindR’s website</a> or <a href="https://github.com/egeulgen/pathfindR/wiki">the pathfindR wiki</a>.</p>
 </div>
 <div id="installation" class="section level1">
@@ -142,23 +142,23 @@
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"pak"</span><span class="op">)</span> <span class="co"># if you have not installed "pak"</span>
 <span class="fu">pak</span><span class="fu">::</span><span class="fu">pkg_install</span><span class="op">(</span><span class="st">"egeulgen/pathfindR"</span><span class="op">)</span></code></pre></div>
 <blockquote>
-<p><strong>IMPORTANT NOTE</strong> For the active subnetwork search component to work, the user must have <a href="https://www.java.com/en/">Java (&gt;= 8.0)</a> installed and path/to/java must be in the PATH environment variable.</p>
+<p><strong>IMPORTANT NOTE</strong> For the active subnetwork search component to work, the user must have <a href="https://www.java.com/en/">Java (&gt;= 8.0)</a> installed, and the path/to/java must be in the PATH environment variable.</p>
 </blockquote>
-<p>We also have docker images available on <a href="https://hub.docker.com/repository/docker/egeulgen/pathfindr">Docker Hub</a> and on <a href="https://github.com/egeulgen/pathfindR/packages">GitHub</a>:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># pull image for latest release</span></span>
+<p>We also have docker images available on <a href="https://hub.docker.com/repository/docker/egeulgen/pathfindr">Docker Hub</a> and <a href="https://github.com/egeulgen/pathfindR/packages">GitHub</a>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># pull image for the latest release</span></span>
 <span id="cb4-2"><a href="#cb4-2"></a><span class="ex">docker</span> pull egeulgen/pathfindr:latest</span>
 <span id="cb4-3"><a href="#cb4-3"></a></span>
-<span id="cb4-4"><a href="#cb4-4"></a><span class="co"># pull image for specific version (e.g. 1.4.1)</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="co"># pull image for a specific version (e.g., 1.4.1)</span></span>
 <span id="cb4-5"><a href="#cb4-5"></a><span class="ex">docker</span> pull egeulgen/pathfindr:1.4.1</span>
 <span id="cb4-6"><a href="#cb4-6"></a></span>
-<span id="cb4-7"><a href="#cb4-7"></a><span class="co"># pull image for latest development version</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="co"># pull image for the latest development version</span></span>
 <span id="cb4-8"><a href="#cb4-8"></a><span class="ex">docker</span> pull egeulgen/pathfindr:dev</span></code></pre></div>
 </div>
 <div id="enrichment-analysis-with-pathfindr" class="section level1">
 <h1 class="hasAnchor">
 <a href="#enrichment-analysis-with-pathfindr" class="anchor"></a>Enrichment Analysis with pathfindR</h1>
 <p><img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/pathfindr.png?raw=true%20%22pathfindr%20Enrichment%20Workflow%22" alt="pathfindR Enrichment Workflow"></p>
-<p>This workflow takes in a data frame consisting of “gene symbols”, “change values” (optional) and “associated p values”:</p>
+<p>This workflow takes in a data frame consisting of “gene symbols”, “change values” (optional), and “associated p-values”:</p>
 <table class="table">
 <thead><tr class="header">
 <th align="left">Gene_symbol</th>
@@ -188,16 +188,16 @@
 </tr>
 </tbody>
 </table>
-<p>After input testing, any gene symbol that is not in the chosen protein-protein interaction network (PIN) is converted to an alias symbol if there is an alias that is in the PIN. After mapping the input genes with the associated p values onto the PIN, active subnetwork search is performed. The resulting active subnetworks are then filtered based on their scores and the number of significant genes they contain.</p>
+<p>After input testing, any gene symbol that is not in the chosen protein-protein interaction network (PIN) is converted to an alias symbol if there is an alias that is found in the PIN. After mapping the input genes with the associated p-values onto the PIN, active subnetwork search is performed. The resulting active subnetworks are then filtered based on their scores and the number of significant genes they contain.</p>
 <blockquote>
 <p>An active subnetwork can be defined as a group of interconnected genes in a protein-protein interaction network (PIN) that predominantly consists of significantly altered genes. In other words, active subnetworks define distinct disease-associated sets of interacting genes, whether discovered through the original analysis or discovered because of being in interaction with a significant gene.</p>
 </blockquote>
-<p>These filtered list of active subnetworks are then used for enrichment analyses, i.e. using the genes in each of the active subnetworks, the significantly enriched terms (pathways/gene sets) are identified. Enriched terms with adjusted p values larger than the given threshold are discarded and the lowest adjusted p value (over all active subnetworks) for each term is kept. This process of <code>active subnetwork search + enrichment analyses</code> is repeated for a selected number of iterations, performed in parallel. Over all iterations, the lowest and the highest adjusted-p values, as well as number of occurrences over all iterations are reported for each significantly enriched term.</p>
+<p>These filtered lists of active subnetworks are then used for enrichment analyses, i.e., using the genes in each of the active subnetworks, the significantly enriched terms (pathways/gene sets) are identified. Enriched terms with adjusted p-values larger than the given threshold are discarded, and the lowest adjusted p-value (among all active subnetworks) for each term is kept. This process of <code>active subnetwork search + enrichment analyses</code> is repeated for a selected number of iterations, performed in parallel. Over all iterations, the lowest and the highest adjusted p-values, and the number of occurrences among all iterations are reported for each significantly enriched term.</p>
 <p>This workflow can be run using the function <code><a href="reference/run_pathfindR.html">run_pathfindR()</a></code>:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://egeulgen.github.io/pathfindR/">pathfindR</a></span><span class="op">)</span>
 <span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindR.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span><span class="op">)</span></code></pre></div>
-<p>This wrapper function performs the active-subnetwork-oriented enrichment analysis and returns a data frame of enriched terms (as well as visualization of enriched terms and an HTML report):</p>
+<p>This wrapper function performs the active-subnetwork-oriented enrichment analysis, and returns a data frame of enriched terms (as well as visualization of enriched terms and an HTML report):</p>
 <p><img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/enrichment_chart.png?raw=true%20%22Enrichment%20Chart%22" alt="pathfindR Enrichment Chart"></p>
 <p>Some useful arguments are:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -249,19 +249,19 @@
 <div id="term-gene-heatmap" class="section level2">
 <h2 class="hasAnchor">
 <a href="#term-gene-heatmap" class="anchor"></a>Term-Gene Heatmap</h2>
-<p>The function <code><a href="reference/term_gene_heatmap.html">term_gene_heatmap()</a></code> can be utilized to visualize the heatmap of enriched terms by the involved input genes. This heatmap allows visual identification of the input genes involved in the enriched terms, as well as the common or distinct genes between different terms. If the input data frame (same as in <code><a href="reference/run_pathfindR.html">run_pathfindR()</a></code>) is supplied, the tile colors indicate the change values.</p>
+<p>The function <code><a href="reference/term_gene_heatmap.html">term_gene_heatmap()</a></code> can visualize the heatmap of enriched terms by the involved input genes. This heatmap allows visual identification of the input genes involved in the enriched terms, and the common or distinct genes between different terms. If the input data frame (same as in <code><a href="reference/run_pathfindR.html">run_pathfindR()</a></code>) is supplied, the tile colors indicate the change values.</p>
 <p><img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/hmap.png?raw=true%20%22Term-Gene%20Heatmap%22" alt="Term-Gene Heatmap"></p>
 </div>
 <div id="term-gene-graph" class="section level2">
 <h2 class="hasAnchor">
 <a href="#term-gene-graph" class="anchor"></a>Term-Gene Graph</h2>
-<p>The function <code><a href="reference/term_gene_graph.html">term_gene_graph()</a></code> (adapted from the Gene-Concept network visualization by the R package <code>enrichplot</code>) can be utilized to visualize which significant genes are involved in the enriched terms. The function creates the term-gene graph, displaying the connections between genes and biological terms (enriched pathways or gene sets). This allows for the investigation of multiple terms to which significant genes are related. The graph also enables determination of the degree of overlap between the enriched terms by identifying shared and/or distinct significant genes.</p>
+<p>The function <code><a href="reference/term_gene_graph.html">term_gene_graph()</a></code> (adapted from the Gene-Concept network visualization by the R package <code>enrichplot</code>) can be utilized to visualize which significant genes are involved in the enriched terms. The function creates the term-gene graph, displaying the connections between genes and biological terms (enriched pathways or gene sets). This allows for the investigation of multiple terms to which significant genes are related. The graph also enables the determination of the degree of overlap between the enriched terms by identifying shared and/or distinct significant genes.</p>
 <p><img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/term_gene.png?raw=true%20%22Term-Gene%20Graph%22" alt="Term-Gene Graph"></p>
 </div>
 <div id="upset-plot" class="section level2">
 <h2 class="hasAnchor">
 <a href="#upset-plot" class="anchor"></a>UpSet Plot</h2>
-<p>UpSet plots are plots of the intersections of sets as a matrix. This function creates a ggplot object of an UpSet plot where the x-axis is the UpSet plot of intersections of enriched terms. By default (i.e., <code>method = "heatmap"</code>), the main plot is a heatmap of genes at the corresponding intersections, colored by up/down regulation (if <code>genes_df</code> is provided, colored by change values). If <code>method = "barplot"</code>, the main plot is bar plots of the number of genes at the corresponding intersections. Finally, if <code>method = "boxplot"</code> and <code>genes_df</code> is provided, then the main plot displays the boxplots of change values of the genes at the corresponding intersections.</p>
+<p>UpSet plots are plots of the intersections of sets as a matrix. This function creates a ggplot object of an UpSet plot where the x-axis is the UpSet plot of intersections of enriched terms. By default (i.e., <code>method = "heatmap"</code>), the main plot is a heatmap of genes at the corresponding intersections, colored by up-/down-regulation (if <code>genes_df</code> is provided, colored by change values). If <code>method = "barplot"</code>, the main plot is bar plots of the number of genes at the corresponding intersections. Finally, if <code>method = "boxplot"</code> and <code>genes_df</code> is provided, then the main plot displays the boxplots of the genes’ change values at the corresponding intersections.</p>
 <p><img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/upset.png?raw=true%20%22UpSet%20Plot%22" alt="UpSet plot"></p>
 </div>
 </div>
@@ -269,12 +269,12 @@
 <h1 class="hasAnchor">
 <a href="#per-sample-enriched-term-scores" class="anchor"></a>Per Sample Enriched Term Scores</h1>
 <p><img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/score_hmap.png?raw=true%20%22Scoring%20per%20Sample%22" alt="Agglomerated Scores for all Enriched Terms per Sample"></p>
-<p>The function <code><a href="reference/score_terms.html">score_terms()</a></code> can be used to calculate the agglomerated z score of each enriched term per sample. This allows the user to individually examine the scores and infer how a term is overall altered (activated or repressed) in a given sample or a group of samples.</p>
+<p>The function <code><a href="reference/score_terms.html">score_terms()</a></code> can be used to calculate the agglomerated z score of each enriched term per sample. This allows the user to examine the scores individually and infer how a term is overall altered (activated or repressed) in a given sample or a group of samples.</p>
 </div>
 <div id="comparison-of-2-pathfindr-results" class="section level1">
 <h1 class="hasAnchor">
 <a href="#comparison-of-2-pathfindr-results" class="anchor"></a>Comparison of 2 pathfindR Results</h1>
-<p>The function <code><a href="reference/combine_pathfindR_results.html">combine_pathfindR_results()</a></code> allows combination of two pathfindR active-subnetwork-oriented enrichment analysis results for investigating common and distinct terms between the groups. Below is an example for comparing two different results using rheumatoid arthritis-related data.</p>
+<p>The function <code><a href="reference/combine_pathfindR_results.html">combine_pathfindR_results()</a></code> allows combining two pathfindR analysis results for investigating common and distinct terms between the groups. Below is an example for comparing two different results using rheumatoid arthritis-related data.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">combined_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/combine_pathfindR_results.html">combine_pathfindR_results</a></span><span class="op">(</span>result_A <span class="op">=</span> <span class="va">RA_output</span>, 
                                          result_B <span class="op">=</span> <span class="va">RA_comparison_output</span><span class="op">)</span></code></pre></div>
