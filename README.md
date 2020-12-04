@@ -23,10 +23,11 @@ MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.or
 
 `pathfindR` is a tool for enrichment analysis via active subnetworks.
 The package also offers functionalities to cluster the enriched terms
-and identify representative terms in each cluster, to score the enriched
-terms per sample and to visualize analysis results.
+and identify representative terms in each cluster, score the enriched
+terms per sample, and visualize analysis results. As of the latest
+version, the package also allows comparison of two pathfindR results.
 
-The functionalities of pathfindR is described in detail in *Ulgen E,
+The functionalities of pathfindR are described in detail in *Ulgen E,
 Ozisik O, Sezerman OU. 2019. pathfindR: An R Package for Comprehensive
 Identification of Enriched Pathways in Omics Data Through Active
 Subnetworks. Front. Genet. <https://doi.org/10.3389/fgene.2019.00858>*
@@ -61,20 +62,21 @@ pak::pkg_install("egeulgen/pathfindR")
 
 > **IMPORTANT NOTE** For the active subnetwork search component to work,
 > the user must have [Java (\>= 8.0)](https://www.java.com/en/)
-> installed and path/to/java must be in the PATH environment variable.
+> installed, and the path/to/java must be in the PATH environment
+> variable.
 
 We also have docker images available on [Docker
-Hub](https://hub.docker.com/repository/docker/egeulgen/pathfindr) and on
+Hub](https://hub.docker.com/repository/docker/egeulgen/pathfindr) and
 [GitHub](https://github.com/egeulgen/pathfindR/packages):
 
 ``` bash
-# pull image for latest release
+# pull image for the latest release
 docker pull egeulgen/pathfindr:latest
 
-# pull image for specific version (e.g. 1.4.1)
+# pull image for a specific version (e.g., 1.4.1)
 docker pull egeulgen/pathfindr:1.4.1
 
-# pull image for latest development version
+# pull image for the latest development version
 docker pull egeulgen/pathfindr:dev
 ```
 
@@ -85,7 +87,7 @@ Workflow](https://github.com/egeulgen/pathfindR/blob/master/vignettes/pathfindr.
 "pathfindr Enrichment Workflow")
 
 This workflow takes in a data frame consisting of “gene symbols”,
-“change values” (optional) and “associated p values”:
+“change values” (optional), and “associated p-values”:
 
 | Gene\_symbol | logFC  | FDR\_p  |
 | :----------- | :----: | :-----: |
@@ -96,8 +98,8 @@ This workflow takes in a data frame consisting of “gene symbols”,
 
 After input testing, any gene symbol that is not in the chosen
 protein-protein interaction network (PIN) is converted to an alias
-symbol if there is an alias that is in the PIN. After mapping the input
-genes with the associated p values onto the PIN, active subnetwork
+symbol if there is an alias that is found in the PIN. After mapping the
+input genes with the associated p-values onto the PIN, active subnetwork
 search is performed. The resulting active subnetworks are then filtered
 based on their scores and the number of significant genes they contain.
 
@@ -108,15 +110,15 @@ based on their scores and the number of significant genes they contain.
 > genes, whether discovered through the original analysis or discovered
 > because of being in interaction with a significant gene.
 
-These filtered list of active subnetworks are then used for enrichment
-analyses, i.e. using the genes in each of the active subnetworks, the
+These filtered lists of active subnetworks are then used for enrichment
+analyses, i.e., using the genes in each of the active subnetworks, the
 significantly enriched terms (pathways/gene sets) are identified.
-Enriched terms with adjusted p values larger than the given threshold
-are discarded and the lowest adjusted p value (over all active
+Enriched terms with adjusted p-values larger than the given threshold
+are discarded, and the lowest adjusted p-value (among all active
 subnetworks) for each term is kept. This process of `active subnetwork
 search + enrichment analyses` is repeated for a selected number of
 iterations, performed in parallel. Over all iterations, the lowest and
-the highest adjusted-p values, as well as number of occurrences over all
+the highest adjusted p-values, and the number of occurrences among all
 iterations are reported for each significantly enriched term.
 
 This workflow can be run using the function `run_pathfindR()`:
@@ -127,7 +129,7 @@ output_df <- run_pathfindR(input_df)
 ```
 
 This wrapper function performs the active-subnetwork-oriented enrichment
-analysis and returns a data frame of enriched terms (as well as
+analysis, and returns a data frame of enriched terms (as well as
 visualization of enriched terms and an HTML report):
 
 ![pathfindR Enrichment
@@ -206,12 +208,12 @@ clustered_df_fuzzy <- cluster_enriched_terms(output_df, method = "fuzzy")
 
 ## Term-Gene Heatmap
 
-The function `term_gene_heatmap()` can be utilized to visualize the
-heatmap of enriched terms by the involved input genes. This heatmap
-allows visual identification of the input genes involved in the enriched
-terms, as well as the common or distinct genes between different terms.
-If the input data frame (same as in `run_pathfindR()`) is supplied, the
-tile colors indicate the change values.
+The function `term_gene_heatmap()` can visualize the heatmap of enriched
+terms by the involved input genes. This heatmap allows visual
+identification of the input genes involved in the enriched terms, and
+the common or distinct genes between different terms. If the input data
+frame (same as in `run_pathfindR()`) is supplied, the tile colors
+indicate the change values.
 
 ![Term-Gene
 Heatmap](https://github.com/egeulgen/pathfindR/blob/master/vignettes/hmap.png?raw=true
@@ -225,9 +227,9 @@ visualize which significant genes are involved in the enriched terms.
 The function creates the term-gene graph, displaying the connections
 between genes and biological terms (enriched pathways or gene sets).
 This allows for the investigation of multiple terms to which significant
-genes are related. The graph also enables determination of the degree of
-overlap between the enriched terms by identifying shared and/or distinct
-significant genes.
+genes are related. The graph also enables the determination of the
+degree of overlap between the enriched terms by identifying shared
+and/or distinct significant genes.
 
 ![Term-Gene
 Graph](https://github.com/egeulgen/pathfindR/blob/master/vignettes/term_gene.png?raw=true
@@ -239,12 +241,12 @@ UpSet plots are plots of the intersections of sets as a matrix. This
 function creates a ggplot object of an UpSet plot where the x-axis is
 the UpSet plot of intersections of enriched terms. By default (i.e.,
 `method = "heatmap"`), the main plot is a heatmap of genes at the
-corresponding intersections, colored by up/down regulation (if
+corresponding intersections, colored by up-/down-regulation (if
 `genes_df` is provided, colored by change values). If `method =
 "barplot"`, the main plot is bar plots of the number of genes at the
 corresponding intersections. Finally, if `method = "boxplot"` and
-`genes_df` is provided, then the main plot displays the boxplots of
-change values of the genes at the corresponding intersections.
+`genes_df` is provided, then the main plot displays the boxplots of the
+genes’ change values at the corresponding intersections.
 
 ![UpSet
 plot](https://github.com/egeulgen/pathfindR/blob/master/vignettes/upset.png?raw=true
@@ -257,17 +259,16 @@ Sample](https://github.com/egeulgen/pathfindR/blob/master/vignettes/score_hmap.p
 "Scoring per Sample")
 
 The function `score_terms()` can be used to calculate the agglomerated z
-score of each enriched term per sample. This allows the user to
-individually examine the scores and infer how a term is overall altered
+score of each enriched term per sample. This allows the user to examine
+the scores individually and infer how a term is overall altered
 (activated or repressed) in a given sample or a group of samples.
 
 # Comparison of 2 pathfindR Results
 
-The function `combine_pathfindR_results()` allows combination of two
-pathfindR active-subnetwork-oriented enrichment analysis results for
-investigating common and distinct terms between the groups. Below is an
-example for comparing two different results using rheumatoid
-arthritis-related data.
+The function `combine_pathfindR_results()` allows combining two
+pathfindR analysis results for investigating common and distinct terms
+between the groups. Below is an example for comparing two different
+results using rheumatoid arthritis-related data.
 
 ``` r
 combined_df <- combine_pathfindR_results(result_A = RA_output, 
