@@ -100,7 +100,7 @@ run_pathfindR <- function(input,
                           saTemp0 = 1, saTemp1 = 0.01, saIter = 10000,
                           gaPop = 400, gaIter = 200, gaThread = 5,
                           gaCrossover = 1, gaMut = 0,
-                          grMaxDepth = 1, grSearchDepth = 1,
+                          grMaxDepth = 1, gr_check_second_neighbors = TRUE,#TODO Default TRUE?
                           grOverlap = 0.5, grSubNum = 1000,
                           iterations = 1, n_processes = NULL,
                           score_quan_thr = 0.8, sig_gene_thr = 0.02,
@@ -245,7 +245,7 @@ run_pathfindR <- function(input,
                                          gaPop = gaPop, gaIter = gaIter,
                                          gaThread = gaThread,
                                          gaCrossover = gaCrossover, gaMut = gaMut,
-                                         grMaxDepth = grMaxDepth, grSearchDepth = grSearchDepth,
+                                         grMaxDepth = grMaxDepth, gr_check_second_neighbors = gr_check_second_neighbors,
                                          grOverlap = grOverlap, grSubNum = grSubNum)
 
     enrichment_res <- pathfindR::enrichment_analyses(snws = snws,
@@ -287,7 +287,7 @@ run_pathfindR <- function(input,
                                            gaPop = gaPop, gaIter = gaIter,
                                            gaThread = gaThread,
                                            gaCrossover = gaCrossover, gaMut = gaMut,
-                                           grMaxDepth = grMaxDepth, grSearchDepth = grSearchDepth,
+                                           grMaxDepth = grMaxDepth, gr_check_second_neighbors = gr_check_second_neighbors,
                                            grOverlap = grOverlap, grSubNum = grSubNum)
 
       enrichment_res <- pathfindR::enrichment_analyses(snws = snws,
