@@ -425,8 +425,8 @@ calculate_background_score <- function(pin, number_of_iterations, scores_vec){
   for(iter in seq_len(number_of_iterations)) {
 
     # progress message
-    if(iter %% 100 == 0) {
-      message(round(iter / number_of_iterations, 2) * 100, '% of total iterations in background score calculation finished\n')
+    if(iter %% 50 == 0) {
+      message(round(iter / number_of_iterations, 2) * 100, '% of total iterations in background score calculation finished')
     }
 
     # shuffle nodes

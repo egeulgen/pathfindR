@@ -1,5 +1,10 @@
 # pathfindR (development version)
 
+## Major Changes
+- Implemented greedy search in R
+
+## Minor changes and bug fixes
+
 ***
 
 # pathfindR 1.6.0
