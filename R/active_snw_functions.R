@@ -140,9 +140,10 @@ active_snw_search <- function(input_for_search,
 
   ############ Run Active Subnetwork Search
 
+  ### BELKI GR_JAVA OPSIYONU EKLEYEBILIRIZ?
   if (search_method %in% c("SA", "GA")) {
     # Active subnetwork search methods written in Java are called
-    grSearchDepth <- ifelse(gr_check_second_neighbors, 2 , 1) ## is this needed here?
+    grSearchDepth <- ifelse(gr_check_second_neighbors, 2 , 1)
 
     # running Active Subnetwork Search in Java
     system(paste0(
@@ -235,7 +236,7 @@ active_snw_search <- function(input_for_search,
                                                             scores_vec = scores_vec,
                                                             sampling_result = sampling_result,
                                                             max_depth = grMaxDepth,
-                                                            max_depth = gr_check_second_neighbors)
+                                                            check_second_neighbors = gr_check_second_neighbors)
 
       # check if the same module exists
       same_exists <- FALSE
@@ -251,29 +252,26 @@ active_snw_search <- function(input_for_search,
     }
     # End of greedy search related part
 
-    sampling_score_means<-sampling_result[[1]]
-    sampling_score_stds<-sampling_result[[2]]
+    sampling_score_means <- sampling_result$sampling_score_means
+    sampling_score_stds <- sampling_result$sampling_score_stds
 
-    #for(active_module in active_modules){
-    #  print(calculate_component_score(pin, scores_vec, active_module, sampling_score_means, sampling_score_stds))
-    #  print(active_module)
-    #}
-
+    # write results to file
     active_module_scores<-c()
     active_module_node_texts<-c()
-    for(active_module in active_modules){
-      score<-calculate_component_score(pin, scores_vec, active_module, sampling_score_means, sampling_score_stds)
-      active_module_scores<-c(active_module_scores, score)
-      active_module_node_texts<-c(active_module_node_texts, paste(names(active_module),collapse=" "))
+    for (active_module in active_modules){
+      score <- calculate_component_score(pin, scores_vec, active_module, sampling_score_means, sampling_score_stds)
+      active_module_scores <- c(active_module_scores, score)
+      active_module_node_texts <- c(active_module_node_texts, paste(names(active_module), collapse=" "))
     }
 
-    df_asnw <- data.frame(active_module_scores, active_module_node_texts, stringsAsFactors = FALSE)
-    df_asnw<-df_asnw[order(-df_asnw$active_module_scores),]
+    df_asnw <- data.frame(active_module_scores, active_module_node_texts)
+    df_asnw <- df_asnw[order(-df_asnw$active_module_scores), ]
 
-    write(paste(df_asnw$active_module_scores,df_asnw$active_module_node_texts), "resultActiveSubnetworkSearch.txt", sep=" ")
-
+    write(paste(df_asnw$active_module_scores, df_asnw$active_module_node_texts),
+          "resultActiveSubnetworkSearch.txt", sep=" ")
   }
 
+  ### Move the active subnetworks file to desired file
   snws_file <- file.path("active_snw_search",
                          paste0(snws_file, ".txt"))
   file.rename(from = "resultActiveSubnetworkSearch.txt",
@@ -296,9 +294,18 @@ active_snw_search <- function(input_for_search,
 }
 
 
-
-
-
+#' Greedy Breadth-First Active Subnetwork search
+#'
+#' @param seed_node the seed node (an igraph.vs object)
+#' @inheritParams calculate_background_score
+#' @param scores_df data frame containing scores per each gene in the PIN
+#' @param sampling_result list containing vector of bacground sampling score means
+#' and vector of background sampling score standard deviations
+#' @param max_depth maximum depth in search
+#' @param check_second_neighbors boolean to indicate whether to check second
+#' neighbors when any direct neighbor does not improve the score
+#'
+#' @return an active module (vector)
 greedy_breadth_first_active_subnetwork_search <- function(seed_node, pin,
                                                           scores_df, scores_vec,
                                                           sampling_result,
@@ -330,13 +337,14 @@ greedy_breadth_first_active_subnetwork_search <- function(seed_node, pin,
       distances_from_seed <- distances_from_seed[-1]
 
       neighbor_names <- names(igraph::neighbors(pin, node))
-      neighbor_scores_df <-scores_df[scores_df$Gene %in% neighbor_names, ]
-      neighbor_names <-neighbor_scores_df$Gene[order(neighbor_scores_df$Score, decreasing = TRUE)]
+      neighbor_scores_df <- scores_df[scores_df$Gene %in% neighbor_names, ]
+      neighbor_names <- neighbor_scores_df$Gene[order(neighbor_scores_df$Score, decreasing = TRUE)]
 
       current_score <- calculate_component_score(pin, scores_vec, comp, sampling_score_means, sampling_score_stds)
       comp <- c(comp, node)
       will_be_checked_for_neighbors <- will_be_checked_for_neighbors[will_be_checked_for_neighbors!=node] #remove from postponed list
-      neighbor_added<-FALSE
+
+      neighbor_added <- FALSE
       for (neighbor_name in neighbor_names) {
         neighbor_node <- igraph::V(pin)[neighbor_name] #getting igraph.vs from gene name
         if (!neighbor_node %in% checked_in_greedy) {
@@ -350,9 +358,8 @@ greedy_breadth_first_active_subnetwork_search <- function(seed_node, pin,
         }
       }
 
-      if(!neighbor_added){
+      if (!neighbor_added)
         comp<-comp[-length(comp)] #Removing node from comp
-      }
 
     } else {
       node <- queue[1] # get next node
@@ -388,8 +395,8 @@ greedy_breadth_first_active_subnetwork_search <- function(seed_node, pin,
 
         } else {
           if (check_second_neighbors) {
-            if (node_distance < max_depth) { #if we will be able to add neighbors of this node
-              #Postponing
+            if (node_distance < max_depth) { # if we will be able to add neighbors of this node
+              # Postponing
               will_be_checked_for_neighbors <- c(will_be_checked_for_neighbors, node)
               queue <- c(queue, node)
               distances_from_seed <- c(distances_from_seed, node_distance)
