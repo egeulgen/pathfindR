@@ -27,7 +27,6 @@ test_that("`run_pathfindR()` works as expected", {
                           pin_name_path = "GeneMania",
                           score_quan_thr = 0.8,
                           plot_enrichment_chart = FALSE,
-                          visualize_enriched_terms = FALSE,
                           output_dir = out_dir),
             "data.frame")
 
