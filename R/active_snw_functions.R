@@ -279,6 +279,7 @@ active_snw_search <- function(input_for_search,
     stop("`input_for_search` should contain the columns ",
          paste(dQuote(cnames), collapse = ","))
   }
+  input_for_search <- input_for_search[, cnames]
 
   # pin_name_path (fetch pin path)
   pin_path <- return_pin_path(pin_name_path)
@@ -377,13 +378,13 @@ active_snw_search <- function(input_for_search,
 
     # Greedy Active subnetwork search method written in R is called
 
-    # Read PIN
+    # read PIN
     pin_df <- utils::read.delim(pin_path, header = FALSE)
     pin_df <- subset(pin_df, select = -2)
 
     pin <- igraph::graph_from_data_frame(pin_df, directed = FALSE, vertices = NULL)
 
-    # Read scores file
+    # read scores file
     scores_df <- input_for_search
     colnames(scores_df) <- c("Gene", "Score")
 
@@ -400,7 +401,7 @@ active_snw_search <- function(input_for_search,
     # p-values are converted to z-scores
     scores_df$Score <- stats::qnorm(1 - scores_df$Score)
 
-    # We add rows with a score of 0 for missing genes (PIN genes not in input)
+    # add rows with a score of 0 for missing genes (PIN genes not in input)
     scores_df_to_append <- data.frame(Gene = setdiff(igraph::V(pin)$name,
                                                      scores_df$Gene),
                                       Score = 0)
@@ -414,7 +415,7 @@ active_snw_search <- function(input_for_search,
     scores_vec <- scores_df$Score[idx]
     names(scores_vec) <- scores_df$Gene[idx]
 
-    # calculating background score
+    # calculate background score
     sampling_result <- calculate_background_score(pin = pin,
                                                   number_of_iterations = 100, # TODO convert 100 to 2000
                                                   scores_vec)
@@ -424,6 +425,7 @@ active_snw_search <- function(input_for_search,
     rownames(scores_df) <- 1:nrow(scores_df) # necessary?
 
     active_modules <- list()
+
     # Greedy-search-related part
     num_of_seeds_used <- 0
     ratio_print_threshold <- 10
@@ -444,7 +446,6 @@ active_snw_search <- function(input_for_search,
                                                             sampling_result = sampling_result,
                                                             max_depth = grMaxDepth,
                                                             check_second_neighbors = gr_check_second_neighbors)
-
       # check if the same module exists
       same_exists <- FALSE
       for (active_module in active_modules){
@@ -457,7 +458,7 @@ active_snw_search <- function(input_for_search,
       if(!same_exists)
         active_modules[[length(active_modules) + 1]] <- comp
     }
-    # End of greedy search related part
+    # End of greedy-search-related part
 
     sampling_score_means <- sampling_result$sampling_score_means
     sampling_score_stds <- sampling_result$sampling_score_stds
