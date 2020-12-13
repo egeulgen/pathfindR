@@ -24,7 +24,7 @@ active_snw_search(
   gaCrossover = 1,
   gaMut = 0,
   grMaxDepth = 1,
-  grSearchDepth = 1,
+  gr_check_second_neighbors = TRUE,
   grOverlap = 0.5,
   grSubNum = 1000
 )
@@ -86,7 +86,8 @@ nodes. In SA, initializes candidate solution with all positive nodes. (default =
 
 \item{grMaxDepth}{Sets max depth in greedy search, 0 for no limit (default = 1)}
 
-\item{grSearchDepth}{Search depth in greedy search (default = 1)}
+\item{gr_check_second_neighbors}{in greedy search, whether to check second
+neighbors when any direct neighbor does not improve the score (default = TRUE) #TODO Default TRUE?}
 
 \item{grOverlap}{Overlap threshold for results of greedy search (default = 0.5)}
 

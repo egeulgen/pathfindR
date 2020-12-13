@@ -30,7 +30,8 @@
 #' @param gaCrossover Applies crossover with the given probability in GA (default = 1, i.e. always perform crossover)
 #' @param gaMut For GA, applies mutation with given mutation rate (default = 0, i.e. mutation off)
 #' @param grMaxDepth Sets max depth in greedy search, 0 for no limit (default = 1)
-#' @param gr_check_second_neighbors Whether to check second neighbors when any direct neighbor does not improve the score (default = TRUE) #TODO Default TRUE?
+#' @param gr_check_second_neighbors in greedy search, whether to check second
+#' neighbors when any direct neighbor does not improve the score (default = TRUE) #TODO Default TRUE?
 #' @param grOverlap Overlap threshold for results of greedy search (default = 0.5)
 #' @param grSubNum Number of subnetworks to be presented in the results (default = 1000)
 #'
@@ -137,18 +138,18 @@ active_snw_search <- function(input_for_search,
 
   input_path <- normalizePath("active_snw_search/input_for_search.txt")
 
-  
-  
+
+
   ############ Run active Subnetwork Search
-  
+
   if(search_method %in% c("SA", "GA")){#Active subnetwork search methods written in Java are called
-    
+
     if(gr_check_second_neighbors){
       grSearchDepth<-2
     }else{
       grSearchDepth<-1
     }
-    
+
     # running Active Subnetwork Search in Java
     system(paste0(
       "java -Xss4m -jar \"", active_search_jar_path, "\"",
@@ -169,35 +170,35 @@ active_snw_search <- function(input_for_search,
       " -grSearchDepth=", grSearchDepth,
       " -grOverlap=", grOverlap,
       " -grSubNum=", grSubNum, silent_option
-    ))  
-  
+    ))
+
   }else{#search_method=="GR" #Active subnetwork search methods written in R are called
-    
+
     library(igraph)#TODO: Is this OK?
-    
-    
+
+
     #Read PIN
     pin_df <- read.table(pin_path, header = FALSE, sep = "")
     #print(head(pin_df))
     pin_df <- subset(pin_df, select = -2)
     pin <- graph_from_data_frame(pin_df, directed = FALSE, vertices = NULL)
-    
+
     #pin <- read.graph(pin_path, format = "ncol", directed = FALSE)
-    
+
     #Read scores file
     scores_df <- read.csv(input_path, sep = '\t', stringsAsFactors = FALSE, header = FALSE, strip.white = TRUE, col.names = c('Gene', 'Score'))
     scores_df <-scores_df[scores_df$Gene %in% V(pin)$name,]
-    
+
     #qnorm that is used for z-score conversion gives Inf for less than (1 - 5E-17), we applied threshold at 1E-15
     scores_df[] <- lapply(scores_df, function(x) ifelse(x<1E-15, 1E-15, x))
-    
+
     #p-values are converted to z-scores
     scores_df$Score <- qnorm(1 - scores_df$Score)
-    
+
     #When the score is missing we add row to the scores dataframe with a score of 0
     scores_df_to_append<-data.frame('Gene'=setdiff(V(pin)$name,scores_df$Gene), 'Score'=rep(0, length(setdiff(V(pin)$name,scores_df$Gene))))
     scores_df <- rbind(scores_df, scores_df_to_append)
-    
+
     #TODO Handle this part
     scores_vector <- c()
     scores_list <- list()
@@ -206,20 +207,20 @@ active_snw_search <- function(input_for_search,
       scores_list[gene]<-scores_df[scores_df$Gene == gene, 'Score']
     }
     V(pin)$score <- scores_vector
-    
+
     #Calculating background score
     sampling_result<-calculate_background_score(pin = pin, number_of_iterations = 100, scores_list)#TODO convert 100 to 2000
-    
+
     #Score dataframe is sorted in descending order
     scores_df <- scores_df[order(scores_df$Score, decreasing = TRUE), ]
     rownames(scores_df) <- 1:nrow(scores_df)
-    
+
     #Getting significant nodes
     degs <- scores_df[scores_df$Score > qnorm(1 - 0.05), 'Gene']
-    
-    
+
+
     active_modules<-list()
-    
+
     #Greedy search related part
     num_of_used_seeds<-0
     ratio_print_threshold<-10
@@ -232,7 +233,7 @@ active_snw_search <- function(input_for_search,
       }
       seed_node <- V(pin)[seed] #getting igraph.vs from gene name
       comp<-greedy_breadth_first_active_subnetwork_search(seed_node, pin, scores_df, scores_list, sampling_result, grMaxDepth, gr_check_second_neighbors)
-      
+
       same_exists<-FALSE
       for(active_module in active_modules){
         if(length(setdiff(comp, active_module))==0){
@@ -245,15 +246,15 @@ active_snw_search <- function(input_for_search,
       }
     }
     #End of greedy search related part
-    
+
     sampling_score_means<-sampling_result[[1]]
     sampling_score_stds<-sampling_result[[2]]
-    
+
     #for(active_module in active_modules){
     #  print(calculate_component_score(pin, scores_list, active_module, sampling_score_means, sampling_score_stds))
     #  print(active_module)
     #}
-    
+
     active_module_scores<-c()
     active_module_node_texts<-c()
     for(active_module in active_modules){
@@ -261,12 +262,12 @@ active_snw_search <- function(input_for_search,
       active_module_scores<-c(active_module_scores, score)
       active_module_node_texts<-c(active_module_node_texts, paste(names(active_module),collapse=" "))
     }
-    
+
     df_asnw <- data.frame(active_module_scores, active_module_node_texts, stringsAsFactors = FALSE)
     df_asnw<-df_asnw[order(-df_asnw$active_module_scores),]
-    
+
     write(paste(df_asnw$active_module_scores,df_asnw$active_module_node_texts), "resultActiveSubnetworkSearch.txt", sep=" ")
-    
+
   }
 
   snws_file <- file.path("active_snw_search",
@@ -292,35 +293,35 @@ active_snw_search <- function(input_for_search,
 
 
 greedy_breadth_first_active_subnetwork_search<-function(seed_node, pin, scores_df, scores_list, sampling_result, max_depth, check_second_neighbors) {
-  
+
   sampling_score_means<-sampling_result[[1]]
   sampling_score_stds<-sampling_result[[2]]
-  
+
   comp <- c()
-  
+
   queue <- c(seed_node)
   checked_in_greedy <- c(seed_node)
   distances_from_seed <- c(0)
-  
+
   will_be_checked_for_neighbors <- c()
-  #When check_second_neighbors==TRUE, a node, the nodes which do not increase the score by themselves are added to the 
+  #When check_second_neighbors==TRUE, a node, the nodes which do not increase the score by themselves are added to the
   #end of the queue and they are checked when there are only this kind of nodes.
   #The reason is, an important neighbor might already be added by the help of another important node and we may not need
   #this unimportant node
-  
-  
+
+
   while (length(queue) > 0) {
     if(length(setdiff(queue, will_be_checked_for_neighbors))==0){ #all nodes in the queue are nodes whose neighbors will be checked for addition
       node <- queue[1] # get next node
       queue <- queue[-1] # remove the node
-      
+
       node_distance <- distances_from_seed[1]
       distances_from_seed <- distances_from_seed[-1]
-      
+
       neighbor_names <- names(neighbors(pin, node))
       neighbor_scores_df <-scores_df[scores_df$Gene %in% neighbor_names, ]
       neighbor_names <-neighbor_scores_df[order(neighbor_scores_df$Score, decreasing = TRUE), ]$Gene
-      
+
       current_score <- calculate_component_score(pin, scores_list, comp, sampling_score_means, sampling_score_stds)
       comp <- c(comp, node)
       will_be_checked_for_neighbors <- will_be_checked_for_neighbors[will_be_checked_for_neighbors!=node] #remove from postponed list
@@ -335,19 +336,19 @@ greedy_breadth_first_active_subnetwork_search<-function(seed_node, pin, scores_d
             distances_from_seed <- c(distances_from_seed, node_distance+1)
             neighbor_added <- TRUE
           }
-        }  
+        }
       }
       if(!neighbor_added){
         comp<-comp[-length(comp)] #Removing node from comp
       }
-      
+
     }else{
       node <- queue[1] # get next node
       queue <- queue[-1] # remove the node
-      
+
       node_distance <- distances_from_seed[1]
       distances_from_seed <- distances_from_seed[-1]
-      
+
       if(node %in% will_be_checked_for_neighbors){
         #Sending to the end of the queue, will be checked when there are only this kind of nodes
         queue <- c(queue, neighbor_node)
@@ -357,12 +358,12 @@ greedy_breadth_first_active_subnetwork_search<-function(seed_node, pin, scores_d
         new_score <- calculate_component_score(pin, scores_list, c(comp, node), sampling_score_means, sampling_score_stds)
         if (new_score > current_score) {
           comp <- c(comp, node)
-          
+
           if(node_distance<max_depth){#Its distance is less than max_depth, which means we can go further and check its neighbors
             neighbor_names <- names(neighbors(pin, node))
             neighbor_scores_df <- scores_df[scores_df$Gene %in% neighbor_names, ]
             neighbor_names <- neighbor_scores_df[order(neighbor_scores_df$Score, decreasing = TRUE), ]$Gene
-            
+
             for (neighbor_name in neighbor_names) {
               neighbor_node <- V(pin)[neighbor_name] #getting igraph.vs from gene name
               if (!(neighbor_node %in% checked_in_greedy)) {
@@ -370,9 +371,9 @@ greedy_breadth_first_active_subnetwork_search<-function(seed_node, pin, scores_d
                 queue <- c(queue, neighbor_node)
                 distances_from_seed <- c(distances_from_seed, node_distance+1)
               }
-            }  
-          }  
-          
+            }
+          }
+
         }else{
           if (check_second_neighbors) {
             if (node_distance<max_depth) { #if we will be able to add neighbors of this node
@@ -386,8 +387,8 @@ greedy_breadth_first_active_subnetwork_search<-function(seed_node, pin, scores_d
       }
     }
   }
-  
-  return(comp)  
+
+  return(comp)
 }
 
 
@@ -419,46 +420,46 @@ calculate_component_score_for_background <- function(pin, n, z_sum) {
 
 
 calculate_background_score<-function(pin, number_of_iterations, scores_list){
-  
+
   sampling_score_sums <- rep(0, vcount(pin))
   sampling_score_square_sums <- rep(0, vcount(pin))
-  
+
   node_list_for_sampling <- V(pin)
-  
+
   for(iter in 1:number_of_iterations){
     if(iter%%100==0){
       cat(round(iter/number_of_iterations,2)*100, '% of total iterations in background score calculation finished\n')
     }
     node_list_for_sampling <- sample(node_list_for_sampling)
-    
+
     z_sum<-0
     number_of_nodes_in_subnetwork<-0
-    
+
     for(node in node_list_for_sampling){
       # z_sum<-z_sum+V(pin)$score[node]
       z_sum<-z_sum+scores_list[[node]]#Much faster than using V(pin)$score[node]
       number_of_nodes_in_subnetwork<-number_of_nodes_in_subnetwork+1
-      
+
       score<-calculate_component_score_for_background(pin, number_of_nodes_in_subnetwork, z_sum)
       sampling_score_sums[number_of_nodes_in_subnetwork]<-sampling_score_sums[number_of_nodes_in_subnetwork]+score
       sampling_score_square_sums[number_of_nodes_in_subnetwork]<-sampling_score_square_sums[number_of_nodes_in_subnetwork]+score*score
     }
   }
-  
+
   #These are vector operations
   sampling_score_means<-sampling_score_sums/number_of_iterations
-  
+
   sampling_score_stds<-sampling_score_square_sums/number_of_iterations - sampling_score_means*sampling_score_means
   sampling_score_stds<-sqrt(sampling_score_stds+0.0000000001)
-  #Addition of small number has two purposes: 
+  #Addition of small number has two purposes:
   #1.Prevents division by zero in calculate_component_score()
   #2.Corrects for very small negative numbers that might appear, like -3.388132e-21
-  
+
   #####
   ##Explanation of the operation above
-  ##var = SUM((x-xmean)^2) / N 
+  ##var = SUM((x-xmean)^2) / N
   ##var = SUM(x^2 - 2*xmean*x + xmean^2)/N
-  ##var = SUM(x^2)/N - (2*xmean*SUM(x))/N + (N*xmean^2)/N 
+  ##var = SUM(x^2)/N - (2*xmean*SUM(x))/N + (N*xmean^2)/N
   ##var = SUM(x^2 )/N - 2*xmean^2 + xmean^2
   ##var = SUM(x^2 )/N - xmean^2
   #####
