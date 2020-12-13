@@ -138,17 +138,11 @@ active_snw_search <- function(input_for_search,
 
   input_path <- normalizePath("active_snw_search/input_for_search.txt")
 
+  ############ Run Active Subnetwork Search
 
-
-  ############ Run active Subnetwork Search
-
-  if(search_method %in% c("SA", "GA")){#Active subnetwork search methods written in Java are called
-
-    if(gr_check_second_neighbors){
-      grSearchDepth<-2
-    }else{
-      grSearchDepth<-1
-    }
+  if (search_method %in% c("SA", "GA")) {
+    # Active subnetwork search methods written in Java are called
+    grSearchDepth <- ifelse(gr_check_second_neighbors, 2 , 1) ## is this needed here?
 
     # running Active Subnetwork Search in Java
     system(paste0(
@@ -172,44 +166,47 @@ active_snw_search <- function(input_for_search,
       " -grSubNum=", grSubNum, silent_option
     ))
 
-  }else{#search_method=="GR" #Active subnetwork search methods written in R are called
+  } else {
 
-    library(igraph)#TODO: Is this OK?
+    # Greedy Active subnetwork search method written in R is called
 
-
-    #Read PIN
-    pin_df <- read.table(pin_path, header = FALSE, sep = "")
-    #print(head(pin_df))
+    # Read PIN
+    pin_df <- utils::read.delim(pin_path, header = FALSE)
     pin_df <- subset(pin_df, select = -2)
-    pin <- graph_from_data_frame(pin_df, directed = FALSE, vertices = NULL)
 
-    #pin <- read.graph(pin_path, format = "ncol", directed = FALSE)
+    pin <- igraph::graph_from_data_frame(pin_df, directed = FALSE, vertices = NULL)
 
-    #Read scores file
-    scores_df <- read.csv(input_path, sep = '\t', stringsAsFactors = FALSE, header = FALSE, strip.white = TRUE, col.names = c('Gene', 'Score'))
-    scores_df <-scores_df[scores_df$Gene %in% V(pin)$name,]
+    # Read scores file
+    scores_df <- input_for_search
+    colnames(scores_df) <- c("Gene", "Score")
 
-    #qnorm that is used for z-score conversion gives Inf for less than (1 - 5E-17), we applied threshold at 1E-15
-    scores_df[] <- lapply(scores_df, function(x) ifelse(x<1E-15, 1E-15, x))
+    scores_df <- scores_df[scores_df$Gene %in% igraph::V(pin)$name, ]
 
-    #p-values are converted to z-scores
-    scores_df$Score <- qnorm(1 - scores_df$Score)
+    # qnorm that is used for z-score conversion gives Inf for less than (1 - 5e-17)
+    # we are applying a threshold at 1E-15 and converting any smaller value to 1e-15
+    scores_df$Score <- vapply(scores_df$Score, function(x) ifelse(x < 1e-15, 1e-15, x), 0.05)
 
-    #When the score is missing we add row to the scores dataframe with a score of 0
-    scores_df_to_append<-data.frame('Gene'=setdiff(V(pin)$name,scores_df$Gene), 'Score'=rep(0, length(setdiff(V(pin)$name,scores_df$Gene))))
+    # p-values are converted to z-scores
+    scores_df$Score <- stats::qnorm(1 - scores_df$Score)
+
+    # We add rows with a score of 0 for missing genes (PIN genes not in input)
+    scores_df_to_append <- data.frame(Gene = setdiff(igraph::V(pin)$name,
+                                                     scores_df$Gene),
+                                      Score = 0)
     scores_df <- rbind(scores_df, scores_df_to_append)
 
-    #TODO Handle this part
-    scores_vector <- c()
-    scores_list <- list()
-    for (gene in V(pin)$name) {
-      scores_vector <- c(scores_vector, scores_df[scores_df$Gene == gene, 'Score'])
-      scores_list[gene]<-scores_df[scores_df$Gene == gene, 'Score']
-    }
-    V(pin)$score <- scores_vector
+    # assign scores to the PIN graph
+    idx <- match(igraph::V(pin)$name, scores_df$Gene)
+    igraph::V(pin)$score <- scores_df$Score[idx]
 
-    #Calculating background score
-    sampling_result<-calculate_background_score(pin = pin, number_of_iterations = 100, scores_list)#TODO convert 100 to 2000
+    # create a vector of scores (for faster execution)
+    scores_vec <- scores_df$Score[idx]
+    names(scores_vec) <- scores_df$Gene[idx]
+
+    # calculating background score
+    sampling_result <- calculate_background_score(pin = pin,
+                                                  number_of_iterations = 100,
+                                                  scores_vec)#TODO convert 100 to 2000
 
     #Score dataframe is sorted in descending order
     scores_df <- scores_df[order(scores_df$Score, decreasing = TRUE), ]
@@ -232,7 +229,7 @@ active_snw_search <- function(input_for_search,
         ratio_print_threshold<-ratio_print_threshold+10
       }
       seed_node <- V(pin)[seed] #getting igraph.vs from gene name
-      comp<-greedy_breadth_first_active_subnetwork_search(seed_node, pin, scores_df, scores_list, sampling_result, grMaxDepth, gr_check_second_neighbors)
+      comp<-greedy_breadth_first_active_subnetwork_search(seed_node, pin, scores_df, scores_vec, sampling_result, grMaxDepth, gr_check_second_neighbors)
 
       same_exists<-FALSE
       for(active_module in active_modules){
@@ -251,14 +248,14 @@ active_snw_search <- function(input_for_search,
     sampling_score_stds<-sampling_result[[2]]
 
     #for(active_module in active_modules){
-    #  print(calculate_component_score(pin, scores_list, active_module, sampling_score_means, sampling_score_stds))
+    #  print(calculate_component_score(pin, scores_vec, active_module, sampling_score_means, sampling_score_stds))
     #  print(active_module)
     #}
 
     active_module_scores<-c()
     active_module_node_texts<-c()
     for(active_module in active_modules){
-      score<-calculate_component_score(pin, scores_list, active_module, sampling_score_means, sampling_score_stds)
+      score<-calculate_component_score(pin, scores_vec, active_module, sampling_score_means, sampling_score_stds)
       active_module_scores<-c(active_module_scores, score)
       active_module_node_texts<-c(active_module_node_texts, paste(names(active_module),collapse=" "))
     }
@@ -292,7 +289,7 @@ active_snw_search <- function(input_for_search,
 }
 
 
-greedy_breadth_first_active_subnetwork_search<-function(seed_node, pin, scores_df, scores_list, sampling_result, max_depth, check_second_neighbors) {
+greedy_breadth_first_active_subnetwork_search<-function(seed_node, pin, scores_df, scores_vec, sampling_result, max_depth, check_second_neighbors) {
 
   sampling_score_means<-sampling_result[[1]]
   sampling_score_stds<-sampling_result[[2]]
@@ -322,7 +319,7 @@ greedy_breadth_first_active_subnetwork_search<-function(seed_node, pin, scores_d
       neighbor_scores_df <-scores_df[scores_df$Gene %in% neighbor_names, ]
       neighbor_names <-neighbor_scores_df[order(neighbor_scores_df$Score, decreasing = TRUE), ]$Gene
 
-      current_score <- calculate_component_score(pin, scores_list, comp, sampling_score_means, sampling_score_stds)
+      current_score <- calculate_component_score(pin, scores_vec, comp, sampling_score_means, sampling_score_stds)
       comp <- c(comp, node)
       will_be_checked_for_neighbors <- will_be_checked_for_neighbors[will_be_checked_for_neighbors!=node] #remove from postponed list
       neighbor_added<-FALSE
@@ -330,7 +327,7 @@ greedy_breadth_first_active_subnetwork_search<-function(seed_node, pin, scores_d
         neighbor_node <-V(pin)[neighbor_name] #getting igraph.vs from gene name
         if (!(neighbor_node %in% checked_in_greedy)) {
           checked_in_greedy <- c(checked_in_greedy, neighbor_node)
-          new_score <- calculate_component_score(pin, scores_list, c(comp, neighbor_node), sampling_score_means, sampling_score_stds)
+          new_score <- calculate_component_score(pin, scores_vec, c(comp, neighbor_node), sampling_score_means, sampling_score_stds)
           if (new_score > current_score) {
             queue <- c(queue, neighbor_node)
             distances_from_seed <- c(distances_from_seed, node_distance+1)
@@ -354,8 +351,8 @@ greedy_breadth_first_active_subnetwork_search<-function(seed_node, pin, scores_d
         queue <- c(queue, neighbor_node)
         distances_from_seed <- c(distances_from_seed, node_distance)
       }else{
-        current_score <- calculate_component_score(pin, scores_list, comp, sampling_score_means, sampling_score_stds)
-        new_score <- calculate_component_score(pin, scores_list, c(comp, node), sampling_score_means, sampling_score_stds)
+        current_score <- calculate_component_score(pin, scores_vec, comp, sampling_score_means, sampling_score_stds)
+        new_score <- calculate_component_score(pin, scores_vec, c(comp, node), sampling_score_means, sampling_score_stds)
         if (new_score > current_score) {
           comp <- c(comp, node)
 
@@ -392,7 +389,7 @@ greedy_breadth_first_active_subnetwork_search<-function(seed_node, pin, scores_d
 }
 
 
-calculate_component_score <- function(pin, scores_list, compo, sampling_score_means, sampling_score_stds) {
+calculate_component_score <- function(pin, scores_vec, compo, sampling_score_means, sampling_score_stds) {
   numberOfNodes<-length(compo)
   if (numberOfNodes == 0) {
     return(0)
@@ -401,72 +398,76 @@ calculate_component_score <- function(pin, scores_list, compo, sampling_score_me
     return(0.0001)
   } else{
     # score<-sum(V(pin)$score[compo]) / sqrt(length(compo))
-    score<-Reduce('+',scores_list[compo])  / sqrt(length(compo))
+    score<-Reduce('+',scores_vec[compo])  / sqrt(length(compo))
     score<-(score-sampling_score_means[numberOfNodes])/sampling_score_stds[numberOfNodes];
     return(score)
   }
 }
 
-calculate_component_score_for_background <- function(pin, n, z_sum) {
-  if (n == 0) {
-    return(0)
-  } else if (n == 1) {
-    return(0.0001)
-  } else{
-    return(z_sum/sqrt(n))
-  }
-}
+#' Calculate Background Score
+#'
+#' @param pin \code{\link[igraph]{igraph}} object containing the protein-protein
+#' interaction network
+#' @param number_of_iterations the number of iterations
+#' @param scores_vec vector of score for each gene in the PIN
+#'
+#' @return a list containing 2 elements \describe{
+#'   \item{sampling_score_means}{vector of sampling score means}
+#'   \item{sampling_score_stds}{vector of sampling score standard deviations}
+#' }
+calculate_background_score <- function(pin, number_of_iterations, scores_vec){
 
+  sampling_score_sums <- rep(0, igraph::vcount(pin))
+  sampling_score_square_sums <- rep(0, igraph::vcount(pin))
 
+  node_list_for_sampling <- igraph::V(pin)
 
-calculate_background_score<-function(pin, number_of_iterations, scores_list){
+  for(iter in seq_len(number_of_iterations)) {
 
-  sampling_score_sums <- rep(0, vcount(pin))
-  sampling_score_square_sums <- rep(0, vcount(pin))
-
-  node_list_for_sampling <- V(pin)
-
-  for(iter in 1:number_of_iterations){
-    if(iter%%100==0){
-      cat(round(iter/number_of_iterations,2)*100, '% of total iterations in background score calculation finished\n')
+    # progress message
+    if(iter %% 100 == 0) {
+      message(round(iter / number_of_iterations, 2) * 100, '% of total iterations in background score calculation finished\n')
     }
+
+    # shuffle nodes
     node_list_for_sampling <- sample(node_list_for_sampling)
 
-    z_sum<-0
-    number_of_nodes_in_subnetwork<-0
+    z_sum <- 0
+    number_of_nodes_in_subnetwork <- 0
 
-    for(node in node_list_for_sampling){
-      # z_sum<-z_sum+V(pin)$score[node]
-      z_sum<-z_sum+scores_list[[node]]#Much faster than using V(pin)$score[node]
-      number_of_nodes_in_subnetwork<-number_of_nodes_in_subnetwork+1
+    for(node in node_list_for_sampling) {
 
-      score<-calculate_component_score_for_background(pin, number_of_nodes_in_subnetwork, z_sum)
-      sampling_score_sums[number_of_nodes_in_subnetwork]<-sampling_score_sums[number_of_nodes_in_subnetwork]+score
-      sampling_score_square_sums[number_of_nodes_in_subnetwork]<-sampling_score_square_sums[number_of_nodes_in_subnetwork]+score*score
+      z_sum <- z_sum + scores_vec[[node]]#Much faster than using V(pin)$score[node]
+
+      number_of_nodes_in_subnetwork <- number_of_nodes_in_subnetwork + 1
+
+      ## SADECE BURADA KULLANILDIGI ICIN FONKSIYONU SILDIM
+      score <- ifelse(number_of_nodes_in_subnetwork == 1, 1e-4, z_sum/sqrt(number_of_nodes_in_subnetwork))
+
+      sampling_score_sums[number_of_nodes_in_subnetwork] <- sampling_score_sums[number_of_nodes_in_subnetwork] + score
+      sampling_score_square_sums[number_of_nodes_in_subnetwork] <- sampling_score_square_sums[number_of_nodes_in_subnetwork] + score^2
     }
   }
 
   #These are vector operations
-  sampling_score_means<-sampling_score_sums/number_of_iterations
+  sampling_score_means <- sampling_score_sums / number_of_iterations
 
-  sampling_score_stds<-sampling_score_square_sums/number_of_iterations - sampling_score_means*sampling_score_means
-  sampling_score_stds<-sqrt(sampling_score_stds+0.0000000001)
+  sampling_score_stds <- sampling_score_square_sums / number_of_iterations - sampling_score_means^2
+  sampling_score_stds <- sqrt(sampling_score_stds + 1e-10)
+
   #Addition of small number has two purposes:
   #1.Prevents division by zero in calculate_component_score()
   #2.Corrects for very small negative numbers that might appear, like -3.388132e-21
 
-  #####
   ##Explanation of the operation above
   ##var = SUM((x-xmean)^2) / N
   ##var = SUM(x^2 - 2*xmean*x + xmean^2)/N
   ##var = SUM(x^2)/N - (2*xmean*SUM(x))/N + (N*xmean^2)/N
-  ##var = SUM(x^2 )/N - 2*xmean^2 + xmean^2
-  ##var = SUM(x^2 )/N - xmean^2
-  #####
-  return(list(sampling_score_means,sampling_score_stds))
+  ##var = SUM(x^2)/N - 2*xmean^2 + xmean^2
+  ##var = SUM(x^2)/N - xmean^2
+  return(list(sampling_score_means = sampling_score_means,
+              sampling_score_stds = sampling_score_stds))
 }
-
-
 
 
 #' Parse Active Subnetwork Search Output File and Filter the Subnetworks
