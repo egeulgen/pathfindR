@@ -331,22 +331,23 @@ active_snw_search <- function(input_for_search,
     dir.create("active_snw_search")
   }
 
-  if (!file.exists("active_snw_search/input_for_search.txt")) {
-    input_for_search$GENE <- base::toupper(input_for_search$GENE)
-    utils::write.table(input_for_search[, c("GENE", "P_VALUE")],
-                       "active_snw_search/input_for_search.txt",
-                       col.names = FALSE,
-                       row.names = FALSE,
-                       quote = FALSE,
-                       sep = "\t")
-  }
-
-  input_path <- normalizePath("active_snw_search/input_for_search.txt")
-
+  input_for_search$GENE <- base::toupper(input_for_search$GENE)
   ############ Run Active Subnetwork Search
 
   ### BELKI GR_JAVA OPSIYONU EKLEYEBILIRIZ?
   if (search_method %in% c("SA", "GA")) {
+    if (!file.exists("active_snw_search/input_for_search.txt")) {
+
+      utils::write.table(input_for_search[, c("GENE", "P_VALUE")],
+                         "active_snw_search/input_for_search.txt",
+                         col.names = FALSE,
+                         row.names = FALSE,
+                         quote = FALSE,
+                         sep = "\t")
+    }
+
+    input_path <- normalizePath("active_snw_search/input_for_search.txt")
+
     # Active subnetwork search methods written in Java are called
     grSearchDepth <- ifelse(gr_check_second_neighbors, 2 , 1)
 
