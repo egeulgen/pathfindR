@@ -386,7 +386,11 @@ active_snw_search <- function(input_for_search,
     scores_df <- input_for_search
     colnames(scores_df) <- c("Gene", "Score")
 
+    # only keep genes that are in the PIN
     scores_df <- scores_df[scores_df$Gene %in% igraph::V(pin)$name, ]
+
+    # getting significant nodes
+    sig_genes <- scores_df$Gene
 
     # qnorm that is used for z-score conversion gives Inf for less than (1 - 5e-17)
     # we are applying a threshold at 1E-15 and converting any smaller value to 1e-15
@@ -417,9 +421,6 @@ active_snw_search <- function(input_for_search,
     # sort scores_df in descending order
     scores_df <- scores_df[order(scores_df$Score, decreasing = TRUE), ]
     rownames(scores_df) <- 1:nrow(scores_df) # necessary?
-
-    # getting significant nodes
-    sig_genes <- input_for_search$GENE
 
     active_modules <- list()
     # Greedy-search-related part
