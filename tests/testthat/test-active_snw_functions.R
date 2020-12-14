@@ -2,7 +2,7 @@
 ## Project: pathfindR
 ## Script purpose: Testthat testing script for
 ## active subnetwork search functions
-## Date: Nov 20, 2020
+## Date: Dec 14, 2020
 ## Author: Ege Ulgen
 ##################################################
 
@@ -15,7 +15,8 @@ input_df2 <- suppressMessages(input_processing(RA_input[1:2, ],
                                                pin_name_path = "Biogrid"))
 
 test_that("`active_snw_search()` returns list object", {
-  # Expect > 0 active snws
+  ### default search method (GR), implemented in R
+  # Expect > 0 active subnetworks
   expect_message(snw_list <- active_snw_search(input_for_search = input_df1),
                  "Found [1-9]\\d* active subnetworks")
   expect_is(snw_list, "list")
@@ -23,7 +24,7 @@ test_that("`active_snw_search()` returns list object", {
   expect_true(length(snw_list) > 0)
   unlink("active_snw_search", recursive = TRUE)
 
-  # Expect no active snws
+  # Expect no active subnetworks
   expect_message(snw_list <- active_snw_search(input_for_search = input_df2,
                                                sig_gene_thr = 1),
                  "Found 0 active subnetworks")
@@ -41,13 +42,21 @@ test_that("`active_snw_search()` returns list object", {
 
 test_that("All search methods for `active_snw_search()` work", {
   skip_on_cran()
-  ## GR
+  ## GR - implemented in R
   expect_message(snw_list <- active_snw_search(input_for_search = input_df1,
                                                pin_name_path = "Biogrid",
                                                search_method = "GR"),
                  "Found [1-9]\\d* active subnetworks")
   expect_is(snw_list, "list")
   expect_is(snw_list[[1]], "character")
+  unlink("active_snw_search", recursive = TRUE)
+
+  ## SA - implemented in Java - empty test case
+  expect_message(snw_list <- active_snw_search(input_for_search = input_df2,
+                                               pin_name_path = "Biogrid",
+                                               search_method = "SA"),
+                 "Found 0 active subnetworks")
+  expect_identical(snw_list, list())
   unlink("active_snw_search", recursive = TRUE)
 
   skip("will test SA and GA if we can create a suitable (faster and non-empty) test case")
