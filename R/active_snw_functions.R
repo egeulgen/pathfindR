@@ -1,4 +1,3 @@
-
 #' Calculate Background Score
 #'
 #' @param pin \code{\link[igraph]{igraph}} object containing the protein-protein
@@ -36,8 +35,7 @@ calculate_background_score <- function(pin, number_of_iterations, scores_vec){
 
       number_of_nodes_in_subnetwork <- number_of_nodes_in_subnetwork + 1
 
-      ## SADECE BURADA KULLANILDIGI ICIN FONKSIYONU SILDIM
-      score <- ifelse(number_of_nodes_in_subnetwork == 1, 1e-4, z_sum/sqrt(number_of_nodes_in_subnetwork))
+      score <- ifelse(number_of_nodes_in_subnetwork == 1, 1e-4, z_sum / sqrt(number_of_nodes_in_subnetwork))
 
       sampling_score_sums[number_of_nodes_in_subnetwork] <- sampling_score_sums[number_of_nodes_in_subnetwork] + score
       sampling_score_square_sums[number_of_nodes_in_subnetwork] <- sampling_score_square_sums[number_of_nodes_in_subnetwork] + score^2
@@ -78,7 +76,7 @@ calculate_component_score <- function(pin, scores_vec, compo, sampling_score_mea
   if (numberOfNodes == 0)
     return(0)
 
-  #We don't want single node components.
+  # We don't want single node components.
   if (numberOfNodes == 1)
     return(1e-4)
 
@@ -152,7 +150,7 @@ greedy_breadth_first_active_subnetwork_search <- function(seed_node, pin,
       }
 
       if (!neighbor_added)
-        comp<-comp[-length(comp)] #Removing node from comp
+        comp<-comp[-length(comp)] # Removing node from comp
 
     } else {
       node <- queue[1] # get next node
@@ -162,7 +160,7 @@ greedy_breadth_first_active_subnetwork_search <- function(seed_node, pin,
       distances_from_seed <- distances_from_seed[-1]
 
       if (node %in% will_be_checked_for_neighbors) {
-        #Sending to the end of the queue, will be checked when there are only this kind of nodes
+        # Sending to the end of the queue, will be checked when there are only this kind of nodes
         queue <- c(queue, neighbor_node)
         distances_from_seed <- c(distances_from_seed, node_distance)
       } else {
@@ -171,13 +169,13 @@ greedy_breadth_first_active_subnetwork_search <- function(seed_node, pin,
         if (new_score > current_score) {
           comp <- c(comp, node)
 
-          if (node_distance < max_depth) {#Its distance is less than max_depth, which means we can go further and check its neighbors
+          if (node_distance < max_depth) {# Its distance is less than max_depth, which means we can go further and check its neighbors
             neighbor_names <- names(igraph::neighbors(pin, node))
             neighbor_scores_df <- scores_df[scores_df$Gene %in% neighbor_names, ]
             neighbor_names <- neighbor_scores_df$Gene[order(neighbor_scores_df$Score, decreasing = TRUE)]
 
             for (neighbor_name in neighbor_names) {
-              neighbor_node <- igraph::V(pin)[neighbor_name] #getting igraph.vs from gene name
+              neighbor_node <- igraph::V(pin)[neighbor_name] # getting igraph.vs from gene name
               if (!neighbor_node %in% checked_in_greedy) {
                 checked_in_greedy <- c(checked_in_greedy, neighbor_node)
                 queue <- c(queue, neighbor_node)
@@ -323,7 +321,7 @@ active_snw_search <- function(input_for_search,
   ## turn use_all_positives into the java argument
   use_all_positives <- ifelse(use_all_positives, " -useAllPositives", "")
 
-  ## absolute path for active snw search jar
+  ## absolute path for active subnetwork search jar
   active_search_jar_path <- system.file("java/ActiveSubnetworkSearch.jar",
                                         package = "pathfindR")
 
@@ -333,10 +331,11 @@ active_snw_search <- function(input_for_search,
   }
 
   input_for_search$GENE <- base::toupper(input_for_search$GENE)
-  ############ Run Active Subnetwork Search
 
-  ### BELKI GR_JAVA OPSIYONU EKLEYEBILIRIZ?
+  ############ Run Active Subnetwork Search
   if (search_method %in% c("SA", "GA")) {
+    # Active subnetwork search methods implemented in Java are called
+
     if (!file.exists("active_snw_search/input_for_search.txt")) {
 
       utils::write.table(input_for_search[, c("GENE", "P_VALUE")],
@@ -349,7 +348,6 @@ active_snw_search <- function(input_for_search,
 
     input_path <- normalizePath("active_snw_search/input_for_search.txt")
 
-    # Active subnetwork search methods written in Java are called
     grSearchDepth <- ifelse(gr_check_second_neighbors, 2 , 1)
 
     # running Active Subnetwork Search in Java
@@ -426,7 +424,7 @@ active_snw_search <- function(input_for_search,
 
     active_modules <- list()
 
-    # Greedy-search-related part
+    ############ Greedy-search-related part
     num_of_seeds_used <- 0
     ratio_print_threshold <- 10
     for (seed in sig_genes) {
@@ -458,7 +456,6 @@ active_snw_search <- function(input_for_search,
       if(!same_exists)
         active_modules[[length(active_modules) + 1]] <- comp
     }
-    # End of greedy-search-related part
 
     sampling_score_means <- sampling_result$sampling_score_means
     sampling_score_stds <- sampling_result$sampling_score_stds
