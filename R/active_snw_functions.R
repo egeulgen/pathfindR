@@ -131,7 +131,11 @@ greedy_breadth_first_active_subnetwork_search <- function(seed_node, pin,
       neighbor_scores_df <- scores_df[scores_df$Gene %in% neighbor_names, ]
       neighbor_names <- neighbor_scores_df$Gene[order(neighbor_scores_df$Score, decreasing = TRUE)]
 
-      current_score <- calculate_component_score(pin, scores_vec, comp, sampling_score_means, sampling_score_stds)
+      current_score <- calculate_component_score(pin = pin,
+                                                 scores_vec = scores_vec,
+                                                 compo = comp,
+                                                 sampling_score_means = sampling_score_means,
+                                                 sampling_score_stds = sampling_score_stds)
       comp <- c(comp, node)
       will_be_checked_for_neighbors <- will_be_checked_for_neighbors[will_be_checked_for_neighbors!=node] #remove from postponed list
 
@@ -140,7 +144,11 @@ greedy_breadth_first_active_subnetwork_search <- function(seed_node, pin,
         neighbor_node <- igraph::V(pin)[neighbor_name] #getting igraph.vs from gene name
         if (!neighbor_node %in% checked_in_greedy) {
           checked_in_greedy <- c(checked_in_greedy, neighbor_node)
-          new_score <- calculate_component_score(pin, scores_vec, c(comp, neighbor_node), sampling_score_means, sampling_score_stds)
+          new_score <- calculate_component_score(pin = pin,
+                                                 scores_vec = scores_vec,
+                                                 compo = c(comp, neighbor_node),
+                                                 sampling_score_means = sampling_score_means,
+                                                 sampling_score_stds = sampling_score_stds)
           if (new_score > current_score) {
             queue <- c(queue, neighbor_node)
             distances_from_seed <- c(distances_from_seed, node_distance+1)
@@ -164,8 +172,16 @@ greedy_breadth_first_active_subnetwork_search <- function(seed_node, pin,
         queue <- c(queue, neighbor_node)
         distances_from_seed <- c(distances_from_seed, node_distance)
       } else {
-        current_score <- calculate_component_score(pin, scores_vec, comp, sampling_score_means, sampling_score_stds)
-        new_score <- calculate_component_score(pin, scores_vec, c(comp, node), sampling_score_means, sampling_score_stds)
+        current_score <- calculate_component_score(pin = pin,
+                                                   scores_vec = scores_vec,
+                                                   compo = comp,
+                                                   sampling_score_means = sampling_score_means,
+                                                   sampling_score_stds = sampling_score_stds)
+        new_score <- calculate_component_score(pin = pin,
+                                               scores_vec = scores_vec,
+                                               compo = c(comp, node),
+                                               sampling_score_means = sampling_score_means,
+                                               sampling_score_stds = sampling_score_stds)
         if (new_score > current_score) {
           comp <- c(comp, node)
 
@@ -416,7 +432,7 @@ active_snw_search <- function(input_for_search,
     # calculate background score
     sampling_result <- calculate_background_score(pin = pin,
                                                   number_of_iterations = 100, # TODO convert 100 to 2000
-                                                  scores_vec)
+                                                  scores_vec = scores_vec)
 
     # sort scores_df in descending order
     scores_df <- scores_df[order(scores_df$Score, decreasing = TRUE), ]
@@ -464,7 +480,11 @@ active_snw_search <- function(input_for_search,
     active_module_scores<-c()
     active_module_node_texts<-c()
     for (active_module in active_modules){
-      score <- calculate_component_score(pin, scores_vec, active_module, sampling_score_means, sampling_score_stds)
+      score <- calculate_component_score(pin = pin,
+                                         scores_vec = scores_vec,
+                                         compo = active_module,
+                                         sampling_score_means = sampling_score_means,
+                                         sampling_score_stds = sampling_score_stds)
       active_module_scores <- c(active_module_scores, score)
       active_module_node_texts <- c(active_module_node_texts, paste(names(active_module), collapse=" "))
     }
