@@ -3,11 +3,7 @@
     "##############################################################################
                         Welcome to pathfindR!
 
-Please cite the article below if you use pathfindR in published reseach:
-
-Ulgen E, Ozisik O, Sezerman OU. 2019. pathfindR: An R Package for Comprehensive
-Identification of Enriched Pathways in Omics Data Through Active Subnetworks.
-Front. Genet. doi:10.3389/fgene.2019.00858
+Type 'citation(\"pathfindR\")' for citing this R package in publications.
 
 ##############################################################################"
   )

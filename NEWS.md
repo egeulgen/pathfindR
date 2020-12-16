@@ -4,6 +4,7 @@
 - Implemented greedy active subnetwork search in R (breadth-first search)
 
 ## Minor changes and bug fixes
+- Shorthened package start-up message
 
 ***
 
