@@ -19,7 +19,7 @@
 #' @inheritParams active_snw_search
 #' @inheritParams enrichment_analyses
 #' @param iterations number of iterations for active subnetwork search and
-#'  enrichment analyses (Default = 1)
+#'  enrichment analyses (Default = 10)
 #' @param n_processes optional argument for specifying the number of processes
 #'  used by foreach. If not specified, the function determines this
 #'  automatically (Default == NULL. Gets set to 1 for Genetic Algorithm)
@@ -102,7 +102,7 @@ run_pathfindR <- function(input,
                           gaCrossover = 1, gaMut = 0,
                           grMaxDepth = 1, grSearchDepth = 1,
                           grOverlap = 0.5, grSubNum = 1000,
-                          iterations = 1, n_processes = NULL,
+                          iterations = 10, n_processes = NULL,
                           score_quan_thr = 0.8, sig_gene_thr = 0.02,
                           plot_enrichment_chart = TRUE,
                           output_dir = "pathfindR_Results",
