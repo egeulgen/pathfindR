@@ -1,5 +1,7 @@
 # pathfindR 1.6.1
 
+## Major Changes
+
 - In `run_pathfindR()`, the default `iterations` was set back to 10 (the default for all other v1.x)
 
 ***
