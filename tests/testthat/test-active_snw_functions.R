@@ -2,7 +2,7 @@
 ## Project: pathfindR
 ## Script purpose: Testthat testing script for
 ## active subnetwork search functions
-## Date: Dec 14, 2020
+## Date: Dec 26, 2020
 ## Author: Ege Ulgen
 ##################################################
 
@@ -51,12 +51,12 @@ test_that("All search methods for `active_snw_search()` work", {
   expect_is(snw_list[[1]], "character")
   unlink("active_snw_search", recursive = TRUE)
 
-  ## SA - implemented in Java - empty test case
+  ## SA - implemented in Java
   expect_message(snw_list <- active_snw_search(input_for_search = input_df2,
                                                pin_name_path = "Biogrid",
                                                search_method = "SA"),
-                 "Found 0 active subnetworks")
-  expect_identical(snw_list, list())
+                 "Found \\d* active subnetworks")
+  expect_is(snw_list, "list")
   unlink("active_snw_search", recursive = TRUE)
 
   skip("will test SA and GA if we can create a suitable (faster and non-empty) test case")
