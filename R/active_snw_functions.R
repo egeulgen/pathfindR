@@ -35,7 +35,7 @@ calculate_background_score <- function(pin, number_of_iterations, scores_vec){
 
       number_of_nodes_in_subnetwork <- number_of_nodes_in_subnetwork + 1
 
-      score <- ifelse(number_of_nodes_in_subnetwork == 1, 1e-4, z_sum / sqrt(number_of_nodes_in_subnetwork))
+      score <- z_sum / sqrt(number_of_nodes_in_subnetwork)
 
       sampling_score_sums[number_of_nodes_in_subnetwork] <- sampling_score_sums[number_of_nodes_in_subnetwork] + score
       sampling_score_square_sums[number_of_nodes_in_subnetwork] <- sampling_score_square_sums[number_of_nodes_in_subnetwork] + score^2
@@ -75,10 +75,6 @@ calculate_component_score <- function(pin, scores_vec, compo, sampling_score_mea
 
   if (numberOfNodes == 0)
     return(0)
-
-  # We don't want single node components.
-  if (numberOfNodes == 1)
-    return(1e-4)
 
   score <- sum(scores_vec[compo])  / sqrt(numberOfNodes)
   score <- (score - sampling_score_means[numberOfNodes]) / sampling_score_stds[numberOfNodes]
@@ -120,7 +116,7 @@ greedy_breadth_first_active_subnetwork_search <- function(seed_node, pin,
   # another important node and we may not need this unimportant node
 
   while (length(queue) > 0) {
-    if (length(setdiff(queue, will_be_checked_for_neighbors)) == 0) { #all nodes in the queue are nodes whose neighbors will be checked for addition
+    if (setequal(queue, will_be_checked_for_neighbors)) { #all nodes in the queue are nodes whose neighbors will be checked for addition
       node <- queue[1] # get next node
       queue <- queue[-1] # remove the node
 
@@ -141,18 +137,20 @@ greedy_breadth_first_active_subnetwork_search <- function(seed_node, pin,
 
       neighbor_added <- FALSE
       for (neighbor_name in neighbor_names) {
-        neighbor_node <- igraph::V(pin)[neighbor_name] #getting igraph.vs from gene name
-        if (!neighbor_node %in% checked_in_greedy) {
-          checked_in_greedy <- c(checked_in_greedy, neighbor_node)
-          new_score <- calculate_component_score(pin = pin,
-                                                 scores_vec = scores_vec,
-                                                 compo = c(comp, neighbor_node),
-                                                 sampling_score_means = sampling_score_means,
-                                                 sampling_score_stds = sampling_score_stds)
-          if (new_score > current_score) {
-            queue <- c(queue, neighbor_node)
-            distances_from_seed <- c(distances_from_seed, node_distance+1)
-            neighbor_added <- TRUE
+        if(scores_vec[neighbor_name]>0){
+          neighbor_node <- igraph::V(pin)[neighbor_name] #getting igraph.vs from gene name
+          if (!neighbor_node %in% checked_in_greedy) {
+            checked_in_greedy <- c(checked_in_greedy, neighbor_node)
+            new_score <- calculate_component_score(pin = pin,
+                                                   scores_vec = scores_vec,
+                                                   compo = c(comp, neighbor_node),
+                                                   sampling_score_means = sampling_score_means,
+                                                   sampling_score_stds = sampling_score_stds)
+            if (new_score > current_score) {
+              queue <- c(queue, neighbor_node)
+              distances_from_seed <- c(distances_from_seed, node_distance+1)
+              neighbor_added <- TRUE
+            }
           }
         }
       }
@@ -182,7 +180,10 @@ greedy_breadth_first_active_subnetwork_search <- function(seed_node, pin,
                                                compo = c(comp, node),
                                                sampling_score_means = sampling_score_means,
                                                sampling_score_stds = sampling_score_stds)
+        
+        
         if (new_score > current_score) {
+          
           comp <- c(comp, node)
 
           if (node_distance < max_depth) {# Its distance is less than max_depth, which means we can go further and check its neighbors
@@ -191,12 +192,14 @@ greedy_breadth_first_active_subnetwork_search <- function(seed_node, pin,
             neighbor_names <- neighbor_scores_df$Gene[order(neighbor_scores_df$Score, decreasing = TRUE)]
 
             for (neighbor_name in neighbor_names) {
-              neighbor_node <- igraph::V(pin)[neighbor_name] # getting igraph.vs from gene name
-              if (!neighbor_node %in% checked_in_greedy) {
-                checked_in_greedy <- c(checked_in_greedy, neighbor_node)
-                queue <- c(queue, neighbor_node)
-                distances_from_seed <- c(distances_from_seed, node_distance + 1)
-              }
+              if(scores_vec[neighbor_name]>0){
+                neighbor_node <- igraph::V(pin)[neighbor_name] # getting igraph.vs from gene name
+                if (!neighbor_node %in% checked_in_greedy) {
+                  checked_in_greedy <- c(checked_in_greedy, neighbor_node)
+                  queue <- c(queue, neighbor_node)
+                  distances_from_seed <- c(distances_from_seed, node_distance + 1)
+                }
+              }#else break
             }
           }
 
@@ -431,7 +434,7 @@ active_snw_search <- function(input_for_search,
 
     # calculate background score
     sampling_result <- calculate_background_score(pin = pin,
-                                                  number_of_iterations = 100, # TODO convert 100 to 2000
+                                                  number_of_iterations = 1000, # TODO convert 100 to 2000
                                                   scores_vec = scores_vec)
 
     # sort scores_df in descending order
@@ -463,7 +466,7 @@ active_snw_search <- function(input_for_search,
       # check if the same module exists
       same_exists <- FALSE
       for (active_module in active_modules){
-        if(length(setdiff(comp, active_module)) == 0){
+        if(setequal(comp, active_module)){
           same_exists <- TRUE
           break
         }
