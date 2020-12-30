@@ -220,6 +220,7 @@ greedy_breadth_first_active_subnetwork_search <- function(seed_node, pin,
   return(comp)
 }
 
+
 #' Perform Active Subnetwork Search
 #'
 #' @param input_for_search input the input data that active subnetwork search uses. The input
@@ -281,7 +282,7 @@ active_snw_search <- function(input_for_search,
                               use_all_positives = FALSE,
                               geneInitProbs = 0.1,
                               saTemp0 = 1, saTemp1 = 0.01, saIter = 10000,
-                              gaPop = 400, gaIter = 10000,
+                              gaPop = 400, gaIter = 200,
                               gaThread = 5, gaCrossover = 1, gaMut = 0,
                               grMaxDepth = 1, gr_check_second_neighbors = TRUE,#TODO Default TRUE?
                               grOverlap = 0.5, grSubNum = 1000) {
@@ -352,7 +353,8 @@ active_snw_search <- function(input_for_search,
   input_for_search$GENE <- base::toupper(input_for_search$GENE)
 
   ############ Run Active Subnetwork Search
-  if (search_method %in% c("SA", "GA")) {
+  #if (search_method %in% c("SA", "GA")) {
+  if (search_method == "SA") {
     # Active subnetwork search methods implemented in Java are called
 
     if (!file.exists("active_snw_search/input_for_search.txt")) {
@@ -409,7 +411,7 @@ active_snw_search <- function(input_for_search,
     scores_df <- scores_df[scores_df$Gene %in% igraph::V(pin)$name, ]
 
     # getting significant nodes
-    sig_genes <- scores_df$Gene
+    sig_genes <- scores_df$Gene #Do we only have scores for significant genes here?
 
     # qnorm that is used for z-score conversion gives Inf for less than (1 - 5e-17)
     # we are applying a threshold at 1E-15 and converting any smaller value to 1e-15
@@ -434,8 +436,11 @@ active_snw_search <- function(input_for_search,
 
     # calculate background score
     sampling_result <- calculate_background_score(pin = pin,
-                                                  number_of_iterations = 1000, # TODO convert 100 to 2000
+                                                  number_of_iterations = 1000,
                                                   scores_vec = scores_vec)
+    
+    sampling_score_means <- sampling_result$sampling_score_means
+    sampling_score_stds <- sampling_result$sampling_score_stds
 
     # sort scores_df in descending order
     scores_df <- scores_df[order(scores_df$Score, decreasing = TRUE), ]
@@ -443,41 +448,118 @@ active_snw_search <- function(input_for_search,
 
     active_modules <- list()
 
-    ############ Greedy-search-related part
-    num_of_seeds_used <- 0
-    ratio_print_threshold <- 10
-    for (seed in sig_genes) {
-      # progress
-      num_of_seeds_used <- num_of_seeds_used + 1
-      used_seed_ratio <- round(num_of_seeds_used / length(sig_genes), 2) * 100
-      if (used_seed_ratio >= ratio_print_threshold) {
-        message(used_seed_ratio, "% of seeds are checked")
-        ratio_print_threshold <- ratio_print_threshold + 10
-      }
-
-      seed_node <- igraph::V(pin)[seed] # getting igraph.vs from gene name
-      comp <- greedy_breadth_first_active_subnetwork_search(seed_node = seed_node,
-                                                            pin = pin,
-                                                            scores_df = scores_df,
-                                                            scores_vec = scores_vec,
-                                                            sampling_result = sampling_result,
-                                                            max_depth = grMaxDepth,
-                                                            check_second_neighbors = gr_check_second_neighbors)
-      # check if the same module exists
-      same_exists <- FALSE
-      for (active_module in active_modules){
-        if(setequal(comp, active_module)){
-          same_exists <- TRUE
-          break
+    if (search_method == "GR") {
+      #Greedy search
+      num_of_seeds_used <- 0
+      ratio_print_threshold <- 10
+      for (seed in sig_genes) {
+        # progress
+        num_of_seeds_used <- num_of_seeds_used + 1
+        used_seed_ratio <- round(num_of_seeds_used / length(sig_genes), 2) * 100
+        if (used_seed_ratio >= ratio_print_threshold) {
+          message(used_seed_ratio, "% of seeds are checked")
+          ratio_print_threshold <- ratio_print_threshold + 10
         }
+  
+        seed_node <- igraph::V(pin)[seed] # getting igraph.vs from gene name
+        comp <- greedy_breadth_first_active_subnetwork_search(seed_node = seed_node,
+                                                              pin = pin,
+                                                              scores_df = scores_df,
+                                                              scores_vec = scores_vec,
+                                                              sampling_result = sampling_result,
+                                                              max_depth = grMaxDepth,
+                                                              check_second_neighbors = gr_check_second_neighbors)
+        # check if the same module exists
+        same_exists <- FALSE
+        for (active_module in active_modules){
+          if(setequal(comp, active_module)){
+            same_exists <- TRUE
+            break
+          }
+        }
+  
+        if(!same_exists)
+          active_modules[[length(active_modules) + 1]] <- names(comp)
       }
-
-      if(!same_exists)
-        active_modules[[length(active_modules) + 1]] <- comp
+    
+    }else{#GA
+      #Genetic algorithm
+      
+      
+      evalFunc <- function(x) {
+        
+        subgraphs<-igraph::groups(igraph::components(igraph::induced_subgraph(pin, igraph::V(pin)[which(x==1)], impl='auto')))
+        
+        scoreMax <- -10^5
+        for(subgraph in subgraphs){
+          score <- calculate_component_score(pin = pin,
+                                             scores_vec = scores_vec,
+                                             comp = subgraph,
+                                             sampling_score_means = sampling_score_means,
+                                             sampling_score_stds = sampling_score_stds)
+          
+          if(score>scoreMax){
+            scoreMax<-score
+          }
+        }
+        
+        
+        return(scoreMax)
+      }
+      
+      suggestion<-which(V(pin)$name %in% sig_genes)
+      suggestionRatio<-0.5
+      
+      
+      start_time <- Sys.time()
+      gaPopulation<-asGA(chromosomes=length(igraph::V(pin)), popSize=gaPop, iters=gaIter, mutationChance = gaMut, suggestion=suggestion, suggestionRatio = suggestionRatio, evalFunc=evalFunc, zeroToOneRatio=c(10,1))
+      #, mutationChance = 0
+      end_time <- Sys.time()
+      print(end_time - start_time)
+      
+      
+      subgraphs<-igraph::groups(igraph::components(igraph::induced_subgraph(pin, igraph::V(pin)[which(gaPopulation[1,]==1)], impl='auto')))
+      
+      scoreMax <- -10^5
+      activeSnw <- NULL
+      for(subgraph in subgraphs){
+        score <- calculate_component_score(pin = pin,
+                                           scores_vec = scores_vec,
+                                           comp = subgraph,
+                                           sampling_score_means = sampling_score_means,
+                                           sampling_score_stds = sampling_score_stds)
+        if(score>scoreMax){
+          scoreMax<-score
+          activeSnw<-subgraph
+        }
+        
+        if(score>0){
+          if(length(subgraph)<50){
+            print(subgraph)  
+          }else{
+            print('Big subgraph')
+            print(length(subgraph))
+          }
+          print(score)
+          active_modules<-c(active_modules, subgraph)
+        }
+        
+      }
+      
+      #print(activeSnw)
+      #score <- calculate_component_score(pin = pin,
+      #                                   scores_vec = scores_vec,
+      #                                   comp = activeSnw,
+      #                                   sampling_score_means = sampling_score_means,
+      #                                   sampling_score_stds = sampling_score_stds)
+      #print(score)
+      #comp<-c(igraph::V(pin)[gaPopulation[1,]])
+      #active_modules<-c(activeSnw)
+      
     }
+    
+    #TODO issue- Why is the big module not written?
 
-    sampling_score_means <- sampling_result$sampling_score_means
-    sampling_score_stds <- sampling_result$sampling_score_stds
 
     # write results to file
     active_module_scores<-c()
@@ -489,7 +571,8 @@ active_snw_search <- function(input_for_search,
                                          sampling_score_means = sampling_score_means,
                                          sampling_score_stds = sampling_score_stds)
       active_module_scores <- c(active_module_scores, score)
-      active_module_node_texts <- c(active_module_node_texts, paste(names(active_module), collapse=" "))
+      #active_module_node_texts <- c(active_module_node_texts, paste(names(active_module), collapse=" "))
+      active_module_node_texts <- c(active_module_node_texts, paste(active_module, collapse=" "))
     }
 
     df_asnw <- data.frame(active_module_scores, active_module_node_texts)
