@@ -507,7 +507,7 @@ active_snw_search <- function(input_for_search,
         return(scoreMax)
       }
       
-      suggestion<-which(V(pin)$name %in% sig_genes)
+      suggestion<-which(igraph::V(pin)$name %in% sig_genes)
       suggestionRatio<-0.5
       
       
@@ -521,7 +521,7 @@ active_snw_search <- function(input_for_search,
       subgraphs<-igraph::groups(igraph::components(igraph::induced_subgraph(pin, igraph::V(pin)[which(gaPopulation[1,]==1)], impl='auto')))
       
       scoreMax <- -10^5
-      activeSnw <- NULL
+      maxScoringActiveSnw <- NULL
       for(subgraph in subgraphs){
         score <- calculate_component_score(pin = pin,
                                            scores_vec = scores_vec,
@@ -530,35 +530,16 @@ active_snw_search <- function(input_for_search,
                                            sampling_score_stds = sampling_score_stds)
         if(score>scoreMax){
           scoreMax<-score
-          activeSnw<-subgraph
+          maxScoringActiveSnw<-subgraph
         }
         
-        if(score>0){
-          if(length(subgraph)<50){
-            print(subgraph)  
-          }else{
-            print('Big subgraph')
-            print(length(subgraph))
-          }
-          print(score)
-          active_modules<-c(active_modules, subgraph)
+        if(score>0 & length(subgraph)>1){
+          active_modules[[length(active_modules) + 1]] <- subgraph
         }
         
       }
       
-      #print(activeSnw)
-      #score <- calculate_component_score(pin = pin,
-      #                                   scores_vec = scores_vec,
-      #                                   comp = activeSnw,
-      #                                   sampling_score_means = sampling_score_means,
-      #                                   sampling_score_stds = sampling_score_stds)
-      #print(score)
-      #comp<-c(igraph::V(pin)[gaPopulation[1,]])
-      #active_modules<-c(activeSnw)
-      
     }
-    
-    #TODO issue- Why is the big module not written?
 
 
     # write results to file
