@@ -1,19 +1,29 @@
-#This implementation is based on genalg R package, https://github.com/egonw/genalg which is Copyright (C) 2005 Egon Willighagen License: GPL 2.0
+#This implementation is initiated with genalg R package, https://github.com/egonw/genalg which is Copyright (C) 2005 Egon Willighagen License: GPL 2.0
 
-#TODO
-#Parent selection probabilities
-
+# chromosomes: Number of chromosomes/variables in each individual
+# popSize: Population size
+# iters: Number of iterations
+# mutationChance: Mutations chance. If NA it is set to 1/(chromosomes+1). For speed, round(chromosomes*mutationChance) samples are selected and mutated
+# elitismRatio: Ratio of population to be handled as elite individuals and transferred to the next generation without any change
+# crossover: Crossover type, 'uniform' or 'singlepoint'
+# selection: Selection type, 'rank' or 'roulette'
+# suggestion: An individual to be used as a pattern while creating initial population
+# suggestionRatio: Ratio of set to 1 variables from suggestion to be taken (If there are 100 1s in a 
+#1000 chromosome individual, and suggestion is 0.5, 50 variables will be sampled and set to 1, others 
+#will be set accordingly to keep up with zeroToOneRatio)
+# zeroToOneRatio: Zero to one ratio in the randomly generated initial individuals. It should be an integer vector of two, e.g. c(3,5), representing the ratio.
+# evalFunc: Funtion to evaluate the inividuals
 asGA<-function(chromosomes=10,
                popSize=200,
                iters=100,
                mutationChance=NA,
-               elitism=NA,
+               elitismRatio=0.2, #implemented different from genalg
                crossover='uniform', #implemented different from genalg
+               selection='rank', #implemented different from genalg
                suggestion=NULL, #implemented different from genalg
                suggestionRatio=1, #implemented different from genalg
                zeroToOneRatio=c(1,1), #implemented different from genalg
-               evalFunc=NULL,
-               parentProb= dnorm(1:popSize, mean=0, sd=(popSize/3))
+               evalFunc=NULL
 ){
   
   #Check input parameters
@@ -21,8 +31,9 @@ asGA<-function(chromosomes=10,
   if (chromosomes<1) { stop("The chromosome number must be at least 1."); }
   if (popSize < 5) { stop("The population size must be at least 5."); }
   if (iters < 1) { stop("The number of iterations must be at least 1."); }
-  if (!is.na(elitism) & !(elitism < popSize)) { stop("The population size must be greater than the elitism."); }
+  if ((elitismRatio < 0) | (elitismRatio>1)) { stop("The population size must be greater than the elitism."); }
   if (!crossover %in% c('uniform', 'singlepoint')) { stop("Crossover method parameter must be either \'uniform\' or \'singlepoint\'"); }
+  if (!selection %in% c('rank', 'roulette')) { stop("Selection method parameter must be either \'rank\' or \'roulette\'"); }
   if (length(zeroToOneRatio)!=2 | zeroToOneRatio[1]<=0 | zeroToOneRatio[2]<=0) { stop("zeroToOneRatio parameters must be a vector of two positive numbers, e.g. c(3,5) which means ~ 3 zeros for every 5 ones"); }
   if ((suggestionRatio < 0) | (suggestionRatio>1)) { stop("Suggestion ratio must be in [0,1] range."); }
   
@@ -31,9 +42,8 @@ asGA<-function(chromosomes=10,
   if (is.na(mutationChance)) {
     mutationChance = 1/(chromosomes+1);
   }
-  if (is.na(elitism)) {
-    elitism = floor(popSize/5)
-  }
+  
+  elitism = floor(popSize*elitismRatio)
   
   #Initialize population
   population = matrix(nrow=popSize, ncol=chromosomes)
@@ -100,12 +110,18 @@ asGA<-function(chromosomes=10,
     
     for (child in (elitism+1):popSize) {
       
-      #Crossover
+      #Selection
+      if(selection=='rank'){
+        parentProb=c(popSize:1)
+      }else{
+        parentProb=evalVals$x
+      }
       
-      #Pick two random parents
       parentIDs = sample(1:popSize, 2, prob= parentProb)
       parents = population[parentIDs,];
       
+      
+      #Crossover
       if(crossover=='uniform'){#Uniform crossover
         newPopulation[child, ] = parents[1,]
         for (chr in 1:chromosomes){
@@ -137,7 +153,7 @@ asGA<-function(chromosomes=10,
         for (child in (elitism+1):popSize) {
           
           #For speed this version is chosen
-          toMutate=sample(c(1:chromosomes),chromosomes*mutationChance, replace = FALSE)
+          toMutate=sample(c(1:chromosomes),round(chromosomes*mutationChance), replace = FALSE)
           for(chr in toMutate){
             if (population[child,chr] == 0) {
               population[child,chr] = 1;

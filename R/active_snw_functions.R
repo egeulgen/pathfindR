@@ -512,7 +512,7 @@ active_snw_search <- function(input_for_search,
       
       
       start_time <- Sys.time()
-      gaPopulation<-asGA(chromosomes=length(igraph::V(pin)), popSize=gaPop, iters=gaIter, mutationChance = gaMut, suggestion=suggestion, suggestionRatio = suggestionRatio, evalFunc=evalFunc, zeroToOneRatio=c(10,1))
+      gaPopulation<-asGA(chromosomes=length(igraph::V(pin)), popSize=gaPop, iters=gaIter, mutationChance = gaMut, suggestion=suggestion, suggestionRatio = suggestionRatio, zeroToOneRatio=c(10,1), evalFunc=evalFunc)
       #, mutationChance = 0
       end_time <- Sys.time()
       print(end_time - start_time)
