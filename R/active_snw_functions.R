@@ -394,8 +394,7 @@ active_snw_search <- function(input_for_search,
     ))
 
   } else {
-
-    # Greedy Active subnetwork search method written in R is called
+    # Greedy or Genetic Algorithm Active subnetwork search methods written in R
 
     # read PIN
     pin_df <- utils::read.delim(pin_path, header = FALSE)
@@ -433,6 +432,7 @@ active_snw_search <- function(input_for_search,
     # create a vector of scores (for faster execution)
     scores_vec <- scores_df$Score[idx]
     names(scores_vec) <- scores_df$Gene[idx]
+    
 
     # calculate background score
     sampling_result <- calculate_background_score(pin = pin,
