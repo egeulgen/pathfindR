@@ -199,11 +199,21 @@ get_kegg_gsets <- function(org_code = "hsa") {
   # parse pathway genes
   genes_by_pathway <- lapply(pathway_codes, function(pwid) {
     pw <- KEGGREST::keggGet(pwid)
-    pw <- pw[[1]]$GENE[c(FALSE, TRUE)] ## get gene symbols
+
+    ## get gene symbols
+    all_entries <- pw[[1]]$GENE
+    if(is.null(all_entries))
+      return(NULL)
+    tmp <- c(TRUE, FALSE)
+    if (grepl(";", all_entries[2])) {
+      tmp <- c(FALSE, TRUE)
+    }
+    pw <- all_entries[tmp]
+
     pw <- sub(";.+", "", pw) ## discard any description
     pw <- pw[grep("^[A-Za-z0-9_-]+(\\@)?$", pw)] ## remove mistaken lines
     pw <- unique(pw) ## keep unique genes
-    pw
+    return(pw)
   })
 
   names(genes_by_pathway) <- pathway_codes
