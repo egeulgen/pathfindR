@@ -1,5 +1,9 @@
 # pathfindR (development version)
 
+## Major Changes
+## Minor changes and bug fixes
+- fixed an issue in `get_kegg_gsets()` where empty result was returned for some organisms due to an error in parsing (#72)
+
 ***
 
 # pathfindR 1.6.1
