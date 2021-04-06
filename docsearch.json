@@ -2,21 +2,21 @@
   "index_name": "pathfindr",
   "start_urls": [
     {
-      "url": "https://egeulgen.github.io/pathfindR//index.html",
+      "url": "https://egeulgen.github.io/pathfindR/index.html",
       "selectors_key": "homepage",
       "tags": [
         "homepage"
       ]
     },
     {
-      "url": "https://egeulgen.github.io/pathfindR//reference",
+      "url": "https://egeulgen.github.io/pathfindR/reference",
       "selectors_key": "reference",
       "tags": [
         "reference"
       ]
     },
     {
-      "url": "https://egeulgen.github.io/pathfindR//articles",
+      "url": "https://egeulgen.github.io/pathfindR/articles",
       "selectors_key": "articles",
       "tags": [
         "articles"
@@ -30,7 +30,7 @@
     "/articles/index.html"
   ],
   "sitemap_urls": [
-    "https://egeulgen.github.io/pathfindR//sitemap.xml"
+    "https://egeulgen.github.io/pathfindR/sitemap.xml"
   ],
   "selectors": {
     "homepage": {

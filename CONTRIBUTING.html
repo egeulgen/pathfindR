@@ -50,6 +50,8 @@
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -61,9 +63,16 @@
 
 
 
+
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-title-body">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -150,7 +159,7 @@
 <div id="contributing-to-pathfindr-development" class="section level1">
 
 <p>The goal of this guide is to help you in contributing to pathfindR. The guide is divided into two main pieces:</p>
-<ol>
+<ol style="list-style-type: decimal">
 <li>Filing a bug report or feature request in an issue.</li>
 <li>Suggesting a change via a pull request.</li>
 </ol>
@@ -159,17 +168,17 @@
 <h2 class="hasAnchor">
 <a href="#issues" class="anchor"></a>Issues</h2>
 <p>When filing an issue, the most important thing is to include a minimal reproducible example so that we can quickly verify the problem, and then figure out how to fix it. There are three things you need to include to make your example reproducible: required packages, data, code.</p>
-<ol>
+<ol style="list-style-type: decimal">
 <li><p><strong>Packages</strong> should be loaded at the top of the script, so it’s easy to see which ones the example needs.</p></li>
 <li>
-<p>The easiest way to include <strong>data</strong> is to use <code><a href="https://rdrr.io/r/base/dput.html">dput()</a></code> to generate the R code to recreate it. For example, to recreate the <code>mtcars</code> dataset in R, I’d perform the following steps:</p>
-<ol>
-<li>Run <code><a href="https://rdrr.io/r/base/dput.html">dput(mtcars)</a></code> in R</li>
+<p>The easiest way to include <strong>data</strong> is to use <code><a href="https://rdrr.io/r/base/dput.html" class="external-link">dput()</a></code> to generate the R code to recreate it. For example, to recreate the <code>mtcars</code> dataset in R, I’d perform the following steps:</p>
+<ol style="list-style-type: decimal">
+<li>Run <code><a href="https://rdrr.io/r/base/dput.html" class="external-link">dput(mtcars)</a></code> in R</li>
 <li>Copy the output</li>
 <li>In my reproducible script, type <code>mtcars &lt;-</code> then paste.</li>
 </ol>
-<p>But even better is if you can create a <code><a href="https://rdrr.io/r/base/data.frame.html">data.frame()</a></code> with just a handful of rows and columns that still illustrates the problem.</p>
-<p>For more complex <strong>data</strong>, you can use <code><a href="https://rdrr.io/r/base/readRDS.html">saveRDS()</a></code> to save the object and attach it with the issue.</p>
+<p>But even better is if you can create a <code><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame()</a></code> with just a handful of rows and columns that still illustrates the problem.</p>
+<p>For more complex <strong>data</strong>, you can use <code><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS()</a></code> to save the object and attach it with the issue.</p>
 </li>
 <li>
 <p>Spend a little bit of time ensuring that your <strong>code</strong> is easy for others to read:</p>
@@ -187,19 +196,19 @@ The shorter your code is, the easier it is to understand.</p></li>
 <h2 class="hasAnchor">
 <a href="#pull-requests" class="anchor"></a>Pull requests</h2>
 <p>To contribute a change to pathfindR, you follow these steps:</p>
-<ol>
+<ol style="list-style-type: decimal">
 <li>Create a branch in git and make your changes.</li>
 <li>Push branch to github and issue pull request (PR).</li>
 <li>Discuss the pull request.</li>
 <li>Iterate until either we accept the PR or decide that it’s not a good fit for pathfindR.</li>
 </ol>
-<p>If you’re not familiar with git or github, please start by reading <a href="http://r-pkgs.had.co.nz/git.html" class="uri">http://r-pkgs.had.co.nz/git.html</a></p>
+<p>If you’re not familiar with git or github, please start by reading <a href="http://r-pkgs.had.co.nz/git.html" class="external-link uri">http://r-pkgs.had.co.nz/git.html</a></p>
 </div>
 </div>
 <div id="attribution" class="section level1">
 <h1 class="hasAnchor">
 <a href="#attribution" class="anchor"></a>Attribution</h1>
-<p>This Contributing guide was adapted from <a href="https://github.com/tidyverse/ggplot2">ggplot2</a></p>
+<p>This Contributing guide was adapted from <a href="https://github.com/tidyverse/ggplot2" class="external-link">ggplot2</a></p>
 </div>
 
 
@@ -217,11 +226,11 @@ The shorter your code is, the easier it is to understand.</p></li>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Ege Ulgen, Ozan Ozisik.</p>
+  <p><p>Developed by Ege Ulgen, Ozan Ozisik.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -246,6 +255,8 @@ The shorter your code is, the easier it is to understand.</p></li>
 </script>
 
 
+
+  
 
   </body>
 </html>

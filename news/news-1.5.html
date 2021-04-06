@@ -50,6 +50,8 @@
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -61,9 +63,16 @@
 
 
 
+
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-news">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -171,12 +180,12 @@
 <h2 class="hasAnchor">
 <a href="#minor-changes-and-bug-fixes-2" class="anchor"></a>Minor changes and bug fixes</h2>
 <ul>
-<li>fixed an issue regarding <code><a href="https://rdrr.io/r/parallel/makeCluster.html">parallel::makeCluster()</a></code> in <code><a href="../reference/run_pathfindR.html">run_pathfindR()</a></code> (<a href='https://github.com/egeulgen/pathfindR/issues/45'>#45</a>)</li>
+<li>fixed an issue regarding <code><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">parallel::makeCluster()</a></code> in <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code> (<a href='https://github.com/egeulgen/pathfindR/issues/45'>#45</a>)</li>
 <li>fixed save-related issue in <code><a href="../reference/download_kegg_png.html">download_kegg_png()</a></code> (<a href='https://github.com/egeulgen/pathfindR/issues/37'>#37</a>, <a href='https://github.com/rix133'>@rix133</a>)</li>
 <li>added the output data <code>RA_comparison_output</code> of pathfindR results on another RA-related dataset (GSE84074)</li>
 <li>in <code><a href="../reference/visualize_hsa_KEGG.html">visualize_hsa_KEGG()</a></code>, fixed the issue where &gt;1 entrez ids were returned for a gene symbol (the first one is kept)</li>
-<li>in <code><a href="../reference/visualize_hsa_KEGG.html">visualize_hsa_KEGG()</a></code>, implemented a tryCatch to avoid any issues when <code><a href="https://rdrr.io/pkg/KEGGREST/man/mark.pathway.by.objects.html">KEGGREST::color.pathway.by.objects()</a></code> might fail (<a href='https://github.com/egeulgen/pathfindR/issues/28'>#28</a>)</li>
-<li>in <code><a href="../reference/visualize_hsa_KEGG.html">visualize_hsa_KEGG()</a></code>, now limiting the number of genes passes onto <code><a href="https://rdrr.io/pkg/KEGGREST/man/mark.pathway.by.objects.html">KEGGREST::color.pathway.by.objects()</a></code> to &lt; 60 (because the KEGG API now limits the number?)</li>
+<li>in <code><a href="../reference/visualize_hsa_KEGG.html">visualize_hsa_KEGG()</a></code>, implemented a tryCatch to avoid any issues when <code><a href="https://rdrr.io/pkg/KEGGREST/man/mark.pathway.by.objects.html" class="external-link">KEGGREST::color.pathway.by.objects()</a></code> might fail (<a href='https://github.com/egeulgen/pathfindR/issues/28'>#28</a>)</li>
+<li>in <code><a href="../reference/visualize_hsa_KEGG.html">visualize_hsa_KEGG()</a></code>, now limiting the number of genes passes onto <code><a href="https://rdrr.io/pkg/KEGGREST/man/mark.pathway.by.objects.html" class="external-link">KEGGREST::color.pathway.by.objects()</a></code> to &lt; 60 (because the KEGG API now limits the number?)</li>
 <li>changed default visualization in <code><a href="../reference/term_gene_heatmap.html">term_gene_heatmap()</a></code> (i.e. when <code>genes_df</code> is not provided) to binary colored heatmap (by default, “green” and “red”, controlled by <code>low</code> and <code>high</code>) by up-/down- regulation status</li>
 <li>update the vignette “pathfindR Analysis for non-Homo-sapiens organisms” to reflect new data generation functions <code><a href="../reference/get_pin_file.html">get_pin_file()</a></code> and <code><a href="../reference/get_gene_sets_list.html">get_gene_sets_list()</a></code> and fixed a minor issue in the vignette (<a href='https://github.com/egeulgen/pathfindR/issues/46'>#46</a>)</li>
 </ul>
@@ -210,11 +219,11 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Ege Ulgen, Ozan Ozisik.</p>
+  <p><p>Developed by Ege Ulgen, Ozan Ozisik.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -239,6 +248,8 @@
 </script>
 
 
+
+  
 
   </body>
 </html>

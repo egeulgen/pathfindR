@@ -21,6 +21,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -75,7 +77,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/egeulgen/pathfindR/">
+  <a href="https://github.com/egeulgen/pathfindR/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -100,27 +102,27 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Step-by-Step Execution of the pathfindR Enrichment Workflow</h1>
-                        <h4 class="author">Ege Ulgen</h4>
+                        <h4 data-toc-skip class="author">Ege Ulgen</h4>
             
-            <h4 class="date">2021-01-05</h4>
+            <h4 data-toc-skip class="date">2021-04-06</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/master/vignettes/manual_execution.Rmd"><code>vignettes/manual_execution.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/master/vignettes/manual_execution.Rmd" class="external-link"><code>vignettes/manual_execution.Rmd</code></a></small>
       <div class="hidden name"><code>manual_execution.Rmd</code></div>
 
     </div>
 
     
     
-<p>This vignette walks through each step of the pathfindR active-subnetwork-oriented pathway enrichment analysis. For most purposes, the wrapper function <code><a href="../reference/run_pathfindR.html">run_pathfindR()</a></code> can be used to perform this analysis from start to end. For users who wish to have further control over the enrichment workflow, this vignette will be more useful.</p>
+<p>This vignette walks through each step of the pathfindR active-subnetwork-oriented pathway enrichment analysis. For most purposes, the wrapper function <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code> can be used to perform this analysis from start to end. For users who wish to have further control over the enrichment workflow, this vignette will be more useful.</p>
 <p><img src="pathfindr.png" style="max-width:100%;"></p>
 <div id="load-the-package-and-prepare-the-input-data-frame" class="section level1">
 <h1 class="hasAnchor">
 <a href="#load-the-package-and-prepare-the-input-data-frame" class="anchor"></a>Load the package and prepare the input data frame</h1>
 <p>We first need to load the package and the input data to be used for analysis. The input must be a data frame consisting of the following columns: <code>Gene Symbols</code>, <code>Change Values</code> (optional) and <code>p values</code>. The example data frame used in this vignette (<code>RA_input</code>) is the dataset containing the differentially-expressed genes for the GEO dataset GSE15573 comparing 18 rheumatoid arthritis (RA) patients versus 15 healthy subjects.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/message.html">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://egeulgen.github.io/pathfindR/">pathfindR</a></span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">RA_input</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">RA_input</span>, <span class="fl">3</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://egeulgen.github.io/pathfindR/">pathfindR</a></span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">RA_input</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">RA_input</span>, <span class="fl">3</span><span class="op">)</span>
 <span class="co">#&gt;   Gene.symbol      logFC    adj.P.Val</span>
 <span class="co">#&gt; 1     FAM110A -0.6939359 3.408699e-06</span>
 <span class="co">#&gt; 2      RNASE2  1.3535040 1.008499e-05</span>
@@ -166,7 +168,7 @@
 <div id="active-subnetwork-search-and-enrichment-analyses" class="section level1">
 <h1 class="hasAnchor">
 <a href="#active-subnetwork-search-and-enrichment-analyses" class="anchor"></a>Active Subnetwork Search and Enrichment Analyses</h1>
-<p>As outlined in the vignette <a href="intro_vignette.html">Introduction to pathfindR</a>, <code><a href="../reference/run_pathfindR.html">run_pathfindR()</a></code> initially identifies and filters active subnetworks, then performs enrichment analyses on these subnetworks and summarize the results.</p>
+<p>As outlined in the vignette <a href="intro_vignette.html">Introduction to pathfindR</a>, <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code> initially identifies and filters active subnetworks, then performs enrichment analyses on these subnetworks and summarize the results.</p>
 <p>To perform these steps manually, we utilize the function <code><a href="../reference/active_snw_search.html">active_snw_search()</a></code> for identifying and filtering active subnetworks and the function <code><a href="../reference/enrichment_analyses.html">enrichment_analyses()</a></code> for obtaining enriched terms using these subnetworks. Because the active subnetwork search algorithms are stochastic, we suggest iterating these subnetwork identification and enrichment steps multiple times (especially for “SA”)<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">n_iter</span> <span class="op">&lt;-</span> <span class="fl">10</span> <span class="co">## number of iterations</span>
@@ -175,7 +177,7 @@
 <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">n_iter</span><span class="op">)</span> <span class="op">{</span>
   
   <span class="co">###### Active Subnetwork Search</span>
-  <span class="va">snws_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"active_snws_"</span>, <span class="va">i</span><span class="op">)</span> <span class="co"># Name of output file</span>
+  <span class="va">snws_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"active_snws_"</span>, <span class="va">i</span><span class="op">)</span> <span class="co"># Name of output file</span>
   <span class="va">active_snws</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/active_snw_search.html">active_snw_search</a></span><span class="op">(</span>input_for_search <span class="op">=</span> <span class="va">RA_processed</span>, 
                                    pin_name_path <span class="op">=</span> <span class="st">"Biogrid"</span>, 
                                    snws_file <span class="op">=</span> <span class="va">snws_file</span>,
@@ -194,7 +196,7 @@
                                      list_active_snw_genes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># listing the non-input active snw genes in output</span>
   
   <span class="co">###### Combine results via `rbind`</span>
-  <span class="va">combined_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">combined_res</span>, <span class="va">current_res</span><span class="op">)</span>
+  <span class="va">combined_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">combined_res</span>, <span class="va">current_res</span><span class="op">)</span>
 <span class="op">}</span></code></pre></div>
 </div>
 <div id="summary-of-enrichment-results" class="section level1">
@@ -229,7 +231,7 @@
 <div class="footnotes">
 <hr>
 <ol>
-<li id="fn1"><p>Here we are using a regular <code>for</code> loop. In the wrapper function <code><a href="../reference/run_pathfindR.html">run_pathfindR()</a></code>, however, a parallel loop (via the package <code>foreach</code>) is used.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn1"><p>Here we are using a regular <code>for</code> loop. In the wrapper function <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code>, however, a parallel loop (via the package <code>foreach</code>) is used.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
   </div>
@@ -245,11 +247,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Ege Ulgen, Ozan Ozisik.</p>
+  <p></p>
+<p>Developed by Ege Ulgen, Ozan Ozisik.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9001.</p>
 </div>
 
       </footer>
