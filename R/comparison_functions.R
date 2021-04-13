@@ -202,7 +202,8 @@ combined_results_graph <- function(combined_df, selected_terms = "common",
                                                   length.out = 4)),
                                name = size_label)
   p <- p + ggplot2::theme_void()
-  p <- p + ggraph::geom_node_text(ggplot2::aes_(label = ~name), nudge_y = .2)
+  p <- p + suppressWarnings(ggraph::geom_node_text(ggplot2::aes_(label = ~name), nudge_y = .2,
+                                                   repel = TRUE, max.overlaps = 20))
 
   vertex_cols <- c("Common term" = "#FCCA46",
                    "A-only term" = "#9FB8AD",

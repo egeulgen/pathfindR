@@ -976,7 +976,8 @@ term_gene_graph <- function(result_df, num_terms = 10,
                                                   length.out = 4)),
                                name = size_label)
   p <- p + ggplot2::theme_void()
-  p <- p + ggraph::geom_node_text(ggplot2::aes_(label = ~name), nudge_y = .2)
+  p <- p + suppressWarnings(ggraph::geom_node_text(ggplot2::aes_(label = ~name), nudge_y = .2,
+                                                   repel = TRUE, max.overlaps = 20))
   p <- p + ggplot2::scale_colour_manual(values = unique(igraph::V(g)$color),
                                         name = NULL,
                                         labels = c("enriched term",
