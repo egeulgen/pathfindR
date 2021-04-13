@@ -1,8 +1,10 @@
 # pathfindR (development version)
 
 ## Major Changes
-## Minor changes and bug fixes
 - fixed an issue in `get_kegg_gsets()` where empty result was returned for some organisms due to an error in parsing (#72)
+
+## Minor changes and bug fixes
+- added `repel = TRUE` in `term_gene_graph()` and `combined_results_graph()`
 
 ***
 
