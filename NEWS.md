@@ -5,6 +5,7 @@
 
 ## Minor changes and bug fixes
 - added `repel = TRUE` in `term_gene_graph()` and `combined_results_graph()`
+- fixed minor issue in `enrichment_chart()` (#75)
 
 ***
 

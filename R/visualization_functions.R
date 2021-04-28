@@ -820,7 +820,7 @@ enrichment_chart <- function(result_df,
     g <- g + ggplot2::scale_size_continuous(breaks = brks)
   }
 
-  g <- g + ggplot2::scale_color_continuous(low = "#f5efef", high = "red")
+  g <- g + ggplot2::scale_color_gradient(low = "#f5efef", high = "red")
 
   if (plot_by_cluster & "Cluster" %in% colnames(result_df)) {
     g <- g + ggplot2::facet_grid(result_df$Cluster ~ .,
