@@ -35,7 +35,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.1.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.1.9003</span>
       </span>
     </div>
 
@@ -104,7 +104,7 @@
       <h1 data-toc-skip>Introduction to pathfindR</h1>
                         <h4 data-toc-skip class="author">Ege Ulgen</h4>
             
-            <h4 data-toc-skip class="date">2021-04-13</h4>
+            <h4 data-toc-skip class="date">2021-04-28</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/master/vignettes/intro_vignette.Rmd" class="external-link"><code>vignettes/intro_vignette.Rmd</code></a></small>
       <div class="hidden name"><code>intro_vignette.Rmd</code></div>
@@ -117,7 +117,7 @@
 <p>The functionalities of pathfindR is described in detail in <em>Ulgen E, Ozisik O, Sezerman OU. 2019. pathfindR: An R Package for Comprehensive Identification of Enriched Pathways in Omics Data Through Active Subnetworks. Front. Genet. <a href="https://doi.org/10.3389/fgene.2019.00858" class="external-link">https://doi.org/10.3389/fgene.2019.00858</a></em></p>
 <div id="overview" class="section level1">
 <h1 class="hasAnchor">
-<a href="#overview" class="anchor"></a>Overview</h1>
+<a href="#overview" class="anchor" aria-hidden="true"></a>Overview</h1>
 <p>The observation that motivated us to develop <code>pathfindR</code> was that direct enrichment analysis of differential RNA/protein expression or DNA methylation results may not provide the researcher with the full picture. That is to say: enrichment analysis of only a list of significant genes alone may not be informative enough to explain the underlying disease mechanisms. Therefore, we considered leveraging interaction information from a protein-protein interaction network (PIN) to identify distinct active subnetworks and then perform enrichment analyses on these subnetworks.</p>
 <blockquote>
 <p>An active subnetwork can be defined as a group of interconnected genes in a PIN that predominantly consists of significantly altered genes. In other words, active subnetworks define distinct disease-associated sets of interacting genes, whether discovered through the original analysis or discovered because of being in interaction with a significant gene.</p>
@@ -133,7 +133,7 @@
 </div>
 <div id="active-subnetwork-oriented-enrichment-analysis" class="section level1">
 <h1 class="hasAnchor">
-<a href="#active-subnetwork-oriented-enrichment-analysis" class="anchor"></a>Active-subnetwork-oriented Enrichment Analysis</h1>
+<a href="#active-subnetwork-oriented-enrichment-analysis" class="anchor" aria-hidden="true"></a>Active-subnetwork-oriented Enrichment Analysis</h1>
 <p><img src="pathfindr.png" style="max-width:100%;"></p>
 <p>For convenience, we provide the wrapper function <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code> to be used for the active-subnetwork-oriented enrichment analysis. The input for this function must be a data frame consisting of the columns containing: <code>Gene Symbols</code>, <code>Change Values</code> (optional) and <code>p values</code>. The example data frame used in this vignette (<code>input_df</code>) is the dataset containing the differentially-expressed genes for the GEO dataset GSE15573 comparing 18 rheumatoid arthritis (RA) patients versus 15 healthy subjects.</p>
 <p>The first 6 rows of the example input data frame are displayed below:</p>
@@ -187,18 +187,18 @@
 <code class="sourceCode R"><span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span><span class="op">)</span></code></pre></div>
 <div id="useful-arguments" class="section level2">
 <h2 class="hasAnchor">
-<a href="#useful-arguments" class="anchor"></a>Useful arguments</h2>
+<a href="#useful-arguments" class="anchor" aria-hidden="true"></a>Useful arguments</h2>
 <p>This subsection demonstrates some (selected) useful arguments of <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code>. For a full list of arguments, see <code><a href="../reference/run_pathfindr.html">?run_pathfindR</a></code> or visit <a href="https://github.com/egeulgen/pathfindR/wiki" class="external-link">our GitHub wiki</a>.</p>
 <div id="filtering-input-genes" class="section level3">
 <h3 class="hasAnchor">
-<a href="#filtering-input-genes" class="anchor"></a>Filtering Input Genes</h3>
+<a href="#filtering-input-genes" class="anchor" aria-hidden="true"></a>Filtering Input Genes</h3>
 <p>By default, <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code> uses the input genes with p-values &lt; 0.05. To change this threshold, use <code>p_val_threshold</code>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, p_val_threshold <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="output-directory" class="section level3">
 <h3 class="hasAnchor">
-<a href="#output-directory" class="anchor"></a>Output Directory</h3>
+<a href="#output-directory" class="anchor" aria-hidden="true"></a>Output Directory</h3>
 <p>By default, <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code> creates a directory named <code>"pathfindR_Results"</code> under the current working directory for writing the output files. To change the output directory, use <code>output_dir</code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, output_dir <span class="op">=</span> <span class="st">"this_is_my_output_directory"</span><span class="op">)</span></code></pre></div>
@@ -212,7 +212,7 @@
 </div>
 <div id="gene-sets-for-enrichment" class="section level3">
 <h3 class="hasAnchor">
-<a href="#gene-sets-for-enrichment" class="anchor"></a>Gene Sets for Enrichment</h3>
+<a href="#gene-sets-for-enrichment" class="anchor" aria-hidden="true"></a>Gene Sets for Enrichment</h3>
 <p>The active-subnetwork-oriented enrichment analyses can be performed on any gene sets (biological pathways, gene ontology terms, transcription factor target genes, miRNA target genes etc.). The available gene sets in pathfindR are “KEGG”, “Reactome”, “BioCarta”, “GO-All”, “GO-BP”, “GO-CC” and “GO-MF” (all for Homo sapiens). For changing the default gene sets for enrichment analysis (hsa KEGG pathways), use the argument <code>gene_sets</code></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, gene_sets <span class="op">=</span> <span class="st">"GO-MF"</span><span class="op">)</span></code></pre></div>
@@ -231,7 +231,7 @@
 </div>
 <div id="filtering-enriched-terms-by-adjusted-p-values" class="section level3">
 <h3 class="hasAnchor">
-<a href="#filtering-enriched-terms-by-adjusted-p-values" class="anchor"></a>Filtering Enriched Terms by Adjusted-p Values</h3>
+<a href="#filtering-enriched-terms-by-adjusted-p-values" class="anchor" aria-hidden="true"></a>Filtering Enriched Terms by Adjusted-p Values</h3>
 <p>By default, <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code> adjusts the enrichment p values via the “bonferroni” method and filters the enriched terms by adjusted-p value &lt; 0.05. To change this adjustment method and the threshold, set <code>adj_method</code> and <code>enrichment_threshold</code>, respectively:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, 
@@ -240,7 +240,7 @@
 </div>
 <div id="protein-protein-interaction-network" class="section level3">
 <h3 class="hasAnchor">
-<a href="#protein-protein-interaction-network" class="anchor"></a>Protein-protein Interaction Network</h3>
+<a href="#protein-protein-interaction-network" class="anchor" aria-hidden="true"></a>Protein-protein Interaction Network</h3>
 <p>For the active subnetwork search process, a protein-protein interaction network (PIN) is used. <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code> maps the input genes onto this PIN and identifies active subnetworks which are then be used for enrichment analyses. To change the default PIN (“Biogrid”), use the <code>pin_name_path</code> argument:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, pin_name_path <span class="op">=</span> <span class="st">"IntAct"</span><span class="op">)</span></code></pre></div>
@@ -254,7 +254,7 @@
 </div>
 <div id="active-subnetwork-search-method" class="section level3">
 <h3 class="hasAnchor">
-<a href="#active-subnetwork-search-method" class="anchor"></a>Active Subnetwork Search Method</h3>
+<a href="#active-subnetwork-search-method" class="anchor" aria-hidden="true"></a>Active Subnetwork Search Method</h3>
 <p>Currently, there are three algorithms implemented in pathfindR for active subnetwork search: Greedy Algorithm (default, based on Ideker et al. <a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>), Simulated Annealing Algorithm (based on Ideker et al. <a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>) and Genetic Algorithm (based on Ozisik et al. <a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>). For a detailed discussion on which algorithm to use see <a href="https://github.com/egeulgen/pathfindR/wiki/Active-subnetwork-oriented-Enrichment-Documentation#selecting-the-active-subnetwork-search-algorithm" class="external-link">this wiki entry</a></p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># for simulated annealing:</span>
@@ -264,7 +264,7 @@
 </div>
 <div id="other-arguments" class="section level3">
 <h3 class="hasAnchor">
-<a href="#other-arguments" class="anchor"></a>Other Arguments</h3>
+<a href="#other-arguments" class="anchor" aria-hidden="true"></a>Other Arguments</h3>
 <p>Because the active subnetwork search algorithms are stochastic, <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code> may be set to iterate the active subnetwork identification and enrichment steps multiple times (by default 1 time). To change this number, set <code>iterations</code>:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, iterations <span class="op">=</span> <span class="fl">25</span><span class="op">)</span> </code></pre></div>
@@ -276,10 +276,10 @@
 </div>
 <div id="output" class="section level2">
 <h2 class="hasAnchor">
-<a href="#output" class="anchor"></a>Output</h2>
+<a href="#output" class="anchor" aria-hidden="true"></a>Output</h2>
 <div id="enriched-terms-data-frame" class="section level3">
 <h3 class="hasAnchor">
-<a href="#enriched-terms-data-frame" class="anchor"></a>Enriched Terms Data Frame</h3>
+<a href="#enriched-terms-data-frame" class="anchor" aria-hidden="true"></a>Enriched Terms Data Frame</h3>
 <p><code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code> returns a data frame of enriched terms. Columns are:</p>
 <ul>
 <li>ID: ID of the enriched term</li>
@@ -353,7 +353,7 @@
 </div>
 <div id="html-report" class="section level3">
 <h3 class="hasAnchor">
-<a href="#html-report" class="anchor"></a>HTML Report</h3>
+<a href="#html-report" class="anchor" aria-hidden="true"></a>HTML Report</h3>
 <p>The function also creates an HTML report <code>results.html</code> that is saved in the output directory. This report contains links to two other HTML files:</p>
 <p><strong>1. <code>enriched_terms.html</code></strong></p>
 <p>This document contains the table of the active subnetwork-oriented enrichment results (same as the returned data frame). By default, each enriched term description is linked to the visualization of the term, with the gene nodes colored according to their change values. If you choose not to create the visualization files, set <code>visualize_enriched_terms = FALSE</code>.</p>
@@ -374,12 +374,12 @@
 </div>
 <div id="clustering-enriched-terms" class="section level1">
 <h1 class="hasAnchor">
-<a href="#clustering-enriched-terms" class="anchor"></a>Clustering Enriched Terms</h1>
+<a href="#clustering-enriched-terms" class="anchor" aria-hidden="true"></a>Clustering Enriched Terms</h1>
 <p><img src="term_clustering.png" style="max-width:100%;"></p>
 <p>The wrapper function <code><a href="../reference/cluster_enriched_terms.html">cluster_enriched_terms()</a></code> can be used to perform clustering of enriched terms and partitioning the terms into biologically-relevant groups. Clustering can be performed either via <code>hierarchical</code> or <code>fuzzy</code> method using the pairwise kappa statistics (a chance-corrected measure of co-occurrence between two sets of categorized data) matrix between all enriched terms.</p>
 <div id="hierarchical-clustering" class="section level2">
 <h2 class="hasAnchor">
-<a href="#hierarchical-clustering" class="anchor"></a>Hierarchical Clustering</h2>
+<a href="#hierarchical-clustering" class="anchor" aria-hidden="true"></a>Hierarchical Clustering</h2>
 <p>By default, <code><a href="../reference/cluster_enriched_terms.html">cluster_enriched_terms()</a></code> performs hierarchical clustering of the terms (using <span class="math inline">\(1 - \kappa\)</span> as the distance metric). Iterating over <span class="math inline">\(2,3,...n\)</span> clusters (where <span class="math inline">\(n\)</span> is the number of terms), <code><a href="../reference/cluster_enriched_terms.html">cluster_enriched_terms()</a></code> determines the optimal number of clusters by maximizing the average silhouette width, partitions the data into this optimal number of clusters and returns a data frame with cluster assignments.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">RA_clustered</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cluster_enriched_terms.html">cluster_enriched_terms</a></span><span class="op">(</span><span class="va">RA_output</span>, plot_dend <span class="op">=</span> <span class="cn">FALSE</span>, plot_clusters_graph <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
@@ -694,14 +694,14 @@
 <p>After clustering, you may again plot the summary enrichment chart and display the enriched terms by clusters:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># plotting only selected clusters for better visualization</span>
-<span class="va">RA_selected</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">RA_clustered</span>, <span class="va">Cluster</span> <span class="op">%in%</span> <span class="fl">5</span><span class="op">:</span><span class="fl">7</span><span class="op">)</span>
+<span class="va">RA_selected</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">RA_clustered</span>, <span class="va">Cluster</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fl">5</span><span class="op">:</span><span class="fl">7</span><span class="op">)</span>
 <span class="fu"><a href="../reference/enrichment_chart.html">enrichment_chart</a></span><span class="op">(</span><span class="va">RA_selected</span>, plot_by_cluster <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><img src="intro_vignette_files/figure-html/hierarchical2-1.png" width="672" style="display: block; margin: auto;"></p>
 <p>For details, see <code><a href="../reference/hierarchical_term_clustering.html">?hierarchical_term_clustering</a></code></p>
 </div>
 <div id="heuristic-fuzzy-multiple-linkage-partitioning" class="section level2">
 <h2 class="hasAnchor">
-<a href="#heuristic-fuzzy-multiple-linkage-partitioning" class="anchor"></a>Heuristic Fuzzy Multiple-linkage Partitioning</h2>
+<a href="#heuristic-fuzzy-multiple-linkage-partitioning" class="anchor" aria-hidden="true"></a>Heuristic Fuzzy Multiple-linkage Partitioning</h2>
 <p>Alternatively, the <code>fuzzy</code> clustering method (as described by Huang et al.<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a>) can be used:</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">RA_clustered_fuzzy</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cluster_enriched_terms.html">cluster_enriched_terms</a></span><span class="op">(</span><span class="va">RA_output</span>, method <span class="op">=</span> <span class="st">"fuzzy"</span><span class="op">)</span></code></pre></div>
@@ -710,7 +710,7 @@
 </div>
 <div id="term-gene-heatmap" class="section level1">
 <h1 class="hasAnchor">
-<a href="#term-gene-heatmap" class="anchor"></a>Term-Gene Heatmap</h1>
+<a href="#term-gene-heatmap" class="anchor" aria-hidden="true"></a>Term-Gene Heatmap</h1>
 <p>The function <code><a href="../reference/term_gene_heatmap.html">term_gene_heatmap()</a></code> can be used to visualize the heatmap of genes that are involved in the enriched terms. This heatmap allows visual identification of the input genes involved in the enriched terms, as well as the common or distinct genes between different terms. If the input data frame (same as in <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code>) is supplied, the tile colors indicate the change values.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/term_gene_heatmap.html">term_gene_heatmap</a></span><span class="op">(</span>result_df <span class="op">=</span> <span class="va">RA_output</span>, genes_df <span class="op">=</span> <span class="va">RA_input</span><span class="op">)</span></code></pre></div>
@@ -719,7 +719,7 @@
 </div>
 <div id="term-gene-graph" class="section level1">
 <h1 class="hasAnchor">
-<a href="#term-gene-graph" class="anchor"></a>Term-Gene Graph</h1>
+<a href="#term-gene-graph" class="anchor" aria-hidden="true"></a>Term-Gene Graph</h1>
 <p>The visualization function <code><a href="../reference/term_gene_graph.html">term_gene_graph()</a></code> (adapted from the “Gene-Concept network visualization” by the R package <code>enrichplot</code>) can be utilized to visualize which genes are involved in the enriched terms. The function creates a term-gene graph which shows the connections between genes and biological terms (enriched pathways or gene sets). This allows for the investigation of multiple terms to which significant genes are related. This graph also enables visual determination of the degree of overlap between the enriched terms by identifying shared and/or distinct significant genes.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/term_gene_graph.html">term_gene_graph</a></span><span class="op">(</span>result_df <span class="op">=</span> <span class="va">RA_output</span>, use_description <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
@@ -728,7 +728,7 @@
 </div>
 <div id="upset-plot" class="section level1">
 <h1 class="hasAnchor">
-<a href="#upset-plot" class="anchor"></a>UpSet Plot</h1>
+<a href="#upset-plot" class="anchor" aria-hidden="true"></a>UpSet Plot</h1>
 <p>UpSet plots are plots of the intersections of sets as a matrix. This function creates a ggplot object of an UpSet plot where the x-axis is the UpSet plot of intersections of enriched terms. By default (i.e., <code>method = "heatmap"</code>), the main plot is a heatmap of genes at the corresponding intersections, colored by up/down regulation (if <code>genes_df</code> is provided, colored by change values). If <code>method = "barplot"</code>, the main plot is bar plots of the number of genes at the corresponding intersections. Finally, if <code>method = "boxplot"</code> and <code>genes_df</code> is provided, then the main plot displays the boxplots of change values of the genes at the corresponding intersections.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span><span class="op">(</span>result_df <span class="op">=</span> <span class="va">RA_output</span>, genes_df <span class="op">=</span> <span class="va">RA_input</span><span class="op">)</span></code></pre></div>
@@ -737,7 +737,7 @@
 </div>
 <div id="aggregated-term-scores-per-sample" class="section level1">
 <h1 class="hasAnchor">
-<a href="#aggregated-term-scores-per-sample" class="anchor"></a>Aggregated Term Scores per Sample</h1>
+<a href="#aggregated-term-scores-per-sample" class="anchor" aria-hidden="true"></a>Aggregated Term Scores per Sample</h1>
 <p>The function <code><a href="../reference/score_terms.html">score_terms()</a></code> can be used to calculate the agglomerated z score of each enriched term per sample. This allows the user to individually examine the scores and infer how a term is overall altered (activated or repressed) in a given sample or a group of samples.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## Vector of "Case" IDs</span>
@@ -763,7 +763,7 @@
 </div>
 <div id="comparison-of-2-pathfindr-results" class="section level1">
 <h1 class="hasAnchor">
-<a href="#comparison-of-2-pathfindr-results" class="anchor"></a>Comparison of 2 pathfindR Results</h1>
+<a href="#comparison-of-2-pathfindr-results" class="anchor" aria-hidden="true"></a>Comparison of 2 pathfindR Results</h1>
 <p>The function <code><a href="../reference/combine_pathfindR_results.html">combine_pathfindR_results()</a></code> allows combination of two pathfindR active-subnetwork-oriented enrichment analysis results for investigating common and distinct terms between the groups. Below is an example for comparing results using two different rheumatoid arthritis-related data sets(<code>RA_output</code> and <code>RA_comparison_output</code>).</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">combined_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/combine_pathfindR_results.html">combine_pathfindR_results</a></span><span class="op">(</span>result_A <span class="op">=</span> <span class="va">RA_output</span>, 
@@ -774,7 +774,7 @@
 </div>
 <div id="analysis-with-custom-gene-sets" class="section level1">
 <h1 class="hasAnchor">
-<a href="#analysis-with-custom-gene-sets" class="anchor"></a>Analysis with Custom Gene Sets</h1>
+<a href="#analysis-with-custom-gene-sets" class="anchor" aria-hidden="true"></a>Analysis with Custom Gene Sets</h1>
 <blockquote>
 <p>As of v1.5, pathfindR offers utility functions for obtaining organism-specific PIN data and organism-specific gene sets data via <code><a href="../reference/get_pin_file.html">get_pin_file()</a></code> and <code><a href="../reference/get_gene_sets_list.html">get_gene_sets_list()</a></code>, respectively. See the vignette <a href="obtain_data.html">Obtaining PIN and Gene Sets Data</a> for detailed information on how to gather PIN and gene sets data (for any organism of your choice) for use with pathfindR.</p>
 </blockquote>

@@ -50,7 +50,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.1.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.1.9003</span>
       </span>
     </div>
 
@@ -118,20 +118,20 @@
 
 <div id="-pathfindr-an-r-package-for-enrichment-analysis-utilizing-active-subnetworks" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#-pathfindr-an-r-package-for-enrichment-analysis-utilizing-active-subnetworks" class="anchor"></a><img src="https://github.com/egeulgen/pathfindR/blob/master/inst/extdata/logo.png?raw=true" align="left" height="150/"> pathfindR: An R Package for Enrichment Analysis Utilizing Active Subnetworks</h1></div>
+<a href="#-pathfindr-an-r-package-for-enrichment-analysis-utilizing-active-subnetworks" class="anchor" aria-hidden="true"></a><img src="https://github.com/egeulgen/pathfindR/blob/master/inst/extdata/logo.png?raw=true" align="left" height="150/"> pathfindR: An R Package for Enrichment Analysis Utilizing Active Subnetworks</h1></div>
 <!-- badges: start -->
 
 </div>
 <div id="overview" class="section level1">
 <h1 class="hasAnchor">
-<a href="#overview" class="anchor"></a>Overview</h1>
+<a href="#overview" class="anchor" aria-hidden="true"></a>Overview</h1>
 <p><code>pathfindR</code> is a tool for enrichment analysis via active subnetworks. The package also offers functionalities to cluster the enriched terms and identify representative terms in each cluster, score the enriched terms per sample, and visualize analysis results. As of the latest version, the package also allows comparison of two pathfindR results.</p>
 <p>The functionalities of pathfindR are described in detail in <em>Ulgen E, Ozisik O, Sezerman OU. 2019. pathfindR: An R Package for Comprehensive Identification of Enriched Pathways in Omics Data Through Active Subnetworks. Front. Genet. <a href="https://doi.org/10.3389/fgene.2019.00858" class="external-link uri">https://doi.org/10.3389/fgene.2019.00858</a></em></p>
 <p>For detailed documentation, see <a href="https://egeulgen.github.io/pathfindR/">pathfindR’s website</a> or <a href="https://github.com/egeulgen/pathfindR/wiki" class="external-link">the pathfindR wiki</a>.</p>
 </div>
 <div id="installation" class="section level1">
 <h1 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h1>
+<a href="#installation" class="anchor" aria-hidden="true"></a>Installation</h1>
 <p>You can install the released version of pathfindR from CRAN via:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"pathfindR"</span><span class="op">)</span></code></pre></div>
@@ -158,7 +158,7 @@
 </div>
 <div id="enrichment-analysis-with-pathfindr" class="section level1">
 <h1 class="hasAnchor">
-<a href="#enrichment-analysis-with-pathfindr" class="anchor"></a>Enrichment Analysis with pathfindR</h1>
+<a href="#enrichment-analysis-with-pathfindr" class="anchor" aria-hidden="true"></a>Enrichment Analysis with pathfindR</h1>
 <div class="figure">
 <img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/pathfindr.png?raw=true%20%22pathfindr%20Enrichment%20Workflow%22" alt=""><p class="caption">pathfindR Enrichment Workflow</p>
 </div>
@@ -230,7 +230,7 @@
 </div>
 <div id="clustering-of-the-enriched-terms" class="section level1">
 <h1 class="hasAnchor">
-<a href="#clustering-of-the-enriched-terms" class="anchor"></a>Clustering of the Enriched Terms</h1>
+<a href="#clustering-of-the-enriched-terms" class="anchor" aria-hidden="true"></a>Clustering of the Enriched Terms</h1>
 <p><img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/term_clustering.png?raw=true%20%22Enriched%20Terms%20Clustering%20Workflow%22" alt="Enriched Terms Clustering Workflow"> The wrapper function for this workflow is <code><a href="reference/cluster_enriched_terms.html">cluster_enriched_terms()</a></code>.</p>
 <p>This workflow first calculates the pairwise kappa statistics between the enriched terms. The function then performs hierarchical clustering (by default), automatically determines the optimal number of clusters by maximizing the average silhouette width and returns a data frame with cluster assignments.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -251,10 +251,10 @@
 </div>
 <div id="visualization-of-enrichment-results" class="section level1">
 <h1 class="hasAnchor">
-<a href="#visualization-of-enrichment-results" class="anchor"></a>Visualization of Enrichment Results</h1>
+<a href="#visualization-of-enrichment-results" class="anchor" aria-hidden="true"></a>Visualization of Enrichment Results</h1>
 <div id="term-gene-heatmap" class="section level2">
 <h2 class="hasAnchor">
-<a href="#term-gene-heatmap" class="anchor"></a>Term-Gene Heatmap</h2>
+<a href="#term-gene-heatmap" class="anchor" aria-hidden="true"></a>Term-Gene Heatmap</h2>
 <p>The function <code><a href="reference/term_gene_heatmap.html">term_gene_heatmap()</a></code> can visualize the heatmap of enriched terms by the involved input genes. This heatmap allows visual identification of the input genes involved in the enriched terms, and the common or distinct genes between different terms. If the input data frame (same as in <code><a href="reference/run_pathfindr.html">run_pathfindR()</a></code>) is supplied, the tile colors indicate the change values.</p>
 <div class="figure">
 <img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/hmap.png?raw=true%20%22Term-Gene%20Heatmap%22" alt=""><p class="caption">Term-Gene Heatmap</p>
@@ -262,7 +262,7 @@
 </div>
 <div id="term-gene-graph" class="section level2">
 <h2 class="hasAnchor">
-<a href="#term-gene-graph" class="anchor"></a>Term-Gene Graph</h2>
+<a href="#term-gene-graph" class="anchor" aria-hidden="true"></a>Term-Gene Graph</h2>
 <p>The function <code><a href="reference/term_gene_graph.html">term_gene_graph()</a></code> (adapted from the Gene-Concept network visualization by the R package <code>enrichplot</code>) can be utilized to visualize which significant genes are involved in the enriched terms. The function creates the term-gene graph, displaying the connections between genes and biological terms (enriched pathways or gene sets). This allows for the investigation of multiple terms to which significant genes are related. The graph also enables the determination of the degree of overlap between the enriched terms by identifying shared and/or distinct significant genes.</p>
 <div class="figure">
 <img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/term_gene.png?raw=true%20%22Term-Gene%20Graph%22" alt=""><p class="caption">Term-Gene Graph</p>
@@ -270,7 +270,7 @@
 </div>
 <div id="upset-plot" class="section level2">
 <h2 class="hasAnchor">
-<a href="#upset-plot" class="anchor"></a>UpSet Plot</h2>
+<a href="#upset-plot" class="anchor" aria-hidden="true"></a>UpSet Plot</h2>
 <p>UpSet plots are plots of the intersections of sets as a matrix. This function creates a ggplot object of an UpSet plot where the x-axis is the UpSet plot of intersections of enriched terms. By default (i.e., <code>method = "heatmap"</code>), the main plot is a heatmap of genes at the corresponding intersections, colored by up-/down-regulation (if <code>genes_df</code> is provided, colored by change values). If <code>method = "barplot"</code>, the main plot is bar plots of the number of genes at the corresponding intersections. Finally, if <code>method = "boxplot"</code> and <code>genes_df</code> is provided, then the main plot displays the boxplots of the genes’ change values at the corresponding intersections.</p>
 <div class="figure">
 <img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/upset.png?raw=true%20%22UpSet%20Plot%22" alt=""><p class="caption">UpSet plot</p>
@@ -279,7 +279,7 @@
 </div>
 <div id="per-sample-enriched-term-scores" class="section level1">
 <h1 class="hasAnchor">
-<a href="#per-sample-enriched-term-scores" class="anchor"></a>Per Sample Enriched Term Scores</h1>
+<a href="#per-sample-enriched-term-scores" class="anchor" aria-hidden="true"></a>Per Sample Enriched Term Scores</h1>
 <div class="figure">
 <img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/score_hmap.png?raw=true%20%22Scoring%20per%20Sample%22" alt=""><p class="caption">Agglomerated Scores for all Enriched Terms per Sample</p>
 </div>
@@ -287,7 +287,7 @@
 </div>
 <div id="comparison-of-2-pathfindr-results" class="section level1">
 <h1 class="hasAnchor">
-<a href="#comparison-of-2-pathfindr-results" class="anchor"></a>Comparison of 2 pathfindR Results</h1>
+<a href="#comparison-of-2-pathfindr-results" class="anchor" aria-hidden="true"></a>Comparison of 2 pathfindR Results</h1>
 <p>The function <code><a href="reference/combine_pathfindR_results.html">combine_pathfindR_results()</a></code> allows combining two pathfindR analysis results for investigating common and distinct terms between the groups. Below is an example for comparing two different results using rheumatoid arthritis-related data.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">combined_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/combine_pathfindR_results.html">combine_pathfindR_results</a></span><span class="op">(</span>result_A <span class="op">=</span> <span class="va">RA_output</span>, 

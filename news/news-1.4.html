@@ -86,7 +86,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.1.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.1.9003</span>
       </span>
     </div>
 
@@ -158,11 +158,11 @@
 
     <div id="pathfindr-140" class="section level1">
 <h1 class="page-header" data-toc-text="1.4.0">
-<a href="#pathfindr-140" class="anchor"></a>pathfindR 1.4.0<small> 2019-11-08 </small>
+<a href="#pathfindr-140" class="anchor" aria-hidden="true"></a>pathfindR 1.4.0<small> 2019-11-08 </small>
 </h1>
 <div id="major-changes-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#major-changes-5" class="anchor"></a>Major Changes</h2>
+<a href="#major-changes-5" class="anchor" aria-hidden="true"></a>Major Changes</h2>
 <ul>
 <li>Replaced most occurrences of “pathway” to “term”. This was adapted because “term” reflects the utility of the package better. The enrichment and clustering approaches work with any kind of gene set data (be it pathway gene sets, gene ontology gene sets, motif gene sets etc.) Accordingly:
 <ul>
@@ -205,7 +205,7 @@
 </div>
 <div id="minor-changes-and-bug-fixes-6" class="section level2">
 <h2 class="hasAnchor">
-<a href="#minor-changes-and-bug-fixes-6" class="anchor"></a>Minor changes and bug fixes</h2>
+<a href="#minor-changes-and-bug-fixes-6" class="anchor" aria-hidden="true"></a>Minor changes and bug fixes</h2>
 <ul>
 <li>In <code><a href="../reference/hierarchical_term_clustering.html">hierarchical_term_clustering()</a></code>, redefined the distance measure as <code>1 - kappa statistic</code>
 </li>
@@ -231,11 +231,11 @@
 </div>
     <div id="pathfindr-141" class="section level1">
 <h1 class="page-header" data-toc-text="1.4.1">
-<a href="#pathfindr-141" class="anchor"></a>pathfindR 1.4.1<small> 2019-11-15 </small>
+<a href="#pathfindr-141" class="anchor" aria-hidden="true"></a>pathfindR 1.4.1<small> 2019-11-15 </small>
 </h1>
 <div id="major-changes-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#major-changes-4" class="anchor"></a>Major Changes</h2>
+<a href="#major-changes-4" class="anchor" aria-hidden="true"></a>Major Changes</h2>
 <ul>
 <li>Fixed error in DESCRIPTION: the Java version in SystemRequirements was corrected to “Java (&gt;= 8.0)”</li>
 <li>The Java version is now checked</li>
@@ -243,7 +243,7 @@
 </div>
 <div id="minor-changes-and-bug-fixes-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#minor-changes-and-bug-fixes-5" class="anchor"></a>Minor changes and bug fixes</h2>
+<a href="#minor-changes-and-bug-fixes-5" class="anchor" aria-hidden="true"></a>Minor changes and bug fixes</h2>
 <ul>
 <li>Fixed behavior: when no input genes are present in the enriched hsa KEGG pathway, visualization of the pathway is now skipped</li>
 <li>Added the argument <code>max_to_plot</code> to <code><a href="../reference/visualize_hsa_KEGG.html">visualize_hsa_KEGG()</a></code> and to <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code>. This argument controls the number of pathways to be visualized (default is NULL, i.e. no filter). This was implemented not to slow down the runtime of <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code> as downloading the png files is slow.</li>
@@ -255,11 +255,11 @@
 </div>
     <div id="pathfindr-142" class="section level1">
 <h1 class="page-header" data-toc-text="1.4.2">
-<a href="#pathfindr-142" class="anchor"></a>pathfindR 1.4.2<small> 2019-12-06 </small>
+<a href="#pathfindr-142" class="anchor" aria-hidden="true"></a>pathfindR 1.4.2<small> 2019-12-06 </small>
 </h1>
 <div id="minor-changes-and-bug-fixes-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#minor-changes-and-bug-fixes-4" class="anchor"></a>Minor changes and bug fixes</h2>
+<a href="#minor-changes-and-bug-fixes-4" class="anchor" aria-hidden="true"></a>Minor changes and bug fixes</h2>
 <ul>
 <li>Fixed corner case in <code><a href="../reference/create_kappa_matrix.html">create_kappa_matrix()</a></code> when <code>chance</code> is 1, the metric is turned into 0</li>
 <li>Fixed misused <code>class(.) == *</code> in <code><a href="../reference/cluster_graph_vis.html">cluster_graph_vis()</a></code>
