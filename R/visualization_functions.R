@@ -978,11 +978,11 @@ term_gene_graph <- function(result_df, num_terms = 10,
   p <- p + ggplot2::theme_void()
   p <- p + suppressWarnings(ggraph::geom_node_text(ggplot2::aes_(label = ~name), nudge_y = .2,
                                                    repel = TRUE, max.overlaps = 20))
-  p <- p + ggplot2::scale_colour_manual(values = unique(igraph::V(g)$color),
-                                        name = NULL,
-                                        labels = c("enriched term",
-                                                   "up-regulated gene",
-                                                   "down-regulated gene"))
+  p <- p + ggplot2::scale_color_manual(values = unique(igraph::V(g)$color),
+                                       name = NULL,
+                                       labels = c("enriched term",
+                                                  "up-regulated gene",
+                                                  "down-regulated gene"))
   if (is.null(num_terms)) {
     p <- p + ggplot2::ggtitle("Term-Gene Graph")
   } else {
