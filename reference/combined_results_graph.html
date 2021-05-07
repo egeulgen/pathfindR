@@ -89,7 +89,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.1.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.1.9004</span>
       </span>
     </div>
 
@@ -213,11 +213,12 @@ or the -log10(lowest p value) ("p_val") for adjusting the node sizes (default = 
  the -log10(lowest p value) (if <code>node_size = "p_val"</code>).</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>combined_results</span> <span class='op'>&lt;-</span> <span class='fu'><a href='combine_pathfindR_results.html'>combine_pathfindR_results</a></span><span class='op'>(</span><span class='va'>RA_output</span>,
-                                              <span class='va'>RA_comparison_output</span>,
-                                              plot_common <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='co'>#&gt; You may run `combined_results_graph()` to create visualizations of combined term-gene graphs of selected terms</div><div class='input'><span class='va'>g</span> <span class='op'>&lt;-</span> <span class='fu'>combined_results_graph</span><span class='op'>(</span><span class='va'>combined_results</span>, selected_terms <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='va'>combined_results</span><span class='op'>$</span><span class='va'>ID</span>, <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>combined_results</span> <span class='op'>&lt;-</span> <span class='fu'><a href='combine_pathfindR_results.html'>combine_pathfindR_results</a></span><span class='op'>(</span><span class='va'>RA_output</span>,</span>
+<span class='r-in'>                                              <span class='va'>RA_comparison_output</span>,</span>
+<span class='r-in'>                                              plot_common <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> You may run `combined_results_graph()` to create visualizations of combined term-gene graphs of selected terms</span>
+<span class='r-in'><span class='va'>g</span> <span class='op'>&lt;-</span> <span class='fu'>combined_results_graph</span><span class='op'>(</span><span class='va'>combined_results</span>, selected_terms <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='va'>combined_results</span><span class='op'>$</span><span class='va'>ID</span>, <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

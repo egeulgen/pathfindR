@@ -86,7 +86,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.1.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.1.9004</span>
       </span>
     </div>
 
@@ -158,23 +158,19 @@
 
     <div id="pathfindr-140" class="section level1">
 <h1 class="page-header" data-toc-text="1.4.0">
-<a href="#pathfindr-140" class="anchor" aria-hidden="true"></a>pathfindR 1.4.0<small> 2019-11-08 </small>
-</h1>
+<a href="#pathfindr-140" class="anchor" aria-hidden="true"></a>pathfindR 1.4.0<small> 2019-11-08 </small></h1>
 <div id="major-changes-5" class="section level2">
 <h2 class="hasAnchor">
 <a href="#major-changes-5" class="anchor" aria-hidden="true"></a>Major Changes</h2>
-<ul>
-<li>Replaced most occurrences of “pathway” to “term”. This was adapted because “term” reflects the utility of the package better. The enrichment and clustering approaches work with any kind of gene set data (be it pathway gene sets, gene ontology gene sets, motif gene sets etc.) Accordingly:
-<ul>
-<li>
+<ul><li>Replaced most occurrences of “pathway” to “term”. This was adapted because “term” reflects the utility of the package better. The enrichment and clustering approaches work with any kind of gene set data (be it pathway gene sets, gene ontology gene sets, motif gene sets etc.) Accordingly:
+<ul><li>
 <code>DESCRIPTION</code> was updated</li>
 <li>The functions <code>annotate_pathway_DEGs()</code>, <code>calculate_pw_scores()</code>, <code>cluster_pathways()</code>, <code>fuzzy_pw_clustering()</code>, <code>hierarchical_pw_clustering()</code>, <code>visualize_pw_interactions()</code> and <code>visualize_pws()</code> were renamed to <code>annotate_term_DEGs()</code>, <code><a href="../reference/score_terms.html">score_terms()</a></code>, <code><a href="../reference/cluster_enriched_terms.html">cluster_enriched_terms()</a></code>, <code><a href="../reference/fuzzy_term_clustering.html">fuzzy_term_clustering()</a></code>, <code><a href="../reference/hierarchical_term_clustering.html">hierarchical_term_clustering()</a></code>, <code><a href="../reference/visualize_term_interactions.html">visualize_term_interactions()</a></code> and <code><a href="../reference/visualize_terms.html">visualize_terms()</a></code> respectively</li>
 <li>The Rmd template file for the report <code>enriched_pathways.Rmd</code> was renamed to <code>enriched_terms.Rmd</code>
 </li>
 <li>All the Rmd template files for the report were updated</li>
 <li>Documentation of each function was updated accordingly</li>
-</ul>
-</li>
+</ul></li>
 <li>Added the visualization function <code><a href="../reference/term_gene_graph.html">term_gene_graph()</a></code>, which creates a graph of enriched terms - involved genes</li>
 <li>Made changes in <code><a href="../reference/enrichment.html">enrichment()</a></code> and <code><a href="../reference/enrichment_analyses.html">enrichment_analyses()</a></code> to get enrichment results faster</li>
 <li>Added the function <code><a href="../reference/fetch_gene_set.html">fetch_gene_set()</a></code> for obtaining gene set data more easily</li>
@@ -189,25 +185,21 @@
 <li>Improved speed of kappa matrix calculation (<code><a href="../reference/create_kappa_matrix.html">create_kappa_matrix()</a></code>)</li>
 <li>Added vignette for non-Homo-sapiens organisms</li>
 <li>Added Mus musculus (mmu) data:
-<ul>
-<li>
+<ul><li>
 <code>mmu_kegg_genes</code> &amp; <code>mmu_kegg_descriptions</code>: mmu KEGG gene sets data</li>
 <li>mmu STRING PIN</li>
 <li>
 <code>myeloma_input</code> &amp; <code>myeloma_output</code>: example mmu input and output data</li>
-</ul>
-</li>
+</ul></li>
 <li>Added the STRING PIN (combined score &gt;= 400)</li>
 <li>The argument <code>sig_gene_thr</code> in subnetwork filtering via <code><a href="../reference/filterActiveSnws.html">filterActiveSnws()</a></code> now serves the threshold proportion of significant genes in the active subnetwork. e.g., if there are 100 significant genes and <code>sig_gene_thr = 0.03</code>, subnetwork that contain at least 3 (100 x 0.03) significant genes will be accepted for further analysis</li>
 <li>Removed <code>pathview</code> dependency by implementing colored pathway diagram visualization function using <code>KEGGREST</code> and <code>KEGGgraph</code>
 </li>
-</ul>
-</div>
+</ul></div>
 <div id="minor-changes-and-bug-fixes-6" class="section level2">
 <h2 class="hasAnchor">
 <a href="#minor-changes-and-bug-fixes-6" class="anchor" aria-hidden="true"></a>Minor changes and bug fixes</h2>
-<ul>
-<li>In <code><a href="../reference/hierarchical_term_clustering.html">hierarchical_term_clustering()</a></code>, redefined the distance measure as <code>1 - kappa statistic</code>
+<ul><li>In <code><a href="../reference/hierarchical_term_clustering.html">hierarchical_term_clustering()</a></code>, redefined the distance measure as <code>1 - kappa statistic</code>
 </li>
 <li>Fixed minor issue in <code><a href="../reference/cluster_graph_vis.html">cluster_graph_vis()</a></code> (during the calculations for additional node colors)</li>
 <li>Removed title from graph visualization of hierarchical clustering in <code><a href="../reference/cluster_graph_vis.html">cluster_graph_vis()</a></code>
@@ -225,48 +217,36 @@
 <li>The gene symbols in the input data frame, the PIN and the gene sets are now turned into uppercase (for obtaining the best overlap)</li>
 <li>Added the argument <code>top_terms</code> to <code><a href="../reference/enrichment_chart.html">enrichment_chart()</a></code>, controlling the number top enriched terms to plot (default is 10)</li>
 <li>Other minor bug/error fixes</li>
-</ul>
-<hr>
-</div>
+</ul><hr></div>
 </div>
     <div id="pathfindr-141" class="section level1">
 <h1 class="page-header" data-toc-text="1.4.1">
-<a href="#pathfindr-141" class="anchor" aria-hidden="true"></a>pathfindR 1.4.1<small> 2019-11-15 </small>
-</h1>
+<a href="#pathfindr-141" class="anchor" aria-hidden="true"></a>pathfindR 1.4.1<small> 2019-11-15 </small></h1>
 <div id="major-changes-4" class="section level2">
 <h2 class="hasAnchor">
 <a href="#major-changes-4" class="anchor" aria-hidden="true"></a>Major Changes</h2>
-<ul>
-<li>Fixed error in DESCRIPTION: the Java version in SystemRequirements was corrected to “Java (&gt;= 8.0)”</li>
+<ul><li>Fixed error in DESCRIPTION: the Java version in SystemRequirements was corrected to “Java (&gt;= 8.0)”</li>
 <li>The Java version is now checked</li>
-</ul>
-</div>
+</ul></div>
 <div id="minor-changes-and-bug-fixes-5" class="section level2">
 <h2 class="hasAnchor">
 <a href="#minor-changes-and-bug-fixes-5" class="anchor" aria-hidden="true"></a>Minor changes and bug fixes</h2>
-<ul>
-<li>Fixed behavior: when no input genes are present in the enriched hsa KEGG pathway, visualization of the pathway is now skipped</li>
+<ul><li>Fixed behavior: when no input genes are present in the enriched hsa KEGG pathway, visualization of the pathway is now skipped</li>
 <li>Added the argument <code>max_to_plot</code> to <code><a href="../reference/visualize_hsa_KEGG.html">visualize_hsa_KEGG()</a></code> and to <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code>. This argument controls the number of pathways to be visualized (default is NULL, i.e. no filter). This was implemented not to slow down the runtime of <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code> as downloading the png files is slow.</li>
 <li>Fixed links to visualizations in <code>enriched_ters.Rmd</code>
 </li>
-</ul>
-<hr>
-</div>
+</ul><hr></div>
 </div>
     <div id="pathfindr-142" class="section level1">
 <h1 class="page-header" data-toc-text="1.4.2">
-<a href="#pathfindr-142" class="anchor" aria-hidden="true"></a>pathfindR 1.4.2<small> 2019-12-06 </small>
-</h1>
+<a href="#pathfindr-142" class="anchor" aria-hidden="true"></a>pathfindR 1.4.2<small> 2019-12-06 </small></h1>
 <div id="minor-changes-and-bug-fixes-4" class="section level2">
 <h2 class="hasAnchor">
 <a href="#minor-changes-and-bug-fixes-4" class="anchor" aria-hidden="true"></a>Minor changes and bug fixes</h2>
-<ul>
-<li>Fixed corner case in <code><a href="../reference/create_kappa_matrix.html">create_kappa_matrix()</a></code> when <code>chance</code> is 1, the metric is turned into 0</li>
+<ul><li>Fixed corner case in <code><a href="../reference/create_kappa_matrix.html">create_kappa_matrix()</a></code> when <code>chance</code> is 1, the metric is turned into 0</li>
 <li>Fixed misused <code>class(.) == *</code> in <code><a href="../reference/cluster_graph_vis.html">cluster_graph_vis()</a></code>
 </li>
-</ul>
-<hr>
-</div>
+</ul><hr></div>
 </div>
   </div>
 

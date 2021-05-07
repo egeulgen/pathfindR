@@ -1,7 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://egeulgen.github.io/pathfindR/404.html</loc>
+  </url>
+  <url>
+    <loc>https://egeulgen.github.io/pathfindR/CODE_OF_CONDUCT.html</loc>
+  </url>
+  <url>
+    <loc>https://egeulgen.github.io/pathfindR/CONTRIBUTING.html</loc>
+  </url>
+  <url>
+    <loc>https://egeulgen.github.io/pathfindR/LICENSE-text.html</loc>
+  </url>
+  <url>
+    <loc>https://egeulgen.github.io/pathfindR/LICENSE.html</loc>
+  </url>
+  <url>
+    <loc>https://egeulgen.github.io/pathfindR/articles/comparing_results.html</loc>
+  </url>
+  <url>
+    <loc>https://egeulgen.github.io/pathfindR/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>https://egeulgen.github.io/pathfindR/articles/intro_vignette.html</loc>
+  </url>
+  <url>
+    <loc>https://egeulgen.github.io/pathfindR/articles/manual_execution.html</loc>
+  </url>
+  <url>
+    <loc>https://egeulgen.github.io/pathfindR/articles/non_hs_analysis.html</loc>
+  </url>
+  <url>
+    <loc>https://egeulgen.github.io/pathfindR/articles/obtain_data.html</loc>
+  </url>
+  <url>
+    <loc>https://egeulgen.github.io/pathfindR/articles/visualization_vignette.html</loc>
+  </url>
+  <url>
+    <loc>https://egeulgen.github.io/pathfindR/authors.html</loc>
+  </url>
+  <url>
     <loc>https://egeulgen.github.io/pathfindR/index.html</loc>
+  </url>
+  <url>
+    <loc>https://egeulgen.github.io/pathfindR/news/index.html</loc>
+  </url>
+  <url>
+    <loc>https://egeulgen.github.io/pathfindR/news/news-1.1.html</loc>
+  </url>
+  <url>
+    <loc>https://egeulgen.github.io/pathfindR/news/news-1.2.html</loc>
+  </url>
+  <url>
+    <loc>https://egeulgen.github.io/pathfindR/news/news-1.3.html</loc>
+  </url>
+  <url>
+    <loc>https://egeulgen.github.io/pathfindR/news/news-1.4.html</loc>
+  </url>
+  <url>
+    <loc>https://egeulgen.github.io/pathfindR/news/news-1.5.html</loc>
+  </url>
+  <url>
+    <loc>https://egeulgen.github.io/pathfindR/news/news-1.6.html</loc>
+  </url>
+  <url>
+    <loc>https://egeulgen.github.io/pathfindR/news/news-dev.html</loc>
   </url>
   <url>
     <loc>https://egeulgen.github.io/pathfindR/reference/UpSet_plot.html</loc>
@@ -85,6 +148,9 @@
     <loc>https://egeulgen.github.io/pathfindR/reference/hyperg_test.html</loc>
   </url>
   <url>
+    <loc>https://egeulgen.github.io/pathfindR/reference/index.html</loc>
+  </url>
+  <url>
     <loc>https://egeulgen.github.io/pathfindR/reference/input_processing.html</loc>
   </url>
   <url>
@@ -134,23 +200,5 @@
   </url>
   <url>
     <loc>https://egeulgen.github.io/pathfindR/reference/visualize_terms.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/articles/comparing_results.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/articles/intro_vignette.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/articles/manual_execution.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/articles/non_hs_analysis.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/articles/obtain_data.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/articles/visualization_vignette.html</loc>
   </url>
 </urlset>

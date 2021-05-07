@@ -35,7 +35,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.1.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.1.9004</span>
       </span>
     </div>
 
@@ -103,7 +103,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Obtaining PIN and Gene Sets Data</h1>
             
-            <h4 data-toc-skip class="date">2021-04-29</h4>
+            <h4 data-toc-skip class="date">2021-05-07</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/master/vignettes/obtain_data.Rmd" class="external-link"><code>vignettes/obtain_data.Rmd</code></a></small>
       <div class="hidden name"><code>obtain_data.Rmd</code></div>
@@ -174,12 +174,16 @@
 <span class="co">#&gt; Warning: 'msigdbr::msigdbr_show_species' is deprecated.</span>
 <span class="co">#&gt; Use 'msigdbr_species' instead.</span>
 <span class="co">#&gt; See help("Deprecated")</span>
-<span class="co">#&gt;  [1] "Bos taurus"               "Caenorhabditis elegans"  </span>
-<span class="co">#&gt;  [3] "Canis lupus familiaris"   "Danio rerio"             </span>
-<span class="co">#&gt;  [5] "Drosophila melanogaster"  "Gallus gallus"           </span>
-<span class="co">#&gt;  [7] "Homo sapiens"             "Mus musculus"            </span>
-<span class="co">#&gt;  [9] "Rattus norvegicus"        "Saccharomyces cerevisiae"</span>
-<span class="co">#&gt; [11] "Sus scrofa"</span></code></pre></div>
+<span class="co">#&gt;  [1] "Anolis carolinensis"             "Bos taurus"                     </span>
+<span class="co">#&gt;  [3] "Caenorhabditis elegans"          "Canis lupus familiaris"         </span>
+<span class="co">#&gt;  [5] "Danio rerio"                     "Drosophila melanogaster"        </span>
+<span class="co">#&gt;  [7] "Equus caballus"                  "Felis catus"                    </span>
+<span class="co">#&gt;  [9] "Gallus gallus"                   "Homo sapiens"                   </span>
+<span class="co">#&gt; [11] "Macaca mulatta"                  "Monodelphis domestica"          </span>
+<span class="co">#&gt; [13] "Mus musculus"                    "Ornithorhynchus anatinus"       </span>
+<span class="co">#&gt; [15] "Pan troglodytes"                 "Rattus norvegicus"              </span>
+<span class="co">#&gt; [17] "Saccharomyces cerevisiae"        "Schizosaccharomyces pombe 972h-"</span>
+<span class="co">#&gt; [19] "Sus scrofa"                      "Xenopus tropicalis"</span></code></pre></div>
 <p>You may also obtain the gene sets for a subcollection by setting the <code>subcollection</code> argument:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## obtaining C3 - MIR: microRNA targets</span>
