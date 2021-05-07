@@ -234,7 +234,7 @@ visualize_term_interactions <- function(result_df, pin_name_path) {
       current_row$Term_Description <- gsub('[, :<>?*|"/\\]', "_", current_row$Term_Description)
 
       # limit to 100 characters
-      current_row$Term_Description <- substr(current_row$Term_Description, 1, min(100, nchar(current_row$Term_Description)))
+      current_row$Term_Description <- substr(current_row$Term_Description, 1, min(50, nchar(current_row$Term_Description)))
 
       path_to_png <- file.path("term_visualizations",
                                paste0(current_row$Term_Description, ".png"))
