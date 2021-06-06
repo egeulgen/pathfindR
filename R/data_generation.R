@@ -77,13 +77,13 @@ get_biogrid_pin <- function(org = "Homo_sapiens", path2pin, release = "4.4.198")
 
   # download tab2 format organism files
   tmp <- tempfile()
-  fname <- paste0("BIOGRID-ORGANISM-", release, ".tab2")
+  fname <- paste0("BIOGRID-ORGANISM-", release, ".tab3")
   biogrid_url <- paste0("https://downloads.thebiogrid.org/Download/BioGRID/Release-Archive/", rel_dir, "/", fname, ".zip")
   utils::download.file(biogrid_url, tmp, quiet = TRUE)
 
   # parse organism names
   all_org_files <- utils::unzip(tmp, list = TRUE)
-  all_org_files$Organism <- sub("\\.tab2\\.txt", "", all_org_files$Name)
+  all_org_files$Organism <- sub("\\.tab3\\.txt", "", all_org_files$Name)
   all_org_files$Organism <- sub("BIOGRID-ORGANISM-", "", all_org_files$Organism)
   all_org_files$Organism <- sub("-.*\\d+$", "", all_org_files$Organism)
 
