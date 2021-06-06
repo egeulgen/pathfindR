@@ -8,7 +8,7 @@
 - fixed minor issue in `enrichment_chart()` (#75)
 - fixed minor issue in `visualize_term_interactions()`
 - fixed issue in `get_biogrid_pin()` where the download method was set to `wget` (now set to `auto`, per #83)
-- updated to using tab3 format for `get_biogrid_pin()`
+- updated to using tab3 format for `get_biogrid_pin()` (if tab3 is available for the chosen release, otherwise tab2 format is used)
 - updated the default version of PIN obtained by `get_biogrid_pin()` to '4.4.198'
 
 ***

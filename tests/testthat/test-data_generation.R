@@ -9,7 +9,7 @@
 # get_biogrid_pin ---------------------------------------------------------
 test_that("`get_biogrid_pin()` returns a path to a valid PIN file", {
   skip_on_cran()
-  # Latest release
+  # v4.4.198
   pin_path <- pathfindR:::get_biogrid_pin(org="Pan_troglodytes")
   pin_df <- read.delim(pin_path, header = FALSE)
   expect_true(ncol(pin_df) == 3)
