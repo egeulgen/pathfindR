@@ -79,7 +79,7 @@ get_biogrid_pin <- function(org = "Homo_sapiens", path2pin, release = "4.4.198")
   tmp <- tempfile()
   fname <- paste0("BIOGRID-ORGANISM-", release, ".tab3")
   biogrid_url <- paste0("https://downloads.thebiogrid.org/Download/BioGRID/Release-Archive/", rel_dir, "/", fname, ".zip")
-  utils::download.file(biogrid_url, tmp, quiet = TRUE)
+  utils::download.file(biogrid_url, tmp, method = "auto", quiet = TRUE)
 
   # parse organism names
   all_org_files <- utils::unzip(tmp, list = TRUE)

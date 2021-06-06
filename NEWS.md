@@ -4,9 +4,12 @@
 - fixed an issue in `get_kegg_gsets()` where empty result was returned for some organisms due to an error in parsing (#72)
 
 ## Minor changes and bug fixes
-- added `repel = TRUE` in `term_gene_graph()` and `combined_results_graph()`
+- added `repel = TRUE` in `term_gene_graph()` and `combined_results_graph()` for better visualization of labels
 - fixed minor issue in `enrichment_chart()` (#75)
 - fixed minor issue in `visualize_term_interactions()`
+- fixed issue in `get_biogrid_pin()` where the download method was set to `wget` (now set to `auto`, per #83)
+- updated to using tab3 format for `get_biogrid_pin()`
+- updated the default version of PIN obtained by `get_biogrid_pin()` to '4.4.198'
 
 ***
 
