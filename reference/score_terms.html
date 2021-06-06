@@ -64,9 +64,6 @@
 
 
 
-<!-- dependencies from examples -->
-
-
   
 
   
@@ -164,14 +161,14 @@
     <p>Calculate Agglomerated Scores of Enriched Terms for Each Subject</p>
     </div>
 
-    <pre class="usage"><span class='fu'>score_terms</span><span class='op'>(</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>score_terms</span><span class='op'>(</span>
   <span class='va'>enrichment_table</span>,
   <span class='va'>exp_mat</span>,
   cases <span class='op'>=</span> <span class='cn'>NULL</span>,
   use_description <span class='op'>=</span> <span class='cn'>FALSE</span>,
   plot_hmap <span class='op'>=</span> <span class='cn'>TRUE</span>,
   <span class='va'>...</span>
-<span class='op'>)</span></pre>
+<span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -248,8 +245,8 @@ correspond to genes and columns corresponds to samples s.t. the matrix has size
 where t &#8712; T and s &#8712; S.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='va'>score_matrix</span> <span class='op'>&lt;-</span> <span class='fu'>score_terms</span><span class='op'>(</span><span class='va'>RA_output</span>, <span class='va'>RA_exp_mat</span>, plot_hmap <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
-</pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='va'>score_matrix</span> <span class='op'>&lt;-</span> <span class='fu'>score_terms</span><span class='op'>(</span><span class='va'>RA_output</span>, <span class='va'>RA_exp_mat</span>, plot_hmap <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

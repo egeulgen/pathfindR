@@ -64,9 +64,6 @@
 
 
 
-<!-- dependencies from examples -->
-
-
   
 
   
@@ -164,7 +161,7 @@
     <p>Perform Enrichment Analyses on the Input Subnetworks</p>
     </div>
 
-    <pre class="usage"><span class='fu'>enrichment_analyses</span><span class='op'>(</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>enrichment_analyses</span><span class='op'>(</span>
   <span class='va'>snws</span>,
   <span class='va'>sig_genes_vec</span>,
   pin_name_path <span class='op'>=</span> <span class='st'>"Biogrid"</span>,
@@ -173,7 +170,7 @@
   adj_method <span class='op'>=</span> <span class='st'>"bonferroni"</span>,
   enrichment_threshold <span class='op'>=</span> <span class='fl'>0.05</span>,
   list_active_snw_genes <span class='op'>=</span> <span class='cn'>FALSE</span>
-<span class='op'>)</span></pre>
+<span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -239,10 +236,10 @@ the given term with the lowest p value (default = <code>FALSE</code>)</p></td>
     <div class='dont-index'><p><code><a href='enrichment.html'>enrichment</a></code> for the enrichment analysis for a single gene set</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='va'>enr_res</span> <span class='op'>&lt;-</span> <span class='fu'>enrichment_analyses</span><span class='op'>(</span>snws <span class='op'>=</span> <span class='va'>example_active_snws</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>]</span>,</span>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='va'>enr_res</span> <span class='op'>&lt;-</span> <span class='fu'>enrichment_analyses</span><span class='op'>(</span>snws <span class='op'>=</span> <span class='va'>example_active_snws</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>]</span>,</span>
 <span class='r-in'>                               sig_genes_vec <span class='op'>=</span> <span class='va'>RA_input</span><span class='op'>$</span><span class='va'>Gene.symbol</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>25</span><span class='op'>]</span>,</span>
 <span class='r-in'>                               pin_name_path <span class='op'>=</span> <span class='st'>"KEGG"</span><span class='op'>)</span></span>
-</pre>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
