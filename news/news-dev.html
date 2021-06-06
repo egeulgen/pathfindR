@@ -85,7 +85,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.1.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.1.9006</span>
       </span>
     </div>
 
@@ -166,11 +166,14 @@
 <div id="minor-changes-and-bug-fixes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#minor-changes-and-bug-fixes" class="anchor" aria-hidden="true"></a>Minor changes and bug fixes</h2>
-<ul><li>added <code>repel = TRUE</code> in <code><a href="../reference/term_gene_graph.html">term_gene_graph()</a></code> and <code><a href="../reference/combined_results_graph.html">combined_results_graph()</a></code>
-</li>
+<ul><li>added <code>repel = TRUE</code> in <code><a href="../reference/term_gene_graph.html">term_gene_graph()</a></code> and <code><a href="../reference/combined_results_graph.html">combined_results_graph()</a></code> for better visualization of labels</li>
 <li>fixed minor issue in <code><a href="../reference/enrichment_chart.html">enrichment_chart()</a></code> (<a href='https://github.com/egeulgen/pathfindR/issues/75'>#75</a>)</li>
 <li>fixed minor issue in <code><a href="../reference/visualize_term_interactions.html">visualize_term_interactions()</a></code>
 </li>
+<li>fixed issue in <code><a href="../reference/get_biogrid_pin.html">get_biogrid_pin()</a></code> where the download method was set to <code>wget</code> (now set to <code>auto</code>, per <a href='https://github.com/egeulgen/pathfindR/issues/83'>#83</a>)</li>
+<li>updated to using tab3 format for <code><a href="../reference/get_biogrid_pin.html">get_biogrid_pin()</a></code>
+</li>
+<li>updated the default version of PIN obtained by <code><a href="../reference/get_biogrid_pin.html">get_biogrid_pin()</a></code> to ‘4.4.198’</li>
 </ul><hr></div>
 </div>
   </div>
