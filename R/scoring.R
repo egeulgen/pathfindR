@@ -92,6 +92,15 @@ score_terms <- function(enrichment_table, exp_mat, cases = NULL,
     }
   }
 
+  ## fix duplicated term descriptions (if using description)
+  if (use_description) {
+    dup_desc <- enrichment_table$Term_Description[duplicated(enrichment_table$Term_Description)]
+
+    enrichment_table$Term_Description <- ifelse(enrichment_table$Term_Description %in% dup_desc,
+                                                paste0(enrichment_table$Term_Description, "_", enrichment_table$ID),
+                                                enrichment_table$Term_Description)
+  }
+
   #### Create score matrix
   all_scores_matrix <- c()
   for (i in base::seq_len(nrow(enrichment_table))) {
