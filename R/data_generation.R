@@ -226,7 +226,7 @@ get_kegg_gsets <- function(org_code = "hsa") {
 
   kegg_descriptions <- pathways_list
   names(kegg_descriptions) <- sub("path:", "", names(kegg_descriptions))
-  kegg_descriptions <- sub(" -.*\\(.*\\)$", "", kegg_descriptions)
+  kegg_descriptions <- sub(" & .*$", "", sub("-([^-]*)$", "&\\1", kegg_descriptions))
   kegg_descriptions <- kegg_descriptions[names(kegg_descriptions) %in% names(kegg_genes)]
 
   result <- list(gene_sets = kegg_genes, descriptions = kegg_descriptions)
