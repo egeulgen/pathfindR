@@ -10,6 +10,8 @@
 - fixed issue in `get_biogrid_pin()` where the download method was set to `wget` (now set to `auto`, per #83)
 - updated to using tab3 format for `get_biogrid_pin()` (if tab3 is available for the chosen release, otherwise tab2 format is used)
 - updated the default version of PIN obtained by `get_biogrid_pin()` to '4.4.198'
+- in `get_kegg_gsets()`, improved parsing of KEGG term descriptions so that no description is duplicated (#87)
+- in `score_terms()`, if using descriptions, the ID is now appended for (any) duplicated term descriptions (#87)
 
 ***
 
