@@ -85,7 +85,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.1.9006</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.1.9008</span>
       </span>
     </div>
 
@@ -173,6 +173,8 @@
 <li>fixed issue in <code><a href="../reference/get_biogrid_pin.html">get_biogrid_pin()</a></code> where the download method was set to <code>wget</code> (now set to <code>auto</code>, per <a href='https://github.com/egeulgen/pathfindR/issues/83'>#83</a>)</li>
 <li>updated to using tab3 format for <code><a href="../reference/get_biogrid_pin.html">get_biogrid_pin()</a></code> (if tab3 is available for the chosen release, otherwise tab2 format is used)</li>
 <li>updated the default version of PIN obtained by <code><a href="../reference/get_biogrid_pin.html">get_biogrid_pin()</a></code> to ‘4.4.198’</li>
+<li>in <code><a href="../reference/get_kegg_gsets.html">get_kegg_gsets()</a></code>, improved parsing of KEGG term descriptions so that no description is duplicated (<a href='https://github.com/egeulgen/pathfindR/issues/87'>#87</a>)</li>
+<li>in <code><a href="../reference/score_terms.html">score_terms()</a></code>, if using descriptions, the ID is now appended for (any) duplicated term descriptions (<a href='https://github.com/egeulgen/pathfindR/issues/87'>#87</a>)</li>
 </ul><hr></div>
 </div>
   </div>
