@@ -96,9 +96,10 @@ score_terms <- function(enrichment_table, exp_mat, cases = NULL,
   if (use_description) {
     dup_desc <- enrichment_table$Term_Description[duplicated(enrichment_table$Term_Description)]
 
-    enrichment_table$Term_Description <- ifelse(enrichment_table$Term_Description %in% dup_desc,
-                                                paste0(enrichment_table$Term_Description, "_", enrichment_table$ID),
-                                                enrichment_table$Term_Description)
+    tmp <- ifelse(enrichment_table$Term_Description %in% dup_desc,
+                  paste0(enrichment_table$Term_Description, "_", enrichment_table$ID),
+                  enrichment_table$Term_Description)
+    enrichment_table$Term_Description <- tmp
   }
 
   #### Create score matrix
