@@ -2,7 +2,7 @@
 ## Project: pathfindR
 ## Script purpose: Testthat testing script for
 ## agglomerated term scoring functions
-## Date: May 24, 2019
+## Date: June, 2021
 ## Author: Ege Ulgen
 ##################################################
 
@@ -64,6 +64,16 @@ test_that("`score_terms()` arg checks work", {
                            exp_mat = RA_exp_mat,
                            cases = LETTERS),
                "Missing `cases` in `exp_mat`")
+})
+
+test_that("duplicated term descriptions test", {
+  tmp_res <- RA_output[1:2, ]
+  tmp_res$Term_Description <- tmp_res$Term_Description[1]
+  expect_is(score_terms(enrichment_table = tmp_res,
+                        exp_mat = RA_exp_mat,
+                        use_description = TRUE,
+                        plot_hmap = FALSE),
+            "matrix")
 })
 
 # plot_scores -------------------------------------------------------------
