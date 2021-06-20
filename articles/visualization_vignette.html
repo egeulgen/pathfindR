@@ -35,7 +35,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.1.9008</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.1.9009</span>
       </span>
     </div>
 
@@ -103,7 +103,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Visualization of pathfindR Enrichment Results</h1>
             
-            <h4 data-toc-skip class="date">2021-06-12</h4>
+            <h4 data-toc-skip class="date">2021-06-20</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/master/vignettes/visualization_vignette.Rmd" class="external-link"><code>vignettes/visualization_vignette.Rmd</code></a></small>
       <div class="hidden name"><code>visualization_vignette.Rmd</code></div>
@@ -140,7 +140,9 @@
 <a href="#term_gene_heatmap-terms-by-genes-heatmap" class="anchor" aria-hidden="true"></a><code>term_gene_heatmap()</code>: Terms by Genes Heatmap</h2>
 <p><code><a href="../reference/term_gene_heatmap.html">term_gene_heatmap()</a></code> is used to create a heatmap where rows are enriched terms and columns are involved input genes. This heatmap allows visual identification of the input genes involved in the enriched terms, as well as the common or distinct genes between different terms.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/term_gene_heatmap.html">term_gene_heatmap</a></span><span class="op">(</span><span class="va">RA_output</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/term_gene_heatmap.html">term_gene_heatmap</a></span><span class="op">(</span><span class="va">RA_output</span><span class="op">)</span>
+<span class="co">#&gt; Warning: `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; =</span>
+<span class="co">#&gt; "none")` instead.</span></code></pre></div>
 <p><img src="visualization_vignette_files/figure-html/hmap-1.png" width="768" style="display: block; margin: auto;"></p>
 <p>By default, the heatmap is generated for the top 10 terms. This can be controlled by the <code>num_terms</code> argument:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
