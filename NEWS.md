@@ -12,6 +12,7 @@
 - updated the default version of PIN obtained by `get_biogrid_pin()` to '4.4.198'
 - in `get_kegg_gsets()`, improved parsing of KEGG term descriptions so that no description is duplicated (#87)
 - in `score_terms()`, if using descriptions, the ID is now appended for (any) duplicated term descriptions (#87)
+- in `obtain_colored_url()`, swapped `bg_color` with `fg_color` due to an issue with `KEGGREST`
 
 ***
 
