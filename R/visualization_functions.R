@@ -666,8 +666,8 @@ obtain_colored_url <- function(pw_id, KEGG_gene_ids, fg_cols, bg_cols) {
   pw_url <- tryCatch({
     KEGGREST::color.pathway.by.objects(pathway.id = pw_id,
                                        object.id.list = KEGG_gene_ids,
-                                       fg.color.list = fg_cols,
-                                       bg.color.list = bg_cols)
+                                       fg.color.list = bg_cols,
+                                       bg.color.list = fg_cols)
   }, error = function(e) {
     message(paste("Cannot retrieve PNG url:", pw_id))
     message("Here's the original error message:")
