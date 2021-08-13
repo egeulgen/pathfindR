@@ -1154,7 +1154,6 @@ term_gene_heatmap <- function(result_df, genes_df, num_terms = 10,
   }
   g <- ggplot2::ggplot(bg_df, ggplot2::aes_(x = ~Symbol, y = ~Enriched_Term))
   g <- g + ggplot2::geom_tile(fill = "white", color = "white")
-  g <- g + ggplot2::guides(fill = FALSE)
   g <- g + ggplot2::theme(axis.ticks.y = ggplot2::element_blank(),
                           axis.text.x = ggplot2::element_text(angle = 90, hjust = 1),
                           axis.text.y = ggplot2::element_text(colour="#000000"),
@@ -1164,7 +1163,8 @@ term_gene_heatmap <- function(result_df, genes_df, num_terms = 10,
                           panel.grid.major.y = ggplot2::element_blank(),
                           panel.grid.minor.x = ggplot2::element_blank(),
                           panel.grid.minor.y = ggplot2::element_blank(),
-                          panel.background = ggplot2::element_rect(fill="#ffffff"))
+                          panel.background = ggplot2::element_rect(fill="#ffffff"),
+                          legend.title = ggplot2::element_blank())
   g <- g + ggplot2::geom_tile(data = term_genes_df,
                               ggplot2::aes_(fill = ~value), color = "gray60")
   if (!missing(genes_df)) {
