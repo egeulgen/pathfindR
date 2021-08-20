@@ -6,8 +6,8 @@
 ## Author: Ege Ulgen
 ##################################################
 
-input_df_A <- RA_output[1:10, ]
-input_df_B <- RA_comparison_output[1:10, ]
+input_df_A <- RA_output[1:20, ]
+input_df_B <- RA_comparison_output[1:20, ]
 # sum(input_df_A$ID %in% input_df_B$ID) != 0
 
 # combine_pathfindR_results -----------------------------------------------
@@ -19,6 +19,7 @@ test_that("`combine_pathfindR_results()` works", {
 
 # combined_results_graph --------------------------------------------------
 combined_df <- combine_pathfindR_results(input_df_A, input_df_B, plot_common = FALSE)
+combined_df2 <- combined_df[combined_df$status != "common", ]
 
 test_that("`combined_results_graph()` produces a ggplot object using the correct data", {
   # Common Terms, default
@@ -41,6 +42,10 @@ test_that("`combined_results_graph()` produces a ggplot object using the correct
   # node_size = "p_val"
   expect_is(p <- combined_results_graph(combined_df, node_size = "p_val"),
             "ggplot")
+
+  # complains when there are no common terms
+  expect_error(combined_results_graph(combined_df2),
+               "There are no common terms")
 })
 
 test_that("`term_gene_graph()` arg checks work", {

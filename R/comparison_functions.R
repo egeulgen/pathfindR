@@ -117,6 +117,9 @@ combined_results_graph <- function(combined_df, selected_terms = "common",
   ############ Initial steps
   ### Filter for selected terms
   if (any(selected_terms == "common")) {
+    if (!any(combined_df$status == "common")) {
+      stop("There are no common terms")
+    }
     combined_df <- combined_df[combined_df$status == "common", ]
   } else {
     if (!any(selected_terms %in% combined_df[, ID_column]))
