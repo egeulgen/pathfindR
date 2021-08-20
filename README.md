@@ -6,7 +6,7 @@
 <!-- badges: start -->
 
 [![Travis-CI Build
-Status](https://travis-ci.com/egeulgen/pathfindR.svg?branch=master)](https://travis-ci.com/egeulgen/pathfindR)
+Status](https://app.travis-ci.com/egeulgen/pathfindR.svg?branch=master)](https://app.travis-ci.com/github/egeulgen/pathfindR)
 [![Codecov test
 coverage](https://codecov.io/gh/egeulgen/pathfindR/branch/master/graph/badge.svg)](https://codecov.io/gh/egeulgen/pathfindR)
 [![CRAN
@@ -61,7 +61,7 @@ pak::pkg_install("egeulgen/pathfindR")
 ```
 
 > **IMPORTANT NOTE** For the active subnetwork search component to work,
-> the user must have [Java (\>= 8.0)](https://www.java.com/en/)
+> the user must have [Java (&gt;= 8.0)](https://www.java.com/en/)
 > installed, and the path/to/java must be in the PATH environment
 > variable.
 
@@ -83,18 +83,17 @@ docker pull egeulgen/pathfindr:dev
 # Enrichment Analysis with pathfindR
 
 ![pathfindR Enrichment
-Workflow](https://github.com/egeulgen/pathfindR/blob/master/vignettes/pathfindr.png?raw=true
-"pathfindr Enrichment Workflow")
+Workflow](https://github.com/egeulgen/pathfindR/blob/master/vignettes/pathfindr.png?raw=true "pathfindr Enrichment Workflow")
 
 This workflow takes in a data frame consisting of “gene symbols”,
 “change values” (optional), and “associated p-values”:
 
-| Gene\_symbol | logFC  | FDR\_p  |
-| :----------- | :----: | :-----: |
-| FAM110A      | \-0.69 | 3.4e-06 |
-| RNASE2       |  1.35  | 1.0e-05 |
-| S100A8       |  1.54  | 3.5e-05 |
-| S100A9       |  1.03  | 2.3e-04 |
+| Gene\_symbol | logFC | FDR\_p  |
+|:-------------|:-----:|:-------:|
+| FAM110A      | -0.69 | 3.4e-06 |
+| RNASE2       | 1.35  | 1.0e-05 |
+| S100A8       | 1.54  | 3.5e-05 |
+| S100A9       | 1.03  | 2.3e-04 |
 
 After input testing, any gene symbol that is not in the chosen
 protein-protein interaction network (PIN) is converted to an alias
@@ -115,11 +114,12 @@ analyses, i.e., using the genes in each of the active subnetworks, the
 significantly enriched terms (pathways/gene sets) are identified.
 Enriched terms with adjusted p-values larger than the given threshold
 are discarded, and the lowest adjusted p-value (among all active
-subnetworks) for each term is kept. This process of `active subnetwork
-search + enrichment analyses` is repeated for a selected number of
-iterations, performed in parallel. Over all iterations, the lowest and
-the highest adjusted p-values, and the number of occurrences among all
-iterations are reported for each significantly enriched term.
+subnetworks) for each term is kept. This process of
+`active subnetwork search + enrichment analyses` is repeated for a
+selected number of iterations, performed in parallel. Over all
+iterations, the lowest and the highest adjusted p-values, and the number
+of occurrences among all iterations are reported for each significantly
+enriched term.
 
 This workflow can be run using the function `run_pathfindR()`:
 
@@ -133,8 +133,7 @@ analysis, and returns a data frame of enriched terms (as well as
 visualization of enriched terms and an HTML report):
 
 ![pathfindR Enrichment
-Chart](https://github.com/egeulgen/pathfindR/blob/master/vignettes/enrichment_chart.png?raw=true
-"Enrichment Chart")
+Chart](https://github.com/egeulgen/pathfindR/blob/master/vignettes/enrichment_chart.png?raw=true "Enrichment Chart")
 
 Some useful arguments are:
 
@@ -171,9 +170,8 @@ custom gene set (see `?fetch_gene_set`)
 # Clustering of the Enriched Terms
 
 ![Enriched Terms Clustering
-Workflow](https://github.com/egeulgen/pathfindR/blob/master/vignettes/term_clustering.png?raw=true
-"Enriched Terms Clustering Workflow") The wrapper function for this
-workflow is `cluster_enriched_terms()`.
+Workflow](https://github.com/egeulgen/pathfindR/blob/master/vignettes/term_clustering.png?raw=true "Enriched Terms Clustering Workflow")
+The wrapper function for this workflow is `cluster_enriched_terms()`.
 
 This workflow first calculates the pairwise kappa statistics between the
 enriched terms. The function then performs hierarchical clustering (by
@@ -216,8 +214,7 @@ frame (same as in `run_pathfindR()`) is supplied, the tile colors
 indicate the change values.
 
 ![Term-Gene
-Heatmap](https://github.com/egeulgen/pathfindR/blob/master/vignettes/hmap.png?raw=true
-"Term-Gene Heatmap")
+Heatmap](https://github.com/egeulgen/pathfindR/blob/master/vignettes/hmap.png?raw=true "Term-Gene Heatmap")
 
 ## Term-Gene Graph
 
@@ -232,8 +229,7 @@ degree of overlap between the enriched terms by identifying shared
 and/or distinct significant genes.
 
 ![Term-Gene
-Graph](https://github.com/egeulgen/pathfindR/blob/master/vignettes/term_gene.png?raw=true
-"Term-Gene Graph")
+Graph](https://github.com/egeulgen/pathfindR/blob/master/vignettes/term_gene.png?raw=true "Term-Gene Graph")
 
 ## UpSet Plot
 
@@ -242,21 +238,19 @@ function creates a ggplot object of an UpSet plot where the x-axis is
 the UpSet plot of intersections of enriched terms. By default (i.e.,
 `method = "heatmap"`), the main plot is a heatmap of genes at the
 corresponding intersections, colored by up-/down-regulation (if
-`genes_df` is provided, colored by change values). If `method =
-"barplot"`, the main plot is bar plots of the number of genes at the
-corresponding intersections. Finally, if `method = "boxplot"` and
+`genes_df` is provided, colored by change values). If
+`method = "barplot"`, the main plot is bar plots of the number of genes
+at the corresponding intersections. Finally, if `method = "boxplot"` and
 `genes_df` is provided, then the main plot displays the boxplots of the
 genes’ change values at the corresponding intersections.
 
 ![UpSet
-plot](https://github.com/egeulgen/pathfindR/blob/master/vignettes/upset.png?raw=true
-"UpSet Plot")
+plot](https://github.com/egeulgen/pathfindR/blob/master/vignettes/upset.png?raw=true "UpSet Plot")
 
 # Per Sample Enriched Term Scores
 
 ![Agglomerated Scores for all Enriched Terms per
-Sample](https://github.com/egeulgen/pathfindR/blob/master/vignettes/score_hmap.png?raw=true
-"Scoring per Sample")
+Sample](https://github.com/egeulgen/pathfindR/blob/master/vignettes/score_hmap.png?raw=true "Scoring per Sample")
 
 The function `score_terms()` can be used to calculate the agglomerated z
 score of each enriched term per sample. This allows the user to examine
@@ -285,5 +279,4 @@ combined_results_graph(combined_df, selected_terms = c("hsa04144", "hsa04141", "
 ```
 
 ![Combined Results
-Graph](https://github.com/egeulgen/pathfindR/blob/master/vignettes/combined_graph.png?raw=true
-"Combined Results Graph")
+Graph](https://github.com/egeulgen/pathfindR/blob/master/vignettes/combined_graph.png?raw=true "Combined Results Graph")
