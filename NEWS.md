@@ -14,6 +14,7 @@
 - in `score_terms()`, if using descriptions, the ID is now appended for (any) duplicated term descriptions (#87)
 - in `obtain_colored_url()`, swapped `bg_color` with `fg_color` due to an issue with `KEGGREST`
 - added legend to `term_gene_heatmap()` (#95)
+- in `get_biogrid_pin()`, the "download.file.method" from global options is used
 
 ***
 
