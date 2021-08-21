@@ -18,7 +18,7 @@ test_that("`visualize_terms()` creates expected png file(s)", {
 
   ## non-hsa-KEGG (visualize_term_interactions)
   expected_out_file <- file.path("term_visualizations",
-                                 paste0(tmp_res$Term_Description, ".png"))
+                                 paste0(gsub("\\s", "_", tmp_res$Term_Description), ".png"))
   suppressMessages(visualize_terms(result_df = tmp_res,
                                    input_processed = input_processed,
                                    hsa_KEGG = FALSE,
@@ -74,7 +74,7 @@ test_that("`visualize_terms()` arg checks work", {
 test_that("`visualize_term_interactions()` creates expected png file(s)", {
   skip_on_cran()
   expected_out_file <- file.path("term_visualizations",
-                                 paste0(tmp_res$Term_Description, ".png"))
+                                 paste0(gsub("\\s", "_", tmp_res$Term_Description), ".png"))
   expect_null(visualize_term_interactions(tmp_res,
                                           pin_name_path = "Biogrid"))
   expect_true(file.exists(expected_out_file))
