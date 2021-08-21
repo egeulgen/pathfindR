@@ -120,7 +120,9 @@
 <p>By default, <code><a href="../reference/combine_pathfindR_results.html">combine_pathfindR_results()</a></code> plots the term-gene graph for the common terms in the combined results. For not plotting the graph, set <code>plot_common = FALSE</code>.</p>
 <p>The function <code><a href="../reference/combined_results_graph.html">combined_results_graph()</a></code> can be used to create this graph (using only selected terms etc.) later on. By default, the function creates the graph using all common terms:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/combined_results_graph.html">combined_results_graph</a></span><span class="op">(</span><span class="va">combined_df</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/combined_results_graph.html">combined_results_graph</a></span><span class="op">(</span><span class="va">combined_df</span><span class="op">)</span>
+<span class="co">#&gt; Warning: ggrepel: 18 unlabeled data points (too many overlaps). Consider</span>
+<span class="co">#&gt; increasing max.overlaps</span></code></pre></div>
 <p><img src="comparing_results_files/figure-html/compare_graph1-1.png" width="768" style="display: block; margin: auto;"></p>
 <p>By supplying a vector of selected terms to the <code>selected_terms</code> arguments, you may plot the term-gene graph for the selected terms:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
