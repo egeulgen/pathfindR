@@ -66,5 +66,5 @@ change values of the genes at the corresponding intersections.
 Create UpSet Plot of Enriched Terms
 }
 \examples{
-UpSet_plot(RA_output)
+UpSet_plot(RA_comparison_output)
 }
