@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Version 1.1 • pathfindR</title>
+<title>Version dev • pathfindR</title>
 
 
 <!-- jquery -->
@@ -45,7 +45,7 @@
 
 
 
-<meta property="og:title" content="Version 1.1" />
+<meta property="og:title" content="Version dev" />
 
 
 
@@ -151,31 +151,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1 data-toc-skip>Changelog <small>1.1</small></h1>
+      <h1 data-toc-skip>Changelog <small>dev</small></h1>
       
     </div>
 
-    <div id="pathfindr-11" class="section level1">
-<h1 class="page-header" data-toc-text="1.1">
-<a href="#pathfindr-11" class="anchor" aria-hidden="true"></a>pathfindR 1.1<small> Unreleased </small></h1>
-<div id="major-changes-10" class="section level2">
-<h2 class="hasAnchor">
-<a href="#major-changes-10" class="anchor" aria-hidden="true"></a>Major changes</h2>
-<ul><li>Added the <code>gene_sets</code> option in <code>run_pathfindR</code> to chose between different gene sets. Available gene sets are <code>KEGG</code>, <code>Reactome</code>, <code>BioCarta</code> and Gene Ontology gene sets (<code>GO-BP</code>, <code>GO-CC</code> and <code>GO-MF</code>)</li>
-<li>
-<code>cluster_pathways</code> automatically recognizes the ID type and chooses the gene sets accordingly</li>
-</ul></div>
-<div id="minor-changes-and-bug-fixes-11" class="section level2">
-<h2 class="hasAnchor">
-<a href="#minor-changes-and-bug-fixes-11" class="anchor" aria-hidden="true"></a>Minor changes and bug fixes</h2>
-<ul><li>Fixed issue regarding p values &lt; 1e-13. No active subnetworks were found when there were p values &lt; 1e-13. These are now changed to 1e-13 in the function <code>input_processing</code>
-</li>
-<li>In <code>input_processing</code>, genes for which no interactions are found in the PIN are now removed before active subnetwork search</li>
-<li>Duplicated gene symbols no longer raise an error. If there are duplicated symbols, the lowest p value is chosen for each gene symbol in the function <code>input_processing</code>
-</li>
-<li>To prevent the formation of nested folders, by default and on errors, the function <code>run_pathfindR</code> returns to the user’s working directory.</li>
-<li>Citation information are now provided for our BioRxiv pre-print</li>
-</ul></div>
+    <div id="pathfindr-development-version" class="section level1">
+<h1 class="page-header" data-toc-text="development version">
+<a href="#pathfindr-development-version" class="anchor" aria-hidden="true"></a>pathfindR (development version)<small> Unreleased </small></h1>
 </div>
   </div>
 
