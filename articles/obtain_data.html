@@ -35,7 +35,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.2.9001</span>
       </span>
     </div>
 
@@ -103,18 +103,18 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Obtaining PIN and Gene Sets Data</h1>
             
-            <h4 data-toc-skip class="date">2021-08-22</h4>
+            <h4 data-toc-skip class="date">2021-11-09</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/master/vignettes/obtain_data.Rmd" class="external-link"><code>vignettes/obtain_data.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/HEAD/vignettes/obtain_data.Rmd" class="external-link"><code>vignettes/obtain_data.Rmd</code></a></small>
       <div class="hidden name"><code>obtain_data.Rmd</code></div>
 
     </div>
 
     
     
-<div id="get-pin-file" class="section level1">
-<h1 class="hasAnchor">
-<a href="#get-pin-file" class="anchor" aria-hidden="true"></a>Get PIN File</h1>
+<div class="section level1">
+<h1 id="get-pin-file">Get PIN File<a class="anchor" aria-label="anchor" href="#get-pin-file"></a>
+</h1>
 <p>For retrieving the PIN file for an organism of your choice, you may use the function <code><a href="../reference/get_pin_file.html">get_pin_file()</a></code>. As of this version, the only source for PIN data is “BioGRID”.</p>
 <p>By default, the function downloads the PIN data from BioGRID and processes it, saves it in a temporary file and returns the path:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -134,30 +134,30 @@
 <span class="va">path_to_pin_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_pin_file.html">get_pin_file</a></span><span class="op">(</span>org <span class="op">=</span> <span class="st">"Mus_musculus"</span>, 
                                  release <span class="op">=</span> <span class="st">"3.5.179"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="get-gene-sets-list" class="section level1">
-<h1 class="hasAnchor">
-<a href="#get-gene-sets-list" class="anchor" aria-hidden="true"></a>Get Gene Sets List</h1>
+<div class="section level1">
+<h1 id="get-gene-sets-list">Get Gene Sets List<a class="anchor" aria-label="anchor" href="#get-gene-sets-list"></a>
+</h1>
 <p>To retrieve organism-specific gene sets list, you may use the function <code><a href="../reference/get_gene_sets_list.html">get_gene_sets_list()</a></code>. The available sources for gene sets are “KEGG”, “Reactome” and “MSigDB”. The function retrieves the gene sets data from the source and processes it into a list of two objects used by pathfindR for active-subnetwork-oriented enrichment analysis: 1. <strong>gene_sets</strong> A list containing the genes involved in each gene set 2. <strong>descriptions</strong> A named vector containing the descriptions for each gene set</p>
 <p>By default, <code><a href="../reference/get_gene_sets_list.html">get_gene_sets_list()</a></code> obtains “KEGG” gene sets for “hsa”.</p>
-<div id="kegg-pathway-gene-sets" class="section level2">
-<h2 class="hasAnchor">
-<a href="#kegg-pathway-gene-sets" class="anchor" aria-hidden="true"></a>KEGG Pathway Gene Sets</h2>
+<div class="section level2">
+<h2 id="kegg-pathway-gene-sets">KEGG Pathway Gene Sets<a class="anchor" aria-label="anchor" href="#kegg-pathway-gene-sets"></a>
+</h2>
 <p>To obtain the gene sets list of the KEGG pathways for an organism of your choice, use the KEGG organism code for the selected organism. For a full list of all available organisms, see <a href="https://www.genome.jp/kegg/catalog/org_list.html" class="external-link">here</a>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## obtaining KEGG pathway gene sets for Rattus norvegicus (rno)</span>
 <span class="va">gsets_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_gene_sets_list.html">get_gene_sets_list</a></span><span class="op">(</span>org_code <span class="op">=</span> <span class="st">"rno"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="reactome-pathway-gene-sets" class="section level2">
-<h2 class="hasAnchor">
-<a href="#reactome-pathway-gene-sets" class="anchor" aria-hidden="true"></a>Reactome Pathway Gene Sets</h2>
+<div class="section level2">
+<h2 id="reactome-pathway-gene-sets">Reactome Pathway Gene Sets<a class="anchor" aria-label="anchor" href="#reactome-pathway-gene-sets"></a>
+</h2>
 <p>For obtaining Reactome pathway gene sets, set the <code>source</code> argument to “Reactome”. This downloads the most current Reactome pathways in gmt format and processes it into the list object that pathfindR uses:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">gsets_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_gene_sets_list.html">get_gene_sets_list</a></span><span class="op">(</span>source <span class="op">=</span> <span class="st">"Reactome"</span><span class="op">)</span></code></pre></div>
 <p>For Reactome, there is only one collection of pathway gene sets.</p>
 </div>
-<div id="msigdb-gene-sets" class="section level2">
-<h2 class="hasAnchor">
-<a href="#msigdb-gene-sets" class="anchor" aria-hidden="true"></a>MSigDB Gene Sets</h2>
+<div class="section level2">
+<h2 id="msigdb-gene-sets">MSigDB Gene Sets<a class="anchor" aria-label="anchor" href="#msigdb-gene-sets"></a>
+</h2>
 <p>Using <code>msigdbr</code>, <code>pathfindR</code> can retrieve all MSigDB gene sets. For this, set the <code>source</code> argument to “MSigDB” and the <code>collection</code> argument to the desired MSigDB collection (one of H, C1, C2, C3, C4, C5, C6, C7):</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">gsets_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_gene_sets_list.html">get_gene_sets_list</a></span><span class="op">(</span>source <span class="op">=</span> <span class="st">"MSigDB"</span>,
@@ -211,7 +211,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9001.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
 </div>
 
       </footer>

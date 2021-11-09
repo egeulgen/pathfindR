@@ -35,7 +35,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.2.9001</span>
       </span>
     </div>
 
@@ -103,9 +103,9 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Visualization of pathfindR Enrichment Results</h1>
             
-            <h4 data-toc-skip class="date">2021-08-22</h4>
+            <h4 data-toc-skip class="date">2021-11-09</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/master/vignettes/visualization_vignette.Rmd" class="external-link"><code>vignettes/visualization_vignette.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/HEAD/vignettes/visualization_vignette.Rmd" class="external-link"><code>vignettes/visualization_vignette.Rmd</code></a></small>
       <div class="hidden name"><code>visualization_vignette.Rmd</code></div>
 
     </div>
@@ -115,9 +115,10 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://egeulgen.github.io/pathfindR/">pathfindR</a></span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><code>pathfindR</code> offers various functionalities to visualize the enrichment results. In this vignette, I try to demonstrate these functionalities.</p>
-<div id="enrichment_chart-bubble-chart-of-enrichment-results" class="section level2">
-<h2 class="hasAnchor">
-<a href="#enrichment_chart-bubble-chart-of-enrichment-results" class="anchor" aria-hidden="true"></a><code>enrichment_chart()</code>: Bubble Chart of Enrichment Results</h2>
+<div class="section level2">
+<h2 id="enrichment_chart-bubble-chart-of-enrichment-results">
+<code>enrichment_chart()</code>: Bubble Chart of Enrichment Results<a class="anchor" aria-label="anchor" href="#enrichment_chart-bubble-chart-of-enrichment-results"></a>
+</h2>
 <p><code>enrichment_chart</code> generates a bubble chart. The x-axis corresponds to fold enrichment values while the y-axis indicates the enriched terms. Size of the bubble indicates the number of significant genes in the given enriched term. Color indicates the -log10(lowest-p) value. The closer the color is to red, the more significant the enrichment is.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/enrichment_chart.html">enrichment_chart</a></span><span class="op">(</span><span class="va">RA_output</span><span class="op">)</span></code></pre></div>
@@ -135,9 +136,10 @@
 <p><img src="visualization_vignette_files/figure-html/enr_chart3-1.png" width="768" style="display: block; margin: auto;"></p>
 <p>See <code><a href="../reference/enrichment_chart.html">?enrichment_chart</a></code> for more details.</p>
 </div>
-<div id="term_gene_heatmap-terms-by-genes-heatmap" class="section level2">
-<h2 class="hasAnchor">
-<a href="#term_gene_heatmap-terms-by-genes-heatmap" class="anchor" aria-hidden="true"></a><code>term_gene_heatmap()</code>: Terms by Genes Heatmap</h2>
+<div class="section level2">
+<h2 id="term_gene_heatmap-terms-by-genes-heatmap">
+<code>term_gene_heatmap()</code>: Terms by Genes Heatmap<a class="anchor" aria-label="anchor" href="#term_gene_heatmap-terms-by-genes-heatmap"></a>
+</h2>
 <p><code><a href="../reference/term_gene_heatmap.html">term_gene_heatmap()</a></code> is used to create a heatmap where rows are enriched terms and columns are involved input genes. This heatmap allows visual identification of the input genes involved in the enriched terms, as well as the common or distinct genes between different terms.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/term_gene_heatmap.html">term_gene_heatmap</a></span><span class="op">(</span><span class="va">RA_output</span><span class="op">)</span></code></pre></div>
@@ -157,9 +159,10 @@
 <p><img src="hmap.png" style="max-width:100%;"></p>
 <p>See <code><a href="../reference/term_gene_heatmap.html">?term_gene_heatmap</a></code> for more details.</p>
 </div>
-<div id="term_gene_graph-term-gene-graph" class="section level2">
-<h2 class="hasAnchor">
-<a href="#term_gene_graph-term-gene-graph" class="anchor" aria-hidden="true"></a><code>term_gene_graph()</code>: Term-Gene Graph</h2>
+<div class="section level2">
+<h2 id="term_gene_graph-term-gene-graph">
+<code>term_gene_graph()</code>: Term-Gene Graph<a class="anchor" aria-label="anchor" href="#term_gene_graph-term-gene-graph"></a>
+</h2>
 <p>The function <code><a href="../reference/term_gene_graph.html">term_gene_graph()</a></code> (adapted from the Gene-Concept network visualization by the R package <code>enrichplot</code>) can be utilized to visualize which significant genes are involved in the enriched terms. The function creates the term-gene graph, displaying the connections between genes and biological terms (enriched pathways or gene sets). This allows for the investigation of multiple terms to which significant genes are related. The graph also enables determination of the degree of overlap between the enriched terms by identifying shared and/or distinct significant genes. By default, the function visualizes the term-gene graph for the top 10 enriched terms:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/term_gene_graph.html">term_gene_graph</a></span><span class="op">(</span><span class="va">RA_output</span><span class="op">)</span></code></pre></div>
@@ -176,9 +179,10 @@
 <code class="sourceCode R"><span class="fu"><a href="../reference/term_gene_graph.html">term_gene_graph</a></span><span class="op">(</span><span class="va">RA_output</span>, num_terms <span class="op">=</span> <span class="fl">3</span>, node_size <span class="op">=</span> <span class="st">"p_val"</span><span class="op">)</span></code></pre></div>
 <p>See <code><a href="../reference/term_gene_graph.html">?term_gene_graph</a></code> for more details.</p>
 </div>
-<div id="upset_plot-upset-plots-of-enriched-terms" class="section level2">
-<h2 class="hasAnchor">
-<a href="#upset_plot-upset-plots-of-enriched-terms" class="anchor" aria-hidden="true"></a><code>UpSet_plot()</code>: UpSet Plots of Enriched Terms</h2>
+<div class="section level2">
+<h2 id="upset_plot-upset-plots-of-enriched-terms">
+<code>UpSet_plot()</code>: UpSet Plots of Enriched Terms<a class="anchor" aria-label="anchor" href="#upset_plot-upset-plots-of-enriched-terms"></a>
+</h2>
 <p>UpSet plots are plots of the intersections of sets as a matrix. <code><a href="../reference/UpSet_plot.html">UpSet_plot()</a></code> creates a ggplot object of an UpSet plot where the x-axis is the UpSet plot of intersections of enriched terms. By default (<code>method = "heatmap"</code>), the main plot is a heatmap of genes at the corresponding intersections, colored by up/down regulation:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span><span class="op">(</span><span class="va">RA_output</span><span class="op">)</span></code></pre></div>
@@ -220,7 +224,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9001.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
 </div>
 
       </footer>
