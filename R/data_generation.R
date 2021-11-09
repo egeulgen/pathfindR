@@ -244,7 +244,7 @@ get_kegg_gsets <- function(org_code = "hsa") {
 get_reactome_gsets <- function() {
   tmp <- tempfile()
   reactome_url <- "https://reactome.org/download/current/ReactomePathways.gmt.zip"
-  utils::download.file(reactome_url, tmp)
+  utils::download.file(reactome_url, tmp, method = getOption("download.file.method"))
 
   reactome_gmt <- unz(tmp, "ReactomePathways.gmt")
   result <- gset_list_from_gmt(reactome_gmt)
