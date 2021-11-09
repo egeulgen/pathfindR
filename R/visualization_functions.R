@@ -273,7 +273,7 @@ visualize_term_interactions <- function(result_df, pin_name_path) {
 #' visualize_hsa_KEGG(hsa_kegg_ids, input_processed)
 #' }
 visualize_hsa_KEGG <- function(hsa_kegg_ids, input_processed, max_to_plot = NULL,
-                               normalize_vals = TRUE, node_cols = NULL,
+                               normalize_vals = FALSE, node_cols = NULL,
                                quiet = TRUE,
                                key_gravity = "northeast",
                                logo_gravity = "southeast") {
@@ -429,7 +429,7 @@ visualize_hsa_KEGG <- function(hsa_kegg_ids, input_processed, max_to_plot = NULL
 #'
 #' @param pw_id hsa KEGG pathway id (e.g. hsa05012)
 #' @param change_vec vector of change values, names should be hsa KEGG gene ids
-#' @param normalize_vals should change values be normalized (default = \code{TRUE})
+#' @param normalize_vals should change values be normalized (default = \code{FALSE})
 #' @param node_cols low, middle and high color values for coloring the pathway nodes
 #' (default = \code{NULL}). If \code{node_cols=NULL}, the low, middle and high color
 #' are set as "green", "gray" and "red". If all change values are 1e6 (in case no
@@ -451,7 +451,7 @@ visualize_hsa_KEGG <- function(hsa_kegg_ids, input_processed, max_to_plot = NULL
 #'    names(change_vec) <- c("hsa:2821", "hsa:226", "hsa:229")
 #'    result <- pathfindR:::color_kegg_pathway(pw_id, change_vec)
 #' }
-color_kegg_pathway <- function(pw_id, change_vec, normalize_vals = TRUE,
+color_kegg_pathway <- function(pw_id, change_vec, normalize_vals = FALSE,
                                node_cols = NULL, quiet = TRUE) {
   ############ Arg checks
   if (!is.logical(normalize_vals)) {
@@ -599,9 +599,9 @@ color_kegg_pathway <- function(pw_id, change_vec, normalize_vals = TRUE,
 
   ############ Label each pw gene with the appropriate color
   fg_cols <- ifelse(names(pw_vis_changes) %in% names(low_bins),
-                    all_key_cols[low_bins[names(pw_vis_changes)]],
+                    low_key_cols[low_bins[names(pw_vis_changes)]],
                     ifelse(names(pw_vis_changes) %in% names(high_bins),
-                           all_key_cols[high_bins[names(pw_vis_changes)]],
+                           high_key_cols[high_bins[names(pw_vis_changes)]],
                            "#ffffff"))
   bg_cols <- rep("#000000", length(pw_vis_changes))
 

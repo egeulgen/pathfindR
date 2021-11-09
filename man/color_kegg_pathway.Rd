@@ -7,7 +7,7 @@
 color_kegg_pathway(
   pw_id,
   change_vec,
-  normalize_vals = TRUE,
+  normalize_vals = FALSE,
   node_cols = NULL,
   quiet = TRUE
 )
@@ -17,7 +17,7 @@ color_kegg_pathway(
 
 \item{change_vec}{vector of change values, names should be hsa KEGG gene ids}
 
-\item{normalize_vals}{should change values be normalized (default = \code{TRUE})}
+\item{normalize_vals}{should change values be normalized (default = \code{FALSE})}
 
 \item{node_cols}{low, middle and high color values for coloring the pathway nodes
 (default = \code{NULL}). If \code{node_cols=NULL}, the low, middle and high color
