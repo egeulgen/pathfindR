@@ -2,7 +2,7 @@
 ## Project: pathfindR
 ## Script purpose: Testthat testing script for
 ## visualization-related functions
-## Date: Dec 4, 2020
+## Date: Nov 9, 2021
 ## Author: Ege Ulgen
 ##################################################
 
@@ -107,7 +107,7 @@ test_that("`visualize_hsa_KEGG()` creates expected png file(s)", {
                                  paste0(tmp_res$ID, "_pathfindR.png"))
 
   ###### Continuous change values
-  ### Normalize = TRUE
+  ### Normalize = FALSE
   expect_null(visualize_hsa_KEGG(hsa_kegg_ids = tmp_res$ID,
                                  input_processed = input_processed))
   expect_true(file.exists(expected_out_file))
@@ -119,10 +119,10 @@ test_that("`visualize_hsa_KEGG()` creates expected png file(s)", {
   expect_true(file.exists(expected_out_file))
   unlink("term_visualizations", recursive = TRUE)
 
-  ### Normalize = FALSE
+  ### Normalize = TRUE
   expect_null(visualize_hsa_KEGG(hsa_kegg_ids = tmp_res$ID,
                                  input_processed = input_processed,
-                                 normalize_vals = FALSE))
+                                 normalize_vals = TRUE))
   expect_true(file.exists(expected_out_file))
   unlink("term_visualizations", recursive = TRUE)
 
