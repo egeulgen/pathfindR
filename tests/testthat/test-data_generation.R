@@ -6,7 +6,7 @@
 ## Author: Ege Ulgen
 ##################################################
 
-options(download.file.method = "wget")
+httr::set_config(httr::config(ssl_verifypeer = 0L))
 
 # get_biogrid_pin ---------------------------------------------------------
 test_that("`get_biogrid_pin()` returns a path to a valid PIN file", {
