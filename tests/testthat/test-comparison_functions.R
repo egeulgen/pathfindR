@@ -22,6 +22,7 @@ combined_df <- combine_pathfindR_results(input_df_A, input_df_B, plot_common = F
 combined_df2 <- combined_df[combined_df$status != "common", ]
 
 test_that("`combined_results_graph()` produces a ggplot object using the correct data", {
+  skip_on_cran()
   # Common Terms, default
   expect_is(p <- combined_results_graph(combined_df), "ggplot")
   expect_equal(sum(p$data$type == "common term"), sum(combined_df$status == "common"))
