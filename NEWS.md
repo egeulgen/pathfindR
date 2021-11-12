@@ -1,6 +1,6 @@
-# pathfindR (development version)
+# pathfindR 1.6.3
 
-## Major Changes
+## Minor Changes
 - Fixed coloring issue in `color_kegg_pathway()`
 - In `color_kegg_pathway()` the default value for `normalize_vals` is now `FALSE`
 
