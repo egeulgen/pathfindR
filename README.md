@@ -8,7 +8,7 @@
 [![Travis-CI Build
 Status](https://app.travis-ci.com/egeulgen/pathfindR.svg?branch=master)](https://app.travis-ci.com/github/egeulgen/pathfindR)
 [![Codecov test
-coverage](https://codecov.io/gh/egeulgen/pathfindR/branch/master/graph/badge.svg)](https://codecov.io/gh/egeulgen/pathfindR)
+coverage](https://codecov.io/gh/egeulgen/pathfindR/branch/master/graph/badge.svg)](https://app.codecov.io/gh/egeulgen/pathfindR)
 [![CRAN
 version](http://www.r-pkg.org/badges/version-ago/pathfindR)](https://cran.r-project.org/package=pathfindR)
 [![CRAN total
@@ -61,7 +61,7 @@ pak::pkg_install("egeulgen/pathfindR")
 ```
 
 > **IMPORTANT NOTE** For the active subnetwork search component to work,
-> the user must have [Java (&gt;= 8.0)](https://www.java.com/)
+> the user must have [Java (>= 8.0)](https://www.java.com/en/)
 > installed, and the path/to/java must be in the PATH environment
 > variable.
 
@@ -88,12 +88,12 @@ Workflow](https://github.com/egeulgen/pathfindR/blob/master/vignettes/pathfindr.
 This workflow takes in a data frame consisting of “gene symbols”,
 “change values” (optional), and “associated p-values”:
 
-| Gene\_symbol | logFC | FDR\_p  |
-|:-------------|:-----:|:-------:|
-| FAM110A      | -0.69 | 3.4e-06 |
-| RNASE2       | 1.35  | 1.0e-05 |
-| S100A8       | 1.54  | 3.5e-05 |
-| S100A9       | 1.03  | 2.3e-04 |
+| Gene_symbol | logFC |  FDR_p  |
+|:------------|:-----:|:-------:|
+| FAM110A     | -0.69 | 3.4e-06 |
+| RNASE2      | 1.35  | 1.0e-05 |
+| S100A8      | 1.54  | 3.5e-05 |
+| S100A9      | 1.03  | 2.3e-04 |
 
 After input testing, any gene symbol that is not in the chosen
 protein-protein interaction network (PIN) is converted to an alias
@@ -157,10 +157,10 @@ output_df <- run_pathfindR(input_df, list_active_snw_genes = TRUE)
 ```
 
 The available PINs are “Biogrid”, “STRING”, “GeneMania”, “IntAct”,
-“KEGG” and “mmu\_STRING”. The available gene sets are “KEGG”,
-“Reactome”, “BioCarta”, “GO-All”, “GO-BP”, “GO-CC”, “GO-MF”, and
-“mmu\_KEGG”. You also use a custom PIN (see `?return_pin_path`) or a
-custom gene set (see `?fetch_gene_set`)
+“KEGG” and “mmu_STRING”. The available gene sets are “KEGG”, “Reactome”,
+“BioCarta”, “GO-All”, “GO-BP”, “GO-CC”, “GO-MF”, and “mmu_KEGG”. You
+also use a custom PIN (see `?return_pin_path`) or a custom gene set (see
+`?fetch_gene_set`)
 
 > As of the latest development version, pathfindR offers utility
 > functions for obtaining organism-specific PIN data (for now, only
