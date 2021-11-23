@@ -58,7 +58,7 @@ must be specified. (Default = "KEGG")}
 
 \item{min_gset_size}{minimum number of genes a term must contain (default = 10)}
 
-\item{max_gset_size}{maximum number of genes a term must contain (default = 10)}
+\item{max_gset_size}{maximum number of genes a term must contain (default = 300)}
 
 \item{custom_genes}{a list containing the genes involved in each custom
 term. Each element is a vector of gene symbols located in the given custom
@@ -68,7 +68,7 @@ term. Names should correspond to the IDs of the custom terms.}
 custom  term. Names of the vector should correspond to the IDs of the custom
 terms.}
 
-\item{pin_name_path}{Name of the chosen PIN or path/to/PIN.sif. If PIN name,
+\item{pin_name_path}{Name of the chosen PIN or absolute/path/to/PIN.sif. If PIN name,
 must be one of c("Biogrid", "STRING", "GeneMania", "IntAct", "KEGG", "mmu_STRING"). If
 path/to/PIN.sif, the file must comply with the PIN specifications. (Default = "Biogrid")}
 
