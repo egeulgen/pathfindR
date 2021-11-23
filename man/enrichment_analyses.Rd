@@ -21,7 +21,7 @@ enrichment_analyses(
 \item{sig_genes_vec}{vector of significant gene symbols. In the scope of this
 package, these are the input genes that were used for active subnetwork search}
 
-\item{pin_name_path}{Name of the chosen PIN or path/to/PIN.sif. If PIN name,
+\item{pin_name_path}{Name of the chosen PIN or absolute/path/to/PIN.sif. If PIN name,
 must be one of c("Biogrid", "STRING", "GeneMania", "IntAct", "KEGG", "mmu_STRING"). If
 path/to/PIN.sif, the file must comply with the PIN specifications. (Default = "Biogrid")}
 

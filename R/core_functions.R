@@ -392,7 +392,7 @@ run_pathfindR <- function(input,
 #'  If "Custom", the arguments \code{custom_genes} and \code{custom_descriptions}
 #'  must be specified. (Default = "KEGG")
 #' @param min_gset_size minimum number of genes a term must contain (default = 10)
-#' @param max_gset_size maximum number of genes a term must contain (default = 10)
+#' @param max_gset_size maximum number of genes a term must contain (default = 300)
 #' @param custom_genes a list containing the genes involved in each custom
 #'  term. Each element is a vector of gene symbols located in the given custom
 #'  term. Names should correspond to the IDs of the custom terms.
@@ -526,7 +526,7 @@ fetch_gene_set <- function(gene_sets = "KEGG",
 #' interactors' gene symbols, column 2 must be a column with all
 #' rows consisting of "pp".
 #'
-#' @param pin_name_path Name of the chosen PIN or path/to/PIN.sif. If PIN name,
+#' @param pin_name_path Name of the chosen PIN or absolute/path/to/PIN.sif. If PIN name,
 #'   must be one of c("Biogrid", "STRING", "GeneMania", "IntAct", "KEGG", "mmu_STRING"). If
 #'   path/to/PIN.sif, the file must comply with the PIN specifications. (Default = "Biogrid")
 #'

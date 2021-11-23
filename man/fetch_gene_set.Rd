@@ -21,7 +21,7 @@ must be specified. (Default = "KEGG")}
 
 \item{min_gset_size}{minimum number of genes a term must contain (default = 10)}
 
-\item{max_gset_size}{maximum number of genes a term must contain (default = 10)}
+\item{max_gset_size}{maximum number of genes a term must contain (default = 300)}
 
 \item{custom_genes}{a list containing the genes involved in each custom
 term. Each element is a vector of gene symbols located in the given custom

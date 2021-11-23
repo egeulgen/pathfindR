@@ -25,7 +25,7 @@ visualize_active_subnetworks(
   \item p value, e.g. adjusted p value associated with differential expression
 } The change values in this data frame are used to color the affected genes}
 
-\item{pin_name_path}{Name of the chosen PIN or path/to/PIN.sif. If PIN name,
+\item{pin_name_path}{Name of the chosen PIN or absolute/path/to/PIN.sif. If PIN name,
 must be one of c("Biogrid", "STRING", "GeneMania", "IntAct", "KEGG", "mmu_STRING"). If
 path/to/PIN.sif, the file must comply with the PIN specifications. (Default = "Biogrid")}
 

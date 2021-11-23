@@ -36,7 +36,7 @@ must be a data frame containing at least these 2 columns: \describe{
   \item{P_VALUE}{p value obtained through a test, e.g. differential expression/methylation}
 }}
 
-\item{pin_name_path}{Name of the chosen PIN or path/to/PIN.sif. If PIN name,
+\item{pin_name_path}{Name of the chosen PIN or absolute/path/to/PIN.sif. If PIN name,
 must be one of c("Biogrid", "STRING", "GeneMania", "IntAct", "KEGG", "mmu_STRING"). If
 path/to/PIN.sif, the file must comply with the PIN specifications. (Default = "Biogrid")}
 

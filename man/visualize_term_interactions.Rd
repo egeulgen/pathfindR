@@ -10,7 +10,7 @@ visualize_term_interactions(result_df, pin_name_path)
 \item{result_df}{Data frame of enrichment results. Must-have columns
 are: "Term_Description", "Up_regulated" and "Down_regulated"}
 
-\item{pin_name_path}{Name of the chosen PIN or path/to/PIN.sif. If PIN name,
+\item{pin_name_path}{Name of the chosen PIN or absolute/path/to/PIN.sif. If PIN name,
 must be one of c("Biogrid", "STRING", "GeneMania", "IntAct", "KEGG", "mmu_STRING"). If
 path/to/PIN.sif, the file must comply with the PIN specifications. (Default = "Biogrid")}
 }

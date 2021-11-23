@@ -22,7 +22,7 @@ input_processing(
 \item{p_val_threshold}{the p value threshold to use when filtering
 the input data frame. Must a numeric value between 0 and 1. (default = 0.05)}
 
-\item{pin_name_path}{Name of the chosen PIN or path/to/PIN.sif. If PIN name,
+\item{pin_name_path}{Name of the chosen PIN or absolute/path/to/PIN.sif. If PIN name,
 must be one of c("Biogrid", "STRING", "GeneMania", "IntAct", "KEGG", "mmu_STRING"). If
 path/to/PIN.sif, the file must comply with the PIN specifications. (Default = "Biogrid")}
 
