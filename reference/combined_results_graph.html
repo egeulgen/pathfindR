@@ -82,15 +82,14 @@
     <p>Combined Results Graph</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">combined_results_graph</span><span class="op">(</span>
+    <div id="ref-usage">Usage,<div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">combined_results_graph</span><span class="op">(</span>
   <span class="va">combined_df</span>,
   selected_terms <span class="op">=</span> <span class="st">"common"</span>,
   use_description <span class="op">=</span> <span class="cn">FALSE</span>,
   layout <span class="op">=</span> <span class="st">"stress"</span>,
   node_size <span class="op">=</span> <span class="st">"num_genes"</span>
-<span class="op">)</span></code></pre></div>
+<span class="op">)</span></code></pre></div></div>
 
-    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>combined_df</dt>
@@ -119,11 +118,10 @@ or the -log10(lowest p value) ("p_val") for adjusting the node sizes (default = 
  to either the number of genes (if <code>node_size = "num_genes"</code>) or
  the -log10(lowest p value) (if <code>node_size = "p_val"</code>).</p>
     </div>
-    </div>
 
-    <div id="examples">
+    <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">combined_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="combine_pathfindR_results.html">combine_pathfindR_results</a></span><span class="op">(</span><span class="va">RA_output</span>,</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">combined_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="combine_pathfindR_results.html">combine_pathfindR_results</a></span><span class="op">(</span><span class="va">RA_output</span>,</span>
 <span class="r-in">                                              <span class="va">RA_comparison_output</span>,</span>
 <span class="r-in">                                              plot_common <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> You may run `combined_results_graph()` to create visualizations of combined term-gene graphs of selected terms</span>
@@ -142,7 +140,7 @@ or the -log10(lowest p value) ("p_val") for adjusting the node sizes (default = 
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.0.9000.</p>
 </div>
 
       </footer></div>

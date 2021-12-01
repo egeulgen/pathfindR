@@ -82,7 +82,7 @@
     <p>Hierarchical Clustering of Enriched Terms</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">hierarchical_term_clustering</span><span class="op">(</span>
+    <div id="ref-usage">Usage,<div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">hierarchical_term_clustering</span><span class="op">(</span>
   <span class="va">kappa_mat</span>,
   <span class="va">enrichment_res</span>,
   num_clusters <span class="op">=</span> <span class="cn">NULL</span>,
@@ -90,9 +90,8 @@
   clu_method <span class="op">=</span> <span class="st">"average"</span>,
   plot_hmap <span class="op">=</span> <span class="cn">FALSE</span>,
   plot_dend <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+<span class="op">)</span></code></pre></div></div>
 
-    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>kappa_mat</dt>
@@ -134,11 +133,10 @@ the clustering dendrogram is cut into k = 2, 3, ..., n - 1 clusters
 determined as the k value which yields the highest average silhouette width.
 (if <code>num_clusters</code> not specified)</p>
     </div>
-    </div>
 
-    <div id="examples">
+    <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
 <span class="r-in"><span class="fu">hierarchical_term_clustering</span><span class="op">(</span><span class="va">kappa_mat</span>, <span class="va">enrichment_res</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu">hierarchical_term_clustering</span><span class="op">(</span><span class="va">kappa_mat</span>, <span class="va">enrichment_res</span>, method <span class="op">=</span> <span class="st">"complete"</span><span class="op">)</span></span>
 <span class="r-in"><span class="op">}</span></span>
@@ -156,7 +154,7 @@ determined as the k value which yields the highest average silhouette width.
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.0.9000.</p>
 </div>
 
       </footer></div>
