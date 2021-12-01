@@ -2,14 +2,13 @@
 ## Project: pathfindR
 ## Script purpose: Testthat testing script for
 ## data generation functions
-## Date: Dec 4, 2020
+## Date: Dec 2, 2021
 ## Author: Ege Ulgen
 ##################################################
 
 org_met <- getOption("download.file.method")
 org_extra <- getOption("download.file.extra")
 options(download.file.method="curl", download.file.extra="-k -L")
-on.exit(options(download.file.method = org_met, download.file.extra=org_extra))
 
 # get_biogrid_pin ---------------------------------------------------------
 test_that("`get_biogrid_pin()` returns a path to a valid PIN file", {
@@ -43,6 +42,7 @@ test_that("`get_pin_file()` works", {
   expect_true(all(pin_df[, 2] == "pp"))
 })
 
+options(download.file.method = org_met, download.file.extra=org_extra)
 # get_kegg_gsets ----------------------------------------------------------
 test_that("`get_kegg_gsets() works`", {
   skip_on_cran()
@@ -53,6 +53,7 @@ test_that("`get_kegg_gsets() works`", {
   expect_true(all(names(hsa_kegg[["gene_sets"]] %in% names(hsa_kegg[["descriptions"]]))))
 })
 
+options(download.file.method="curl", download.file.extra="-k -L")
 # get_reactome_gsets ------------------------------------------------------
 test_that("`get_reactome_gsets()` works", {
   skip_on_cran()
@@ -100,3 +101,5 @@ test_that("`get_gene_sets_list()` works", {
                                            collection = "C3",
                                            subcollection = "MIR:MIR_Legacy"))
 })
+options(download.file.method = org_met, download.file.extra=org_extra)
+
