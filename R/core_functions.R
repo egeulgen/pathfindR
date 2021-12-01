@@ -732,6 +732,7 @@ input_processing <- function(input, p_val_threshold = 0.05,
   ## Genes not in pin
   PIN_genes <- c(base::toupper(pin[, 1]), base::toupper(pin[, 3]))
   missing_symbols <- input$GENE[!base::toupper(input$GENE) %in% PIN_genes]
+  non_missing_symbols <- input$GENE[base::toupper(input$GENE) %in% PIN_genes]
 
   if (convert2alias & length(missing_symbols) != 0) {
     ## use SQL to get alias table and gene_info table (contains the symbols)
@@ -744,13 +745,13 @@ input_processing <- function(input, p_val_threshold = 0.05,
     hsa_alias_df <- DBI::dbGetQuery(db_con, sql_query)
 
     select_alias <- function(result, converted, idx) {
-      if (idx == 0) {
-        return("NOT_FOUND")
-      } else if (result[idx] %in% converted[, 2]) {
-        return(result[idx - 1])
-      } else {
-        return(result[idx])
+      while (idx > 0) {
+        if (!result[idx] %in% c(converted[, 2], non_missing_symbols)) {
+          return(result[idx])
+        }
+        idx <- idx - 1
       }
+      return("NOT_FOUND")
     }
 
     ## loop for getting all symbols
