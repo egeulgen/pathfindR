@@ -2,6 +2,7 @@
 
 ## Minor Changes
 - updated the alias selection function within `input_processing()` so that an alias that is not already present is selected
+- updated the min-max scaling (controlled by `scale_vals`) in `color_kegg_pathway()`, the default is now `scale_vals=TRUE`
 
 # pathfindR 1.6.3
 
