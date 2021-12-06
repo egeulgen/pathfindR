@@ -8,7 +8,7 @@ visualize_hsa_KEGG(
   hsa_kegg_ids,
   input_processed,
   max_to_plot = NULL,
-  normalize_vals = FALSE,
+  scale_vals = TRUE,
   node_cols = NULL,
   quiet = TRUE,
   key_gravity = "northeast",
@@ -24,7 +24,7 @@ visualize_hsa_KEGG(
 until the \code{max_to_plot}th id) to visualize. If NULL, visualizes all
 (default = NULL)}
 
-\item{normalize_vals}{should change values be normalized (default = \code{FALSE})}
+\item{scale_vals}{should change values be scaled? (default = \code{TRUE})}
 
 \item{node_cols}{low, middle and high color values for coloring the pathway nodes
 (default = \code{NULL}). If \code{node_cols=NULL}, the low, middle and high color

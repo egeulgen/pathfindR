@@ -2,7 +2,7 @@
 ## Project: pathfindR
 ## Script purpose: Testthat testing script for
 ## visualization-related functions
-## Date: Nov 9, 2021
+## Date: Dec 6, 2021
 ## Author: Ege Ulgen
 ##################################################
 
@@ -107,7 +107,7 @@ test_that("`visualize_hsa_KEGG()` creates expected png file(s)", {
                                  paste0(tmp_res$ID, "_pathfindR.png"))
 
   ###### Continuous change values
-  ### Normalize = FALSE
+  ### scale_vals = TRUE
   expect_null(visualize_hsa_KEGG(hsa_kegg_ids = tmp_res$ID,
                                  input_processed = input_processed))
   expect_true(file.exists(expected_out_file))
@@ -119,10 +119,10 @@ test_that("`visualize_hsa_KEGG()` creates expected png file(s)", {
   expect_true(file.exists(expected_out_file))
   unlink("term_visualizations", recursive = TRUE)
 
-  ### Normalize = TRUE
+  ### scale_vals = FALSE
   expect_null(visualize_hsa_KEGG(hsa_kegg_ids = tmp_res$ID,
                                  input_processed = input_processed,
-                                 normalize_vals = TRUE))
+                                 scale_vals = FALSE))
   expect_true(file.exists(expected_out_file))
   unlink("term_visualizations", recursive = TRUE)
 
@@ -207,8 +207,8 @@ test_that("arg checks for `visualize_hsa_KEGG()` work", {
 
   expect_error(visualize_hsa_KEGG(hsa_kegg_ids = tmp_res$ID,
                                   input_processed = input_processed,
-                                  normalize_vals = "INVALID"),
-               "`normalize_vals` should be logical")
+                                  scale_vals = "INVALID"),
+               "`scale_vals` should be logical")
 
   expect_error(visualize_hsa_KEGG(hsa_kegg_ids = tmp_res$ID,
                                   input_processed = input_processed,

@@ -273,7 +273,7 @@ visualize_term_interactions <- function(result_df, pin_name_path) {
 #' visualize_hsa_KEGG(hsa_kegg_ids, input_processed)
 #' }
 visualize_hsa_KEGG <- function(hsa_kegg_ids, input_processed, max_to_plot = NULL,
-                               normalize_vals = FALSE, node_cols = NULL,
+                               scale_vals = TRUE, node_cols = NULL,
                                quiet = TRUE,
                                key_gravity = "northeast",
                                logo_gravity = "southeast") {
@@ -339,7 +339,7 @@ visualize_hsa_KEGG <- function(hsa_kegg_ids, input_processed, max_to_plot = NULL
 
     pw_vis_list[[pw_id]] <- color_kegg_pathway(pw_id = pw_id,
                                                change_vec = change_vec,
-                                               normalize_vals = normalize_vals,
+                                               scale_vals = scale_vals,
                                                node_cols = node_cols,
                                                quiet = quiet)
 
@@ -429,7 +429,7 @@ visualize_hsa_KEGG <- function(hsa_kegg_ids, input_processed, max_to_plot = NULL
 #'
 #' @param pw_id hsa KEGG pathway id (e.g. hsa05012)
 #' @param change_vec vector of change values, names should be hsa KEGG gene ids
-#' @param normalize_vals should change values be normalized (default = \code{FALSE})
+#' @param scale_vals should change values be scaled? (default = \code{TRUE})
 #' @param node_cols low, middle and high color values for coloring the pathway nodes
 #' (default = \code{NULL}). If \code{node_cols=NULL}, the low, middle and high color
 #' are set as "green", "gray" and "red". If all change values are 1e6 (in case no
@@ -451,11 +451,11 @@ visualize_hsa_KEGG <- function(hsa_kegg_ids, input_processed, max_to_plot = NULL
 #'    names(change_vec) <- c("hsa:2821", "hsa:226", "hsa:229")
 #'    result <- pathfindR:::color_kegg_pathway(pw_id, change_vec)
 #' }
-color_kegg_pathway <- function(pw_id, change_vec, normalize_vals = FALSE,
+color_kegg_pathway <- function(pw_id, change_vec, scale_vals = TRUE,
                                node_cols = NULL, quiet = TRUE) {
   ############ Arg checks
-  if (!is.logical(normalize_vals)) {
-    stop("`normalize_vals` should be logical")
+  if (!is.logical(scale_vals)) {
+    stop("`scale_vals` should be logical")
   }
 
   ## check node_cols
@@ -564,9 +564,21 @@ color_kegg_pathway <- function(pw_id, change_vec, normalize_vals = FALSE,
 
   ############ Determine node colors
   vals <- pw_vis_changes[!is.na(pw_vis_changes)]
-  ### Normalization
-  if (!all(vals == 1e6) & normalize_vals) {
-    vals <- 2 * (vals - min(vals)) / diff(range(vals)) - 1
+  ### Scaling
+  if (!all(vals == 1e6) & scale_vals) {
+    pos_idx <- which(vals >= 0)
+    neg_idx <- which(vals < 0)
+
+    UL <- max(abs(vals))
+
+    pos_vals <- c(UL, vals[pos_idx])
+    pos_vals <- (pos_vals - min(pos_vals)) / diff(range(pos_vals))
+
+    neg_vals <- c(-UL, vals[neg_idx])
+    neg_vals <- (neg_vals - min(neg_vals)) / diff(range(neg_vals)) - 1
+
+    vals[pos_idx] <- pos_vals[-1]
+    vals[neg_idx] <- neg_vals[-1]
   }
 
   ### determine limit
