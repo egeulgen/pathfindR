@@ -35,7 +35,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.3.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.3.9003</span>
       </span>
     </div>
 
@@ -104,7 +104,7 @@
       <h1 data-toc-skip>pathfindR Analysis for non-Homo-sapiens organisms</h1>
                         <h4 data-toc-skip class="author">Ege Ulgen</h4>
             
-            <h4 data-toc-skip class="date">2021-12-06</h4>
+            <h4 data-toc-skip class="date">2022-01-13</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/HEAD/vignettes/non_hs_analysis.Rmd" class="external-link"><code>vignettes/non_hs_analysis.Rmd</code></a></small>
       <div class="hidden name"><code>non_hs_analysis.Rmd</code></div>
@@ -114,9 +114,9 @@
     
     
 <p>As mentioned in the vignette <a href="intro_vignette.html">Introduction to pathfindR</a>, enrichment analysis with pathfindR is not limited to the built-in data. The users are able to utilize custom protein-protein interaction networks (PINs) as well as custom gene sets. These abilities to use custom data naturally allow for performing pathfindR analysis on non-Homo-sapiens input data. In this vignette, we’ll try to provide an overview of how pathfindR analysis using Mus musculus data can be performed.</p>
-<div class="section level1">
-<h1 id="preparation-of-necessary-data">Preparation of Necessary Data<a class="anchor" aria-label="anchor" href="#preparation-of-necessary-data"></a>
-</h1>
+<div class="section level2">
+<h2 id="preparation-of-necessary-data">Preparation of Necessary Data<a class="anchor" aria-label="anchor" href="#preparation-of-necessary-data"></a>
+</h2>
 <blockquote>
 <p>As of v1.5, pathfindR offers utility functions for obtaining organism-specific PIN data and organism-specific gene sets data via <code><a href="../reference/get_pin_file.html">get_pin_file()</a></code> and <code><a href="../reference/get_gene_sets_list.html">get_gene_sets_list()</a></code>, respectively. See the vignette <a href="obtain_data.html">Obtaining PIN and Gene Sets Data</a> for detailed information on how to gather PIN and gene sets data (for any organism of your choice) for use with pathfindR.</p>
 </blockquote>
@@ -129,9 +129,9 @@
 <blockquote>
 <p>Important Note: Because the non-human organism-specific PIN will likely contain less interactions than the Homo sapiens PIN, pathfindR may result in less (or even no) enriched terms.</p>
 </blockquote>
-<div class="section level2">
-<h2 id="obtain-organism-specific-gene-sets">Obtain Organism-specific Gene Sets<a class="anchor" aria-label="anchor" href="#obtain-organism-specific-gene-sets"></a>
-</h2>
+<div class="section level3">
+<h3 id="obtain-organism-specific-gene-sets">Obtain Organism-specific Gene Sets<a class="anchor" aria-label="anchor" href="#obtain-organism-specific-gene-sets"></a>
+</h3>
 <p>We can obtain the up-to-date M.musculus (KEGG identifier: mmu) KEGG Pathway Gene Sets using the function <code><a href="../reference/get_gene_sets_list.html">get_gene_sets_list()</a></code>:</p>
 <blockquote>
 <p>If using another organism, all you have to do is to replace “mmu” with the KEGG organism code in the related arguments in this vignette.</p>
@@ -156,9 +156,9 @@
 <p>The function <code><a href="../reference/get_gene_sets_list.html">get_gene_sets_list()</a></code> can also be used to obtain gene sets data from other sources. See the vignette <a href="obtain_data.html">Obtaining PIN and Gene Sets Data</a> for more detail.</p>
 </blockquote>
 </div>
-<div class="section level2">
-<h2 id="obtain-organism-specific-protein-protein-interaction-network">Obtain Organism-specific Protein-protein Interaction Network<a class="anchor" aria-label="anchor" href="#obtain-organism-specific-protein-protein-interaction-network"></a>
-</h2>
+<div class="section level3">
+<h3 id="obtain-organism-specific-protein-protein-interaction-network">Obtain Organism-specific Protein-protein Interaction Network<a class="anchor" aria-label="anchor" href="#obtain-organism-specific-protein-protein-interaction-network"></a>
+</h3>
 <p>You may use the function <code><a href="../reference/get_pin_file.html">get_pin_file()</a></code> to obtain organism-specific BioGRID PIN data (see the vignette <a href="obtain_data.html">Obtaining PIN and Gene Sets Data</a>)</p>
 <blockquote>
 <p>Note that BioGRID PINs are smaller for non-H.sapiens organisms and this, in turn, results in less or no significantly enriched terms with pathfindR analysis.</p>
@@ -276,12 +276,12 @@
 </blockquote>
 </div>
 </div>
-<div class="section level1">
-<h1 id="running-pathfindr-on-non-homo-sapiens-data">Running pathfindR on non-Homo sapiens data<a class="anchor" aria-label="anchor" href="#running-pathfindr-on-non-homo-sapiens-data"></a>
-</h1>
 <div class="section level2">
-<h2 id="input-data">Input Data<a class="anchor" aria-label="anchor" href="#input-data"></a>
+<h2 id="running-pathfindr-on-non-homo-sapiens-data">Running pathfindR on non-Homo sapiens data<a class="anchor" aria-label="anchor" href="#running-pathfindr-on-non-homo-sapiens-data"></a>
 </h2>
+<div class="section level3">
+<h3 id="input-data">Input Data<a class="anchor" aria-label="anchor" href="#input-data"></a>
+</h3>
 <p>The data used in this vignette (<code>myeloma_input</code>) is the data frame of differentially-expressed genes along for the GEO dataset <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE99393" class="external-link">GSE99393</a>. The RNA microarray experiment was perform to detail the global program of gene expression underlying polarization of myeloma-associated macrophages by CSF1R antibody treatment. The samples are 6 murine bone marrow derived macrophages co-cultured with myeloma cells (myeloma-associated macrophages), 3 of which were treated with CSF1R antibody (treatment group) and the rest were treated with control IgG antibody (control group). In <code>myeloma_input</code>, 45 differentially-expressed genes with |logFC| &gt;= 2 and FDR &lt;= 0.05 are presented.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">myeloma_input</span><span class="op">)</span><span class="op">)</span></code></pre></div>
@@ -318,9 +318,9 @@
 </tbody>
 </table>
 </div>
-<div class="section level2">
-<h2 id="executing-run_pathfindr">Executing <code>run_pathfindR()</code><a class="anchor" aria-label="anchor" href="#executing-run_pathfindr"></a>
-</h2>
+<div class="section level3">
+<h3 id="executing-run_pathfindr">Executing <code>run_pathfindR()</code><a class="anchor" aria-label="anchor" href="#executing-run_pathfindr"></a>
+</h3>
 <p>After obtaining the necessary PIN and gene sets data, you can then perform pathfindR analysis by setting these arguments: - <code>convert2alias = FALSE</code>: alias conversion only works on H.sapiens genes - <code>pin_name_path = path2SIF</code>: as we’re using a non-built-in PIN, we need to provide the path to the mmu sif file - <code>gene_sets = "Custom</code>: as we’re using a non-built-in source for gene sets - <code>custom_genes = mmu_kegg_genes</code> - <code>custom_descriptions = mmu_kegg_descriptions</code></p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">myeloma_output</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span>input <span class="op">=</span> <span class="va">myeloma_input</span>,
@@ -580,9 +580,9 @@
 </table>
 <p>Because we used a very strict cut-off (logFC &gt;= 2 + FDR &lt;= 0.05), there were only 18 enriched KEGG pathways. However, the pathways identified here are significantly related to the pathways identified in the original publication by Wang et al.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>.</p>
 </div>
-<div class="section level2">
-<h2 id="built-in-mus-musculus-data">Built-in Mus musculus Data<a class="anchor" aria-label="anchor" href="#built-in-mus-musculus-data"></a>
-</h2>
+<div class="section level3">
+<h3 id="built-in-mus-musculus-data">Built-in Mus musculus Data<a class="anchor" aria-label="anchor" href="#built-in-mus-musculus-data"></a>
+</h3>
 <p>As aforementioned, for Mus musculus (only), we have provided the necessary PIN (<code>mmu_STRING</code>) and gene set data (<code>mmu_KEGG</code>) so you can also run:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">myeloma_output</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span>input <span class="op">=</span> <span class="va">myeloma_input</span>,

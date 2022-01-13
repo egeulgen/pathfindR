@@ -35,7 +35,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.3.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.3.9003</span>
       </span>
     </div>
 
@@ -104,7 +104,7 @@
       <h1 data-toc-skip>Step-by-Step Execution of the pathfindR Enrichment Workflow</h1>
                         <h4 data-toc-skip class="author">Ege Ulgen</h4>
             
-            <h4 data-toc-skip class="date">2021-12-06</h4>
+            <h4 data-toc-skip class="date">2022-01-13</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/HEAD/vignettes/manual_execution.Rmd" class="external-link"><code>vignettes/manual_execution.Rmd</code></a></small>
       <div class="hidden name"><code>manual_execution.Rmd</code></div>
@@ -115,9 +115,9 @@
     
 <p>This vignette walks through each step of the pathfindR active-subnetwork-oriented pathway enrichment analysis. For most purposes, the wrapper function <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code> can be used to perform this analysis from start to end. For users who wish to have further control over the enrichment workflow, this vignette will be more useful.</p>
 <p><img src="pathfindr.png" style="max-width:100%;"></p>
-<div class="section level1">
-<h1 id="load-the-package-and-prepare-the-input-data-frame">Load the package and prepare the input data frame<a class="anchor" aria-label="anchor" href="#load-the-package-and-prepare-the-input-data-frame"></a>
-</h1>
+<div class="section level2">
+<h2 id="load-the-package-and-prepare-the-input-data-frame">Load the package and prepare the input data frame<a class="anchor" aria-label="anchor" href="#load-the-package-and-prepare-the-input-data-frame"></a>
+</h2>
 <p>We first need to load the package and the input data to be used for analysis. The input must be a data frame consisting of the following columns: <code>Gene Symbols</code>, <code>Change Values</code> (optional) and <code>p values</code>. The example data frame used in this vignette (<code>RA_input</code>) is the dataset containing the differentially-expressed genes for the GEO dataset GSE15573 comparing 18 rheumatoid arthritis (RA) patients versus 15 healthy subjects.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://egeulgen.github.io/pathfindR/">pathfindR</a></span><span class="op">)</span><span class="op">)</span>
@@ -128,18 +128,18 @@
 <span class="co">#&gt; 2      RNASE2  1.3535040 1.008499e-05</span>
 <span class="co">#&gt; 3      S100A8  1.5448338 3.466386e-05</span></code></pre></div>
 </div>
-<div class="section level1">
-<h1 id="the-protein-protein-interaction-network-pin">The protein-protein interaction network (PIN)<a class="anchor" aria-label="anchor" href="#the-protein-protein-interaction-network-pin"></a>
-</h1>
+<div class="section level2">
+<h2 id="the-protein-protein-interaction-network-pin">The protein-protein interaction network (PIN)<a class="anchor" aria-label="anchor" href="#the-protein-protein-interaction-network-pin"></a>
+</h2>
 <p>For the active subnetwork search process, we will need a protein-protein interaction network (PIN). pathfindR will map the input genes onto this PIN and identify active subnetworks which will then be used for enrichment analyses.</p>
 <blockquote>
 <p>An active subnetwork can be defined as a group of interconnected genes in a protein-protein interaction network (PIN) that predominantly consists of significantly altered genes. In other words, active subnetworks define distinct disease-associated sets of interacting genes, whether discovered through the original analysis or discovered because of being in interaction with a significant gene.</p>
 </blockquote>
 <p>The <code>pin_name_path</code> argument in all functions can be one of “Biogrid”, “STRING”, “GeneMania”, “IntAct”, “KEGG”, “mmu_STRING” or it can be the path to a custom PIN file provided by the user.</p>
 </div>
-<div class="section level1">
-<h1 id="process-input-data">Process input data<a class="anchor" aria-label="anchor" href="#process-input-data"></a>
-</h1>
+<div class="section level2">
+<h2 id="process-input-data">Process input data<a class="anchor" aria-label="anchor" href="#process-input-data"></a>
+</h2>
 <p>We next need to process the input data for use in analysis via <code><a href="../reference/input_processing.html">input_processing()</a></code>:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">RA_processed</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/input_processing.html">input_processing</a></span><span class="op">(</span>input <span class="op">=</span> <span class="va">RA_input</span>, <span class="co"># the input: in this case, differential expression results</span>
@@ -150,9 +150,9 @@
 <p>After checking that the data frame complies with the requirements, <code><a href="../reference/input_processing.html">input_processing()</a></code> filters the input so that genes with p values larger than <code>p_val_threshold</code> are excluded. Next, gene symbols that are not in the PIN are identified and excluded. For human genes, if aliases of these missing gene symbols are found in the PIN, these symbols are converted to the corresponding aliases (controlled by the argument <code>convert2alias</code>). This step is performed to best map the input data onto the PIN.</p>
 </blockquote>
 </div>
-<div class="section level1">
-<h1 id="obtain-gene-set-data">Obtain Gene Set Data<a class="anchor" aria-label="anchor" href="#obtain-gene-set-data"></a>
-</h1>
+<div class="section level2">
+<h2 id="obtain-gene-set-data">Obtain Gene Set Data<a class="anchor" aria-label="anchor" href="#obtain-gene-set-data"></a>
+</h2>
 <p>We obtain the necessary gene sets for enrichment analyses using <code><a href="../reference/fetch_gene_set.html">fetch_gene_set()</a></code>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># using "BioCarta" as our gene sets for enrichment</span>
@@ -165,9 +165,9 @@
 <p>The available gene sets in pathfindR are “KEGG”, “Reactome”, “BioCarta”, “GO-All”, “GO-BP”, “GO-CC” and “GO-MF”. If the user prefers to use another gene set source, the <code>gene_sets</code> argument should be set to <code>"Custom"</code> and the custom gene sets (list) and the custom gene set descriptions (named vector) should be supplied via the arguments <code>custom_genes</code> and <code>custom_descriptions</code>, respectively. See <code><a href="../reference/fetch_gene_set.html">?fetch_gene_set</a></code> for more details.</p>
 </blockquote>
 </div>
-<div class="section level1">
-<h1 id="active-subnetwork-search-and-enrichment-analyses">Active Subnetwork Search and Enrichment Analyses<a class="anchor" aria-label="anchor" href="#active-subnetwork-search-and-enrichment-analyses"></a>
-</h1>
+<div class="section level2">
+<h2 id="active-subnetwork-search-and-enrichment-analyses">Active Subnetwork Search and Enrichment Analyses<a class="anchor" aria-label="anchor" href="#active-subnetwork-search-and-enrichment-analyses"></a>
+</h2>
 <p>As outlined in the vignette <a href="intro_vignette.html">Introduction to pathfindR</a>, <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code> initially identifies and filters active subnetworks, then performs enrichment analyses on these subnetworks and summarize the results.</p>
 <p>To perform these steps manually, we utilize the function <code><a href="../reference/active_snw_search.html">active_snw_search()</a></code> for identifying and filtering active subnetworks and the function <code><a href="../reference/enrichment_analyses.html">enrichment_analyses()</a></code> for obtaining enriched terms using these subnetworks. Because the active subnetwork search algorithms are stochastic, we suggest iterating these subnetwork identification and enrichment steps multiple times (especially for “SA”)<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
@@ -199,9 +199,9 @@
   <span class="va">combined_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">combined_res</span>, <span class="va">current_res</span><span class="op">)</span>
 <span class="op">}</span></code></pre></div>
 </div>
-<div class="section level1">
-<h1 id="summary-of-enrichment-results">Summary of Enrichment Results<a class="anchor" aria-label="anchor" href="#summary-of-enrichment-results"></a>
-</h1>
+<div class="section level2">
+<h2 id="summary-of-enrichment-results">Summary of Enrichment Results<a class="anchor" aria-label="anchor" href="#summary-of-enrichment-results"></a>
+</h2>
 <p>We next summarize the enrichment results (in <code>combined_res</code>) using <code><a href="../reference/summarize_enrichment_results.html">summarize_enrichment_results()</a></code> and annotate the involved significant (input) genes in each term using <code><a href="../reference/annotate_term_genes.html">annotate_term_genes()</a></code>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">###### Summarize Combined Enrichment Results</span>
@@ -213,9 +213,9 @@
                                  input_processed <span class="op">=</span> <span class="va">RA_processed</span>, 
                                  genes_by_term <span class="op">=</span> <span class="va">biocarta_gsets</span><span class="op">)</span></code></pre></div>
 </div>
-<div class="section level1">
-<h1 id="visualizations">Visualizations<a class="anchor" aria-label="anchor" href="#visualizations"></a>
-</h1>
+<div class="section level2">
+<h2 id="visualizations">Visualizations<a class="anchor" aria-label="anchor" href="#visualizations"></a>
+</h2>
 <p>We can visualize each enriched term diagram using <code><a href="../reference/visualize_terms.html">visualize_terms()</a></code>. In this case, these will be graphs of interactions of pathway-involved genes for each pathway. See <code><a href="../reference/visualize_terms.html">?visualize_terms</a></code> for more details.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/visualize_terms.html">visualize_terms</a></span><span class="op">(</span>result_df <span class="op">=</span> <span class="va">final_res</span>, 
