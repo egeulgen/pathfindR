@@ -12,6 +12,7 @@ term_gene_heatmap(
   low = "green",
   mid = "black",
   high = "red",
+  legend_title = "change",
   ...
 )
 }
@@ -42,6 +43,8 @@ all enriched terms (default = 10)}
 \item{mid}{a string indicating the color of 'mid' values in the coloring gradient (default = 'black')}
 
 \item{high}{a string indicating the color of 'high' values in the coloring gradient (default = 'red')}
+
+\item{legend_title}{legend title (defaut = "change")}
 
 \item{...}{additional arguments for \code{\link{input_processing}} (used if
 \code{genes_df} is provided)}

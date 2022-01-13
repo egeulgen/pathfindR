@@ -1029,6 +1029,7 @@ term_gene_graph <- function(result_df, num_terms = 10,
 #'  all enriched terms (default = 10)
 #' @inheritParams term_gene_graph
 #' @inheritParams plot_scores
+#' @param legend_title legend title (defaut = "change")
 #' @param ... additional arguments for \code{\link{input_processing}} (used if
 #' \code{genes_df} is provided)
 #'
@@ -1042,6 +1043,7 @@ term_gene_graph <- function(result_df, num_terms = 10,
 term_gene_heatmap <- function(result_df, genes_df, num_terms = 10,
                               use_description = FALSE,
                               low = "green", mid = "black", high = "red",
+                              legend_title = "change",
                               ...) {
 
   ############ Arg checks
@@ -1153,7 +1155,11 @@ term_gene_heatmap <- function(result_df, genes_df, num_terms = 10,
   if (!missing(genes_df)) {
     for (i in seq_len(nrow(term_genes_df))) {
       if (!is.na(term_genes_df$value[i])) {
-        term_genes_df$value[i] <- genes_df$CHANGE[genes_df$GENE == term_genes_df$Symbol[i]]
+        if (all(genes_df$CHANGE == 1e6)) {
+          term_genes_df$value[i] <- ifelse(term_genes_df$Symbol[i] %in% up_genes[[term_genes_df$Enriched_Term[i]]], 1, -1)
+        } else {
+          term_genes_df$value[i] <- genes_df$CHANGE[genes_df$GENE == term_genes_df$Symbol[i]]
+        }
       }
     }
   } else {
@@ -1175,14 +1181,13 @@ term_gene_heatmap <- function(result_df, genes_df, num_terms = 10,
                           panel.grid.major.y = ggplot2::element_blank(),
                           panel.grid.minor.x = ggplot2::element_blank(),
                           panel.grid.minor.y = ggplot2::element_blank(),
-                          panel.background = ggplot2::element_rect(fill="#ffffff"),
-                          legend.title = ggplot2::element_blank())
+                          panel.background = ggplot2::element_rect(fill="#ffffff"))
   g <- g + ggplot2::geom_tile(data = term_genes_df,
                               ggplot2::aes_(fill = ~value), color = "gray60")
   if (!missing(genes_df)) {
-    g <- g + ggplot2::scale_fill_gradient2(low = low, mid = mid, high = high, na.value = "white")
+    g <- g + ggplot2::scale_fill_gradient2(low = low, mid = mid, high = high, na.value = "white", name = legend_title)
   } else {
-    g <- g + ggplot2::scale_fill_manual(values = c(low, high), na.value ="white")
+    g <- g + ggplot2::scale_fill_manual(values = c(low, high), na.value ="white", name = legend_title)
   }
   return(g)
 }
