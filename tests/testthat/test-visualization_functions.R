@@ -2,7 +2,7 @@
 ## Project: pathfindR
 ## Script purpose: Testthat testing script for
 ## visualization-related functions
-## Date: Dec 6, 2021
+## Date: Jan 16, 2022
 ## Author: Ege Ulgen
 ##################################################
 
@@ -417,6 +417,9 @@ test_that("`term_gene_heatmap()` produces a ggplot object using the correct data
 
   # genes_df supplied
   expect_is(p <- term_gene_heatmap(RA_output[1:3, ], RA_input), "ggplot")
+
+  # genes_df supplied - wihout change column
+  expect_is(p <- term_gene_heatmap(RA_output[1:3, ], RA_input[, -2]), "ggplot")
 })
 
 test_that("`term_gene_graph()` arg checks work", {

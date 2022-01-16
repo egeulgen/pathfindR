@@ -1153,15 +1153,21 @@ term_gene_heatmap <- function(result_df, genes_df, num_terms = 10,
   bg_df$Symbol <- factor(bg_df$Symbol, levels = colnames(term_genes_mat))
 
   if (!missing(genes_df)) {
+
     for (i in seq_len(nrow(term_genes_df))) {
       if (!is.na(term_genes_df$value[i])) {
         if (all(genes_df$CHANGE == 1e6)) {
-          term_genes_df$value[i] <- ifelse(term_genes_df$Symbol[i] %in% up_genes[[term_genes_df$Enriched_Term[i]]], 1, -1)
+          term_genes_df$value[i] <- ifelse(term_genes_df$Symbol[i] %in% up_genes[[as.character(term_genes_df$Enriched_Term[i])]], 1, -1)
         } else {
           term_genes_df$value[i] <- genes_df$CHANGE[genes_df$GENE == term_genes_df$Symbol[i]]
         }
       }
     }
+
+    if (all(genes_df$CHANGE == 1e6)) {
+      term_genes_df$value <- factor(term_genes_df$value, levels = c(-1, 1))
+    }
+
   } else {
     for (i in seq_len(nrow(term_genes_df))) {
       if (!is.na(term_genes_df$value[i])) {
@@ -1170,6 +1176,7 @@ term_gene_heatmap <- function(result_df, genes_df, num_terms = 10,
     }
 
   }
+
   g <- ggplot2::ggplot(bg_df, ggplot2::aes_(x = ~Symbol, y = ~Enriched_Term))
   g <- g + ggplot2::geom_tile(fill = "white", color = "white")
   g <- g + ggplot2::theme(axis.ticks.y = ggplot2::element_blank(),
@@ -1185,7 +1192,11 @@ term_gene_heatmap <- function(result_df, genes_df, num_terms = 10,
   g <- g + ggplot2::geom_tile(data = term_genes_df,
                               ggplot2::aes_(fill = ~value), color = "gray60")
   if (!missing(genes_df)) {
-    g <- g + ggplot2::scale_fill_gradient2(low = low, mid = mid, high = high, na.value = "white", name = legend_title)
+    if (all(genes_df$CHANGE == 1e6)) {
+      g <- g + ggplot2::scale_fill_manual(values = c(low, high), na.value ="white", name = legend_title)
+    } else {
+      g <- g + ggplot2::scale_fill_gradient2(low = low, mid = mid, high = high, na.value = "white", name = legend_title)
+    }
   } else {
     g <- g + ggplot2::scale_fill_manual(values = c(low, high), na.value ="white", name = legend_title)
   }
