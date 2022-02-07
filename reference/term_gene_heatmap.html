@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.3.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.3.9005</span>
       </span>
     </div>
 
@@ -92,6 +92,7 @@
   mid <span class="op">=</span> <span class="st">"black"</span>,
   high <span class="op">=</span> <span class="st">"red"</span>,
   legend_title <span class="op">=</span> <span class="st">"change"</span>,
+  sort_terms_by_p <span class="op">=</span> <span class="cn">FALSE</span>,
   <span class="va">...</span>
 <span class="op">)</span></code></pre></div>
     </div>
@@ -136,6 +137,9 @@ all enriched terms (default = 10)</p></dd>
 <dd><p>a string indicating the color of 'high' values in the coloring gradient (default = 'red')</p></dd>
 <dt>legend_title</dt>
 <dd><p>legend title (defaut = "change")</p></dd>
+<dt>sort_terms_by_p</dt>
+<dd><p>boolean to indicate whether to sort terms by 'lowest_p'
+(<code>TRUE</code>) or by number of genes (<code>FALSE</code>) (default = <code>FALSE</code>)</p></dd>
 <dt>...</dt>
 <dd><p>additional arguments for <code><a href="input_processing.html">input_processing</a></code> (used if
 <code>genes_df</code> is provided)</p></dd>
@@ -165,7 +169,7 @@ the tiles indicate the change values.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
 </div>
 
       </footer></div>

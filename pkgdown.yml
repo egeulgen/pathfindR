@@ -1,6 +1,6 @@
 pandoc: 2.7.3
-pkgdown: 2.0.1.9000
-pkgdown_sha: 6ab0c4e57f7eea0d6c76403dc2c873ab82089103
+pkgdown: 2.0.2.9000
+pkgdown_sha: ae7363faac9040a473a54fb3d770decdfb8dfec1
 articles:
   comparing_results: comparing_results.html
   intro_vignette: intro_vignette.html
@@ -8,7 +8,7 @@ articles:
   non_hs_analysis: non_hs_analysis.html
   obtain_data: obtain_data.html
   visualization_vignette: visualization_vignette.html
-last_built: 2022-01-16T12:59Z
+last_built: 2022-02-07T17:34Z
 urls:
   reference: https://egeulgen.github.io/pathfindR/reference
   article: https://egeulgen.github.io/pathfindR/articles
