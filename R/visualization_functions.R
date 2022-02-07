@@ -1030,6 +1030,8 @@ term_gene_graph <- function(result_df, num_terms = 10,
 #' @inheritParams term_gene_graph
 #' @inheritParams plot_scores
 #' @param legend_title legend title (defaut = "change")
+#' @param sort_terms_by_p boolean to indicate whether to sort terms by 'lowest_p'
+#' (\code{TRUE}) or by number of genes (\code{FALSE}) (default = \code{FALSE})
 #' @param ... additional arguments for \code{\link{input_processing}} (used if
 #' \code{genes_df} is provided)
 #'
@@ -1044,6 +1046,7 @@ term_gene_heatmap <- function(result_df, genes_df, num_terms = 10,
                               use_description = FALSE,
                               low = "green", mid = "black", high = "red",
                               legend_title = "change",
+                              sort_terms_by_p = FALSE,
                               ...) {
 
   ############ Arg checks
@@ -1149,7 +1152,13 @@ term_gene_heatmap <- function(result_df, genes_df, num_terms = 10,
 
   bg_df <- expand.grid(Enriched_Term = all_terms,
                        Symbol = all_genes)
-  bg_df$Enriched_Term <- factor(bg_df$Enriched_Term, levels = rev(rownames(term_genes_mat)))
+  if (sort_terms_by_p) {
+    bg_df$Enriched_Term <- factor(bg_df$Enriched_Term, levels = rev(result_df[, ID_column]))
+  } else {
+    bg_df$Enriched_Term <- factor(bg_df$Enriched_Term, levels = rev(rownames(term_genes_mat)))
+  }
+
+
   bg_df$Symbol <- factor(bg_df$Symbol, levels = colnames(term_genes_mat))
 
   if (!missing(genes_df)) {

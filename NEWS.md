@@ -5,6 +5,7 @@
 - updated the min-max scaling (controlled by `scale_vals`) in `color_kegg_pathway()`, the default is now `scale_vals=TRUE`
 - updated the `term_gene_heatmap()` function so that legend title is shown and can be customized
 - updated the `term_gene_heatmap()` function so that coloring is proper when no change values are provided in `genes_df`
+- added the `sort_terms_by_p` argument to the `term_gene_heatmap()` function to enable sorting of terms by 'lowest_p'
 
 
 # pathfindR 1.6.3
