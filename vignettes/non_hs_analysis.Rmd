@@ -113,8 +113,8 @@ head(mmu_string_pin, 2)
 
 Since the interactors are Ensembl peptide IDs, we'll need to convert them to MGI symbols for use with pathfindR. This can be achieved via `biomaRt` or any other conversion method you prefer:
 
-```{r process_PIN2}
-library(biomaRt)
+```{r process_PIN2, eval=FALSE}
+# library(biomaRt)
 
 mmu_ensembl <- useMart("ensembl", dataset = "mmusculus_gene_ensembl")
 
