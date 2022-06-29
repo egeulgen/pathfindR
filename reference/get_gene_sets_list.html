@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.3.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.3.9006</span>
       </span>
     </div>
 
@@ -26,7 +26,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -83,35 +83,46 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">get_gene_sets_list</span><span class="op">(</span>
-  source <span class="op">=</span> <span class="st">"KEGG"</span>,
-  org_code <span class="op">=</span> <span class="st">"hsa"</span>,
-  species <span class="op">=</span> <span class="st">"Homo sapiens"</span>,
-  <span class="va">collection</span>,
-  subcollection <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_gene_sets_list</span><span class="op">(</span></span>
+<span>  source <span class="op">=</span> <span class="st">"KEGG"</span>,</span>
+<span>  org_code <span class="op">=</span> <span class="st">"hsa"</span>,</span>
+<span>  species <span class="op">=</span> <span class="st">"Homo sapiens"</span>,</span>
+<span>  <span class="va">collection</span>,</span>
+<span>  subcollection <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>source</dt>
 <dd><p>As of this version, either "KEGG", "Reactome" or "MSigDB" (default = "KEGG")</p></dd>
+
+
 <dt>org_code</dt>
 <dd><p>(Used for "KEGG" only) KEGG organism code for the selected organism. For a full list
 of all available organisms, see <a href="https://www.genome.jp/kegg/catalog/org_list.html" class="external-link">https://www.genome.jp/kegg/catalog/org_list.html</a></p></dd>
+
+
 <dt>species</dt>
 <dd><p>(Used for "MSigDB" only) species name, such as Homo sapiens, Mus musculus, etc.
 See <code><a href="https://igordot.github.io/msigdbr/reference/msigdbr_show_species.html" class="external-link">msigdbr_show_species</a></code> for all the species available in
 the msigdbr package (default = "Homo sapiens")</p></dd>
+
+
 <dt>collection</dt>
 <dd><p>(Used for "MSigDB" only) collection. i.e., H, C1, C2, C3, C4, C5, C6, C7.</p></dd>
+
+
 <dt>subcollection</dt>
 <dd><p>(Used for "MSigDB" only)  sub-collection, such as CGP, MIR, BP, etc. (default = NULL,
 i.e. list all gene sets in collection)</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A list containing 2 elements:</p><ul><li><p>gene_setsA list containing the genes involved in each gene set</p></li>
+    
+
+<p>A list containing 2 elements:</p><ul><li><p>gene_setsA list containing the genes involved in each gene set</p></li>
 <li><p>descriptionsA named vector containing the descriptions for each gene set</p></li>
 </ul><p>. For "KEGG" and "MSigDB", it is possible to choose a specific organism. For a full list
 of all available KEGG organisms, see <a href="https://www.genome.jp/kegg/catalog/org_list.html" class="external-link">https://www.genome.jp/kegg/catalog/org_list.html</a>.
@@ -132,7 +143,7 @@ For Reactome, there is only one collection of pathway gene sets.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.9000.</p>
 </div>
 
       </footer></div>

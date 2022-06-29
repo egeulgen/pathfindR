@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.3.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.3.9006</span>
       </span>
     </div>
 
@@ -26,7 +26,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -81,8 +81,7 @@
 <h2 class="page-header" data-toc-text="1.4.0" id="pathfindr-140">pathfindR 1.4.0<small>2019-11-08</small><a class="anchor" aria-label="anchor" href="#pathfindr-140"></a></h2>
 <div class="section level3">
 <h3 id="major-changes-1-4-0">Major Changes<a class="anchor" aria-label="anchor" href="#major-changes-1-4-0"></a></h3>
-<ul><li>Replaced most occurrences of “pathway” to “term”. This was adapted because “term” reflects the utility of the package better. The enrichment and clustering approaches work with any kind of gene set data (be it pathway gene sets, gene ontology gene sets, motif gene sets etc.) Accordingly:
-<ul><li>
+<ul><li>Replaced most occurrences of “pathway” to “term”. This was adapted because “term” reflects the utility of the package better. The enrichment and clustering approaches work with any kind of gene set data (be it pathway gene sets, gene ontology gene sets, motif gene sets etc.) Accordingly:<ul><li>
 <code>DESCRIPTION</code> was updated</li>
 <li>The functions <code>annotate_pathway_DEGs()</code>, <code>calculate_pw_scores()</code>, <code>cluster_pathways()</code>, <code>fuzzy_pw_clustering()</code>, <code>hierarchical_pw_clustering()</code>, <code>visualize_pw_interactions()</code> and <code>visualize_pws()</code> were renamed to <code>annotate_term_DEGs()</code>, <code><a href="../reference/score_terms.html">score_terms()</a></code>, <code><a href="../reference/cluster_enriched_terms.html">cluster_enriched_terms()</a></code>, <code><a href="../reference/fuzzy_term_clustering.html">fuzzy_term_clustering()</a></code>, <code><a href="../reference/hierarchical_term_clustering.html">hierarchical_term_clustering()</a></code>, <code><a href="../reference/visualize_term_interactions.html">visualize_term_interactions()</a></code> and <code><a href="../reference/visualize_terms.html">visualize_terms()</a></code> respectively</li>
 <li>The Rmd template file for the report <code>enriched_pathways.Rmd</code> was renamed to <code>enriched_terms.Rmd</code>
@@ -103,8 +102,7 @@
 <li>Updated all PIN data</li>
 <li>Improved speed of kappa matrix calculation (<code><a href="../reference/create_kappa_matrix.html">create_kappa_matrix()</a></code>)</li>
 <li>Added vignette for non-Homo-sapiens organisms</li>
-<li>Added Mus musculus (mmu) data:
-<ul><li>
+<li>Added Mus musculus (mmu) data:<ul><li>
 <code>mmu_kegg_genes</code> &amp; <code>mmu_kegg_descriptions</code>: mmu KEGG gene sets data</li>
 <li>mmu STRING PIN</li>
 <li>
@@ -175,7 +173,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.9000.</p>
 </div>
 
       </footer></div>

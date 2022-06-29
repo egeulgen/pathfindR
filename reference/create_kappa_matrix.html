@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.3.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.3.9006</span>
       </span>
     </div>
 
@@ -26,7 +26,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -83,11 +83,11 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">create_kappa_matrix</span><span class="op">(</span>
-  <span class="va">enrichment_res</span>,
-  use_description <span class="op">=</span> <span class="cn">FALSE</span>,
-  use_active_snw_genes <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">create_kappa_matrix</span><span class="op">(</span></span>
+<span>  <span class="va">enrichment_res</span>,</span>
+<span>  use_description <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  use_active_snw_genes <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -98,24 +98,31 @@ columns are "Term_Description" (if <code>use_description = TRUE</code>) or "ID"
 (if <code>use_description = FALSE</code>), "Down_regulated", and "Up_regulated".
 If <code>use_active_snw_genes = TRUE</code>, "non_Signif_Snw_Genes" must also be
 provided.</p></dd>
+
+
 <dt>use_description</dt>
 <dd><p>Boolean argument to indicate whether term descriptions
 (in the "Term_Description" column) should be used. (default = <code>FALSE</code>)</p></dd>
+
+
 <dt>use_active_snw_genes</dt>
 <dd><p>boolean to indicate whether or not to use
 non-input active subnetwork genes in the calculation of kappa statistics
 (default = FALSE, i.e. only use affected genes)</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a matrix of kappa statistics between each term in the
+    
+
+<p>a matrix of kappa statistics between each term in the
 enrichment results.</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">sub_df</span> <span class="op">&lt;-</span> <span class="va">RA_output</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="op">]</span></span>
-<span class="r-in"><span class="fu">create_kappa_matrix</span><span class="op">(</span><span class="va">sub_df</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">sub_df</span> <span class="op">&lt;-</span> <span class="va">RA_output</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="op">]</span></span></span>
+<span class="r-in"><span><span class="fu">create_kappa_matrix</span><span class="op">(</span><span class="va">sub_df</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            hsa05415   hsa04130   hsa03410</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> hsa05415  1.0000000 -0.3636364 -0.3255814</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> hsa04130 -0.3636364  1.0000000 -0.2272727</span>
@@ -134,7 +141,7 @@ enrichment results.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.9000.</p>
 </div>
 
       </footer></div>

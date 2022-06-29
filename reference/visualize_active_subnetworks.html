@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.3.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.3.9006</span>
       </span>
     </div>
 
@@ -26,7 +26,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -83,64 +83,81 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">visualize_active_subnetworks</span><span class="op">(</span>
-  <span class="va">active_snw_path</span>,
-  <span class="va">genes_df</span>,
-  pin_name_path <span class="op">=</span> <span class="st">"Biogrid"</span>,
-  <span class="va">num_snws</span>,
-  layout <span class="op">=</span> <span class="st">"stress"</span>,
-  score_quan_thr <span class="op">=</span> <span class="fl">0.8</span>,
-  sig_gene_thr <span class="op">=</span> <span class="fl">0.02</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">visualize_active_subnetworks</span><span class="op">(</span></span>
+<span>  <span class="va">active_snw_path</span>,</span>
+<span>  <span class="va">genes_df</span>,</span>
+<span>  pin_name_path <span class="op">=</span> <span class="st">"Biogrid"</span>,</span>
+<span>  <span class="va">num_snws</span>,</span>
+<span>  layout <span class="op">=</span> <span class="st">"stress"</span>,</span>
+<span>  score_quan_thr <span class="op">=</span> <span class="fl">0.8</span>,</span>
+<span>  sig_gene_thr <span class="op">=</span> <span class="fl">0.02</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>active_snw_path</dt>
 <dd><p>path to the output of an Active Subnetwork Search</p></dd>
+
+
 <dt>genes_df</dt>
 <dd><p>the input data that was used with <code><a href="run_pathfindr.html">run_pathfindR</a></code>.
   It must be a data frame with 3 columns:</p><ol><li><p>Gene Symbol (Gene Symbol)</p></li>
 <li><p>Change value, e.g. log(fold change) (optional)</p></li>
 <li><p>p value, e.g. adjusted p value associated with differential expression</p></li>
 </ol><p>The change values in this data frame are used to color the affected genes</p></dd>
+
+
 <dt>pin_name_path</dt>
 <dd><p>Name of the chosen PIN or absolute/path/to/PIN.sif. If PIN name,
 must be one of c("Biogrid", "STRING", "GeneMania", "IntAct", "KEGG", "mmu_STRING"). If
 path/to/PIN.sif, the file must comply with the PIN specifications. (Default = "Biogrid")</p></dd>
+
+
 <dt>num_snws</dt>
 <dd><p>number of top subnetworks to be visualized (leave blank if
 you want to visualize all subnetworks)</p></dd>
+
+
 <dt>layout</dt>
 <dd><p>The type of layout to create (see <code><a href="https://ggraph.data-imaginist.com/reference/ggraph.html" class="external-link">ggraph</a></code> for details. Default = "stress")</p></dd>
+
+
 <dt>score_quan_thr</dt>
 <dd><p>active subnetwork score quantile threshold. Must be
 between 0 and 1 or set to -1 for not filtering. (Default = 0.8)</p></dd>
+
+
 <dt>sig_gene_thr</dt>
 <dd><p>threshold for the minimum proportion of significant genes in
 the subnetwork (Default = 0.02) If the number of genes to use as threshold is
 calculated to be &lt; 2 (e.g. 50 signif. genes x 0.01 = 0.5), the threshold number
 is set to 2</p></dd>
+
+
 <dt>...</dt>
 <dd><p>additional arguments for <code><a href="input_processing.html">input_processing</a></code></p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a list of ggplot objects of graph visualizations of identified active
+    
+
+<p>a list of ggplot objects of graph visualizations of identified active
 subnetworks. Green nodes are down-regulated genes, reds are up-regulated genes
 and yellows are non-input genes</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">path2snw_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/resultActiveSubnetworkSearch.txt"</span>,</span>
-<span class="r-in">                              package <span class="op">=</span> <span class="st">"pathfindR"</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># visualize top 2 active subnetworks</span></span>
-<span class="r-in"><span class="va">g_list</span> <span class="op">&lt;-</span> <span class="fu">visualize_active_subnetworks</span><span class="op">(</span>active_snw_path <span class="op">=</span> <span class="va">path2snw_list</span>,</span>
-<span class="r-in">                                       genes_df <span class="op">=</span> <span class="va">RA_input</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">]</span>,</span>
-<span class="r-in">                                       pin_name_path <span class="op">=</span> <span class="st">"KEGG"</span>,</span>
-<span class="r-in">                                       num_snws <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">path2snw_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/resultActiveSubnetworkSearch.txt"</span>,</span></span>
+<span class="r-in"><span>                              package <span class="op">=</span> <span class="st">"pathfindR"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># visualize top 2 active subnetworks</span></span></span>
+<span class="r-in"><span><span class="va">g_list</span> <span class="op">&lt;-</span> <span class="fu">visualize_active_subnetworks</span><span class="op">(</span>active_snw_path <span class="op">=</span> <span class="va">path2snw_list</span>,</span></span>
+<span class="r-in"><span>                                       genes_df <span class="op">=</span> <span class="va">RA_input</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">]</span>,</span></span>
+<span class="r-in"><span>                                       pin_name_path <span class="op">=</span> <span class="st">"KEGG"</span>,</span></span>
+<span class="r-in"><span>                                       num_snws <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Number of genes provided in input: 10</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Number of genes in input after p-value filtering: 10</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Could not find any interactions for 5 (50%) genes in the PIN</span>
@@ -159,7 +176,7 @@ and yellows are non-input genes</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.9000.</p>
 </div>
 
       </footer></div>

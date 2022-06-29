@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.3.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.3.9006</span>
       </span>
     </div>
 
@@ -26,7 +26,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -83,48 +83,59 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">color_kegg_pathway</span><span class="op">(</span>
-  <span class="va">pw_id</span>,
-  <span class="va">change_vec</span>,
-  scale_vals <span class="op">=</span> <span class="cn">TRUE</span>,
-  node_cols <span class="op">=</span> <span class="cn">NULL</span>,
-  quiet <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">color_kegg_pathway</span><span class="op">(</span></span>
+<span>  <span class="va">pw_id</span>,</span>
+<span>  <span class="va">change_vec</span>,</span>
+<span>  scale_vals <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  node_cols <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  quiet <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>pw_id</dt>
 <dd><p>hsa KEGG pathway id (e.g. hsa05012)</p></dd>
+
+
 <dt>change_vec</dt>
 <dd><p>vector of change values, names should be hsa KEGG gene ids</p></dd>
+
+
 <dt>scale_vals</dt>
 <dd><p>should change values be scaled? (default = <code>TRUE</code>)</p></dd>
+
+
 <dt>node_cols</dt>
 <dd><p>low, middle and high color values for coloring the pathway nodes
 (default = <code>NULL</code>). If <code>node_cols=NULL</code>, the low, middle and high color
 are set as "green", "gray" and "red". If all change values are 1e6 (in case no
 changes are supplied, this dummy value is assigned by
 <code><a href="input_processing.html">input_processing</a></code>), only one color ("#F38F18" if NULL) is used.</p></dd>
+
+
 <dt>quiet</dt>
 <dd><p>If <code>TRUE</code>, suppress status messages (if any), and the
 progress bar while downloading file(s)</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>list containing:</p><ol><li><p>file_path: path to colored hsa KEGG pathway diagram</p></li>
+    
+
+<p>list containing:</p><ol><li><p>file_path: path to colored hsa KEGG pathway diagram</p></li>
 <li><p>all_key_cols: colors used for each change value bin</p></li>
 <li><p>all_brks: breaks used for separating change values into bins</p></li>
 </ol></div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">   <span class="va">pw_id</span> <span class="op">&lt;-</span> <span class="st">"hsa00010"</span></span>
-<span class="r-in">   <span class="va">change_vec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>, <span class="fl">4</span>, <span class="fl">6</span><span class="op">)</span></span>
-<span class="r-in">   <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">change_vec</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hsa:2821"</span>, <span class="st">"hsa:226"</span>, <span class="st">"hsa:229"</span><span class="op">)</span></span>
-<span class="r-in">   <span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">pathfindR</span><span class="fu">:::</span><span class="fu">color_kegg_pathway</span><span class="op">(</span><span class="va">pw_id</span>, <span class="va">change_vec</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>   <span class="va">pw_id</span> <span class="op">&lt;-</span> <span class="st">"hsa00010"</span></span></span>
+<span class="r-in"><span>   <span class="va">change_vec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>, <span class="fl">4</span>, <span class="fl">6</span><span class="op">)</span></span></span>
+<span class="r-in"><span>   <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">change_vec</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hsa:2821"</span>, <span class="st">"hsa:226"</span>, <span class="st">"hsa:229"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>   <span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">pathfindR</span><span class="fu">:::</span><span class="fu">color_kegg_pathway</span><span class="op">(</span><span class="va">pw_id</span>, <span class="va">change_vec</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -139,7 +150,7 @@ progress bar while downloading file(s)</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.9000.</p>
 </div>
 
       </footer></div>

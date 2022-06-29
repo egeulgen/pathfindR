@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.3.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.3.9006</span>
       </span>
     </div>
 
@@ -26,7 +26,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -83,33 +83,42 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">filterActiveSnws</span><span class="op">(</span>
-  <span class="va">active_snw_path</span>,
-  <span class="va">sig_genes_vec</span>,
-  score_quan_thr <span class="op">=</span> <span class="fl">0.8</span>,
-  sig_gene_thr <span class="op">=</span> <span class="fl">0.02</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">filterActiveSnws</span><span class="op">(</span></span>
+<span>  <span class="va">active_snw_path</span>,</span>
+<span>  <span class="va">sig_genes_vec</span>,</span>
+<span>  score_quan_thr <span class="op">=</span> <span class="fl">0.8</span>,</span>
+<span>  sig_gene_thr <span class="op">=</span> <span class="fl">0.02</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>active_snw_path</dt>
 <dd><p>path to the output of an Active Subnetwork Search</p></dd>
+
+
 <dt>sig_genes_vec</dt>
 <dd><p>vector of significant gene symbols. In the scope of this
 package, these are the input genes that were used for active subnetwork search</p></dd>
+
+
 <dt>score_quan_thr</dt>
 <dd><p>active subnetwork score quantile threshold. Must be
 between 0 and 1 or set to -1 for not filtering. (Default = 0.8)</p></dd>
+
+
 <dt>sig_gene_thr</dt>
 <dd><p>threshold for the minimum proportion of significant genes in
 the subnetwork (Default = 0.02) If the number of genes to use as threshold is
 calculated to be &lt; 2 (e.g. 50 signif. genes x 0.01 = 0.5), the threshold number
 is set to 2</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A list containing <code>subnetworks</code>: a list of of genes in every
+    
+
+<p>A list containing <code>subnetworks</code>: a list of of genes in every
 active subnetwork that has a score greater than the <code>score_quan_thr</code>th
 quantile and that contains at least <code>sig_gene_thr</code> of significant genes
 and <code>scores</code> the score of each filtered active subnetwork</p>
@@ -122,10 +131,10 @@ and <code>scores</code> the score of each filtered active subnetwork</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">path2snw_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/resultActiveSubnetworkSearch.txt"</span>,</span>
-<span class="r-in">                              package <span class="op">=</span> <span class="st">"pathfindR"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">filtered</span> <span class="op">&lt;-</span> <span class="fu">filterActiveSnws</span><span class="op">(</span>active_snw_path <span class="op">=</span> <span class="va">path2snw_list</span>,</span>
-<span class="r-in">                             sig_genes_vec <span class="op">=</span> <span class="va">RA_input</span><span class="op">$</span><span class="va">Gene.symbol</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">path2snw_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/resultActiveSubnetworkSearch.txt"</span>,</span></span>
+<span class="r-in"><span>                              package <span class="op">=</span> <span class="st">"pathfindR"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">filtered</span> <span class="op">&lt;-</span> <span class="fu">filterActiveSnws</span><span class="op">(</span>active_snw_path <span class="op">=</span> <span class="va">path2snw_list</span>,</span></span>
+<span class="r-in"><span>                             sig_genes_vec <span class="op">=</span> <span class="va">RA_input</span><span class="op">$</span><span class="va">Gene.symbol</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -140,7 +149,7 @@ and <code>scores</code> the score of each filtered active subnetwork</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.9000.</p>
 </div>
 
       </footer></div>

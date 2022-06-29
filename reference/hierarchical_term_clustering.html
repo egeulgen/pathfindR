@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.3.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.3.9006</span>
       </span>
     </div>
 
@@ -26,7 +26,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -83,47 +83,62 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">hierarchical_term_clustering</span><span class="op">(</span>
-  <span class="va">kappa_mat</span>,
-  <span class="va">enrichment_res</span>,
-  num_clusters <span class="op">=</span> <span class="cn">NULL</span>,
-  use_description <span class="op">=</span> <span class="cn">FALSE</span>,
-  clu_method <span class="op">=</span> <span class="st">"average"</span>,
-  plot_hmap <span class="op">=</span> <span class="cn">FALSE</span>,
-  plot_dend <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">hierarchical_term_clustering</span><span class="op">(</span></span>
+<span>  <span class="va">kappa_mat</span>,</span>
+<span>  <span class="va">enrichment_res</span>,</span>
+<span>  num_clusters <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  use_description <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  clu_method <span class="op">=</span> <span class="st">"average"</span>,</span>
+<span>  plot_hmap <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  plot_dend <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>kappa_mat</dt>
 <dd><p>matrix of kappa statistics (output of <code><a href="create_kappa_matrix.html">create_kappa_matrix</a></code>)</p></dd>
+
+
 <dt>enrichment_res</dt>
 <dd><p>data frame of pathfindR enrichment results. Must-have
 columns are "Term_Description" (if <code>use_description = TRUE</code>) or "ID"
 (if <code>use_description = FALSE</code>), "Down_regulated", and "Up_regulated".
 If <code>use_active_snw_genes = TRUE</code>, "non_Signif_Snw_Genes" must also be
 provided.</p></dd>
+
+
 <dt>num_clusters</dt>
 <dd><p>number of clusters to be formed (default = <code>NULL</code>).
 If <code>NULL</code>, the optimal number of clusters is determined as the number
 which yields the highest average silhouette width.</p></dd>
+
+
 <dt>use_description</dt>
 <dd><p>Boolean argument to indicate whether term descriptions
 (in the "Term_Description" column) should be used. (default = <code>FALSE</code>)</p></dd>
+
+
 <dt>clu_method</dt>
 <dd><p>the agglomeration method to be used
 (default = "average", see <code><a href="https://rdrr.io/r/stats/hclust.html" class="external-link">hclust</a></code>)</p></dd>
+
+
 <dt>plot_hmap</dt>
 <dd><p>boolean to indicate whether to plot the kappa statistics
 clustering heatmap or not (default = FALSE)</p></dd>
+
+
 <dt>plot_dend</dt>
 <dd><p>boolean to indicate whether to plot the clustering
 dendrogram partitioned into the optimal number of clusters (default = TRUE)</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a vector of clusters for each enriched term in the enrichment results.</p>
+    
+
+<p>a vector of clusters for each enriched term in the enrichment results.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -138,10 +153,10 @@ determined as the k value which yields the highest average silhouette width.
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="fu">hierarchical_term_clustering</span><span class="op">(</span><span class="va">kappa_mat</span>, <span class="va">enrichment_res</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">hierarchical_term_clustering</span><span class="op">(</span><span class="va">kappa_mat</span>, <span class="va">enrichment_res</span>, method <span class="op">=</span> <span class="st">"complete"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="fu">hierarchical_term_clustering</span><span class="op">(</span><span class="va">kappa_mat</span>, <span class="va">enrichment_res</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">hierarchical_term_clustering</span><span class="op">(</span><span class="va">kappa_mat</span>, <span class="va">enrichment_res</span>, method <span class="op">=</span> <span class="st">"complete"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -156,7 +171,7 @@ determined as the k value which yields the highest average silhouette width.
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.9000.</p>
 </div>
 
       </footer></div>

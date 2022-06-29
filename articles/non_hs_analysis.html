@@ -35,7 +35,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.3.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.3.9006</span>
       </span>
     </div>
 
@@ -45,7 +45,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -104,7 +104,7 @@
       <h1 data-toc-skip>pathfindR Analysis for non-Homo-sapiens organisms</h1>
                         <h4 data-toc-skip class="author">Ege Ulgen</h4>
             
-            <h4 data-toc-skip class="date">2022-02-07</h4>
+            <h4 data-toc-skip class="date">2022-06-29</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/HEAD/vignettes/non_hs_analysis.Rmd" class="external-link"><code>vignettes/non_hs_analysis.Rmd</code></a></small>
       <div class="hidden name"><code>non_hs_analysis.Rmd</code></div>
@@ -137,21 +137,21 @@
 <p>If using another organism, all you have to do is to replace “mmu” with the KEGG organism code in the related arguments in this vignette.</p>
 </blockquote>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">gsets_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_gene_sets_list.html">get_gene_sets_list</a></span><span class="op">(</span>source <span class="op">=</span> <span class="st">"KEGG"</span>,
-                                 org_code <span class="op">=</span> <span class="st">"mmu"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">gsets_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_gene_sets_list.html">get_gene_sets_list</a></span><span class="op">(</span>source <span class="op">=</span> <span class="st">"KEGG"</span>,</span>
+<span>                                 org_code <span class="op">=</span> <span class="st">"mmu"</span><span class="op">)</span></span></code></pre></div>
 <p>This returns a list containing 2 objects named: <code>gene_sets</code> containing sets of genes of each pathway and <code>desriptions</code> containing the description of each pathway.</p>
 <p>The M.musculus KEGG gene set data <code>mmu_kegg_genes</code> and <code>mmu_kegg_descriptions</code> are already provided in pathfindR. For other organisms, the user may wish to save the data as RDS files for future use:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mmu_kegg_genes</span> <span class="op">&lt;-</span> <span class="va">gsets_list</span><span class="op">$</span><span class="va">gene_sets</span>
-<span class="va">mmu_kegg_descriptions</span> <span class="op">&lt;-</span> <span class="va">gsets_list</span><span class="op">$</span><span class="va">descriptions</span>
-
-<span class="co">## Save both as RDS files for later use</span>
-<span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS</a></span><span class="op">(</span><span class="va">mmu_kegg_genes</span>, <span class="st">"mmu_kegg_genes.RDS"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS</a></span><span class="op">(</span><span class="va">mmu_kegg_descriptions</span>, <span class="st">"mmu_kegg_descriptions.RDS"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">mmu_kegg_genes</span> <span class="op">&lt;-</span> <span class="va">gsets_list</span><span class="op">$</span><span class="va">gene_sets</span></span>
+<span><span class="va">mmu_kegg_descriptions</span> <span class="op">&lt;-</span> <span class="va">gsets_list</span><span class="op">$</span><span class="va">descriptions</span></span>
+<span></span>
+<span><span class="co">## Save both as RDS files for later use</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS</a></span><span class="op">(</span><span class="va">mmu_kegg_genes</span>, <span class="st">"mmu_kegg_genes.RDS"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS</a></span><span class="op">(</span><span class="va">mmu_kegg_descriptions</span>, <span class="st">"mmu_kegg_descriptions.RDS"</span><span class="op">)</span></span></code></pre></div>
 <p>These can be later loaded via:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mmu_kegg_genes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="st">"mmu_kegg_genes.RDS"</span><span class="op">)</span>
-<span class="va">mmu_kegg_descriptions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="st">"mmu_kegg_descriptions.RDS"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">mmu_kegg_genes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="st">"mmu_kegg_genes.RDS"</span><span class="op">)</span></span>
+<span><span class="va">mmu_kegg_descriptions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="st">"mmu_kegg_descriptions.RDS"</span><span class="op">)</span></span></code></pre></div>
 <blockquote>
 <p>The function <code><a href="../reference/get_gene_sets_list.html">get_gene_sets_list()</a></code> can also be used to obtain gene sets data from other sources. See the vignette <a href="obtain_data.html">Obtaining PIN and Gene Sets Data</a> for more detail.</p>
 </blockquote>
@@ -185,21 +185,21 @@
 <p>Notice there are no headers and each line contains an interaction in the form <code>GeneA pp GeneB</code>, separated by tab (i.e. <code>\t</code>) with no row names and no column names.</p>
 <p>Below we download process the STRING PIN for use with pathfindR:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Downloading the STRING PIN file to tempdir</span>
-<span class="va">url</span> <span class="op">&lt;-</span> <span class="st">"https://stringdb-static.org/download/protein.links.v11.0/10090.protein.links.v11.0.txt.gz"</span>
-<span class="va">path2file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span>check <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, <span class="st">"STRING.txt.gz"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/download.file.html" class="external-link">download.file</a></span><span class="op">(</span><span class="va">url</span>, <span class="va">path2file</span><span class="op">)</span>
-
-<span class="co">## read STRING pin file</span>
-<span class="va">mmu_string_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span><span class="va">path2file</span>, header <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="co">## filter using combined_score cut-off value of 800</span>
-<span class="va">mmu_string_df</span> <span class="op">&lt;-</span> <span class="va">mmu_string_df</span><span class="op">[</span><span class="va">mmu_string_df</span><span class="op">$</span><span class="va">combined_score</span> <span class="op">&gt;=</span> <span class="fl">800</span>, <span class="op">]</span>
-
-<span class="co">## fix ids</span>
-<span class="va">mmu_string_pin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>Interactor_A <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">sub</a></span><span class="op">(</span><span class="st">"^10090\\."</span>, <span class="st">""</span>, <span class="va">mmu_string_df</span><span class="op">$</span><span class="va">protein1</span><span class="op">)</span>,
-                             Interactor_B <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">sub</a></span><span class="op">(</span><span class="st">"^10090\\."</span>, <span class="st">""</span>, <span class="va">mmu_string_df</span><span class="op">$</span><span class="va">protein2</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">mmu_string_pin</span>, <span class="fl">2</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Downloading the STRING PIN file to tempdir</span></span>
+<span><span class="va">url</span> <span class="op">&lt;-</span> <span class="st">"https://stringdb-static.org/download/protein.links.v11.0/10090.protein.links.v11.0.txt.gz"</span></span>
+<span><span class="va">path2file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span>check <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, <span class="st">"STRING.txt.gz"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/download.file.html" class="external-link">download.file</a></span><span class="op">(</span><span class="va">url</span>, <span class="va">path2file</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## read STRING pin file</span></span>
+<span><span class="va">mmu_string_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span><span class="va">path2file</span>, header <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## filter using combined_score cut-off value of 800</span></span>
+<span><span class="va">mmu_string_df</span> <span class="op">&lt;-</span> <span class="va">mmu_string_df</span><span class="op">[</span><span class="va">mmu_string_df</span><span class="op">$</span><span class="va">combined_score</span> <span class="op">&gt;=</span> <span class="fl">800</span>, <span class="op">]</span></span>
+<span></span>
+<span><span class="co">## fix ids</span></span>
+<span><span class="va">mmu_string_pin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>Interactor_A <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">sub</a></span><span class="op">(</span><span class="st">"^10090\\."</span>, <span class="st">""</span>, <span class="va">mmu_string_df</span><span class="op">$</span><span class="va">protein1</span><span class="op">)</span>,</span>
+<span>                             Interactor_B <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">sub</a></span><span class="op">(</span><span class="st">"^10090\\."</span>, <span class="st">""</span>, <span class="va">mmu_string_df</span><span class="op">$</span><span class="va">protein2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">mmu_string_pin</span>, <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">Interactor_A</th>
@@ -218,20 +218,20 @@
 </table>
 <p>Since the interactors are Ensembl peptide IDs, we’ll need to convert them to MGI symbols for use with pathfindR. This can be achieved via <code>biomaRt</code> or any other conversion method you prefer:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">biomaRt</span><span class="op">)</span>
-
-<span class="va">mmu_ensembl</span> <span class="op">&lt;-</span> <span class="fu">useMart</span><span class="op">(</span><span class="st">"ensembl"</span>, dataset <span class="op">=</span> <span class="st">"mmusculus_gene_ensembl"</span><span class="op">)</span>
-
-<span class="va">converted</span> <span class="op">&lt;-</span> <span class="fu">getBM</span><span class="op">(</span>attributes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ensembl_peptide_id"</span>, <span class="st">"mgi_symbol"</span><span class="op">)</span>,
-                   filters <span class="op">=</span> <span class="st">"ensembl_peptide_id"</span>,
-                   values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">mmu_string_pin</span><span class="op">)</span><span class="op">)</span>,
-                   mart <span class="op">=</span> <span class="va">mmu_ensembl</span><span class="op">)</span>
-<span class="va">mmu_string_pin</span><span class="op">$</span><span class="va">Interactor_A</span> <span class="op">&lt;-</span> <span class="va">converted</span><span class="op">$</span><span class="va">mgi_symbol</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/match.html" class="external-link">match</a></span><span class="op">(</span><span class="va">mmu_string_pin</span><span class="op">$</span><span class="va">Interactor_A</span>, <span class="va">converted</span><span class="op">$</span><span class="va">ensembl_peptide_id</span><span class="op">)</span><span class="op">]</span>
-<span class="va">mmu_string_pin</span><span class="op">$</span><span class="va">Interactor_B</span> <span class="op">&lt;-</span> <span class="va">converted</span><span class="op">$</span><span class="va">mgi_symbol</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/match.html" class="external-link">match</a></span><span class="op">(</span><span class="va">mmu_string_pin</span><span class="op">$</span><span class="va">Interactor_B</span>, <span class="va">converted</span><span class="op">$</span><span class="va">ensembl_peptide_id</span><span class="op">)</span><span class="op">]</span>
-<span class="va">mmu_string_pin</span> <span class="op">&lt;-</span> <span class="va">mmu_string_pin</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">mmu_string_pin</span><span class="op">$</span><span class="va">Interactor_A</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">mmu_string_pin</span><span class="op">$</span><span class="va">Interactor_B</span><span class="op">)</span>, <span class="op">]</span>
-<span class="va">mmu_string_pin</span> <span class="op">&lt;-</span> <span class="va">mmu_string_pin</span><span class="op">[</span><span class="va">mmu_string_pin</span><span class="op">$</span><span class="va">Interactor_A</span> <span class="op">!=</span> <span class="st">""</span> <span class="op">&amp;</span> <span class="va">mmu_string_pin</span><span class="op">$</span><span class="va">Interactor_B</span> <span class="op">!=</span> <span class="st">""</span>, <span class="op">]</span>
-
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">mmu_string_pin</span>, <span class="fl">2</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># library(biomaRt)</span></span>
+<span></span>
+<span><span class="va">mmu_ensembl</span> <span class="op">&lt;-</span> <span class="fu">useMart</span><span class="op">(</span><span class="st">"ensembl"</span>, dataset <span class="op">=</span> <span class="st">"mmusculus_gene_ensembl"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">converted</span> <span class="op">&lt;-</span> <span class="fu">getBM</span><span class="op">(</span>attributes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ensembl_peptide_id"</span>, <span class="st">"mgi_symbol"</span><span class="op">)</span>,</span>
+<span>                   filters <span class="op">=</span> <span class="st">"ensembl_peptide_id"</span>,</span>
+<span>                   values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">mmu_string_pin</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>                   mart <span class="op">=</span> <span class="va">mmu_ensembl</span><span class="op">)</span></span>
+<span><span class="va">mmu_string_pin</span><span class="op">$</span><span class="va">Interactor_A</span> <span class="op">&lt;-</span> <span class="va">converted</span><span class="op">$</span><span class="va">mgi_symbol</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/match.html" class="external-link">match</a></span><span class="op">(</span><span class="va">mmu_string_pin</span><span class="op">$</span><span class="va">Interactor_A</span>, <span class="va">converted</span><span class="op">$</span><span class="va">ensembl_peptide_id</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">mmu_string_pin</span><span class="op">$</span><span class="va">Interactor_B</span> <span class="op">&lt;-</span> <span class="va">converted</span><span class="op">$</span><span class="va">mgi_symbol</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/match.html" class="external-link">match</a></span><span class="op">(</span><span class="va">mmu_string_pin</span><span class="op">$</span><span class="va">Interactor_B</span>, <span class="va">converted</span><span class="op">$</span><span class="va">ensembl_peptide_id</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">mmu_string_pin</span> <span class="op">&lt;-</span> <span class="va">mmu_string_pin</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">mmu_string_pin</span><span class="op">$</span><span class="va">Interactor_A</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">mmu_string_pin</span><span class="op">$</span><span class="va">Interactor_B</span><span class="op">)</span>, <span class="op">]</span></span>
+<span><span class="va">mmu_string_pin</span> <span class="op">&lt;-</span> <span class="va">mmu_string_pin</span><span class="op">[</span><span class="va">mmu_string_pin</span><span class="op">$</span><span class="va">Interactor_A</span> <span class="op">!=</span> <span class="st">""</span> <span class="op">&amp;</span> <span class="va">mmu_string_pin</span><span class="op">$</span><span class="va">Interactor_B</span> <span class="op">!=</span> <span class="st">""</span>, <span class="op">]</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">mmu_string_pin</span>, <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="center">Interactor_A</th>
@@ -250,26 +250,26 @@
 </table>
 <p>Next, we remove self interactions and any duplicated interactions, format the data frame as SIF:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># remove self interactions</span>
-<span class="va">self_intr_cond</span> <span class="op">&lt;-</span> <span class="va">mmu_string_pin</span><span class="op">$</span><span class="va">Interactor_A</span> <span class="op">==</span> <span class="va">mmu_string_pin</span><span class="op">$</span><span class="va">Interactor_B</span>
-<span class="va">mmu_string_pin</span> <span class="op">&lt;-</span> <span class="va">mmu_string_pin</span><span class="op">[</span><span class="op">!</span><span class="va">self_intr_cond</span>, <span class="op">]</span>
-
-<span class="co"># remove duplicated inteactions (including symmetric ones)</span>
-<span class="va">mmu_string_pin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">mmu_string_pin</span>, <span class="fl">1</span>, <span class="va">sort</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="co"># this will return a matrix object</span>
-
-<span class="va">mmu_string_pin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>A <span class="op">=</span> <span class="va">mmu_string_pin</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>,
-                             pp <span class="op">=</span> <span class="st">"pp"</span>,
-                             B <span class="op">=</span> <span class="va">mmu_string_pin</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># remove self interactions</span></span>
+<span><span class="va">self_intr_cond</span> <span class="op">&lt;-</span> <span class="va">mmu_string_pin</span><span class="op">$</span><span class="va">Interactor_A</span> <span class="op">==</span> <span class="va">mmu_string_pin</span><span class="op">$</span><span class="va">Interactor_B</span></span>
+<span><span class="va">mmu_string_pin</span> <span class="op">&lt;-</span> <span class="va">mmu_string_pin</span><span class="op">[</span><span class="op">!</span><span class="va">self_intr_cond</span>, <span class="op">]</span></span>
+<span></span>
+<span><span class="co"># remove duplicated inteactions (including symmetric ones)</span></span>
+<span><span class="va">mmu_string_pin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">mmu_string_pin</span>, <span class="fl">1</span>, <span class="va">sort</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="co"># this will return a matrix object</span></span>
+<span></span>
+<span><span class="va">mmu_string_pin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>A <span class="op">=</span> <span class="va">mmu_string_pin</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>,</span>
+<span>                             pp <span class="op">=</span> <span class="st">"pp"</span>,</span>
+<span>                             B <span class="op">=</span> <span class="va">mmu_string_pin</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <p>Finally, we save the gene symbol PIN as a SIF file named “mmusculusPIN.sif” under the temporary directory (i.e. <code><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir()</a></code>):</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">path2SIF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"mmusculusPIN.sif"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.table</a></span><span class="op">(</span><span class="va">mmu_string_pin</span>,
-            file <span class="op">=</span> <span class="va">path2SIF</span>,
-            col.names <span class="op">=</span> <span class="cn">FALSE</span>,
-            row.names <span class="op">=</span> <span class="cn">FALSE</span>,
-            sep <span class="op">=</span> <span class="st">"\t"</span>,
-            quote <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="va">path2SIF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/normalizePath.html" class="external-link">normalizePath</a></span><span class="op">(</span><span class="va">path2SIF</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">path2SIF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"mmusculusPIN.sif"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.table</a></span><span class="op">(</span><span class="va">mmu_string_pin</span>,</span>
+<span>            file <span class="op">=</span> <span class="va">path2SIF</span>,</span>
+<span>            col.names <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>            row.names <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>            sep <span class="op">=</span> <span class="st">"\t"</span>,</span>
+<span>            quote <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">path2SIF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/normalizePath.html" class="external-link">normalizePath</a></span><span class="op">(</span><span class="va">path2SIF</span><span class="op">)</span></span></code></pre></div>
 <p>We’ll use this path to the custom sif for analysis with <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code>.</p>
 <blockquote>
 <p>The STRING Mus musculus PIN created above is available in pathfindR and can be used via setting <code>pin_name_path = "mmu_STRING"</code> in <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code>.</p>
@@ -284,7 +284,7 @@
 </h3>
 <p>The data used in this vignette (<code>myeloma_input</code>) is the data frame of differentially-expressed genes along for the GEO dataset <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE99393" class="external-link">GSE99393</a>. The RNA microarray experiment was perform to detail the global program of gene expression underlying polarization of myeloma-associated macrophages by CSF1R antibody treatment. The samples are 6 murine bone marrow derived macrophages co-cultured with myeloma cells (myeloma-associated macrophages), 3 of which were treated with CSF1R antibody (treatment group) and the rest were treated with control IgG antibody (control group). In <code>myeloma_input</code>, 45 differentially-expressed genes with |logFC| &gt;= 2 and FDR &lt;= 0.05 are presented.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">myeloma_input</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">myeloma_input</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">Gene_Symbol</th>
@@ -323,15 +323,15 @@
 </h3>
 <p>After obtaining the necessary PIN and gene sets data, you can then perform pathfindR analysis by setting these arguments: - <code>convert2alias = FALSE</code>: alias conversion only works on H.sapiens genes - <code>pin_name_path = path2SIF</code>: as we’re using a non-built-in PIN, we need to provide the path to the mmu sif file - <code>gene_sets = "Custom</code>: as we’re using a non-built-in source for gene sets - <code>custom_genes = mmu_kegg_genes</code> - <code>custom_descriptions = mmu_kegg_descriptions</code></p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">myeloma_output</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span>input <span class="op">=</span> <span class="va">myeloma_input</span>,
-                                convert2alias <span class="op">=</span> <span class="cn">FALSE</span>,
-                                gene_sets <span class="op">=</span> <span class="st">"Custom"</span>,
-                                custom_genes <span class="op">=</span> <span class="va">mmu_kegg_genes</span>,
-                                custom_descriptions <span class="op">=</span> <span class="va">mmu_kegg_descriptions</span>,
-                                pin_name_path <span class="op">=</span> <span class="va">path2SIF</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">myeloma_output</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span>input <span class="op">=</span> <span class="va">myeloma_input</span>,</span>
+<span>                                convert2alias <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>                                gene_sets <span class="op">=</span> <span class="st">"Custom"</span>,</span>
+<span>                                custom_genes <span class="op">=</span> <span class="va">mmu_kegg_genes</span>,</span>
+<span>                                custom_descriptions <span class="op">=</span> <span class="va">mmu_kegg_descriptions</span>,</span>
+<span>                                pin_name_path <span class="op">=</span> <span class="va">path2SIF</span><span class="op">)</span></span></code></pre></div>
 <p><img src="non_hs_analysis_files/figure-html/enr_chart-1.png" width="672" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">myeloma_output</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">myeloma_output</span><span class="op">)</span></span></code></pre></div>
 <table style="width:100%;" class="table">
 <colgroup>
 <col width="5%">
@@ -585,10 +585,10 @@
 </h3>
 <p>As aforementioned, for Mus musculus (only), we have provided the necessary PIN (<code>mmu_STRING</code>) and gene set data (<code>mmu_KEGG</code>) so you can also run:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">myeloma_output</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span>input <span class="op">=</span> <span class="va">myeloma_input</span>,
-                                convert2alias <span class="op">=</span> <span class="cn">FALSE</span>,
-                                gene_sets <span class="op">=</span> <span class="st">"mmu_KEGG"</span>,
-                                pin_name_path <span class="op">=</span> <span class="st">"mmu_STRING"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">myeloma_output</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span>input <span class="op">=</span> <span class="va">myeloma_input</span>,</span>
+<span>                                convert2alias <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>                                gene_sets <span class="op">=</span> <span class="st">"mmu_KEGG"</span>,</span>
+<span>                                pin_name_path <span class="op">=</span> <span class="st">"mmu_STRING"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="footnotes">
@@ -616,7 +616,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.9000.</p>
 </div>
 
       </footer>

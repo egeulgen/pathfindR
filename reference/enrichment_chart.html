@@ -18,7 +18,7 @@ enrichment results."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/a
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.3.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.3.9006</span>
       </span>
     </div>
 
@@ -27,7 +27,7 @@ enrichment results."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/a
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -85,13 +85,13 @@ enrichment results.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">enrichment_chart</span><span class="op">(</span>
-  <span class="va">result_df</span>,
-  top_terms <span class="op">=</span> <span class="fl">10</span>,
-  plot_by_cluster <span class="op">=</span> <span class="cn">FALSE</span>,
-  num_bubbles <span class="op">=</span> <span class="fl">4</span>,
-  even_breaks <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">enrichment_chart</span><span class="op">(</span></span>
+<span>  <span class="va">result_df</span>,</span>
+<span>  top_terms <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  plot_by_cluster <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  num_bubbles <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  even_breaks <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -117,29 +117,40 @@ enrichment results.</p>
 
 
 </dl></dd>
+
+
 <dt>top_terms</dt>
 <dd><p>number of top terms (according to the "lowest_p" column)
 to plot (default = 10). If <code>plot_by_cluster = TRUE</code>, selects the top
 <code>top_terms</code> terms per each cluster. Set <code>top_terms = NULL</code> to plot
 for all terms.If the total number of terms is less than <code>top_terms</code>,
 all terms are plotted.</p></dd>
+
+
 <dt>plot_by_cluster</dt>
 <dd><p>boolean value indicating whether or not to group the
 enriched terms by cluster (works if <code>result_df</code> contains a
 "Cluster" column).</p></dd>
+
+
 <dt>num_bubbles</dt>
 <dd><p>number of sizes displayed in the legend <code># genes</code>
 (Default = 4)</p></dd>
+
+
 <dt>even_breaks</dt>
 <dd><p>whether or not to set even breaks for the number of sizes
 displayed in the legend <code># genes</code>. If <code>TRUE</code> (default), sets
 equal breaks and the number of displayed bubbles may be different than the
 number set by <code>num_bubbles</code>. If the exact number set by
 <code>num_bubbles</code> is required, set this argument to <code>FALSE</code></p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a <code><a href="https://ggplot2.tidyverse.org/reference/ggplot2-package.html" class="external-link">ggplot2</a></code> object containing the bubble chart.
+    
+
+<p>a <code><a href="https://ggplot2.tidyverse.org/reference/ggplot2-package.html" class="external-link">ggplot2</a></code> object containing the bubble chart.
 The x-axis corresponds to fold enrichment values while the y-axis indicates
 the enriched terms. Size of the bubble indicates the number of significant
 genes in the given enriched term. Color indicates the -log10(lowest-p) value.
@@ -150,7 +161,7 @@ Optionally, if "Cluster" is a column of <code>result_df</code> and
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">g</span> <span class="op">&lt;-</span> <span class="fu">enrichment_chart</span><span class="op">(</span><span class="va">RA_output</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">g</span> <span class="op">&lt;-</span> <span class="fu">enrichment_chart</span><span class="op">(</span><span class="va">RA_output</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -165,7 +176,7 @@ Optionally, if "Cluster" is a column of <code>result_df</code> and
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.9000.</p>
 </div>
 
       </footer></div>

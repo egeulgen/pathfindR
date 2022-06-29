@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.3.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.3.9006</span>
       </span>
     </div>
 
@@ -26,7 +26,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -83,18 +83,18 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">term_gene_heatmap</span><span class="op">(</span>
-  <span class="va">result_df</span>,
-  <span class="va">genes_df</span>,
-  num_terms <span class="op">=</span> <span class="fl">10</span>,
-  use_description <span class="op">=</span> <span class="cn">FALSE</span>,
-  low <span class="op">=</span> <span class="st">"green"</span>,
-  mid <span class="op">=</span> <span class="st">"black"</span>,
-  high <span class="op">=</span> <span class="st">"red"</span>,
-  legend_title <span class="op">=</span> <span class="st">"change"</span>,
-  sort_terms_by_p <span class="op">=</span> <span class="cn">FALSE</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">term_gene_heatmap</span><span class="op">(</span></span>
+<span>  <span class="va">result_df</span>,</span>
+<span>  <span class="va">genes_df</span>,</span>
+<span>  num_terms <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  use_description <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  low <span class="op">=</span> <span class="st">"red"</span>,</span>
+<span>  mid <span class="op">=</span> <span class="st">"black"</span>,</span>
+<span>  high <span class="op">=</span> <span class="st">"green"</span>,</span>
+<span>  legend_title <span class="op">=</span> <span class="st">"change"</span>,</span>
+<span>  sort_terms_by_p <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -117,43 +117,64 @@
 
 
 </dl></dd>
+
+
 <dt>genes_df</dt>
 <dd><p>the input data that was used with <code><a href="run_pathfindr.html">run_pathfindR</a></code>.
   It must be a data frame with 3 columns:</p><ol><li><p>Gene Symbol (Gene Symbol)</p></li>
 <li><p>Change value, e.g. log(fold change) (optional)</p></li>
 <li><p>p value, e.g. adjusted p value associated with differential expression</p></li>
 </ol><p>The change values in this data frame are used to color the affected genes</p></dd>
+
+
 <dt>num_terms</dt>
 <dd><p>Number of top enriched terms to use while creating the plot. Set to <code>NULL</code> to use
 all enriched terms (default = 10)</p></dd>
+
+
 <dt>use_description</dt>
 <dd><p>Boolean argument to indicate whether term descriptions
 (in the "Term_Description" column) should be used. (default = <code>FALSE</code>)</p></dd>
+
+
 <dt>low</dt>
 <dd><p>a string indicating the color of 'low' values in the coloring gradient (default = 'green')</p></dd>
+
+
 <dt>mid</dt>
 <dd><p>a string indicating the color of 'mid' values in the coloring gradient (default = 'black')</p></dd>
+
+
 <dt>high</dt>
 <dd><p>a string indicating the color of 'high' values in the coloring gradient (default = 'red')</p></dd>
+
+
 <dt>legend_title</dt>
 <dd><p>legend title (defaut = "change")</p></dd>
+
+
 <dt>sort_terms_by_p</dt>
 <dd><p>boolean to indicate whether to sort terms by 'lowest_p'
 (<code>TRUE</code>) or by number of genes (<code>FALSE</code>) (default = <code>FALSE</code>)</p></dd>
+
+
 <dt>...</dt>
 <dd><p>additional arguments for <code><a href="input_processing.html">input_processing</a></code> (used if
 <code>genes_df</code> is provided)</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a ggplot2 object of a heatmap where rows are enriched terms and
+    
+
+<p>a ggplot2 object of a heatmap where rows are enriched terms and
 columns are involved input genes. If <code>genes_df</code> is provided, colors of
 the tiles indicate the change values.</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">term_gene_heatmap</span><span class="op">(</span><span class="va">RA_output</span>, num_terms <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">term_gene_heatmap</span><span class="op">(</span><span class="va">RA_output</span>, num_terms <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="term_gene_heatmap-1.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
@@ -169,7 +190,7 @@ the tiles indicate the change values.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.9000.</p>
 </div>
 
       </footer></div>

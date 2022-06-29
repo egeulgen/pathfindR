@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.3.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.3.9006</span>
       </span>
     </div>
 
@@ -26,7 +26,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -83,49 +83,66 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">enrichment_analyses</span><span class="op">(</span>
-  <span class="va">snws</span>,
-  <span class="va">sig_genes_vec</span>,
-  pin_name_path <span class="op">=</span> <span class="st">"Biogrid"</span>,
-  genes_by_term <span class="op">=</span> <span class="fu">pathfindR.data</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/pathfindR.data/man/kegg_genes.html" class="external-link">kegg_genes</a></span>,
-  term_descriptions <span class="op">=</span> <span class="fu">pathfindR.data</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/pathfindR.data/man/kegg_descriptions.html" class="external-link">kegg_descriptions</a></span>,
-  adj_method <span class="op">=</span> <span class="st">"bonferroni"</span>,
-  enrichment_threshold <span class="op">=</span> <span class="fl">0.05</span>,
-  list_active_snw_genes <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">enrichment_analyses</span><span class="op">(</span></span>
+<span>  <span class="va">snws</span>,</span>
+<span>  <span class="va">sig_genes_vec</span>,</span>
+<span>  pin_name_path <span class="op">=</span> <span class="st">"Biogrid"</span>,</span>
+<span>  genes_by_term <span class="op">=</span> <span class="fu">pathfindR.data</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/pathfindR.data/man/kegg_genes.html" class="external-link">kegg_genes</a></span>,</span>
+<span>  term_descriptions <span class="op">=</span> <span class="fu">pathfindR.data</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/pathfindR.data/man/kegg_descriptions.html" class="external-link">kegg_descriptions</a></span>,</span>
+<span>  adj_method <span class="op">=</span> <span class="st">"bonferroni"</span>,</span>
+<span>  enrichment_threshold <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>  list_active_snw_genes <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>snws</dt>
 <dd><p>a list of subnetwork genes (i.e., vectors of genes for each subnetwork)</p></dd>
+
+
 <dt>sig_genes_vec</dt>
 <dd><p>vector of significant gene symbols. In the scope of this
 package, these are the input genes that were used for active subnetwork search</p></dd>
+
+
 <dt>pin_name_path</dt>
 <dd><p>Name of the chosen PIN or absolute/path/to/PIN.sif. If PIN name,
 must be one of c("Biogrid", "STRING", "GeneMania", "IntAct", "KEGG", "mmu_STRING"). If
 path/to/PIN.sif, the file must comply with the PIN specifications. (Default = "Biogrid")</p></dd>
+
+
 <dt>genes_by_term</dt>
 <dd><p>List that contains genes for each gene set. Names of
 this list are gene set IDs (default = kegg_genes)</p></dd>
+
+
 <dt>term_descriptions</dt>
 <dd><p>Vector that contains term descriptions for the
 gene sets. Names of this vector are gene set IDs (default = kegg_descriptions)</p></dd>
+
+
 <dt>adj_method</dt>
 <dd><p>correction method to be used for adjusting p-values.
 (default = "bonferroni")</p></dd>
+
+
 <dt>enrichment_threshold</dt>
 <dd><p>adjusted-p value threshold used when filtering
 enrichment results (default = 0.05)</p></dd>
+
+
 <dt>list_active_snw_genes</dt>
 <dd><p>boolean value indicating whether or not to report
 the non-significant active subnetwork genes for the active subnetwork which was enriched for
 the given term with the lowest p value (default = <code>FALSE</code>)</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a dataframe of combined enrichment results. Columns are:</p><dl><dt>ID</dt>
+    
+
+<p>a dataframe of combined enrichment results. Columns are:</p><dl><dt>ID</dt>
 <dd><p>ID of the enriched term</p></dd>
 
   <dt>Term_Description</dt>
@@ -155,9 +172,9 @@ the given term with the lowest p value (default = <code>FALSE</code>)</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">enr_res</span> <span class="op">&lt;-</span> <span class="fu">enrichment_analyses</span><span class="op">(</span>snws <span class="op">=</span> <span class="va">example_active_snws</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>,</span>
-<span class="r-in">                               sig_genes_vec <span class="op">=</span> <span class="va">RA_input</span><span class="op">$</span><span class="va">Gene.symbol</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">25</span><span class="op">]</span>,</span>
-<span class="r-in">                               pin_name_path <span class="op">=</span> <span class="st">"KEGG"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">enr_res</span> <span class="op">&lt;-</span> <span class="fu">enrichment_analyses</span><span class="op">(</span>snws <span class="op">=</span> <span class="va">example_active_snws</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>,</span></span>
+<span class="r-in"><span>                               sig_genes_vec <span class="op">=</span> <span class="va">RA_input</span><span class="op">$</span><span class="va">Gene.symbol</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">25</span><span class="op">]</span>,</span></span>
+<span class="r-in"><span>                               pin_name_path <span class="op">=</span> <span class="st">"KEGG"</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -172,7 +189,7 @@ the given term with the lowest p value (default = <code>FALSE</code>)</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.9000.</p>
 </div>
 
       </footer></div>

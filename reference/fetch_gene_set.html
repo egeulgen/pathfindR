@@ -18,7 +18,7 @@ be used for enrichment analysis."><!-- mathjax --><script src="https://cdnjs.clo
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.3.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.3.9006</span>
       </span>
     </div>
 
@@ -27,7 +27,7 @@ be used for enrichment analysis."><!-- mathjax --><script src="https://cdnjs.clo
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -85,13 +85,13 @@ be used for enrichment analysis.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">fetch_gene_set</span><span class="op">(</span>
-  gene_sets <span class="op">=</span> <span class="st">"KEGG"</span>,
-  min_gset_size <span class="op">=</span> <span class="fl">10</span>,
-  max_gset_size <span class="op">=</span> <span class="fl">300</span>,
-  custom_genes <span class="op">=</span> <span class="cn">NULL</span>,
-  custom_descriptions <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fetch_gene_set</span><span class="op">(</span></span>
+<span>  gene_sets <span class="op">=</span> <span class="st">"KEGG"</span>,</span>
+<span>  min_gset_size <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  max_gset_size <span class="op">=</span> <span class="fl">300</span>,</span>
+<span>  custom_genes <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  custom_descriptions <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -102,22 +102,33 @@ Available gene sets are "KEGG", "Reactome", "BioCarta", "GO-All",
 "GO-BP", "GO-CC", "GO-MF", "cell_markers", "mmu_KEGG" or "Custom".
 If "Custom", the arguments <code>custom_genes</code> and <code>custom_descriptions</code>
 must be specified. (Default = "KEGG")</p></dd>
+
+
 <dt>min_gset_size</dt>
 <dd><p>minimum number of genes a term must contain (default = 10)</p></dd>
+
+
 <dt>max_gset_size</dt>
 <dd><p>maximum number of genes a term must contain (default = 300)</p></dd>
+
+
 <dt>custom_genes</dt>
 <dd><p>a list containing the genes involved in each custom
 term. Each element is a vector of gene symbols located in the given custom
 term. Names should correspond to the IDs of the custom terms.</p></dd>
+
+
 <dt>custom_descriptions</dt>
 <dd><p>A vector containing the descriptions for each
 custom  term. Names of the vector should correspond to the IDs of the custom
 terms.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a list containing 2 elements</p><dl><dt>genes_by_term</dt>
+    
+
+<p>a list containing 2 elements</p><dl><dt>genes_by_term</dt>
 <dd><p>list of vectors of genes contained in each term</p></dd>
 
   <dt>term_descriptions</dt>
@@ -128,8 +139,8 @@ terms.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">KEGG_gset</span> <span class="op">&lt;-</span> <span class="fu">fetch_gene_set</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">GO_MF_gset</span> <span class="op">&lt;-</span> <span class="fu">fetch_gene_set</span><span class="op">(</span><span class="st">"GO-MF"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">KEGG_gset</span> <span class="op">&lt;-</span> <span class="fu">fetch_gene_set</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">GO_MF_gset</span> <span class="op">&lt;-</span> <span class="fu">fetch_gene_set</span><span class="op">(</span><span class="st">"GO-MF"</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -144,7 +155,7 @@ terms.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.9000.</p>
 </div>
 
       </footer></div>
