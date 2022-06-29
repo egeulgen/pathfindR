@@ -9,9 +9,9 @@ term_gene_heatmap(
   genes_df,
   num_terms = 10,
   use_description = FALSE,
-  low = "green",
+  low = "red",
   mid = "black",
-  high = "red",
+  high = "green",
   legend_title = "change",
   sort_terms_by_p = FALSE,
   ...

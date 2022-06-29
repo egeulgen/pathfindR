@@ -10,9 +10,9 @@ UpSet_plot(
   num_terms = 10,
   method = "heatmap",
   use_description = FALSE,
-  low = "green",
+  low = "red",
   mid = "black",
-  high = "red",
+  high = "green",
   ...
 )
 }

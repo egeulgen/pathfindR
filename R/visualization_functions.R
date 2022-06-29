@@ -180,8 +180,8 @@ visualize_term_interactions <- function(result_df, pin_name_path) {
       cond1 <- names(igraph::V(g)) %in% up_genes
       cond2 <- names(igraph::V(g)) %in% down_genes
       cond3 <- names(igraph::V(g)) %in% snw_genes
-      igraph::V(g)$color <- ifelse(cond1, "red",
-                                   ifelse(cond2, "green",
+      igraph::V(g)$color <- ifelse(cond1, "green",
+                                   ifelse(cond2, "red",
                                           ifelse(cond3, "blue", "gray60")))
 
       #### Generate diagram
@@ -206,7 +206,7 @@ visualize_term_interactions <- function(result_df, pin_name_path) {
                          legend = c("Upregulated Input Genes",
                                     "Downregulated Input Genes",
                                     "Other"),
-                         col = c("red", "green", "gray60"),
+                         col = c("green", "red", "gray60"),
                          pch = 19, cex = 1.5, bty = "n")
       } else {
         graphics::legend("topleft",
@@ -214,7 +214,7 @@ visualize_term_interactions <- function(result_df, pin_name_path) {
                                     "Upregulated Input Genes",
                                     "Downregulated Input Genes",
                                     "Other"),
-                         col = c("blue", "red", "green", "gray60"),
+                         col = c("blue", "green", "red", "gray60"),
                          pch = 19, cex = 1.5, bty = "n")
       }
       grDevices::dev.off()
@@ -491,9 +491,9 @@ color_kegg_pathway <- function(pw_id, change_vec, scale_vals = TRUE,
   } else if (all(change_vec == 1e6)) { ## NO CHANGES SUPPLIED
     low_col <- mid_col <- high_col <- "#F38F18"
   } else {
-    low_col <- "green"
+    low_col <- "red"
     mid_col <- "gray"
-    high_col <- "red"
+    high_col <- "green"
   }
 
   ############ Summarization for genes that are in the same node
@@ -660,6 +660,11 @@ obtain_KEGGML_URL <- function(pw_id, pwKGML, quiet = TRUE) {
     message(paste("Cannot download KGML file for:", pw_id))
     message("Here's the original error message:")
     message(e$message)
+    return(NA)
+  }, warning = function(w) {
+    message(paste("Cannot download KGML file for:", pw_id))
+    message("Here's the original error message:")
+    message(w$message)
     return(NA)
   })
   return(KGML_URL)
@@ -1044,7 +1049,7 @@ term_gene_graph <- function(result_df, num_terms = 10,
 #' term_gene_heatmap(RA_output, num_terms = 3)
 term_gene_heatmap <- function(result_df, genes_df, num_terms = 10,
                               use_description = FALSE,
-                              low = "green", mid = "black", high = "red",
+                              low = "red", mid = "black", high = "green",
                               legend_title = "change",
                               sort_terms_by_p = FALSE,
                               ...) {
@@ -1236,7 +1241,7 @@ term_gene_heatmap <- function(result_df, genes_df, num_terms = 10,
 UpSet_plot <- function(result_df, genes_df, num_terms = 10,
                        method = "heatmap",
                        use_description = FALSE,
-                       low = "green", mid = "black", high = "red",
+                       low = "red", mid = "black", high = "green",
                        ...) {
   ############ Arg checks
   if (!is.logical(use_description)) {
