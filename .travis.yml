@@ -4,6 +4,7 @@ language: R
 sudo: false
 cache: packages
 r: bioc-release
+chrome: stable
 
 addons:
   apt:
