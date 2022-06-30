@@ -19,7 +19,6 @@ jobs:
       matrix:
         config:
           - {os: macOS-latest,   r: 'release'}
-          - {os: windows-latest, r: 'devel'}
           - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
 
     env:
