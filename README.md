@@ -5,8 +5,6 @@
 
 <!-- badges: start -->
 
-[![Travis-CI Build
-Status](https://app.travis-ci.com/egeulgen/pathfindR.svg?branch=master)](https://app.travis-ci.com/github/egeulgen/pathfindR)
 [![Codecov test
 coverage](https://codecov.io/gh/egeulgen/pathfindR/branch/master/graph/badge.svg)](https://app.codecov.io/gh/egeulgen/pathfindR)
 [![CRAN
@@ -61,7 +59,7 @@ pak::pkg_install("egeulgen/pathfindR")
 ```
 
 > **IMPORTANT NOTE** For the active subnetwork search component to work,
-> the user must have [Java (>= 8.0)](https://www.java.com/en/)
+> the user must have [Java (\>= 8.0)](https://www.java.com/en/)
 > installed, and the path/to/java must be in the PATH environment
 > variable.
 
