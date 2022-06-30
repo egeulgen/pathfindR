@@ -49,7 +49,7 @@ Imports: DBI,
     R.utils,
     magick,
     msigdbr,
-    KEGGREST,
+    KEGGREST (>=1.37.2),
     KEGGgraph,
     knitr
 Depends: R (>= 4.0),
