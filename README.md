@@ -79,6 +79,8 @@ docker pull egeulgen/pathfindr:1.4.1
 docker pull egeulgen/pathfindr:dev
 ```
 
+Online app on superbio.ai: <https://app.superbio.ai/apps/111/>
+
 # Enrichment Analysis with pathfindR
 
 ![pathfindR Enrichment
