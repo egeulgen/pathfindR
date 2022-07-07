@@ -25,12 +25,12 @@ process_pin <- function(pin_df) {
 #' list of available organisms (default = "Homo_sapiens")
 #' @param path2pin the path of the file to save the PIN data. By default, the
 #' PIN data is saved in a temporary file
-#' @param release the requested BioGRID release (default = "4.4.200")
+#' @param release the requested BioGRID release (default = "4.4.211")
 #'
 #' @return the path of the file in which the PIN data was saved. If
 #' \code{path2pin} was not supplied by the user, the PIN data is saved in a
 #' temporary file
-get_biogrid_pin <- function(org = "Homo_sapiens", path2pin, release = "4.4.200") {
+get_biogrid_pin <- function(org = "Homo_sapiens", path2pin, release = "4.4.211") {
   # check organism name
   all_org_names <- c("Anopheles_gambiae_PEST", "Apis_mellifera",
                      "Arabidopsis_thaliana_Columbia", "Bacillus_subtilis_168",
