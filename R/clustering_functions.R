@@ -360,6 +360,8 @@ fuzzy_term_clustering <- function(kappa_mat, enrichment_res,
 #' \code{\link{hierarchical_term_clustering}} or \code{\link{fuzzy_term_clustering}}
 #' `fuzzy_term_clustering` or a vector obtained via `hierarchical_term_clustering`)
 #' @inheritParams fuzzy_term_clustering
+#' @param vertex.label.cex font size for vertex labels; it is interpreted as a multiplication factor of some device-dependent base font size (default = 0.7)
+#' @param vertex.size.scaling scaling factor for the node size (default = 2.5)                     
 #'
 #' @return Plots a graph diagram of clustering results. Each node is an enriched term
 #' from `enrichment_res`. Size of node corresponds to -log(lowest_p). Thickness
