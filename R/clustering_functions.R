@@ -360,6 +360,8 @@ fuzzy_term_clustering <- function(kappa_mat, enrichment_res,
 #' \code{\link{hierarchical_term_clustering}} or \code{\link{fuzzy_term_clustering}}
 #' `fuzzy_term_clustering` or a vector obtained via `hierarchical_term_clustering`)
 #' @inheritParams fuzzy_term_clustering
+#' @param vertex.label.cex font size for vertex labels; it is interpreted as a multiplication factor of some device-dependent base font size (default = 0.7)
+#' @param vertex.size.scaling scaling factor for the node size (default = 2.5)                     
 #'
 #' @return Plots a graph diagram of clustering results. Each node is an enriched term
 #' from `enrichment_res`. Size of node corresponds to -log(lowest_p). Thickness
@@ -374,7 +376,8 @@ fuzzy_term_clustering <- function(kappa_mat, enrichment_res,
 #' cluster_graph_vis(clu_obj, kappa_mat, enrichment_res)
 #' }
 cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res,
-                              kappa_threshold = 0.35, use_description = FALSE) {
+                              kappa_threshold = 0.35, use_description = FALSE,
+                              vertex.label.cex = 0.7, vertex.size.scaling = 2.5) {
   ### Set ID/Name index
   chosen_id <- ifelse(use_description,
                       which(colnames(enrichment_res) == "Term_Description"),
@@ -440,7 +443,7 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res,
     # Node sizes are -log(lowest_p)
     p_idx <- match(names(igraph::V(g)), enrichment_res[, chosen_id])
     transformed_p <- -log10(enrichment_res$lowest_p[p_idx])
-    igraph::V(g)$size <- transformed_p * 2.5
+    igraph::V(g)$size <- transformed_p * vertex.size.scaling
 
     ### Plot Graph
     igraph::plot.igraph(g,
@@ -451,7 +454,7 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res,
                         vertex.label.dist = 0,
                         vertex.label.color = "black",
                         asp = 1,
-                        vertex.label.cex = 0.7,
+                        vertex.label.cex = vertex.label.cex,
                         edge.width = igraph::E(g)$weight,
                         edge.arrow.mode = 0)
   } else if (is.integer(clu_obj)) {
@@ -495,7 +498,7 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res,
     # Node sizes are -log(lowest_p)
     p_idx <- match(names(igraph::V(g)), enrichment_res[, chosen_id])
     transformed_p <- -log10(enrichment_res$lowest_p[p_idx])
-    igraph::V(g)$size <- transformed_p * 2.5
+    igraph::V(g)$size <- transformed_p * vertex.size.scaling
 
     ### Plot graph
     igraph::plot.igraph(g,
@@ -504,7 +507,7 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res,
                         vertex.label.dist = 0,
                         vertex.label.color = "black",
                         asp = 0,
-                        vertex.label.cex = 0.7,
+                        vertex.label.cex = vertex.label.cex,
                         edge.width = igraph::E(g)$weight,
                         edge.arrow.mode = 0)
   } else {
