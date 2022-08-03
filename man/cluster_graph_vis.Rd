@@ -9,7 +9,9 @@ cluster_graph_vis(
   kappa_mat,
   enrichment_res,
   kappa_threshold = 0.35,
-  use_description = FALSE
+  use_description = FALSE,
+  vertex.label.cex = 0.7,
+  vertex.size.scaling = 2.5
 )
 }
 \arguments{
@@ -30,6 +32,10 @@ relation (default = 0.35)}
 
 \item{use_description}{Boolean argument to indicate whether term descriptions
 (in the "Term_Description" column) should be used. (default = \code{FALSE})}
+
+\item{vertex.label.cex}{font size for vertex labels; it is interpreted as a multiplication factor of some device-dependent base font size (default = 0.7)}
+
+\item{vertex.size.scaling}{scaling factor for the node size (default = 2.5)}
 }
 \value{
 Plots a graph diagram of clustering results. Each node is an enriched term
