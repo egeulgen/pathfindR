@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.3.9007</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.3.9008</span>
       </span>
     </div>
 
@@ -83,7 +83,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">visualize_term_interactions</span><span class="op">(</span><span class="va">result_df</span>, <span class="va">pin_name_path</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">visualize_term_interactions</span><span class="op">(</span><span class="va">result_df</span>, <span class="va">pin_name_path</span>, show_legend <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -97,6 +97,11 @@ are: "Term_Description", "Up_regulated" and "Down_regulated"</p></dd>
 <dd><p>Name of the chosen PIN or absolute/path/to/PIN.sif. If PIN name,
 must be one of c("Biogrid", "STRING", "GeneMania", "IntAct", "KEGG", "mmu_STRING"). If
 path/to/PIN.sif, the file must comply with the PIN specifications. (Default = "Biogrid")</p></dd>
+
+
+<dt>show_legend</dt>
+<dd><p>Boolean to indicate whether to display the legend (<code>TRUE</code>)
+or not (<code>FALSE</code>) (default: <code>TRUE</code>)</p></dd>
 
 </dl></div>
     <div id="value">
