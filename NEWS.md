@@ -8,6 +8,7 @@
 - added the `sort_terms_by_p` argument to the `term_gene_heatmap()` function to enable sorting of terms by 'lowest_p'
 - in visualization functions, made coloring of up-/down-regrulated genes consistent (#126)
 - added the `vertex.label.cex` and `vertex.size.scaling` arguments to `cluster_graph_vis()`
+- added the `show_legend` argument to `visualize_term_interactions()` to toggle the legend
 
 
 # pathfindR 1.6.3

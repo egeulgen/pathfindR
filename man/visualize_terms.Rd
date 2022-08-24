@@ -29,7 +29,8 @@ must be one of c("Biogrid", "STRING", "GeneMania", "IntAct", "KEGG", "mmu_STRING
 path/to/PIN.sif, the file must comply with the PIN specifications. (Default = "Biogrid")}
 
 \item{...}{additional arguments for \code{\link{visualize_hsa_KEGG}} (used
-when \code{hsa_kegg = TRUE})}
+when \code{hsa_kegg = TRUE}) or \code{\link{visualize_term_interactions}}
+(used when \code{hsa_kegg = FALSE})}
 }
 \value{
 Depending on the argument \code{hsa_KEGG}, creates visualization of

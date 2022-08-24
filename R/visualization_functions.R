@@ -10,7 +10,8 @@
 #'  enrichment analysis or not (default = \code{TRUE})
 #' @inheritParams return_pin_path
 #' @param ... additional arguments for \code{\link{visualize_hsa_KEGG}} (used
-#' when \code{hsa_kegg = TRUE})
+#' when \code{hsa_kegg = TRUE}) or \code{\link{visualize_term_interactions}}
+#' (used when \code{hsa_kegg = FALSE})
 #'
 #' @return Depending on the argument \code{hsa_KEGG}, creates visualization of
 #'  interactions of genes involved in the list of enriched terms in
@@ -73,7 +74,8 @@ visualize_terms <- function(result_df, input_processed = NULL,
                        ...)
   } else {
     visualize_term_interactions(result_df = result_df,
-                                pin_name_path = pin_name_path)
+                                pin_name_path = pin_name_path,
+                                ...)
   }
 }
 
@@ -82,6 +84,8 @@ visualize_terms <- function(result_df, input_processed = NULL,
 #' @param result_df Data frame of enrichment results. Must-have columns
 #' are: "Term_Description", "Up_regulated" and "Down_regulated"
 #' @inheritParams return_pin_path
+#' @param show_legend Boolean to indicate whether to display the legend (\code{TRUE})
+#' or not (\code{FALSE}) (default: \code{TRUE})
 #'
 #' @return Creates PNG files visualizing the interactions of genes involved
 #' in the given enriched terms (annotated in the \code{result_df}) in the PIN used
@@ -108,7 +112,7 @@ visualize_terms <- function(result_df, input_processed = NULL,
 #' \dontrun{
 #' visualize_term_interactions(result_df, pin_name_path = "IntAct")
 #' }
-visualize_term_interactions <- function(result_df, pin_name_path) {
+visualize_term_interactions <- function(result_df, pin_name_path, show_legend = TRUE) {
   ############ Initial Steps
   ## fix naming issue
   result_df$Term_Description <- gsub("\\/", "-", result_df$Term_Description)
@@ -201,21 +205,23 @@ visualize_term_interactions <- function(result_df, pin_name_path) {
                                        "\n Involved Gene Interactions in",
                                        pin_name_path))
 
-      if (is.null(snw_genes)) {
-        graphics::legend("topleft",
-                         legend = c("Upregulated Input Genes",
-                                    "Downregulated Input Genes",
-                                    "Other"),
-                         col = c("green", "red", "gray60"),
-                         pch = 19, cex = 1.5, bty = "n")
-      } else {
-        graphics::legend("topleft",
-                         legend = c("Non-input Active Snw. Genes",
-                                    "Upregulated Input Genes",
-                                    "Downregulated Input Genes",
-                                    "Other"),
-                         col = c("blue", "green", "red", "gray60"),
-                         pch = 19, cex = 1.5, bty = "n")
+      if (show_legend) {
+        if (is.null(snw_genes)) {
+          graphics::legend("topleft",
+                           legend = c("Upregulated Input Genes",
+                                      "Downregulated Input Genes",
+                                      "Other"),
+                           col = c("green", "red", "gray60"),
+                           pch = 19, cex = 1.5, bty = "n")
+        } else {
+          graphics::legend("topleft",
+                           legend = c("Non-input Active Snw. Genes",
+                                      "Upregulated Input Genes",
+                                      "Downregulated Input Genes",
+                                      "Other"),
+                           col = c("blue", "green", "red", "gray60"),
+                           pch = 19, cex = 1.5, bty = "n")
+        }
       }
       grDevices::dev.off()
 
