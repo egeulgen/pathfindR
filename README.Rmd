@@ -64,9 +64,6 @@ docker pull egeulgen/pathfindr:latest
 
 # pull image for a specific version (e.g., 1.4.1)
 docker pull egeulgen/pathfindr:1.4.1
-
-# pull image for the latest development version
-docker pull egeulgen/pathfindr:dev
 ```
 
 Online app on superbio.ai: [https://app.superbio.ai/apps/111/](https://app.superbio.ai/apps/111/)
