@@ -51,12 +51,11 @@ install.packages("pak") # if you have not installed "pak"
 pak::pkg_install("pathfindR")
 ```
 
-And the development version from GitHub via
-[pak](https://pak.r-lib.org/):
+And the development version from GitHub via `devtools`:
 
 ``` r
-install.packages("pak") # if you have not installed "pak"
-pak::pkg_install("egeulgen/pathfindR")
+install.packages("devtools") # if you have not installed "pak"
+devtools::install_github("egeulgen/pathfindR")
 ```
 
 > **IMPORTANT NOTE** For the active subnetwork search component to work,
