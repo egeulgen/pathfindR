@@ -21,3 +21,4 @@
 ^_pkgdown\.yml$
 ^pkgdown$
 ^revdep$
+^CRAN-SUBMISSION$
