@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.3.9008</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.4</span>
       </span>
     </div>
 
@@ -129,6 +129,23 @@
 </li>
 <li>In <code><a href="../reference/color_kegg_pathway.html">color_kegg_pathway()</a></code> the default value for <code>normalize_vals</code> is now <code>FALSE</code>
 </li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="1.6.4" id="pathfindr-164">pathfindR 1.6.4<a class="anchor" aria-label="anchor" href="#pathfindr-164"></a></h2>
+<div class="section level3">
+<h3 id="minor-changes-1-6-4">Minor Changes<a class="anchor" aria-label="anchor" href="#minor-changes-1-6-4"></a></h3>
+<ul><li>updated the alias selection function within <code><a href="../reference/input_processing.html">input_processing()</a></code> so that an alias that is not already present is selected</li>
+<li>updated the min-max scaling (controlled by <code>scale_vals</code>) in <code><a href="../reference/color_kegg_pathway.html">color_kegg_pathway()</a></code>, the default is now <code>scale_vals=TRUE</code>
+</li>
+<li>updated the <code><a href="../reference/term_gene_heatmap.html">term_gene_heatmap()</a></code> function so that legend title is shown and can be customized</li>
+<li>updated the <code><a href="../reference/term_gene_heatmap.html">term_gene_heatmap()</a></code> function so that coloring is proper when no change values are provided in <code>genes_df</code>
+</li>
+<li>added the <code>sort_terms_by_p</code> argument to the <code><a href="../reference/term_gene_heatmap.html">term_gene_heatmap()</a></code> function to enable sorting of terms by ‘lowest_p’</li>
+<li>in visualization functions, made coloring of up-/down-regrulated genes consistent (<a href="https://github.com/egeulgen/pathfindR/issues/126" class="external-link">#126</a>)</li>
+<li>added the <code>vertex.label.cex</code> and <code>vertex.size.scaling</code> arguments to <code><a href="../reference/cluster_graph_vis.html">cluster_graph_vis()</a></code>
+</li>
+<li>added the <code>show_legend</code> argument to <code><a href="../reference/visualize_term_interactions.html">visualize_term_interactions()</a></code> to toggle the legend</li>
 </ul></div>
 </div>
   </div>
