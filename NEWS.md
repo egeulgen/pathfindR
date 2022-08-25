@@ -1,4 +1,4 @@
-# pathfindR (development version)
+# pathfindR 1.6.4
 
 ## Minor Changes
 - updated the alias selection function within `input_processing()` so that an alias that is not already present is selected
