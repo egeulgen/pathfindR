@@ -12,8 +12,6 @@ coverage](https://codecov.io/gh/egeulgen/pathfindR/branch/master/graph/badge.svg
 version](http://www.r-pkg.org/badges/version-ago/pathfindR)](https://cran.r-project.org/package=pathfindR)
 [![CRAN total
 downloads](https://cranlogs.r-pkg.org/badges/grand-total/pathfindR)](https://cran.r-project.org/package=pathfindR)
-[![Lifecycle:
-stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 [![License:
 MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 <!-- badges: end -->
