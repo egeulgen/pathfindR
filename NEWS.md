@@ -1,5 +1,8 @@
 # pathfindR (development version)
 
+## Minor Changes
+- fixed minor issue in `return_pin_path()` (#157)
+
 # pathfindR 1.6.4
 
 ## Minor Changes
