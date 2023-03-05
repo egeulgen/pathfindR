@@ -35,7 +35,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.4.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.4.9001</span>
       </span>
     </div>
 
@@ -98,13 +98,14 @@
 
       
 
-      </header><script src="non_hs_analysis_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>pathfindR Analysis for non-Homo-sapiens organisms</h1>
+      <h1 data-toc-skip>pathfindR Analysis for non-Homo-sapiens
+organisms</h1>
                         <h4 data-toc-skip class="author">Ege Ulgen</h4>
             
-            <h4 data-toc-skip class="date">2022-08-25</h4>
+            <h4 data-toc-skip class="date">2023-03-05</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/HEAD/vignettes/non_hs_analysis.Rmd" class="external-link"><code>vignettes/non_hs_analysis.Rmd</code></a></small>
       <div class="hidden name"><code>non_hs_analysis.Rmd</code></div>
@@ -113,34 +114,59 @@
 
     
     
-<p>As mentioned in the vignette <a href="intro_vignette.html">Introduction to pathfindR</a>, enrichment analysis with pathfindR is not limited to the built-in data. The users are able to utilize custom protein-protein interaction networks (PINs) as well as custom gene sets. These abilities to use custom data naturally allow for performing pathfindR analysis on non-Homo-sapiens input data. In this vignette, we’ll try to provide an overview of how pathfindR analysis using Mus musculus data can be performed.</p>
+<p>As mentioned in the vignette <a href="intro_vignette.html">Introduction to pathfindR</a>, enrichment
+analysis with pathfindR is not limited to the built-in data. The users
+are able to utilize custom protein-protein interaction networks (PINs)
+as well as custom gene sets. These abilities to use custom data
+naturally allow for performing pathfindR analysis on non-Homo-sapiens
+input data. In this vignette, we’ll try to provide an overview of how
+pathfindR analysis using Mus musculus data can be performed.</p>
 <div class="section level2">
 <h2 id="preparation-of-necessary-data">Preparation of Necessary Data<a class="anchor" aria-label="anchor" href="#preparation-of-necessary-data"></a>
 </h2>
 <blockquote>
-<p>As of v1.5, pathfindR offers utility functions for obtaining organism-specific PIN data and organism-specific gene sets data via <code><a href="../reference/get_pin_file.html">get_pin_file()</a></code> and <code><a href="../reference/get_gene_sets_list.html">get_gene_sets_list()</a></code>, respectively. See the vignette <a href="obtain_data.html">Obtaining PIN and Gene Sets Data</a> for detailed information on how to gather PIN and gene sets data (for any organism of your choice) for use with pathfindR.</p>
+<p>As of v1.5, pathfindR offers utility functions for obtaining
+organism-specific PIN data and organism-specific gene sets data via
+<code><a href="../reference/get_pin_file.html">get_pin_file()</a></code> and <code><a href="../reference/get_gene_sets_list.html">get_gene_sets_list()</a></code>,
+respectively. See the vignette <a href="obtain_data.html">Obtaining PIN
+and Gene Sets Data</a> for detailed information on how to gather PIN and
+gene sets data (for any organism of your choice) for use with
+pathfindR.</p>
 </blockquote>
-<p>For performing non-human active-subnetwork-oriented enrichment analysis, the user needs the following resources:</p>
+<p>For performing non-human active-subnetwork-oriented enrichment
+analysis, the user needs the following resources:</p>
 <ul>
 <li>organism-specific protein interaction network (PIN) data</li>
 <li>organism-specific gene sets data</li>
 </ul>
-<p>After obtaining and processing these data for use, the user can run pathfindR using custom parameters.</p>
+<p>After obtaining and processing these data for use, the user can run
+pathfindR using custom parameters.</p>
 <blockquote>
-<p>Important Note: Because the non-human organism-specific PIN will likely contain less interactions than the Homo sapiens PIN, pathfindR may result in less (or even no) enriched terms.</p>
+<p>Important Note: Because the non-human organism-specific PIN will
+likely contain less interactions than the Homo sapiens PIN, pathfindR
+may result in less (or even no) enriched terms.</p>
 </blockquote>
 <div class="section level3">
 <h3 id="obtain-organism-specific-gene-sets">Obtain Organism-specific Gene Sets<a class="anchor" aria-label="anchor" href="#obtain-organism-specific-gene-sets"></a>
 </h3>
-<p>We can obtain the up-to-date M.musculus (KEGG identifier: mmu) KEGG Pathway Gene Sets using the function <code><a href="../reference/get_gene_sets_list.html">get_gene_sets_list()</a></code>:</p>
+<p>We can obtain the up-to-date M.musculus (KEGG identifier: mmu) KEGG
+Pathway Gene Sets using the function
+<code><a href="../reference/get_gene_sets_list.html">get_gene_sets_list()</a></code>:</p>
 <blockquote>
-<p>If using another organism, all you have to do is to replace “mmu” with the KEGG organism code in the related arguments in this vignette.</p>
+<p>If using another organism, all you have to do is to replace “mmu”
+with the KEGG organism code in the related arguments in this
+vignette.</p>
 </blockquote>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">gsets_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_gene_sets_list.html">get_gene_sets_list</a></span><span class="op">(</span>source <span class="op">=</span> <span class="st">"KEGG"</span>,</span>
 <span>                                 org_code <span class="op">=</span> <span class="st">"mmu"</span><span class="op">)</span></span></code></pre></div>
-<p>This returns a list containing 2 objects named: <code>gene_sets</code> containing sets of genes of each pathway and <code>desriptions</code> containing the description of each pathway.</p>
-<p>The M.musculus KEGG gene set data <code>mmu_kegg_genes</code> and <code>mmu_kegg_descriptions</code> are already provided in pathfindR. For other organisms, the user may wish to save the data as RDS files for future use:</p>
+<p>This returns a list containing 2 objects named:
+<code>gene_sets</code> containing sets of genes of each pathway and
+<code>desriptions</code> containing the description of each pathway.</p>
+<p>The M.musculus KEGG gene set data <code>mmu_kegg_genes</code> and
+<code>mmu_kegg_descriptions</code> are already provided in pathfindR.
+For other organisms, the user may wish to save the data as RDS files for
+future use:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mmu_kegg_genes</span> <span class="op">&lt;-</span> <span class="va">gsets_list</span><span class="op">$</span><span class="va">gene_sets</span></span>
 <span><span class="va">mmu_kegg_descriptions</span> <span class="op">&lt;-</span> <span class="va">gsets_list</span><span class="op">$</span><span class="va">descriptions</span></span>
@@ -153,18 +179,30 @@
 <code class="sourceCode R"><span><span class="va">mmu_kegg_genes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="st">"mmu_kegg_genes.RDS"</span><span class="op">)</span></span>
 <span><span class="va">mmu_kegg_descriptions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="st">"mmu_kegg_descriptions.RDS"</span><span class="op">)</span></span></code></pre></div>
 <blockquote>
-<p>The function <code><a href="../reference/get_gene_sets_list.html">get_gene_sets_list()</a></code> can also be used to obtain gene sets data from other sources. See the vignette <a href="obtain_data.html">Obtaining PIN and Gene Sets Data</a> for more detail.</p>
+<p>The function <code><a href="../reference/get_gene_sets_list.html">get_gene_sets_list()</a></code> can also be used to
+obtain gene sets data from other sources. See the vignette <a href="obtain_data.html">Obtaining PIN and Gene Sets Data</a> for more
+detail.</p>
 </blockquote>
 </div>
 <div class="section level3">
 <h3 id="obtain-organism-specific-protein-protein-interaction-network">Obtain Organism-specific Protein-protein Interaction Network<a class="anchor" aria-label="anchor" href="#obtain-organism-specific-protein-protein-interaction-network"></a>
 </h3>
-<p>You may use the function <code><a href="../reference/get_pin_file.html">get_pin_file()</a></code> to obtain organism-specific BioGRID PIN data (see the vignette <a href="obtain_data.html">Obtaining PIN and Gene Sets Data</a>)</p>
+<p>You may use the function <code><a href="../reference/get_pin_file.html">get_pin_file()</a></code> to obtain
+organism-specific BioGRID PIN data (see the vignette <a href="obtain_data.html">Obtaining PIN and Gene Sets Data</a>)</p>
 <blockquote>
-<p>Note that BioGRID PINs are smaller for non-H.sapiens organisms and this, in turn, results in less or no significantly enriched terms with pathfindR analysis.</p>
+<p>Note that BioGRID PINs are smaller for non-H.sapiens organisms and
+this, in turn, results in less or no significantly enriched terms with
+pathfindR analysis.</p>
 </blockquote>
-<p>Here, we demonstrate obtaining the organism-specific protein-protein interaction network (PIN) from <a href="https://string-db.org/" class="external-link">STRING</a>. You may choose the organism of your choice and find the PIN on the downloads page with the description “protein network data (scored links between proteins)”. When processing, we recommend filtering the interactions using a link score threshold (e.g. 800).</p>
-<p>Regardless of the resource, the raw PIN data should be processed to a SIF file, each interactor should be specified with their gene symbols. The first 3 interactions from an example SIF file is provided below:</p>
+<p>Here, we demonstrate obtaining the organism-specific protein-protein
+interaction network (PIN) from <a href="https://string-db.org/" class="external-link">STRING</a>. You may choose the organism of
+your choice and find the PIN on the downloads page with the description
+“protein network data (scored links between proteins)”. When processing,
+we recommend filtering the interactions using a link score threshold
+(e.g. 800).</p>
+<p>Regardless of the resource, the raw PIN data should be processed to a
+SIF file, each interactor should be specified with their gene symbols.
+The first 3 interactions from an example SIF file is provided below:</p>
 <table class="table"><tbody>
 <tr class="odd">
 <td align="left">C2cd2</td>
@@ -182,7 +220,9 @@
 <td align="left">Mettl1</td>
 </tr>
 </tbody></table>
-<p>Notice there are no headers and each line contains an interaction in the form <code>GeneA pp GeneB</code>, separated by tab (i.e. <code>\t</code>) with no row names and no column names.</p>
+<p>Notice there are no headers and each line contains an interaction in
+the form <code>GeneA pp GeneB</code>, separated by tab
+(i.e. <code>\t</code>) with no row names and no column names.</p>
 <p>Below we download process the STRING PIN for use with pathfindR:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Downloading the STRING PIN file to tempdir</span></span>
@@ -216,7 +256,9 @@
 </tr>
 </tbody>
 </table>
-<p>Since the interactors are Ensembl peptide IDs, we’ll need to convert them to MGI symbols for use with pathfindR. This can be achieved via <code>biomaRt</code> or any other conversion method you prefer:</p>
+<p>Since the interactors are Ensembl peptide IDs, we’ll need to convert
+them to MGI symbols for use with pathfindR. This can be achieved via
+<code>biomaRt</code> or any other conversion method you prefer:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># library(biomaRt)</span></span>
 <span></span>
@@ -248,7 +290,8 @@
 </tr>
 </tbody>
 </table>
-<p>Next, we remove self interactions and any duplicated interactions, format the data frame as SIF:</p>
+<p>Next, we remove self interactions and any duplicated interactions,
+format the data frame as SIF:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># remove self interactions</span></span>
 <span><span class="va">self_intr_cond</span> <span class="op">&lt;-</span> <span class="va">mmu_string_pin</span><span class="op">$</span><span class="va">Interactor_A</span> <span class="op">==</span> <span class="va">mmu_string_pin</span><span class="op">$</span><span class="va">Interactor_B</span></span>
@@ -260,7 +303,9 @@
 <span><span class="va">mmu_string_pin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>A <span class="op">=</span> <span class="va">mmu_string_pin</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>,</span>
 <span>                             pp <span class="op">=</span> <span class="st">"pp"</span>,</span>
 <span>                             B <span class="op">=</span> <span class="va">mmu_string_pin</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
-<p>Finally, we save the gene symbol PIN as a SIF file named “mmusculusPIN.sif” under the temporary directory (i.e. <code><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir()</a></code>):</p>
+<p>Finally, we save the gene symbol PIN as a SIF file named
+“mmusculusPIN.sif” under the temporary directory
+(i.e. <code><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir()</a></code>):</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">path2SIF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"mmusculusPIN.sif"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.table</a></span><span class="op">(</span><span class="va">mmu_string_pin</span>,</span>
@@ -270,9 +315,12 @@
 <span>            sep <span class="op">=</span> <span class="st">"\t"</span>,</span>
 <span>            quote <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">path2SIF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/normalizePath.html" class="external-link">normalizePath</a></span><span class="op">(</span><span class="va">path2SIF</span><span class="op">)</span></span></code></pre></div>
-<p>We’ll use this path to the custom sif for analysis with <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code>.</p>
+<p>We’ll use this path to the custom sif for analysis with
+<code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code>.</p>
 <blockquote>
-<p>The STRING Mus musculus PIN created above is available in pathfindR and can be used via setting <code>pin_name_path = "mmu_STRING"</code> in <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code>.</p>
+<p>The STRING Mus musculus PIN created above is available in pathfindR
+and can be used via setting <code>pin_name_path = "mmu_STRING"</code> in
+<code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code>.</p>
 </blockquote>
 </div>
 </div>
@@ -282,7 +330,18 @@
 <div class="section level3">
 <h3 id="input-data">Input Data<a class="anchor" aria-label="anchor" href="#input-data"></a>
 </h3>
-<p>The data used in this vignette (<code>myeloma_input</code>) is the data frame of differentially-expressed genes along for the GEO dataset <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE99393" class="external-link">GSE99393</a>. The RNA microarray experiment was perform to detail the global program of gene expression underlying polarization of myeloma-associated macrophages by CSF1R antibody treatment. The samples are 6 murine bone marrow derived macrophages co-cultured with myeloma cells (myeloma-associated macrophages), 3 of which were treated with CSF1R antibody (treatment group) and the rest were treated with control IgG antibody (control group). In <code>myeloma_input</code>, 45 differentially-expressed genes with |logFC| &gt;= 2 and FDR &lt;= 0.05 are presented.</p>
+<p>The data used in this vignette (<code>myeloma_input</code>) is the
+data frame of differentially-expressed genes along for the GEO dataset
+<a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE99393" class="external-link">GSE99393</a>.
+The RNA microarray experiment was perform to detail the global program
+of gene expression underlying polarization of myeloma-associated
+macrophages by CSF1R antibody treatment. The samples are 6 murine bone
+marrow derived macrophages co-cultured with myeloma cells
+(myeloma-associated macrophages), 3 of which were treated with CSF1R
+antibody (treatment group) and the rest were treated with control IgG
+antibody (control group). In <code>myeloma_input</code>, 45
+differentially-expressed genes with |logFC| &gt;= 2 and FDR &lt;= 0.05
+are presented.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">myeloma_input</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
@@ -321,7 +380,14 @@
 <div class="section level3">
 <h3 id="executing-run_pathfindr">Executing <code>run_pathfindR()</code><a class="anchor" aria-label="anchor" href="#executing-run_pathfindr"></a>
 </h3>
-<p>After obtaining the necessary PIN and gene sets data, you can then perform pathfindR analysis by setting these arguments: - <code>convert2alias = FALSE</code>: alias conversion only works on H.sapiens genes - <code>pin_name_path = path2SIF</code>: as we’re using a non-built-in PIN, we need to provide the path to the mmu sif file - <code>gene_sets = "Custom</code>: as we’re using a non-built-in source for gene sets - <code>custom_genes = mmu_kegg_genes</code> - <code>custom_descriptions = mmu_kegg_descriptions</code></p>
+<p>After obtaining the necessary PIN and gene sets data, you can then
+perform pathfindR analysis by setting these arguments: -
+<code>convert2alias = FALSE</code>: alias conversion only works on
+H.sapiens genes - <code>pin_name_path = path2SIF</code>: as we’re using
+a non-built-in PIN, we need to provide the path to the mmu sif file -
+<code>gene_sets = "Custom</code>: as we’re using a non-built-in source
+for gene sets - <code>custom_genes = mmu_kegg_genes</code> -
+<code>custom_descriptions = mmu_kegg_descriptions</code></p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">myeloma_output</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span>input <span class="op">=</span> <span class="va">myeloma_input</span>,</span>
 <span>                                convert2alias <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -334,15 +400,15 @@
 <code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">myeloma_output</span><span class="op">)</span></span></code></pre></div>
 <table style="width:100%;" class="table">
 <colgroup>
-<col width="5%">
-<col width="26%">
-<col width="9%">
-<col width="6%">
-<col width="5%">
-<col width="5%">
-<col width="5%">
-<col width="27%">
+<col width="4%">
+<col width="32%">
 <col width="8%">
+<col width="5%">
+<col width="5%">
+<col width="5%">
+<col width="5%">
+<col width="24%">
+<col width="7%">
 </colgroup>
 <thead><tr class="header">
 <th align="left">ID</th>
@@ -357,233 +423,305 @@
 </tr></thead>
 <tbody>
 <tr class="odd">
+<td align="left">mmu04061</td>
+<td align="left">Viral protein interaction with cytokine and cytokine
+receptor</td>
+<td align="right">25.162835</td>
+<td align="right">10</td>
+<td align="right">0.0714286</td>
+<td align="right">0.0000006</td>
+<td align="right">0.0000006</td>
+<td align="left">Ccl8, Ccl12, Cxcl10, Tnfsf10</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
 <td align="left">mmu04060</td>
 <td align="left">Cytokine-cytokine receptor interaction</td>
-<td align="right">12.238095</td>
+<td align="right">13.981904</td>
 <td align="right">10</td>
-<td align="right">0.1666667</td>
-<td align="right">0.0000062</td>
-<td align="right">0.0000062</td>
+<td align="right">0.1428571</td>
+<td align="right">0.0000070</td>
+<td align="right">0.0000070</td>
 <td align="left">Ccl8, Ccl12, Cxcl10, Il15, Il1b, Tnfsf10, Lifr</td>
 <td align="left"></td>
 </tr>
+<tr class="odd">
+<td align="left">mmu04657</td>
+<td align="left">IL-17 signaling pathway</td>
+<td align="right">18.448034</td>
+<td align="right">10</td>
+<td align="right">0.2142857</td>
+<td align="right">0.0000091</td>
+<td align="right">0.0000091</td>
+<td align="left">Cxcl10, Ccl12, Il1b</td>
+<td align="left"></td>
+</tr>
 <tr class="even">
+<td align="left">mmu04062</td>
+<td align="left">Chemokine signaling pathway</td>
+<td align="right">9.021291</td>
+<td align="right">10</td>
+<td align="right">0.0714286</td>
+<td align="right">0.0000111</td>
+<td align="right">0.0000111</td>
+<td align="left">Cxcl10, Ccl12, Ccl8</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
 <td align="left">mmu04668</td>
 <td align="left">TNF signaling pathway</td>
-<td align="right">16.895070</td>
+<td align="right">19.722222</td>
 <td align="right">10</td>
-<td align="right">0.1666667</td>
-<td align="right">0.0000220</td>
-<td align="right">0.0000220</td>
+<td align="right">0.0714286</td>
+<td align="right">0.0000223</td>
+<td align="right">0.0000223</td>
 <td align="left">Ccl12, Cxcl10, Il1b, Il15</td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">mmu04625</td>
 <td align="left">C-type lectin receptor signaling pathway</td>
-<td align="right">13.257936</td>
+<td align="right">14.659598</td>
 <td align="right">10</td>
-<td align="right">0.0833333</td>
-<td align="right">0.0001576</td>
-<td align="right">0.0001576</td>
+<td align="right">0.0714286</td>
+<td align="right">0.0001883</td>
+<td align="right">0.0018598</td>
 <td align="left">Il1b, Clec4n, Clec4e</td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">mmu00230</td>
 <td align="left">Purine metabolism</td>
-<td align="right">7.231602</td>
+<td align="right">8.485142</td>
 <td align="right">10</td>
-<td align="right">0.0833333</td>
-<td align="right">0.0002892</td>
-<td align="right">0.0002892</td>
+<td align="right">0.0714286</td>
+<td align="right">0.0002888</td>
+<td align="right">0.0002888</td>
 <td align="left">Gda, Pde3b</td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
-<td align="left">mmu04217</td>
-<td align="left">Necroptosis</td>
-<td align="right">6.867420</td>
+<tr class="even">
+<td align="left">mmu05144</td>
+<td align="left">Malaria</td>
+<td align="right">21.049679</td>
 <td align="right">10</td>
-<td align="right">0.0833333</td>
-<td align="right">0.0003381</td>
-<td align="right">0.0003381</td>
-<td align="left">Il1b, Tnfsf10</td>
+<td align="right">0.1428571</td>
+<td align="right">0.0003621</td>
+<td align="right">0.0003621</td>
+<td align="left">Ccl12, Il1b</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">mmu05171</td>
+<td align="left">Coronavirus disease - COVID-19</td>
+<td align="right">9.559680</td>
+<td align="right">10</td>
+<td align="right">0.1428571</td>
+<td align="right">0.0004099</td>
+<td align="right">0.0004099</td>
+<td align="left">Il1b, Ccl12, Cxcl10, F13a1</td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">mmu04623</td>
-<td align="left">Cytosolic DNA-sensing pathway</td>
-<td align="right">16.179177</td>
+<td align="left">mmu04217</td>
+<td align="left">Necroptosis</td>
+<td align="right">6.674289</td>
 <td align="right">10</td>
-<td align="right">0.0833333</td>
-<td align="right">0.0004972</td>
-<td align="right">0.0004972</td>
-<td align="left">Cxcl10, Il1b</td>
+<td align="right">0.0714286</td>
+<td align="right">0.0005964</td>
+<td align="right">0.0005964</td>
+<td align="left">Il1b, Tnfsf10</td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
 <td align="left">mmu05164</td>
 <td align="left">Influenza A</td>
-<td align="right">11.500861</td>
+<td align="right">13.267677</td>
 <td align="right">10</td>
-<td align="right">0.2500000</td>
-<td align="right">0.0005779</td>
-<td align="right">0.0005779</td>
+<td align="right">0.1428571</td>
+<td align="right">0.0006074</td>
+<td align="right">0.0006074</td>
 <td align="left">Il1b, Ccl12, Cxcl10, Tnfsf10</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">mmu04630</td>
+<td align="left">JAK-STAT signaling pathway</td>
+<td align="right">6.515377</td>
+<td align="right">10</td>
+<td align="right">0.0714286</td>
+<td align="right">0.0006414</td>
+<td align="right">0.0006414</td>
+<td align="left">Il15, Lifr</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">mmu04620</td>
+<td align="left">Toll-like receptor signaling pathway</td>
+<td align="right">11.284364</td>
+<td align="right">9</td>
+<td align="right">0.0714286</td>
+<td align="right">0.0012052</td>
+<td align="right">0.0012052</td>
+<td align="left">Il1b, Cxcl10</td>
 <td align="left"></td>
 </tr>
 <tr class="even">
 <td align="left">mmu05417</td>
 <td align="left">Lipid and atherosclerosis</td>
-<td align="right">6.690921</td>
+<td align="right">7.672313</td>
 <td align="right">10</td>
-<td align="right">0.0833333</td>
-<td align="right">0.0012432</td>
-<td align="right">0.0012432</td>
+<td align="right">0.0714286</td>
+<td align="right">0.0013307</td>
+<td align="right">0.0013307</td>
 <td align="left">Ccl12, Il1b, Tnfsf10</td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
 <td align="left">mmu05323</td>
 <td align="left">Rheumatoid arthritis</td>
-<td align="right">16.649502</td>
+<td align="right">19.316177</td>
 <td align="right">10</td>
-<td align="right">0.1666667</td>
-<td align="right">0.0015580</td>
-<td align="right">0.0015580</td>
+<td align="right">0.0714286</td>
+<td align="right">0.0016094</td>
+<td align="right">0.0016094</td>
 <td align="left">Il15, Il1b, Ccl12</td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">mmu04657</td>
-<td align="left">IL-17 signaling pathway</td>
-<td align="right">16.088282</td>
-<td align="right">10</td>
-<td align="right">0.2500000</td>
-<td align="right">0.0017280</td>
-<td align="right">0.0017280</td>
-<td align="left">Cxcl10, Ccl12, Il1b</td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
 <td align="left">mmu05132</td>
 <td align="left">Salmonella infection</td>
-<td align="right">3.912178</td>
+<td align="right">4.431512</td>
 <td align="right">10</td>
-<td align="right">0.0833333</td>
-<td align="right">0.0018460</td>
-<td align="right">0.0018460</td>
+<td align="right">0.0714286</td>
+<td align="right">0.0020500</td>
+<td align="right">0.0020500</td>
 <td align="left">Il1b, Tnfsf10</td>
 <td align="left"></td>
 </tr>
-<tr class="even">
-<td align="left">mmu04620</td>
-<td align="left">Toll-like receptor signaling pathway</td>
-<td align="right">9.740525</td>
-<td align="right">10</td>
-<td align="right">0.1666667</td>
-<td align="right">0.0023108</td>
-<td align="right">0.0023108</td>
-<td align="left">Il1b, Cxcl10</td>
+<tr class="odd">
+<td align="left">mmu05152</td>
+<td align="left">Tuberculosis</td>
+<td align="right">6.149345</td>
+<td align="right">9</td>
+<td align="right">0.0714286</td>
+<td align="right">0.0074842</td>
+<td align="right">0.0074842</td>
+<td align="left">Clec4e, Il1b</td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">mmu00760</td>
 <td align="left">Nicotinate and nicotinamide metabolism</td>
-<td align="right">12.238095</td>
+<td align="right">14.033120</td>
 <td align="right">10</td>
-<td align="right">0.0833333</td>
-<td align="right">0.0076290</td>
-<td align="right">0.0076290</td>
+<td align="right">0.0714286</td>
+<td align="right">0.0080257</td>
+<td align="right">0.0080257</td>
 <td align="left">Art2b</td>
 <td align="left"></td>
 </tr>
-<tr class="even">
-<td align="left">mmu04630</td>
-<td align="left">JAK-STAT signaling pathway</td>
-<td align="right">5.820557</td>
+<tr class="odd">
+<td align="left">mmu04621</td>
+<td align="left">NOD-like receptor signaling pathway</td>
+<td align="right">11.769713</td>
 <td align="right">10</td>
-<td align="right">0.0833333</td>
-<td align="right">0.0108438</td>
-<td align="right">0.0108438</td>
-<td align="left">Il15, Lifr</td>
+<td align="right">0.0714286</td>
+<td align="right">0.0168973</td>
+<td align="right">0.0168973</td>
+<td align="left">Il1b, Ccl12, Gbp2, Gbp7</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">mmu04923</td>
+<td align="left">Regulation of lipolysis in adipocytes</td>
+<td align="right">9.601608</td>
+<td align="right">10</td>
+<td align="right">0.0714286</td>
+<td align="right">0.0172702</td>
+<td align="right">0.0172702</td>
+<td align="left">Pde3b</td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
 <td align="left">mmu05134</td>
 <td align="left">Legionellosis</td>
-<td align="right">8.089588</td>
+<td align="right">9.276130</td>
 <td align="right">10</td>
-<td align="right">0.0833333</td>
-<td align="right">0.0175980</td>
-<td align="right">0.0175980</td>
+<td align="right">0.0714286</td>
+<td align="right">0.0185127</td>
+<td align="right">0.0185127</td>
 <td align="left">Il1b</td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">mmu04621</td>
-<td align="left">NOD-like receptor signaling pathway</td>
-<td align="right">11.431993</td>
+<td align="left">mmu05140</td>
+<td align="left">Leishmaniasis</td>
+<td align="right">7.931763</td>
 <td align="right">10</td>
-<td align="right">0.0833333</td>
-<td align="right">0.0198495</td>
-<td align="right">0.0198495</td>
-<td align="left">Il1b, Ccl12, Gbp2, Gbp7</td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">mmu05171</td>
-<td align="left">Coronavirus disease - COVID-19</td>
-<td align="right">8.373434</td>
-<td align="right">10</td>
-<td align="right">0.0833333</td>
-<td align="right">0.0289720</td>
-<td align="right">0.0289720</td>
-<td align="left">Il1b, Ccl12, Cxcl10, F13a1</td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left">mmu05143</td>
-<td align="left">African trypanosomiasis</td>
-<td align="right">13.636735</td>
-<td align="right">10</td>
-<td align="right">0.0833333</td>
-<td align="right">0.0304842</td>
-<td align="right">0.0304842</td>
+<td align="right">0.1428571</td>
+<td align="right">0.0253704</td>
+<td align="right">0.0253704</td>
 <td align="left">Il1b</td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
+<td align="left">mmu05133</td>
+<td align="left">Pertussis</td>
+<td align="right">7.201206</td>
+<td align="right">10</td>
+<td align="right">0.0714286</td>
+<td align="right">0.0308098</td>
+<td align="right">0.0308098</td>
+<td align="left">Il1b</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
 <td align="left">mmu04012</td>
 <td align="left">ErbB signaling pathway</td>
-<td align="right">5.892416</td>
+<td align="right">6.674289</td>
 <td align="right">10</td>
-<td align="right">0.1666667</td>
-<td align="right">0.0332873</td>
-<td align="right">0.0332873</td>
+<td align="right">0.0714286</td>
+<td align="right">0.0358906</td>
+<td align="right">0.0358906</td>
 <td align="left">Nrg1</td>
 <td align="left"></td>
 </tr>
+<tr class="odd">
+<td align="left">mmu04623</td>
+<td align="left">Cytosolic DNA-sensing pathway</td>
+<td align="right">18.552260</td>
+<td align="right">1</td>
+<td align="right">0.0588235</td>
+<td align="right">0.0369183</td>
+<td align="right">0.0369183</td>
+<td align="left">Cxcl10, Il1b</td>
+<td align="left"></td>
+</tr>
 <tr class="even">
-<td align="left">mmu04672</td>
-<td align="left">Intestinal immune network for IgA production</td>
-<td align="right">11.363946</td>
+<td align="left">mmu04914</td>
+<td align="left">Progesterone-mediated oocyte maturation</td>
+<td align="right">6.014194</td>
 <td align="right">10</td>
-<td align="right">0.0833333</td>
-<td align="right">0.0440507</td>
-<td align="right">0.0440507</td>
-<td align="left">Il15</td>
+<td align="right">0.0714286</td>
+<td align="right">0.0442350</td>
+<td align="right">0.0442350</td>
+<td align="left">Pde3b</td>
 <td align="left"></td>
 </tr>
 </tbody>
 </table>
-<p>Because we used a very strict cut-off (logFC &gt;= 2 + FDR &lt;= 0.05), there were only 18 enriched KEGG pathways. However, the pathways identified here are significantly related to the pathways identified in the original publication by Wang et al.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>.</p>
+<p>Because we used a very strict cut-off (logFC &gt;= 2 + FDR &lt;=
+0.05), there were only 18 enriched KEGG pathways. However, the pathways
+identified here are significantly related to the pathways identified in
+the original publication by Wang et al.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>.</p>
 </div>
 <div class="section level3">
 <h3 id="built-in-mus-musculus-data">Built-in Mus musculus Data<a class="anchor" aria-label="anchor" href="#built-in-mus-musculus-data"></a>
 </h3>
-<p>As aforementioned, for Mus musculus (only), we have provided the necessary PIN (<code>mmu_STRING</code>) and gene set data (<code>mmu_KEGG</code>) so you can also run:</p>
+<p>As aforementioned, for Mus musculus (only), we have provided the
+necessary PIN (<code>mmu_STRING</code>) and gene set data
+(<code>mmu_KEGG</code>) so you can also run:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">myeloma_output</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span>input <span class="op">=</span> <span class="va">myeloma_input</span>,</span>
 <span>                                convert2alias <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -591,10 +729,12 @@
 <span>                                pin_name_path <span class="op">=</span> <span class="st">"mmu_STRING"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
-<div class="footnotes">
+<div class="footnotes footnotes-end-of-document">
 <hr>
 <ol>
-<li id="fn1"><p>Wang Q, Lu Y, Li R, et al. Therapeutic effects of CSF1R-blocking antibodies in multiple myeloma. Leukemia. 2018;32(1):176-183.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn1"><p>Wang Q, Lu Y, Li R, et al. Therapeutic effects of
+CSF1R-blocking antibodies in multiple myeloma. Leukemia.
+2018;32(1):176-183.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
   </div>
@@ -616,7 +756,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

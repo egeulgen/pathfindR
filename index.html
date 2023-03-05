@@ -50,7 +50,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.4.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.4.9001</span>
       </span>
     </div>
 
@@ -117,10 +117,11 @@
   <div class="contents col-md-9">
 
 <div class="section level1">
-<div class="page-header"><h1 id="-pathfindr-an-r-package-for-enrichment-analysis-utilizing-active-subnetworks">
-<img src="https://github.com/egeulgen/pathfindR/blob/master/inst/extdata/logo.png?raw=true" align="left" height="150/"> pathfindR: An R Package for Enrichment Analysis Utilizing Active Subnetworks<a class="anchor" aria-label="anchor" href="#-pathfindr-an-r-package-for-enrichment-analysis-utilizing-active-subnetworks"></a>
+<div class="page-header"><h1 id="id_-pathfindr-an-r-package-for-enrichment-analysis-utilizing-active-subnetworks">
+<img src="https://github.com/egeulgen/pathfindR/blob/master/inst/extdata/logo.png?raw=true" align="left" height="150/"> pathfindR: An R Package for Enrichment Analysis Utilizing Active Subnetworks<a class="anchor" aria-label="anchor" href="#id_-pathfindr-an-r-package-for-enrichment-analysis-utilizing-active-subnetworks"></a>
 </h1></div>
 <!-- badges: start -->
+
 </div>
 <div class="section level1">
 <h1 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
@@ -138,18 +139,20 @@
 <p>or via <a href="https://pak.r-lib.org/" class="external-link">pak</a> (this might be preferable given <code>pathfindR</code>’s Bioconductor dependencies):</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"pak"</span><span class="op">)</span> <span class="co"># if you have not installed "pak"</span></span>
-<span><span class="fu">pak</span><span class="fu">::</span><span class="fu">pkg_install</span><span class="op">(</span><span class="st">"pathfindR"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="http://pak.r-lib.org/reference/pkg_install.html" class="external-link">pkg_install</a></span><span class="op">(</span><span class="st">"pathfindR"</span><span class="op">)</span></span></code></pre></div>
 <p>And the development version from GitHub via <code>devtools</code>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span> <span class="co"># if you have not installed "pak"</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"egeulgen/pathfindR"</span><span class="op">)</span></span></code></pre></div>
-<blockquote><p><strong>IMPORTANT NOTE</strong> For the active subnetwork search component to work, the user must have <a href="https://www.java.com/en/" class="external-link">Java (&gt;= 8.0)</a> installed, and the path/to/java must be in the PATH environment variable.</p></blockquote>
+<blockquote>
+<p><strong>IMPORTANT NOTE</strong> For the active subnetwork search component to work, the user must have <a href="https://www.java.com/en/" class="external-link">Java (&gt;= 8.0)</a> installed, and the path/to/java must be in the PATH environment variable.</p>
+</blockquote>
 <p>We also have docker images available on <a href="https://hub.docker.com/repository/docker/egeulgen/pathfindr" class="external-link">Docker Hub</a> and <a href="https://github.com/egeulgen/pathfindR/packages" class="external-link">GitHub</a>:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># pull image for the latest release</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="ex">docker</span> pull egeulgen/pathfindr:latest</span>
-<span id="cb4-3"><a href="#cb4-3"></a></span>
-<span id="cb4-4"><a href="#cb4-4"></a><span class="co"># pull image for a specific version (e.g., 1.4.1)</span></span>
-<span id="cb4-5"><a href="#cb4-5"></a><span class="ex">docker</span> pull egeulgen/pathfindr:1.4.1</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pull image for the latest release</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> pull egeulgen/pathfindr:latest</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># pull image for a specific version (e.g., 1.4.1)</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> pull egeulgen/pathfindr:1.4.1</span></code></pre></div>
 <p>Online app on superbio.ai: <a href="https://app.superbio.ai/apps/111/" class="external-link uri">https://app.superbio.ai/apps/111/</a></p>
 </div>
 <div class="section level1">
@@ -189,7 +192,9 @@
 </tbody>
 </table>
 <p>After input testing, any gene symbol that is not in the chosen protein-protein interaction network (PIN) is converted to an alias symbol if there is an alias that is found in the PIN. After mapping the input genes with the associated p-values onto the PIN, active subnetwork search is performed. The resulting active subnetworks are then filtered based on their scores and the number of significant genes they contain.</p>
-<blockquote><p>An active subnetwork can be defined as a group of interconnected genes in a protein-protein interaction network (PIN) that predominantly consists of significantly altered genes. In other words, active subnetworks define distinct disease-associated sets of interacting genes, whether discovered through the original analysis or discovered because of being in interaction with a significant gene.</p></blockquote>
+<blockquote>
+<p>An active subnetwork can be defined as a group of interconnected genes in a protein-protein interaction network (PIN) that predominantly consists of significantly altered genes. In other words, active subnetworks define distinct disease-associated sets of interacting genes, whether discovered through the original analysis or discovered because of being in interaction with a significant gene.</p>
+</blockquote>
 <p>These filtered lists of active subnetworks are then used for enrichment analyses, i.e., using the genes in each of the active subnetworks, the significantly enriched terms (pathways/gene sets) are identified. Enriched terms with adjusted p-values larger than the given threshold are discarded, and the lowest adjusted p-value (among all active subnetworks) for each term is kept. This process of <code>active subnetwork search + enrichment analyses</code> is repeated for a selected number of iterations, performed in parallel. Over all iterations, the lowest and the highest adjusted p-values, and the number of occurrences among all iterations are reported for each significantly enriched term.</p>
 <p>This workflow can be run using the function <code><a href="reference/run_pathfindr.html">run_pathfindR()</a></code>:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -218,7 +223,9 @@
 <span><span class="co"># report the non-significant active subnetwork genes (for later analyses)</span></span>
 <span><span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, list_active_snw_genes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>The available PINs are “Biogrid”, “STRING”, “GeneMania”, “IntAct”, “KEGG” and “mmu_STRING”. The available gene sets are “KEGG”, “Reactome”, “BioCarta”, “GO-All”, “GO-BP”, “GO-CC”, “GO-MF”, and “mmu_KEGG”. You also use a custom PIN (see <code><a href="reference/return_pin_path.html">?return_pin_path</a></code>) or a custom gene set (see <code><a href="reference/fetch_gene_set.html">?fetch_gene_set</a></code>)</p>
-<blockquote><p>As of the latest development version, pathfindR offers utility functions for obtaining organism-specific PIN data (for now, only BioGRID PINs) and organism-specific gene sets (KEGG and Reactome) data via <code><a href="reference/get_pin_file.html">get_pin_file()</a></code> and <code><a href="reference/get_gene_sets_list.html">get_gene_sets_list()</a></code>, respectively.</p></blockquote>
+<blockquote>
+<p>As of the latest development version, pathfindR offers utility functions for obtaining organism-specific PIN data (for now, only BioGRID PINs) and organism-specific gene sets (KEGG and Reactome) data via <code><a href="reference/get_pin_file.html">get_pin_file()</a></code> and <code><a href="reference/get_gene_sets_list.html">get_gene_sets_list()</a></code>, respectively.</p>
+</blockquote>
 </div>
 <div class="section level1">
 <h1 id="clustering-of-the-enriched-terms">Clustering of the Enriched Terms<a class="anchor" aria-label="anchor" href="#clustering-of-the-enriched-terms"></a>
@@ -357,7 +364,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
