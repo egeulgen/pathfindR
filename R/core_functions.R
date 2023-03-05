@@ -569,7 +569,7 @@ return_pin_path <- function(pin_name_path = "Biogrid") {
     ## Custom PIN
   } else if (file.exists(suppressWarnings(normalizePath(pin_name_path)))) {
     path <- normalizePath(pin_name_path)
-    pin <- utils::read.delim(file = path, quote = FALSE,
+    pin <- utils::read.delim(file = path, quote = "",
                              header = FALSE, stringsAsFactors = FALSE)
     if (ncol(pin) != 3) {
       stop("The PIN file must have 3 columns and be tab-separated")
