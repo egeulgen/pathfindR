@@ -200,7 +200,7 @@ hierarchical_term_clustering <- function(kappa_mat,
 
   ### Choose optimal k if not specified
   if (is.null(num_clusters)) {
-    kmax <- nrow(kappa_mat2) %/% 2
+    kmax <- max(nrow(kappa_mat2) %/% 2, 2)
 
     # sequence of k (num clusters) to try
     if (kmax <= 10) {
