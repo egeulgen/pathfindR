@@ -1,5 +1,8 @@
 # pathfindR (development version)
 
+## Major Changes
+- in `hierarchical_term_clustering()`, update the sequence of number of clusters for which silhouette width is calculated for choosing the optimal number of clusters. This should speed up the function for cases with a large number of enriched terms
+
 ## Minor Changes
 - fixed minor issue in `return_pin_path()` (#157)
 

@@ -2,7 +2,7 @@
 ## Project: pathfindR
 ## Script purpose: Testthat testing script for
 ## enriched term clustering functions
-## Date: Nov 4, 2020
+## Date: Mar 17, 2023
 ## Author: Ege Ulgen
 ##################################################
 
@@ -101,6 +101,18 @@ test_that("For `hierarchical_term_clustering()`, `num_clusters` works", {
             "integer")
   expect_equal(max(res), 4)
 
+})
+
+test_that("For `hierarchical_term_clustering()`, `kseq` works", {
+  skip_on_cran()
+  enrichment_res <- RA_output[1:15, ]
+  kappa_mat <- create_kappa_matrix(enrichment_res)
+  expect_is(res <- hierarchical_term_clustering(kappa_mat, enrichment_res),
+            "integer")
+  enrichment_res <- RA_output[1:101, ]
+  kappa_mat <- create_kappa_matrix(enrichment_res)
+  expect_is(res <- hierarchical_term_clustering(kappa_mat, enrichment_res),
+            "integer")
 })
 
 test_that("Consistent `hierarchical_term_clustering()` results", {

@@ -200,16 +200,28 @@ hierarchical_term_clustering <- function(kappa_mat,
 
   ### Choose optimal k if not specified
   if (is.null(num_clusters)) {
-    kmax <- nrow(kappa_mat2) - 1
+    kmax <- nrow(kappa_mat2) %/% 2
+
+    # sequence of k (num clusters) to try
+    if (kmax <= 10) {
+      kseq <- 2:kmax
+    } else if (kmax <= 100) {
+      kseq <- c(2:10, seq(20, kmax %/% 10 * 10, 10))
+    } else {
+      kseq <- c(2:10, seq(20, 100, 10),
+                seq(150, kmax %/% 50 * 50, 50))
+    }
+
+    # calculate average sil. width per k in sequence
     avg_sils <- c()
-    for (i in 2:kmax) {
+    for (k in kseq) {
       avg_sils <- c(avg_sils, fpc::cluster.stats(stats::as.dist(1 - kappa_mat2),
-                                                 stats::cutree(clu, k = i),
+                                                 stats::cutree(clu, k = k),
                                                  silhouette = TRUE
       )$avg.silwidth)
     }
 
-    k_opt <- (2:kmax)[which.max(avg_sils)]
+    k_opt <- kseq[which.max(avg_sils)]
 
     message(paste(
       "The maximum average silhouette width was",
@@ -361,7 +373,7 @@ fuzzy_term_clustering <- function(kappa_mat, enrichment_res,
 #' `fuzzy_term_clustering` or a vector obtained via `hierarchical_term_clustering`)
 #' @inheritParams fuzzy_term_clustering
 #' @param vertex.label.cex font size for vertex labels; it is interpreted as a multiplication factor of some device-dependent base font size (default = 0.7)
-#' @param vertex.size.scaling scaling factor for the node size (default = 2.5)                     
+#' @param vertex.size.scaling scaling factor for the node size (default = 2.5)
 #'
 #' @return Plots a graph diagram of clustering results. Each node is an enriched term
 #' from `enrichment_res`. Size of node corresponds to -log(lowest_p). Thickness
