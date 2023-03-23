@@ -401,13 +401,13 @@ visualize_hsa_KEGG <- function(hsa_kegg_ids, input_processed, max_to_plot = NULL
                               axis.title.x = ggplot2::element_blank(),
                               axis.title.y = ggplot2::element_blank(),
                               axis.ticks = ggplot2::element_line(colour = "black",
-                                                                 size = .6),
+                                                                 linewidth = .6),
                               axis.ticks.length = ggplot2::unit(.2, "cm"),
                               axis.text.x = ggplot2::element_text(size = 14,
                                                                   face = "bold"),
                               panel.border = ggplot2::element_rect(colour = "black",
                                                                    fill = NA,
-                                                                   size = .5),
+                                                                   linewidth = .5),
                               plot.margin = ggplot2::unit(c(0, .7 , 0, .7), "cm"))
       print(g)
       grDevices::dev.off()

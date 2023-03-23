@@ -354,11 +354,13 @@ visualize_active_subnetworks <- function(active_snw_path, genes_df,
                       "#D2222D" = "up-regulated gene",
                       "#FFD500" = "non-input gene")
 
+
+
     p <- ggraph::ggraph(g, layout = layout)
     p <- p + ggraph::geom_edge_link(alpha = .8, colour = "darkgrey")
-    p <- p + ggraph::geom_node_point(ggplot2::aes_(color = ~ I(color)), size = 2)
+    p <- p + ggraph::geom_node_point(ggplot2::aes(color = .data$color), size = 2)
     p <- p + ggplot2::theme_void()
-    p <- p + ggraph::geom_node_text(ggplot2::aes_(label = ~name), nudge_y = .2)
+    p <- p + ggraph::geom_node_text(ggplot2::aes(label = .data$name), nudge_y = .2)
     p <- p + ggplot2::scale_colour_manual(values = unique(igraph::V(g)$color),
                                           name = NULL,
                                           labels = color_lookup[unique(igraph::V(g)$color)])
