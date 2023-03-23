@@ -203,12 +203,12 @@ hierarchical_term_clustering <- function(kappa_mat,
     kmax <- max(nrow(kappa_mat2) %/% 2, 2)
 
     # sequence of k (num clusters) to try
-    if (kmax <= 10) {
+    if (kmax <= 20) {
       kseq <- 2:kmax
     } else if (kmax <= 100) {
-      kseq <- c(2:10, seq(20, kmax %/% 10 * 10, 10))
+      kseq <- c(2:19, seq(20, kmax %/% 10 * 10, 10))
     } else {
-      kseq <- c(2:10, seq(20, 100, 10),
+      kseq <- c(2:19, seq(20, 100, 10),
                 seq(150, kmax %/% 50 * 50, 50))
     }
 
