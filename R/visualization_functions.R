@@ -387,7 +387,7 @@ visualize_hsa_KEGG <- function(hsa_kegg_ids, input_processed, max_to_plot = NULL
 
       ### Generate color legend image
       col_key_legend <- magick::image_graph(width = 200, height = 90, res = 100)
-      g <- ggplot2::ggplot(key_col_df, ggplot2::aes_(~bin_val, ~y_val))
+      g <- ggplot2::ggplot(key_col_df, ggplot2::aes(.data$bin_val, .data$y_val))
       g <- g + ggplot2::geom_tile(fill = key_col_df$color,
                                   colour = "black")
       g <- g + ggplot2::scale_x_continuous(expand = c(0, 0),
@@ -817,7 +817,7 @@ enrichment_chart <- function(result_df,
 
   log_p <- -log10(result_df$lowest_p)
 
-  g <- ggplot2::ggplot(result_df, ggplot2::aes_(~Fold_Enrichment, ~Term_Description))
+  g <- ggplot2::ggplot(result_df, ggplot2::aes(.data$Fold_Enrichment, .data$Term_Description))
   g <- g + ggplot2::geom_point(ggplot2::aes(color = log_p,
                                             size = num_genes), na.rm = TRUE)
   g <- g + ggplot2::theme_bw()
@@ -992,14 +992,14 @@ term_gene_graph <- function(result_df, num_terms = 10,
   ### Create graph
   p <- ggraph::ggraph(g, layout = layout)
   p <- p + ggraph::geom_edge_link(alpha = .8, colour = "darkgrey")
-  p <- p + ggraph::geom_node_point(ggplot2::aes_(color = ~ I(color), size = ~size))
+  p <- p + ggraph::geom_node_point(ggplot2::aes(color = .data$color, size = .data$size))
   p <- p + ggplot2::scale_size(range = c(5, 10),
                                breaks = round(seq(round(min(igraph::V(g)$size)),
                                                   round(max(igraph::V(g)$size)),
                                                   length.out = 4)),
                                name = size_label)
   p <- p + ggplot2::theme_void()
-  p <- p + suppressWarnings(ggraph::geom_node_text(ggplot2::aes_(label = ~name), nudge_y = .2,
+  p <- p + suppressWarnings(ggraph::geom_node_text(ggplot2::aes(label = .data$name), nudge_y = .2,
                                                    repel = TRUE, max.overlaps = 20))
   p <- p + ggplot2::scale_color_manual(values = unique(igraph::V(g)$color),
                                        name = NULL,
@@ -1197,7 +1197,7 @@ term_gene_heatmap <- function(result_df, genes_df, num_terms = 10,
 
   }
 
-  g <- ggplot2::ggplot(bg_df, ggplot2::aes_(x = ~Symbol, y = ~Enriched_Term))
+  g <- ggplot2::ggplot(bg_df, ggplot2::aes(x = .data$Symbol, y = .data$Enriched_Term))
   g <- g + ggplot2::geom_tile(fill = "white", color = "white")
   g <- g + ggplot2::theme(axis.ticks.y = ggplot2::element_blank(),
                           axis.text.x = ggplot2::element_text(angle = 90, hjust = 1),
@@ -1210,7 +1210,7 @@ term_gene_heatmap <- function(result_df, genes_df, num_terms = 10,
                           panel.grid.minor.y = ggplot2::element_blank(),
                           panel.background = ggplot2::element_rect(fill="#ffffff"))
   g <- g + ggplot2::geom_tile(data = term_genes_df,
-                              ggplot2::aes_(fill = ~value), color = "gray60")
+                              ggplot2::aes(fill = .data$value), color = "gray60")
   if (!missing(genes_df)) {
     if (all(genes_df$CHANGE == 1e6)) {
       g <- g + ggplot2::scale_fill_manual(values = c(low, high), na.value ="white", name = legend_title)
@@ -1356,15 +1356,15 @@ UpSet_plot <- function(result_df, genes_df, num_terms = 10,
                        Term = unique(plot_df$Term))
 
   if (method == "heatmap") {
-    g <- ggplot2::ggplot(bg_df, ggplot2::aes_(x = ~Term, y = ~Gene))
+    g <- ggplot2::ggplot(bg_df, ggplot2::aes(x = .data$Term, y = .data$Gene))
     g <- g + ggplot2::geom_tile(fill = "white", color = "gray60")
 
     if (missing(genes_df)) {
-      g <- g + ggplot2::geom_tile(data = plot_df, ggplot2::aes_(x = ~Term, y = ~Gene, fill = ~Up_Down), color = "gray60")
+      g <- g + ggplot2::geom_tile(data = plot_df, ggplot2::aes(x = .data$Term, y = .data$Gene, fill = .data$Up_Down), color = "gray60")
       g <- g + ggplot2::scale_fill_manual(values = c(low, high))
     } else {
       plot_df$Value <- genes_df$CHANGE[match(names(plot_df$Term), genes_df$GENE)]
-      g <- g + ggplot2::geom_tile(data = plot_df, ggplot2::aes_(x = ~Term, y = ~Gene, fill = ~Value), color = "gray60")
+      g <- g + ggplot2::geom_tile(data = plot_df, ggplot2::aes(x = .data$Term, y = .data$Gene, fill = .data$Value), color = "gray60")
       g <- g + ggplot2::scale_fill_gradient2(low = low, mid = mid, high = high)
     }
     g <- g + ggplot2::theme_minimal()
@@ -1378,11 +1378,11 @@ UpSet_plot <- function(result_df, genes_df, num_terms = 10,
       stop("For `method = boxplot`, you must provide `genes_df`")
 
     plot_df$Value <- genes_df$CHANGE[match(names(plot_df$Term), genes_df$GENE)]
-    g <- ggplot2::ggplot(plot_df, ggplot2::aes_(x = ~Term, y = ~Value))
+    g <- ggplot2::ggplot(plot_df, ggplot2::aes(x = .data$Term, y = .data$Value))
     g <- g + ggplot2::geom_boxplot()
     g <- g + ggplot2::geom_jitter(width = .1)
   } else {
-    g <- ggplot2::ggplot(plot_df, ggplot2::aes_(x = ~Term))
+    g <- ggplot2::ggplot(plot_df, ggplot2::aes(x = .data$Term))
     g <- g + ggplot2::geom_bar()
   }
 
