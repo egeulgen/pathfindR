@@ -30,6 +30,8 @@ jobs:
         run: |
           echo "R_GSCMD=$(which gs)" >> $GITHUB_ENV
 
+      - name: Print PATH environment variable
+        run: echo $PATH
 
       - name: Test coverage
         run: |
