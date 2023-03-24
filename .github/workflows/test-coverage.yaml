@@ -30,8 +30,8 @@ jobs:
         run: |
           echo "R_GSCMD=$(which gs)" >> $GITHUB_ENV
 
-      - name: Print PATH environment variable
-        run: echo $PATH
+      - name: Add ghostscript directory to PATH
+        run: export PATH="$PATH:/usr/bin/gs"
 
       - name: Test coverage
         run: |
