@@ -26,25 +26,14 @@ jobs:
           extra-packages: any::covr
           needs: coverage
 
-      - name: Install fonts
-        run: sudo apt-get install -y fonts-helvetica
-
       - name: Test coverage
         run: |
-          ## --------------------------------------------------------------------
           covr::codecov(
             quiet = FALSE,
             clean = FALSE,
             install_path = file.path(Sys.getenv("RUNNER_TEMP"), "package")
           )
         shell: Rscript {0}
-
-      - name: Show testthat fail log
-        if: always()
-        run: |
-          ## --------------------------------------------------------------------
-          find ${{ runner.temp }}/package -name 'testthat*.fail' -exec cat '{}' \;
-        shell: bash
 
       - name: Show testthat output
         if: always()
