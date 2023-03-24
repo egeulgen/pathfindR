@@ -26,9 +26,6 @@ jobs:
           extra-packages: any::covr
           needs: coverage
 
-      - name: Copy font files to expected location
-        run: sudo cp /usr/share/fonts/truetype/msttcorefonts/* /usr/local/share/fonts/
-
       - name: Test coverage
         run: |
           covr::codecov(
