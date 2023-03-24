@@ -28,6 +28,7 @@ jobs:
 
       - name: Test coverage
         run: |
+          options(pdf.fontname = 'ArialMT')
           covr::codecov(
             quiet = FALSE,
             clean = FALSE,
