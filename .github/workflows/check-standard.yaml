@@ -47,7 +47,7 @@ jobs:
           
       - name: Install extrafont R package
         run: |
-          install.packages("extrafont")
+          Rscript -e "install.packages('extrafont')"
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
