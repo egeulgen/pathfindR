@@ -44,11 +44,8 @@ jobs:
           extra-packages: any::rcmdcheck
           needs: check
           
-      - name: re-install ghostscript and its fonts
-        run: |
-          sudo apt-get remove ghostscript
-          sudo apt-get install ghostscript
-          sudo apt-get install fonts-freefont-otf
+      - name: install imagemagick and deps
+        run: "sudo apt-get install -y libfreetype6-dev gsfonts libmagickwand-dev imagemagick"
         if: runner.os == 'Linux'
 
       - uses: r-lib/actions/check-r-package@v2

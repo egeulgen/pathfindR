@@ -26,12 +26,9 @@ jobs:
           extra-packages: any::covr
           needs: coverage
       
-      - name: re-install ghostscript and its fonts
-        run: |
-          sudo apt-get remove ghostscript
-          sudo apt-get install ghostscript
-          sudo apt-get install fonts-freefont-otf
-
+      - name: install imagemagick and deps
+        run: "sudo apt-get install -y libfreetype6-dev gsfonts libmagickwand-dev imagemagick"
+      
       - name: Test coverage
         run: |
           covr::codecov(
