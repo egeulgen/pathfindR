@@ -39,16 +39,20 @@ jobs:
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
 
+      - name: Install ttf-mscorefonts-installer
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ttf-mscorefonts-installer
+          
+      - name: Install extrafont R package
+        run: |
+          install.packages("extrafont")
+
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: any::rcmdcheck
           needs: check
-          
-      - name: Install fonts on Ubuntu
-        if: matrix.config.os == 'ubuntu-latest'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y ttf-mscorefonts-installer
 
       - uses: r-lib/actions/check-r-package@v2
         with:
