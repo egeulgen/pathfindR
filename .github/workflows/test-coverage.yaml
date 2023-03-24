@@ -26,9 +26,13 @@ jobs:
           extra-packages: any::covr
           needs: coverage
 
+      - name: Install ghostscript and gsfonts
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q ghostscript gsfonts
+
       - name: Test coverage
         run: |
-          options(pdf.fontname = 'ArialMT')
           covr::codecov(
             quiet = FALSE,
             clean = FALSE,
