@@ -43,6 +43,12 @@ jobs:
         with:
           extra-packages: any::rcmdcheck
           needs: check
+          
+      - name: install ghostscript and its fonts
+        run: |
+          sudo apt-get install ghostscript
+          sudo apt-get install fonts-freefont-otf
+        if: matrix.os == 'ubuntu-latest'
 
       - uses: r-lib/actions/check-r-package@v2
         with:

@@ -25,6 +25,11 @@ jobs:
         with:
           extra-packages: any::covr
           needs: coverage
+      
+      - name: install ghostscript and its fonts
+        run: |
+          sudo apt-get install ghostscript
+          sudo apt-get install fonts-freefont-otf
 
       - name: Test coverage
         run: |
