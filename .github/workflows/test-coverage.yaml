@@ -26,10 +26,10 @@ jobs:
           extra-packages: any::covr
           needs: coverage
 
-      - name: Install ghostscript and gsfonts
+      - name: Set R_GSCMD environment variable
         run: |
-          sudo apt-get update -q
-          sudo apt-get install -y -q ghostscript gsfonts
+          echo "R_GSCMD=$(which gs)" >> $GITHUB_ENV
+
 
       - name: Test coverage
         run: |
