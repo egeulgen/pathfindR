@@ -26,11 +26,6 @@ jobs:
           extra-packages: any::covr
           needs: coverage
       
-      - name: install imagemagick and deps
-        run: |
-          sudo apt-get update
-          sudo apt-get install gs
-      
       - name: Test coverage
         run: |
           covr::codecov(
