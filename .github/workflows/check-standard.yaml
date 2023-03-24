@@ -44,8 +44,9 @@ jobs:
           extra-packages: any::rcmdcheck
           needs: check
           
-      - name: install ghostscript and its fonts
+      - name: re-install ghostscript and its fonts
         run: |
+          sudo apt-get remove ghostscript
           sudo apt-get install ghostscript
           sudo apt-get install fonts-freefont-otf
         if: runner.os == 'Linux'
