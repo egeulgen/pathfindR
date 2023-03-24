@@ -26,12 +26,8 @@ jobs:
           extra-packages: any::covr
           needs: coverage
 
-      - name: Set R_GSCMD environment variable
-        run: |
-          echo "R_GSCMD=$(which gs)" >> $GITHUB_ENV
-
-      - name: Add ghostscript directory to PATH
-        run: export PATH="$PATH:/usr/bin/gs"
+      - name: Copy font files to expected location
+        run: sudo cp /usr/share/fonts/truetype/msttcorefonts/* /usr/local/share/fonts/
 
       - name: Test coverage
         run: |
