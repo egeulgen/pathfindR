@@ -38,6 +38,7 @@ jobs:
           ## --------------------------------------------------------------------
           ## Use the newly installed font in R
           ## --------------------------------------------------------------------
+          install.packages("extrafont")
           library(extrafont)
           font_import(prompt = FALSE)
           loadfonts(device = "pdf")
