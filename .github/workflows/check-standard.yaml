@@ -44,9 +44,11 @@ jobs:
           extra-packages: any::rcmdcheck
           needs: check
           
-      # - name: install gs
-      #   run: "sudo apt-get install -y gs"
-      #   if: runner.os == 'Linux'
+      - name: Install fonts on Ubuntu
+        if: matrix.config.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ttf-mscorefonts-installer
 
       - uses: r-lib/actions/check-r-package@v2
         with:
