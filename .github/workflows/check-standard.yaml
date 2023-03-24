@@ -48,7 +48,7 @@ jobs:
         run: |
           sudo apt-get install ghostscript
           sudo apt-get install fonts-freefont-otf
-        if: matrix.os == 'ubuntu-latest'
+        if: runner.os == 'Linux'
 
       - uses: r-lib/actions/check-r-package@v2
         with:
