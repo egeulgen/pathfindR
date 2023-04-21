@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.4.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.4.9005</span>
       </span>
     </div>
 
@@ -116,11 +116,11 @@ saved in the folder "term_visualizations" under the current working directory.</
     <div id="details">
     <h2>Details</h2>
     <p>The following steps are performed for the visualization of interactions
-of genes involved for each enriched term:</p><ol><li><p>shortest paths between all affected genes are determined (via <code><a href="https://rdrr.io/pkg/igraph/man/aaa-igraph-package.html" class="external-link">igraph</a></code>)</p></li>
+of genes involved for each enriched term:</p><ol><li><p>shortest paths between all affected genes are determined (via <code><a href="https://r.igraph.org/reference/aaa-igraph-package.html" class="external-link">igraph</a></code>)</p></li>
 <li><p>the nodes of all shortest paths are merged</p></li>
 <li><p>the PIN is subsetted using the merged nodes (genes)</p></li>
 <li><p>using the PIN subset, the graph showing the interactions is generated</p></li>
-<li><p>the final graph is visualized using <code><a href="https://rdrr.io/pkg/igraph/man/aaa-igraph-package.html" class="external-link">igraph</a></code>, colored by changed
+<li><p>the final graph is visualized using <code><a href="https://r.igraph.org/reference/aaa-igraph-package.html" class="external-link">igraph</a></code>, colored by changed
   status (if provided), and is saved as a PNG file.</p></li>
 </ol></div>
     <div id="see-also">
