@@ -14,6 +14,7 @@ run_pathfindR(
   pin_name_path = "Biogrid",
   p_val_threshold = 0.05,
   visualize_enriched_terms = TRUE,
+  create_HTML_report = TRUE,
   max_to_plot = 10,
   convert2alias = TRUE,
   enrichment_threshold = 0.05,
@@ -77,6 +78,9 @@ the input data frame. Must a numeric value between 0 and 1. (default = 0.05)}
 
 \item{visualize_enriched_terms}{Boolean value to indicate whether or not to
 create diagrams for enriched terms (default = TRUE)}
+
+\item{create_HTML_report}{Boolean value to indicate whether or not to
+create HTML report (default = TRUE)}
 
 \item{max_to_plot}{(necessary only if \code{gene_sets = "KEGG"} and
 \code{visualize_enriched_terms = TRUE}) The number of top hsa kegg pathways
