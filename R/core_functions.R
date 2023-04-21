@@ -25,6 +25,8 @@
 #'  automatically (Default == NULL. Gets set to 1 for Genetic Algorithm)
 #' @param visualize_enriched_terms Boolean value to indicate whether or not to
 #'  create diagrams for enriched terms (default = TRUE)
+#' @param create_HTML_report Boolean value to indicate whether or not to
+#'  create HTML report (default = TRUE)
 #' @param max_to_plot (necessary only if \code{gene_sets = "KEGG"} and
 #' \code{visualize_enriched_terms = TRUE}) The number of top hsa kegg pathways
 #' to visualize. If \code{NULL}, visualizes all (default = 10)
@@ -91,6 +93,7 @@ run_pathfindR <- function(input,
                           pin_name_path = "Biogrid",
                           p_val_threshold = 5e-2,
                           visualize_enriched_terms = TRUE,
+                          create_HTML_report = TRUE,
                           max_to_plot = 10,
                           convert2alias = TRUE,
                           enrichment_threshold = 5e-2,
@@ -153,6 +156,10 @@ run_pathfindR <- function(input,
   # Other
   if (!is.logical(visualize_enriched_terms)) {
     stop("`visualize_enriched_terms` should be either TRUE or FALSE")
+  }
+
+  if (!is.logical(create_HTML_report)) {
+    stop("`create_HTML_report` should be either TRUE or FALSE")
   }
 
   if (!is.logical(plot_enrichment_chart)) {
@@ -344,26 +351,34 @@ run_pathfindR <- function(input,
     }
   }
 
-  ############ Create HTML Report
-  message("## Creating HTML report")
-  ## Create report
-  rmarkdown::render(input = system.file("rmd", "results.Rmd",
-                                        package = "pathfindR"),
-                    output_dir = ".")
+  if (create_HTML_report) {
+    ############ Create HTML Report
+    message("## Creating HTML report")
+    ## Create report
+    rmarkdown::render(
+      input = system.file("rmd", "results.Rmd",
+                          package = "pathfindR"),
+      output_dir = "."
+    )
 
-  rmarkdown::render(input = system.file("rmd", "enriched_terms.Rmd",
-                                        package = "pathfindR"),
-                    params = list(df = final_res,
-                                  gset = gene_sets,
-                                  vis_cond = visualize_enriched_terms,
-                                  out_dir = output_dir),
-                    output_dir = ".")
+    rmarkdown::render(
+      input = system.file("rmd", "enriched_terms.Rmd",
+                          package = "pathfindR"),
+      params = list(df = final_res,
+                    gset = gene_sets,
+                    vis_cond = visualize_enriched_terms,
+                    out_dir = output_dir),
+      output_dir = "."
+    )
 
-  rmarkdown::render(input = system.file("rmd", "conversion_table.Rmd",
-                                        package = "pathfindR"),
-                    params = list(df = input_processed,
-                                  original_df = input),
-                    output_dir = ".")
+    rmarkdown::render(
+      input = system.file("rmd", "conversion_table.Rmd",
+                          package = "pathfindR"),
+      params = list(df = input_processed,
+                    original_df = input),
+      output_dir = "."
+      )
+  }
 
   ############ Enrichment Chart
   if (plot_enrichment_chart) {
@@ -373,9 +388,11 @@ run_pathfindR <- function(input,
 
   message(paste0("Found ", nrow(final_res), " enriched terms\n"))
 
-  message("Enrichment results and table of converted genes ")
-  message("can be found in \"results.html\" ")
-  message(paste0("in the folder \"", output_dir, "\"\n"))
+  if (create_HTML_report) {
+    message("Enrichment results and table of converted genes ")
+    message("can be found in \"results.html\" ")
+    message(paste0("in the folder \"", output_dir, "\"\n"))
+  }
   message("Run cluster_enriched_terms() for clustering enriched terms\n\n")
 
   return(final_res)

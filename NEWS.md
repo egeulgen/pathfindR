@@ -1,6 +1,7 @@
 # pathfindR (development version)
 
 ## Major Changes
+- in `run_pathfindR()`, added the argument `create_HTML_report` to make HTML report optional
 - in `hierarchical_term_clustering()`, update the sequence of number of clusters for which silhouette width is calculated for choosing the optimal number of clusters. This should speed up the function for cases with a large number of enriched terms
 
 ## Minor Changes

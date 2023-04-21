@@ -2,7 +2,7 @@
 ## Project: pathfindR
 ## Script purpose: Testthat testing script for
 ## core functions
-## Date: Dec 4, 2020
+## Date: Apr 21, 2023
 ## Author: Ege Ulgen
 ##################################################
 
@@ -92,6 +92,34 @@ test_that("Expect warning with empty result from `run_pathfindR()`", {
   expect_identical(res, data.frame())
 })
 
+test_that("`run_pathfindR()` `create_HTML_report` works", {
+  out_dir <- file.path(tempdir(check = TRUE), "pathfindR_results")
+  expect_is(run_pathfindR(RA_input[1:50, ],
+                          iterations = 1,
+                          n_processes = 2,
+                          score_quan_thr = 0.8,
+                          max_to_plot = 1,
+                          output_dir = out_dir,
+                          create_HTML_report = TRUE),
+            "data.frame")
+  expect_true(dir.exists(out_dir))
+  expect_true(file.exists(file.path(out_dir, "results.html")))
+  expect_true(file.exists(file.path(out_dir, "enriched_terms.html")))
+  expect_true(file.exists(file.path(out_dir, "conversion_table.html")))
+  unlink(out_dir, recursive = TRUE)
+
+  expect_is(run_pathfindR(RA_input[1:50, ],
+                          iterations = 1,
+                          n_processes = 2,
+                          score_quan_thr = 0.8,
+                          max_to_plot = 1,
+                          output_dir = out_dir,
+                          create_HTML_report = FALSE),
+            "data.frame")
+  expect_true(dir.exists(out_dir))
+  expect_false(file.exists(file.path(out_dir, "results.html")))
+})
+
 
 test_that("`run_pathfindR()` arg checks work", {
   valid_mets <- c("GR", "SA", "GA")
@@ -107,6 +135,9 @@ test_that("`run_pathfindR()` arg checks work", {
 
   expect_error(run_pathfindR(RA_input, visualize_enriched_terms = "INVALID"),
                "`visualize_enriched_terms` should be either TRUE or FALSE")
+
+  expect_error(run_pathfindR(RA_input, create_HTML_report = "INVALID"),
+               "`create_HTML_report` should be either TRUE or FALSE")
 
   expect_error(run_pathfindR(RA_input, plot_enrichment_chart = "INVALID"),
                "`plot_enrichment_chart` should be either TRUE or FALSE")
