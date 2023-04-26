@@ -25,9 +25,9 @@ suppressPackageStartupMessages(library(pathfindR))
 
 # Overview
 
-`pathfindR` is a tool for enrichment analysis via active subnetworks. The package also offers functionalities to cluster the enriched terms and identify representative terms in each cluster, score the enriched terms per sample, and visualize analysis results. As of the latest version, the package also allows comparison of two pathfindR results.
+`pathfindR` is an R package for enrichment analysis via active subnetworks. The package also offers functionality to cluster the enriched terms and identify representative terms in each cluster, score the enriched terms per sample, and visualize analysis results. As of the latest version, the package also allows comparison of two pathfindR results.
     
-The functionalities of pathfindR are described in detail in _Ulgen E, Ozisik O, Sezerman OU. 2019. pathfindR: An R Package for Comprehensive Identification of Enriched Pathways in Omics Data Through Active Subnetworks. Front. Genet. [https://doi.org/10.3389/fgene.2019.00858](https://doi.org/10.3389/fgene.2019.00858)_
+The functionality suite of pathfindR is described in detail in _Ulgen E, Ozisik O, Sezerman OU. 2019. pathfindR: An R Package for Comprehensive Identification of Enriched Pathways in Omics Data Through Active Subnetworks. Front. Genet. [https://doi.org/10.3389/fgene.2019.00858](https://doi.org/10.3389/fgene.2019.00858)_
 
 For detailed documentation, see [pathfindR's website](https://egeulgen.github.io/pathfindR/) or [the pathfindR wiki](https://github.com/egeulgen/pathfindR/wiki).
 
@@ -49,7 +49,7 @@ pak::pkg_install("pathfindR")
 And the development version from GitHub via `devtools`:
 
 ```{r installation3, eval=FALSE}
-install.packages("devtools") # if you have not installed "pak"
+install.packages("devtools") # if you have not installed "devtools"
 devtools::install_github("egeulgen/pathfindR")
 ```
 
@@ -75,7 +75,7 @@ Online app on superbio.ai: [https://app.superbio.ai/apps/111/](https://app.super
 This workflow takes in a data frame consisting of "gene symbols", "change values" (optional), and "associated p-values":
 
 ```{r example_input, echo=FALSE}
-tmp <- RA_input[1:4, ]
+tmp <- example_pathfindR_input[1:4, ]
 tmp$logFC <- round(tmp$logFC,2)
 tmp$adj.P.Val <- format(tmp$adj.P.Val, digits = 2)
 colnames(tmp) <- c("Gene_symbol", "logFC", "FDR_p")
@@ -96,22 +96,6 @@ output_df <- run_pathfindR(input_df)
 ```
 
 This wrapper function performs the active-subnetwork-oriented enrichment analysis, and returns a data frame of enriched terms (as well as visualization of enriched terms and an HTML report):
-
-```{r example_output, echo=FALSE, eval=FALSE}
-tmp <- RA_output[1:3, ]
-tmp$Up_regulated[1] <- "NDUFA1, NDUFB3, UQCRQ"
-tmp$Up_regulated[2] <- "COX7C"
-tmp$Up_regulated[3] <- "DDIT3, NDUFA1"
-
-tmp$Down_regulated[1] <- "SNRPB, SF3B2"
-tmp$Down_regulated[2] <- "UBE2G1, VDAC1"
-
-tmp$lowest_p <- format(tmp$lowest_p, scientific = TRUE, digits = 2)
-tmp$highest_p <- format(tmp$highest_p, scientific = TRUE, digits = 2)
-
-knitr::kable(tmp, align = c("l", "l", "c", "c", "c", "c", "l", "l"))
-enrichment_chart(RA_output)
-```
 
 ![pathfindR Enrichment Chart](https://github.com/egeulgen/pathfindR/blob/master/vignettes/enrichment_chart.png?raw=true "Enrichment Chart")
 
@@ -197,8 +181,10 @@ The function `score_terms()` can be used to calculate the agglomerated z score o
 The function `combine_pathfindR_results()` allows combining two pathfindR analysis results for investigating common and distinct terms between the groups. Below is an example for comparing two different results using rheumatoid arthritis-related data.
 
 ```{r compare2res, eval=FALSE}
-combined_df <- combine_pathfindR_results(result_A = RA_output, 
-                                         result_B = RA_comparison_output)
+combined_df <- combine_pathfindR_results(
+  result_A = an_output_df, 
+  result_B = another_output_df
+)
 ```
 
 By default, `combine_pathfindR_results()` plots the term-gene graph for the common terms in the combined results. The function `combined_results_graph()` can be used to create this graph (using only selected terms etc.) later on.

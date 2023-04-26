@@ -18,13 +18,14 @@ MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.or
 
 # Overview
 
-`pathfindR` is a tool for enrichment analysis via active subnetworks.
-The package also offers functionalities to cluster the enriched terms
-and identify representative terms in each cluster, score the enriched
-terms per sample, and visualize analysis results. As of the latest
-version, the package also allows comparison of two pathfindR results.
+`pathfindR` is an R package for enrichment analysis via active
+subnetworks. The package also offers functionality to cluster the
+enriched terms and identify representative terms in each cluster, score
+the enriched terms per sample, and visualize analysis results. As of the
+latest version, the package also allows comparison of two pathfindR
+results.
 
-The functionalities of pathfindR are described in detail in *Ulgen E,
+The functionality suite of pathfindR is described in detail in *Ulgen E,
 Ozisik O, Sezerman OU. 2019. pathfindR: An R Package for Comprehensive
 Identification of Enriched Pathways in Omics Data Through Active
 Subnetworks. Front. Genet. <https://doi.org/10.3389/fgene.2019.00858>*
@@ -52,7 +53,7 @@ pak::pkg_install("pathfindR")
 And the development version from GitHub via `devtools`:
 
 ``` r
-install.packages("devtools") # if you have not installed "pak"
+install.packages("devtools") # if you have not installed "devtools"
 devtools::install_github("egeulgen/pathfindR")
 ```
 
@@ -260,8 +261,10 @@ between the groups. Below is an example for comparing two different
 results using rheumatoid arthritis-related data.
 
 ``` r
-combined_df <- combine_pathfindR_results(result_A = RA_output, 
-                                         result_B = RA_comparison_output)
+combined_df <- combine_pathfindR_results(
+  result_A = an_output_df, 
+  result_B = another_output_df
+)
 ```
 
 By default, `combine_pathfindR_results()` plots the term-gene graph for
