@@ -45,8 +45,10 @@ You may also retrieve a specific version of BioGRID via setting the `release` ar
 
 ```{r}
 ## retrieving PIN data for "Mus_musculus" from BioGRID release 3.5.179
-path_to_pin_file <- get_pin_file(org = "Mus_musculus", 
-                                 release = "3.5.179")
+path_to_pin_file <- get_pin_file(
+  org = "Mus_musculus",
+  release = "3.5.179"
+)
 ```
 
 # Get Gene Sets List
@@ -81,17 +83,21 @@ For Reactome, there is only one collection of pathway gene sets.
 Using `msigdbr`, `pathfindR` can retrieve all MSigDB gene sets. For this, set the `source` argument to "MSigDB" and the `collection` argument to the desired MSigDB collection (one of H, C1, C2, C3, C4, C5, C6, C7):
 
 ```{r}
-gsets_list <- get_gene_sets_list(source = "MSigDB",
-                                 collection = "C2")
+gsets_list <- get_gene_sets_list(
+  source = "MSigDB",
+  collection = "C2"
+)
 ```
 
 The default organism for MSigDB is "Homo sapiens", you may obtain the gene sets data for another organism by setting the `species` argument:
 
 ```{r}
 ## obtaining C5 gene sets data for "Drosophila melanogaster"
-gsets_list <- get_gene_sets_list(source = "MSigDB",
-                                 species = "Drosophila melanogaster",
-                                 collection = "C5")
+gsets_list <- get_gene_sets_list(
+  source = "MSigDB",
+  species = "Drosophila melanogaster",
+  collection = "C5"
+)
 ```
 
 ```{r, eval=TRUE}
@@ -103,7 +109,9 @@ You may also obtain the gene sets for a subcollection by setting the `subcollect
 
 ```{r}
 ## obtaining C3 - MIR: microRNA targets
-gsets_list <- get_gene_sets_list(source = "MSigDB",
-                                 collection = "C3",
-                                 subcollection = "MIR")
+gsets_list <- get_gene_sets_list(
+  source = "MSigDB",
+  collection = "C3",
+  subcollection = "MIR"
+)
 ```

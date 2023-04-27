@@ -16,12 +16,14 @@ knitr::opts_chunk$set(
 suppressPackageStartupMessages(library(pathfindR))
 ```
 
-The function `combine_pathfindR_results()` allows combination of two pathfindR active-subnetwork-oriented enrichment analysis results for investigating common and distinct terms between the groups. Below is an example for comparing results using two different rheumatoid arthritis-related data sets (`RA_output` and `RA_comparison_output`).
+The function `combine_pathfindR_results()` allows combination of two pathfindR active-subnetwork-oriented enrichment analysis results for investigating common and distinct terms between the groups. Below is an example for comparing results using two different rheumatoid arthritis-related data sets (`example_pathfindR_output` and `example_comparison_output`).
 
 ```{r compare2res}
-combined_df <- combine_pathfindR_results(result_A = RA_output, 
-                                         result_B = RA_comparison_output, 
-                                         plot_common = FALSE)
+combined_df <- combine_pathfindR_results(
+  result_A = example_pathfindR_output,
+  result_B = example_comparison_output,
+  plot_common = FALSE
+)
 ```
 
 By default, `combine_pathfindR_results()` plots the term-gene graph for the common terms in the combined results. For not plotting the graph, set `plot_common = FALSE`. 
@@ -35,16 +37,20 @@ combined_results_graph(combined_df)
 By supplying a vector of selected terms to the `selected_terms` arguments, you may plot the term-gene graph for the selected terms:
 
 ```{r compare_graph2, fig.width=8, fig.height=4}
-combined_results_graph(combined_df, 
-                       selected_terms = c("hsa04144", "hsa04141", "hsa04140"))
+combined_results_graph(
+  combined_df,
+  selected_terms = c("hsa04144", "hsa04141", "hsa04140")
+)
 ```
 
 By default, `combined_results_graph()` creates the graph using term IDs. To use term descriptions instead, set `use_description = TRUE`: 
 
 ```{r compare_graph3, eval=FALSE}
-combined_results_graph(combined_df, 
-                       use_description = TRUE,
-                       selected_terms = combined_df$Term_Description[1:4])
+combined_results_graph(
+  combined_df,
+  use_description = TRUE,
+  selected_terms = combined_df$Term_Description[1:4]
+)
 ```
 
 For changing the layout of the graph (`"auto"` by default), you may use the `layout` argument.
@@ -52,7 +58,9 @@ For changing the layout of the graph (`"auto"` by default), you may use the `lay
 For changing how the sizes of the term nodes are determined, you may use the `node_size` argument. The options are `"num_genes"` (default) and `"p_val"` for using the number of significant genes in the term and the -log10(p) value of the term, respectively:
 
 ```{r compare_graph4, eval=FALSE}
-combined_results_graph(combined_df, 
-                       selected_terms = c("hsa04144", "hsa04141", "hsa04140"),
-                       node_size = "p_val")
+combined_results_graph(
+  combined_df,
+  selected_terms = c("hsa04144", "hsa04141", "hsa04140"),
+  node_size = "p_val"
+)
 ```

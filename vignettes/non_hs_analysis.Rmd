@@ -10,10 +10,12 @@ vignette: >
 ---
 
 ```{r, include = FALSE}
-knitr::opts_chunk$set(collapse = TRUE,
-                      comment = "#>",
-                      fig.width = 7, fig.height = 7, fig.align = "center",
-                      eval = FALSE)
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7, fig.height = 7, fig.align = "center",
+  eval = FALSE
+)
 suppressPackageStartupMessages(library(pathfindR))
 ```
 
@@ -39,8 +41,10 @@ We can obtain the up-to-date M.musculus (KEGG identifier: mmu) KEGG Pathway Gene
 > If using another organism, all you have to do is to replace "mmu" with the KEGG organism code in the related arguments in this vignette.
 
 ```{r mmu_kegg}
-gsets_list <- get_gene_sets_list(source = "KEGG",
-                                 org_code = "mmu")
+gsets_list <- get_gene_sets_list(
+  source = "KEGG",
+  org_code = "mmu"
+)
 ```
 
 This returns a list containing 2 objects named: `gene_sets` containing sets of genes of each pathway and `desriptions` containing the description of each pathway. 
@@ -101,8 +105,10 @@ mmu_string_df <- read.table(path2file, header = TRUE)
 mmu_string_df <- mmu_string_df[mmu_string_df$combined_score >= 800, ]
 
 ## fix ids
-mmu_string_pin <- data.frame(Interactor_A = sub("^10090\\.", "", mmu_string_df$protein1),
-                             Interactor_B = sub("^10090\\.", "", mmu_string_df$protein2))
+mmu_string_pin <- data.frame(
+  Interactor_A = sub("^10090\\.", "", mmu_string_df$protein1),
+  Interactor_B = sub("^10090\\.", "", mmu_string_df$protein2)
+)
 head(mmu_string_pin, 2)
 ```
 
@@ -118,10 +124,12 @@ Since the interactors are Ensembl peptide IDs, we'll need to convert them to MGI
 
 mmu_ensembl <- useMart("ensembl", dataset = "mmusculus_gene_ensembl")
 
-converted <- getBM(attributes = c("ensembl_peptide_id", "mgi_symbol"),
-                   filters = "ensembl_peptide_id",
-                   values = unique(unlist(mmu_string_pin)),
-                   mart = mmu_ensembl)
+converted <- getBM(
+  attributes = c("ensembl_peptide_id", "mgi_symbol"),
+  filters = "ensembl_peptide_id",
+  values = unique(unlist(mmu_string_pin)),
+  mart = mmu_ensembl
+)
 mmu_string_pin$Interactor_A <- converted$mgi_symbol[match(mmu_string_pin$Interactor_A, converted$ensembl_peptide_id)]
 mmu_string_pin$Interactor_B <- converted$mgi_symbol[match(mmu_string_pin$Interactor_B, converted$ensembl_peptide_id)]
 mmu_string_pin <- mmu_string_pin[!is.na(mmu_string_pin$Interactor_A) & !is.na(mmu_string_pin$Interactor_B), ]
@@ -145,9 +153,11 @@ mmu_string_pin <- mmu_string_pin[!self_intr_cond, ]
 # remove duplicated inteactions (including symmetric ones)
 mmu_string_pin <- unique(t(apply(mmu_string_pin, 1, sort))) # this will return a matrix object
 
-mmu_string_pin <- data.frame(A = mmu_string_pin[, 1],
-                             pp = "pp",
-                             B = mmu_string_pin[, 2])
+mmu_string_pin <- data.frame(
+  A = mmu_string_pin[, 1],
+  pp = "pp",
+  B = mmu_string_pin[, 2]
+)
 ```
 
 Finally, we save the gene symbol PIN as a SIF file named "mmusculusPIN.sif" under the temporary directory (i.e. `tempdir()`):
@@ -155,11 +165,12 @@ Finally, we save the gene symbol PIN as a SIF file named "mmusculusPIN.sif" unde
 ```{r process_PIN4}
 path2SIF <- file.path(tempdir(), "mmusculusPIN.sif")
 write.table(mmu_string_pin,
-            file = path2SIF,
-            col.names = FALSE,
-            row.names = FALSE,
-            sep = "\t",
-            quote = FALSE)
+  file = path2SIF,
+  col.names = FALSE,
+  row.names = FALSE,
+  sep = "\t",
+  quote = FALSE
+)
 path2SIF <- normalizePath(path2SIF)
 ```
 
@@ -171,10 +182,10 @@ We'll use this path to the custom sif for analysis with `run_pathfindR()`.
 
 ## Input Data
 
-The data used in this vignette (`myeloma_input`) is the data frame of differentially-expressed genes along for the GEO dataset [GSE99393](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE99393). The RNA microarray experiment was perform to detail the global program of gene expression underlying polarization of myeloma-associated macrophages by CSF1R antibody treatment. The samples are 6 murine bone marrow derived macrophages co-cultured with myeloma cells (myeloma-associated macrophages), 3 of which were treated with CSF1R antibody (treatment group) and the rest were treated with control IgG antibody (control group). In `myeloma_input`, 45 differentially-expressed genes with |logFC| >= 2 and FDR <= 0.05 are presented.
+The data used in this vignette (`example_mmu_input`) is the data frame of differentially-expressed genes along for the GEO dataset [GSE99393](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE99393). The RNA microarray experiment was perform to detail the global program of gene expression underlying polarization of myeloma-associated macrophages by CSF1R antibody treatment. The samples are 6 murine bone marrow derived macrophages co-cultured with myeloma cells (myeloma-associated macrophages), 3 of which were treated with CSF1R antibody (treatment group) and the rest were treated with control IgG antibody (control group). In `example_mmu_input`, 45 differentially-expressed genes with |logFC| >= 2 and FDR <= 0.05 are presented.
 
 ```{r mmu_input_df, eval=TRUE}
-knitr::kable(head(myeloma_input))
+knitr::kable(head(example_mmu_input))
 ```
 
 
@@ -188,20 +199,22 @@ After obtaining the necessary PIN and gene sets data, you can then perform pathf
 - `custom_descriptions = mmu_kegg_descriptions`
 
 ```{r run}
-myeloma_output <- run_pathfindR(input = myeloma_input,
-                                convert2alias = FALSE,
-                                gene_sets = "Custom",
-                                custom_genes = mmu_kegg_genes,
-                                custom_descriptions = mmu_kegg_descriptions,
-                                pin_name_path = path2SIF)
+example_mmu_output <- run_pathfindR(
+  input = example_mmu_input,
+  convert2alias = FALSE,
+  gene_sets = "Custom",
+  custom_genes = mmu_kegg_genes,
+  custom_descriptions = mmu_kegg_descriptions,
+  pin_name_path = path2SIF
+)
 ```
 
 ```{r enr_chart, echo=FALSE, eval=TRUE}
-enrichment_chart(myeloma_output)
+enrichment_chart(example_mmu_output)
 ```
 
 ```{r output, eval=TRUE}
-knitr::kable(myeloma_output)
+knitr::kable(example_mmu_output)
 ```
 
 Because we used a very strict cut-off (logFC >= 2 + FDR <= 0.05), there were only 18 enriched KEGG pathways. However, the pathways identified here are significantly related to the pathways identified in the original publication by Wang et al.[^1].
@@ -213,8 +226,10 @@ Because we used a very strict cut-off (logFC >= 2 + FDR <= 0.05), there were onl
 As aforementioned, for Mus musculus (only), we have provided the necessary PIN (`mmu_STRING`) and gene set data (`mmu_KEGG`) so you can also run:
 
 ```{r run2}
-myeloma_output <- run_pathfindR(input = myeloma_input,
-                                convert2alias = FALSE,
-                                gene_sets = "mmu_KEGG",
-                                pin_name_path = "mmu_STRING")
+example_mmu_output <- run_pathfindR(
+  input = example_mmu_input,
+  convert2alias = FALSE,
+  gene_sets = "mmu_KEGG",
+  pin_name_path = "mmu_STRING"
+)
 ```
