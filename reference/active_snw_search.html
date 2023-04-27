@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.4.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.4.9006</span>
       </span>
     </div>
 
@@ -74,7 +74,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Perform Active Subnetwork Search</h1>
-    <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/HEAD/R/active_snw_functions.R" class="external-link"><code>R/active_snw_functions.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/HEAD/R/active_snw_search.R" class="external-link"><code>R/active_snw_search.R</code></a></small>
     <div class="hidden name"><code>active_snw_search.Rd</code></div>
     </div>
 
@@ -231,12 +231,14 @@ the `score_quan_thr`th quantile and that has at least `sig_gene_thr` affected ge
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">processed_df</span> <span class="op">&lt;-</span> <span class="va">RA_input</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">15</span>, <span class="op">-</span><span class="fl">2</span><span class="op">]</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">processed_df</span> <span class="op">&lt;-</span> <span class="va">example_pathfindR_input</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">15</span>, <span class="op">-</span><span class="fl">2</span><span class="op">]</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">processed_df</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"GENE"</span>, <span class="st">"P_VALUE"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">GR_snws</span> <span class="op">&lt;-</span> <span class="fu">active_snw_search</span><span class="op">(</span>input_for_search <span class="op">=</span> <span class="va">processed_df</span>,</span></span>
-<span class="r-in"><span>                             pin_name_path <span class="op">=</span> <span class="st">"KEGG"</span>,</span></span>
-<span class="r-in"><span>                             search_method <span class="op">=</span> <span class="st">"GR"</span>,</span></span>
-<span class="r-in"><span>                             score_quan_thr <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">GR_snws</span> <span class="op">&lt;-</span> <span class="fu">active_snw_search</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  input_for_search <span class="op">=</span> <span class="va">processed_df</span>,</span></span>
+<span class="r-in"><span>  pin_name_path <span class="op">=</span> <span class="st">"KEGG"</span>,</span></span>
+<span class="r-in"><span>  search_method <span class="op">=</span> <span class="st">"GR"</span>,</span></span>
+<span class="r-in"><span>  score_quan_thr <span class="op">=</span> <span class="fl">0.8</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Found 2 active subnetworks</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co"># clean-up</span></span></span>

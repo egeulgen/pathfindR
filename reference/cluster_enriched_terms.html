@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.4.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.4.9006</span>
       </span>
     </div>
 
@@ -74,7 +74,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Cluster Enriched Terms</h1>
-    <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/HEAD/R/clustering_functions.R" class="external-link"><code>R/clustering_functions.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/HEAD/R/clustering.R" class="external-link"><code>R/clustering.R</code></a></small>
     <div class="hidden name"><code>cluster_enriched_terms.Rd</code></div>
     </div>
 
@@ -152,13 +152,17 @@ See <code><a href="cluster_graph_vis.html">cluster_graph_vis</a></code> for grap
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">example_clustered</span> <span class="op">&lt;-</span> <span class="fu">cluster_enriched_terms</span><span class="op">(</span><span class="va">RA_output</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="op">]</span>,</span></span>
-<span class="r-in"><span>  plot_clusters_graph <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">example_clustered</span> <span class="op">&lt;-</span> <span class="fu">cluster_enriched_terms</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">example_pathfindR_output</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="op">]</span>,</span></span>
+<span class="r-in"><span>  plot_clusters_graph <span class="op">=</span> <span class="cn">FALSE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> The maximum average silhouette width was 0.15 for k = 2 </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-plt img"><img src="cluster_enriched_terms-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span><span class="va">example_clustered</span> <span class="op">&lt;-</span> <span class="fu">cluster_enriched_terms</span><span class="op">(</span><span class="va">RA_output</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="op">]</span>,</span></span>
-<span class="r-in"><span>  method <span class="op">=</span> <span class="st">"fuzzy"</span>, plot_clusters_graph <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">example_clustered</span> <span class="op">&lt;-</span> <span class="fu">cluster_enriched_terms</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">example_pathfindR_output</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="op">]</span>,</span></span>
+<span class="r-in"><span>  method <span class="op">=</span> <span class="st">"fuzzy"</span>, plot_clusters_graph <span class="op">=</span> <span class="cn">FALSE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>

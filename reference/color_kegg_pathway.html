@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.4.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.4.9006</span>
       </span>
     </div>
 
@@ -74,7 +74,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Color hsa KEGG pathway</h1>
-    <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/HEAD/R/visualization_functions.R" class="external-link"><code>R/visualization_functions.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/HEAD/R/visualization.R" class="external-link"><code>R/visualization.R</code></a></small>
     <div class="hidden name"><code>color_kegg_pathway.Rd</code></div>
     </div>
 
@@ -131,10 +131,10 @@ progress bar while downloading file(s)</p></dd>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>   <span class="va">pw_id</span> <span class="op">&lt;-</span> <span class="st">"hsa00010"</span></span></span>
-<span class="r-in"><span>   <span class="va">change_vec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>, <span class="fl">4</span>, <span class="fl">6</span><span class="op">)</span></span></span>
-<span class="r-in"><span>   <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">change_vec</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hsa:2821"</span>, <span class="st">"hsa:226"</span>, <span class="st">"hsa:229"</span><span class="op">)</span></span></span>
-<span class="r-in"><span>   <span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">pathfindR</span><span class="fu">:::</span><span class="fu">color_kegg_pathway</span><span class="op">(</span><span class="va">pw_id</span>, <span class="va">change_vec</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">pw_id</span> <span class="op">&lt;-</span> <span class="st">"hsa00010"</span></span></span>
+<span class="r-in"><span><span class="va">change_vec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>, <span class="fl">4</span>, <span class="fl">6</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">change_vec</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hsa:2821"</span>, <span class="st">"hsa:226"</span>, <span class="st">"hsa:229"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">pathfindR</span><span class="fu">:::</span><span class="fu">color_kegg_pathway</span><span class="op">(</span><span class="va">pw_id</span>, <span class="va">change_vec</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>

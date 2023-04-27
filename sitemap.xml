@@ -70,6 +70,9 @@
     <loc>https://egeulgen.github.io/pathfindR/reference/UpSet_plot.html</loc>
   </url>
   <url>
+    <loc>https://egeulgen.github.io/pathfindR/reference/active_snw_enrichment_wrapper.html</loc>
+  </url>
+  <url>
     <loc>https://egeulgen.github.io/pathfindR/reference/active_snw_search.html</loc>
   </url>
   <url>
@@ -92,6 +95,12 @@
   </url>
   <url>
     <loc>https://egeulgen.github.io/pathfindR/reference/combined_results_graph.html</loc>
+  </url>
+  <url>
+    <loc>https://egeulgen.github.io/pathfindR/reference/configure_output_dir.html</loc>
+  </url>
+  <url>
+    <loc>https://egeulgen.github.io/pathfindR/reference/create_HTML_report.html</loc>
   </url>
   <url>
     <loc>https://egeulgen.github.io/pathfindR/reference/create_kappa_matrix.html</loc>

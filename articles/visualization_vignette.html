@@ -35,7 +35,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.4.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.4.9006</span>
       </span>
     </div>
 
@@ -104,7 +104,7 @@
       <h1 data-toc-skip>Visualization of pathfindR Enrichment
 Results</h1>
             
-            <h4 data-toc-skip class="date">2023-04-26</h4>
+            <h4 data-toc-skip class="date">2023-04-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/HEAD/vignettes/visualization_vignette.Rmd" class="external-link"><code>vignettes/visualization_vignette.Rmd</code></a></small>
       <div class="hidden name"><code>visualization_vignette.Rmd</code></div>
@@ -115,8 +115,8 @@ Results</h1>
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://egeulgen.github.io/pathfindR/">pathfindR</a></span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><code>pathfindR</code> offers various functionalities to visualize
-the enrichment results. In this vignette, I try to demonstrate these
+<p><code>pathfindR</code> offers various functionality to visualize the
+enrichment results. In this vignette, I try to demonstrate these
 functionalities.</p>
 <div class="section level2">
 <h2 id="enrichment_chart-bubble-chart-of-enrichment-results">
@@ -130,23 +130,56 @@ genes in the given enriched term. Color indicates the -log10(lowest-p)
 value. The closer the color is to red, the more significant the
 enrichment is.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/enrichment_chart.html">enrichment_chart</a></span><span class="op">(</span><span class="va">RA_output</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/enrichment_chart.html">enrichment_chart</a></span><span class="op">(</span><span class="va">example_pathfindR_output</span><span class="op">)</span></span></code></pre></div>
 <p><img src="enrichment_chart.png" style="max-width:100%;"></p>
 <p>By default, the bubble chart is generated for the top 10 terms. This
 can be controlled by the <code>top_terms</code> argument:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## change top_terms</span></span>
-<span><span class="fu"><a href="../reference/enrichment_chart.html">enrichment_chart</a></span><span class="op">(</span><span class="va">RA_output</span>, top_terms <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/enrichment_chart.html">enrichment_chart</a></span><span class="op">(</span><span class="va">example_pathfindR_output</span>, top_terms <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## set null for displaying all terms</span></span>
-<span><span class="fu"><a href="../reference/enrichment_chart.html">enrichment_chart</a></span><span class="op">(</span><span class="va">RA_output</span>, top_terms <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/enrichment_chart.html">enrichment_chart</a></span><span class="op">(</span><span class="va">example_pathfindR_output</span>, top_terms <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
 <p>If the enrichment results were clustered, setting
 <code>plot_by_cluster == TRUE</code> will result in the enriched terms
 to be grouped by clusters:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/enrichment_chart.html">enrichment_chart</a></span><span class="op">(</span><span class="va">RA_clustered</span>, plot_by_cluster <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/enrichment_chart.html">enrichment_chart</a></span><span class="op">(</span><span class="va">example_pathfindR_output_clustered</span>, plot_by_cluster <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Plotting the enrichment bubble chart</span></span></code></pre></div>
 <p><img src="visualization_vignette_files/figure-html/enr_chart3-1.png" width="768" style="display: block; margin: auto;"></p>
 <p>See <code><a href="../reference/enrichment_chart.html">?enrichment_chart</a></code> for more details.</p>
+</div>
+<div class="section level2">
+<h2 id="visualize_terms-enriched-term-diagrams">
+<code>visualize_terms()</code>: Enriched Term Diagrams<a class="anchor" aria-label="anchor" href="#visualize_terms-enriched-term-diagrams"></a>
+</h2>
+<p>For H.sapiens KEGG enrichment analyses,
+<code><a href="../reference/visualize_terms.html">visualize_terms()</a></code> can be used to generate KEGG pathway
+diagrams that are saved as PNG files in a directory called
+“term_visualizations” under the current working directory:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">input_processed</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/input_processing.html">input_processing</a></span><span class="op">(</span><span class="va">example_pathfindR_input</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/visualize_terms.html">visualize_terms</a></span><span class="op">(</span></span>
+<span>  result_df <span class="op">=</span> <span class="va">example_pathfindR_output</span>,</span>
+<span>  input_processed <span class="op">=</span> <span class="va">input_processed</span>,</span>
+<span>  hsa_KEGG <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p><img src="hsaKEGG_diagram.png" style="max-width:100%;"></p>
+<p>Alternatively (i.e., for other types of non-KEGG/non-H.sapiens
+enrichment analyses), an interaction diagram per enriched term can be
+generated again via <code><a href="../reference/visualize_terms.html">visualize_terms()</a></code>. These diagrams are
+also saved as PNG files in a directory called “term_visualizations”
+under the current working directory:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">input_processed</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/input_processing.html">input_processing</a></span><span class="op">(</span><span class="va">example_pathfindR_input</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/visualize_terms.html">visualize_terms</a></span><span class="op">(</span></span>
+<span>  result_df <span class="op">=</span> <span class="va">example_pathfindR_output</span>,</span>
+<span>  input_processed <span class="op">=</span> <span class="va">input_processed</span>,</span>
+<span>  hsa_KEGG <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  pin_name_path <span class="op">=</span> <span class="st">"Biogrid"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p><img src="example_interaction_vis.png" style="max-width:100%;"></p>
+<p>See <code><a href="../reference/visualize_terms.html">?visualize_terms</a></code> for more details.</p>
 </div>
 <div class="section level2">
 <h2 id="term_gene_heatmap-terms-by-genes-heatmap">
@@ -157,24 +190,24 @@ rows are enriched terms and columns are involved input genes. This
 heatmap allows visual identification of the input genes involved in the
 enriched terms, as well as the common or distinct genes between
 different terms.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/term_gene_heatmap.html">term_gene_heatmap</a></span><span class="op">(</span><span class="va">RA_output</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/term_gene_heatmap.html">term_gene_heatmap</a></span><span class="op">(</span><span class="va">example_pathfindR_output</span><span class="op">)</span></span></code></pre></div>
 <p><img src="visualization_vignette_files/figure-html/hmap-1.png" width="768" style="display: block; margin: auto;"></p>
 <p>By default, the heatmap is generated for the top 10 terms. This can
 be controlled by the <code>num_terms</code> argument:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/term_gene_heatmap.html">term_gene_heatmap</a></span><span class="op">(</span><span class="va">RA_output</span>, num_terms <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/term_gene_heatmap.html">term_gene_heatmap</a></span><span class="op">(</span><span class="va">example_pathfindR_output</span>, num_terms <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## set null for displaying all terms</span></span>
-<span><span class="fu"><a href="../reference/term_gene_heatmap.html">term_gene_heatmap</a></span><span class="op">(</span><span class="va">RA_output</span>, num_terms <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/term_gene_heatmap.html">term_gene_heatmap</a></span><span class="op">(</span><span class="va">example_pathfindR_output</span>, num_terms <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
 <p>By default, the term ids are used. For using full descriptions, set
 <code>use_description = TRUE</code></p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/term_gene_heatmap.html">term_gene_heatmap</a></span><span class="op">(</span><span class="va">RA_output</span>, use_description <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/term_gene_heatmap.html">term_gene_heatmap</a></span><span class="op">(</span><span class="va">example_pathfindR_output</span>, use_description <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>If the input data frame (same as in <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code>) is
 supplied, the tile colors indicate the change values:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/term_gene_heatmap.html">term_gene_heatmap</a></span><span class="op">(</span>result_df <span class="op">=</span> <span class="va">RA_output</span>, genes_df <span class="op">=</span> <span class="va">RA_input</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/term_gene_heatmap.html">term_gene_heatmap</a></span><span class="op">(</span>result_df <span class="op">=</span> <span class="va">example_pathfindR_output</span>, genes_df <span class="op">=</span> <span class="va">example_pathfindR_input</span><span class="op">)</span></span></code></pre></div>
 <p><img src="hmap.png" style="max-width:100%;"></p>
 <p>See <code><a href="../reference/term_gene_heatmap.html">?term_gene_heatmap</a></code> for more details.</p>
 </div>
@@ -193,25 +226,25 @@ The graph also enables determination of the degree of overlap between
 the enriched terms by identifying shared and/or distinct significant
 genes. By default, the function visualizes the term-gene graph for the
 top 10 enriched terms:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/term_gene_graph.html">term_gene_graph</a></span><span class="op">(</span><span class="va">RA_output</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/term_gene_graph.html">term_gene_graph</a></span><span class="op">(</span><span class="va">example_pathfindR_output</span><span class="op">)</span></span></code></pre></div>
 <p><img src="visualization_vignette_files/figure-html/term_gene1-1.png" width="768" style="display: block; margin: auto;"></p>
 <p>To plot all of the enriched terms in the enrichment results, set
 <code>num_terms = NULL</code> (not advised due to cluttered
 visualization):</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/term_gene_graph.html">term_gene_graph</a></span><span class="op">(</span><span class="va">RA_output</span>, num_terms <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/term_gene_graph.html">term_gene_graph</a></span><span class="op">(</span><span class="va">example_pathfindR_output</span>, num_terms <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
 <p>To plot using full term names (instead of IDs which is the default),
 set <code>use_description = TRUE</code>:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/term_gene_graph.html">term_gene_graph</a></span><span class="op">(</span><span class="va">RA_output</span>, num_terms <span class="op">=</span> <span class="fl">3</span>, use_description <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/term_gene_graph.html">term_gene_graph</a></span><span class="op">(</span><span class="va">example_pathfindR_output</span>, num_terms <span class="op">=</span> <span class="fl">3</span>, use_description <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="term_gene.png" style="max-width:100%;"></p>
 <p>By default the node sizes are plotted proportional to the number of
 genes a term contains (<code>num_genes</code>). To adjust node sizes
 using the <span class="math inline">\(-log_{10}\)</span>(lowest p
 values), set <code>node_size = "p_val"</code>:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/term_gene_graph.html">term_gene_graph</a></span><span class="op">(</span><span class="va">RA_output</span>, num_terms <span class="op">=</span> <span class="fl">3</span>, node_size <span class="op">=</span> <span class="st">"p_val"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/term_gene_graph.html">term_gene_graph</a></span><span class="op">(</span><span class="va">example_pathfindR_output</span>, num_terms <span class="op">=</span> <span class="fl">3</span>, node_size <span class="op">=</span> <span class="st">"p_val"</span><span class="op">)</span></span></code></pre></div>
 <p>See <code><a href="../reference/term_gene_graph.html">?term_gene_graph</a></code> for more details.</p>
 </div>
 <div class="section level2">
@@ -224,31 +257,31 @@ the x-axis is the UpSet plot of intersections of enriched terms. By
 default (<code>method = "heatmap"</code>), the main plot is a heatmap of
 genes at the corresponding intersections, colored by up/down
 regulation:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span><span class="op">(</span><span class="va">RA_output</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span><span class="op">(</span><span class="va">example_pathfindR_output</span><span class="op">)</span></span></code></pre></div>
 <p><img src="visualization_vignette_files/figure-html/upset1-1.png" width="768" style="display: block; margin: auto;"></p>
 <p>If genes_df is provided, the heatmap tiles are colored by change
 values:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span><span class="op">(</span><span class="va">RA_output</span>, genes_df <span class="op">=</span> <span class="va">RA_input</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span><span class="op">(</span><span class="va">example_pathfindR_output</span>, genes_df <span class="op">=</span> <span class="va">example_pathfindR_input</span><span class="op">)</span></span></code></pre></div>
 <p><img src="upset.png" style="max-width:100%;"></p>
 <p>Again, you may change the number of top terms plotted via
 <code>num_terms</code> (default = 10):</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span><span class="op">(</span><span class="va">RA_output</span>, num_terms <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span><span class="op">(</span><span class="va">example_pathfindR_output</span>, num_terms <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
 <p>Again, to plot using full term names (instead of IDs which is the
 default), set <code>use_description = TRUE</code>:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span><span class="op">(</span><span class="va">RA_output</span>, use_description <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span><span class="op">(</span><span class="va">example_pathfindR_output</span>, use_description <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>If <code>method = "barplot"</code>, the main plot is a bar plots of
 the number of genes in the corresponding intersections:</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span><span class="op">(</span><span class="va">RA_output</span>, method <span class="op">=</span> <span class="st">"barplot"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span><span class="op">(</span><span class="va">example_pathfindR_output</span>, method <span class="op">=</span> <span class="st">"barplot"</span><span class="op">)</span></span></code></pre></div>
 <p>If <code>method = "boxplot"</code> and if <code>genes_df</code> is
 provided, then the main plot displays the boxplots of change values of
 the genes within the corresponding intersections:</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span><span class="op">(</span><span class="va">RA_output</span>, <span class="va">RA_input</span>, method <span class="op">=</span> <span class="st">"boxplot"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span><span class="op">(</span><span class="va">example_pathfindR_output</span>, <span class="va">example_pathfindR_input</span>, method <span class="op">=</span> <span class="st">"boxplot"</span><span class="op">)</span></span></code></pre></div>
 <p>See <code><a href="../reference/UpSet_plot.html">?UpSet_plot</a></code> for more details.</p>
 </div>
   </div>

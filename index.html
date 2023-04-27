@@ -50,7 +50,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.4.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.4.9006</span>
       </span>
     </div>
 
@@ -200,13 +200,14 @@
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://egeulgen.github.io/pathfindR/">pathfindR</a></span><span class="op">)</span></span>
 <span><span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span><span class="op">)</span></span></code></pre></div>
-<p>This wrapper function performs the active-subnetwork-oriented enrichment analysis, and returns a data frame of enriched terms (as well as visualization of enriched terms and an HTML report):</p>
+<p>This wrapper function performs the active-subnetwork-oriented enrichment analysis, and returns a data frame of enriched terms:</p>
 <div class="figure">
 <img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/enrichment_chart.png?raw=true" title="Enrichment Chart" alt=""><p class="caption">pathfindR Enrichment Chart</p>
 </div>
 <p>Some useful arguments are:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># change the output directory</span></span>
+<code class="sourceCode R"><span><span class="co"># set an output directory for saving active subnetworks and creating an HTML report </span></span>
+<span><span class="co"># (default=NULL, sets a temporary directory)</span></span>
 <span><span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, output_dir <span class="op">=</span> <span class="st">"/top/secret/results"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># change the gene sets used for analysis (default = "KEGG")</span></span>
@@ -215,7 +216,7 @@
 <span><span class="co"># change the PIN for active subnetwork search (default = Biogrid)</span></span>
 <span><span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, pin_name_path <span class="op">=</span> <span class="st">"IntAct"</span><span class="op">)</span></span>
 <span><span class="co"># or use an external PIN of your choice</span></span>
-<span><span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, pin_name_path <span class="op">=</span> <span class="st">"/path/to/myPIN.sif"</span><span class="op">)</span></span>
+<span><span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, pin_name_path <span class="op">=</span> <span class="st">"/path/to/my/PIN.sif"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># change the number of iterations (default = 10)</span></span>
 <span><span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, iterations <span class="op">=</span> <span class="fl">25</span><span class="op">)</span> </span>
@@ -251,6 +252,33 @@
 <div class="section level1">
 <h1 id="visualization-of-enrichment-results">Visualization of Enrichment Results<a class="anchor" aria-label="anchor" href="#visualization-of-enrichment-results"></a>
 </h1>
+<div class="section level2">
+<h2 id="enriched-term-diagrams">Enriched Term Diagrams<a class="anchor" aria-label="anchor" href="#enriched-term-diagrams"></a>
+</h2>
+<p>For H.sapiens KEGG enrichment analyses, <code><a href="reference/visualize_terms.html">visualize_terms()</a></code> can be used to generate KEGG pathway diagrams that are saved as PNG files in a directory called “term_visualizations” under the current working directory:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">input_processed</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/input_processing.html">input_processing</a></span><span class="op">(</span><span class="va">example_pathfindR_input</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/visualize_terms.html">visualize_terms</a></span><span class="op">(</span></span>
+<span>  result_df <span class="op">=</span> <span class="va">example_pathfindR_output</span>,</span>
+<span>  input_processed <span class="op">=</span> <span class="va">input_processed</span>,</span>
+<span>  hsa_KEGG <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<div class="figure">
+<img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/hsaKEGG_diagram.png?raw=true" title="Pathway Diagram" alt=""><p class="caption">Pathway Diagram</p>
+</div>
+<p>Alternatively (i.e., for other types of non-KEGG/non-H.sapiens enrichment analyses), an interaction diagram per enriched term can be generated again via <code><a href="reference/visualize_terms.html">visualize_terms()</a></code>. These diagrams are also saved as PNG files in a directory called “term_visualizations” under the current working directory:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">input_processed</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/input_processing.html">input_processing</a></span><span class="op">(</span><span class="va">example_pathfindR_input</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/visualize_terms.html">visualize_terms</a></span><span class="op">(</span></span>
+<span>  result_df <span class="op">=</span> <span class="va">example_pathfindR_output</span>,</span>
+<span>  input_processed <span class="op">=</span> <span class="va">input_processed</span>,</span>
+<span>  hsa_KEGG <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  pin_name_path <span class="op">=</span> <span class="st">"Biogrid"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<div class="figure">
+<img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/example_interaction_vis.png?raw=true" title="Interaction Diagram" alt=""><p class="caption">Interaction Diagram</p>
+</div>
+</div>
 <div class="section level2">
 <h2 id="term-gene-heatmap">Term-Gene Heatmap<a class="anchor" aria-label="anchor" href="#term-gene-heatmap"></a>
 </h2>
@@ -288,13 +316,13 @@
 <h1 id="comparison-of-2-pathfindr-results">Comparison of 2 pathfindR Results<a class="anchor" aria-label="anchor" href="#comparison-of-2-pathfindr-results"></a>
 </h1>
 <p>The function <code><a href="reference/combine_pathfindR_results.html">combine_pathfindR_results()</a></code> allows combining two pathfindR analysis results for investigating common and distinct terms between the groups. Below is an example for comparing two different results using rheumatoid arthritis-related data.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">combined_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/combine_pathfindR_results.html">combine_pathfindR_results</a></span><span class="op">(</span></span>
 <span>  result_A <span class="op">=</span> <span class="va">an_output_df</span>, </span>
 <span>  result_B <span class="op">=</span> <span class="va">another_output_df</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>By default, <code><a href="reference/combine_pathfindR_results.html">combine_pathfindR_results()</a></code> plots the term-gene graph for the common terms in the combined results. The function <code><a href="reference/combined_results_graph.html">combined_results_graph()</a></code> can be used to create this graph (using only selected terms etc.) later on.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/combined_results_graph.html">combined_results_graph</a></span><span class="op">(</span><span class="va">combined_df</span>, selected_terms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hsa04144"</span>, <span class="st">"hsa04141"</span>, <span class="st">"hsa04140"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/combined_graph.png?raw=true" title="Combined Results Graph" alt=""><p class="caption">Combined Results Graph</p>

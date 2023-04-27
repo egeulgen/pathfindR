@@ -35,7 +35,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.4.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.4.9006</span>
       </span>
     </div>
 
@@ -103,7 +103,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Obtaining PIN and Gene Sets Data</h1>
             
-            <h4 data-toc-skip class="date">2023-04-26</h4>
+            <h4 data-toc-skip class="date">2023-04-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/HEAD/vignettes/obtain_data.Rmd" class="external-link"><code>vignettes/obtain_data.Rmd</code></a></small>
       <div class="hidden name"><code>obtain_data.Rmd</code></div>
@@ -138,8 +138,10 @@ returned):</p>
 <code>release</code> argument:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## retrieving PIN data for "Mus_musculus" from BioGRID release 3.5.179</span></span>
-<span><span class="va">path_to_pin_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_pin_file.html">get_pin_file</a></span><span class="op">(</span>org <span class="op">=</span> <span class="st">"Mus_musculus"</span>, </span>
-<span>                                 release <span class="op">=</span> <span class="st">"3.5.179"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">path_to_pin_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_pin_file.html">get_pin_file</a></span><span class="op">(</span></span>
+<span>  org <span class="op">=</span> <span class="st">"Mus_musculus"</span>,</span>
+<span>  release <span class="op">=</span> <span class="st">"3.5.179"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="get-gene-sets-list">Get Gene Sets List<a class="anchor" aria-label="anchor" href="#get-gene-sets-list"></a>
@@ -183,16 +185,20 @@ MSigDB gene sets. For this, set the <code>source</code> argument to
 “MSigDB” and the <code>collection</code> argument to the desired MSigDB
 collection (one of H, C1, C2, C3, C4, C5, C6, C7):</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">gsets_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_gene_sets_list.html">get_gene_sets_list</a></span><span class="op">(</span>source <span class="op">=</span> <span class="st">"MSigDB"</span>,</span>
-<span>                                 collection <span class="op">=</span> <span class="st">"C2"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">gsets_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_gene_sets_list.html">get_gene_sets_list</a></span><span class="op">(</span></span>
+<span>  source <span class="op">=</span> <span class="st">"MSigDB"</span>,</span>
+<span>  collection <span class="op">=</span> <span class="st">"C2"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>The default organism for MSigDB is “Homo sapiens”, you may obtain the
 gene sets data for another organism by setting the <code>species</code>
 argument:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## obtaining C5 gene sets data for "Drosophila melanogaster"</span></span>
-<span><span class="va">gsets_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_gene_sets_list.html">get_gene_sets_list</a></span><span class="op">(</span>source <span class="op">=</span> <span class="st">"MSigDB"</span>,</span>
-<span>                                 species <span class="op">=</span> <span class="st">"Drosophila melanogaster"</span>,</span>
-<span>                                 collection <span class="op">=</span> <span class="st">"C5"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">gsets_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_gene_sets_list.html">get_gene_sets_list</a></span><span class="op">(</span></span>
+<span>  source <span class="op">=</span> <span class="st">"MSigDB"</span>,</span>
+<span>  species <span class="op">=</span> <span class="st">"Drosophila melanogaster"</span>,</span>
+<span>  collection <span class="op">=</span> <span class="st">"C5"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## see msigdbr::msigdbr_show_species() for all available organisms</span></span>
 <span><span class="fu">msigdbr</span><span class="fu">::</span><span class="fu"><a href="https://igordot.github.io/msigdbr/reference/msigdbr_show_species.html" class="external-link">msigdbr_show_species</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -213,9 +219,11 @@ argument:</p>
 <code>subcollection</code> argument:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## obtaining C3 - MIR: microRNA targets</span></span>
-<span><span class="va">gsets_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_gene_sets_list.html">get_gene_sets_list</a></span><span class="op">(</span>source <span class="op">=</span> <span class="st">"MSigDB"</span>,</span>
-<span>                                 collection <span class="op">=</span> <span class="st">"C3"</span>,</span>
-<span>                                 subcollection <span class="op">=</span> <span class="st">"MIR"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">gsets_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_gene_sets_list.html">get_gene_sets_list</a></span><span class="op">(</span></span>
+<span>  source <span class="op">=</span> <span class="st">"MSigDB"</span>,</span>
+<span>  collection <span class="op">=</span> <span class="st">"C3"</span>,</span>
+<span>  subcollection <span class="op">=</span> <span class="st">"MIR"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
   </div>

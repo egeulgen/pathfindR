@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.4.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.4.9006</span>
       </span>
     </div>
 
@@ -74,7 +74,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Process Input</h1>
-    <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/HEAD/R/core_functions.R" class="external-link"><code>R/core_functions.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/HEAD/R/utility.R" class="external-link"><code>R/utility.R</code></a></small>
     <div class="hidden name"><code>input_processing.Rd</code></div>
     </div>
 
@@ -137,17 +137,25 @@ in the input that are not found in the PIN to an alias symbol found in the PIN
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">processed_df</span> <span class="op">&lt;-</span> <span class="fu">input_processing</span><span class="op">(</span>input <span class="op">=</span> <span class="va">RA_input</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">]</span>,</span></span>
-<span class="r-in"><span>                                 pin_name_path <span class="op">=</span> <span class="st">"KEGG"</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">processed_df</span> <span class="op">&lt;-</span> <span class="fu">input_processing</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  input <span class="op">=</span> <span class="va">example_pathfindR_input</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">]</span>,</span></span>
+<span class="r-in"><span>  pin_name_path <span class="op">=</span> <span class="st">"KEGG"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ## Processing input. Converting gene symbols,</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>           if necessary (and if human gene symbols provided)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Number of genes provided in input: 5</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Number of genes in input after p-value filtering: 5</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>replacing previous import ‘utils::findMatches’ by ‘S4Vectors::findMatches’ when loading ‘AnnotationDbi’</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Could not find any interactions for 2 (40%) genes in the PIN</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Final number of genes in input: 3</span>
-<span class="r-in"><span><span class="va">processed_df</span> <span class="op">&lt;-</span> <span class="fu">input_processing</span><span class="op">(</span>input <span class="op">=</span> <span class="va">RA_input</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">]</span>,</span></span>
-<span class="r-in"><span>                                 pin_name_path <span class="op">=</span> <span class="st">"KEGG"</span>,</span></span>
-<span class="r-in"><span>                                 convert2alias <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">processed_df</span> <span class="op">&lt;-</span> <span class="fu">input_processing</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  input <span class="op">=</span> <span class="va">example_pathfindR_input</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">]</span>,</span></span>
+<span class="r-in"><span>  pin_name_path <span class="op">=</span> <span class="st">"KEGG"</span>,</span></span>
+<span class="r-in"><span>  convert2alias <span class="op">=</span> <span class="cn">FALSE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ## Processing input. Converting gene symbols,</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>           if necessary (and if human gene symbols provided)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Number of genes provided in input: 10</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Number of genes in input after p-value filtering: 10</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Could not find any interactions for 6 (60%) genes in the PIN</span>

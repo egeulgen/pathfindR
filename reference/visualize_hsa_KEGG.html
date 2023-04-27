@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.4.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.4.9006</span>
       </span>
     </div>
 
@@ -74,7 +74,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Visualize Human KEGG Pathways</h1>
-    <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/HEAD/R/visualization_functions.R" class="external-link"><code>R/visualization_functions.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/HEAD/R/visualization.R" class="external-link"><code>R/visualization.R</code></a></small>
     <div class="hidden name"><code>visualize_hsa_KEGG.Rd</code></div>
     </div>
 
@@ -86,7 +86,6 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">visualize_hsa_KEGG</span><span class="op">(</span></span>
 <span>  <span class="va">hsa_kegg_ids</span>,</span>
 <span>  <span class="va">input_processed</span>,</span>
-<span>  max_to_plot <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  scale_vals <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  node_cols <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  quiet <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -103,12 +102,6 @@
 
 <dt>input_processed</dt>
 <dd><p>input data processed via <code><a href="input_processing.html">input_processing</a></code></p></dd>
-
-
-<dt>max_to_plot</dt>
-<dd><p>The number of hsa kegg pathways (from beginning
-until the <code>max_to_plot</code>th id) to visualize. If NULL, visualizes all
-(default = NULL)</p></dd>
 
 
 <dt>scale_vals</dt>
