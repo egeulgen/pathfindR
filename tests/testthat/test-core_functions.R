@@ -93,6 +93,7 @@ test_that("Expect warning with empty result from `run_pathfindR()`", {
 })
 
 test_that("`run_pathfindR()` `create_HTML_report` works", {
+  skip_on_cran()
   out_dir <- file.path(tempdir(check = TRUE), "pathfindR_results")
   expect_is(run_pathfindR(RA_input[1:50, ],
                           iterations = 1,
