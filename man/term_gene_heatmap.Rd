@@ -62,5 +62,5 @@ the tiles indicate the change values.
 Create Terms by Genes Heatmap
 }
 \examples{
-term_gene_heatmap(RA_output, num_terms = 3)
+term_gene_heatmap(example_pathfindR_output, num_terms = 3)
 }

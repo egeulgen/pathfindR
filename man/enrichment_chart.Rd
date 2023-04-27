@@ -55,5 +55,5 @@ This function is used to create a ggplot2 bubble chart displaying the
 enrichment results.
 }
 \examples{
-g <- enrichment_chart(RA_output)
+g <- enrichment_chart(example_pathfindR_output)
 }

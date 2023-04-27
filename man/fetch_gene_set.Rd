@@ -43,5 +43,5 @@ be used for enrichment analysis.
 }
 \examples{
 KEGG_gset <- fetch_gene_set()
-GO_MF_gset <- fetch_gene_set("GO-MF")
+GO_MF_gset <- fetch_gene_set("GO-MF", min_gset_size = 20, max_gset_size = 100)
 }

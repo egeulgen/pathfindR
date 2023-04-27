@@ -77,5 +77,9 @@ where \ifelse{html}{\out{t &#8712; T}}{\eqn{t \in T}} and \ifelse{html}{\out{s &
 }
 
 \examples{
-score_matrix <- score_terms(RA_output, RA_exp_mat, plot_hmap = FALSE)
+score_matrix <- score_terms(
+  example_pathfindR_output,
+  example_experiment_matrix,
+  plot_hmap = FALSE
+)
 }

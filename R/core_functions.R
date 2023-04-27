@@ -83,7 +83,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' run_pathfindR(RA_input)
+#' run_pathfindR(example_pathfindR_input)
 #' }
 run_pathfindR <- function(input,
                           gene_sets = "KEGG",
@@ -426,7 +426,7 @@ run_pathfindR <- function(input,
 #'
 #' @examples
 #' KEGG_gset <- fetch_gene_set()
-#' GO_MF_gset <- fetch_gene_set("GO-MF")
+#' GO_MF_gset <- fetch_gene_set("GO-MF", min_gset_size = 20, max_gset_size = 100)
 fetch_gene_set <- function(gene_sets = "KEGG",
                            min_gset_size = 10,
                            max_gset_size = 300,
@@ -631,7 +631,7 @@ return_pin_path <- function(pin_name_path = "Biogrid") {
 #' @seealso See \code{\link{run_pathfindR}} for the wrapper function of the
 #'   pathfindR workflow
 #' @examples
-#' input_testing(RA_input, 0.05)
+#' input_testing(example_pathfindR_input, 0.05)
 input_testing <- function(input, p_val_threshold = 0.05) {
   if (!is.data.frame(input)) {
     stop("the input is not a data frame")
@@ -691,11 +691,15 @@ input_testing <- function(input, p_val_threshold = 0.05) {
 #'   pathfindR workflow
 #'
 #' @examples
-#' processed_df <- input_processing(input = RA_input[1:5, ],
-#'                                  pin_name_path = "KEGG")
-#' processed_df <- input_processing(input = RA_input[1:10, ],
-#'                                  pin_name_path = "KEGG",
-#'                                  convert2alias = FALSE)
+#' processed_df <- input_processing(
+#'   input = example_pathfindR_input[1:5, ],
+#'   pin_name_path = "KEGG"
+#' )
+#' processed_df <- input_processing(
+#'   input = example_pathfindR_input[1:10, ],
+#'   pin_name_path = "KEGG",
+#'   convert2alias = FALSE
+#' )
 input_processing <- function(input, p_val_threshold = 0.05,
                              pin_name_path = "Biogrid", convert2alias = TRUE) {
 
@@ -844,11 +848,13 @@ input_processing <- function(input, p_val_threshold = 0.05,
 #' @export
 #'
 #' @examples
-#' example_gene_data <- RA_input
+#' example_gene_data <- example_pathfindR_input
 #' colnames(example_gene_data) <- c("GENE", "CHANGE", "P_VALUE")
 #'
-#' annotated_result <- annotate_term_genes(result_df = RA_output,
-#'                                         input_processed = example_gene_data)
+#' annotated_result <- annotate_term_genes(
+#'   result_df = example_pathfindR_output,
+#'   input_processed = example_gene_data
+#' )
 annotate_term_genes <- function(result_df,
                                 input_processed,
                                 genes_by_term = pathfindR.data::kegg_genes) {

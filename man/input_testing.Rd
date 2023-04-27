@@ -25,7 +25,7 @@ Only checks if the input and the threshold follows the required
 Input Testing
 }
 \examples{
-input_testing(RA_input, 0.05)
+input_testing(example_pathfindR_input, 0.05)
 }
 \seealso{
 See \code{\link{run_pathfindR}} for the wrapper function of the

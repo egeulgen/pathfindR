@@ -17,7 +17,7 @@
 #' @export
 #'
 #' @examples
-#' sub_df <- RA_output[1:3, ]
+#' sub_df <- example_pathfindR_output[1:3, ]
 #' create_kappa_matrix(sub_df)
 create_kappa_matrix <- function(enrichment_res,
                                 use_description = FALSE,
@@ -550,10 +550,12 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res,
 #' @export
 #'
 #' @examples
-#' example_clustered <- cluster_enriched_terms(RA_output[1:3, ],
-#'   plot_clusters_graph = FALSE)
-#' example_clustered <- cluster_enriched_terms(RA_output[1:3, ],
-#'   method = "fuzzy", plot_clusters_graph = FALSE)
+#' example_clustered <- cluster_enriched_terms(
+#'   example_pathfindR_output[1:3, ], plot_clusters_graph = FALSE
+#'   )
+#' example_clustered <- cluster_enriched_terms(
+#'   example_pathfindR_output[1:3, ], method = "fuzzy", plot_clusters_graph = FALSE
+#'   )
 #' @seealso See \code{\link{hierarchical_term_clustering}} for hierarchical
 #' clustering of enriched terms.
 #' See \code{\link{fuzzy_term_clustering}} for fuzzy clustering of enriched terms.

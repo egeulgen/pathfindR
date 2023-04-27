@@ -54,7 +54,11 @@
 #' @export
 #'
 #' @examples
-#' score_matrix <- score_terms(RA_output, RA_exp_mat, plot_hmap = FALSE)
+#' score_matrix <- score_terms(
+#'   example_pathfindR_output,
+#'   example_experiment_matrix,
+#'   plot_hmap = FALSE
+#' )
 score_terms <- function(enrichment_table, exp_mat, cases = NULL,
                         use_description = FALSE,
                         plot_hmap = TRUE,
@@ -178,8 +182,12 @@ score_terms <- function(enrichment_table, exp_mat, cases = NULL,
 #' @export
 #'
 #' @examples
-#' score_mat <- score_terms(RA_output, RA_exp_mat, plot_hmap = FALSE)
-#' hmap <- plot_scores(score_mat)
+#' score_matrix <- score_terms(
+#'   example_pathfindR_output,
+#'   example_experiment_matrix,
+#'   plot_hmap = FALSE
+#' )
+#' hmap <- plot_scores(score_matrix)
 plot_scores <- function(score_matrix, cases = NULL, label_samples = TRUE,
                         case_title = "Case",
                         control_title = "Control",

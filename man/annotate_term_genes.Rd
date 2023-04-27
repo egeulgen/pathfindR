@@ -29,9 +29,11 @@ The original data frame with two additional columns:  \describe{
 Function to annotate the involved affected (input) genes in each term.
 }
 \examples{
-example_gene_data <- RA_input
+example_gene_data <- example_pathfindR_input
 colnames(example_gene_data) <- c("GENE", "CHANGE", "P_VALUE")
 
-annotated_result <- annotate_term_genes(result_df = RA_output,
-                                        input_processed = example_gene_data)
+annotated_result <- annotate_term_genes(
+  result_df = example_pathfindR_output,
+  input_processed = example_gene_data
+)
 }

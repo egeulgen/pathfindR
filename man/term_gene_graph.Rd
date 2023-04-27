@@ -53,7 +53,7 @@ graph also enables determination of the overlap between the enriched terms
 by identifying shared and distinct significant term-related genes.
 }
 \examples{
-p <- term_gene_graph(RA_output)
-p <- term_gene_graph(RA_output, num_terms = 5)
-p <- term_gene_graph(RA_output, node_size = "p_val")
+p <- term_gene_graph(example_pathfindR_output)
+p <- term_gene_graph(example_pathfindR_output, num_terms = 5)
+p <- term_gene_graph(example_pathfindR_output, node_size = "p_val")
 }

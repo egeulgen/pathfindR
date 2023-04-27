@@ -40,12 +40,14 @@
 #' @export
 #'
 #' @examples
-#' processed_df <- RA_input[1:15, -2]
+#' processed_df <- example_pathfindR_input[1:15, -2]
 #' colnames(processed_df) <- c("GENE", "P_VALUE")
-#' GR_snws <- active_snw_search(input_for_search = processed_df,
-#'                              pin_name_path = "KEGG",
-#'                              search_method = "GR",
-#'                              score_quan_thr = 0.8)
+#' GR_snws <- active_snw_search(
+#'   input_for_search = processed_df,
+#'   pin_name_path = "KEGG",
+#'   search_method = "GR",
+#'   score_quan_thr = 0.8
+#' )
 #' # clean-up
 #' unlink("active_snw_search", recursive = TRUE)
 active_snw_search <- function(input_for_search,
@@ -205,8 +207,10 @@ active_snw_search <- function(input_for_search,
 #' @examples
 #' path2snw_list <- system.file("extdata/resultActiveSubnetworkSearch.txt",
 #'                               package = "pathfindR")
-#' filtered <- filterActiveSnws(active_snw_path = path2snw_list,
-#'                              sig_genes_vec = RA_input$Gene.symbol)
+#' filtered <- filterActiveSnws(
+#'   active_snw_path = path2snw_list,
+#'   sig_genes_vec = example_pathfindR_input$Gene.symbol
+#' )
 filterActiveSnws <- function(active_snw_path, sig_genes_vec,
                              score_quan_thr = 0.8, sig_gene_thr = 0.02) {
   ## Arg. checks
@@ -286,10 +290,12 @@ filterActiveSnws <- function(active_snw_path, sig_genes_vec,
 #' path2snw_list <- system.file("extdata/resultActiveSubnetworkSearch.txt",
 #'                               package = "pathfindR")
 #' # visualize top 2 active subnetworks
-#' g_list <- visualize_active_subnetworks(active_snw_path = path2snw_list,
-#'                                        genes_df = RA_input[1:10, ],
-#'                                        pin_name_path = "KEGG",
-#'                                        num_snws = 2)
+#' g_list <- visualize_active_subnetworks(
+#'   active_snw_path = path2snw_list,
+#'   genes_df = example_pathfindR_input[1:10, ],
+#'   pin_name_path = "KEGG",
+#'   num_snws = 2
+#' )
 visualize_active_subnetworks <- function(active_snw_path, genes_df,
                                          pin_name_path = "Biogrid",
                                          num_snws,

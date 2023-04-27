@@ -39,5 +39,5 @@ By default, the function also displays the term-gene graph of the common terms
 Combine 2 pathfindR Results
 }
 \examples{
-combined_results <- combine_pathfindR_results(RA_output, RA_comparison_output)
+combined_results <- combine_pathfindR_results(example_pathfindR_output, example_comparison_output)
 }

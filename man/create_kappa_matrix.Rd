@@ -32,6 +32,6 @@ enrichment results.
 Create Kappa Statistics Matrix
 }
 \examples{
-sub_df <- RA_output[1:3, ]
+sub_df <- example_pathfindR_output[1:3, ]
 create_kappa_matrix(sub_df)
 }

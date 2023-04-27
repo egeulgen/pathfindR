@@ -764,7 +764,7 @@ download_kegg_png <- function(pw_url, f_path, quiet = TRUE) {
 #' @export
 #'
 #' @examples
-#' g <- enrichment_chart(RA_output)
+#' g <- enrichment_chart(example_pathfindR_output)
 enrichment_chart <- function(result_df,
                              top_terms = 10,
                              plot_by_cluster = FALSE,
@@ -893,9 +893,9 @@ enrichment_chart <- function(result_df,
 #' @export
 #'
 #' @examples
-#' p <- term_gene_graph(RA_output)
-#' p <- term_gene_graph(RA_output, num_terms = 5)
-#' p <- term_gene_graph(RA_output, node_size = "p_val")
+#' p <- term_gene_graph(example_pathfindR_output)
+#' p <- term_gene_graph(example_pathfindR_output, num_terms = 5)
+#' p <- term_gene_graph(example_pathfindR_output, node_size = "p_val")
 term_gene_graph <- function(result_df, num_terms = 10,
                             layout = "stress", use_description = FALSE,
                             node_size = "num_genes") {
@@ -1052,7 +1052,7 @@ term_gene_graph <- function(result_df, num_terms = 10,
 #' @export
 #'
 #' @examples
-#' term_gene_heatmap(RA_output, num_terms = 3)
+#' term_gene_heatmap(example_pathfindR_output, num_terms = 3)
 term_gene_heatmap <- function(result_df, genes_df, num_terms = 10,
                               use_description = FALSE,
                               low = "red", mid = "black", high = "green",
@@ -1243,7 +1243,7 @@ term_gene_heatmap <- function(result_df, genes_df, num_terms = 10,
 #' @export
 #'
 #' @examples
-#' UpSet_plot(RA_comparison_output)
+#' UpSet_plot(example_pathfindR_output)
 UpSet_plot <- function(result_df, genes_df, num_terms = 10,
                        method = "heatmap",
                        use_description = FALSE,

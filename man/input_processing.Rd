@@ -42,11 +42,15 @@ This function first filters the input so that all p values are less
 Process Input
 }
 \examples{
-processed_df <- input_processing(input = RA_input[1:5, ],
-                                 pin_name_path = "KEGG")
-processed_df <- input_processing(input = RA_input[1:10, ],
-                                 pin_name_path = "KEGG",
-                                 convert2alias = FALSE)
+processed_df <- input_processing(
+  input = example_pathfindR_input[1:5, ],
+  pin_name_path = "KEGG"
+)
+processed_df <- input_processing(
+  input = example_pathfindR_input[1:10, ],
+  pin_name_path = "KEGG",
+  convert2alias = FALSE
+)
 }
 \seealso{
 See \code{\link{run_pathfindR}} for the wrapper function of the

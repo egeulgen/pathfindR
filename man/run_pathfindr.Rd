@@ -204,7 +204,7 @@ are reported for each enriched term.
 
 \examples{
 \dontrun{
-run_pathfindR(RA_input)
+run_pathfindR(example_pathfindR_input)
 }
 }
 \seealso{

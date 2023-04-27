@@ -41,8 +41,10 @@ a  \code{\link[ggraph]{ggraph}} object containing the combined term-gene graph.
 Combined Results Graph
 }
 \examples{
-combined_results <- combine_pathfindR_results(RA_output,
-                                              RA_comparison_output,
-                                              plot_common = FALSE)
+combined_results <- combine_pathfindR_results(
+  example_pathfindR_output,
+  example_comparison_output,
+  plot_common = FALSE
+)
 g <- combined_results_graph(combined_results, selected_terms = sample(combined_results$ID, 3))
 }

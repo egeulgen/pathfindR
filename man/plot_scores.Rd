@@ -45,6 +45,10 @@ divided into 2 facets, named by \code{case_title} and \code{control_title}.
 Plot the Heatmap of Score Matrix of Enriched Terms per Sample
 }
 \examples{
-score_mat <- score_terms(RA_output, RA_exp_mat, plot_hmap = FALSE)
-hmap <- plot_scores(score_mat)
+score_matrix <- score_terms(
+  example_pathfindR_output,
+  example_experiment_matrix,
+  plot_hmap = FALSE
+)
+hmap <- plot_scores(score_matrix)
 }

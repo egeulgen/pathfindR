@@ -204,9 +204,11 @@ enrichment <- function(input_genes,
 #' @seealso \code{\link{enrichment}} for the enrichment analysis for a single gene set
 #'
 #' @examples
-#' enr_res <- enrichment_analyses(snws = example_active_snws[1:2],
-#'                                sig_genes_vec = RA_input$Gene.symbol[1:25],
-#'                                pin_name_path = "KEGG")
+#' enr_res <- enrichment_analyses(
+#'   snws = example_active_snws[1:2],
+#'   sig_genes_vec = example_pathfindR_input$Gene.symbol[1:25],
+#'   pin_name_path = "KEGG"
+#' )
 enrichment_analyses <- function(snws,
                                 sig_genes_vec,
                                 pin_name_path = "Biogrid",

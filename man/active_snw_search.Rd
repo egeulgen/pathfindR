@@ -100,12 +100,14 @@ the `score_quan_thr`th quantile and that has at least `sig_gene_thr` affected ge
 Perform Active Subnetwork Search
 }
 \examples{
-processed_df <- RA_input[1:15, -2]
+processed_df <- example_pathfindR_input[1:15, -2]
 colnames(processed_df) <- c("GENE", "P_VALUE")
-GR_snws <- active_snw_search(input_for_search = processed_df,
-                             pin_name_path = "KEGG",
-                             search_method = "GR",
-                             score_quan_thr = 0.8)
+GR_snws <- active_snw_search(
+  input_for_search = processed_df,
+  pin_name_path = "KEGG",
+  search_method = "GR",
+  score_quan_thr = 0.8
+)
 # clean-up
 unlink("active_snw_search", recursive = TRUE)
 }
