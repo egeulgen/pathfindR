@@ -49,6 +49,37 @@ enrichment_chart(example_pathfindR_output_clustered, plot_by_cluster = TRUE)
 
 See `?enrichment_chart` for more details.
 
+## `visualize_terms()`: Enriched Term Diagrams
+
+For H.sapiens KEGG enrichment analyses, `visualize_terms()` can be used to generate KEGG pathway diagrams that are saved as PNG files in a directory called "term_visualizations" under the current working directory:
+
+```{r KEGG_vis, eval=FALSE}
+input_processed <- input_processing(example_pathfindR_input)
+visualize_terms(
+  result_df = example_pathfindR_output,
+  input_processed = input_processed,
+  hsa_KEGG = TRUE
+)
+```
+
+<img src="./hsaKEGG_diagram.png" style="max-width:100%;" />
+
+Alternatively (i.e., for other types of non-KEGG/non-H.sapiens enrichment analyses), an interaction diagram per enriched term can be generated again via `visualize_terms()`. These diagrams are also saved as PNG files in a directory called "term_visualizations" under the current working directory:
+
+```{r nonKEGG_viss, eval=FALSE}
+input_processed <- input_processing(example_pathfindR_input)
+visualize_terms(
+  result_df = example_pathfindR_output,
+  input_processed = input_processed,
+  hsa_KEGG = FALSE,
+  pin_name_path = "Biogrid"
+)
+```
+
+<img src="./example_interaction_vis.png" style="max-width:100%;" />
+
+See `?visualize_terms` for more details.
+
 ## `term_gene_heatmap()`: Terms by Genes Heatmap
 
 `term_gene_heatmap()` is used to create a heatmap where rows are enriched terms and columns are involved input genes. This heatmap allows visual identification of the input genes involved in the enriched terms, as well as the common or distinct genes between different terms. 
