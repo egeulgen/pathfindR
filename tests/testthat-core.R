@@ -1,4 +1,4 @@
 library(testthat)
 library(pathfindR)
 
-test_check("pathfindR", filter = "core_functions")
+test_check("pathfindR", filter = "core")

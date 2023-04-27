@@ -1,161 +1,61 @@
 ##################################################
 ## Package: pathfindR
 ## Script purpose: Unit testing script for
-## core functions (wrapper etc.)
+## utility functions
 ## Date: Apr 27, 2023
 ## Author: Ege Ulgen
 ##################################################
 
-# run_pathfindR -----------------------------------------------------------
-test_that("`run_pathfindR()` works as expected", {
+# active_snw_enrichment_wrapper -------------------------------------------
+input_processed <- input_processing(example_pathfindR_input[1:2, ])
+pin_path <- return_pin_path()
+gset_list <- fetch_gene_set()
+
+test_that("`active_snw_enrichment_wrapper()` works as expected", {
+  org_dir <- getwd()
+  test_directory <- file.path(tempdir(check = TRUE), "snw_wrapper_test")
+  dir.create(test_directory)
+  setwd(test_directory)
+  on.exit(setwd(org_dir))
+  on.exit(unlink(test_directory), add = TRUE)
+
+  expect_is(
+    pathfindR:::active_snw_enrichment_wrapper(
+      input_processed = input_processed,
+      pin_path = pin_path,
+      gset_list = gset_list,
+      enrichment_threshold = 0.05,
+      list_active_snw_genes = FALSE,
+      iterations = 1
+    ),
+    "NULL"
+  )
+
   skip_on_cran()
-
-  out_dir <- file.path(tempdir(check = TRUE), "pathfindR_results")
-  ## GR
   expect_is(
-    run_pathfindR(example_pathfindR_input[1:50, ],
-      iterations = 1,
-      n_processes = 2,
-      score_quan_thr = 0.8,
-      max_to_plot = 1,
-      output_dir = out_dir
+    pathfindR:::active_snw_enrichment_wrapper(
+      input_processed = input_processed,
+      pin_path = pin_path,
+      gset_list = gset_list,
+      enrichment_threshold = 0.05,
+      list_active_snw_genes = FALSE,
+      iterations = 2
     ),
-    "data.frame"
-  )
-
-  expect_is(
-    run_pathfindR(example_pathfindR_input[1:50, ],
-      iterations = 2,
-      n_processes = 5,
-      gene_sets = "BioCarta",
-      pin_name_path = "GeneMania",
-      score_quan_thr = 0.8,
-      plot_enrichment_chart = FALSE,
-      output_dir = out_dir
-    ),
-    "data.frame"
-  )
-
-  ## GA - n_processes <- 1 and n_processes <- iterations (iterations < n_processes)
-  expected_warns <- c(
-    "Did not find any enriched terms!",
-    "`iterations` is set to 1 because `search_method = \"GA\""
-  )
-  expect_warning(
-    run_pathfindR(example_pathfindR_input[3:4, ],
-      search_method = "GA",
-      iterations = 2,
-      score_quan_thr = 0.8,
-      pin_name_path = "KEGG",
-      output_dir = file.path(tempdir(), "GA_example"),
-      visualize_enriched_terms = FALSE
-    ),
-    paste0(paste(expected_warns, collapse = "|")),
-    all = TRUE, perl = TRUE
-  )
-
-  ### output_dir renaming works
-  test_out_dir <- file.path(tempdir(check = TRUE), "TEST")
-  for (i in 1:3) {
-    expect_warning(
-      res <- run_pathfindR(example_pathfindR_input[1:2, ],
-        iterations = 1,
-        n_processes = 1,
-        score_quan_thr = 0.8,
-        visualize_enriched_terms = FALSE,
-        output_dir = test_out_dir
-      ),
-      "Did not find any enriched terms!"
-    )
-    dir_to_check <- test_out_dir
-    if (i > 1) {
-      dir_to_check <- paste0(dir_to_check, "(", i - 1, ")")
-    }
-    expect_true(dir.exists(dir_to_check))
-  }
-
-  skip("will test SA and GA if we can create a suitable (faster and non-empty) test case")
-
-  ## SA
-  expect_is(
-    run_pathfindR(example_pathfindR_input[1:50, ],
-      iterations = 1,
-      gene_sets = "GO-BP",
-      pin_name_path = "GeneMania",
-      search_method = "SA",
-      visualize_enriched_terms = FALSE,
-      plot_enrichment_chart = FALSE,
-      output_dir = out_dir
-    ),
-    "data.frame"
-  )
-
-  ## GA
-  expect_is(
-    run_pathfindR(example_pathfindR_input[1:50, ],
-      gene_sets = "GO-BP",
-      pin_name_path = "GeneMania",
-      search_method = "GA",
-      visualize_enriched_terms = FALSE,
-      plot_enrichment_chart = FALSE,
-      output_dir = out_dir
-    ),
-    "data.frame"
+    "NULL"
   )
 })
 
-test_that("Expect warning with empty result from `run_pathfindR()`", {
-  expect_warning(
-    res <- run_pathfindR(example_pathfindR_input[1:2, ],
-      iterations = 1,
-      visualize_enriched_terms = FALSE,
-      output_dir = file.path(tempdir(check = TRUE), "pathfindR_results")
-    ),
-    "Did not find any enriched terms!"
-  )
-  expect_identical(res, data.frame())
-})
-
-test_that("`run_pathfindR()` `create_HTML_report` works", {
-  skip_on_cran()
-  out_dir <- file.path(tempdir(check = TRUE), "pathfindR_results")
-  expect_is(
-    run_pathfindR(example_pathfindR_input[1:50, ],
-      iterations = 1,
-      n_processes = 2,
-      score_quan_thr = 0.8,
-      max_to_plot = 1,
-      output_dir = out_dir,
-      create_HTML_report = TRUE
-    ),
-    "data.frame"
-  )
-  expect_true(dir.exists(out_dir))
-  expect_true(file.exists(file.path(out_dir, "results.html")))
-  expect_true(file.exists(file.path(out_dir, "enriched_terms.html")))
-  expect_true(file.exists(file.path(out_dir, "conversion_table.html")))
-  unlink(out_dir, recursive = TRUE)
-
-  expect_is(
-    run_pathfindR(example_pathfindR_input[1:50, ],
-      iterations = 1,
-      n_processes = 2,
-      score_quan_thr = 0.8,
-      max_to_plot = 1,
-      output_dir = out_dir,
-      create_HTML_report = FALSE
-    ),
-    "data.frame"
-  )
-  expect_true(dir.exists(out_dir))
-  expect_false(file.exists(file.path(out_dir, "results.html")))
-})
-
-
-test_that("`run_pathfindR()` argument checks work", {
+test_that("`active_snw_enrichment_wrapper()` argument checks work", {
   valid_mets <- c("GR", "SA", "GA")
   expect_error(
-    run_pathfindR(example_pathfindR_input, search_method = "INVALID"),
+    pathfindR:::active_snw_enrichment_wrapper(
+      input_processed = input_processed,
+      pin_path = pin_path,
+      gset_list = gset_list,
+      enrichment_threshold = 0.05,
+      list_active_snw_genes = FALSE,
+      search_method = "INVALID"
+    ),
     paste0(
       "`search_method` should be one of ",
       paste(dQuote(valid_mets), collapse = ", ")
@@ -163,50 +63,118 @@ test_that("`run_pathfindR()` argument checks work", {
   )
 
   expect_error(
-    run_pathfindR(example_pathfindR_input, use_all_positives = "INVALID"),
+    pathfindR:::active_snw_enrichment_wrapper(
+      input_processed = input_processed,
+      pin_path = pin_path,
+      gset_list = gset_list,
+      enrichment_threshold = 0.05,
+      list_active_snw_genes = FALSE,
+      use_all_positives = "INVALID"
+    ),
     "`use_all_positives` should be either TRUE or FALSE"
   )
 
   expect_error(
-    run_pathfindR(example_pathfindR_input, silent_option = "INVALID"),
+    pathfindR:::active_snw_enrichment_wrapper(
+      input_processed = input_processed,
+      pin_path = pin_path,
+      gset_list = gset_list,
+      enrichment_threshold = 0.05,
+      list_active_snw_genes = FALSE,
+      silent_option = "INVALID"
+    ),
     "`silent_option` should be either TRUE or FALSE"
   )
 
   expect_error(
-    run_pathfindR(example_pathfindR_input, visualize_enriched_terms = "INVALID"),
-    "`visualize_enriched_terms` should be either TRUE or FALSE"
-  )
-
-  expect_error(
-    run_pathfindR(example_pathfindR_input, create_HTML_report = "INVALID"),
-    "`create_HTML_report` should be either TRUE or FALSE"
-  )
-
-  expect_error(
-    run_pathfindR(example_pathfindR_input, plot_enrichment_chart = "INVALID"),
-    "`plot_enrichment_chart` should be either TRUE or FALSE"
-  )
-
-  expect_error(
-    run_pathfindR(example_pathfindR_input, iterations = "INVALID"),
+    pathfindR:::active_snw_enrichment_wrapper(
+      input_processed = input_processed,
+      pin_path = pin_path,
+      gset_list = gset_list,
+      enrichment_threshold = 0.05,
+      list_active_snw_genes = FALSE,
+      iterations = "INVALID"
+    ),
     "`iterations` should be a positive integer"
   )
 
   expect_error(
-    run_pathfindR(example_pathfindR_input, iterations = 0),
+    pathfindR:::active_snw_enrichment_wrapper(
+      input_processed = input_processed,
+      pin_path = pin_path,
+      gset_list = gset_list,
+      enrichment_threshold = 0.05,
+      list_active_snw_genes = FALSE,
+      iterations = 0
+    ),
     "`iterations` should be >= 1"
   )
 
   expect_error(
-    run_pathfindR(example_pathfindR_input, n_processes = "INVALID"),
+    pathfindR:::active_snw_enrichment_wrapper(
+      input_processed = input_processed,
+      pin_path = pin_path,
+      gset_list = gset_list,
+      enrichment_threshold = 0.05,
+      list_active_snw_genes = FALSE,
+      n_processes = "INVALID"
+    ),
     "`n_processes` should be either NULL or a positive integer"
   )
 
   expect_error(
-    run_pathfindR(example_pathfindR_input, n_processes = 0),
+    pathfindR:::active_snw_enrichment_wrapper(
+      input_processed = input_processed,
+      pin_path = pin_path,
+      gset_list = gset_list,
+      enrichment_threshold = 0.05,
+      list_active_snw_genes = FALSE,
+      n_processes = 0
+    ),
     "`n_processes` should be > 1"
   )
 })
+
+
+# configure_output_dir ----------------------------------------------------
+test_that("`configure_output_dir()` works as expected", {
+  expect_equal(pathfindR:::configure_output_dir(),
+               file.path(tempdir(), "pathfindR_results"))
+
+  test_out_dir <- file.path(tempdir(check = TRUE), "TEST")
+  for (i in 1:3) {
+    actual_dir <- pathfindR:::configure_output_dir(test_out_dir)
+    dir_to_check <- test_out_dir
+    if (i > 1) {
+      dir_to_check <- paste0(dir_to_check, "(", i - 1, ")")
+    }
+    expect_equal(actual_dir, dir_to_check)
+    dir.create(actual_dir)
+  }
+})
+
+# create_HTML_report ------------------------------------------------------
+test_that("`create_HTML_report()` works a expected", {
+  org_dir <- getwd()
+  test_directory <- file.path(tempdir(check = TRUE), "HTML_report")
+  dir.create(test_directory)
+  setwd(test_directory)
+  on.exit(setwd(org_dir))
+  on.exit(unlink(test_directory), add = TRUE)
+
+  input_processed <- input_processing(example_pathfindR_input)
+
+  pathfindR:::create_HTML_report(
+    input = example_pathfindR_input,
+    input_processed = input_processed,
+    final_res = example_pathfindR_output
+  )
+
+  expect_true(file.exists(file.path(test_directory, "results.html")))
+  expect_true(file.exists(file.path(test_directory, "enriched_terms.html")))
+  expect_true(file.exists(file.path(test_directory, "conversion_table.html")))
+})
+
 
 # fetch_gene_set ----------------------------------------------------------
 test_that("`fetch_gene_set()` can fetch all gene set objects", {
@@ -481,16 +449,16 @@ test_that("`return_pin_path()` returns the absolute path to PIN file", {
 
   # custom PIN
   custom_pin <- read.delim(return_pin_path("KEGG"),
-    header = FALSE,
-    stringsAsFactors = FALSE
+                           header = FALSE,
+                           stringsAsFactors = FALSE
   )
   custom_pin <- custom_pin[1:10, ]
   custom_pin$V1 <- tolower(custom_pin$V1)
   custom_sif_path <- file.path(tempdir(check = TRUE), "tmp_PIN.sif")
   utils::write.table(custom_pin,
-    custom_sif_path,
-    sep = "\t",
-    row.names = FALSE, col.names = FALSE, quote = FALSE
+                     custom_sif_path,
+                     sep = "\t",
+                     row.names = FALSE, col.names = FALSE, quote = FALSE
   )
   expect_true(file.exists(return_pin_path(custom_sif_path)))
   # convert to uppercase works
@@ -501,7 +469,7 @@ test_that("`return_pin_path()` returns the absolute path to PIN file", {
 
   # invalid custom PIN - wrong format
   invalid_sif_path <- system.file(paste0("extdata/MYC.txt"),
-    package = "pathfindR"
+                                  package = "pathfindR"
   )
   expect_error(
     return_pin_path(invalid_sif_path),
@@ -512,8 +480,8 @@ test_that("`return_pin_path()` returns the absolute path to PIN file", {
   invalid_sif_path <- file.path(tempdir(check = TRUE), "custom.sif")
   invalid_custom_sif <- data.frame(P1 = "X", pp = "INVALID", P2 = "Y")
   write.table(invalid_custom_sif, invalid_sif_path,
-    sep = "\t",
-    col.names = FALSE, row.names = FALSE
+              sep = "\t",
+              col.names = FALSE, row.names = FALSE
   )
   expect_error(
     return_pin_path(invalid_sif_path),
@@ -632,9 +600,9 @@ test_that("`input_processing()` works", {
 
   expect_is(
     input_processing(example_pathfindR_input[5:10, ],
-      p_val_threshold = 0.01,
-      pin_name_path = "KEGG",
-      convert2alias = FALSE
+                     p_val_threshold = 0.01,
+                     pin_name_path = "KEGG",
+                     convert2alias = FALSE
     ),
     "data.frame"
   )
@@ -643,9 +611,9 @@ test_that("`input_processing()` works", {
   input2 <- example_pathfindR_input[1:5, -2]
   expect_is(
     tmp <- suppressWarnings(input_processing(input2,
-      p_val_threshold = 0.05,
-      pin_name_path = "Biogrid",
-      convert2alias = TRUE
+                                             p_val_threshold = 0.05,
+                                             pin_name_path = "Biogrid",
+                                             convert2alias = TRUE
     )),
     "data.frame"
   )
@@ -659,9 +627,9 @@ test_that("`input_processing()` works", {
   input_m$Gene.symbol[4] <- "GIG25"
   expect_is(
     tmp <- input_processing(input_m,
-      p_val_threshold = 0.05,
-      pin_name_path = "Biogrid",
-      convert2alias = TRUE
+                            p_val_threshold = 0.05,
+                            pin_name_path = "Biogrid",
+                            convert2alias = TRUE
     ),
     "data.frame"
   )
@@ -672,17 +640,17 @@ test_that("`input_processing()` errors and warnings work", {
   input2$Gene.symbol <- as.factor(input2$Gene.symbol)
   expect_warning(
     input_processing(input2,
-      p_val_threshold = 0.05,
-      pin_name_path = "Biogrid",
-      convert2alias = TRUE
+                     p_val_threshold = 0.05,
+                     pin_name_path = "Biogrid",
+                     convert2alias = TRUE
     ),
     "The gene column was turned into character from factor."
   )
 
   expect_error(
     input_processing(example_pathfindR_input,
-      p_val_threshold = 1e-100,
-      pin_name_path = "Biogrid"
+                     p_val_threshold = 1e-100,
+                     pin_name_path = "Biogrid"
     ),
     "No input p value is lower than the provided threshold \\(1e-100\\)"
   )
@@ -691,8 +659,8 @@ test_that("`input_processing()` errors and warnings work", {
   input_dup <- rbind(input_dup, input_dup[1, ])
   expect_warning(
     input_processing(input_dup,
-      p_val_threshold = 5e-2,
-      pin_name_path = "Biogrid"
+                     p_val_threshold = 5e-2,
+                     pin_name_path = "Biogrid"
     ),
     "Duplicated genes found! The lowest p value for each gene was selected"
   )
@@ -701,8 +669,8 @@ test_that("`input_processing()` errors and warnings work", {
   tmp_input$adj.P.Val <- 1e-15
   expect_message(
     tmp <- input_processing(tmp_input,
-      p_val_threshold = 5e-2,
-      pin_name_path = "Biogrid"
+                            p_val_threshold = 5e-2,
+                            pin_name_path = "Biogrid"
     ),
     "pathfindR cannot handle p values < 1e-13. These were changed to 1e-13"
   )
@@ -711,8 +679,8 @@ test_that("`input_processing()` errors and warnings work", {
   tmp_input$Gene.symbol <- paste0(LETTERS[seq_len(nrow(tmp_input))], "INVALID")
   expect_error(
     input_processing(tmp_input,
-      p_val_threshold = 5e-2,
-      pin_name_path = "Biogrid"
+                     p_val_threshold = 5e-2,
+                     pin_name_path = "Biogrid"
     ),
     "None of the genes were in the PIN\nPlease check your gene symbols"
   )
@@ -721,17 +689,17 @@ test_that("`input_processing()` errors and warnings work", {
   tmp_input$Gene.symbol[2] <- "NRDC"
   expect_error(
     input_processing(tmp_input,
-      p_val_threshold = 5e-2,
-      pin_name_path = "Biogrid"
+                     p_val_threshold = 5e-2,
+                     pin_name_path = "Biogrid"
     ),
     "After processing, 1 gene \\(or no genes\\) could be mapped to the PIN"
   )
 
   expect_error(
     input_processing(tmp_input,
-      p_val_threshold = 5e-2,
-      pin_name_path = "Biogrid",
-      convert2alias = "INVALID"
+                     p_val_threshold = 5e-2,
+                     pin_name_path = "Biogrid",
+                     convert2alias = "INVALID"
     ),
     "`convert2alias` should be either TRUE or FALSE"
   )
@@ -751,7 +719,7 @@ test_that("`annotate_term_genes()` adds input genes for each term", {
     "data.frame"
   )
   expect_true("Up_regulated" %in% colnames(annotated_result) &
-    "Down_regulated" %in% colnames(annotated_result))
+                "Down_regulated" %in% colnames(annotated_result))
   expect_true(nrow(annotated_result) == nrow(tmp_res))
 })
 
@@ -804,3 +772,4 @@ test_that("annotate_term_genes() argument checks work", {
     "`genes_by_term` should be a named list \\(names are gene set IDs\\)"
   )
 })
+
