@@ -135,7 +135,7 @@ enrichment <- function(input_genes,
 
   #### Obtain p values
   enrichment_res <- vapply(
-    genes_by_term, pathfindR::hyperg_test, 0.1,
+    genes_by_term, hyperg_test, 0.1,
     input_genes, background_genes
   )
   enrichment_res <- as.data.frame(enrichment_res)
@@ -244,7 +244,7 @@ enrichment_analyses <- function(snws,
 
   ############ Enrichment per subnetwork
   enrichment_res <- lapply(snws, function(x) {
-    pathfindR::enrichment(
+    enrichment(
       input_genes = base::toupper(x),
       genes_by_term = genes_by_term,
       term_descriptions = term_descriptions,
@@ -319,6 +319,8 @@ enrichment_analyses <- function(snws,
 #' }
 summarize_enrichment_results <- function(enrichment_res,
                                          list_active_snw_genes = FALSE) {
+  message("## Processing the enrichment results over all iterations")
+
   ## Argument checks
   if (!is.logical(list_active_snw_genes)) {
     stop("`list_active_snw_genes` should be either TRUE or FALSE")

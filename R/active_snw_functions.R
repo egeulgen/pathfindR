@@ -179,7 +179,7 @@ active_snw_search <- function(input_for_search,
   )
 
   ############ Parse and filter active subnetworks
-  filtered_snws <- pathfindR::filterActiveSnws(
+  filtered_snws <- filterActiveSnws(
     active_snw_path = snws_file,
     sig_genes_vec = input_for_search$GENE,
     score_quan_thr = score_quan_thr,

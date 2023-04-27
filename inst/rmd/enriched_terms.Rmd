@@ -1,11 +1,8 @@
 ---
-title: '`r logo_path <- system.file("extdata", "logo.png", package = "pathfindR"); knitr::opts_chunk$set(out.width="15%"); knitr::include_graphics(logo_path)` pathfindR - All Enriched Terms - `r params$gset`' 
+title: '`r logo_path <- system.file("extdata", "logo.png", package = "pathfindR"); knitr::opts_chunk$set(out.width="15%"); knitr::include_graphics(logo_path)` pathfindR - All Enriched Terms' 
 output: html_document
 params:
   df: ""
-  gset: ""
-  vis_cond: TRUE
-  out_dir: ""
 ---
 
 ```{r setup, include=FALSE}
@@ -19,31 +16,6 @@ result_df$highest_p <- format(result_df$highest_p, digits = 2)
 
 create_link <- function(text, link)
   return(paste0("[", text, "]", "(", link, ")"))
-
-if (params$vis_cond) {
-  vis_dir <- file.path(params$out_dir, "term_visualizations")
-  vis_dir <- normalizePath(vis_dir)
-  ## If hsa KEGG visualizations
-  if (params$gset == "KEGG") {
-    for(i in 1:10) {
-      fpath <- file.path(vis_dir, paste0(result_df[i, 1], "_pathfindR.png")) 
-      result_df[i, 1] <- create_link(result_df[i, 1], fpath)
-      result_df[i, 2] <- create_link(result_df[i, 2], fpath)
-    }
-      
-  } else {
-    ## If interactions of term-related genes visualizations
-    for(i in seq_len(nrow(result_df))) {
-      fpath <- file.path(vis_dir, paste0(result_df[i, 2],".png"))
-      fpath <- paste0(vis_dir, "/", result_df[i, 2],".png")
-      if (file.exists(fpath)) {
-        fpath <- normalizePath(fpath)
-        result_df[i, 1] <- create_link(result_df[i, 1], fpath)
-        result_df[i, 2] <- create_link(result_df[i, 2], fpath)
-      }
-    }
-  }
-}
 
 knitr::kable(result_df, align = "c", table.caption.prefix ="")
 ```

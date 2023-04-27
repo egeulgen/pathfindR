@@ -851,6 +851,7 @@ enrichment_chart <- function(result_df,
                              plot_by_cluster = FALSE,
                              num_bubbles = 4,
                              even_breaks = TRUE) {
+  message("Plotting the enrichment bubble chart")
   necessary <- c(
     "Term_Description", "Fold_Enrichment", "lowest_p",
     "Up_regulated", "Down_regulated"

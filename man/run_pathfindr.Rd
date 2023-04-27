@@ -2,7 +2,7 @@
 % Please edit documentation in R/core_functions.R
 \name{run_pathfindR}
 \alias{run_pathfindR}
-\title{Wrapper Function for pathfindR - Active-Subnetwork-Oriented Enrichment Analysis}
+\title{Wrapper Function for pathfindR - Active-Subnetwork-Oriented Enrichment Workflow}
 \usage{
 run_pathfindR(
   input,
@@ -13,34 +13,12 @@ run_pathfindR(
   custom_descriptions = NULL,
   pin_name_path = "Biogrid",
   p_val_threshold = 0.05,
-  visualize_enriched_terms = TRUE,
-  create_HTML_report = TRUE,
-  max_to_plot = 10,
-  convert2alias = TRUE,
   enrichment_threshold = 0.05,
-  adj_method = "bonferroni",
-  search_method = "GR",
-  use_all_positives = FALSE,
-  saTemp0 = 1,
-  saTemp1 = 0.01,
-  saIter = 10000,
-  gaPop = 400,
-  gaIter = 200,
-  gaThread = 5,
-  gaCrossover = 1,
-  gaMut = 0,
-  grMaxDepth = 1,
-  grSearchDepth = 1,
-  grOverlap = 0.5,
-  grSubNum = 1000,
-  iterations = 10,
-  n_processes = NULL,
-  score_quan_thr = 0.8,
-  sig_gene_thr = 0.02,
+  convert2alias = TRUE,
   plot_enrichment_chart = TRUE,
-  output_dir = "pathfindR_Results",
+  output_dir = NULL,
   list_active_snw_genes = FALSE,
-  silent_option = TRUE
+  ...
 )
 }
 \arguments{
@@ -76,85 +54,24 @@ path/to/PIN.sif, the file must comply with the PIN specifications. (Default = "B
 \item{p_val_threshold}{the p value threshold to use when filtering
 the input data frame. Must a numeric value between 0 and 1. (default = 0.05)}
 
-\item{visualize_enriched_terms}{Boolean value to indicate whether or not to
-create diagrams for enriched terms (default = TRUE)}
-
-\item{create_HTML_report}{Boolean value to indicate whether or not to
-create HTML report (default = TRUE)}
-
-\item{max_to_plot}{(necessary only if \code{gene_sets = "KEGG"} and
-\code{visualize_enriched_terms = TRUE}) The number of top hsa kegg pathways
-to visualize. If \code{NULL}, visualizes all (default = 10)}
+\item{enrichment_threshold}{adjusted-p value threshold used when filtering
+enrichment results (default = 0.05)}
 
 \item{convert2alias}{boolean to indicate whether or not to convert gene symbols
 in the input that are not found in the PIN to an alias symbol found in the PIN
 (default = TRUE) IMPORTANT NOTE: the conversion uses human gene symbols/alias symbols.}
 
-\item{enrichment_threshold}{adjusted-p value threshold used when filtering
-enrichment results (default = 0.05)}
+\item{plot_enrichment_chart}{boolean value. If TRUE, a bubble chart displaying
+the enrichment results is plotted. (default = TRUE)}
 
-\item{adj_method}{correction method to be used for adjusting p-values.
-(default = "bonferroni")}
-
-\item{search_method}{algorithm to use when performing active subnetwork
-search. Options are greedy search (GR), simulated annealing (SA) or genetic
-algorithm (GA) for the search (default = "GR").}
-
-\item{use_all_positives}{if TRUE: in GA, adds an individual with all positive
-nodes. In SA, initializes candidate solution with all positive nodes. (default = FALSE)}
-
-\item{saTemp0}{Initial temperature for SA (default = 1.0)}
-
-\item{saTemp1}{Final temperature for SA (default = 0.01)}
-
-\item{saIter}{Iteration number for SA (default = 10000)}
-
-\item{gaPop}{Population size for GA (default = 400)}
-
-\item{gaIter}{Iteration number for GA (default = 200)}
-
-\item{gaThread}{Number of threads to be used in GA (default = 5)}
-
-\item{gaCrossover}{Applies crossover with the given probability in GA (default = 1, i.e. always perform crossover)}
-
-\item{gaMut}{For GA, applies mutation with given mutation rate (default = 0, i.e. mutation off)}
-
-\item{grMaxDepth}{Sets max depth in greedy search, 0 for no limit (default = 1)}
-
-\item{grSearchDepth}{Search depth in greedy search (default = 1)}
-
-\item{grOverlap}{Overlap threshold for results of greedy search (default = 0.5)}
-
-\item{grSubNum}{Number of subnetworks to be presented in the results (default = 1000)}
-
-\item{iterations}{number of iterations for active subnetwork search and
-enrichment analyses (Default = 10)}
-
-\item{n_processes}{optional argument for specifying the number of processes
-used by foreach. If not specified, the function determines this
-automatically (Default == NULL. Gets set to 1 for Genetic Algorithm)}
-
-\item{score_quan_thr}{active subnetwork score quantile threshold. Must be
-between 0 and 1 or set to -1 for not filtering. (Default = 0.8)}
-
-\item{sig_gene_thr}{threshold for the minimum proportion of significant genes in
-the subnetwork (Default = 0.02) If the number of genes to use as threshold is
-calculated to be < 2 (e.g. 50 signif. genes x 0.01 = 0.5), the threshold number
-is set to 2}
-
-\item{plot_enrichment_chart}{boolean value. If TRUE, a bubble chart displaying the enrichment
-results is plotted. (default = TRUE)}
-
-\item{output_dir}{the directory to be created where the output and intermediate files are saved (default = "pathfindR_Results")}
+\item{output_dir}{the directory to be created where the output and intermediate
+files are saved (default = \code{NULL}, a temporary directory is used)}
 
 \item{list_active_snw_genes}{boolean value indicating whether or not to report
 the non-significant active subnetwork genes for the active subnetwork which was enriched for
 the given term with the lowest p value (default = \code{FALSE})}
 
-\item{silent_option}{boolean value indicating whether to print the messages
-to the console (FALSE) or not (TRUE, this will print to a temp. file) during
-active subnetwork search (default = TRUE). This option was added because
-during parallel runs, the console messages get disorderly printed.}
+\item{...}{additional arguments for \code{\link{active_snw_enrichment_wrapper}}}
 }
 \value{
 Data frame of pathfindR enrichment results. Columns are: \describe{
