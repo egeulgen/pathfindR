@@ -45,6 +45,7 @@ reference:
     desc: >
       Active subnetwork search- and Enrichment-related functions
     contents:
+      - active_snw_enrichment_wrapper
       - active_snw_search
       - annotate_term_genes
       - enrichment
@@ -75,6 +76,8 @@ reference:
     desc: >
       Miscellaneous functions
     contents:
+      - configure_output_dir
+      - create_HTML_report
       - check_java_version
       - fetch_java_version
       - get_biogrid_pin
@@ -85,5 +88,3 @@ reference:
       - gset_list_from_gmt
       - obtain_KEGGML_URL
       - obtain_colored_url
-
-
