@@ -125,8 +125,7 @@ output_df <- run_pathfindR(input_df)
 ```
 
 This wrapper function performs the active-subnetwork-oriented enrichment
-analysis, and returns a data frame of enriched terms (as well as
-visualization of enriched terms and an HTML report):
+analysis, and returns a data frame of enriched terms:
 
 ![pathfindR Enrichment
 Chart](https://github.com/egeulgen/pathfindR/blob/master/vignettes/enrichment_chart.png?raw=true "Enrichment Chart")
@@ -134,7 +133,8 @@ Chart](https://github.com/egeulgen/pathfindR/blob/master/vignettes/enrichment_ch
 Some useful arguments are:
 
 ``` r
-# change the output directory
+# set an output directory for saving active subnetworks and creating an HTML report 
+# (default=NULL, sets a temporary directory)
 output_df <- run_pathfindR(input_df, output_dir = "/top/secret/results")
 
 # change the gene sets used for analysis (default = "KEGG")
@@ -143,7 +143,7 @@ output_df <- run_pathfindR(input_df, gene_sets = "GO-MF")
 # change the PIN for active subnetwork search (default = Biogrid)
 output_df <- run_pathfindR(input_df, pin_name_path = "IntAct")
 # or use an external PIN of your choice
-output_df <- run_pathfindR(input_df, pin_name_path = "/path/to/myPIN.sif")
+output_df <- run_pathfindR(input_df, pin_name_path = "/path/to/my/PIN.sif")
 
 # change the number of iterations (default = 10)
 output_df <- run_pathfindR(input_df, iterations = 25) 
@@ -199,6 +199,44 @@ clustered_df_fuzzy <- cluster_enriched_terms(output_df, method = "fuzzy")
 ```
 
 # Visualization of Enrichment Results
+
+## Enriched Term Diagrams
+
+For H.sapiens KEGG enrichment analyses, `visualize_terms()` can be used
+to generate KEGG pathway diagrams that are saved as PNG files in a
+directory called “term_visualizations” under the current working
+directory:
+
+``` r
+input_processed <- input_processing(example_pathfindR_input)
+visualize_terms(
+  result_df = example_pathfindR_output,
+  input_processed = input_processed,
+  hsa_KEGG = TRUE
+)
+```
+
+![Pathway
+Diagram](https://github.com/egeulgen/pathfindR/blob/master/vignettes/hsaKEGG_diagram.png?raw=true "Pathway Diagram")
+
+Alternatively (i.e., for other types of non-KEGG/non-H.sapiens
+enrichment analyses), an interaction diagram per enriched term can be
+generated again via `visualize_terms()`. These diagrams are also saved
+as PNG files in a directory called “term_visualizations” under the
+current working directory:
+
+``` r
+input_processed <- input_processing(example_pathfindR_input)
+visualize_terms(
+  result_df = example_pathfindR_output,
+  input_processed = input_processed,
+  hsa_KEGG = FALSE,
+  pin_name_path = "Biogrid"
+)
+```
+
+![Interaction
+Diagram](https://github.com/egeulgen/pathfindR/blob/master/vignettes/example_interaction_vis.png?raw=true "Interaction Diagram")
 
 ## Term-Gene Heatmap
 

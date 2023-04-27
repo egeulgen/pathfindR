@@ -26,7 +26,7 @@ suppressPackageStartupMessages(library(pathfindR))
 # Overview
 
 `pathfindR` is an R package for enrichment analysis via active subnetworks. The package also offers functionality to cluster the enriched terms and identify representative terms in each cluster, score the enriched terms per sample, and visualize analysis results. As of the latest version, the package also allows comparison of two pathfindR results.
-    
+
 The functionality suite of pathfindR is described in detail in _Ulgen E, Ozisik O, Sezerman OU. 2019. pathfindR: An R Package for Comprehensive Identification of Enriched Pathways in Omics Data Through Active Subnetworks. Front. Genet. [https://doi.org/10.3389/fgene.2019.00858](https://doi.org/10.3389/fgene.2019.00858)_
 
 For detailed documentation, see [pathfindR's website](https://egeulgen.github.io/pathfindR/) or [the pathfindR wiki](https://github.com/egeulgen/pathfindR/wiki).
@@ -54,7 +54,7 @@ devtools::install_github("egeulgen/pathfindR")
 ```
 
 > **IMPORTANT NOTE**
-> For the active subnetwork search component to work, the user must have [Java  (>= 8.0)](https://www.java.com/en/) installed, and the path/to/java must be in the PATH environment variable.
+> For the active subnetwork search component to work, the user must have [Java (>= 8.0)](https://www.java.com/en/) installed, and the path/to/java must be in the PATH environment variable.
 
 We also have docker images available on [Docker Hub](https://hub.docker.com/repository/docker/egeulgen/pathfindr) and [GitHub](https://github.com/egeulgen/pathfindR/packages):
 
@@ -95,14 +95,15 @@ library(pathfindR)
 output_df <- run_pathfindR(input_df)
 ```
 
-This wrapper function performs the active-subnetwork-oriented enrichment analysis, and returns a data frame of enriched terms (as well as visualization of enriched terms and an HTML report):
+This wrapper function performs the active-subnetwork-oriented enrichment analysis, and returns a data frame of enriched terms:
 
 ![pathfindR Enrichment Chart](https://github.com/egeulgen/pathfindR/blob/master/vignettes/enrichment_chart.png?raw=true "Enrichment Chart")
 
 Some useful arguments are:
 
 ```{r useful_args, eval=FALSE}
-# change the output directory
+# set an output directory for saving active subnetworks and creating an HTML report 
+# (default=NULL, sets a temporary directory)
 output_df <- run_pathfindR(input_df, output_dir = "/top/secret/results")
 
 # change the gene sets used for analysis (default = "KEGG")
@@ -111,7 +112,7 @@ output_df <- run_pathfindR(input_df, gene_sets = "GO-MF")
 # change the PIN for active subnetwork search (default = Biogrid)
 output_df <- run_pathfindR(input_df, pin_name_path = "IntAct")
 # or use an external PIN of your choice
-output_df <- run_pathfindR(input_df, pin_name_path = "/path/to/myPIN.sif")
+output_df <- run_pathfindR(input_df, pin_name_path = "/path/to/my/PIN.sif")
 
 # change the number of iterations (default = 10)
 output_df <- run_pathfindR(input_df, iterations = 25) 
@@ -152,6 +153,36 @@ clustered_df_fuzzy <- cluster_enriched_terms(output_df, method = "fuzzy")
 ```
 
 # Visualization of Enrichment Results
+
+## Enriched Term Diagrams
+
+For H.sapiens KEGG enrichment analyses, `visualize_terms()` can be used to generate KEGG pathway diagrams that are saved as PNG files in a directory called "term_visualizations" under the current working directory:
+
+```{r KEGG_vis, eval=FALSE}
+input_processed <- input_processing(example_pathfindR_input)
+visualize_terms(
+  result_df = example_pathfindR_output,
+  input_processed = input_processed,
+  hsa_KEGG = TRUE
+)
+```
+
+![Pathway Diagram](https://github.com/egeulgen/pathfindR/blob/master/vignettes/hsaKEGG_diagram.png?raw=true "Pathway Diagram")
+
+Alternatively (i.e., for other types of non-KEGG/non-H.sapiens enrichment analyses), an interaction diagram per enriched term can be generated again via `visualize_terms()`. These diagrams are also saved as PNG files in a directory called "term_visualizations" under the current working directory:
+
+```{r nonKEGG_viss, eval=FALSE}
+input_processed <- input_processing(example_pathfindR_input)
+visualize_terms(
+  result_df = example_pathfindR_output,
+  input_processed = input_processed,
+  hsa_KEGG = FALSE,
+  pin_name_path = "Biogrid"
+)
+```
+
+![Interaction Diagram](https://github.com/egeulgen/pathfindR/blob/master/vignettes/example_interaction_vis.png?raw=true "Interaction Diagram")
+
 ## Term-Gene Heatmap
 
 The function `term_gene_heatmap()` can visualize the heatmap of enriched terms by the involved input genes. This heatmap allows visual identification of the input genes involved in the enriched terms, and the common or distinct genes between different terms. If the input data frame (same as in `run_pathfindR()`) is supplied, the tile colors indicate the change values.
@@ -173,7 +204,7 @@ UpSet plots are plots of the intersections of sets as a matrix. This function cr
 # Per Sample Enriched Term Scores
 
 ![Agglomerated Scores for all Enriched Terms per Sample](https://github.com/egeulgen/pathfindR/blob/master/vignettes/score_hmap.png?raw=true "Scoring per Sample")
- 
+
 The function `score_terms()` can be used to calculate the agglomerated z score of each enriched term per sample. This allows the user to examine the scores individually and infer how a term is overall altered (activated or repressed) in a given sample or a group of samples.
 
 # Comparison of 2 pathfindR Results
