@@ -204,23 +204,6 @@ test_that("`visualize_hsa_KEGG()` creates expected png file(s)", {
   expect_true(file.exists(expected_out_file))
   unlink("term_visualizations", recursive = TRUE)
 
-
-  ###### max_to_plot works
-  max_n <- 2
-  expected_out_files <- file.path(
-    "term_visualizations",
-    paste0(example_pathfindR_output$ID[seq_len(max_n)], "_pathfindR.png")
-  )
-  expect_null(
-    visualize_hsa_KEGG(
-      hsa_kegg_ids = example_pathfindR_output$ID,
-      input_processed = processed_input,
-      max_to_plot = max_n
-    )
-  )
-  expect_true(all(file.exists(expected_out_files)))
-  unlink("term_visualizations", recursive = TRUE)
-
   ###### skips NULL
   temp_res <- example_pathfindR_output[1:2, ]
   temp_res$ID[2] <- "hsa12345"
@@ -287,24 +270,6 @@ test_that("`visualize_hsa_KEGG()` argument checks work", {
       paste(dQuote(c("GENE", "CHANGE")), collapse = ", ")
     )
   )
-
-  expect_error(
-    visualize_hsa_KEGG(
-      hsa_kegg_ids = single_result$ID,
-      input_processed = processed_input,
-      max_to_plot = "INVALID"
-    ),
-    "`max_to_plot` should be numeric or NULL"
-  )
-  expect_error(
-    visualize_hsa_KEGG(
-      hsa_kegg_ids = single_result$ID,
-      input_processed = processed_input,
-      max_to_plot = 0
-    ),
-    "`max_to_plot` should be >=1"
-  )
-
 
   expect_error(
     visualize_hsa_KEGG(
