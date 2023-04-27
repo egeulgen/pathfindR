@@ -33,7 +33,7 @@ if (params$vis_cond) {
       
   } else {
     ## If interactions of term-related genes visualizations
-    for(i in 1:nrow(result_df)) {
+    for(i in seq_len(nrow(result_df))) {
       fpath <- file.path(vis_dir, paste0(result_df[i, 2],".png"))
       fpath <- paste0(vis_dir, "/", result_df[i, 2],".png")
       if (file.exists(fpath)) {
