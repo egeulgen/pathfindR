@@ -41,7 +41,6 @@
 visualize_terms <- function(result_df, input_processed = NULL,
                             hsa_KEGG = TRUE, pin_name_path = "Biogrid",
                             ...) {
-
   ############ Argument Checks
   if (!is.data.frame(result_df)) {
     stop("`result_df` should be a data frame")
@@ -57,8 +56,10 @@ visualize_terms <- function(result_df, input_processed = NULL,
     nec_cols <- c("Term_Description", "Up_regulated", "Down_regulated")
   }
   if (!all(nec_cols %in% colnames(result_df))) {
-    stop("`result_df` should contain the following columns: ",
-         paste(dQuote(nec_cols), collapse = ", "))
+    stop(
+      "`result_df` should contain the following columns: ",
+      paste(dQuote(nec_cols), collapse = ", ")
+    )
   }
 
   if (hsa_KEGG) {
@@ -69,13 +70,17 @@ visualize_terms <- function(result_df, input_processed = NULL,
 
   ############ Generate Diagrams
   if (hsa_KEGG) {
-    visualize_hsa_KEGG(hsa_kegg_ids = result_df$ID,
-                       input_processed = input_processed,
-                       ...)
+    visualize_hsa_KEGG(
+      hsa_kegg_ids = result_df$ID,
+      input_processed = input_processed,
+      ...
+    )
   } else {
-    visualize_term_interactions(result_df = result_df,
-                                pin_name_path = pin_name_path,
-                                ...)
+    visualize_term_interactions(
+      result_df = result_df,
+      pin_name_path = pin_name_path,
+      ...
+    )
   }
 }
 
@@ -119,8 +124,10 @@ visualize_term_interactions <- function(result_df, pin_name_path, show_legend = 
 
   ## load PIN
   pin_path <- return_pin_path(pin_name_path)
-  pin <- utils::read.delim(file = pin_path,
-                           header = FALSE, stringsAsFactors = FALSE)
+  pin <- utils::read.delim(
+    file = pin_path,
+    header = FALSE, stringsAsFactors = FALSE
+  )
   pin$V2 <- NULL
 
   pin[, 1] <- base::toupper(pin[, 1])
@@ -150,11 +157,15 @@ visualize_term_interactions <- function(result_df, pin_name_path, show_legend = 
     }
 
     if (length(current_genes) < 2) {
-      message(paste0("< 2 genes, skipping visualization of ",
-                     current_row$Term_Description))
+      message(paste0(
+        "< 2 genes, skipping visualization of ",
+        current_row$Term_Description
+      ))
     } else {
-      cat("Visualizing:", current_row$Term_Description,
-          paste(rep(" ", 200), collapse = ""), "\r")
+      cat(
+        "Visualizing:", current_row$Term_Description,
+        paste(rep(" ", 200), collapse = ""), "\r"
+      )
 
       ## Find genes without direct interaction
       cond1 <- pin$V1 %in% current_genes
@@ -168,9 +179,10 @@ visualize_term_interactions <- function(result_df, pin_name_path, show_legend = 
       s_path_genes <- c()
       for (gene in missing_genes) {
         tmp <- suppressWarnings(igraph::shortest_paths(pin_g,
-                                                       from = which(names(igraph::V(pin_g)) == gene),
-                                                       to = which(names(igraph::V(pin_g)) %in% current_genes),
-                                                       output = "vpath"))
+          from = which(names(igraph::V(pin_g)) == gene),
+          to = which(names(igraph::V(pin_g)) %in% current_genes),
+          output = "vpath"
+        ))
         tmp <- unique(unlist(lapply(tmp$vpath, function(x) names(x))))
         s_path_genes <- unique(c(s_path_genes, tmp))
       }
@@ -185,42 +197,53 @@ visualize_term_interactions <- function(result_df, pin_name_path, show_legend = 
       cond2 <- names(igraph::V(g)) %in% down_genes
       cond3 <- names(igraph::V(g)) %in% snw_genes
       igraph::V(g)$color <- ifelse(cond1, "green",
-                                   ifelse(cond2, "red",
-                                          ifelse(cond3, "blue", "gray60")))
+        ifelse(cond2, "red",
+          ifelse(cond3, "blue", "gray60")
+        )
+      )
 
       #### Generate diagram
       term_diagram <- magick::image_graph(width = 1200, height = 900, res = 100)
       # Plot the tree object
       igraph::plot.igraph(g,
-                          layout = igraph::layout.fruchterman.reingold,
-                          edge.curved = FALSE,
-                          vertex.size = 10,
-                          vertex.label.dist = 0,
-                          vertex.label.color = "black",
-                          asp = FALSE,
-                          vertex.label.cex = 0.8,
-                          edge.width = 1.2,
-                          edge.arrow.mode = 0,
-                          main = paste(current_row$Term_Description,
-                                       "\n Involved Gene Interactions in",
-                                       pin_name_path))
+        layout = igraph::layout.fruchterman.reingold,
+        edge.curved = FALSE,
+        vertex.size = 10,
+        vertex.label.dist = 0,
+        vertex.label.color = "black",
+        asp = FALSE,
+        vertex.label.cex = 0.8,
+        edge.width = 1.2,
+        edge.arrow.mode = 0,
+        main = paste(
+          current_row$Term_Description,
+          "\n Involved Gene Interactions in",
+          pin_name_path
+        )
+      )
 
       if (show_legend) {
         if (is.null(snw_genes)) {
           graphics::legend("topleft",
-                           legend = c("Upregulated Input Genes",
-                                      "Downregulated Input Genes",
-                                      "Other"),
-                           col = c("green", "red", "gray60"),
-                           pch = 19, cex = 1.5, bty = "n")
+            legend = c(
+              "Upregulated Input Genes",
+              "Downregulated Input Genes",
+              "Other"
+            ),
+            col = c("green", "red", "gray60"),
+            pch = 19, cex = 1.5, bty = "n"
+          )
         } else {
           graphics::legend("topleft",
-                           legend = c("Non-input Active Snw. Genes",
-                                      "Upregulated Input Genes",
-                                      "Downregulated Input Genes",
-                                      "Other"),
-                           col = c("blue", "green", "red", "gray60"),
-                           pch = 19, cex = 1.5, bty = "n")
+            legend = c(
+              "Non-input Active Snw. Genes",
+              "Upregulated Input Genes",
+              "Downregulated Input Genes",
+              "Other"
+            ),
+            col = c("blue", "green", "red", "gray60"),
+            pch = 19, cex = 1.5, bty = "n"
+          )
         }
       }
       grDevices::dev.off()
@@ -232,9 +255,10 @@ visualize_term_interactions <- function(result_df, pin_name_path, show_legend = 
 
       ### Add logo
       term_diagram <- magick::image_composite(term_diagram,
-                                              magick::image_scale(logo_img, "x100"),
-                                              gravity = "northeast",
-                                              offset = "+10+10")
+        magick::image_scale(logo_img, "x100"),
+        gravity = "northeast",
+        offset = "+10+10"
+      )
 
       # remove forbidden characters
       current_row$Term_Description <- gsub('[, :<>?*|"/\\]', "_", current_row$Term_Description)
@@ -242,8 +266,10 @@ visualize_term_interactions <- function(result_df, pin_name_path, show_legend = 
       # limit to 100 characters
       current_row$Term_Description <- substr(current_row$Term_Description, 1, min(50, nchar(current_row$Term_Description)))
 
-      path_to_png <- file.path("term_visualizations",
-                               paste0(current_row$Term_Description, ".png"))
+      path_to_png <- file.path(
+        "term_visualizations",
+        paste0(current_row$Term_Description, ".png")
+      )
 
       #### Save file
       magick::image_write(term_diagram, path = path_to_png, format = "png")
@@ -300,8 +326,10 @@ visualize_hsa_KEGG <- function(hsa_kegg_ids, input_processed, max_to_plot = NULL
 
   nec_cols <- c("GENE", "CHANGE")
   if (!all(nec_cols %in% colnames(input_processed))) {
-    stop("`input_processed` should contain the following columns: ",
-         paste(dQuote(nec_cols), collapse = ", "))
+    stop(
+      "`input_processed` should contain the following columns: ",
+      paste(dQuote(nec_cols), collapse = ", ")
+    )
   }
 
   ## max_to_plot
@@ -317,20 +345,23 @@ visualize_hsa_KEGG <- function(hsa_kegg_ids, input_processed, max_to_plot = NULL
 
 
   ## Select the first `max_to_plot` kegg ids
-  if (!is.null(max_to_plot))
-    if (max_to_plot < length(hsa_kegg_ids))
+  if (!is.null(max_to_plot)) {
+    if (max_to_plot < length(hsa_kegg_ids)) {
       hsa_kegg_ids <- hsa_kegg_ids[1:max_to_plot]
+    }
+  }
 
   ############ Create change vector
   ### Convert gene symbols into NCBI gene IDs
   tmp <- AnnotationDbi::mget(input_processed$GENE,
-                             AnnotationDbi::revmap(org.Hs.eg.db::org.Hs.egSYMBOL),
-                             ifnotfound = NA)
+    AnnotationDbi::revmap(org.Hs.eg.db::org.Hs.egSYMBOL),
+    ifnotfound = NA
+  )
   input_processed$EG_ID <- vapply(tmp, function(x) as.character(x[1]), "EGID")
   input_processed <- input_processed[!is.na(input_processed$EG_ID), ]
 
   ### A rule of thumb for the 'kegg' ID is entrezgene ID for eukaryote species
-  input_processed$KEGG_ID  <- paste0("hsa:", input_processed$EG_ID)
+  input_processed$KEGG_ID <- paste0("hsa:", input_processed$EG_ID)
 
   ############ Fetch all pathway genes, create vector of change values and
   ############ Generate colored pathway diagrams for each pathway
@@ -343,11 +374,13 @@ visualize_hsa_KEGG <- function(hsa_kegg_ids, input_processed, max_to_plot = NULL
   for (i in seq_len(length(hsa_kegg_ids))) {
     pw_id <- hsa_kegg_ids[i]
 
-    pw_vis_list[[pw_id]] <- color_kegg_pathway(pw_id = pw_id,
-                                               change_vec = change_vec,
-                                               scale_vals = scale_vals,
-                                               node_cols = node_cols,
-                                               quiet = quiet)
+    pw_vis_list[[pw_id]] <- color_kegg_pathway(
+      pw_id = pw_id,
+      change_vec = change_vec,
+      scale_vals = scale_vals,
+      node_cols = node_cols,
+      quiet = quiet
+    )
 
     utils::setTxtProgressBar(pb, i)
   }
@@ -371,14 +404,17 @@ visualize_hsa_KEGG <- function(hsa_kegg_ids, input_processed, max_to_plot = NULL
 
       ### Add logo
       pw_diag <- magick::image_composite(pw_diag,
-                                         magick::image_scale(logo_img, "x90"),
-                                         gravity = logo_gravity,
-                                         offset = "+10+10")
+        magick::image_scale(logo_img, "x90"),
+        gravity = logo_gravity,
+        offset = "+10+10"
+      )
 
       ### Prep for color keys
-      key_col_df <- data.frame(bin_val = seq_along(pw_vis_list[[i]]$all_key_cols),
-                               color = pw_vis_list[[i]]$all_key_cols,
-                               y_val = 1)
+      key_col_df <- data.frame(
+        bin_val = seq_along(pw_vis_list[[i]]$all_key_cols),
+        color = pw_vis_list[[i]]$all_key_cols,
+        y_val = 1
+      )
 
       key_breaks <- pw_vis_list[[i]]$all_brks
       names(key_breaks) <- seq_along(key_breaks)
@@ -388,27 +424,40 @@ visualize_hsa_KEGG <- function(hsa_kegg_ids, input_processed, max_to_plot = NULL
       ### Generate color legend image
       col_key_legend <- magick::image_graph(width = 200, height = 90, res = 100)
       g <- ggplot2::ggplot(key_col_df, ggplot2::aes(.data$bin_val, .data$y_val))
-      g <- g + ggplot2::geom_tile(fill = key_col_df$color,
-                                  colour = "black")
-      g <- g + ggplot2::scale_x_continuous(expand = c(0, 0),
-                                           breaks = brks,
-                                           labels = base::format(key_breaks,
-                                                                 digits = 2))
+      g <- g + ggplot2::geom_tile(
+        fill = key_col_df$color,
+        colour = "black"
+      )
+      g <- g + ggplot2::scale_x_continuous(
+        expand = c(0, 0),
+        breaks = brks,
+        labels = base::format(key_breaks,
+          digits = 2
+        )
+      )
       g <- g + ggplot2::scale_y_discrete(expand = c(0, 0))
       g <- g + ggplot2::theme_bw()
-      g <- g + ggplot2::theme(panel.grid.major = ggplot2::element_blank(),
-                              panel.grid.minor = ggplot2::element_blank(),
-                              axis.title.x = ggplot2::element_blank(),
-                              axis.title.y = ggplot2::element_blank(),
-                              axis.ticks = ggplot2::element_line(colour = "black",
-                                                                 linewidth = .6),
-                              axis.ticks.length = ggplot2::unit(.2, "cm"),
-                              axis.text.x = ggplot2::element_text(size = 14,
-                                                                  face = "bold"),
-                              panel.border = ggplot2::element_rect(colour = "black",
-                                                                   fill = NA,
-                                                                   linewidth = .5),
-                              plot.margin = ggplot2::unit(c(0, .7 , 0, .7), "cm"))
+      g <- g + ggplot2::theme(
+        panel.grid.major = ggplot2::element_blank(),
+        panel.grid.minor = ggplot2::element_blank(),
+        axis.title.x = ggplot2::element_blank(),
+        axis.title.y = ggplot2::element_blank(),
+        axis.ticks = ggplot2::element_line(
+          colour = "black",
+          linewidth = .6
+        ),
+        axis.ticks.length = ggplot2::unit(.2, "cm"),
+        axis.text.x = ggplot2::element_text(
+          size = 14,
+          face = "bold"
+        ),
+        panel.border = ggplot2::element_rect(
+          colour = "black",
+          fill = NA,
+          linewidth = .5
+        ),
+        plot.margin = ggplot2::unit(c(0, .7, 0, .7), "cm")
+      )
       print(g)
       grDevices::dev.off()
 
@@ -417,9 +466,10 @@ visualize_hsa_KEGG <- function(hsa_kegg_ids, input_processed, max_to_plot = NULL
         final_pw_img <- pw_diag
       } else {
         final_pw_img <- magick::image_composite(pw_diag,
-                                                magick::image_scale(col_key_legend, "x45"),
-                                                gravity  = key_gravity,
-                                                offset = "+10+10")
+          magick::image_scale(col_key_legend, "x45"),
+          gravity = key_gravity,
+          offset = "+10+10"
+        )
       }
 
       final_path <- file.path("term_visualizations", basename(f_path))
@@ -452,10 +502,10 @@ visualize_hsa_KEGG <- function(hsa_kegg_ids, input_processed, max_to_plot = NULL
 #'
 #' @examples
 #' \dontrun{
-#'    pw_id <- "hsa00010"
-#'    change_vec <- c(-2, 4, 6)
-#'    names(change_vec) <- c("hsa:2821", "hsa:226", "hsa:229")
-#'    result <- pathfindR:::color_kegg_pathway(pw_id, change_vec)
+#' pw_id <- "hsa00010"
+#' change_vec <- c(-2, 4, 6)
+#' names(change_vec) <- c("hsa:2821", "hsa:226", "hsa:229")
+#' result <- pathfindR:::color_kegg_pathway(pw_id, change_vec)
 #' }
 color_kegg_pathway <- function(pw_id, change_vec, scale_vals = TRUE,
                                node_cols = NULL, quiet = TRUE) {
@@ -476,7 +526,8 @@ color_kegg_pathway <- function(pw_id, change_vec, scale_vals = TRUE,
 
     isColor <- function(x) {
       tryCatch(is.matrix(grDevices::col2rgb(x)),
-               error = function(e) FALSE)
+        error = function(e) FALSE
+      )
     }
 
     if (!all(vapply(node_cols, isColor, TRUE))) {
@@ -543,10 +594,11 @@ color_kegg_pathway <- function(pw_id, change_vec, scale_vals = TRUE,
     chosen_nm <- chosen_nm[!chosen_nm %in% names(pw_vis_changes)][1]
     if (is.na(chosen_nm)) {
       tmp <- node[!node %in% names(pw_vis_changes)]
-      if (length(tmp) == 0)
+      if (length(tmp) == 0) {
         chosen_nm <- node[1]
-      else
+      } else {
         chosen_nm <- tmp[1]
+      }
     }
 
     names(tmp_val) <- chosen_nm
@@ -595,8 +647,10 @@ color_kegg_pathway <- function(pw_id, change_vec, scale_vals = TRUE,
   ### generate low colors
   low_vals <- vals[vals < 0]
   low_brks <- seq(from = -lim, to = 0, length.out = 6)
-  low_bins <- cut(low_vals, breaks = low_brks,
-                  ordered_result = TRUE, include.lowest = TRUE)
+  low_bins <- cut(low_vals,
+    breaks = low_brks,
+    ordered_result = TRUE, include.lowest = TRUE
+  )
   key_col_fn <- grDevices::colorRampPalette(c(low_col, mid_col))
   low_key_cols <- key_col_fn(5)
   names(low_key_cols) <- levels(low_bins)
@@ -605,8 +659,10 @@ color_kegg_pathway <- function(pw_id, change_vec, scale_vals = TRUE,
   ### generate high colors
   high_vals <- vals[vals > 0]
   high_brks <- seq(from = 0, to = lim, length.out = 6)
-  high_bins <- cut(high_vals, breaks = high_brks,
-                   ordered_result = TRUE, include.lowest = TRUE)
+  high_bins <- cut(high_vals,
+    breaks = high_brks,
+    ordered_result = TRUE, include.lowest = TRUE
+  )
   key_col_fn <- grDevices::colorRampPalette(c(mid_col, high_col))
   high_key_cols <- key_col_fn(5)
   names(high_key_cols) <- levels(high_bins)
@@ -617,10 +673,12 @@ color_kegg_pathway <- function(pw_id, change_vec, scale_vals = TRUE,
 
   ############ Label each pw gene with the appropriate color
   fg_cols <- ifelse(names(pw_vis_changes) %in% names(low_bins),
-                    low_key_cols[low_bins[names(pw_vis_changes)]],
-                    ifelse(names(pw_vis_changes) %in% names(high_bins),
-                           high_key_cols[high_bins[names(pw_vis_changes)]],
-                           "#ffffff"))
+    low_key_cols[low_bins[names(pw_vis_changes)]],
+    ifelse(names(pw_vis_changes) %in% names(high_bins),
+      high_key_cols[high_bins[names(pw_vis_changes)]],
+      "#ffffff"
+    )
+  )
   bg_cols <- rep("#000000", length(pw_vis_changes))
 
   ## if leq than 60, disregard non-input genes
@@ -632,20 +690,25 @@ color_kegg_pathway <- function(pw_id, change_vec, scale_vals = TRUE,
   }
 
   ############ Download colored KEGG pathway diagram
-  pw_url <- obtain_colored_url(pw_id = pw_id,
-                               KEGG_gene_ids = names(pw_vis_changes),
-                               fg_cols = fg_cols,
-                               bg_cols = bg_cols)
+  pw_url <- obtain_colored_url(
+    pw_id = pw_id,
+    KEGG_gene_ids = names(pw_vis_changes),
+    fg_cols = fg_cols,
+    bg_cols = bg_cols
+  )
 
   fname <- paste0(pw_id, "_pathfindR.png")
   f_path <- file.path(tempdir(check = TRUE), fname)
 
   dl_stat <- download_kegg_png(pw_url, f_path, quiet)
 
-  if (!is.na(dl_stat))
-    return(list(file_path = f_path,
-                all_key_cols = all_key_cols,
-                all_brks = all_brks))
+  if (!is.na(dl_stat)) {
+    return(list(
+      file_path = f_path,
+      all_key_cols = all_key_cols,
+      all_brks = all_brks
+    ))
+  }
 }
 
 
@@ -657,22 +720,30 @@ color_kegg_pathway <- function(pw_id, change_vec, scale_vals = TRUE,
 #'
 #' @return KGML URL
 obtain_KEGGML_URL <- function(pw_id, pwKGML, quiet = TRUE) {
-  KGML_URL <- tryCatch({
-    utils::download.file(url = KEGGgraph::getKGMLurl(pathwayid = sub("hsa", "", pw_id),
-                                                     organism = "hsa"),
-                         destfile = pwKGML,
-                         quiet = quiet)
-  }, error = function(e) {
-    message(paste("Cannot download KGML file for:", pw_id))
-    message("Here's the original error message:")
-    message(e$message)
-    return(NA)
-  }, warning = function(w) {
-    message(paste("Cannot download KGML file for:", pw_id))
-    message("Here's the original error message:")
-    message(w$message)
-    return(NA)
-  })
+  KGML_URL <- tryCatch(
+    {
+      utils::download.file(
+        url = KEGGgraph::getKGMLurl(
+          pathwayid = sub("hsa", "", pw_id),
+          organism = "hsa"
+        ),
+        destfile = pwKGML,
+        quiet = quiet
+      )
+    },
+    error = function(e) {
+      message(paste("Cannot download KGML file for:", pw_id))
+      message("Here's the original error message:")
+      message(e$message)
+      return(NA)
+    },
+    warning = function(w) {
+      message(paste("Cannot download KGML file for:", pw_id))
+      message("Here's the original error message:")
+      message(w$message)
+      return(NA)
+    }
+  )
   return(KGML_URL)
 }
 
@@ -686,17 +757,22 @@ obtain_KEGGML_URL <- function(pw_id, pwKGML, quiet = TRUE) {
 #'
 #' @return download status
 obtain_colored_url <- function(pw_id, KEGG_gene_ids, fg_cols, bg_cols) {
-  pw_url <- tryCatch({
-    KEGGREST::color.pathway.by.objects(pathway.id = pw_id,
-                                       object.id.list = KEGG_gene_ids,
-                                       fg.color.list = bg_cols,
-                                       bg.color.list = fg_cols)
-  }, error = function(e) {
-    message(paste("Cannot retrieve PNG url:", pw_id))
-    message("Here's the original error message:")
-    message(e$message)
-    return(NA)
-  })
+  pw_url <- tryCatch(
+    {
+      KEGGREST::color.pathway.by.objects(
+        pathway.id = pw_id,
+        object.id.list = KEGG_gene_ids,
+        fg.color.list = bg_cols,
+        bg.color.list = fg_cols
+      )
+    },
+    error = function(e) {
+      message(paste("Cannot retrieve PNG url:", pw_id))
+      message("Here's the original error message:")
+      message(e$message)
+      return(NA)
+    }
+  )
   return(pw_url)
 }
 
@@ -709,17 +785,22 @@ obtain_colored_url <- function(pw_id, KEGG_gene_ids, fg_cols, bg_cols) {
 #'
 #' @return download status
 download_kegg_png <- function(pw_url, f_path, quiet = TRUE) {
-  res <- tryCatch({
-    utils::download.file(url = pw_url,
-                         destfile = f_path,
-                         mode = "wb",
-                         quiet = quiet)
-  }, error = function(e) {
-    message(paste("Cannot download PNG file:", pw_url))
-    message("Here's the original error message:")
-    message(e$message)
-    return(NA)
-  })
+  res <- tryCatch(
+    {
+      utils::download.file(
+        url = pw_url,
+        destfile = f_path,
+        mode = "wb",
+        quiet = quiet
+      )
+    },
+    error = function(e) {
+      message(paste("Cannot download PNG file:", pw_url))
+      message("Here's the original error message:")
+      message(e$message)
+      return(NA)
+    }
+  )
   return(res)
 }
 
@@ -770,12 +851,16 @@ enrichment_chart <- function(result_df,
                              plot_by_cluster = FALSE,
                              num_bubbles = 4,
                              even_breaks = TRUE) {
-  necessary <- c("Term_Description", "Fold_Enrichment", "lowest_p",
-                 "Up_regulated", "Down_regulated")
+  necessary <- c(
+    "Term_Description", "Fold_Enrichment", "lowest_p",
+    "Up_regulated", "Down_regulated"
+  )
 
   if (!all(necessary %in% colnames(result_df))) {
-    stop("The input data frame must have the columns:\n",
-         paste(necessary, collapse = ", "))
+    stop(
+      "The input data frame must have the columns:\n",
+      paste(necessary, collapse = ", ")
+    )
   }
 
   if (!is.logical(plot_by_cluster)) {
@@ -786,7 +871,7 @@ enrichment_chart <- function(result_df,
     stop("`top_terms` must be either numeric or NULL")
   }
 
-  if (!is.null(top_terms)){
+  if (!is.null(top_terms)) {
     if (top_terms < 1) {
       stop("`top_terms` must be > 1")
     }
@@ -798,32 +883,42 @@ enrichment_chart <- function(result_df,
   ## Filter for top_terms
   if (!is.null(top_terms)) {
     if (plot_by_cluster & "Cluster" %in% colnames(result_df)) {
-      keep_ids <- tapply(result_df$ID, result_df$Cluster, function(x)
-                                          x[seq_len(min(top_terms, length(x)))])
+      keep_ids <- tapply(result_df$ID, result_df$Cluster, function(x) {
+        x[seq_len(min(top_terms, length(x)))]
+      })
       keep_ids <- unlist(keep_ids)
       result_df <- result_df[result_df$ID %in% keep_ids, ]
-    } else if (top_terms < nrow(result_df)){
+    } else if (top_terms < nrow(result_df)) {
       result_df <- result_df[seq_len(top_terms), ]
     }
   }
 
-  num_genes <- vapply(result_df$Up_regulated,
-    function(x) length(unlist(strsplit(x, ", "))), 1)
-  num_genes <- num_genes + vapply(result_df$Down_regulated,
-    function(x) length(unlist(strsplit(x, ", "))), 1)
+  num_genes <- vapply(
+    result_df$Up_regulated,
+    function(x) length(unlist(strsplit(x, ", "))), 1
+  )
+  num_genes <- num_genes + vapply(
+    result_df$Down_regulated,
+    function(x) length(unlist(strsplit(x, ", "))), 1
+  )
 
   result_df$Term_Description <- factor(result_df$Term_Description,
-          levels = rev(unique(result_df$Term_Description)))
+    levels = rev(unique(result_df$Term_Description))
+  )
 
   log_p <- -log10(result_df$lowest_p)
 
   g <- ggplot2::ggplot(result_df, ggplot2::aes(.data$Fold_Enrichment, .data$Term_Description))
-  g <- g + ggplot2::geom_point(ggplot2::aes(color = log_p,
-                                            size = num_genes), na.rm = TRUE)
+  g <- g + ggplot2::geom_point(ggplot2::aes(
+    color = log_p,
+    size = num_genes
+  ), na.rm = TRUE)
   g <- g + ggplot2::theme_bw()
-  g <- g + ggplot2::theme(axis.text.x = ggplot2::element_text(size = 10),
-                          axis.text.y = ggplot2::element_text(size = 10),
-                          plot.title = ggplot2::element_blank())
+  g <- g + ggplot2::theme(
+    axis.text.x = ggplot2::element_text(size = 10),
+    axis.text.y = ggplot2::element_text(size = 10),
+    plot.title = ggplot2::element_blank()
+  )
   g <- g + ggplot2::xlab("Fold Enrichment")
   g <- g + ggplot2::theme(axis.title.y = ggplot2::element_blank())
   g <- g + ggplot2::labs(size = "# genes", color = expression(-log[10](p)))
@@ -832,13 +927,15 @@ enrichment_chart <- function(result_df,
   if (max(num_genes) < num_bubbles) {
     g <- g + ggplot2::scale_size_continuous(breaks = seq(0, max(num_genes)))
   } else {
-
     if (even_breaks) {
-      brks <- base::seq(0, max(num_genes),
-                        round(max(num_genes) / (num_bubbles + 1)))
+      brks <- base::seq(
+        0, max(num_genes),
+        round(max(num_genes) / (num_bubbles + 1))
+      )
     } else {
       brks <- base::round(base::seq(0, max(num_genes),
-                                    length.out = num_bubbles + 1))
+        length.out = num_bubbles + 1
+      ))
     }
     g <- g + ggplot2::scale_size_continuous(breaks = brks)
   }
@@ -899,7 +996,6 @@ enrichment_chart <- function(result_df,
 term_gene_graph <- function(result_df, num_terms = 10,
                             layout = "stress", use_description = FALSE,
                             node_size = "num_genes") {
-
   ############ Argument Checks
   ### Check num_terms is NULL or numeric
   if (!is.numeric(num_terms) & !is.null(num_terms)) {
@@ -920,15 +1016,18 @@ term_gene_graph <- function(result_df, num_terms = 10,
     stop("`node_size` should be one of ", paste(dQuote(val_node_size), collapse = ", "))
   }
 
-  if (!is.data.frame(result_df))
+  if (!is.data.frame(result_df)) {
     stop("`result_df` should be a data frame")
+  }
 
   ### Check necessary columnns
   necessary_cols <- c(ID_column, "lowest_p", "Up_regulated", "Down_regulated")
 
   if (!all(necessary_cols %in% colnames(result_df))) {
-    stop(paste(c("All of", paste(necessary_cols, collapse = ", "),
-                 "must be present in `results_df`!"), collapse = " "))
+    stop(paste(c(
+      "All of", paste(necessary_cols, collapse = ", "),
+      "must be present in `results_df`!"
+    ), collapse = " "))
   }
 
   ############ Initial steps
@@ -953,15 +1052,21 @@ term_gene_graph <- function(result_df, num_terms = 10,
     genes <- c(up_genes, down_genes)
 
     for (gene in genes) {
-      graph_df <- rbind(graph_df,
-                         data.frame(Term = result_df[i, ID_column],
-                                    Gene = gene))
+      graph_df <- rbind(
+        graph_df,
+        data.frame(
+          Term = result_df[i, ID_column],
+          Gene = gene
+        )
+      )
     }
   }
 
 
-  up_genes <- lapply(result_df$Up_regulated,
-                     function(x) unlist(strsplit(x, ", ")))
+  up_genes <- lapply(
+    result_df$Up_regulated,
+    function(x) unlist(strsplit(x, ", "))
+  )
   up_genes <- unlist(up_genes)
 
   ############ Create graph object and plot
@@ -970,7 +1075,8 @@ term_gene_graph <- function(result_df, num_terms = 10,
   cond_term <- names(igraph::V(g)) %in% result_df[, ID_column]
   cond_up_gene <- names(igraph::V(g)) %in% up_genes
   igraph::V(g)$type <- ifelse(cond_term, "term",
-                              ifelse(cond_up_gene, "up", "down"))
+    ifelse(cond_up_gene, "up", "down")
+  )
   # Adjust node sizes
   if (node_size == "num_genes") {
     sizes <- igraph::degree(g)
@@ -986,36 +1092,51 @@ term_gene_graph <- function(result_df, num_terms = 10,
   igraph::V(g)$label.cex <- 0.5
   igraph::V(g)$frame.color <- "gray"
   igraph::V(g)$color <- ifelse(igraph::V(g)$type == "term", "#E5D7BF",
-                               ifelse(igraph::V(g)$type == "up", "green",
-                                      "red"))
+    ifelse(igraph::V(g)$type == "up", "green",
+      "red"
+    )
+  )
 
   ### Create graph
   p <- ggraph::ggraph(g, layout = layout)
   p <- p + ggraph::geom_edge_link(alpha = .8, colour = "darkgrey")
   p <- p + ggraph::geom_node_point(ggplot2::aes(color = .data$color, size = .data$size))
-  p <- p + ggplot2::scale_size(range = c(5, 10),
-                               breaks = round(seq(round(min(igraph::V(g)$size)),
-                                                  round(max(igraph::V(g)$size)),
-                                                  length.out = 4)),
-                               name = size_label)
+  p <- p + ggplot2::scale_size(
+    range = c(5, 10),
+    breaks = round(seq(round(min(igraph::V(g)$size)),
+      round(max(igraph::V(g)$size)),
+      length.out = 4
+    )),
+    name = size_label
+  )
   p <- p + ggplot2::theme_void()
-  p <- p + suppressWarnings(ggraph::geom_node_text(ggplot2::aes(label = .data$name), nudge_y = .2,
-                                                   repel = TRUE, max.overlaps = 20))
-  p <- p + ggplot2::scale_color_manual(values = unique(igraph::V(g)$color),
-                                       name = NULL,
-                                       labels = c("enriched term",
-                                                  "up-regulated gene",
-                                                  "down-regulated gene"))
+  p <- p + suppressWarnings(ggraph::geom_node_text(ggplot2::aes(label = .data$name),
+    nudge_y = .2,
+    repel = TRUE, max.overlaps = 20
+  ))
+  p <- p + ggplot2::scale_color_manual(
+    values = unique(igraph::V(g)$color),
+    name = NULL,
+    labels = c(
+      "enriched term",
+      "up-regulated gene",
+      "down-regulated gene"
+    )
+  )
   if (is.null(num_terms)) {
     p <- p + ggplot2::ggtitle("Term-Gene Graph")
   } else {
     p <- p + ggplot2::ggtitle("Term-Gene Graph",
-                              subtitle = paste(c("Top", num_terms, "terms"),
-                                               collapse = " "))
+      subtitle = paste(c("Top", num_terms, "terms"),
+        collapse = " "
+      )
+    )
   }
 
-  p <- p + ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5),
-                          plot.subtitle = ggplot2::element_text(hjust = 0.5))
+  p <- p + ggplot2::theme(
+    plot.title = ggplot2::element_text(hjust = 0.5),
+    plot.subtitle = ggplot2::element_text(hjust = 0.5)
+  )
 
   return(p)
 }
@@ -1059,7 +1180,6 @@ term_gene_heatmap <- function(result_df, genes_df, num_terms = 10,
                               legend_title = "change",
                               sort_terms_by_p = FALSE,
                               ...) {
-
   ############ Arg checks
   if (!is.logical(use_description)) {
     stop("`use_description` must either be TRUE or FALSE!")
@@ -1068,44 +1188,59 @@ term_gene_heatmap <- function(result_df, genes_df, num_terms = 10,
   ### Set column for term labels
   ID_column <- ifelse(use_description, "Term_Description", "ID")
 
-  if (!is.data.frame(result_df))
+  if (!is.data.frame(result_df)) {
     stop("`result_df` should be a data frame")
+  }
 
   nec_cols <- c(ID_column, "lowest_p", "Up_regulated", "Down_regulated")
-  if (!all(nec_cols %in% colnames(result_df)))
-    stop("`result_df` should have the following columns: ",
-         paste(dQuote(nec_cols), collapse = ", "))
+  if (!all(nec_cols %in% colnames(result_df))) {
+    stop(
+      "`result_df` should have the following columns: ",
+      paste(dQuote(nec_cols), collapse = ", ")
+    )
+  }
 
-  if (!missing(genes_df))
+  if (!missing(genes_df)) {
     suppressMessages(input_testing(genes_df))
+  }
 
   if (!is.null(num_terms)) {
-    if (!is.numeric(num_terms))
+    if (!is.numeric(num_terms)) {
       stop("`num_terms` should be numeric or NULL")
+    }
 
-    if (num_terms < 1)
+    if (num_terms < 1) {
       stop("`num_terms` should be > 0 or NULL")
+    }
   }
 
   ############ Init prep steps
   result_df <- result_df[order(result_df$lowest_p), ]
   ### select num_terms genes
-  if (!is.null(num_terms))
-    if (num_terms < nrow(result_df))
-      result_df <- result_df[1:num_terms,]
+  if (!is.null(num_terms)) {
+    if (num_terms < nrow(result_df)) {
+      result_df <- result_df[1:num_terms, ]
+    }
+  }
 
   ### process input genes (if provided)
-  if(!missing(genes_df))
+  if (!missing(genes_df)) {
     genes_df <- input_processing(input = genes_df, ...)
+  }
 
   ### parse genes from enrichment results
-  parse_genes <- function(vec, idx)
+  parse_genes <- function(vec, idx) {
     return(unname(unlist(strsplit(vec[idx], ", "))))
+  }
 
-  up_genes <- apply(result_df, 1, parse_genes,
-                    which(colnames(result_df) == "Up_regulated"))
-  down_genes <- apply(result_df, 1, parse_genes,
-                      which(colnames(result_df) == "Down_regulated"))
+  up_genes <- apply(
+    result_df, 1, parse_genes,
+    which(colnames(result_df) == "Up_regulated")
+  )
+  down_genes <- apply(
+    result_df, 1, parse_genes,
+    which(colnames(result_df) == "Down_regulated")
+  )
 
   if (length(down_genes) == 0) {
     down_genes <- rep(NA, nrow(result_df))
@@ -1122,9 +1257,10 @@ term_gene_heatmap <- function(result_df, genes_df, num_terms = 10,
   all_terms <- result_df[, ID_column]
 
   term_genes_mat <- matrix(0,
-                           nrow = nrow(result_df),
-                           ncol = length(all_genes),
-                           dimnames = list(all_terms, all_genes))
+    nrow = nrow(result_df),
+    ncol = length(all_genes),
+    dimnames = list(all_terms, all_genes)
+  )
   for (i in seq_len(nrow(term_genes_mat))) {
     current_term <- rownames(term_genes_mat)[i]
     current_genes <- c(up_genes[[current_term]], down_genes[[current_term]])
@@ -1134,35 +1270,42 @@ term_gene_heatmap <- function(result_df, genes_df, num_terms = 10,
 
   ### Order by column
   term_genes_mat <- term_genes_mat[, order(colSums(term_genes_mat),
-                                           decreasing=TRUE)]
+    decreasing = TRUE
+  )]
 
   ### Order by row
   ordering_func <- function(row) {
     n <- length(row)
-    pow <- 2^-(0:(n-1))
-    return (row %*% pow)
+    pow <- 2^-(0:(n - 1))
+    return(row %*% pow)
   }
   term_genes_mat <- term_genes_mat[order(apply(term_genes_mat, 1, ordering_func),
-                                         decreasing=TRUE), ]
+    decreasing = TRUE
+  ), ]
 
   ### Transform the matrix
   var_names <- list()
   var_names[["Enriched_Term"]] <- factor(rownames(term_genes_mat),
-                                         levels = rev(rownames(term_genes_mat)))
+    levels = rev(rownames(term_genes_mat))
+  )
   var_names[["Symbol"]] <- factor(colnames(term_genes_mat),
-                                  levels = colnames(term_genes_mat))
+    levels = colnames(term_genes_mat)
+  )
 
 
   term_genes_df <- expand.grid(var_names,
-                               KEEP.OUT.ATTRS = FALSE,
-                               stringsAsFactors = FALSE)
+    KEEP.OUT.ATTRS = FALSE,
+    stringsAsFactors = FALSE
+  )
   value <- as.vector(term_genes_mat)
   value <- data.frame(value)
   term_genes_df <- cbind(term_genes_df, value)
   term_genes_df$value[term_genes_df$value == 0] <- NA
 
-  bg_df <- expand.grid(Enriched_Term = all_terms,
-                       Symbol = all_genes)
+  bg_df <- expand.grid(
+    Enriched_Term = all_terms,
+    Symbol = all_genes
+  )
   if (sort_terms_by_p) {
     bg_df$Enriched_Term <- factor(bg_df$Enriched_Term, levels = rev(result_df[, ID_column]))
   } else {
@@ -1173,7 +1316,6 @@ term_gene_heatmap <- function(result_df, genes_df, num_terms = 10,
   bg_df$Symbol <- factor(bg_df$Symbol, levels = colnames(term_genes_mat))
 
   if (!missing(genes_df)) {
-
     for (i in seq_len(nrow(term_genes_df))) {
       if (!is.na(term_genes_df$value[i])) {
         if (all(genes_df$CHANGE == 1e6)) {
@@ -1187,38 +1329,40 @@ term_gene_heatmap <- function(result_df, genes_df, num_terms = 10,
     if (all(genes_df$CHANGE == 1e6)) {
       term_genes_df$value <- factor(term_genes_df$value, levels = c(-1, 1))
     }
-
   } else {
     for (i in seq_len(nrow(term_genes_df))) {
       if (!is.na(term_genes_df$value[i])) {
         term_genes_df$value[i] <- ifelse(term_genes_df$Symbol[i] %in% unlist(up_genes), "up", "down")
       }
     }
-
   }
 
   g <- ggplot2::ggplot(bg_df, ggplot2::aes(x = .data$Symbol, y = .data$Enriched_Term))
   g <- g + ggplot2::geom_tile(fill = "white", color = "white")
-  g <- g + ggplot2::theme(axis.ticks.y = ggplot2::element_blank(),
-                          axis.text.x = ggplot2::element_text(angle = 90, hjust = 1),
-                          axis.text.y = ggplot2::element_text(colour="#000000"),
-                          axis.title.x =  ggplot2::element_blank(),
-                          axis.title.y = ggplot2::element_blank(),
-                          panel.grid.major.x = ggplot2::element_blank(),
-                          panel.grid.major.y = ggplot2::element_blank(),
-                          panel.grid.minor.x = ggplot2::element_blank(),
-                          panel.grid.minor.y = ggplot2::element_blank(),
-                          panel.background = ggplot2::element_rect(fill="#ffffff"))
-  g <- g + ggplot2::geom_tile(data = term_genes_df,
-                              ggplot2::aes(fill = .data$value), color = "gray60")
+  g <- g + ggplot2::theme(
+    axis.ticks.y = ggplot2::element_blank(),
+    axis.text.x = ggplot2::element_text(angle = 90, hjust = 1),
+    axis.text.y = ggplot2::element_text(colour = "#000000"),
+    axis.title.x = ggplot2::element_blank(),
+    axis.title.y = ggplot2::element_blank(),
+    panel.grid.major.x = ggplot2::element_blank(),
+    panel.grid.major.y = ggplot2::element_blank(),
+    panel.grid.minor.x = ggplot2::element_blank(),
+    panel.grid.minor.y = ggplot2::element_blank(),
+    panel.background = ggplot2::element_rect(fill = "#ffffff")
+  )
+  g <- g + ggplot2::geom_tile(
+    data = term_genes_df,
+    ggplot2::aes(fill = .data$value), color = "gray60"
+  )
   if (!missing(genes_df)) {
     if (all(genes_df$CHANGE == 1e6)) {
-      g <- g + ggplot2::scale_fill_manual(values = c(low, high), na.value ="white", name = legend_title)
+      g <- g + ggplot2::scale_fill_manual(values = c(low, high), na.value = "white", name = legend_title)
     } else {
       g <- g + ggplot2::scale_fill_gradient2(low = low, mid = mid, high = high, na.value = "white", name = legend_title)
     }
   } else {
-    g <- g + ggplot2::scale_fill_manual(values = c(low, high), na.value ="white", name = legend_title)
+    g <- g + ggplot2::scale_fill_manual(values = c(low, high), na.value = "white", name = legend_title)
   }
   return(g)
 }
@@ -1257,48 +1401,64 @@ UpSet_plot <- function(result_df, genes_df, num_terms = 10,
   ### Set column for term labels
   ID_column <- ifelse(use_description, "Term_Description", "ID")
 
-  if (!is.data.frame(result_df))
+  if (!is.data.frame(result_df)) {
     stop("`result_df` should be a data frame")
+  }
 
   nec_cols <- c(ID_column, "lowest_p", "Up_regulated", "Down_regulated")
-  if (!all(nec_cols %in% colnames(result_df)))
-    stop("`result_df` should have the following columns: ",
-         paste(dQuote(nec_cols), collapse = ", "))
+  if (!all(nec_cols %in% colnames(result_df))) {
+    stop(
+      "`result_df` should have the following columns: ",
+      paste(dQuote(nec_cols), collapse = ", ")
+    )
+  }
 
-  if (!missing(genes_df))
+  if (!missing(genes_df)) {
     suppressMessages(input_testing(genes_df))
+  }
 
   if (!is.null(num_terms)) {
-    if (!is.numeric(num_terms))
+    if (!is.numeric(num_terms)) {
       stop("`num_terms` should be numeric or NULL")
+    }
 
-    if (num_terms < 1)
+    if (num_terms < 1) {
       stop("`num_terms` should be > 0 or NULL")
+    }
   }
 
   valid_opts <- c("heatmap", "boxplot", "barplot")
-  if (!method %in% valid_opts)
+  if (!method %in% valid_opts) {
     stop("`method` should be one of` ", paste(dQuote(valid_opts), collapse = ", "))
+  }
 
   ########## Init prep steps
   result_df <- result_df[order(result_df$lowest_p), ]
   ### select num_terms genes
-  if (!is.null(num_terms))
-    if (num_terms < nrow(result_df))
-      result_df <- result_df[1:num_terms,]
+  if (!is.null(num_terms)) {
+    if (num_terms < nrow(result_df)) {
+      result_df <- result_df[1:num_terms, ]
+    }
+  }
 
   ### process input genes (if provided)
-  if(!missing(genes_df))
+  if (!missing(genes_df)) {
     genes_df <- input_processing(input = genes_df, ...)
+  }
 
   ### parse genes from enrichment results
-  parse_genes <- function(vec, idx)
+  parse_genes <- function(vec, idx) {
     return(unname(unlist(strsplit(vec[idx], ", "))))
+  }
 
-  up_genes <- apply(result_df, 1, parse_genes,
-                    which(colnames(result_df) == "Up_regulated"))
-  down_genes <- apply(result_df, 1, parse_genes,
-                      which(colnames(result_df) == "Down_regulated"))
+  up_genes <- apply(
+    result_df, 1, parse_genes,
+    which(colnames(result_df) == "Up_regulated")
+  )
+  down_genes <- apply(
+    result_df, 1, parse_genes,
+    which(colnames(result_df) == "Down_regulated")
+  )
 
   if (length(down_genes) == 0) {
     down_genes <- rep(NA, nrow(result_df))
@@ -1314,9 +1474,10 @@ UpSet_plot <- function(result_df, genes_df, num_terms = 10,
   all_terms <- result_df[, ID_column]
 
   term_genes_mat <- matrix(0,
-                           nrow = nrow(result_df),
-                           ncol = length(all_genes),
-                           dimnames = list(all_terms, all_genes))
+    nrow = nrow(result_df),
+    ncol = length(all_genes),
+    dimnames = list(all_terms, all_genes)
+  )
   for (i in seq_len(nrow(term_genes_mat))) {
     current_term <- rownames(term_genes_mat)[i]
     current_genes <- c(up_genes[[current_term]], down_genes[[current_term]])
@@ -1326,14 +1487,17 @@ UpSet_plot <- function(result_df, genes_df, num_terms = 10,
   ### Transform the matrix
   var_names <- list()
   var_names[["Enriched_Term"]] <- factor(rownames(term_genes_mat),
-                                         levels = rownames(term_genes_mat))
+    levels = rownames(term_genes_mat)
+  )
   var_names[["Symbol"]] <- factor(colnames(term_genes_mat),
-                                  levels = colnames(term_genes_mat))
+    levels = colnames(term_genes_mat)
+  )
 
 
   term_genes_df <- expand.grid(var_names,
-                               KEEP.OUT.ATTRS = FALSE,
-                               stringsAsFactors = FALSE)
+    KEEP.OUT.ATTRS = FALSE,
+    stringsAsFactors = FALSE
+  )
   value <- as.vector(term_genes_mat)
   value <- data.frame(value)
   term_genes_df <- cbind(term_genes_df, value)
@@ -1341,19 +1505,25 @@ UpSet_plot <- function(result_df, genes_df, num_terms = 10,
 
   ### Order according to frequencies
   term_genes_df$Enriched_Term <- factor(term_genes_df$Enriched_Term,
-                                        levels = names(sort(table(term_genes_df$Enriched_Term), decreasing = TRUE)))
+    levels = names(sort(table(term_genes_df$Enriched_Term), decreasing = TRUE))
+  )
   term_genes_df$Symbol <- factor(term_genes_df$Symbol,
-                                 levels = rev(names(sort(table(term_genes_df$Symbol)))))
+    levels = rev(names(sort(table(term_genes_df$Symbol))))
+  )
 
   terms_lists <- rev(split(term_genes_df$Enriched_Term, term_genes_df$Symbol))
 
-  plot_df <- data.frame(Gene = names(terms_lists),
-                        Term = I(terms_lists),
-                        Up_Down = ifelse(names(terms_lists) %in% unlist(up_genes), "up", "down"),
-                        stringsAsFactors = FALSE)
+  plot_df <- data.frame(
+    Gene = names(terms_lists),
+    Term = I(terms_lists),
+    Up_Down = ifelse(names(terms_lists) %in% unlist(up_genes), "up", "down"),
+    stringsAsFactors = FALSE
+  )
 
-  bg_df <- expand.grid(Gene = unique(plot_df$Gene),
-                       Term = unique(plot_df$Term))
+  bg_df <- expand.grid(
+    Gene = unique(plot_df$Gene),
+    Term = unique(plot_df$Term)
+  )
 
   if (method == "heatmap") {
     g <- ggplot2::ggplot(bg_df, ggplot2::aes(x = .data$Term, y = .data$Gene))
@@ -1368,14 +1538,16 @@ UpSet_plot <- function(result_df, genes_df, num_terms = 10,
       g <- g + ggplot2::scale_fill_gradient2(low = low, mid = mid, high = high)
     }
     g <- g + ggplot2::theme_minimal()
-    g <- g + ggplot2::theme(axis.title = ggplot2::element_blank(),
-                            panel.grid.major = ggplot2::element_blank(),
-                            panel.grid.minor = ggplot2::element_blank(),
-                            legend.title = ggplot2::element_blank())
-
+    g <- g + ggplot2::theme(
+      axis.title = ggplot2::element_blank(),
+      panel.grid.major = ggplot2::element_blank(),
+      panel.grid.minor = ggplot2::element_blank(),
+      legend.title = ggplot2::element_blank()
+    )
   } else if (method == "boxplot") {
-    if (missing(genes_df))
+    if (missing(genes_df)) {
       stop("For `method = boxplot`, you must provide `genes_df`")
+    }
 
     plot_df$Value <- genes_df$CHANGE[match(names(plot_df$Term), genes_df$GENE)]
     g <- ggplot2::ggplot(plot_df, ggplot2::aes(x = .data$Term, y = .data$Value))
@@ -1386,8 +1558,10 @@ UpSet_plot <- function(result_df, genes_df, num_terms = 10,
     g <- g + ggplot2::geom_bar()
   }
 
-  g <- g + ggupset::scale_x_upset(order_by =
-                                    ifelse(missing(genes_df), "freq", "degree"),
-                                  reverse = !missing(genes_df))
+  g <- g + ggupset::scale_x_upset(
+    order_by =
+      ifelse(missing(genes_df), "freq", "degree"),
+    reverse = !missing(genes_df)
+  )
   return(g)
 }

@@ -19,7 +19,6 @@
 #' hyperg_test(letters[1:5], letters[2:10], letters)
 #' hyperg_test(letters[1:5], letters[2:13], letters)
 hyperg_test <- function(term_genes, chosen_genes, background_genes) {
-
   #### Argument checks
   if (!is.atomic(term_genes)) {
     stop("`term_genes` should be a vector")
@@ -27,7 +26,7 @@ hyperg_test <- function(term_genes, chosen_genes, background_genes) {
   if (!is.atomic(chosen_genes)) {
     stop("`chosen_genes` should be a vector")
   }
-  if(!is.atomic(background_genes)) {
+  if (!is.atomic(background_genes)) {
     stop("`background_genes` should be a vector")
   }
 
@@ -46,8 +45,9 @@ hyperg_test <- function(term_genes, chosen_genes, background_genes) {
   num_selected_genes <- length(chosen_genes)
 
   p_val <- stats::phyper(term_genes_selected - 1, term_genes_in_pool,
-                         non_term_genes_in_pool, num_selected_genes,
-                         lower.tail = FALSE)
+    non_term_genes_in_pool, num_selected_genes,
+    lower.tail = FALSE
+  )
   return(p_val)
 }
 
@@ -77,9 +77,11 @@ hyperg_test <- function(term_genes, chosen_genes, background_genes) {
 #'   workflow. \code{\link{hyperg_test}} for the details on hypergeometric
 #'   distribution-based hypothesis testing.
 #' @examples
-#' enrichment(input_genes = c("PER1", "PER2", "CRY1", "CREB1"),
-#'            sig_genes_vec = "PER1",
-#'            background_genes = unlist(pathfindR.data::kegg_genes))
+#' enrichment(
+#'   input_genes = c("PER1", "PER2", "CRY1", "CREB1"),
+#'   sig_genes_vec = "PER1",
+#'   background_genes = unlist(pathfindR.data::kegg_genes)
+#' )
 enrichment <- function(input_genes,
                        genes_by_term = pathfindR.data::kegg_genes,
                        term_descriptions = pathfindR.data::kegg_descriptions,
@@ -87,7 +89,6 @@ enrichment <- function(input_genes,
                        enrichment_threshold = 5e-2,
                        sig_genes_vec,
                        background_genes) {
-
   #### Argument checks
   ## input genes
   if (!is.atomic(input_genes)) {
@@ -133,8 +134,10 @@ enrichment <- function(input_genes,
   }
 
   #### Obtain p values
-  enrichment_res <- vapply(genes_by_term, pathfindR::hyperg_test, 0.1,
-                           input_genes, background_genes)
+  enrichment_res <- vapply(
+    genes_by_term, pathfindR::hyperg_test, 0.1,
+    input_genes, background_genes
+  )
   enrichment_res <- as.data.frame(enrichment_res)
   colnames(enrichment_res) <- "p_value"
 
@@ -147,8 +150,9 @@ enrichment <- function(input_genes,
   #### Filter by adj-p
   cond <- enrichment_res$adj_p <= enrichment_threshold
   # Empty case (if all adj-p > threshold)
-  if (sum(cond) == 0)
+  if (sum(cond) == 0) {
     return(NULL)
+  }
   enrichment_res <- enrichment_res[cond, ]
 
   #### Add other columns
@@ -173,8 +177,10 @@ enrichment <- function(input_genes,
   }
 
   ## reorder columns
-  to_order <- c("ID", "Term_Description", "Fold_Enrichment",
-                "p_value", "adj_p", "non_Signif_Snw_Genes")
+  to_order <- c(
+    "ID", "Term_Description", "Fold_Enrichment",
+    "p_value", "adj_p", "non_Signif_Snw_Genes"
+  )
   enrichment_res <- enrichment_res[, to_order]
 
   return(enrichment_res)
@@ -217,7 +223,6 @@ enrichment_analyses <- function(snws,
                                 adj_method = "bonferroni",
                                 enrichment_threshold = 0.05,
                                 list_active_snw_genes = FALSE) {
-
   ### Argument check
   if (!is.logical(list_active_snw_genes)) {
     stop("`list_active_snw_genes` should be either TRUE or FALSE")
@@ -225,8 +230,10 @@ enrichment_analyses <- function(snws,
 
   ### Load PIN Data
   pin_path <- return_pin_path(pin_name_path)
-  pin <- utils::read.delim(file = pin_path, header = FALSE,
-                           stringsAsFactors = FALSE)
+  pin <- utils::read.delim(
+    file = pin_path, header = FALSE,
+    stringsAsFactors = FALSE
+  )
 
   background_genes <- unique(c(pin[, 1], pin[, 3]))
 
@@ -236,14 +243,17 @@ enrichment_analyses <- function(snws,
   background_genes <- base::toupper(background_genes)
 
   ############ Enrichment per subnetwork
-  enrichment_res <- lapply(snws, function(x)
-    pathfindR::enrichment(input_genes = base::toupper(x),
-                          genes_by_term = genes_by_term,
-                          term_descriptions = term_descriptions,
-                          adj_method = adj_method,
-                          enrichment_threshold = enrichment_threshold,
-                          sig_genes_vec = sig_genes_vec,
-                          background_genes = background_genes))
+  enrichment_res <- lapply(snws, function(x) {
+    pathfindR::enrichment(
+      input_genes = base::toupper(x),
+      genes_by_term = genes_by_term,
+      term_descriptions = term_descriptions,
+      adj_method = adj_method,
+      enrichment_threshold = enrichment_threshold,
+      sig_genes_vec = sig_genes_vec,
+      background_genes = background_genes
+    )
+  })
 
   ### indices for snw.s
   if (length(enrichment_res) != 0) {
@@ -259,7 +269,6 @@ enrichment_analyses <- function(snws,
 
   ############ Process if non-empty
   if (!is.null(enrichment_res)) {
-
     ## calculate support values
     support <- tapply(enrichment_res$snw_idx, enrichment_res$ID, length)
     support <- support / length(snws)
@@ -311,7 +320,7 @@ enrichment_analyses <- function(snws,
 summarize_enrichment_results <- function(enrichment_res,
                                          list_active_snw_genes = FALSE) {
   ## Argument checks
-  if(!is.logical(list_active_snw_genes)) {
+  if (!is.logical(list_active_snw_genes)) {
     stop("`list_active_snw_genes` should be either TRUE or FALSE")
   }
 
@@ -329,8 +338,10 @@ summarize_enrichment_results <- function(enrichment_res,
   }
 
   if (!all(nec_cols %in% colnames(enrichment_res))) {
-    stop("`enrichment_res` should have column names ",
-         paste(dQuote(nec_cols), collapse = ", "))
+    stop(
+      "`enrichment_res` should have column names ",
+      paste(dQuote(nec_cols), collapse = ", ")
+    )
   }
 
   ## Annotate lowest p, highest p, occurrence and median support
@@ -353,8 +364,10 @@ summarize_enrichment_results <- function(enrichment_res,
   final_res$support <- as.numeric(support[matched_idx])
 
   ## reorder columns
-  keep <- c("ID", "Term_Description", "Fold_Enrichment",
-            "occurrence", "support", "lowest_p", "highest_p")
+  keep <- c(
+    "ID", "Term_Description", "Fold_Enrichment",
+    "occurrence", "support", "lowest_p", "highest_p"
+  )
   if (list_active_snw_genes) {
     keep <- c(keep, "non_Signif_Snw_Genes")
   }

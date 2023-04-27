@@ -64,7 +64,6 @@ active_snw_search <- function(input_for_search,
                               gaThread = 5, gaCrossover = 1, gaMut = 0,
                               grMaxDepth = 1, grSearchDepth = 1,
                               grOverlap = 0.5, grSubNum = 1000) {
-
   ############ Argument checks
   # input_for_search
   if (!is.data.frame(input_for_search)) {
@@ -72,24 +71,30 @@ active_snw_search <- function(input_for_search,
   }
   cnames <- c("GENE", "P_VALUE")
   if (any(!cnames %in% colnames(input_for_search))) {
-    stop("`input_for_search` should contain the columns ",
-         paste(dQuote(cnames), collapse = ","))
+    stop(
+      "`input_for_search` should contain the columns ",
+      paste(dQuote(cnames), collapse = ",")
+    )
   }
 
   # pin_name_path (fetch pin path)
   pin_path <- return_pin_path(pin_name_path)
 
   # snws_file
-  if (!suppressWarnings(file.create(file.path(tempdir(check = TRUE),
-                                              snws_file)))) {
+  if (!suppressWarnings(file.create(file.path(
+    tempdir(check = TRUE),
+    snws_file
+  )))) {
     stop("`snws_file` may be containing forbidden characters. Please change and try again")
   }
 
   # search_method
   valid_mets <- c("GR", "SA", "GA")
   if (!search_method %in% valid_mets) {
-    stop("`search_method` should be one of ",
-         paste(dQuote(valid_mets), collapse = ", "))
+    stop(
+      "`search_method` should be one of ",
+      paste(dQuote(valid_mets), collapse = ", ")
+    )
   }
 
   # silent_option
@@ -120,7 +125,8 @@ active_snw_search <- function(input_for_search,
 
   ## absolute path for active snw search jar
   active_search_jar_path <- system.file("java/ActiveSubnetworkSearch.jar",
-                                        package = "pathfindR")
+    package = "pathfindR"
+  )
 
   ## create directory for active subnetworks
   if (!dir.exists("active_snw_search")) {
@@ -130,11 +136,12 @@ active_snw_search <- function(input_for_search,
   if (!file.exists("active_snw_search/input_for_search.txt")) {
     input_for_search$GENE <- base::toupper(input_for_search$GENE)
     utils::write.table(input_for_search[, c("GENE", "P_VALUE")],
-                       "active_snw_search/input_for_search.txt",
-                       col.names = FALSE,
-                       row.names = FALSE,
-                       quote = FALSE,
-                       sep = "\t")
+      "active_snw_search/input_for_search.txt",
+      col.names = FALSE,
+      row.names = FALSE,
+      quote = FALSE,
+      sep = "\t"
+    )
   }
 
   input_path <- normalizePath("active_snw_search/input_for_search.txt")
@@ -162,16 +169,22 @@ active_snw_search <- function(input_for_search,
     " -grSubNum=", grSubNum, silent_option
   ))
 
-  snws_file <- file.path("active_snw_search",
-                         paste0(snws_file, ".txt"))
-  file.rename(from = "resultActiveSubnetworkSearch.txt",
-              to = snws_file)
+  snws_file <- file.path(
+    "active_snw_search",
+    paste0(snws_file, ".txt")
+  )
+  file.rename(
+    from = "resultActiveSubnetworkSearch.txt",
+    to = snws_file
+  )
 
   ############ Parse and filter active subnetworks
-  filtered_snws <- pathfindR::filterActiveSnws(active_snw_path  = snws_file,
-                                              sig_genes_vec = input_for_search$GENE,
-                                              score_quan_thr = score_quan_thr,
-                                              sig_gene_thr = sig_gene_thr)
+  filtered_snws <- pathfindR::filterActiveSnws(
+    active_snw_path = snws_file,
+    sig_genes_vec = input_for_search$GENE,
+    score_quan_thr = score_quan_thr,
+    sig_gene_thr = sig_gene_thr
+  )
 
   if (is.null(filtered_snws)) {
     snws <- list()
@@ -205,8 +218,10 @@ active_snw_search <- function(input_for_search,
 #'   pathfindR enrichment workflow
 #'
 #' @examples
-#' path2snw_list <- system.file("extdata/resultActiveSubnetworkSearch.txt",
-#'                               package = "pathfindR")
+#' path2snw_list <- system.file(
+#'   "extdata/resultActiveSubnetworkSearch.txt",
+#'   package = "pathfindR"
+#' )
 #' filtered <- filterActiveSnws(
 #'   active_snw_path = path2snw_list,
 #'   sig_genes_vec = example_pathfindR_input$Gene.symbol
@@ -216,21 +231,27 @@ filterActiveSnws <- function(active_snw_path, sig_genes_vec,
   ## Arg. checks
   active_snw_path <- suppressWarnings(normalizePath(active_snw_path))
 
-  if (!file.exists(active_snw_path))
+  if (!file.exists(active_snw_path)) {
     stop("The active subnetwork file does not exist! Check the `active_snw_path` argument")
+  }
 
-  if (!is.atomic(sig_genes_vec))
+  if (!is.atomic(sig_genes_vec)) {
     stop("`sig_genes_vec` should be a vector")
+  }
 
-  if (!is.numeric(score_quan_thr))
+  if (!is.numeric(score_quan_thr)) {
     stop("`score_quan_thr` should be numeric")
-  if (score_quan_thr != -1 & (score_quan_thr > 1 | score_quan_thr < 0))
+  }
+  if (score_quan_thr != -1 & (score_quan_thr > 1 | score_quan_thr < 0)) {
     stop("`score_quan_thr` should be in [0, 1] or -1 (if not filtering)")
+  }
 
-  if(!is.numeric(sig_gene_thr))
+  if (!is.numeric(sig_gene_thr)) {
     stop("`sig_gene_thr` should be numeric")
-  if(sig_gene_thr < 0 | sig_gene_thr > 1)
+  }
+  if (sig_gene_thr < 0 | sig_gene_thr > 1) {
     stop("`sig_gene_thr` should be in [0, 1]")
+  }
 
   output <- readLines(active_snw_path)
 
@@ -260,8 +281,9 @@ filterActiveSnws <- function(active_snw_path, sig_genes_vec,
   score_vec <- as.numeric(score_vec)[cond]
 
   # select subnetworks containing at least "sig_gene_thr" of significant genes
-  snw_sig_counts <- vapply(subnetworks, function(snw_genes)
-    sum(base::toupper(snw_genes) %in% base::toupper(sig_genes_vec)), 1)
+  snw_sig_counts <- vapply(subnetworks, function(snw_genes) {
+    sum(base::toupper(snw_genes) %in% base::toupper(sig_genes_vec))
+  }, 1)
   sig_gene_num_thr <- sig_gene_thr * length(sig_genes_vec)
   sig_gene_num_thr <- max(2, sig_gene_num_thr)
   cond <- (snw_sig_counts >= sig_gene_num_thr)
@@ -287,8 +309,10 @@ filterActiveSnws <- function(active_snw_path, sig_genes_vec,
 #' @export
 #'
 #' @examples
-#' path2snw_list <- system.file("extdata/resultActiveSubnetworkSearch.txt",
-#'                               package = "pathfindR")
+#' path2snw_list <- system.file(
+#'   "extdata/resultActiveSubnetworkSearch.txt",
+#'   package = "pathfindR"
+#' )
 #' # visualize top 2 active subnetworks
 #' g_list <- visualize_active_subnetworks(
 #'   active_snw_path = path2snw_list,
@@ -305,31 +329,39 @@ visualize_active_subnetworks <- function(active_snw_path, genes_df,
                                          ...) {
   # process input data frame
   processed_input <- input_processing(genes_df,
-                                      pin_name_path = pin_name_path,
-                                      ...)
+    pin_name_path = pin_name_path,
+    ...
+  )
 
   # parse and filter active subnetworks
-  active_snw_list <- filterActiveSnws(active_snw_path = active_snw_path,
-                                      sig_genes_vec = processed_input$GENE,
-                                      score_quan_thr = score_quan_thr,
-                                      sig_gene_thr = sig_gene_thr)
-  if (is.null(active_snw_list) | length(active_snw_list$scores) == 0)
+  active_snw_list <- filterActiveSnws(
+    active_snw_path = active_snw_path,
+    sig_genes_vec = processed_input$GENE,
+    score_quan_thr = score_quan_thr,
+    sig_gene_thr = sig_gene_thr
+  )
+  if (is.null(active_snw_list) | length(active_snw_list$scores) == 0) {
     return(NULL)
+  }
 
   score_vec <- active_snw_list$scores
   subnetworks <- active_snw_list$subnetworks
 
-  if (missing(num_snws))
+  if (missing(num_snws)) {
     num_snws <- length(subnetworks)
+  }
 
-  if (num_snws > length(subnetworks))
+  if (num_snws > length(subnetworks)) {
     num_snws <- length(subnetworks)
+  }
 
   # load PIN data
   ## load PIN
   pin_path <- return_pin_path(pin_name_path)
-  pin <- utils::read.delim(file = pin_path,
-                           header = FALSE, stringsAsFactors = FALSE)
+  pin <- utils::read.delim(
+    file = pin_path,
+    header = FALSE, stringsAsFactors = FALSE
+  )
   pin$V2 <- NULL
 
   pin[, 1] <- base::toupper(pin[, 1])
@@ -348,17 +380,22 @@ visualize_active_subnetworks <- function(active_snw_path, genes_df,
     cond_up_gene <- names(igraph::V(g)) %in% processed_input$GENE[processed_input$CHANGE > 0]
     cond_down_gene <- names(igraph::V(g)) %in% processed_input$GENE[processed_input$CHANGE < 0]
     igraph::V(g)$type <- ifelse(cond_up_gene, "up",
-                                ifelse(cond_down_gene, "down", "non-input"))
+      ifelse(cond_down_gene, "down", "non-input")
+    )
 
     igraph::V(g)$label.cex <- 0.5
     igraph::V(g)$frame.color <- "gray"
     igraph::V(g)$color <- ifelse(igraph::V(g)$type == "non-input", "#FFD500",
-                                 ifelse(igraph::V(g)$type == "up", "#D2222D",
-                                        "#35CD35"))
+      ifelse(igraph::V(g)$type == "up", "#D2222D",
+        "#35CD35"
+      )
+    )
 
-    color_lookup <- c("#35CD35" = "down-regulated gene",
-                      "#D2222D" = "up-regulated gene",
-                      "#FFD500" = "non-input gene")
+    color_lookup <- c(
+      "#35CD35" = "down-regulated gene",
+      "#D2222D" = "up-regulated gene",
+      "#FFD500" = "non-input gene"
+    )
 
 
 
@@ -367,15 +404,23 @@ visualize_active_subnetworks <- function(active_snw_path, genes_df,
     p <- p + ggraph::geom_node_point(ggplot2::aes(color = .data$color), size = 2)
     p <- p + ggplot2::theme_void()
     p <- p + ggraph::geom_node_text(ggplot2::aes(label = .data$name), nudge_y = .2)
-    p <- p + ggplot2::scale_colour_manual(values = unique(igraph::V(g)$color),
-                                          name = NULL,
-                                          labels = color_lookup[unique(igraph::V(g)$color)])
-    p <- p + ggplot2::labs(title = paste0("Active Subnetwork #", idx),
-                           subtitle = paste0("Score=", round(score_vec[idx], 2),
-                                             ", ", num_input_genes, "(", perc_input_genes, "%) input genes"))
-    p <- p + ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5),
-                            plot.subtitle = ggplot2::element_text(hjust = 0.5),
-                            legend.position = "bottom")
+    p <- p + ggplot2::scale_colour_manual(
+      values = unique(igraph::V(g)$color),
+      name = NULL,
+      labels = color_lookup[unique(igraph::V(g)$color)]
+    )
+    p <- p + ggplot2::labs(
+      title = paste0("Active Subnetwork #", idx),
+      subtitle = paste0(
+        "Score=", round(score_vec[idx], 2),
+        ", ", num_input_genes, "(", perc_input_genes, "%) input genes"
+      )
+    )
+    p <- p + ggplot2::theme(
+      plot.title = ggplot2::element_text(hjust = 0.5),
+      plot.subtitle = ggplot2::element_text(hjust = 0.5),
+      legend.position = "bottom"
+    )
     graphs_list[[idx]] <- p
   }
 

@@ -35,14 +35,19 @@ fetch_java_version <- function() {
     java <- Sys.which("java")
   }
 
-  if (java == "")
-    stop("Java version not detected. Please download and install Java from ",
-         dQuote("https://www.java.com/en/"))
+  if (java == "") {
+    stop(
+      "Java version not detected. Please download and install Java from ",
+      dQuote("https://www.java.com/en/")
+    )
+  }
 
   version <- system2(java, "-version", stderr = TRUE, stdout = TRUE)
   if (length(version) < 1) {
-    stop("Java version not detected. Please download and install Java from ",
-         dQuote("https://www.java.com/en/"))
+    stop(
+      "Java version not detected. Please download and install Java from ",
+      dQuote("https://www.java.com/en/")
+    )
   }
 
   return(version)
@@ -57,14 +62,15 @@ fetch_java_version <- function() {
 #'
 #' @details this function was adapted from the CRAN package \code{sparklyr}
 check_java_version <- function(version = NULL) {
-
-  if (is.null(version))
+  if (is.null(version)) {
     version <- fetch_java_version()
+  }
 
   # find line with version info
   versionLine <- version[grepl("version", version)]
-  if (length(versionLine) != 1)
+  if (length(versionLine) != 1) {
     stop("Java version detected but couldn't parse version from ", paste(version, collapse = " - "))
+  }
 
   # transform to usable R version string
   vers_string <- strsplit(versionLine, "\\s+", perl = TRUE)[[1]]
@@ -74,8 +80,9 @@ check_java_version <- function(version = NULL) {
     vers_string <- vers_string[grepl("[0-9]+", vers_string, perl = TRUE)]
     vers_string <- vers_string[!grepl("-", vers_string)]
 
-    if (length(vers_string) != 1)
+    if (length(vers_string) != 1) {
       stop("Java version detected but couldn't parse version from: ", versionLine)
+    }
   }
 
   parsedVersion <- gsub("^\"|\"$", "", vers_string)
@@ -83,8 +90,11 @@ check_java_version <- function(version = NULL) {
   parsedVersion <- gsub("[^0-9.]+", "", parsedVersion)
 
   # ensure Java 1.8 (8) or higher
-  if (utils::compareVersion(parsedVersion, "1.8") < 0)
-    stop("Java version", parsedVersion, " detected but Java >=8 is required.
+  if (utils::compareVersion(parsedVersion, "1.8") < 0) {
+    stop(
+      "Java version", parsedVersion, " detected but Java >=8 is required.
   Please download and install Java from ",
-         dQuote("https://www.java.com/en/"))
+      dQuote("https://www.java.com/en/")
+    )
+  }
 }

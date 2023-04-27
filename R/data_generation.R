@@ -32,45 +32,50 @@ process_pin <- function(pin_df) {
 #' temporary file
 get_biogrid_pin <- function(org = "Homo_sapiens", path2pin, release = "4.4.211") {
   # check organism name
-  all_org_names <- c("Anopheles_gambiae_PEST", "Apis_mellifera",
-                     "Arabidopsis_thaliana_Columbia", "Bacillus_subtilis_168",
-                     "Bos_taurus", "Caenorhabditis_elegans",
-                     "Candida_albicans_SC5314", "Canis_familiaris",
-                     "Cavia_porcellus", "Chlamydomonas_reinhardtii",
-                     "Chlorocebus_sabaeus", "Cricetulus_griseus",
-                     "Danio_rerio", "Dictyostelium_discoideum_AX4",
-                     "Drosophila_melanogaster", "Emericella_nidulans_FGSC_A4",
-                     "Equus_caballus", "Escherichia_coli_K12_MC4100_BW2952",
-                     "Escherichia_coli_K12_MG1655", "Escherichia_coli_K12_W3110",
-                     "Escherichia_coli_K12", "Gallus_gallus", "Glycine_max",
-                     "Hepatitus_C_Virus", "Homo_sapiens", "Human_Herpesvirus_1",
-                     "Human_Herpesvirus_2", "Human_Herpesvirus_3",
-                     "Human_Herpesvirus_4", "Human_Herpesvirus_5",
-                     "Human_Herpesvirus_6A", "Human_Herpesvirus_6B",
-                     "Human_Herpesvirus_7", "Human_Herpesvirus_8",
-                     "Human_Immunodeficiency_Virus_1",
-                     "Human_Immunodeficiency_Virus_2", "Human_papillomavirus_10",
-                     "Human_papillomavirus_16", "Human_papillomavirus_6b",
-                     "Leishmania_major_Friedlin", "Macaca_mulatta",
-                     "Meleagris_gallopavo", "Mus_musculus",
-                     "Mycobacterium_tuberculosis_H37Rv",
-                     "Neurospora_crassa_OR74A", "Nicotiana_tomentosiformis",
-                     "Oryctolagus_cuniculus", "Oryza_sativa_Japonica",
-                     "Ovis_aries", "Pan_troglodytes", "Pediculus_humanus",
-                     "Plasmodium_falciparum_3D7", "Rattus_norvegicus",
-                     "Ricinus_communis", "Saccharomyces_cerevisiae_S288c",
-                     "Schizosaccharomyces_pombe_972h",
-                     "Selaginella_moellendorffii",
-                     "Simian_Immunodeficiency_Virus", "Simian_Virus_40",
-                     "Solanum_lycopersicum", "Solanum_tuberosum",
-                     "Streptococcus_pneumoniae_ATCCBAA255",
-                     "Strongylocentrotus_purpuratus", "Sus_scrofa",
-                     "Tobacco_Mosaic_Virus", "Ustilago_maydis_521",
-                     "Vaccinia_Virus", "Vitis_vinifera", "Xenopus_laevis",
-                     "Zea_mays")
-  if (!org %in% all_org_names)
-    stop(paste(org, "is not a valid Biogrid organism.",
-               "Available organisms are listed on: https://wiki.thebiogrid.org/doku.php/statistics"))
+  all_org_names <- c(
+    "Anopheles_gambiae_PEST", "Apis_mellifera",
+    "Arabidopsis_thaliana_Columbia", "Bacillus_subtilis_168",
+    "Bos_taurus", "Caenorhabditis_elegans",
+    "Candida_albicans_SC5314", "Canis_familiaris",
+    "Cavia_porcellus", "Chlamydomonas_reinhardtii",
+    "Chlorocebus_sabaeus", "Cricetulus_griseus",
+    "Danio_rerio", "Dictyostelium_discoideum_AX4",
+    "Drosophila_melanogaster", "Emericella_nidulans_FGSC_A4",
+    "Equus_caballus", "Escherichia_coli_K12_MC4100_BW2952",
+    "Escherichia_coli_K12_MG1655", "Escherichia_coli_K12_W3110",
+    "Escherichia_coli_K12", "Gallus_gallus", "Glycine_max",
+    "Hepatitus_C_Virus", "Homo_sapiens", "Human_Herpesvirus_1",
+    "Human_Herpesvirus_2", "Human_Herpesvirus_3",
+    "Human_Herpesvirus_4", "Human_Herpesvirus_5",
+    "Human_Herpesvirus_6A", "Human_Herpesvirus_6B",
+    "Human_Herpesvirus_7", "Human_Herpesvirus_8",
+    "Human_Immunodeficiency_Virus_1",
+    "Human_Immunodeficiency_Virus_2", "Human_papillomavirus_10",
+    "Human_papillomavirus_16", "Human_papillomavirus_6b",
+    "Leishmania_major_Friedlin", "Macaca_mulatta",
+    "Meleagris_gallopavo", "Mus_musculus",
+    "Mycobacterium_tuberculosis_H37Rv",
+    "Neurospora_crassa_OR74A", "Nicotiana_tomentosiformis",
+    "Oryctolagus_cuniculus", "Oryza_sativa_Japonica",
+    "Ovis_aries", "Pan_troglodytes", "Pediculus_humanus",
+    "Plasmodium_falciparum_3D7", "Rattus_norvegicus",
+    "Ricinus_communis", "Saccharomyces_cerevisiae_S288c",
+    "Schizosaccharomyces_pombe_972h",
+    "Selaginella_moellendorffii",
+    "Simian_Immunodeficiency_Virus", "Simian_Virus_40",
+    "Solanum_lycopersicum", "Solanum_tuberosum",
+    "Streptococcus_pneumoniae_ATCCBAA255",
+    "Strongylocentrotus_purpuratus", "Sus_scrofa",
+    "Tobacco_Mosaic_Virus", "Ustilago_maydis_521",
+    "Vaccinia_Virus", "Vitis_vinifera", "Xenopus_laevis",
+    "Zea_mays"
+  )
+  if (!org %in% all_org_names) {
+    stop(paste(
+      org, "is not a valid Biogrid organism.",
+      "Available organisms are listed on: https://wiki.thebiogrid.org/doku.php/statistics"
+    ))
+  }
 
   # release directory for download
   rel_dir <- paste0("BIOGRID-", release)
@@ -94,25 +99,32 @@ get_biogrid_pin <- function(org = "Homo_sapiens", path2pin, release = "4.4.211")
 
   # process and save organism PIN file
   biogrid_df <- utils::read.delim(unz(tmp, org_file),
-                                  check.names = FALSE,
-                                  colClasses = "character",
-                                  stringsAsFactors = FALSE)
-  biogrid_pin <- data.frame(Interactor_A = biogrid_df[, "Official Symbol Interactor A"],
-                            Interactor_B = biogrid_df[, "Official Symbol Interactor B"],
-                            stringsAsFactors = FALSE)
+    check.names = FALSE,
+    colClasses = "character",
+    stringsAsFactors = FALSE
+  )
+  biogrid_pin <- data.frame(
+    Interactor_A = biogrid_df[, "Official Symbol Interactor A"],
+    Interactor_B = biogrid_df[, "Official Symbol Interactor B"],
+    stringsAsFactors = FALSE
+  )
   biogrid_pin <- process_pin(biogrid_pin)
 
-  final_pin <- data.frame(intA = biogrid_pin$Interactor_A,
-                          pp = "pp",
-                          intB = biogrid_pin$Interactor_B,
-                          stringsAsFactors = FALSE)
+  final_pin <- data.frame(
+    intA = biogrid_pin$Interactor_A,
+    pp = "pp",
+    intB = biogrid_pin$Interactor_B,
+    stringsAsFactors = FALSE
+  )
 
-  if (missing(path2pin))
+  if (missing(path2pin)) {
     path2pin <- tempfile()
+  }
   utils::write.table(final_pin,
-                     path2pin,
-                     sep = "\t",
-                     row.names = FALSE, col.names = FALSE, quote = FALSE)
+    path2pin,
+    sep = "\t",
+    row.names = FALSE, col.names = FALSE, quote = FALSE
+  )
   return(path2pin)
 }
 
@@ -135,8 +147,9 @@ get_biogrid_pin <- function(org = "Homo_sapiens", path2pin, release = "4.4.211")
 #' }
 get_pin_file <- function(source = "BioGRID", org = "Homo_sapiens", path2pin, ...) {
   ## TODO
-  if (source != "BioGRID")
+  if (source != "BioGRID") {
     stop("As of this version, this function is implemented to get data from BioGRID only")
+  }
 
   path2pin <- get_biogrid_pin(org = org, path2pin = path2pin, ...)
   return(path2pin)
@@ -205,8 +218,9 @@ get_kegg_gsets <- function(org_code = "hsa") {
 
     ## get gene symbols
     all_entries <- pw[[1]]$GENE
-    if(is.null(all_entries))
+    if (is.null(all_entries)) {
       return(NULL)
+    }
     tmp <- c(TRUE, FALSE)
     if (grepl(";", all_entries[2])) {
       tmp <- c(FALSE, TRUE)
@@ -279,13 +293,16 @@ get_reactome_gsets <- function() {
 get_mgsigdb_gsets <- function(species = "Homo sapiens", collection, subcollection = NULL) {
   # arg check
   all_collections <- c("H", "C1", "C2", "C3", "C4", "C5", "C6", "C7")
-  if (!collection %in% all_collections)
+  if (!collection %in% all_collections) {
     stop("`collection` should be one of ", paste(dQuote(all_collections), collapse = ", "))
+  }
 
   # retrieve msigdbr df
-  msig_df <- msigdbr::msigdbr(species = species,
-                              category = collection,
-                              subcategory = subcollection)
+  msig_df <- msigdbr::msigdbr(
+    species = species,
+    category = collection,
+    subcategory = subcollection
+  )
 
   ### create gene sets list
   all_gs_ids <- unique(msig_df$gs_id)
@@ -336,9 +353,11 @@ get_gene_sets_list <- function(source = "KEGG", org_code = "hsa",
     message("For Reactome, there is only one collection of pathway gene sets.")
     return(get_reactome_gsets())
   } else if (source == "MSigDB") {
-    return(get_mgsigdb_gsets(species = species,
-                             collection = collection,
-                             subcollection = subcollection))
+    return(get_mgsigdb_gsets(
+      species = species,
+      collection = collection,
+      subcollection = subcollection
+    ))
   } else {
     stop("As of this version, this function is implemented to get data from KEGG, Reactome and MSigDB only")
   }

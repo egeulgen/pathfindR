@@ -78,11 +78,13 @@ score_terms <- function(enrichment_table, exp_mat, cases = NULL,
   ID_column <- ifelse(use_description, "Term_Description", "ID")
   nec_cols <- c(ID_column, "Up_regulated", "Down_regulated")
   if (!all(nec_cols %in% colnames(enrichment_table))) {
-    stop("`enrichment_table` should contain all of ",
-         paste(dQuote(nec_cols), collapse = ", "))
+    stop(
+      "`enrichment_table` should contain all of ",
+      paste(dQuote(nec_cols), collapse = ", ")
+    )
   }
 
-  if(!is.matrix(exp_mat)) {
+  if (!is.matrix(exp_mat)) {
     stop("`exp_mat` should be a matrix")
   }
 
@@ -101,8 +103,9 @@ score_terms <- function(enrichment_table, exp_mat, cases = NULL,
     dup_desc <- enrichment_table$Term_Description[duplicated(enrichment_table$Term_Description)]
 
     tmp <- ifelse(enrichment_table$Term_Description %in% dup_desc,
-                  paste0(enrichment_table$Term_Description, "_", enrichment_table$ID),
-                  enrichment_table$Term_Description)
+      paste0(enrichment_table$Term_Description, "_", enrichment_table$ID),
+      enrichment_table$Term_Description
+    )
     enrichment_table$Term_Description <- tmp
   }
 
@@ -192,7 +195,6 @@ plot_scores <- function(score_matrix, cases = NULL, label_samples = TRUE,
                         case_title = "Case",
                         control_title = "Control",
                         low = "green", mid = "black", high = "red") {
-
   #### Argument Checks
   if (!is.matrix(score_matrix)) {
     stop("`score_matrix` should be a matrix")
@@ -231,40 +233,52 @@ plot_scores <- function(score_matrix, cases = NULL, label_samples = TRUE,
   ## transform the matrix
   var_names <- list()
   var_names[["Term"]] <- factor(rownames(score_matrix),
-    levels = rev(rownames(score_matrix)))
+    levels = rev(rownames(score_matrix))
+  )
   var_names[["Sample"]] <- factor(colnames(score_matrix),
-    levels = colnames(score_matrix))
+    levels = colnames(score_matrix)
+  )
 
   score_df <- expand.grid(var_names,
-                          KEEP.OUT.ATTRS = FALSE,
-                          stringsAsFactors = FALSE)
+    KEEP.OUT.ATTRS = FALSE,
+    stringsAsFactors = FALSE
+  )
   scores <- as.vector(score_matrix)
   scores <- data.frame(scores)
   score_df <- cbind(score_df, scores)
   if (!is.null(cases)) {
     score_df$Type <- ifelse(score_df$Sample %in% cases, case_title, control_title)
     score_df$Type <- factor(score_df$Type,
-                            levels = c(case_title, control_title))
+      levels = c(case_title, control_title)
+    )
   }
 
   g <- ggplot2::ggplot(score_df, ggplot2::aes_(x = ~Sample, y = ~Term))
   g <- g + ggplot2::geom_tile(ggplot2::aes_(fill = ~scores), color = "white")
   g <- g + ggplot2::scale_fill_gradient2(low = low, mid = mid, high = high)
-  g <- g + ggplot2::theme(axis.title.x = ggplot2::element_blank(),
-                          axis.title.y = ggplot2::element_blank(),
-                          axis.text.x = ggplot2::element_text(angle = 45,
-                                                              hjust = 1),
-                          legend.title = ggplot2::element_text(size = 10),
-                          legend.text = ggplot2::element_text(size = 12))
+  g <- g + ggplot2::theme(
+    axis.title.x = ggplot2::element_blank(),
+    axis.title.y = ggplot2::element_blank(),
+    axis.text.x = ggplot2::element_text(
+      angle = 45,
+      hjust = 1
+    ),
+    legend.title = ggplot2::element_text(size = 10),
+    legend.text = ggplot2::element_text(size = 12)
+  )
   g <- g + ggplot2::labs(fill = "Score")
   if (!is.null(cases)) {
     g <- g + ggplot2::facet_grid(~Type, scales = "free_x", space = "free")
-    g <- g + ggplot2::theme(strip.text.x = ggplot2::element_text(size = 12,
-                                                                 face = "bold"))
+    g <- g + ggplot2::theme(strip.text.x = ggplot2::element_text(
+      size = 12,
+      face = "bold"
+    ))
   }
   if (!label_samples) {
-    g <- g + ggplot2::theme(axis.text.x = ggplot2::element_blank(),
-                            axis.ticks.x = ggplot2::element_blank())
+    g <- g + ggplot2::theme(
+      axis.text.x = ggplot2::element_blank(),
+      axis.ticks.x = ggplot2::element_blank()
+    )
   }
   return(g)
 }

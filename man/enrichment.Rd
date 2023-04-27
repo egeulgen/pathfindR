@@ -45,9 +45,11 @@ A data frame that contains enrichment results
 Perform Enrichment Analysis for a Single Gene Set
 }
 \examples{
-enrichment(input_genes = c("PER1", "PER2", "CRY1", "CREB1"),
-           sig_genes_vec = "PER1",
-           background_genes = unlist(pathfindR.data::kegg_genes))
+enrichment(
+  input_genes = c("PER1", "PER2", "CRY1", "CREB1"),
+  sig_genes_vec = "PER1",
+  background_genes = unlist(pathfindR.data::kegg_genes)
+)
 }
 \seealso{
 \code{\link[stats]{p.adjust}} for adjustment of p values. See

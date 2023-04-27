@@ -53,8 +53,10 @@ and yellows are non-input genes
 Visualize Active Subnetworks
 }
 \examples{
-path2snw_list <- system.file("extdata/resultActiveSubnetworkSearch.txt",
-                              package = "pathfindR")
+path2snw_list <- system.file(
+  "extdata/resultActiveSubnetworkSearch.txt",
+  package = "pathfindR"
+)
 # visualize top 2 active subnetworks
 g_list <- visualize_active_subnetworks(
   active_snw_path = path2snw_list,

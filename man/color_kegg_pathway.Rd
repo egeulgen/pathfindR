@@ -40,9 +40,9 @@ Color hsa KEGG pathway
 }
 \examples{
 \dontrun{
-   pw_id <- "hsa00010"
-   change_vec <- c(-2, 4, 6)
-   names(change_vec) <- c("hsa:2821", "hsa:226", "hsa:229")
-   result <- pathfindR:::color_kegg_pathway(pw_id, change_vec)
+pw_id <- "hsa00010"
+change_vec <- c(-2, 4, 6)
+names(change_vec) <- c("hsa:2821", "hsa:226", "hsa:229")
+result <- pathfindR:::color_kegg_pathway(pw_id, change_vec)
 }
 }

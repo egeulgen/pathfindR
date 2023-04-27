@@ -51,11 +51,13 @@ Cluster Enriched Terms
 }
 \examples{
 example_clustered <- cluster_enriched_terms(
-  example_pathfindR_output[1:3, ], plot_clusters_graph = FALSE
-  )
+  example_pathfindR_output[1:3, ],
+  plot_clusters_graph = FALSE
+)
 example_clustered <- cluster_enriched_terms(
-  example_pathfindR_output[1:3, ], method = "fuzzy", plot_clusters_graph = FALSE
-  )
+  example_pathfindR_output[1:3, ],
+  method = "fuzzy", plot_clusters_graph = FALSE
+)
 }
 \seealso{
 See \code{\link{hierarchical_term_clustering}} for hierarchical

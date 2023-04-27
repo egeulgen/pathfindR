@@ -48,29 +48,38 @@ create_kappa_matrix <- function(enrichment_res,
     nec_cols <- c(nec_cols, "non_Signif_Snw_Genes")
   }
   if (!all(nec_cols %in% colnames(enrichment_res))) {
-    stop("`enrichment_res` should contain all of ",
-         paste(dQuote(nec_cols), collapse = ", "))
+    stop(
+      "`enrichment_res` should contain all of ",
+      paste(dQuote(nec_cols), collapse = ", ")
+    )
   }
 
   ### Initial steps
   # Column to use for gene set names
-  chosen_id <- ifelse(use_description,
-                      which(colnames(enrichment_res) == "Term_Description"),
-                      which(colnames(enrichment_res) == "ID"))
+  chosen_id <- ifelse(
+    use_description,
+    which(colnames(enrichment_res) == "Term_Description"),
+    which(colnames(enrichment_res) == "ID")
+  )
 
   # list of genes
   down_idx <- which(colnames(enrichment_res) == "Down_regulated")
   up_idx <- which(colnames(enrichment_res) == "Up_regulated")
 
-  genes_lists <- apply(enrichment_res, 1, function(x)
-    base::toupper(c(unlist(strsplit(as.character(x[up_idx]), ", ")),
-                    unlist(strsplit(as.character(x[down_idx]), ", ")))))
+  genes_lists <- apply(enrichment_res, 1, function(x) {
+    base::toupper(c(
+      unlist(strsplit(as.character(x[up_idx]), ", ")),
+      unlist(strsplit(as.character(x[down_idx]), ", "))
+    ))
+  })
 
   if (use_active_snw_genes) {
     active_idx <- which(colnames(enrichment_res) == "non_Signif_Snw_Genes")
 
-    genes_lists <- mapply(function(x, y)
-      c(x, unlist(strsplit(as.character(y), ", "))),
+    genes_lists <- mapply(
+      function(x, y) {
+        c(x, unlist(strsplit(as.character(y), ", ")))
+      },
       genes_lists, enrichment_res[, active_idx]
     )
   }
@@ -87,9 +96,11 @@ create_kappa_matrix <- function(enrichment_res,
   N <- nrow(enrichment_res)
   term_names <- enrichment_res[, chosen_id]
 
-  kappa_mat <- matrix(0,
-                      nrow = N, ncol = N,
-                      dimnames = list(term_names, term_names))
+  kappa_mat <- matrix(
+    0,
+    nrow = N, ncol = N,
+    dimnames = list(term_names, term_names)
+  )
   diag(kappa_mat) <- 1
 
   total <- length(all_genes)
@@ -153,8 +164,9 @@ hierarchical_term_clustering <- function(kappa_mat,
                                          plot_hmap = FALSE, plot_dend = TRUE) {
   ### Set ID/Name index
   chosen_id <- ifelse(use_description,
-                      which(colnames(enrichment_res) == "Term_Description"),
-                      which(colnames(enrichment_res) == "ID"))
+    which(colnames(enrichment_res) == "Term_Description"),
+    which(colnames(enrichment_res) == "ID")
+  )
 
   ### Argument checks
   if (!isSymmetric.matrix(kappa_mat)) {
@@ -208,16 +220,18 @@ hierarchical_term_clustering <- function(kappa_mat,
     } else if (kmax <= 100) {
       kseq <- c(2:19, seq(20, kmax %/% 10 * 10, 10))
     } else {
-      kseq <- c(2:19, seq(20, 100, 10),
-                seq(150, kmax %/% 50 * 50, 50))
+      kseq <- c(
+        2:19, seq(20, 100, 10),
+        seq(150, kmax %/% 50 * 50, 50)
+      )
     }
 
     # calculate average sil. width per k in sequence
     avg_sils <- c()
     for (k in kseq) {
       avg_sils <- c(avg_sils, fpc::cluster.stats(stats::as.dist(1 - kappa_mat2),
-                                                 stats::cutree(clu, k = k),
-                                                 silhouette = TRUE
+        stats::cutree(clu, k = k),
+        silhouette = TRUE
       )$avg.silwidth)
     }
 
@@ -268,11 +282,12 @@ hierarchical_term_clustering <- function(kappa_mat,
 fuzzy_term_clustering <- function(kappa_mat, enrichment_res,
                                   kappa_threshold = 0.35,
                                   use_description = FALSE) {
-
   ### Set ID/Name index
-  chosen_id <- ifelse(use_description,
-                      which(colnames(enrichment_res) == "Term_Description"),
-                      which(colnames(enrichment_res) == "ID"))
+  chosen_id <- ifelse(
+    use_description,
+    which(colnames(enrichment_res) == "Term_Description"),
+    which(colnames(enrichment_res) == "ID")
+  )
 
   ### Argument checks
   if (!isSymmetric.matrix(kappa_mat)) {
@@ -391,20 +406,24 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res,
                               kappa_threshold = 0.35, use_description = FALSE,
                               vertex.label.cex = 0.7, vertex.size.scaling = 2.5) {
   ### Set ID/Name index
-  chosen_id <- ifelse(use_description,
-                      which(colnames(enrichment_res) == "Term_Description"),
-                      which(colnames(enrichment_res) == "ID"))
+  chosen_id <- ifelse(
+    use_description,
+    which(colnames(enrichment_res) == "Term_Description"),
+    which(colnames(enrichment_res) == "ID")
+  )
 
   ### For coloring nodes
-  all_cols <- c("#E41A1C", "#377EB8", "#4DAF4A", "#984EA3", "#FF7F00",
-                "#FFFF33", "#A65628", "#F781BF", "#999999", "#66C2A5",
-                "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F",
-                "#E5C494", "#B3B3B3", "#8DD3C7", "#FFFFB3", "#BEBADA",
-                "#FB8072", "#80B1D3", "#FDB462", "#B3DE69", "#FCCDE5",
-                "#D9D9D9", "#BC80BD", "#CCEBC5", "#FFED6F", "#A6CEE3",
-                "#1F78B4", "#B2DF8A", "#33A02C", "#FB9A99", "#E31A1C",
-                "#FDBF6F", "#FF7F00", "#CAB2D6", "#6A3D9A", "#FFFF99",
-                "#B15928")
+  all_cols <- c(
+    "#E41A1C", "#377EB8", "#4DAF4A", "#984EA3", "#FF7F00",
+    "#FFFF33", "#A65628", "#F781BF", "#999999", "#66C2A5",
+    "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F",
+    "#E5C494", "#B3B3B3", "#8DD3C7", "#FFFFB3", "#BEBADA",
+    "#FB8072", "#80B1D3", "#FDB462", "#B3DE69", "#FCCDE5",
+    "#D9D9D9", "#BC80BD", "#CCEBC5", "#FFED6F", "#A6CEE3",
+    "#1F78B4", "#B2DF8A", "#33A02C", "#FB9A99", "#E31A1C",
+    "#FDBF6F", "#FF7F00", "#CAB2D6", "#6A3D9A", "#FFFF99",
+    "#B15928"
+  )
 
   if (is.matrix(clu_obj)) {
     ### Argument checks
@@ -420,14 +439,18 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res,
 
     # Add missing terms
     missing <- rownames(clu_obj)[!rownames(clu_obj) %in% colnames(kappa_mat2)]
-    missing_mat <- matrix(0,
-                          nrow = nrow(kappa_mat2), ncol = length(missing),
-                          dimnames = list(rownames(kappa_mat2), missing))
+    missing_mat <- matrix(
+      0,
+      nrow = nrow(kappa_mat2), ncol = length(missing),
+      dimnames = list(rownames(kappa_mat2), missing)
+    )
     kappa_mat2 <- cbind(kappa_mat2, missing_mat)
     missing <- rownames(clu_obj)[!rownames(clu_obj) %in% rownames(kappa_mat2)]
-    missing_mat <- matrix(0,
-                          nrow = length(missing), ncol = ncol(kappa_mat2),
-                          dimnames = list(missing, colnames(kappa_mat2)))
+    missing_mat <- matrix(
+      0,
+      nrow = length(missing), ncol = ncol(kappa_mat2),
+      dimnames = list(missing, colnames(kappa_mat2))
+    )
     kappa_mat2 <- rbind(kappa_mat2, missing_mat)
 
     ### Create Graph, Set Color, Size and Percentages
@@ -458,17 +481,19 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res,
     igraph::V(g)$size <- transformed_p * vertex.size.scaling
 
     ### Plot Graph
-    igraph::plot.igraph(g,
-                        vertex.pie = percs,
-                        vertex.pie.color = cols,
-                        layout = igraph::layout_nicely(g),
-                        edge.curved = FALSE,
-                        vertex.label.dist = 0,
-                        vertex.label.color = "black",
-                        asp = 1,
-                        vertex.label.cex = vertex.label.cex,
-                        edge.width = igraph::E(g)$weight,
-                        edge.arrow.mode = 0)
+    igraph::plot.igraph(
+      g,
+      vertex.pie = percs,
+      vertex.pie.color = cols,
+      layout = igraph::layout_nicely(g),
+      edge.curved = FALSE,
+      vertex.label.dist = 0,
+      vertex.label.color = "black",
+      asp = 1,
+      vertex.label.cex = vertex.label.cex,
+      edge.width = igraph::E(g)$weight,
+      edge.arrow.mode = 0
+    )
   } else if (is.integer(clu_obj)) {
     ### Argument checks
     if (!all(names(clu_obj) %in% colnames(kappa_mat))) {
@@ -483,14 +508,18 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res,
 
     # Add missing terms
     missing <- names(clu_obj)[!names(clu_obj) %in% colnames(kappa_mat2)]
-    missing_mat <- matrix(0,
-                          nrow = nrow(kappa_mat2), ncol = length(missing),
-                          dimnames = list(rownames(kappa_mat2), missing))
+    missing_mat <- matrix(
+      0,
+      nrow = nrow(kappa_mat2), ncol = length(missing),
+      dimnames = list(rownames(kappa_mat2), missing)
+    )
     kappa_mat2 <- cbind(kappa_mat2, missing_mat)
     missing <- names(clu_obj)[!names(clu_obj) %in% rownames(kappa_mat2)]
-    missing_mat <- matrix(0,
-                          nrow = length(missing), ncol = ncol(kappa_mat2),
-                          dimnames = list(missing, colnames(kappa_mat2)))
+    missing_mat <- matrix(
+      0,
+      nrow = length(missing), ncol = ncol(kappa_mat2),
+      dimnames = list(missing, colnames(kappa_mat2))
+    )
     kappa_mat2 <- rbind(kappa_mat2, missing_mat)
 
     ### Create Graph, Set Colors and Sizes
@@ -513,15 +542,17 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res,
     igraph::V(g)$size <- transformed_p * vertex.size.scaling
 
     ### Plot graph
-    igraph::plot.igraph(g,
-                        layout = igraph::layout_nicely(g),
-                        edge.curved = FALSE,
-                        vertex.label.dist = 0,
-                        vertex.label.color = "black",
-                        asp = 0,
-                        vertex.label.cex = vertex.label.cex,
-                        edge.width = igraph::E(g)$weight,
-                        edge.arrow.mode = 0)
+    igraph::plot.igraph(
+      g,
+      layout = igraph::layout_nicely(g),
+      edge.curved = FALSE,
+      vertex.label.dist = 0,
+      vertex.label.color = "black",
+      asp = 0,
+      vertex.label.cex = vertex.label.cex,
+      edge.width = igraph::E(g)$weight,
+      edge.arrow.mode = 0
+    )
   } else {
     stop("Invalid class for `clu_obj`!")
   }
@@ -551,11 +582,13 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res,
 #'
 #' @examples
 #' example_clustered <- cluster_enriched_terms(
-#'   example_pathfindR_output[1:3, ], plot_clusters_graph = FALSE
-#'   )
+#'   example_pathfindR_output[1:3, ],
+#'   plot_clusters_graph = FALSE
+#' )
 #' example_clustered <- cluster_enriched_terms(
-#'   example_pathfindR_output[1:3, ], method = "fuzzy", plot_clusters_graph = FALSE
-#'   )
+#'   example_pathfindR_output[1:3, ],
+#'   method = "fuzzy", plot_clusters_graph = FALSE
+#' )
 #' @seealso See \code{\link{hierarchical_term_clustering}} for hierarchical
 #' clustering of enriched terms.
 #' See \code{\link{fuzzy_term_clustering}} for fuzzy clustering of enriched terms.
@@ -576,34 +609,39 @@ cluster_enriched_terms <- function(enrichment_res,
   }
 
   ### Create Kappa Matrix
-  kappa_mat <- create_kappa_matrix(enrichment_res = enrichment_res,
-                                   use_description = use_description,
-                                   use_active_snw_genes = use_active_snw_genes)
+  kappa_mat <- create_kappa_matrix(
+    enrichment_res = enrichment_res,
+    use_description = use_description,
+    use_active_snw_genes = use_active_snw_genes
+  )
   kappa_mat[is.na(kappa_mat)] <- 0
 
   ### Cluster Terms
   if (method == "hierarchical") {
     clu_obj <- R.utils::doCall("hierarchical_term_clustering",
-                               kappa_mat = kappa_mat,
-                               enrichment_res = enrichment_res,
-                               use_description = use_description,
-                               ...)
+      kappa_mat = kappa_mat,
+      enrichment_res = enrichment_res,
+      use_description = use_description,
+      ...
+    )
   } else {
     clu_obj <- R.utils::doCall("fuzzy_term_clustering",
-                               kappa_mat = kappa_mat,
-                               enrichment_res = enrichment_res,
-                               use_description = use_description,
-                               ...)
+      kappa_mat = kappa_mat,
+      enrichment_res = enrichment_res,
+      use_description = use_description,
+      ...
+    )
   }
 
   ### Graph Visualization of Clusters
   if (plot_clusters_graph) {
     R.utils::doCall("cluster_graph_vis",
-                    clu_obj = clu_obj,
-                    kappa_mat = kappa_mat,
-                    enrichment_res = enrichment_res,
-                    use_description = use_description,
-                    ...)
+      clu_obj = clu_obj,
+      kappa_mat = kappa_mat,
+      enrichment_res = enrichment_res,
+      use_description = use_description,
+      ...
+    )
   }
 
   ### Returned Data Frame with Cluster Information
@@ -620,8 +658,9 @@ cluster_enriched_terms <- function(enrichment_res,
     clu_idx <- match(clustered_df[, chosen_id], names(clu_obj))
     clustered_df$Cluster <- clu_obj[clu_idx]
     clustered_df <- clustered_df[order(clustered_df$Cluster,
-                                       clustered_df$lowest_p,
-                                       decreasing = FALSE), ]
+      clustered_df$lowest_p,
+      decreasing = FALSE
+    ), ]
 
     tmp <- tapply(clustered_df[, chosen_id], clustered_df$Cluster, function(x) x[1])
     stat_cond <- clustered_df[, chosen_id] %in% tmp
@@ -637,15 +676,18 @@ cluster_enriched_terms <- function(enrichment_res,
       current_row <- clustered_df[i, ]
       current_clusters <- term_list[[current_row[, chosen_id]]]
       for (clu in current_clusters) {
-        clustered_df2 <- rbind(clustered_df2,
-                               data.frame(current_row, Cluster = clu))
+        clustered_df2 <- rbind(
+          clustered_df2,
+          data.frame(current_row, Cluster = clu)
+        )
       }
     }
 
     clustered_df <- clustered_df2
     clustered_df <- clustered_df[order(clustered_df$Cluster,
-                                       clustered_df$lowest_p,
-                                       decreasing = FALSE), ]
+      clustered_df$lowest_p,
+      decreasing = FALSE
+    ), ]
 
     tmp <- tapply(clustered_df[, chosen_id], clustered_df$Cluster, function(x) x[1])
     stat_cond <- clustered_df[, chosen_id] %in% tmp
