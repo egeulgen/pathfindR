@@ -34,7 +34,8 @@ Encoding: UTF-8
 LazyData: true
 SystemRequirements: Java (>= 8.0)
 biocViews:
-Imports: DBI,
+Imports: 
+    DBI,
     AnnotationDbi,
     doParallel,
     foreach,
@@ -53,7 +54,7 @@ Imports: DBI,
     KEGGgraph,
     knitr
 Depends: R (>= 4.0),
-    pathfindR.data
+    pathfindR.data (>= 2.0)
 Suggests: 
     testthat (>= 2.3.2),
     covr
