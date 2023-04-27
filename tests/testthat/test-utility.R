@@ -138,8 +138,10 @@ test_that("`active_snw_enrichment_wrapper()` argument checks work", {
 
 # configure_output_dir ----------------------------------------------------
 test_that("`configure_output_dir()` works as expected", {
-  expect_equal(pathfindR:::configure_output_dir(),
-               file.path(tempdir(), "pathfindR_results"))
+  expect_equal(
+    pathfindR:::configure_output_dir(),
+    file.path(tempdir(), "pathfindR_results")
+  )
 
   test_out_dir <- file.path(tempdir(check = TRUE), "TEST")
   for (i in 1:3) {
@@ -449,16 +451,16 @@ test_that("`return_pin_path()` returns the absolute path to PIN file", {
 
   # custom PIN
   custom_pin <- read.delim(return_pin_path("KEGG"),
-                           header = FALSE,
-                           stringsAsFactors = FALSE
+    header = FALSE,
+    stringsAsFactors = FALSE
   )
   custom_pin <- custom_pin[1:10, ]
   custom_pin$V1 <- tolower(custom_pin$V1)
   custom_sif_path <- file.path(tempdir(check = TRUE), "tmp_PIN.sif")
   utils::write.table(custom_pin,
-                     custom_sif_path,
-                     sep = "\t",
-                     row.names = FALSE, col.names = FALSE, quote = FALSE
+    custom_sif_path,
+    sep = "\t",
+    row.names = FALSE, col.names = FALSE, quote = FALSE
   )
   expect_true(file.exists(return_pin_path(custom_sif_path)))
   # convert to uppercase works
@@ -469,7 +471,7 @@ test_that("`return_pin_path()` returns the absolute path to PIN file", {
 
   # invalid custom PIN - wrong format
   invalid_sif_path <- system.file(paste0("extdata/MYC.txt"),
-                                  package = "pathfindR"
+    package = "pathfindR"
   )
   expect_error(
     return_pin_path(invalid_sif_path),
@@ -480,8 +482,8 @@ test_that("`return_pin_path()` returns the absolute path to PIN file", {
   invalid_sif_path <- file.path(tempdir(check = TRUE), "custom.sif")
   invalid_custom_sif <- data.frame(P1 = "X", pp = "INVALID", P2 = "Y")
   write.table(invalid_custom_sif, invalid_sif_path,
-              sep = "\t",
-              col.names = FALSE, row.names = FALSE
+    sep = "\t",
+    col.names = FALSE, row.names = FALSE
   )
   expect_error(
     return_pin_path(invalid_sif_path),
@@ -600,9 +602,9 @@ test_that("`input_processing()` works", {
 
   expect_is(
     input_processing(example_pathfindR_input[5:10, ],
-                     p_val_threshold = 0.01,
-                     pin_name_path = "KEGG",
-                     convert2alias = FALSE
+      p_val_threshold = 0.01,
+      pin_name_path = "KEGG",
+      convert2alias = FALSE
     ),
     "data.frame"
   )
@@ -611,9 +613,9 @@ test_that("`input_processing()` works", {
   input2 <- example_pathfindR_input[1:5, -2]
   expect_is(
     tmp <- suppressWarnings(input_processing(input2,
-                                             p_val_threshold = 0.05,
-                                             pin_name_path = "Biogrid",
-                                             convert2alias = TRUE
+      p_val_threshold = 0.05,
+      pin_name_path = "Biogrid",
+      convert2alias = TRUE
     )),
     "data.frame"
   )
@@ -627,9 +629,9 @@ test_that("`input_processing()` works", {
   input_m$Gene.symbol[4] <- "GIG25"
   expect_is(
     tmp <- input_processing(input_m,
-                            p_val_threshold = 0.05,
-                            pin_name_path = "Biogrid",
-                            convert2alias = TRUE
+      p_val_threshold = 0.05,
+      pin_name_path = "Biogrid",
+      convert2alias = TRUE
     ),
     "data.frame"
   )
@@ -640,17 +642,17 @@ test_that("`input_processing()` errors and warnings work", {
   input2$Gene.symbol <- as.factor(input2$Gene.symbol)
   expect_warning(
     input_processing(input2,
-                     p_val_threshold = 0.05,
-                     pin_name_path = "Biogrid",
-                     convert2alias = TRUE
+      p_val_threshold = 0.05,
+      pin_name_path = "Biogrid",
+      convert2alias = TRUE
     ),
     "The gene column was turned into character from factor."
   )
 
   expect_error(
     input_processing(example_pathfindR_input,
-                     p_val_threshold = 1e-100,
-                     pin_name_path = "Biogrid"
+      p_val_threshold = 1e-100,
+      pin_name_path = "Biogrid"
     ),
     "No input p value is lower than the provided threshold \\(1e-100\\)"
   )
@@ -659,8 +661,8 @@ test_that("`input_processing()` errors and warnings work", {
   input_dup <- rbind(input_dup, input_dup[1, ])
   expect_warning(
     input_processing(input_dup,
-                     p_val_threshold = 5e-2,
-                     pin_name_path = "Biogrid"
+      p_val_threshold = 5e-2,
+      pin_name_path = "Biogrid"
     ),
     "Duplicated genes found! The lowest p value for each gene was selected"
   )
@@ -669,8 +671,8 @@ test_that("`input_processing()` errors and warnings work", {
   tmp_input$adj.P.Val <- 1e-15
   expect_message(
     tmp <- input_processing(tmp_input,
-                            p_val_threshold = 5e-2,
-                            pin_name_path = "Biogrid"
+      p_val_threshold = 5e-2,
+      pin_name_path = "Biogrid"
     ),
     "pathfindR cannot handle p values < 1e-13. These were changed to 1e-13"
   )
@@ -679,8 +681,8 @@ test_that("`input_processing()` errors and warnings work", {
   tmp_input$Gene.symbol <- paste0(LETTERS[seq_len(nrow(tmp_input))], "INVALID")
   expect_error(
     input_processing(tmp_input,
-                     p_val_threshold = 5e-2,
-                     pin_name_path = "Biogrid"
+      p_val_threshold = 5e-2,
+      pin_name_path = "Biogrid"
     ),
     "None of the genes were in the PIN\nPlease check your gene symbols"
   )
@@ -689,17 +691,17 @@ test_that("`input_processing()` errors and warnings work", {
   tmp_input$Gene.symbol[2] <- "NRDC"
   expect_error(
     input_processing(tmp_input,
-                     p_val_threshold = 5e-2,
-                     pin_name_path = "Biogrid"
+      p_val_threshold = 5e-2,
+      pin_name_path = "Biogrid"
     ),
     "After processing, 1 gene \\(or no genes\\) could be mapped to the PIN"
   )
 
   expect_error(
     input_processing(tmp_input,
-                     p_val_threshold = 5e-2,
-                     pin_name_path = "Biogrid",
-                     convert2alias = "INVALID"
+      p_val_threshold = 5e-2,
+      pin_name_path = "Biogrid",
+      convert2alias = "INVALID"
     ),
     "`convert2alias` should be either TRUE or FALSE"
   )
@@ -719,7 +721,7 @@ test_that("`annotate_term_genes()` adds input genes for each term", {
     "data.frame"
   )
   expect_true("Up_regulated" %in% colnames(annotated_result) &
-                "Down_regulated" %in% colnames(annotated_result))
+    "Down_regulated" %in% colnames(annotated_result))
   expect_true(nrow(annotated_result) == nrow(tmp_res))
 })
 
@@ -772,4 +774,3 @@ test_that("annotate_term_genes() argument checks work", {
     "`genes_by_term` should be a named list \\(names are gene set IDs\\)"
   )
 })
-

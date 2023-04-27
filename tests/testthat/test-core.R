@@ -12,9 +12,9 @@ test_that("`run_pathfindR()` works as expected", {
   out_dir <- file.path(tempdir(check = TRUE), "pathfindR_results")
   ## GR
   expect_is(
-    run_pathfindR(example_pathfindR_input[1:50, ],
+    run_pathfindR(
+      input = example_pathfindR_input[1:50, ],
       iterations = 1,
-      n_processes = 2,
       score_quan_thr = 0.8
     ),
     "data.frame"
@@ -22,7 +22,8 @@ test_that("`run_pathfindR()` works as expected", {
   expect_true(dir.exists(out_dir))
 
   expect_is(
-    run_pathfindR(example_pathfindR_input[1:50, ],
+    run_pathfindR(
+      input = example_pathfindR_input[1:50, ],
       iterations = 2,
       n_processes = 5,
       gene_sets = "BioCarta",
@@ -41,7 +42,8 @@ test_that("`run_pathfindR()` works as expected", {
     "`iterations` is set to 1 because `search_method = \"GA\""
   )
   expect_warning(
-    run_pathfindR(example_pathfindR_input[3:4, ],
+    run_pathfindR(
+      input = example_pathfindR_input[3:4, ],
       search_method = "GA",
       iterations = 2,
       score_quan_thr = 0.8,
@@ -56,7 +58,8 @@ test_that("`run_pathfindR()` works as expected", {
 
   ## SA
   expect_is(
-    run_pathfindR(example_pathfindR_input[1:50, ],
+    run_pathfindR(
+      input = example_pathfindR_input[1:50, ],
       iterations = 1,
       gene_sets = "GO-BP",
       pin_name_path = "GeneMania",
@@ -69,7 +72,8 @@ test_that("`run_pathfindR()` works as expected", {
 
   ## GA
   expect_is(
-    run_pathfindR(example_pathfindR_input[1:50, ],
+    run_pathfindR(
+      input = example_pathfindR_input[1:50, ],
       gene_sets = "GO-BP",
       pin_name_path = "GeneMania",
       search_method = "GA",
@@ -82,7 +86,8 @@ test_that("`run_pathfindR()` works as expected", {
 
 test_that("Expect warning with empty result from `run_pathfindR()`", {
   expect_warning(
-    res <- run_pathfindR(example_pathfindR_input[1:2, ],
+    res <- run_pathfindR(
+      input = example_pathfindR_input[1:2, ],
       iterations = 1,
       output_dir = file.path(tempdir(check = TRUE), "pathfindR_results")
     ),

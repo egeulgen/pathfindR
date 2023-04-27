@@ -129,7 +129,8 @@ run_pathfindR <- function(input,
     pin_path,
     gset_list,
     enrichment_threshold,
-    list_active_snw_genes
+    list_active_snw_genes,
+    ...
   )
   setwd(output_dir)
 

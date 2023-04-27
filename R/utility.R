@@ -43,7 +43,7 @@ active_snw_enrichment_wrapper <- function(input_processed,
   ## If search_method is GA, set iterations as 1
   if (search_method == "GA") {
     warning("`iterations` is set to 1 because `search_method = \"GA\"`",
-            call. = FALSE
+      call. = FALSE
     )
     iterations <- 1
   }
@@ -95,10 +95,10 @@ active_snw_enrichment_wrapper <- function(input_processed,
     }
   }
 
-  single_iter_wrapper <- function(i=NULL) {
+  single_iter_wrapper <- function(i = NULL) {
     snws_file <- "active_snws"
     dir_for_parallel_run <- NULL
-    if(!is.null(i)) {
+    if (!is.null(i)) {
       snws_file <- paste0("active_snws_", i)
       dir_for_parallel_run <- dirs[i]
     }
@@ -136,7 +136,6 @@ active_snw_enrichment_wrapper <- function(input_processed,
   if (iterations == 1) {
     combined_res <- single_iter_wrapper()
   } else {
-    # Initiate the clusters
     cl <- parallel::makeCluster(n_processes, setup_strategy = "sequential")
     doParallel::registerDoParallel(cl)
     `%dopar%` <- foreach::`%dopar%`
@@ -194,20 +193,20 @@ create_HTML_report <- function(input, input_processed, final_res) {
   message("## Creating HTML report")
   rmarkdown::render(
     input = system.file("rmd", "results.Rmd",
-                        package = "pathfindR"
+      package = "pathfindR"
     ),
     output_dir = "."
   )
   rmarkdown::render(
     input = system.file("rmd", "enriched_terms.Rmd",
-                        package = "pathfindR"
+      package = "pathfindR"
     ),
     params = list(df = final_res),
     output_dir = "."
   )
   rmarkdown::render(
     input = system.file("rmd", "conversion_table.Rmd",
-                        package = "pathfindR"
+      package = "pathfindR"
     ),
     params = list(
       df = input_processed,
@@ -512,10 +511,10 @@ annotate_term_genes <- function(result_df,
     idx <- which(names(genes_by_term) == annotated_df$ID[i])
     temp <- genes_by_term[[idx]]
     annotated_df$Up_regulated[i] <- paste(temp[base::toupper(temp) %in% upreg],
-                                          collapse = ", "
+      collapse = ", "
     )
     annotated_df$Down_regulated[i] <- paste(temp[base::toupper(temp) %in% downreg],
-                                            collapse = ", "
+      collapse = ", "
     )
   }
 
@@ -696,24 +695,24 @@ return_pin_path <- function(pin_name_path = "Biogrid") {
     path <- file.path(tempdir(check = TRUE), paste0(pin_name_path, ".sif"))
     if (!file.exists(path)) {
       adj_list <- utils::getFromNamespace(paste0(tolower(pin_name_path), "_adj_list"),
-                                          ns = "pathfindR.data"
+        ns = "pathfindR.data"
       )
 
       pin_df <- lapply(seq_along(adj_list),
-                       function(i, nm, val) {
-                         data.frame(base::toupper(nm[[i]]),
-                                    "pp",
-                                    base::toupper(val[[i]]),
-                                    stringsAsFactors = FALSE
-                         )
-                       },
-                       val = adj_list, nm = names(adj_list)
+        function(i, nm, val) {
+          data.frame(base::toupper(nm[[i]]),
+            "pp",
+            base::toupper(val[[i]]),
+            stringsAsFactors = FALSE
+          )
+        },
+        val = adj_list, nm = names(adj_list)
       )
       pin_df <- base::do.call("rbind", pin_df)
       utils::write.table(pin_df,
-                         path,
-                         sep = "\t",
-                         row.names = FALSE, col.names = FALSE, quote = FALSE
+        path,
+        sep = "\t",
+        row.names = FALSE, col.names = FALSE, quote = FALSE
       )
     }
     path <- normalizePath(path)
@@ -739,9 +738,9 @@ return_pin_path <- function(pin_name_path = "Biogrid") {
 
       path <- file.path(tempdir(check = TRUE), "custom_PIN.sif")
       utils::write.table(pin,
-                         path,
-                         sep = "\t",
-                         row.names = FALSE, col.names = FALSE, quote = FALSE
+        path,
+        sep = "\t",
+        row.names = FALSE, col.names = FALSE, quote = FALSE
       )
       path <- normalizePath(path)
     }
