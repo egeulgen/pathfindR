@@ -2,7 +2,7 @@
 ## Package: pathfindR
 ## Script purpose: Unit testing script for
 ## functions related to active subnetwork searh
-## Date: Apr 27, 2023
+## Date: May 3, 2023
 ## Author: Ege Ulgen
 ##################################################
 
@@ -28,6 +28,19 @@ test_that("`active_snw_search()` returns list object", {
   expect_true(length(snw_list) > 0)
   unlink("active_snw_search", recursive = TRUE)
 
+  # dir_for_parallel_run works
+  dummy_dir <- file.path(tempdir(check = TRUE), "dummy_dir")
+  dir.create(dummy_dir)
+  expect_message(
+    snw_list <- active_snw_search(
+      input_for_search = input_df1,
+      dir_for_parallel_run = dummy_dir
+    ),
+    "Found [1-9]\\d* active subnetworks"
+  )
+  expect_true(file.exists(file.path(dummy_dir, "active_snw_search/active_snws.txt")))
+
+
   # Expect no active snws
   expect_message(
     snw_list <- active_snw_search(
@@ -39,17 +52,13 @@ test_that("`active_snw_search()` returns list object", {
   expect_identical(snw_list, list())
   unlink("active_snw_search", recursive = TRUE)
 
-  # dir_for_parallel_run works?
-  dummy_dir <- file.path(tempdir(check = TRUE), "dummy_dir")
-  dir.create(dummy_dir)
+  mockery::stub(active_snw_search, "filterActiveSnws", NULL)
   expect_message(
-    snw_list <- active_snw_search(
-      input_for_search = input_df1,
-      dir_for_parallel_run = dummy_dir
-    ),
-    "Found [1-9]\\d* active subnetworks"
+    snw_list <- active_snw_search(input_for_search = input_df2),
+    "Found 0 active subnetworks"
   )
-  expect_true(file.exists(file.path(dummy_dir, "active_snw_search/active_snws.txt")))
+  expect_identical(snw_list, list())
+  unlink("active_snw_search", recursive = TRUE)
 })
 
 test_that("All search methods for `active_snw_search()` work", {
