@@ -2,12 +2,38 @@
 ## Package: pathfindR
 ## Script purpose: Unit testing script for
 ## functions related to java version check
-## Date: Apr 27, 2023
+## Date: May 3, 2023
 ## Author: Ege Ulgen
 ##################################################
 
-test_that("`fetch_java_version()` works", {
-  expect_is(fetch_java_version(), "character")
+test_that("`fetch_java_version()` works as expected", {
+  version_vec <- c(
+    "java version \"13.0.1\" 2019-10-15",
+    "Java(TM) SE Runtime Environment (build 13.0.1+9)",
+    "Java HotSpot(TM) 64-Bit Server VM (build 13.0.1+9, mixed mode, sharing)"
+  )
+
+  org_OS <- .Platform$OS.type
+  on.exit(.Platform$OS.type <- org_OS)
+
+  mockery::stub(fetch_java_version, "Sys.getenv", "/path/to/java/home")
+  mockery::stub(fetch_java_version, "file.exists", TRUE)
+  mockery::stub(fetch_java_version, "system2", version_vec)
+  .Platform$OS.type <- "unix"
+  expect_equal(fetch_java_version(), version_vec)
+  .Platform$OS.type <- "windows"
+  expect_equal(fetch_java_version(), version_vec)
+
+  mockery::stub(fetch_java_version, "system2", c())
+  expect_error(fetch_java_version())
+
+  mockery::stub(fetch_java_version, "file.exists", FALSE)
+  expect_error(fetch_java_version())
+
+  mockery::stub(fetch_java_version, "Sys.getenv", NA)
+  mockery::stub(fetch_java_version, "Sys.which", "path/to/java")
+  mockery::stub(fetch_java_version, "system2", version_vec)
+  expect_equal(fetch_java_version(), version_vec)
 })
 
 test_that("`check_java_version()` works", {
