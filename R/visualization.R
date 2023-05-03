@@ -572,11 +572,7 @@ color_kegg_pathway <- function(pw_id, change_vec, scale_vals = TRUE,
     chosen_nm <- chosen_nm[!chosen_nm %in% names(pw_vis_changes)][1]
     if (is.na(chosen_nm)) {
       tmp <- node[!node %in% names(pw_vis_changes)]
-      if (length(tmp) == 0) {
-        chosen_nm <- node[1]
-      } else {
-        chosen_nm <- tmp[1]
-      }
+      chosen_nm <- ifelse(length(tmp) == 0,  node[1], tmp[1])
     }
 
     names(tmp_val) <- chosen_nm

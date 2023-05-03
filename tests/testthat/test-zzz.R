@@ -13,15 +13,15 @@ test_that("`fetch_java_version()` works as expected", {
     "Java HotSpot(TM) 64-Bit Server VM (build 13.0.1+9, mixed mode, sharing)"
   )
 
-  org_OS <- .Platform$OS.type
-  on.exit(.Platform$OS.type <- org_OS)
-
   mockery::stub(fetch_java_version, "Sys.getenv", "/path/to/java/home")
   mockery::stub(fetch_java_version, "file.exists", TRUE)
   mockery::stub(fetch_java_version, "system2", version_vec)
-  .Platform$OS.type <- "unix"
+
+  # unix
+  mockery::stub(fetch_java_version, "identical", FALSE)
   expect_equal(fetch_java_version(), version_vec)
-  .Platform$OS.type <- "windows"
+  # windows
+  mockery::stub(fetch_java_version, "identical", TRUE)
   expect_equal(fetch_java_version(), version_vec)
 
   mockery::stub(fetch_java_version, "system2", c())

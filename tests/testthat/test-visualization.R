@@ -310,21 +310,26 @@ test_that("`visualize_hsa_KEGG()` argument checks work", {
 test_that("`color_kegg_pathway()` exceptions are handled properly", {
   expect_null(
     suppressWarnings(
-      pathfindR:::color_kegg_pathway(pw_id = "hsa03040", change_vec = NULL)
+      color_kegg_pathway(pw_id = "hsa03040", change_vec = NULL)
     )
   )
   expect_message(
-    pathfindR:::color_kegg_pathway(pw_id = "hsa11111", change_vec = c())
+    color_kegg_pathway(pw_id = "hsa11111", change_vec = c())
   )
 
   expect_message(
-    tmp <- pathfindR:::obtain_KEGGML_URL("INVAID", tempfile())
+    tmp <- obtain_KEGGML_URL("INVAID", tempfile())
+  )
+  mockery::stub(obtain_KEGGML_URL, "KEGGgraph::getKGMLurl", function(...) stop())
+  expect_message(
+    tmp <- obtain_KEGGML_URL("hsa11111", tempfile())
+  )
+
+  expect_message(
+    tmp2 <- obtain_colored_url("INVALID", "INVALID", "white", "white")
   )
   expect_message(
-    tmp2 <- pathfindR:::obtain_colored_url("INVALID", "INVALID", "white", "white")
-  )
-  expect_message(
-    tmp3 <- suppressWarnings(pathfindR:::download_kegg_png("INVALID", tempfile()))
+    tmp3 <- suppressWarnings(download_kegg_png("INVALID", tempfile()))
   )
 
   expect_true(is.na(tmp))
