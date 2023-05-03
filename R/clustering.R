@@ -221,8 +221,8 @@ hierarchical_term_clustering <- function(kappa_mat,
       kseq <- c(2:19, seq(20, kmax %/% 10 * 10, 10))
     } else {
       kseq <- c(
-        2:19, seq(20, 100, 10),
-        seq(150, kmax %/% 50 * 50, 50)
+        2:19, seq(20, 99, 10),
+        seq(100, kmax %/% 50 * 50, 50)
       )
     }
 
