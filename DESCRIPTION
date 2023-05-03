@@ -57,6 +57,7 @@ Depends: R (>= 4.0),
     pathfindR.data (>= 2.0)
 Suggests: 
     testthat (>= 2.3.2),
-    covr
+    covr,
+    mockery
 RoxygenNote: 7.2.3
 VignetteBuilder: knitr
