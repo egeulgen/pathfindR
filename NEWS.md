@@ -1,6 +1,7 @@
 # pathfindR (development version)
 
 ## Major Changes
+- updated the java active subnetwork search component and added the `seedForRandom` argument in `active_snw_search()`to ensure reproducibility. By default behavior, in `run_pathfindR()`, a seed is set for each iteration to produce reproducible results (#108)
 - as the example input/output data were renamed for convenience in 'pathfindR.data' v2.0, 'pathfindR' now depends on pathfindR.data (>= 2.0) 
 - refactored/simplified `run_pathfindR()`
 - visualization enriched term diagrams are now NOT part of `run_pathfindR()`
