@@ -34,7 +34,7 @@ public class GeneticAlgorithm {
         networkNodeList = ActiveSubnetworkSearch.networkNodeList;
         populationSize=Parameters.ga_populationSize;
         ArrayList<GAIndividual> population=new ArrayList<>();
-        random=new Random();
+        random=new Random(Parameters.seedForRandom);
         
         initializePopulation(population, populationSize);
         

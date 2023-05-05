@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Collections;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -128,15 +129,18 @@ public class ScoreCalculations {
         }
 //        System.out.println(""+significantNodesList.size()+" "+nonsignificantNodesList.size());
         
+        Random random=new Random(Parameters.seedForRandom);
+        
+
         for (int trial = 0; trial < numberOfTrials; trial++) {
 //            long start=System.nanoTime();
 
-            Collections.shuffle(nodeListForSampling);
+            Collections.shuffle(nodeListForSampling, random);
 
             //These code can be used to first add significant nodes and start 
             //sampling with positive scored nodes
-//            Collections.shuffle(significantNodesList);
-//            Collections.shuffle(nonsignificantNodesList);
+//            Collections.shuffle(significantNodesList, random);
+//            Collections.shuffle(nonsignificantNodesList, random);
 //            nodeListForSampling.clear();
 //            nodeListForSampling.addAll(significantNodesList);
 //            nodeListForSampling.addAll(nonsignificantNodesList);

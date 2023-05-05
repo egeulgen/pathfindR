@@ -27,9 +27,7 @@ public class AppActiveSubnetworkSearch {
     
     public static void processArguments(String[] args) throws Exception {
         String helpText;
-        helpText = "It is recommended to increase Stack size while running. You can use\n"
-                + "java -Xss4m -jar ActiveSubnetworkSearch.jar\n"
-                + "Options of the application are\n"
+        helpText = "Options of the application are\n"
                 + "-sif=<path>            \tuses the given interaction file\n"
                 + "-sig=<path>            \tuses the given experiment file (gene p-value pairs)\n"
                 + "-method=[GR|SA|GA]     \truns greedy search, simulated annealing or genetic algorithm for the search (default GR)\n"
@@ -46,7 +44,8 @@ public class AppActiveSubnetworkSearch {
                 + "-grMaxDepth=<value>    \tsets max depth in greedy search, 0 for no limit (default 1)\n"
                 + "-grSearchDepth=<value> \tsets search depth in greedy search (default 1)\n"
                 + "-grOverlap=<value>     \tsets overlap threshold for results of greedy search (default 0.5)\n"
-                + "-grSubNum=<value>      \tsets number of subnetworks to be presented in the results (default 1000)\n";
+                + "-grSubNum=<value>      \tsets number of subnetworks to be presented in the results (default 1000)\n"
+                + "-seedForRandom=<value>      \tsets the seed for random number generators, useful for reproducibility (default 1234)\n";
         if(args.length==0 || args[0].equals("-h") || args[0].equals("help") || args[0].equals("-help")){
             System.out.println(helpText);
         }else{
@@ -78,6 +77,7 @@ public class AppActiveSubnetworkSearch {
                     case "-grSearchDepth":Parameters.gr_searchDepth=Integer.parseInt(value);break;
                     case "-grOverlap":Parameters.gr_overlapThreshold=Double.parseDouble(value);break;
                     case "-grSubNum":Parameters.gr_subnetworkNum=Integer.parseInt(value);break;
+                    case "-seedForRandom":Parameters.seedForRandom=Integer.parseInt(value);break;
                     default:System.out.println("Unknown argument: "+argType);
                 }
             }

@@ -34,7 +34,10 @@ public class SimulatedAnnealing {
      * @param scoreCalculations 
      */
     public ArrayList<Subnetwork> simulatedAnnealing() {
-
+        
+        Random rand = new Random(Parameters.seedForRandom);
+        
+        
         Network network=ActiveSubnetworkSearch.network;
         ScoreCalculations scoreCalculations=ActiveSubnetworkSearch.scoreCalculations;
                 
@@ -51,7 +54,7 @@ public class SimulatedAnnealing {
             }
         }else{
             for (Node node : nodesOffSet) {
-                if(Math.random()<Parameters.geneInitialAdditionProbability){
+                if(rand.nextDouble()<Parameters.geneInitialAdditionProbability){
                     nodesOnSet.add(node);
                 }
             }
@@ -78,7 +81,7 @@ public class SimulatedAnnealing {
 
         double T = initialTemperature;
         double temp_step = 1 - Math.pow((finalTemperature / initialTemperature), (1.0 / totalIterations));
-        Random rand = new Random();
+        
 
         System.out.println("Percentage of finished job, node number and score of modules that have more than one node are as follows:");
         int percent=0;

@@ -5,7 +5,6 @@ package Application;
  * @author Ozan Ozisik
  */
 
-
 public class Parameters {
     public static String sifPath="BIOGRID-ORGANISM-Homo_sapiens-3.4.155.OzCleaned.sif";
     public static String experimentFilePath="Behcet_jp_GWASPvalue.txt";
@@ -35,5 +34,7 @@ public class Parameters {
     public static int gr_searchDepth=1;//(default 1)
     public static double gr_overlapThreshold=0.5;//(default 0.5)
     public static double gr_subnetworkNum=1000;//(default 1000)
+    
+    public static int seedForRandom=1234;
     
 }
