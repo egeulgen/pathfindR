@@ -110,6 +110,7 @@ active_snw_enrichment_wrapper <- function(input_processed,
       score_quan_thr = score_quan_thr,
       sig_gene_thr = sig_gene_thr,
       search_method = search_method,
+      seedForRandom = ifelse(is.null(i), 1234, i),
       silent_option = silent_option,
       use_all_positives = use_all_positives,
       geneInitProbs = ifelse(!is.null(i), geneInitProbs[i], geneInitProbs),
@@ -155,13 +156,13 @@ active_snw_enrichment_wrapper <- function(input_processed,
 #'
 #' @return /path/to/output/dir
 configure_output_dir <- function(output_dir = NULL) {
+  output_dir_init <- output_dir
   output_dir <- ifelse(
     is.null(output_dir),
     file.path(tempdir(check = TRUE), "pathfindR_results"),
     output_dir
   )
   dir_changed <- FALSE
-  output_dir_init <- output_dir
   while (dir.exists(output_dir)) {
     output_dir <- sub("/$", "", output_dir)
     if (grepl("\\(\\d+\\)$", output_dir)) {
@@ -174,7 +175,7 @@ configure_output_dir <- function(output_dir = NULL) {
     dir_changed <- TRUE
   }
 
-  if (dir_changed) {
+  if (dir_changed & !is.null(output_dir_init)) {
     message(paste0(
       "There is already a directory named \"", output_dir_init,
       "\".\nWriting the result to \"", output_dir,

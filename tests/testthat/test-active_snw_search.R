@@ -2,7 +2,7 @@
 ## Package: pathfindR
 ## Script purpose: Unit testing script for
 ## functions related to active subnetwork searh
-## Date: May 3, 2023
+## Date: May 6, 2023
 ## Author: Ege Ulgen
 ##################################################
 
@@ -104,6 +104,19 @@ test_that("All search methods for `active_snw_search()` work", {
   unlink("active_snw_search", recursive = TRUE)
 })
 
+
+test_that("`active_snw_search()` results are reproducible", {
+  skip_on_cran()
+  snw_list1 <- active_snw_search(input_for_search = input_df1, seedForRandom = 123)
+  snw_list2 <- active_snw_search(input_for_search = input_df1, seedForRandom = 123)
+  snw_list3 <- active_snw_search(input_for_search = input_df1, seedForRandom = 456)
+  expect_identical(snw_list1, snw_list2)
+  expect_false(identical(snw_list1, snw_list3))
+})
+
+
+
+
 test_that("`active_snw_search()` argument checks work", {
   # input_for_search
   expect_error(
@@ -160,6 +173,8 @@ test_that("`active_snw_search()` argument checks work", {
     "`use_all_positives` should be either TRUE or FALSE"
   )
 })
+
+
 
 # filterActiveSnws --------------------------------------------------------
 sample_path <- system.file("extdata/resultActiveSubnetworkSearch.txt",

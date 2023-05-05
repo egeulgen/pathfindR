@@ -12,6 +12,7 @@ active_snw_search(
   score_quan_thr = 0.8,
   sig_gene_thr = 0.02,
   search_method = "GR",
+  seedForRandom = 1234,
   silent_option = TRUE,
   use_all_positives = FALSE,
   geneInitProbs = 0.1,
@@ -57,6 +58,8 @@ is set to 2}
 \item{search_method}{algorithm to use when performing active subnetwork
 search. Options are greedy search (GR), simulated annealing (SA) or genetic
 algorithm (GA) for the search (default = "GR").}
+
+\item{seedForRandom}{seed for reproducibility while running the java modules (applies for GR and SA)}
 
 \item{silent_option}{boolean value indicating whether to print the messages
 to the console (FALSE) or not (TRUE, this will print to a temp. file) during

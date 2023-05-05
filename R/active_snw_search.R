@@ -14,6 +14,7 @@
 #' @param search_method algorithm to use when performing active subnetwork
 #'  search. Options are greedy search (GR), simulated annealing (SA) or genetic
 #'  algorithm (GA) for the search (default = "GR").
+#' @param seedForRandom seed for reproducibility while running the java modules (applies for GR and SA)
 #' @param silent_option boolean value indicating whether to print the messages
 #' to the console (FALSE) or not (TRUE, this will print to a temp. file) during
 #' active subnetwork search (default = TRUE). This option was added because
@@ -56,6 +57,7 @@ active_snw_search <- function(input_for_search,
                               dir_for_parallel_run = NULL,
                               score_quan_thr = 0.8, sig_gene_thr = 0.02,
                               search_method = "GR",
+                              seedForRandom = 1234,
                               silent_option = TRUE,
                               use_all_positives = FALSE,
                               geneInitProbs = 0.1,
@@ -153,6 +155,7 @@ active_snw_search <- function(input_for_search,
     " -sif=\"", pin_path, "\"",
     " -sig=\"", input_path, "\"",
     " -method=", search_method,
+    " -seedForRandom=", seedForRandom,
     use_all_positives,
     " -saTemp0=", saTemp0,
     " -saTemp1=", saTemp1,
