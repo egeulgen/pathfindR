@@ -1,14 +1,16 @@
 ## Test environments
-* local OS X 12.5.1, R 4.2.1
-* macOS-latest (on GitHub-Actions), R 4.2.1
-* ubuntu-latest (on GitHub-Actions), R devel
+* local OS X 13.3, R 4.3.0
+* macOS-latest (on GitHub-Actions), R 4.3.0
+* windows-latest (on GitHub-Actions), R 4.3.0
+* ubuntu-latest (on GitHub-Actions), 4.2.3, R 4.3.0, devel
 * win-builder (devel and release)
 * R-hub (via check_for_cran())
 
 ## R CMD check results
   There were no ERRORs, WARNINGs or NOTEs.
   
-  This is a minor update for 'pathfindR' containing bug fixes and enhancements.
+  This is a major version update for 'pathfindR' containing bug fixes, 
+  enhancements and new functionality.
   
 ## Downstream dependencies
   There are currently no downstream dependencies for this package.
