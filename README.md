@@ -13,7 +13,7 @@ version](http://www.r-pkg.org/badges/version-ago/pathfindR)](https://cran.r-proj
 [![CRAN total
 downloads](https://cranlogs.r-pkg.org/badges/grand-total/pathfindR)](https://cran.r-project.org/package=pathfindR)
 [![License:
-MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/license/mit/)
 <!-- badges: end -->
 
 # Overview
@@ -58,7 +58,7 @@ devtools::install_github("egeulgen/pathfindR")
 ```
 
 > **IMPORTANT NOTE** For the active subnetwork search component to work,
-> the user must have [Java (\>= 8.0)](https://www.java.com/en/)
+> the user must have [Java (\>= 8.0)](https://www.java.com/en/download/)
 > installed, and the path/to/java must be in the PATH environment
 > variable.
 
