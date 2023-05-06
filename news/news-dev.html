@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.4.9006</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.4.9007</span>
       </span>
     </div>
 
@@ -81,7 +81,8 @@
 <h2 class="page-header" data-toc-text="development version" id="pathfindr-development-version">pathfindR (development version)<a class="anchor" aria-label="anchor" href="#pathfindr-development-version"></a></h2>
 <div class="section level3">
 <h3 id="major-changes-development-version">Major Changes<a class="anchor" aria-label="anchor" href="#major-changes-development-version"></a></h3>
-<ul><li>as the example input/output data were renamed for convenience in ‘pathfindR.data’ v2.0, ‘pathfindR’ now depends on pathfindR.data (&gt;= 2.0)</li>
+<ul><li>updated the java active subnetwork search component and added the <code>seedForRandom</code> argument in <code><a href="../reference/active_snw_search.html">active_snw_search()</a></code>to ensure reproducibility. By default behavior, in <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code>, a seed is set for each iteration to produce reproducible results (<a href="https://github.com/egeulgen/pathfindR/issues/108" class="external-link">#108</a>)</li>
+<li>as the example input/output data were renamed for convenience in ‘pathfindR.data’ v2.0, ‘pathfindR’ now depends on pathfindR.data (&gt;= 2.0)</li>
 <li>refactored/simplified <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code>
 </li>
 <li>visualization enriched term diagrams are now NOT part of <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code>

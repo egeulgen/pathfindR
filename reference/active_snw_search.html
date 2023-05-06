@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.4.9006</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.4.9007</span>
       </span>
     </div>
 
@@ -91,6 +91,7 @@
 <span>  score_quan_thr <span class="op">=</span> <span class="fl">0.8</span>,</span>
 <span>  sig_gene_thr <span class="op">=</span> <span class="fl">0.02</span>,</span>
 <span>  search_method <span class="op">=</span> <span class="st">"GR"</span>,</span>
+<span>  seedForRandom <span class="op">=</span> <span class="fl">1234</span>,</span>
 <span>  silent_option <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  use_all_positives <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  geneInitProbs <span class="op">=</span> <span class="fl">0.1</span>,</span>
@@ -155,6 +156,10 @@ is set to 2</p></dd>
 <dd><p>algorithm to use when performing active subnetwork
 search. Options are greedy search (GR), simulated annealing (SA) or genetic
 algorithm (GA) for the search (default = "GR").</p></dd>
+
+
+<dt>seedForRandom</dt>
+<dd><p>seed for reproducibility while running the java modules (applies for GR and SA)</p></dd>
 
 
 <dt>silent_option</dt>
