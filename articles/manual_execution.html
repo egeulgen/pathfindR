@@ -235,7 +235,8 @@ subnetwork identification and enrichment steps multiple times
 <span>    snws_file <span class="op">=</span> <span class="va">snws_file</span>,</span>
 <span>    score_quan_thr <span class="op">=</span> <span class="fl">0.8</span>, <span class="co"># you may tweak these arguments for optimal filtering of subnetworks</span></span>
 <span>    sig_gene_thr <span class="op">=</span> <span class="fl">0.02</span>, <span class="co"># you may tweak these arguments for optimal filtering of subnetworks</span></span>
-<span>    search_method <span class="op">=</span> <span class="st">"GR"</span></span>
+<span>    search_method <span class="op">=</span> <span class="st">"GR"</span>, <span class="co"># we suggest using GR</span></span>
+<span>    seedForRandom <span class="op">=</span> <span class="va">i</span> <span class="co"># setting seed to ensure reproducibility per iteration</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span>  <span class="co">###### Enrichment Analyses</span></span>
