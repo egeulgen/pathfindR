@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.4.9007</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.0.9000</span>
       </span>
     </div>
 
@@ -79,22 +79,6 @@
 
     <div class="section level2">
 <h2 class="page-header" data-toc-text="development version" id="pathfindr-development-version">pathfindR (development version)<a class="anchor" aria-label="anchor" href="#pathfindr-development-version"></a></h2>
-<div class="section level3">
-<h3 id="major-changes-development-version">Major Changes<a class="anchor" aria-label="anchor" href="#major-changes-development-version"></a></h3>
-<ul><li>updated the java active subnetwork search component and added the <code>seedForRandom</code> argument in <code><a href="../reference/active_snw_search.html">active_snw_search()</a></code>to ensure reproducibility. By default behavior, in <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code>, a seed is set for each iteration to produce reproducible results (<a href="https://github.com/egeulgen/pathfindR/issues/108" class="external-link">#108</a>)</li>
-<li>as the example input/output data were renamed for convenience in ‘pathfindR.data’ v2.0, ‘pathfindR’ now depends on pathfindR.data (&gt;= 2.0)</li>
-<li>refactored/simplified <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code>
-</li>
-<li>visualization enriched term diagrams are now NOT part of <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code>
-</li>
-<li>default behavior of <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code> is now to run in a temporary directory. The user can still set <code>output_dir</code> to run in a specified directory and also produce HTML reports</li>
-<li>in <code><a href="../reference/hierarchical_term_clustering.html">hierarchical_term_clustering()</a></code>, update the sequence of number of clusters for which silhouette width is calculated for choosing the optimal number of clusters. This should speed up the function for cases with a large number of enriched terms</li>
-<li>updated the relevant vignettes to reflect the implemented changes</li>
-</ul></div>
-<div class="section level3">
-<h3 id="minor-changes-development-version">Minor Changes<a class="anchor" aria-label="anchor" href="#minor-changes-development-version"></a></h3>
-<ul><li>fixed a minor issue in <code><a href="../reference/return_pin_path.html">return_pin_path()</a></code> where the PIN was not properly read (<a href="https://github.com/egeulgen/pathfindR/issues/157" class="external-link">#157</a>)</li>
-</ul></div>
 </div>
   </div>
 
