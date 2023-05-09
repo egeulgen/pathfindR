@@ -1,5 +1,8 @@
 # pathfindR (development version)
 
+## Minor Changes
+- added the `dir_for_report` argument in the internal function `create_HTML_report()` to fix test issues on CRAN
+
 # pathfindR 2.0.0
 
 ## Major Changes

@@ -157,19 +157,15 @@ test_that("`configure_output_dir()` works as expected", {
 
 # create_HTML_report ------------------------------------------------------
 test_that("`create_HTML_report()` works a expected", {
-  org_dir <- getwd()
-  test_directory <- file.path(tempdir(check = TRUE), "HTML_report")
-  dir.create(test_directory)
-  setwd(test_directory)
-  on.exit(setwd(org_dir))
-  on.exit(unlink(test_directory), add = TRUE)
+  test_directory <- tempdir(check = TRUE)
 
   input_processed <- input_processing(example_pathfindR_input)
 
-  pathfindR:::create_HTML_report(
+  create_HTML_report(
     input = example_pathfindR_input,
     input_processed = input_processed,
-    final_res = example_pathfindR_output
+    final_res = example_pathfindR_output,
+    dir_for_report = test_directory
   )
 
   expect_true(file.exists(file.path(test_directory, "results.html")))

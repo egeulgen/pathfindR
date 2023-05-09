@@ -153,7 +153,12 @@ run_pathfindR <- function(input,
   )
 
   if (!is.null(output_dir_org)) {
-    create_HTML_report(input, input_processed, final_res)
+    create_HTML_report(
+      input = input,
+      input_processed = input_processed,
+      final_res = final_res,
+      dir_for_report = output_dir
+    )
   }
 
   if (plot_enrichment_chart) {

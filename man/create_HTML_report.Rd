@@ -4,7 +4,7 @@
 \alias{create_HTML_report}
 \title{Create HTML Report of pathfindR Results}
 \usage{
-create_HTML_report(input, input_processed, final_res)
+create_HTML_report(input, input_processed, final_res, dir_for_report)
 }
 \arguments{
 \item{input}{the input data that pathfindR uses. The input must be a data
@@ -17,6 +17,8 @@ create_HTML_report(input, input_processed, final_res)
 \item{input_processed}{processed input data frame}
 
 \item{final_res}{final pathfindR result data frame}
+
+\item{dir_for_report}{directory to render the report in}
 }
 \description{
 Create HTML Report of pathfindR Results
