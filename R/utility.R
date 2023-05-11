@@ -185,39 +185,6 @@ configure_output_dir <- function(output_dir = NULL) {
   return(output_dir)
 }
 
-#' Create HTML Report of pathfindR Results
-#'
-#' @inheritParams run_pathfindR
-#' @param input_processed processed input data frame
-#' @param final_res final pathfindR result data frame
-#' @param dir_for_report directory to render the report in
-create_HTML_report <- function(input, input_processed, final_res, dir_for_report) {
-  message("## Creating HTML report")
-  rmarkdown::render(
-    input = system.file("rmd", "results.Rmd",
-      package = "pathfindR"
-    ),
-    output_dir = dir_for_report
-  )
-  rmarkdown::render(
-    input = system.file("rmd", "enriched_terms.Rmd",
-      package = "pathfindR"
-    ),
-    params = list(df = final_res),
-    output_dir = dir_for_report
-  )
-  rmarkdown::render(
-    input = system.file("rmd", "conversion_table.Rmd",
-      package = "pathfindR"
-    ),
-    params = list(
-      df = input_processed,
-      original_df = input
-    ),
-    output_dir = dir_for_report
-  )
-}
-
 #' Input Testing
 #'
 #' @param input the input data that pathfindR uses. The input must be a data

@@ -152,15 +152,6 @@ run_pathfindR <- function(input,
     genes_by_term = gset_list$genes_by_term
   )
 
-  if (!is.null(output_dir_org)) {
-    create_HTML_report(
-      input = input,
-      input_processed = input_processed,
-      final_res = final_res,
-      dir_for_report = output_dir
-    )
-  }
-
   if (plot_enrichment_chart) {
     graphics::plot(enrichment_chart(result_df = final_res))
   }

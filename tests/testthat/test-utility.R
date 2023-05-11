@@ -155,25 +155,6 @@ test_that("`configure_output_dir()` works as expected", {
   }
 })
 
-# create_HTML_report ------------------------------------------------------
-test_that("`create_HTML_report()` works a expected", {
-  test_directory <- tempdir(check = TRUE)
-
-  input_processed <- input_processing(example_pathfindR_input)
-
-  create_HTML_report(
-    input = example_pathfindR_input,
-    input_processed = input_processed,
-    final_res = example_pathfindR_output,
-    dir_for_report = test_directory
-  )
-
-  expect_true(file.exists(file.path(test_directory, "results.html")))
-  expect_true(file.exists(file.path(test_directory, "enriched_terms.html")))
-  expect_true(file.exists(file.path(test_directory, "conversion_table.html")))
-})
-
-
 # fetch_gene_set ----------------------------------------------------------
 test_that("`fetch_gene_set()` can fetch all gene set objects", {
   skip_on_cran()
