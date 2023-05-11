@@ -77,7 +77,6 @@ reference:
       Miscellaneous functions
     contents:
       - configure_output_dir
-      - create_HTML_report
       - check_java_version
       - fetch_java_version
       - get_biogrid_pin
