@@ -133,7 +133,7 @@ Chart](https://github.com/egeulgen/pathfindR/blob/master/vignettes/enrichment_ch
 Some useful arguments are:
 
 ``` r
-# set an output directory for saving active subnetworks and creating an HTML report 
+# set an output directory for saving active subnetworks
 # (default=NULL, sets a temporary directory)
 output_df <- run_pathfindR(input_df, output_dir = "/top/secret/results")
 

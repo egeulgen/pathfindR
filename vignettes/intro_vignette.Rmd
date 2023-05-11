@@ -74,7 +74,7 @@ output_df <- run_pathfindR(example_pathfindR_input, p_val_threshold = 0.01)
 
 ### Output Directory
 
-By default, `run_pathfindR()` creates a temporary directory for writing the output files, including active subnetwork search results and a HTML report. To set the output directory, use `output_dir`:
+By default, `run_pathfindR()` creates a temporary directory for writing the output files, i.e. active subnetwork search results. To set the output directory, use `output_dir`:
 
 ```{r change_out_dir}
 output_df <- run_pathfindR(example_pathfindR_input, output_dir = "this_is_my_output_directory")
@@ -203,27 +203,6 @@ enrichment_chart(
   top_terms = 15
 )
 ```
-
-### HTML Report (created when `output_dir` is set)
-
-The function also creates an HTML report `results.html` that is saved in the output directory if it's set. This report contains links to two other HTML files:
-
-**1. `enriched_terms.html`**
-
-This document contains the table of the active subnetwork-oriented enrichment results (same as the returned data frame).
-
-**2. `conversion_table.html`**
-
-This document contains the table of converted gene symbols. Columns are:
-
-- Old Symbol: the original gene symbol
-- Converted Symbol: the alias symbol that was found in the PIN
-- Change: the provided change value
-- p-value: the provided adjusted p value
-
-> During input processing, gene symbols that are not in the PIN are identified and excluded. For human genes, if aliases of these missing gene symbols are found in the PIN, these symbols are converted to the corresponding aliases (controlled by the argument `convert2alias`). This step is performed to best map the input data onto the PIN.
-
-The document contains a second table of genes for which **no interactions** were identified after checking for alias symbols (so these could not be used during the analysis).
 
 ## Enriched Term Diagrams
 

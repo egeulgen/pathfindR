@@ -102,7 +102,7 @@ This wrapper function performs the active-subnetwork-oriented enrichment analysi
 Some useful arguments are:
 
 ```{r useful_args, eval=FALSE}
-# set an output directory for saving active subnetworks and creating an HTML report 
+# set an output directory for saving active subnetworks
 # (default=NULL, sets a temporary directory)
 output_df <- run_pathfindR(input_df, output_dir = "/top/secret/results")
 
