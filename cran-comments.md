@@ -11,8 +11,8 @@
   
   This is a patch version update for 'pathfindR' containing a bug fix to address
   problems on Debian systems, where a function attempted to write to user’s home 
-  filespace. The relevant function is now updated and the issue should have been 
-  resolved.
+  filespace. The relevant function was not essential and is now removed. Hence, 
+  the issue should have been resolved.
   
 ## Downstream dependencies
   There are currently no downstream dependencies for this package.
