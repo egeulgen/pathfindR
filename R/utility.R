@@ -3,6 +3,8 @@
 #' @param input_processed processed input data frame
 #' @param pin_path path/to/PIN/file
 #' @param gset_list list for gene sets
+#' @param disable_parallel boolean to indicate whether to disable parallel runs
+#'  via \code{foreach} (default = FALSE)
 #' @inheritParams run_pathfindR
 #' @inheritParams active_snw_search
 #' @inheritParams enrichment_analyses
@@ -20,6 +22,7 @@ active_snw_enrichment_wrapper <- function(input_processed,
                                           list_active_snw_genes,
                                           adj_method = "bonferroni",
                                           search_method = "GR",
+                                          disable_parallel = FALSE,
                                           use_all_positives = FALSE,
                                           iterations = 10, n_processes = NULL,
                                           score_quan_thr = 0.8, sig_gene_thr = 0.02,
@@ -74,6 +77,10 @@ active_snw_enrichment_wrapper <- function(input_processed,
 
   if (!is.logical(silent_option)) {
     stop("`silent_option` should be either TRUE or FALSE")
+  }
+
+  if (!is.logical(disable_parallel)) {
+    stop("`disable_parallel` should be either TRUE or FALSE")
   }
 
   if (!is.numeric(iterations)) {
@@ -137,13 +144,21 @@ active_snw_enrichment_wrapper <- function(input_processed,
   if (iterations == 1) {
     combined_res <- single_iter_wrapper()
   } else {
-    cl <- parallel::makeCluster(n_processes, setup_strategy = "sequential")
-    doParallel::registerDoParallel(cl)
-    `%dopar%` <- foreach::`%dopar%`
-    combined_res <- foreach::foreach(i = 1:iterations, .combine = rbind) %dopar% {
-      single_iter_wrapper(i)
+    if (!disable_parallel) {
+      cl <- parallel::makeCluster(n_processes, setup_strategy = "sequential")
+      doParallel::registerDoParallel(cl)
+      `%dopar%` <- foreach::`%dopar%`
+      combined_res <- foreach::foreach(i = 1:iterations, .combine = rbind) %dopar% {
+        single_iter_wrapper(i)
+      }
+      parallel::stopCluster(cl)
+    } else {
+      combined_res <- c()
+      for (i in 1:iterations) {
+        current_res <- single_iter_wrapper(i)
+        combined_res <- rbind(combined_res, current_res)
+      }
     }
-    parallel::stopCluster(cl)
   }
   return(combined_res)
 }

@@ -43,6 +43,18 @@ test_that("`active_snw_enrichment_wrapper()` works as expected", {
     ),
     "NULL"
   )
+  expect_is(
+    pathfindR:::active_snw_enrichment_wrapper(
+      input_processed = input_processed,
+      pin_path = pin_path,
+      gset_list = gset_list,
+      enrichment_threshold = 0.05,
+      list_active_snw_genes = FALSE,
+      iterations = 2,
+      disable_parallel = TRUE
+    ),
+    "NULL"
+  )
 })
 
 test_that("`active_snw_enrichment_wrapper()` argument checks work", {
@@ -84,6 +96,18 @@ test_that("`active_snw_enrichment_wrapper()` argument checks work", {
       silent_option = "INVALID"
     ),
     "`silent_option` should be either TRUE or FALSE"
+  )
+
+  expect_error(
+    pathfindR:::active_snw_enrichment_wrapper(
+      input_processed = input_processed,
+      pin_path = pin_path,
+      gset_list = gset_list,
+      enrichment_threshold = 0.05,
+      list_active_snw_genes = FALSE,
+      disable_parallel = "INVALID"
+    ),
+    "`disable_parallel` should be either TRUE or FALSE"
   )
 
   expect_error(

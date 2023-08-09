@@ -12,6 +12,7 @@ active_snw_enrichment_wrapper(
   list_active_snw_genes,
   adj_method = "bonferroni",
   search_method = "GR",
+  disable_parallel = FALSE,
   use_all_positives = FALSE,
   iterations = 10,
   n_processes = NULL,
@@ -52,6 +53,9 @@ the given term with the lowest p value (default = \code{FALSE})}
 \item{search_method}{algorithm to use when performing active subnetwork
 search. Options are greedy search (GR), simulated annealing (SA) or genetic
 algorithm (GA) for the search (default = "GR").}
+
+\item{disable_parallel}{boolean to indicate whether to disable parallel runs
+via \code{foreach} (default = FALSE)}
 
 \item{use_all_positives}{if TRUE: in GA, adds an individual with all positive
 nodes. In SA, initializes candidate solution with all positive nodes. (default = FALSE)}
