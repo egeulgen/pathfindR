@@ -40,7 +40,10 @@ jobs:
           use-public-rspm: true
 
       - name: Install Bioconductor dependencies
-        shell: Rscript {install.packages("BiocManager"); BiocManager::install(c("KEGGREST", "KEGGgraph", "AnnotationDbi", "org.Hs.eg.db"))}
+         run: |
+          install.packages("BiocManager")
+          BiocManager::install(c("KEGGREST", "KEGGgraph", "AnnotationDbi", "org.Hs.eg.db"))
+        shell: Rscript {0}
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
