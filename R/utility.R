@@ -148,7 +148,7 @@ active_snw_enrichment_wrapper <- function(input_processed,
       cl <- parallel::makeCluster(n_processes, setup_strategy = "sequential")
       doParallel::registerDoParallel(cl)
       `%dopar%` <- foreach::`%dopar%`
-      combined_res <- foreach::foreach(i = 1:iterations, .combine = rbind) %dopar% {
+      combined_res <- foreach::foreach(i = 1:iterations, .combine = rbind, .packages = "pathfindR") %dopar% {
         single_iter_wrapper(i)
       }
       parallel::stopCluster(cl)
