@@ -39,6 +39,9 @@ jobs:
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
 
+      - name: Install Bioconductor dependencies
+        shell: Rscript {install.packages("BiocManager"); BiocManager::install(c("KEGGREST", "KEGGgraph", "AnnotationDbi", "org.Hs.eg.db"))}
+
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: any::rcmdcheck
