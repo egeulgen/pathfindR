@@ -128,40 +128,49 @@
 </h1>
 <p><code>pathfindR</code> is an R package for enrichment analysis via active subnetworks. The package also offers functionality to cluster the enriched terms and identify representative terms in each cluster, score the enriched terms per sample, and visualize analysis results. As of the latest version, the package also allows comparison of two pathfindR results.</p>
 <p>The functionality suite of pathfindR is described in detail in <em>Ulgen E, Ozisik O, Sezerman OU. 2019. pathfindR: An R Package for Comprehensive Identification of Enriched Pathways in Omics Data Through Active Subnetworks. Front. Genet. <a href="https://doi.org/10.3389/fgene.2019.00858" class="external-link uri">https://doi.org/10.3389/fgene.2019.00858</a></em></p>
-<p>For detailed documentation, see <a href="https://egeulgen.github.io/pathfindR/">pathfindR’s website</a> or <a href="https://github.com/egeulgen/pathfindR/wiki" class="external-link">the pathfindR wiki</a>.</p>
+<p>For detailed documentation, see <a href="https://egeulgen.github.io/pathfindR/">pathfindR’s website</a>.</p>
 </div>
 <div class="section level1">
 <h1 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h1>
-<p>You can install the released version of pathfindR from CRAN via:</p>
+<ul>
+<li>You can install the released version of pathfindR from CRAN via:</li>
+</ul>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"pathfindR"</span><span class="op">)</span></span></code></pre></div>
-<p>or via <a href="https://pak.r-lib.org/" class="external-link">pak</a> (this might be preferable given <code>pathfindR</code>’s Bioconductor dependencies):</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<ul>
+<li>Since version 2.1.0, you may also install <code>pathfindR</code> via conda:</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> install <span class="at">-c</span> egeulgen r-pathfindr</span></code></pre></div>
+<ul>
+<li>Via <a href="https://pak.r-lib.org/" class="external-link">pak</a> (this might be preferable given <code>pathfindR</code>’s Bioconductor dependencies):</li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"pak"</span><span class="op">)</span> <span class="co"># if you have not installed "pak"</span></span>
 <span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="http://pak.r-lib.org/reference/pkg_install.html" class="external-link">pkg_install</a></span><span class="op">(</span><span class="st">"pathfindR"</span><span class="op">)</span></span></code></pre></div>
-<p>And the development version from GitHub via <code>devtools</code>:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<ul>
+<li>And the development version from GitHub via <code>devtools</code>:</li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span> <span class="co"># if you have not installed "devtools"</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"egeulgen/pathfindR"</span><span class="op">)</span></span></code></pre></div>
 <blockquote>
 <p><strong>IMPORTANT NOTE</strong> For the active subnetwork search component to work, the user must have <a href="https://www.java.com/en/download/" class="external-link">Java (&gt;= 8.0)</a> installed, and the path/to/java must be in the PATH environment variable.</p>
 </blockquote>
 <p>We also have docker images available on <a href="https://hub.docker.com/repository/docker/egeulgen/pathfindr" class="external-link">Docker Hub</a> and <a href="https://github.com/egeulgen/pathfindR/packages" class="external-link">GitHub</a>:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pull image for the latest release</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> pull egeulgen/pathfindr:latest</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># pull image for a specific version (e.g., 1.4.1)</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> pull egeulgen/pathfindr:1.4.1</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pull image for the latest release</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> pull egeulgen/pathfindr:latest</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># pull image for a specific version (e.g., 1.4.1)</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> pull egeulgen/pathfindr:1.4.1</span></code></pre></div>
 <p>Online app on superbio.ai: <a href="https://app.superbio.ai/apps/111/" class="external-link uri">https://app.superbio.ai/apps/111/</a></p>
 </div>
 <div class="section level1">
 <h1 id="enrichment-analysis-with-pathfindr">Enrichment Analysis with pathfindR<a class="anchor" aria-label="anchor" href="#enrichment-analysis-with-pathfindr"></a>
 </h1>
-<div class="figure">
-<img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/pathfindr.png?raw=true" title="pathfindr Enrichment Workflow" alt=""><p class="caption">pathfindR Enrichment Workflow</p>
-</div>
-<p>This workflow takes in a data frame consisting of “gene symbols”, “change values” (optional), and “associated p-values”:</p>
+<figure><img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/pathfindr.png?raw=true" title="pathfindr Enrichment Workflow" alt="pathfindR Enrichment Workflow"><figcaption aria-hidden="true">
+pathfindR Enrichment Workflow
+</figcaption></figure><p>This workflow takes in a data frame consisting of “gene symbols”, “change values” (optional), and “associated p-values”:</p>
 <table class="table">
 <thead><tr class="header">
 <th align="left">Gene_symbol</th>
@@ -197,32 +206,31 @@
 </blockquote>
 <p>These filtered lists of active subnetworks are then used for enrichment analyses, i.e., using the genes in each of the active subnetworks, the significantly enriched terms (pathways/gene sets) are identified. Enriched terms with adjusted p-values larger than the given threshold are discarded, and the lowest adjusted p-value (among all active subnetworks) for each term is kept. This process of <code>active subnetwork search + enrichment analyses</code> is repeated for a selected number of iterations, performed in parallel. Over all iterations, the lowest and the highest adjusted p-values, and the number of occurrences among all iterations are reported for each significantly enriched term.</p>
 <p>This workflow can be run using the function <code><a href="reference/run_pathfindr.html">run_pathfindR()</a></code>:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://egeulgen.github.io/pathfindR/">pathfindR</a></span><span class="op">)</span></span>
 <span><span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span><span class="op">)</span></span></code></pre></div>
 <p>This wrapper function performs the active-subnetwork-oriented enrichment analysis, and returns a data frame of enriched terms:</p>
-<div class="figure">
-<img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/enrichment_chart.png?raw=true" title="Enrichment Chart" alt=""><p class="caption">pathfindR Enrichment Chart</p>
-</div>
-<p>Some useful arguments are:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<figure><img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/enrichment_chart.png?raw=true" title="Enrichment Chart" alt="pathfindR Enrichment Chart"><figcaption aria-hidden="true">
+pathfindR Enrichment Chart
+</figcaption></figure><p>Some useful arguments are:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># set an output directory for saving active subnetworks</span></span>
 <span><span class="co"># (default=NULL, sets a temporary directory)</span></span>
-<span><span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, output_dir <span class="op">=</span> <span class="st">"/top/secret/results"</span><span class="op">)</span></span>
+<span><span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, output_dir<span class="op">=</span><span class="st">"/top/secret/results"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># change the gene sets used for analysis (default = "KEGG")</span></span>
-<span><span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, gene_sets <span class="op">=</span> <span class="st">"GO-MF"</span><span class="op">)</span></span>
+<span><span class="co"># change the gene sets used for analysis (default="KEGG")</span></span>
+<span><span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, gene_sets<span class="op">=</span><span class="st">"GO-MF"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># change the PIN for active subnetwork search (default = Biogrid)</span></span>
-<span><span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, pin_name_path <span class="op">=</span> <span class="st">"IntAct"</span><span class="op">)</span></span>
+<span><span class="co"># change the PIN for active subnetwork search (default=Biogrid)</span></span>
+<span><span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, pin_name_path<span class="op">=</span><span class="st">"IntAct"</span><span class="op">)</span></span>
 <span><span class="co"># or use an external PIN of your choice</span></span>
-<span><span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, pin_name_path <span class="op">=</span> <span class="st">"/path/to/my/PIN.sif"</span><span class="op">)</span></span>
+<span><span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, pin_name_path<span class="op">=</span><span class="st">"/path/to/my/PIN.sif"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># change the number of iterations (default = 10)</span></span>
-<span><span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, iterations <span class="op">=</span> <span class="fl">25</span><span class="op">)</span> </span>
+<span><span class="co"># change the number of iterations (default=10)</span></span>
+<span><span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, iterations<span class="op">=</span><span class="fl">25</span><span class="op">)</span> </span>
 <span></span>
 <span><span class="co"># report the non-significant active subnetwork genes (for later analyses)</span></span>
-<span><span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, list_active_snw_genes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, list_active_snw_genes<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>The available PINs are “Biogrid”, “STRING”, “GeneMania”, “IntAct”, “KEGG” and “mmu_STRING”. The available gene sets are “KEGG”, “Reactome”, “BioCarta”, “GO-All”, “GO-BP”, “GO-CC”, “GO-MF”, and “mmu_KEGG”. You also use a custom PIN (see <code><a href="reference/return_pin_path.html">?return_pin_path</a></code>) or a custom gene set (see <code><a href="reference/fetch_gene_set.html">?fetch_gene_set</a></code>)</p>
 <blockquote>
 <p>As of the latest development version, pathfindR offers utility functions for obtaining organism-specific PIN data (for now, only BioGRID PINs) and organism-specific gene sets (KEGG and Reactome) data via <code><a href="reference/get_pin_file.html">get_pin_file()</a></code> and <code><a href="reference/get_gene_sets_list.html">get_gene_sets_list()</a></code>, respectively.</p>
@@ -233,21 +241,21 @@
 </h1>
 <p><img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/term_clustering.png?raw=true" title="Enriched Terms Clustering Workflow" alt="Enriched Terms Clustering Workflow"> The wrapper function for this workflow is <code><a href="reference/cluster_enriched_terms.html">cluster_enriched_terms()</a></code>.</p>
 <p>This workflow first calculates the pairwise kappa statistics between the enriched terms. The function then performs hierarchical clustering (by default), automatically determines the optimal number of clusters by maximizing the average silhouette width and returns a data frame with cluster assignments.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># default settings</span></span>
 <span><span class="va">clustered_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cluster_enriched_terms.html">cluster_enriched_terms</a></span><span class="op">(</span><span class="va">output_df</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># display the heatmap of hierarchical clustering</span></span>
-<span><span class="va">clustered_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cluster_enriched_terms.html">cluster_enriched_terms</a></span><span class="op">(</span><span class="va">output_df</span>, plot_hmap <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">clustered_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cluster_enriched_terms.html">cluster_enriched_terms</a></span><span class="op">(</span><span class="va">output_df</span>, plot_hmap<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># display the dendrogram and automatically-determined clusters</span></span>
-<span><span class="va">clustered_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cluster_enriched_terms.html">cluster_enriched_terms</a></span><span class="op">(</span><span class="va">output_df</span>, plot_dend <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">clustered_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cluster_enriched_terms.html">cluster_enriched_terms</a></span><span class="op">(</span><span class="va">output_df</span>, plot_dend<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># change agglomeration method (default = "average") for hierarchical clustering</span></span>
-<span><span class="va">clustered_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cluster_enriched_terms.html">cluster_enriched_terms</a></span><span class="op">(</span><span class="va">output_df</span>, clu_method <span class="op">=</span> <span class="st">"centroid"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co"># change agglomeration method (default="average") for hierarchical clustering</span></span>
+<span><span class="va">clustered_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cluster_enriched_terms.html">cluster_enriched_terms</a></span><span class="op">(</span><span class="va">output_df</span>, clu_method<span class="op">=</span><span class="st">"centroid"</span><span class="op">)</span></span></code></pre></div>
 <p>Alternatively, the <code>fuzzy</code> clustering method (as described in Huang DW, Sherman BT, Tan Q, et al. The DAVID Gene Functional Classification Tool: a novel biological module-centric algorithm to functionally analyze large gene lists. Genome Biol. 2007;8(9):R183.) can be used:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">clustered_df_fuzzy</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cluster_enriched_terms.html">cluster_enriched_terms</a></span><span class="op">(</span><span class="va">output_df</span>, method <span class="op">=</span> <span class="st">"fuzzy"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">clustered_df_fuzzy</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cluster_enriched_terms.html">cluster_enriched_terms</a></span><span class="op">(</span><span class="va">output_df</span>, method<span class="op">=</span><span class="st">"fuzzy"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level1">
 <h1 id="visualization-of-enrichment-results">Visualization of Enrichment Results<a class="anchor" aria-label="anchor" href="#visualization-of-enrichment-results"></a>
@@ -256,77 +264,75 @@
 <h2 id="enriched-term-diagrams">Enriched Term Diagrams<a class="anchor" aria-label="anchor" href="#enriched-term-diagrams"></a>
 </h2>
 <p>For H.sapiens KEGG enrichment analyses, <code><a href="reference/visualize_terms.html">visualize_terms()</a></code> can be used to generate KEGG pathway diagrams that are saved as PNG files in a directory called “term_visualizations” under the current working directory:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">input_processed</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/input_processing.html">input_processing</a></span><span class="op">(</span><span class="va">example_pathfindR_input</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/visualize_terms.html">visualize_terms</a></span><span class="op">(</span></span>
-<span>  result_df <span class="op">=</span> <span class="va">example_pathfindR_output</span>,</span>
-<span>  input_processed <span class="op">=</span> <span class="va">input_processed</span>,</span>
-<span>  hsa_KEGG <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<div class="figure">
-<img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/hsaKEGG_diagram.png?raw=true" title="Pathway Diagram" alt=""><p class="caption">Pathway Diagram</p>
-</div>
-<p>Alternatively (i.e., for other types of non-KEGG/non-H.sapiens enrichment analyses), an interaction diagram per enriched term can be generated again via <code><a href="reference/visualize_terms.html">visualize_terms()</a></code>. These diagrams are also saved as PNG files in a directory called “term_visualizations” under the current working directory:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">input_processed</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/input_processing.html">input_processing</a></span><span class="op">(</span><span class="va">example_pathfindR_input</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/visualize_terms.html">visualize_terms</a></span><span class="op">(</span></span>
-<span>  result_df <span class="op">=</span> <span class="va">example_pathfindR_output</span>,</span>
-<span>  input_processed <span class="op">=</span> <span class="va">input_processed</span>,</span>
-<span>  hsa_KEGG <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  pin_name_path <span class="op">=</span> <span class="st">"Biogrid"</span></span>
+<span>  result_df<span class="op">=</span><span class="va">example_pathfindR_output</span>,</span>
+<span>  input_processed<span class="op">=</span><span class="va">input_processed</span>,</span>
+<span>  hsa_KEGG<span class="op">=</span><span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="figure">
-<img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/example_interaction_vis.png?raw=true" title="Interaction Diagram" alt=""><p class="caption">Interaction Diagram</p>
-</div>
+<figure><img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/hsaKEGG_diagram.png?raw=true" title="Pathway Diagram" alt="Pathway Diagram"><figcaption aria-hidden="true">
+Pathway Diagram
+</figcaption></figure><p>Alternatively (i.e., for other types of non-KEGG/non-H.sapiens enrichment analyses), an interaction diagram per enriched term can be generated again via <code><a href="reference/visualize_terms.html">visualize_terms()</a></code>. These diagrams are also saved as PNG files in a directory called “term_visualizations” under the current working directory:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">input_processed</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/input_processing.html">input_processing</a></span><span class="op">(</span><span class="va">example_pathfindR_input</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/visualize_terms.html">visualize_terms</a></span><span class="op">(</span></span>
+<span>  result_df<span class="op">=</span><span class="va">example_pathfindR_output</span>,</span>
+<span>  input_processed<span class="op">=</span><span class="va">input_processed</span>,</span>
+<span>  hsa_KEGG<span class="op">=</span><span class="cn">FALSE</span>,</span>
+<span>  pin_name_path<span class="op">=</span><span class="st">"Biogrid"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<figure><img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/example_interaction_vis.png?raw=true" title="Interaction Diagram" alt="Interaction Diagram"><figcaption aria-hidden="true">
+Interaction Diagram
+</figcaption></figure>
 </div>
 <div class="section level2">
 <h2 id="term-gene-heatmap">Term-Gene Heatmap<a class="anchor" aria-label="anchor" href="#term-gene-heatmap"></a>
 </h2>
 <p>The function <code><a href="reference/term_gene_heatmap.html">term_gene_heatmap()</a></code> can visualize the heatmap of enriched terms by the involved input genes. This heatmap allows visual identification of the input genes involved in the enriched terms, and the common or distinct genes between different terms. If the input data frame (same as in <code><a href="reference/run_pathfindr.html">run_pathfindR()</a></code>) is supplied, the tile colors indicate the change values.</p>
-<div class="figure">
-<img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/hmap.png?raw=true" title="Term-Gene Heatmap" alt=""><p class="caption">Term-Gene Heatmap</p>
-</div>
+<figure><img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/hmap.png?raw=true" title="Term-Gene Heatmap" alt="Term-Gene Heatmap"><figcaption aria-hidden="true">
+Term-Gene Heatmap
+</figcaption></figure>
 </div>
 <div class="section level2">
 <h2 id="term-gene-graph">Term-Gene Graph<a class="anchor" aria-label="anchor" href="#term-gene-graph"></a>
 </h2>
 <p>The function <code><a href="reference/term_gene_graph.html">term_gene_graph()</a></code> (adapted from the Gene-Concept network visualization by the R package <code>enrichplot</code>) can be utilized to visualize which significant genes are involved in the enriched terms. The function creates the term-gene graph, displaying the connections between genes and biological terms (enriched pathways or gene sets). This allows for the investigation of multiple terms to which significant genes are related. The graph also enables the determination of the degree of overlap between the enriched terms by identifying shared and/or distinct significant genes.</p>
-<div class="figure">
-<img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/term_gene.png?raw=true" title="Term-Gene Graph" alt=""><p class="caption">Term-Gene Graph</p>
-</div>
+<figure><img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/term_gene.png?raw=true" title="Term-Gene Graph" alt="Term-Gene Graph"><figcaption aria-hidden="true">
+Term-Gene Graph
+</figcaption></figure>
 </div>
 <div class="section level2">
 <h2 id="upset-plot">UpSet Plot<a class="anchor" aria-label="anchor" href="#upset-plot"></a>
 </h2>
-<p>UpSet plots are plots of the intersections of sets as a matrix. This function creates a ggplot object of an UpSet plot where the x-axis is the UpSet plot of intersections of enriched terms. By default (i.e., <code>method = "heatmap"</code>), the main plot is a heatmap of genes at the corresponding intersections, colored by up-/down-regulation (if <code>genes_df</code> is provided, colored by change values). If <code>method = "barplot"</code>, the main plot is bar plots of the number of genes at the corresponding intersections. Finally, if <code>method = "boxplot"</code> and <code>genes_df</code> is provided, then the main plot displays the boxplots of the genes’ change values at the corresponding intersections.</p>
-<div class="figure">
-<img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/upset.png?raw=true" title="UpSet Plot" alt=""><p class="caption">UpSet plot</p>
-</div>
+<p>UpSet plots are plots of the intersections of sets as a matrix. This function creates a ggplot object of an UpSet plot where the x-axis is the UpSet plot of intersections of enriched terms. By default (i.e., <code>method="heatmap"</code>), the main plot is a heatmap of genes at the corresponding intersections, colored by up-/down-regulation (if <code>genes_df</code> is provided, colored by change values). If <code>method="barplot"</code>, the main plot is bar plots of the number of genes at the corresponding intersections. Finally, if <code>method="boxplot"</code> and <code>genes_df</code> is provided, then the main plot displays the boxplots of the genes’ change values at the corresponding intersections.</p>
+<figure><img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/upset.png?raw=true" title="UpSet Plot" alt="UpSet plot"><figcaption aria-hidden="true">
+UpSet plot
+</figcaption></figure>
 </div>
 </div>
 <div class="section level1">
 <h1 id="per-sample-enriched-term-scores">Per Sample Enriched Term Scores<a class="anchor" aria-label="anchor" href="#per-sample-enriched-term-scores"></a>
 </h1>
-<div class="figure">
-<img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/score_hmap.png?raw=true" title="Scoring per Sample" alt=""><p class="caption">Agglomerated Scores for all Enriched Terms per Sample</p>
-</div>
-<p>The function <code><a href="reference/score_terms.html">score_terms()</a></code> can be used to calculate the agglomerated z score of each enriched term per sample. This allows the user to examine the scores individually and infer how a term is overall altered (activated or repressed) in a given sample or a group of samples.</p>
+<figure><img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/score_hmap.png?raw=true" title="Scoring per Sample" alt="Agglomerated Scores for all Enriched Terms per Sample"><figcaption aria-hidden="true">
+Agglomerated Scores for all Enriched Terms per Sample
+</figcaption></figure><p>The function <code><a href="reference/score_terms.html">score_terms()</a></code> can be used to calculate the agglomerated z score of each enriched term per sample. This allows the user to examine the scores individually and infer how a term is overall altered (activated or repressed) in a given sample or a group of samples.</p>
 </div>
 <div class="section level1">
 <h1 id="comparison-of-2-pathfindr-results">Comparison of 2 pathfindR Results<a class="anchor" aria-label="anchor" href="#comparison-of-2-pathfindr-results"></a>
 </h1>
 <p>The function <code><a href="reference/combine_pathfindR_results.html">combine_pathfindR_results()</a></code> allows combining two pathfindR analysis results for investigating common and distinct terms between the groups. Below is an example for comparing two different results using rheumatoid arthritis-related data.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">combined_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/combine_pathfindR_results.html">combine_pathfindR_results</a></span><span class="op">(</span></span>
-<span>  result_A <span class="op">=</span> <span class="va">an_output_df</span>, </span>
-<span>  result_B <span class="op">=</span> <span class="va">another_output_df</span></span>
+<span>  result_A<span class="op">=</span><span class="va">an_output_df</span>, </span>
+<span>  result_B<span class="op">=</span><span class="va">another_output_df</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>By default, <code><a href="reference/combine_pathfindR_results.html">combine_pathfindR_results()</a></code> plots the term-gene graph for the common terms in the combined results. The function <code><a href="reference/combined_results_graph.html">combined_results_graph()</a></code> can be used to create this graph (using only selected terms etc.) later on.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/combined_results_graph.html">combined_results_graph</a></span><span class="op">(</span><span class="va">combined_df</span>, selected_terms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hsa04144"</span>, <span class="st">"hsa04141"</span>, <span class="st">"hsa04140"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="figure">
-<img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/combined_graph.png?raw=true" title="Combined Results Graph" alt=""><p class="caption">Combined Results Graph</p>
-</div>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/combined_results_graph.html">combined_results_graph</a></span><span class="op">(</span><span class="va">combined_df</span>, selected_terms<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hsa04144"</span>, <span class="st">"hsa04141"</span>, <span class="st">"hsa04140"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<figure><img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/combined_graph.png?raw=true" title="Combined Results Graph" alt="Combined Results Graph"><figcaption aria-hidden="true">
+Combined Results Graph
+</figcaption></figure>
 </div>
 
   </div>
