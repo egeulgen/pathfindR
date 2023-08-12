@@ -4,11 +4,11 @@ output: github_document
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(collapse = TRUE,
-                      comment = "#>",
-                      fig.path = "inst/extdata/",
-                      out.width = "100%")
+```{r, include=FALSE}
+knitr::opts_chunk$set(collapse=TRUE,
+                      comment="#>",
+                      fig.path="inst/extdata/",
+                      out.width="100%")
 suppressPackageStartupMessages(library(pathfindR))
 ```
 
@@ -29,24 +29,30 @@ suppressPackageStartupMessages(library(pathfindR))
 
 The functionality suite of pathfindR is described in detail in _Ulgen E, Ozisik O, Sezerman OU. 2019. pathfindR: An R Package for Comprehensive Identification of Enriched Pathways in Omics Data Through Active Subnetworks. Front. Genet. [https://doi.org/10.3389/fgene.2019.00858](https://doi.org/10.3389/fgene.2019.00858)_
 
-For detailed documentation, see [pathfindR's website](https://egeulgen.github.io/pathfindR/) or [the pathfindR wiki](https://github.com/egeulgen/pathfindR/wiki).
+For detailed documentation, see [pathfindR's website](https://egeulgen.github.io/pathfindR/).
 
 # Installation
 
-You can install the released version of pathfindR from CRAN via:
+- You can install the released version of pathfindR from CRAN via:
 
 ```{r installation1, eval=FALSE}
 install.packages("pathfindR")
 ```
 
-or via [pak](https://pak.r-lib.org/) (this might be preferable given `pathfindR`'s Bioconductor dependencies):
+- Since version 2.1.0, you may also install `pathfindR` via conda:
+
+```{bash conda, eval=FALSE}
+conda install -c egeulgen r-pathfindr
+```
+
+- Via [pak](https://pak.r-lib.org/) (this might be preferable given `pathfindR`'s Bioconductor dependencies):
 
 ```{r installation2, eval=FALSE}
 install.packages("pak") # if you have not installed "pak"
 pak::pkg_install("pathfindR")
 ```
 
-And the development version from GitHub via `devtools`:
+- And the development version from GitHub via `devtools`:
 
 ```{r installation3, eval=FALSE}
 install.packages("devtools") # if you have not installed "devtools"
@@ -58,7 +64,7 @@ devtools::install_github("egeulgen/pathfindR")
 
 We also have docker images available on [Docker Hub](https://hub.docker.com/repository/docker/egeulgen/pathfindr) and [GitHub](https://github.com/egeulgen/pathfindR/packages):
 
-```{bash docker, eval = FALSE}
+```{bash docker, eval=FALSE}
 # pull image for the latest release
 docker pull egeulgen/pathfindr:latest
 
@@ -77,9 +83,9 @@ This workflow takes in a data frame consisting of "gene symbols", "change values
 ```{r example_input, echo=FALSE}
 tmp <- example_pathfindR_input[1:4, ]
 tmp$logFC <- round(tmp$logFC,2)
-tmp$adj.P.Val <- format(tmp$adj.P.Val, digits = 2)
+tmp$adj.P.Val <- format(tmp$adj.P.Val, digits=2)
 colnames(tmp) <- c("Gene_symbol", "logFC", "FDR_p")
-knitr::kable(tmp, align = c("l", "c", "c"))
+knitr::kable(tmp, align=c("l", "c", "c"))
 ```
 
 After input testing, any gene symbol that is not in the chosen protein-protein interaction network (PIN) is converted to an alias symbol if there is an alias that is found in the PIN. After mapping the input genes with the associated p-values onto the PIN, active subnetwork search is performed. The resulting active subnetworks are then filtered based on their scores and the number of significant genes they contain. 
@@ -104,21 +110,21 @@ Some useful arguments are:
 ```{r useful_args, eval=FALSE}
 # set an output directory for saving active subnetworks
 # (default=NULL, sets a temporary directory)
-output_df <- run_pathfindR(input_df, output_dir = "/top/secret/results")
+output_df <- run_pathfindR(input_df, output_dir="/top/secret/results")
 
-# change the gene sets used for analysis (default = "KEGG")
-output_df <- run_pathfindR(input_df, gene_sets = "GO-MF")
+# change the gene sets used for analysis (default="KEGG")
+output_df <- run_pathfindR(input_df, gene_sets="GO-MF")
 
-# change the PIN for active subnetwork search (default = Biogrid)
-output_df <- run_pathfindR(input_df, pin_name_path = "IntAct")
+# change the PIN for active subnetwork search (default=Biogrid)
+output_df <- run_pathfindR(input_df, pin_name_path="IntAct")
 # or use an external PIN of your choice
-output_df <- run_pathfindR(input_df, pin_name_path = "/path/to/my/PIN.sif")
+output_df <- run_pathfindR(input_df, pin_name_path="/path/to/my/PIN.sif")
 
-# change the number of iterations (default = 10)
-output_df <- run_pathfindR(input_df, iterations = 25) 
+# change the number of iterations (default=10)
+output_df <- run_pathfindR(input_df, iterations=25) 
 
 # report the non-significant active subnetwork genes (for later analyses)
-output_df <- run_pathfindR(input_df, list_active_snw_genes = TRUE)
+output_df <- run_pathfindR(input_df, list_active_snw_genes=TRUE)
 ```
 
 The available PINs are "Biogrid", "STRING", "GeneMania", "IntAct", "KEGG" and "mmu_STRING". The available gene sets are "KEGG", "Reactome", "BioCarta", "GO-All", "GO-BP", "GO-CC", "GO-MF", and "mmu_KEGG". You also use a custom PIN (see `?return_pin_path`) or a custom gene set (see `?fetch_gene_set`)
@@ -137,19 +143,19 @@ This workflow first calculates the pairwise kappa statistics between the enriche
 clustered_df <- cluster_enriched_terms(output_df)
 
 # display the heatmap of hierarchical clustering
-clustered_df <- cluster_enriched_terms(output_df, plot_hmap = TRUE)
+clustered_df <- cluster_enriched_terms(output_df, plot_hmap=TRUE)
 
 # display the dendrogram and automatically-determined clusters
-clustered_df <- cluster_enriched_terms(output_df, plot_dend = TRUE)
+clustered_df <- cluster_enriched_terms(output_df, plot_dend=TRUE)
 
-# change agglomeration method (default = "average") for hierarchical clustering
-clustered_df <- cluster_enriched_terms(output_df, clu_method = "centroid")
+# change agglomeration method (default="average") for hierarchical clustering
+clustered_df <- cluster_enriched_terms(output_df, clu_method="centroid")
 ```
 
 Alternatively, the `fuzzy` clustering method (as described in Huang DW, Sherman BT, Tan Q, et al. The DAVID Gene Functional Classification Tool: a novel biological module-centric algorithm to functionally analyze large gene lists. Genome Biol. 2007;8(9):R183.) can be used:
 
 ```{r clustering_f, eval=FALSE}
-clustered_df_fuzzy <- cluster_enriched_terms(output_df, method = "fuzzy")
+clustered_df_fuzzy <- cluster_enriched_terms(output_df, method="fuzzy")
 ```
 
 # Visualization of Enrichment Results
@@ -161,9 +167,9 @@ For H.sapiens KEGG enrichment analyses, `visualize_terms()` can be used to gener
 ```{r KEGG_vis, eval=FALSE}
 input_processed <- input_processing(example_pathfindR_input)
 visualize_terms(
-  result_df = example_pathfindR_output,
-  input_processed = input_processed,
-  hsa_KEGG = TRUE
+  result_df=example_pathfindR_output,
+  input_processed=input_processed,
+  hsa_KEGG=TRUE
 )
 ```
 
@@ -174,10 +180,10 @@ Alternatively (i.e., for other types of non-KEGG/non-H.sapiens enrichment analys
 ```{r nonKEGG_viss, eval=FALSE}
 input_processed <- input_processing(example_pathfindR_input)
 visualize_terms(
-  result_df = example_pathfindR_output,
-  input_processed = input_processed,
-  hsa_KEGG = FALSE,
-  pin_name_path = "Biogrid"
+  result_df=example_pathfindR_output,
+  input_processed=input_processed,
+  hsa_KEGG=FALSE,
+  pin_name_path="Biogrid"
 )
 ```
 
@@ -197,7 +203,7 @@ The function `term_gene_graph()` (adapted from the Gene-Concept network visualiz
 
 ## UpSet Plot
 
-UpSet plots are plots of the intersections of sets as a matrix. This function creates a ggplot object of an UpSet plot where the x-axis is the UpSet plot of intersections of enriched terms. By default (i.e., `method = "heatmap"`), the main plot is a heatmap of genes at the corresponding intersections, colored by up-/down-regulation (if `genes_df` is provided, colored by change values). If `method = "barplot"`, the main plot is bar plots of the number of genes at the corresponding intersections. Finally, if `method = "boxplot"` and `genes_df` is provided, then the main plot displays the boxplots of the genes' change values at the corresponding intersections.
+UpSet plots are plots of the intersections of sets as a matrix. This function creates a ggplot object of an UpSet plot where the x-axis is the UpSet plot of intersections of enriched terms. By default (i.e., `method="heatmap"`), the main plot is a heatmap of genes at the corresponding intersections, colored by up-/down-regulation (if `genes_df` is provided, colored by change values). If `method="barplot"`, the main plot is bar plots of the number of genes at the corresponding intersections. Finally, if `method="boxplot"` and `genes_df` is provided, then the main plot displays the boxplots of the genes' change values at the corresponding intersections.
 
 ![UpSet plot](https://github.com/egeulgen/pathfindR/blob/master/vignettes/upset.png?raw=true "UpSet Plot")
 
@@ -213,15 +219,15 @@ The function `combine_pathfindR_results()` allows combining two pathfindR analys
 
 ```{r compare2res, eval=FALSE}
 combined_df <- combine_pathfindR_results(
-  result_A = an_output_df, 
-  result_B = another_output_df
+  result_A=an_output_df, 
+  result_B=another_output_df
 )
 ```
 
 By default, `combine_pathfindR_results()` plots the term-gene graph for the common terms in the combined results. The function `combined_results_graph()` can be used to create this graph (using only selected terms etc.) later on.
 
 ```{r compare_graph, eval=FALSE}
-combined_results_graph(combined_df, selected_terms = c("hsa04144", "hsa04141", "hsa04140"))
+combined_results_graph(combined_df, selected_terms=c("hsa04144", "hsa04141", "hsa04140"))
 ```
 
 ![Combined Results Graph](https://github.com/egeulgen/pathfindR/blob/master/vignettes/combined_graph.png?raw=true "Combined Results Graph")

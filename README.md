@@ -31,26 +31,31 @@ Identification of Enriched Pathways in Omics Data Through Active
 Subnetworks. Front. Genet. <https://doi.org/10.3389/fgene.2019.00858>*
 
 For detailed documentation, see [pathfindR’s
-website](https://egeulgen.github.io/pathfindR/) or [the pathfindR
-wiki](https://github.com/egeulgen/pathfindR/wiki).
+website](https://egeulgen.github.io/pathfindR/).
 
 # Installation
 
-You can install the released version of pathfindR from CRAN via:
+- You can install the released version of pathfindR from CRAN via:
 
 ``` r
 install.packages("pathfindR")
 ```
 
-or via [pak](https://pak.r-lib.org/) (this might be preferable given
-`pathfindR`’s Bioconductor dependencies):
+- Since version 2.1.0, you may also install `pathfindR` via conda:
+
+``` bash
+conda install -c egeulgen r-pathfindr
+```
+
+- Via [pak](https://pak.r-lib.org/) (this might be preferable given
+  `pathfindR`’s Bioconductor dependencies):
 
 ``` r
 install.packages("pak") # if you have not installed "pak"
 pak::pkg_install("pathfindR")
 ```
 
-And the development version from GitHub via `devtools`:
+- And the development version from GitHub via `devtools`:
 
 ``` r
 install.packages("devtools") # if you have not installed "devtools"
@@ -78,8 +83,14 @@ Online app on superbio.ai: <https://app.superbio.ai/apps/111/>
 
 # Enrichment Analysis with pathfindR
 
-![pathfindR Enrichment
-Workflow](https://github.com/egeulgen/pathfindR/blob/master/vignettes/pathfindr.png?raw=true "pathfindr Enrichment Workflow")
+<figure>
+<img
+src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/pathfindr.png?raw=true"
+title="pathfindr Enrichment Workflow"
+alt="pathfindR Enrichment Workflow" />
+<figcaption aria-hidden="true">pathfindR Enrichment
+Workflow</figcaption>
+</figure>
 
 This workflow takes in a data frame consisting of “gene symbols”,
 “change values” (optional), and “associated p-values”:
@@ -127,29 +138,33 @@ output_df <- run_pathfindR(input_df)
 This wrapper function performs the active-subnetwork-oriented enrichment
 analysis, and returns a data frame of enriched terms:
 
-![pathfindR Enrichment
-Chart](https://github.com/egeulgen/pathfindR/blob/master/vignettes/enrichment_chart.png?raw=true "Enrichment Chart")
+<figure>
+<img
+src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/enrichment_chart.png?raw=true"
+title="Enrichment Chart" alt="pathfindR Enrichment Chart" />
+<figcaption aria-hidden="true">pathfindR Enrichment Chart</figcaption>
+</figure>
 
 Some useful arguments are:
 
 ``` r
 # set an output directory for saving active subnetworks
 # (default=NULL, sets a temporary directory)
-output_df <- run_pathfindR(input_df, output_dir = "/top/secret/results")
+output_df <- run_pathfindR(input_df, output_dir="/top/secret/results")
 
-# change the gene sets used for analysis (default = "KEGG")
-output_df <- run_pathfindR(input_df, gene_sets = "GO-MF")
+# change the gene sets used for analysis (default="KEGG")
+output_df <- run_pathfindR(input_df, gene_sets="GO-MF")
 
-# change the PIN for active subnetwork search (default = Biogrid)
-output_df <- run_pathfindR(input_df, pin_name_path = "IntAct")
+# change the PIN for active subnetwork search (default=Biogrid)
+output_df <- run_pathfindR(input_df, pin_name_path="IntAct")
 # or use an external PIN of your choice
-output_df <- run_pathfindR(input_df, pin_name_path = "/path/to/my/PIN.sif")
+output_df <- run_pathfindR(input_df, pin_name_path="/path/to/my/PIN.sif")
 
-# change the number of iterations (default = 10)
-output_df <- run_pathfindR(input_df, iterations = 25) 
+# change the number of iterations (default=10)
+output_df <- run_pathfindR(input_df, iterations=25) 
 
 # report the non-significant active subnetwork genes (for later analyses)
-output_df <- run_pathfindR(input_df, list_active_snw_genes = TRUE)
+output_df <- run_pathfindR(input_df, list_active_snw_genes=TRUE)
 ```
 
 The available PINs are “Biogrid”, “STRING”, “GeneMania”, “IntAct”,
@@ -180,13 +195,13 @@ cluster assignments.
 clustered_df <- cluster_enriched_terms(output_df)
 
 # display the heatmap of hierarchical clustering
-clustered_df <- cluster_enriched_terms(output_df, plot_hmap = TRUE)
+clustered_df <- cluster_enriched_terms(output_df, plot_hmap=TRUE)
 
 # display the dendrogram and automatically-determined clusters
-clustered_df <- cluster_enriched_terms(output_df, plot_dend = TRUE)
+clustered_df <- cluster_enriched_terms(output_df, plot_dend=TRUE)
 
-# change agglomeration method (default = "average") for hierarchical clustering
-clustered_df <- cluster_enriched_terms(output_df, clu_method = "centroid")
+# change agglomeration method (default="average") for hierarchical clustering
+clustered_df <- cluster_enriched_terms(output_df, clu_method="centroid")
 ```
 
 Alternatively, the `fuzzy` clustering method (as described in Huang DW,
@@ -195,7 +210,7 @@ a novel biological module-centric algorithm to functionally analyze
 large gene lists. Genome Biol. 2007;8(9):R183.) can be used:
 
 ``` r
-clustered_df_fuzzy <- cluster_enriched_terms(output_df, method = "fuzzy")
+clustered_df_fuzzy <- cluster_enriched_terms(output_df, method="fuzzy")
 ```
 
 # Visualization of Enrichment Results
@@ -210,14 +225,18 @@ directory:
 ``` r
 input_processed <- input_processing(example_pathfindR_input)
 visualize_terms(
-  result_df = example_pathfindR_output,
-  input_processed = input_processed,
-  hsa_KEGG = TRUE
+  result_df=example_pathfindR_output,
+  input_processed=input_processed,
+  hsa_KEGG=TRUE
 )
 ```
 
-![Pathway
-Diagram](https://github.com/egeulgen/pathfindR/blob/master/vignettes/hsaKEGG_diagram.png?raw=true "Pathway Diagram")
+<figure>
+<img
+src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/hsaKEGG_diagram.png?raw=true"
+title="Pathway Diagram" alt="Pathway Diagram" />
+<figcaption aria-hidden="true">Pathway Diagram</figcaption>
+</figure>
 
 Alternatively (i.e., for other types of non-KEGG/non-H.sapiens
 enrichment analyses), an interaction diagram per enriched term can be
@@ -228,15 +247,19 @@ current working directory:
 ``` r
 input_processed <- input_processing(example_pathfindR_input)
 visualize_terms(
-  result_df = example_pathfindR_output,
-  input_processed = input_processed,
-  hsa_KEGG = FALSE,
-  pin_name_path = "Biogrid"
+  result_df=example_pathfindR_output,
+  input_processed=input_processed,
+  hsa_KEGG=FALSE,
+  pin_name_path="Biogrid"
 )
 ```
 
-![Interaction
-Diagram](https://github.com/egeulgen/pathfindR/blob/master/vignettes/example_interaction_vis.png?raw=true "Interaction Diagram")
+<figure>
+<img
+src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/example_interaction_vis.png?raw=true"
+title="Interaction Diagram" alt="Interaction Diagram" />
+<figcaption aria-hidden="true">Interaction Diagram</figcaption>
+</figure>
 
 ## Term-Gene Heatmap
 
@@ -247,8 +270,12 @@ the common or distinct genes between different terms. If the input data
 frame (same as in `run_pathfindR()`) is supplied, the tile colors
 indicate the change values.
 
-![Term-Gene
-Heatmap](https://github.com/egeulgen/pathfindR/blob/master/vignettes/hmap.png?raw=true "Term-Gene Heatmap")
+<figure>
+<img
+src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/hmap.png?raw=true"
+title="Term-Gene Heatmap" alt="Term-Gene Heatmap" />
+<figcaption aria-hidden="true">Term-Gene Heatmap</figcaption>
+</figure>
 
 ## Term-Gene Graph
 
@@ -262,29 +289,43 @@ genes are related. The graph also enables the determination of the
 degree of overlap between the enriched terms by identifying shared
 and/or distinct significant genes.
 
-![Term-Gene
-Graph](https://github.com/egeulgen/pathfindR/blob/master/vignettes/term_gene.png?raw=true "Term-Gene Graph")
+<figure>
+<img
+src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/term_gene.png?raw=true"
+title="Term-Gene Graph" alt="Term-Gene Graph" />
+<figcaption aria-hidden="true">Term-Gene Graph</figcaption>
+</figure>
 
 ## UpSet Plot
 
 UpSet plots are plots of the intersections of sets as a matrix. This
 function creates a ggplot object of an UpSet plot where the x-axis is
 the UpSet plot of intersections of enriched terms. By default (i.e.,
-`method = "heatmap"`), the main plot is a heatmap of genes at the
+`method="heatmap"`), the main plot is a heatmap of genes at the
 corresponding intersections, colored by up-/down-regulation (if
 `genes_df` is provided, colored by change values). If
-`method = "barplot"`, the main plot is bar plots of the number of genes
-at the corresponding intersections. Finally, if `method = "boxplot"` and
+`method="barplot"`, the main plot is bar plots of the number of genes at
+the corresponding intersections. Finally, if `method="boxplot"` and
 `genes_df` is provided, then the main plot displays the boxplots of the
 genes’ change values at the corresponding intersections.
 
-![UpSet
-plot](https://github.com/egeulgen/pathfindR/blob/master/vignettes/upset.png?raw=true "UpSet Plot")
+<figure>
+<img
+src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/upset.png?raw=true"
+title="UpSet Plot" alt="UpSet plot" />
+<figcaption aria-hidden="true">UpSet plot</figcaption>
+</figure>
 
 # Per Sample Enriched Term Scores
 
-![Agglomerated Scores for all Enriched Terms per
-Sample](https://github.com/egeulgen/pathfindR/blob/master/vignettes/score_hmap.png?raw=true "Scoring per Sample")
+<figure>
+<img
+src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/score_hmap.png?raw=true"
+title="Scoring per Sample"
+alt="Agglomerated Scores for all Enriched Terms per Sample" />
+<figcaption aria-hidden="true">Agglomerated Scores for all Enriched
+Terms per Sample</figcaption>
+</figure>
 
 The function `score_terms()` can be used to calculate the agglomerated z
 score of each enriched term per sample. This allows the user to examine
@@ -300,8 +341,8 @@ results using rheumatoid arthritis-related data.
 
 ``` r
 combined_df <- combine_pathfindR_results(
-  result_A = an_output_df, 
-  result_B = another_output_df
+  result_A=an_output_df, 
+  result_B=another_output_df
 )
 ```
 
@@ -311,8 +352,12 @@ the common terms in the combined results. The function
 selected terms etc.) later on.
 
 ``` r
-combined_results_graph(combined_df, selected_terms = c("hsa04144", "hsa04141", "hsa04140"))
+combined_results_graph(combined_df, selected_terms=c("hsa04144", "hsa04141", "hsa04140"))
 ```
 
-![Combined Results
-Graph](https://github.com/egeulgen/pathfindR/blob/master/vignettes/combined_graph.png?raw=true "Combined Results Graph")
+<figure>
+<img
+src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/combined_graph.png?raw=true"
+title="Combined Results Graph" alt="Combined Results Graph" />
+<figcaption aria-hidden="true">Combined Results Graph</figcaption>
+</figure>
