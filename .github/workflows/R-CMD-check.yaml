@@ -42,6 +42,7 @@ jobs:
       - name: Install Bioconductor dependencies
         run: |
           install.packages("BiocManager")
+          BiocManager::install(version = "3.17")
           BiocManager::install(c("KEGGREST", "KEGGgraph", "AnnotationDbi", "org.Hs.eg.db"))
         shell: Rscript {0}
 
