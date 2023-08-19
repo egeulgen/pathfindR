@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.0.9003</span>
       </span>
     </div>
 
@@ -89,14 +89,14 @@
 <li>Implemented the new function <code>cluster_graph_vis</code> for visualizing graph diagrams of clustering results.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="minor-changes-and-bug-fixes-1-3-0">Minor changes and bug fixes<a class="anchor" aria-label="anchor" href="#minor-changes-and-bug-fixes-1-3-0"></a></h3>
+<h3 id="minor-changes-and-bug-fixes-1-3-0">Minor Changes and Bug Fixes<a class="anchor" aria-label="anchor" href="#minor-changes-and-bug-fixes-1-3-0"></a></h3>
 <ul><li>Fixed the bug where the arguments <code>score_quan_thr</code> and <code>sig_gene_thr</code> for <code>run_pathfindR</code> were not being utilized.</li>
 <li>in <code>run_pathfindR</code>, added message at the end of run, reporting the number enriched pathways.</li>
 <li>the function <code>run_pathfindR</code> now creates a variable <code>org_dir</code> that is the “path/to/original/working/directory”. <code>org_dir</code> is used in multiple functions to return to the original working directory if anything fails. This changes the previous behavior where if a function stopped with an error the directory was changed to “..”, i.e. the parent directory. This change was adapted so that the user is returned to the original working directory if they supply a recursive output folder (<code>output_dir</code>, e.g. “./ALL_RESULTS/RESULT_A”).</li>
 <li>in <code>input_processing</code>, added the argument <code>human_genes</code> to only perform alias symbol conversion when human gene symbols are provided. - Updated the Rmd files used to create the report HTML files</li>
 <li>Added the data for <code>GO-All</code>, all annotations in the GO database (BP+MF+CC)</li>
 <li>Updated the vignette <code>pathfindR - An R Package for Pathway Enrichment Analysis Utilizing Active Subnetworks</code> to reflect the new functionalities.</li>
-</ul><hr></div>
+</ul></div>
 </div>
   </div>
 

@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.0.9003</span>
       </span>
     </div>
 
@@ -116,7 +116,7 @@
 </li>
 </ul></div>
 <div class="section level3">
-<h3 id="minor-changes-and-bug-fixes-1-4-0">Minor changes and bug fixes<a class="anchor" aria-label="anchor" href="#minor-changes-and-bug-fixes-1-4-0"></a></h3>
+<h3 id="minor-changes-and-bug-fixes-1-4-0">Minor Changes and Bug Fixes<a class="anchor" aria-label="anchor" href="#minor-changes-and-bug-fixes-1-4-0"></a></h3>
 <ul><li>In <code><a href="../reference/hierarchical_term_clustering.html">hierarchical_term_clustering()</a></code>, redefined the distance measure as <code>1 - kappa statistic</code>
 </li>
 <li>Fixed minor issue in <code><a href="../reference/cluster_graph_vis.html">cluster_graph_vis()</a></code> (during the calculations for additional node colors)</li>
@@ -135,7 +135,7 @@
 <li>The gene symbols in the input data frame, the PIN and the gene sets are now turned into uppercase (for obtaining the best overlap)</li>
 <li>Added the argument <code>top_terms</code> to <code><a href="../reference/enrichment_chart.html">enrichment_chart()</a></code>, controlling the number top enriched terms to plot (default is 10)</li>
 <li>Other minor bug/error fixes</li>
-</ul><hr></div>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.4.1" id="pathfindr-141">pathfindR 1.4.1<small>2019-11-15</small><a class="anchor" aria-label="anchor" href="#pathfindr-141"></a></h2>
@@ -145,21 +145,21 @@
 <li>The Java version is now checked</li>
 </ul></div>
 <div class="section level3">
-<h3 id="minor-changes-and-bug-fixes-1-4-1">Minor changes and bug fixes<a class="anchor" aria-label="anchor" href="#minor-changes-and-bug-fixes-1-4-1"></a></h3>
+<h3 id="minor-changes-and-bug-fixes-1-4-1">Minor Changes and Bug Fixes<a class="anchor" aria-label="anchor" href="#minor-changes-and-bug-fixes-1-4-1"></a></h3>
 <ul><li>Fixed behavior: when no input genes are present in the enriched hsa KEGG pathway, visualization of the pathway is now skipped</li>
 <li>Added the argument <code>max_to_plot</code> to <code><a href="../reference/visualize_hsa_KEGG.html">visualize_hsa_KEGG()</a></code> and to <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code>. This argument controls the number of pathways to be visualized (default is NULL, i.e. no filter). This was implemented not to slow down the runtime of <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code> as downloading the png files is slow.</li>
 <li>Fixed links to visualizations in <code>enriched_ters.Rmd</code>
 </li>
-</ul><hr></div>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.4.2" id="pathfindr-142">pathfindR 1.4.2<small>2019-12-06</small><a class="anchor" aria-label="anchor" href="#pathfindr-142"></a></h2>
 <div class="section level3">
-<h3 id="minor-changes-and-bug-fixes-1-4-2">Minor changes and bug fixes<a class="anchor" aria-label="anchor" href="#minor-changes-and-bug-fixes-1-4-2"></a></h3>
+<h3 id="minor-changes-and-bug-fixes-1-4-2">Minor Changes and Bug Fixes<a class="anchor" aria-label="anchor" href="#minor-changes-and-bug-fixes-1-4-2"></a></h3>
 <ul><li>Fixed corner case in <code><a href="../reference/create_kappa_matrix.html">create_kappa_matrix()</a></code> when <code>chance</code> is 1, the metric is turned into 0</li>
 <li>Fixed misused <code>class(.) == *</code> in <code><a href="../reference/cluster_graph_vis.html">cluster_graph_vis()</a></code>
 </li>
-</ul><hr></div>
+</ul></div>
 </div>
   </div>
 

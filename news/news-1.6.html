@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.0.9003</span>
       </span>
     </div>
 
@@ -86,17 +86,17 @@
 <li>updated the download URL in <code><a href="../reference/get_biogrid_pin.html">get_biogrid_pin()</a></code> as BioGRID updated the URL for download</li>
 </ul></div>
 <div class="section level3">
-<h3 id="minor-changes-and-bug-fixes-1-6-0">Minor changes and bug fixes<a class="anchor" aria-label="anchor" href="#minor-changes-and-bug-fixes-1-6-0"></a></h3>
+<h3 id="minor-changes-and-bug-fixes-1-6-0">Minor Changes and Bug Fixes<a class="anchor" aria-label="anchor" href="#minor-changes-and-bug-fixes-1-6-0"></a></h3>
 <ul><li>changed old argument in the “Step-by-Step Execution of the pathfindR Enrichment Workflow” vignette</li>
 <li>fixed an issue in <code><a href="../reference/visualize_term_interactions.html">visualize_term_interactions()</a></code> where the file name was too long, it was causing an error on Windows. Limited to 100 characters (<a href="https://github.com/egeulgen/pathfindR/issues/58" class="external-link">#58</a>)</li>
-</ul><hr></div>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.6.1" id="pathfindr-161">pathfindR 1.6.1<small>2021-01-04</small><a class="anchor" aria-label="anchor" href="#pathfindr-161"></a></h2>
 <div class="section level3">
 <h3 id="major-changes-1-6-1">Major Changes<a class="anchor" aria-label="anchor" href="#major-changes-1-6-1"></a></h3>
 <ul><li>In <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code>, the default <code>iterations</code> was set back to 10 (the default for all other v1.x)</li>
-</ul><hr></div>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.6.2" id="pathfindr-162">pathfindR 1.6.2<small>2021-08-21</small><a class="anchor" aria-label="anchor" href="#pathfindr-162"></a></h2>
@@ -105,7 +105,7 @@
 <ul><li>fixed an issue in <code><a href="../reference/get_kegg_gsets.html">get_kegg_gsets()</a></code> where empty result was returned for some organisms due to an error in parsing (<a href="https://github.com/egeulgen/pathfindR/issues/72" class="external-link">#72</a>)</li>
 </ul></div>
 <div class="section level3">
-<h3 id="minor-changes-and-bug-fixes-1-6-2">Minor changes and bug fixes<a class="anchor" aria-label="anchor" href="#minor-changes-and-bug-fixes-1-6-2"></a></h3>
+<h3 id="minor-changes-and-bug-fixes-1-6-2">Minor Changes and Bug Fixes<a class="anchor" aria-label="anchor" href="#minor-changes-and-bug-fixes-1-6-2"></a></h3>
 <ul><li>added <code>repel = TRUE</code> in <code><a href="../reference/term_gene_graph.html">term_gene_graph()</a></code> and <code><a href="../reference/combined_results_graph.html">combined_results_graph()</a></code> for better visualization of labels</li>
 <li>fixed minor issue in <code><a href="../reference/enrichment_chart.html">enrichment_chart()</a></code> (<a href="https://github.com/egeulgen/pathfindR/issues/75" class="external-link">#75</a>)</li>
 <li>fixed minor issue in <code><a href="../reference/visualize_term_interactions.html">visualize_term_interactions()</a></code>
@@ -121,12 +121,12 @@
 <li>in <code><a href="../reference/get_biogrid_pin.html">get_biogrid_pin()</a></code>, the “download.file.method” from global options is used</li>
 <li>
 <code><a href="../reference/combined_results_graph.html">combined_results_graph()</a></code> raises an error if there are no common terms in the combined data frame</li>
-</ul><hr></div>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.6.3" id="pathfindr-163">pathfindR 1.6.3<small>2021-11-15</small><a class="anchor" aria-label="anchor" href="#pathfindr-163"></a></h2>
 <div class="section level3">
-<h3 id="minor-changes-1-6-3">Minor Changes<a class="anchor" aria-label="anchor" href="#minor-changes-1-6-3"></a></h3>
+<h3 id="minor-changes-and-bug-fixes-1-6-3">Minor Changes and Bug Fixes<a class="anchor" aria-label="anchor" href="#minor-changes-and-bug-fixes-1-6-3"></a></h3>
 <ul><li>Fixed coloring issue in <code><a href="../reference/color_kegg_pathway.html">color_kegg_pathway()</a></code>
 </li>
 <li>In <code><a href="../reference/color_kegg_pathway.html">color_kegg_pathway()</a></code> the default value for <code>normalize_vals</code> is now <code>FALSE</code>
@@ -136,7 +136,7 @@
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.6.4" id="pathfindr-164">pathfindR 1.6.4<small>2022-08-25</small><a class="anchor" aria-label="anchor" href="#pathfindr-164"></a></h2>
 <div class="section level3">
-<h3 id="minor-changes-1-6-4">Minor Changes<a class="anchor" aria-label="anchor" href="#minor-changes-1-6-4"></a></h3>
+<h3 id="minor-changes-and-bug-fixes-1-6-4">Minor Changes and Bug Fixes<a class="anchor" aria-label="anchor" href="#minor-changes-and-bug-fixes-1-6-4"></a></h3>
 <ul><li>updated the alias selection function within <code><a href="../reference/input_processing.html">input_processing()</a></code> so that an alias that is not already present is selected</li>
 <li>updated the min-max scaling (controlled by <code>scale_vals</code>) in <code><a href="../reference/color_kegg_pathway.html">color_kegg_pathway()</a></code>, the default is now <code>scale_vals=TRUE</code>
 </li>

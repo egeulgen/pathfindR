@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.0.9003</span>
       </span>
     </div>
 
@@ -93,7 +93,7 @@
 </li>
 </ul></div>
 <div class="section level3">
-<h3 id="minor-changes-and-bug-fixes-1-5-0">Minor changes and bug fixes<a class="anchor" aria-label="anchor" href="#minor-changes-and-bug-fixes-1-5-0"></a></h3>
+<h3 id="minor-changes-and-bug-fixes-1-5-0">Minor Changes and Bug Fixes<a class="anchor" aria-label="anchor" href="#minor-changes-and-bug-fixes-1-5-0"></a></h3>
 <ul><li>fixed an issue regarding <code><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">parallel::makeCluster()</a></code> in <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code> (<a href="https://github.com/egeulgen/pathfindR/issues/45" class="external-link">#45</a>)</li>
 <li>fixed save-related issue in <code><a href="../reference/download_kegg_png.html">download_kegg_png()</a></code> (<a href="https://github.com/egeulgen/pathfindR/issues/37" class="external-link">#37</a>, <a href="https://github.com/rix133" class="external-link">@rix133</a>)</li>
 <li>added the output data <code>RA_comparison_output</code> of pathfindR results on another RA-related dataset (GSE84074)</li>
@@ -102,15 +102,15 @@
 <li>in <code><a href="../reference/visualize_hsa_KEGG.html">visualize_hsa_KEGG()</a></code>, now limiting the number of genes passes onto <code><a href="https://rdrr.io/pkg/KEGGREST/man/mark.pathway.by.objects.html" class="external-link">KEGGREST::color.pathway.by.objects()</a></code> to &lt; 60 (because the KEGG API now limits the number?)</li>
 <li>changed default visualization in <code><a href="../reference/term_gene_heatmap.html">term_gene_heatmap()</a></code> (i.e. when <code>genes_df</code> is not provided) to binary colored heatmap (by default, “green” and “red”, controlled by <code>low</code> and <code>high</code>) by up-/down- regulation status</li>
 <li>update the vignette “pathfindR Analysis for non-Homo-sapiens organisms” to reflect new data generation functions <code><a href="../reference/get_pin_file.html">get_pin_file()</a></code> and <code><a href="../reference/get_gene_sets_list.html">get_gene_sets_list()</a></code> and fixed a minor issue in the vignette (<a href="https://github.com/egeulgen/pathfindR/issues/46" class="external-link">#46</a>)</li>
-</ul><hr></div>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.5.1" id="pathfindr-151">pathfindR 1.5.1<small>2020-09-20</small><a class="anchor" aria-label="anchor" href="#pathfindr-151"></a></h2>
 <div class="section level3">
-<h3 id="minor-changes-and-bug-fixes-1-5-1">Minor changes and bug fixes<a class="anchor" aria-label="anchor" href="#minor-changes-and-bug-fixes-1-5-1"></a></h3>
+<h3 id="minor-changes-and-bug-fixes-1-5-1">Minor Changes and Bug Fixes<a class="anchor" aria-label="anchor" href="#minor-changes-and-bug-fixes-1-5-1"></a></h3>
 <ul><li>Fixed issue in <code><a href="../reference/check_java_version.html">check_java_version()</a></code> where java version 14 could not be parsed (<a href="https://github.com/egeulgen/pathfindR/issues/49" class="external-link">#49</a>)</li>
 <li>Fixed issue in <code><a href="../reference/combined_results_graph.html">combined_results_graph()</a></code> where gene nodes were not colored correctly (<a href="https://github.com/egeulgen/pathfindR/issues/55" class="external-link">#55</a>)</li>
-</ul><hr></div>
+</ul></div>
 </div>
   </div>
 
