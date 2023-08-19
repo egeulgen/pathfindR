@@ -3,6 +3,7 @@
 \docType{package}
 \name{pathfindR}
 \alias{pathfindR}
+\alias{pathfindR-package}
 \title{pathfindR: A package for Enrichment Analysis Utilizing Active Subnetworks}
 \description{
 pathfindR is a tool for active-subnetwork-oriented gene set enrichment analysis.
@@ -37,4 +38,13 @@ See \code{\link{UpSet_plot}} for details on creating an UpSet plot of the
 enriched terms.
 See \code{\link{get_pin_file}} for obtaining organism-specific PIN data and
 \code{\link{get_gene_sets_list}} for obtaining organism-specific gene sets data
+}
+\author{
+\strong{Maintainer}: Ege Ulgen \email{egeulgen@gmail.com} (\href{https://orcid.org/0000-0003-2090-3621}{ORCID}) [copyright holder]
+
+Authors:
+\itemize{
+  \item Ozan Ozisik \email{ozanytu@gmail.com} (\href{https://orcid.org/0000-0001-5980-8002}{ORCID})
+}
+
 }

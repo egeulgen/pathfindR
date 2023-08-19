@@ -1,15 +1,16 @@
 # pathfindR (development version)
-## Minor Changes
+## Minor Changes and Bug Fixes
 - added the `disable_parallel` argument in `active_snw_enrichment_wrapper()` to be able to disable parallel runs via `foreach` 
 - fixed the issue encountered on CentOS where `forech` wasn't loading `pathfindR` (#164)
+- fixed a CRAN error due to a package documentation issue (#172)
 
 # pathfindR 2.1.0
-## Minor Changes
+## Minor Changes and Bug Fixes
 - removed `create_HTML_report()` so `run_pathfindR()` no longer generates a HTML report
 
 # pathfindR 2.0.1
 
-## Minor Changes
+## Minor Changes and Bug Fixes
 - added the `dir_for_report` argument in the internal function `create_HTML_report()` to fix test issues on CRAN
 
 # pathfindR 2.0.0
@@ -23,12 +24,12 @@
 - in `hierarchical_term_clustering()`, update the sequence of number of clusters for which silhouette width is calculated for choosing the optimal number of clusters. This should speed up the function for cases with a large number of enriched terms
 - updated the relevant vignettes to reflect the implemented changes
 
-## Minor Changes
+## Minor Changes and Bug Fixes
 - fixed a minor issue in `return_pin_path()` where the PIN was not properly read (#157)
 
 # pathfindR 1.6.4
 
-## Minor Changes
+## Minor Changes and Bug Fixes
 - updated the alias selection function within `input_processing()` so that an alias that is not already present is selected
 - updated the min-max scaling (controlled by `scale_vals`) in `color_kegg_pathway()`, the default is now `scale_vals=TRUE`
 - updated the `term_gene_heatmap()` function so that legend title is shown and can be customized
@@ -41,7 +42,7 @@
 
 # pathfindR 1.6.3
 
-## Minor Changes
+## Minor Changes and Bug Fixes
 - Fixed coloring issue in `color_kegg_pathway()`
 - In `color_kegg_pathway()` the default value for `normalize_vals` is now `FALSE`
 
@@ -51,7 +52,7 @@
 ## Major Changes
 - fixed an issue in `get_kegg_gsets()` where empty result was returned for some organisms due to an error in parsing (#72)
 
-## Minor changes and bug fixes
+## Minor Changes and Bug Fixes
 - added `repel = TRUE` in `term_gene_graph()` and `combined_results_graph()` for better visualization of labels
 - fixed minor issue in `enrichment_chart()` (#75)
 - fixed minor issue in `visualize_term_interactions()`
@@ -82,7 +83,7 @@
 - added the column 'support' (the proportion of active subnetworks leading to enrichment over all subnetworks) in the output
 - updated the download URL in `get_biogrid_pin()` as BioGRID updated the URL for download
 
-## Minor changes and bug fixes
+## Minor Changes and Bug Fixes and bug fixes
 - changed old argument in the "Step-by-Step Execution of the pathfindR Enrichment Workflow" vignette
 - fixed an issue in `visualize_term_interactions()` where the file name was too long, it was causing an error on Windows. Limited to 100 characters (#58)
 
@@ -90,7 +91,7 @@
 
 # pathfindR 1.5.1
 
-## Minor changes and bug fixes
+## Minor Changes and Bug Fixes and bug fixes
 - Fixed issue in `check_java_version()` where java version 14 could not be parsed (#49)
 - Fixed issue in `combined_results_graph()` where gene nodes were not colored correctly (#55)
 
@@ -109,7 +110,7 @@
 - added the function `UpSet_plot()` to create UpSet plots of enriched terms
 - added the human cell markers gene sets data `cell_markers_gsets` and `cell_markers_descriptions`
 
-## Minor changes and bug fixes
+## Minor Changes and Bug Fixes and bug fixes
 - fixed an issue regarding `parallel::makeCluster()` in `run_pathfindR()` (#45)
 - fixed save-related issue in `download_kegg_png()` (#37, @rix133)
 - added the output data `RA_comparison_output` of pathfindR results on another RA-related dataset (GSE84074)
@@ -123,7 +124,7 @@
 
 # pathfindR 1.4.2
 
-## Minor changes and bug fixes
+## Minor Changes and Bug Fixes and bug fixes
 - Fixed corner case in `create_kappa_matrix()` when `chance` is 1, the metric is turned into 0
 - Fixed misused `class(.) == *` in `cluster_graph_vis()`
 
@@ -135,7 +136,7 @@
 - Fixed error in DESCRIPTION: the Java version in SystemRequirements was corrected to "Java (>= 8.0)"
 - The Java version is now checked
 
-## Minor changes and bug fixes
+## Minor Changes and Bug Fixes and bug fixes
 - Fixed behavior: when no input genes are present in the enriched hsa KEGG pathway, visualization of the pathway is now skipped
 - Added the argument `max_to_plot` to `visualize_hsa_KEGG()` and to `run_pathfindR()`. This argument controls the number of pathways to be visualized (default is NULL, i.e. no filter). This was implemented not to slow down the runtime of `run_pathfindR()` as downloading the png files is slow.
 - Fixed links to visualizations in `enriched_ters.Rmd`
@@ -172,7 +173,7 @@
 - The argument `sig_gene_thr` in subnetwork filtering via `filterActiveSnws()` now serves the threshold proportion of significant genes in the active subnetwork. e.g., if there are 100 significant genes and `sig_gene_thr = 0.03`, subnetwork that contain at least 3 (100 x 0.03) significant genes will be accepted for further analysis
 - Removed `pathview` dependency by implementing colored pathway diagram visualization function using `KEGGREST` and `KEGGgraph`
 
-## Minor changes and bug fixes
+## Minor Changes and Bug Fixes and bug fixes
 - In `hierarchical_term_clustering()`, redefined the distance measure as `1 - kappa statistic`
 - Fixed minor issue in `cluster_graph_vis()` (during the calculations for additional node colors)
 - Removed title from graph visualization of hierarchical clustering in `cluster_graph_vis()`
@@ -201,7 +202,7 @@
 - Changed clustering metric to kappa statistic, created the new clustering related functions `create_kappa_matrix`, `hierarchical_pw_clustering`, `fuzzy_pw_clustering` and `cluster_pathways`.
 - Implemented the new function `cluster_graph_vis` for visualizing graph diagrams of clustering results.
 
-## Minor changes and bug fixes
+## Minor Changes and Bug Fixes and bug fixes
 - Fixed the bug where the arguments `score_quan_thr` and `sig_gene_thr` for `run_pathfindR` were not being utilized.
 - in `run_pathfindR`, added message at the end of run, reporting the number enriched pathways.
 - the function `run_pathfindR` now creates a variable `org_dir` that is the "path/to/original/working/directory". `org_dir` is used in multiple functions to return to the original working directory if anything fails. This changes the previous behavior where if a function stopped with an error the directory was changed to "..", i.e. the parent directory. This change was adapted so that the user is returned to the original working directory if they supply a recursive output folder (`output_dir`, e.g. "./ALL_RESULTS/RESULT_A"). 
@@ -212,7 +213,7 @@
 ***
 
 # pathfindR 1.2.3
-## Minor changes and bug fixes
+## Minor Changes and Bug Fixes and bug fixes
 - in the function `plot_scores`, added the argument `label_cases` to indicate whether or not to label the cases in the pathway scoring heatmap plot. Also added the argument `case_control_titles` which allows the user to change the default "Case" and "Control" headers. Also added the arguments `low` and `high` used to change the low and high end colors of the scoring color gradient.
 - in the function `plot_scores`, reversed the color gradient to match the coloring scheme used by pathview (i.e. red for positive values, green for negative values)
 - minor change in `parseActiveSnwSearch`, replaced `score_thr` by `score_quan_thr`. This was done so that the scoring filter for active subnetworks could be performed based on the distribution of the current active subnetworks and not using a constant empirical score value threshold.
@@ -225,7 +226,7 @@
 
 ## Major Changes
 - fixed issue related to the package `pathview`.
-## Minor changes and bug fixes
+## Minor Changes and Bug Fixes and bug fixes
 - in the function `choose_clusters`, added option to use pathway names instead of pathway ids when visualizing the clustering dendrogram and heatmap.
 
 ***
@@ -235,7 +236,7 @@
 ## Major Changes
 - Added the option to specify a custom gene set when using `run_pathfindR`. For this, the `gene_sets` argument should be set to "Custom" and `custom_genes` and `custom_pathways` should be provided.
 
-## Minor changes and bug fixes
+## Minor Changes and Bug Fixes and bug fixes
 - fixed minor bug in `calculate_pw_scores` where if there was one DEG, subsetting the experiment matrix failed
 - added if condition to check if there were DEGs in `calculate_pw_scores`. If there is none, the pathway is skipped.
 - in `calculate_pw_scores`, if `cases` are provided, the pathways are reordered before plotting the heat map and returning the matrix according to their activity in `cases`. This way, "up" pathways are grouped together, same for "down" pathways.
@@ -258,7 +259,7 @@
 
 - Added the option `bubble` to plot a bubble chart displaying the enrichment results in `run_pathfindR` using the helper function `enrichment_chart`. To plot the bubble chart set `bubble = TRUE` in `run_pathfindR` or use `enrichment_chart(your_result_df)`. 
 
-## Minor changes and bug fixes
+## Minor Changes and Bug Fixes and bug fixes
 - Add the parameter `silent_option` to `run_pathfindR`. When `silent_option == TRUE` (default), the console outputs during active subnetwork search are printed to a file named "console_out.txt". If `silent_option == FALSE`, the output is printed on the screen. Default was set to `TRUE` because multiple console outputs are simultaneously printed when running in parallel.
 
 - Added the `list_active_snw_genes` parameter to `run_pathfindR`. When `list_active_snw_genes == TRUE`, the function adds the column `non_DEG_Active_Snw_Genes`, which reports the non-DEG active subnetwork genes for the active subnetwork which was enriched for the given pathway with the lowest p value.
@@ -279,7 +280,7 @@
 - Added the `gene_sets` option in `run_pathfindR` to chose between different gene sets. Available gene sets are `KEGG`, `Reactome`, `BioCarta` and Gene Ontology gene sets (`GO-BP`, `GO-CC` and `GO-MF`)
 - `cluster_pathways` automatically recognizes the ID type and chooses the gene sets accordingly
 
-## Minor changes and bug fixes
+## Minor Changes and Bug Fixes and bug fixes
 - Fixed issue regarding p values < 1e-13. No active subnetworks were found when there were p values < 1e-13. These are now changed to 1e-13 in the function `input_processing`
 - In `input_processing`, genes for which no interactions are found in the PIN are now removed before active subnetwork search
 - Duplicated gene symbols no longer raise an error. If there are duplicated symbols, the lowest p value is chosen for each gene symbol in the function `input_processing`
