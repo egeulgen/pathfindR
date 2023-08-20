@@ -4,11 +4,14 @@ input_df_A <- example_pathfindR_output[1:20, ]
 input_df_B <- example_comparison_output[1:20, ]
 
 test_that("`combine_pathfindR_results()` -- works as expected", {
+    mock_graph <- mockery::mock(NULL)
     mock_plot <- mockery::mock(NULL)
+    mockery::stub(combine_pathfindR_results, "combined_results_graph", mock_graph)
     mockery::stub(combine_pathfindR_results, "graphics::plot", mock_plot)
     expect_is(combined <- combine_pathfindR_results(input_df_A, input_df_B), "data.frame")
     expect_true(nrow(combined) <= nrow(input_df_A) + nrow(input_df_B))
     mockery::expect_called(mock_plot, 1)
+    mockery::expect_called(mock_graph, 1)
 })
 
 
