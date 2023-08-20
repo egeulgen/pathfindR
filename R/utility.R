@@ -1,3 +1,56 @@
+#' Active Subnetwork Search + Enrichment Analysis Wrapper for a Single Iteration
+#'
+#' @param i current iteration index (default = \code{NULL})
+#' @param dirs vector of directories for parallel runs
+#' @inheritParams active_snw_search
+#' @inheritParams enrichment_analyses
+#' @inheritParams active_snw_enrichment_wrapper
+#'
+#' @return Data frame of enrichment results using active subnetwork search results
+single_iter_wrapper <- function(i = NULL, dirs, input_processed, pin_path, score_quan_thr, sig_gene_thr, search_method, silent_option, use_all_positives,
+                                geneInitProbs, saTemp0, saTemp1, saIter, gaPop, gaIter, gaThread, gaCrossover, gaMut,
+                                grMaxDepth, grSearchDepth, grOverlap, grSubNum, gset_list, adj_method, enrichment_threshold,
+                                list_active_snw_genes) {
+  snws_file <- "active_snws"
+  dir_for_parallel_run <- NULL
+  if (!is.null(i)) {
+    snws_file <- paste0("active_snws_", i)
+    dir_for_parallel_run <- dirs[i]
+  }
+  snws <- active_snw_search(
+    input_for_search = input_processed,
+    pin_name_path = pin_path,
+    snws_file = snws_file,
+    dir_for_parallel_run = dir_for_parallel_run,
+    score_quan_thr = score_quan_thr,
+    sig_gene_thr = sig_gene_thr,
+    search_method = search_method,
+    seedForRandom = ifelse(is.null(i), 1234, i),
+    silent_option = silent_option,
+    use_all_positives = use_all_positives,
+    geneInitProbs = ifelse(!is.null(i), geneInitProbs[i], geneInitProbs),
+    saTemp0 = saTemp0, saTemp1 = saTemp1, saIter = saIter,
+    gaPop = gaPop, gaIter = gaIter,
+    gaThread = gaThread,
+    gaCrossover = gaCrossover, gaMut = gaMut,
+    grMaxDepth = grMaxDepth, grSearchDepth = grSearchDepth,
+    grOverlap = grOverlap, grSubNum = grSubNum
+  )
+  enrichment_res <- enrichment_analyses(
+    snws = snws,
+    sig_genes_vec = input_processed$GENE,
+    pin_name_path = pin_path,
+    genes_by_term = gset_list$genes_by_term,
+    term_descriptions = gset_list$term_descriptions,
+    adj_method = adj_method,
+    enrichment_threshold = enrichment_threshold,
+    list_active_snw_genes = list_active_snw_genes
+  )
+  return(enrichment_res)
+}
+
+
+
 #' Wrapper for Active Subnetwork Search + Enrichment over Single/Multiple Iteration(s)
 #'
 #' @param input_processed processed input data frame
@@ -97,65 +150,35 @@ active_snw_enrichment_wrapper <- function(input_processed,
 
     for (i in base::seq_len(iterations)) {
       dir_i <- file.path("active_snw_searches", paste0("Iteration_", i))
-      dir.create(dir_i, recursive = TRUE)
+      dir.create(dir_i, recursive = TRUE, showWarnings = FALSE)
       dirs <- c(dirs, dir_i)
     }
   }
 
-  single_iter_wrapper <- function(i = NULL) {
-    snws_file <- "active_snws"
-    dir_for_parallel_run <- NULL
-    if (!is.null(i)) {
-      snws_file <- paste0("active_snws_", i)
-      dir_for_parallel_run <- dirs[i]
-    }
-    snws <- active_snw_search(
-      input_for_search = input_processed,
-      pin_name_path = pin_path,
-      snws_file = snws_file,
-      dir_for_parallel_run = dir_for_parallel_run,
-      score_quan_thr = score_quan_thr,
-      sig_gene_thr = sig_gene_thr,
-      search_method = search_method,
-      seedForRandom = ifelse(is.null(i), 1234, i),
-      silent_option = silent_option,
-      use_all_positives = use_all_positives,
-      geneInitProbs = ifelse(!is.null(i), geneInitProbs[i], geneInitProbs),
-      saTemp0 = saTemp0, saTemp1 = saTemp1, saIter = saIter,
-      gaPop = gaPop, gaIter = gaIter,
-      gaThread = gaThread,
-      gaCrossover = gaCrossover, gaMut = gaMut,
-      grMaxDepth = grMaxDepth, grSearchDepth = grSearchDepth,
-      grOverlap = grOverlap, grSubNum = grSubNum
-    )
-    enrichment_res <- enrichment_analyses(
-      snws = snws,
-      sig_genes_vec = input_processed$GENE,
-      pin_name_path = pin_path,
-      genes_by_term = gset_list$genes_by_term,
-      term_descriptions = gset_list$term_descriptions,
-      adj_method = adj_method,
-      enrichment_threshold = enrichment_threshold,
-      list_active_snw_genes = list_active_snw_genes
-    )
-    return(enrichment_res)
-  }
-
   if (iterations == 1) {
-    combined_res <- single_iter_wrapper()
+    combined_res <- single_iter_wrapper(i = NULL, dirs, input_processed, pin_path, score_quan_thr, sig_gene_thr, search_method, silent_option, use_all_positives,
+                                        geneInitProbs, saTemp0, saTemp1, saIter, gaPop, gaIter, gaThread, gaCrossover, gaMut,
+                                        grMaxDepth, grSearchDepth, grOverlap, grSubNum, gset_list, adj_method, enrichment_threshold,
+                                        list_active_snw_genes)
   } else {
     if (!disable_parallel) {
       cl <- parallel::makeCluster(n_processes, setup_strategy = "sequential")
       doParallel::registerDoParallel(cl)
       `%dopar%` <- foreach::`%dopar%`
       combined_res <- foreach::foreach(i = 1:iterations, .combine = rbind, .packages = "pathfindR") %dopar% {
-        single_iter_wrapper(i)
+        single_iter_wrapper(i, dirs, input_processed, pin_path, score_quan_thr, sig_gene_thr, search_method, silent_option, use_all_positives,
+                            geneInitProbs, saTemp0, saTemp1, saIter, gaPop, gaIter, gaThread, gaCrossover, gaMut,
+                            grMaxDepth, grSearchDepth, grOverlap, grSubNum, gset_list, adj_method, enrichment_threshold,
+                            list_active_snw_genes)
       }
       parallel::stopCluster(cl)
     } else {
       combined_res <- c()
       for (i in 1:iterations) {
-        current_res <- single_iter_wrapper(i)
+        current_res <- single_iter_wrapper(i, dirs, score_quan_thr, sig_gene_thr, search_method, silent_option, use_all_positives,
+                                           geneInitProbs, saTemp0, saTemp1, saIter, gaPop, gaIter, gaThread, gaCrossover, gaMut,
+                                           grMaxDepth, grSearchDepth, grOverlap, grSubNum, gset_list, adj_method, enrichment_threshold,
+                                           list_active_snw_genes)
         combined_res <- rbind(combined_res, current_res)
       }
     }
