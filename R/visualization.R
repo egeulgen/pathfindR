@@ -535,9 +535,9 @@ color_kegg_pathway <- function(pw_id, change_vec, scale_vals = TRUE,
   ############ and handling of non-input pathway genes
   ## download KGML to determine gene nodes
   pwKGML <- tempfile()
-  KGML_URL <- obtain_KEGGML_URL(pw_id, pwKGML, quiet)
+  KGML_download_status <- download_KGML_file(pw_id, pwKGML, quiet)
 
-  if (is.na(KGML_URL) | is.na(file.info(pwKGML)$size)) {
+  if (is.na(KGML_download_status) | is.na(file.info(pwKGML)$size)) {
     return(NULL)
   }
 
@@ -692,9 +692,9 @@ color_kegg_pathway <- function(pw_id, change_vec, scale_vals = TRUE,
 #' @param pwKGML destination file
 #' @inheritParams color_kegg_pathway
 #'
-#' @return KGML URL
-obtain_KEGGML_URL <- function(pw_id, pwKGML, quiet = TRUE) {
-  KGML_URL <- tryCatch(
+#' @return download status (0 for success), if warning/error returns NA
+download_KGML_file <- function(pw_id, pwKGML, quiet = TRUE) {
+  status <- tryCatch(
     {
       utils::download.file(
         url = KEGGgraph::getKGMLurl(
@@ -718,7 +718,7 @@ obtain_KEGGML_URL <- function(pw_id, pwKGML, quiet = TRUE) {
       return(NA)
     }
   )
-  return(KGML_URL)
+  return(status)
 }
 
 
@@ -729,7 +729,7 @@ obtain_KEGGML_URL <- function(pw_id, pwKGML, quiet = TRUE) {
 #' @param fg_cols colors for the text and border
 #' @param bg_cols background colors of the objects in a pathway diagram.
 #'
-#' @return download status
+#' @return URL for colored KEGG pathway diagram
 obtain_colored_url <- function(pw_id, KEGG_gene_ids, fg_cols, bg_cols) {
   pw_url <- tryCatch(
     {
