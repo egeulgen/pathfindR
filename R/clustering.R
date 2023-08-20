@@ -201,7 +201,7 @@ hierarchical_term_clustering <- function(kappa_mat,
   )
   kappa_mat2 <- rbind(kappa_mat2, outliers_mat)
 
-  ### Hierarchical clustering
+  ### Perform hierarchical clustering
   clu <- stats::hclust(stats::as.dist(1 - kappa_mat2), method = clu_method)
 
   if (plot_hmap) {
@@ -211,11 +211,11 @@ hierarchical_term_clustering <- function(kappa_mat,
     )
   }
 
-  ### Choose optimal k if not specified
+  ### Choose optimal k (if not specified)
   if (is.null(num_clusters)) {
     kmax <- max(nrow(kappa_mat2) %/% 2, 2)
 
-    # sequence of k (num clusters) to try
+    # sequence of k (number of clusters) to try
     if (kmax <= 20) {
       kseq <- 2:kmax
     } else if (kmax <= 100) {
@@ -227,7 +227,7 @@ hierarchical_term_clustering <- function(kappa_mat,
       )
     }
 
-    # calculate average sil. width per k in sequence
+    # calculate average silhouette width per k in sequence
     avg_sils <- c()
     for (k in kseq) {
       avg_sils <- c(avg_sils, fpc::cluster.stats(stats::as.dist(1 - kappa_mat2),
@@ -249,11 +249,10 @@ hierarchical_term_clustering <- function(kappa_mat,
 
 
   if (plot_dend) {
-    plot(clu)
+    graphics::plot(clu)
     stats::rect.hclust(clu, k = k_opt)
   }
 
-  ### Return clusters
   clusters <- stats::cutree(clu, k = k_opt)
 
   return(clusters)
