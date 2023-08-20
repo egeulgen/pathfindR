@@ -8,6 +8,8 @@ gset_list_from_gmt(path2gmt, descriptions_idx = 2)
 }
 \arguments{
 \item{path2gmt}{path to the gmt file}
+
+\item{descriptions_idx}{index for descriptions (default = 2)}
 }
 \value{
 list containing 2 elements: \itemize{

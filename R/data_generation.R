@@ -155,6 +155,7 @@ get_pin_file <- function(source = "BioGRID", org = "Homo_sapiens", path2pin, ...
 #' Retrieve Gene Sets from GMT-format File
 #'
 #' @param path2gmt path to the gmt file
+#' @param descriptions_idx index for descriptions (default = 2)
 #'
 #' @return list containing 2 elements: \itemize{
 #' \item{gene_sets}{A list containing the genes involved in each gene set}
