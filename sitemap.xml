@@ -109,6 +109,9 @@
     <loc>https://egeulgen.github.io/pathfindR/reference/create_kappa_matrix.html</loc>
   </url>
   <url>
+    <loc>https://egeulgen.github.io/pathfindR/reference/download_KGML_file.html</loc>
+  </url>
+  <url>
     <loc>https://egeulgen.github.io/pathfindR/reference/download_kegg_png.html</loc>
   </url>
   <url>
@@ -169,9 +172,6 @@
     <loc>https://egeulgen.github.io/pathfindR/reference/input_testing.html</loc>
   </url>
   <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/obtain_KEGGML_URL.html</loc>
-  </url>
-  <url>
     <loc>https://egeulgen.github.io/pathfindR/reference/obtain_colored_url.html</loc>
   </url>
   <url>
@@ -191,6 +191,9 @@
   </url>
   <url>
     <loc>https://egeulgen.github.io/pathfindR/reference/score_terms.html</loc>
+  </url>
+  <url>
+    <loc>https://egeulgen.github.io/pathfindR/reference/single_iter_wrapper.html</loc>
   </url>
   <url>
     <loc>https://egeulgen.github.io/pathfindR/reference/summarize_enrichment_results.html</loc>
