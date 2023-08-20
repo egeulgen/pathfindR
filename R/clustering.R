@@ -173,11 +173,11 @@ hierarchical_term_clustering <- function(kappa_mat,
   }
 
   if (!is.logical(plot_hmap)) {
-    stop("`plot_hmap` should be logical")
+    stop("`plot_hmap` should be TRUE or FALSE")
   }
 
   if (!is.logical(plot_dend)) {
-    stop("`plot_dend` should be logical")
+    stop("`plot_dend` should be TRUE or FALSE")
   }
 
   ### Add excluded (zero-length) genes
