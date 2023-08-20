@@ -7,6 +7,8 @@
 single_iter_wrapper(
   i = NULL,
   dirs,
+  input_processed,
+  pin_path,
   score_quan_thr,
   sig_gene_thr,
   search_method,
@@ -35,6 +37,10 @@ single_iter_wrapper(
 \item{i}{current iteration index (default = \code{NULL})}
 
 \item{dirs}{vector of directories for parallel runs}
+
+\item{input_processed}{processed input data frame}
+
+\item{pin_path}{path/to/PIN/file}
 
 \item{score_quan_thr}{active subnetwork score quantile threshold. Must be
 between 0 and 1 or set to -1 for not filtering. (Default = 0.8)}
