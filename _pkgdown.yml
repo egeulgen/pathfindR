@@ -46,6 +46,7 @@ reference:
       Active subnetwork search- and Enrichment-related functions
     contents:
       - active_snw_enrichment_wrapper
+      - single_iter_wrapper
       - active_snw_search
       - annotate_term_genes
       - enrichment
