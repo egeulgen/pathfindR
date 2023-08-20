@@ -4,7 +4,7 @@
 \alias{gset_list_from_gmt}
 \title{Retrieve Gene Sets from GMT-format File}
 \usage{
-gset_list_from_gmt(path2gmt)
+gset_list_from_gmt(path2gmt, descriptions_idx = 2)
 }
 \arguments{
 \item{path2gmt}{path to the gmt file}
