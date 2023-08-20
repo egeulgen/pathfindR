@@ -84,6 +84,12 @@ test_that("`get_kegg_gsets()` -- works as expected", {
     toy_kegg_pw_list <- sub(" & .*$", "", sub("-([^-]*)$", "&\\1", toy_kegg_pw_list))
     expect_true(all(toy_kegg_pw_list %in% hsa_kegg$descriptions))
     expect_true(all(names(toy_kegg_pw_list) %in% names(hsa_kegg[["gene_sets"]])))
+
+    toy_kegg_pw_list2 <- KEGGREST::keggList("pathway", "hsa")[1]
+    mockery::stub(get_kegg_gsets, "KEGGREST::keggList", toy_kegg_pw_list2)
+    expect_is(res <- get_kegg_gsets(), "list")
+    expect_length(res$gene_sets, 0)
+    expect_length(res$descriptions, 0)
 })
 
 test_that("`get_reactome_gsets()` -- works as expected", {

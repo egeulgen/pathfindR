@@ -151,7 +151,7 @@ test_that("`hierarchical_term_clustering()` -- argument checks work", {
 })
 
 test_that("`fuzzy_term_clustering()` -- returns matrix of cluster memberships", {
-    expect_is(res_mat <- fuzzy_term_clustering(input_kappa_mat, enrichment_res),
+    expect_is(res_mat <- fuzzy_term_clustering(create_kappa_matrix(example_pathfindR_output[1:25, ]), example_pathfindR_output[1:25, ], kappa_threshold = 0.1),
         "matrix")
     expect_true(is.logical(res_mat))
 })

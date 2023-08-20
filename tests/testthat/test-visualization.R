@@ -78,6 +78,16 @@ test_that("`visualize_hsa_KEGG()` -- creates expected png file(s)", {
         expect_null(visualize_hsa_KEGG(hsa_kegg_ids = single_result$ID, input_processed = processed_input))
     }, color_kegg_pathway = function(...) mock_color_kegg_pw, .package = "pathfindR")
     expect_true(file.exists(expected_out_file))
+
+
+    mock_color_kegg_pw <- list(file_path = system.file("extdata", "logo.png", package = "pathfindR"),
+                               all_key_cols = "green", all_brks = c(0.5, 3, 5.5, 8, 10.5))
+    constant_input <- processed_input
+    constant_input$CHANGE <- 1e6
+    with_mocked_bindings({
+      expect_null(visualize_hsa_KEGG(hsa_kegg_ids = single_result$ID, input_processed = constant_input))
+    }, color_kegg_pathway = function(...) mock_color_kegg_pw, .package = "pathfindR")
+    expect_true(file.exists(expected_out_file))
 })
 
 test_that("`visualize_hsa_KEGG()` -- skips if non-existent", {
@@ -127,6 +137,7 @@ test_that("`color_kegg_pathway()` -- works as expected", {
 test_that("`color_kegg_pathway()` -- exceptions are handled properly", {
     change_vec <- c(-2, 4, 6)
     names(change_vec) <- c("hsa:2821", "hsa:226", "hsa:229")
+
     expect_error(color_kegg_pathway(pw_id = "hsa03040", change_vec = change_vec,
         scale_vals = "INVALID"), "`scale_vals` should be logical")
     expect_error(color_kegg_pathway(pw_id = "hsa03040", change_vec = change_vec,
@@ -137,6 +148,12 @@ test_that("`color_kegg_pathway()` -- exceptions are handled properly", {
         node_cols = c("red", "#FFFFFF", "INVALID")), "`node_cols` should be a vector of valid colors")
 
     skip_on_cran()
+
+    constant_vec <- rep(1e6, 3)
+    names(constant_vec) <- c("hsa:2821", "hsa:226", "hsa:229")
+
+    expect_silent(color_kegg_pathway(pw_id = "hsa03040", change_vec = change_vec, node_cols = c("red", "blue", "green")))
+    expect_message(color_kegg_pathway(pw_id = "hsa03040", change_vec = constant_vec, node_cols = c("red", "blue", "green")))
 
     expect_null(suppressWarnings(color_kegg_pathway(pw_id = "hsa03040", change_vec = NULL)))
     expect_message(color_kegg_pathway(pw_id = "hsa11111", change_vec = c()))

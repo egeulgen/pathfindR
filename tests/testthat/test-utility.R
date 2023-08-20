@@ -21,6 +21,10 @@ test_that("`active_snw_enrichment_wrapper()` -- works as expected", {
         expect_is(active_snw_enrichment_wrapper(input_processed = input_df, pin_path = "Biogrid",
             gset_list = list(), enrichment_threshold = 0.05, list_active_snw_genes = FALSE,
             iterations = 2, disable_parallel = TRUE), "data.frame")
+
+        expect_warning(active_snw_enrichment_wrapper(input_processed = input_df, pin_path = "Biogrid",
+            gset_list = list(), enrichment_threshold = 0.05, list_active_snw_genes = FALSE, search_method = "GA",
+            iterations = 2))
     }, single_iter_wrapper = function(...) example_pathfindR_output, .package = "pathfindR")
 
     skip_on_cran()
