@@ -5,15 +5,17 @@ gene_pool <- paste0("Gene", 1:100)
 toy_biogrid_pin <- data.frame(A = sample(gene_pool, 25), B = sample(gene_pool, 25))
 colnames(toy_biogrid_pin) <- c("Official Symbol Interactor A", "Official Symbol Interactor B")
 
-test_that("`process_pin()` -- removes self-interactions and duplicated interactions", {
-    input_pin_df <- toy_biogrid_pin
-    colnames(input_pin_df) <- c("Interactor_A", "Interactor_B")
-    input_pin_df <- rbind(input_pin_df, data.frame(Interactor_A = input_pin_df$Interactor_B[1:5], Interactor_B = input_pin_df$Interactor_A[1:5]))
+test_that("`process_pin()` -- removes self-interactions and duplicated interactions",
+    {
+        input_pin_df <- toy_biogrid_pin
+        colnames(input_pin_df) <- c("Interactor_A", "Interactor_B")
+        input_pin_df <- rbind(input_pin_df, data.frame(Interactor_A = input_pin_df$Interactor_B[1:5],
+            Interactor_B = input_pin_df$Interactor_A[1:5]))
 
-    processed_df <- process_pin(input_pin_df)
+        processed_df <- process_pin(input_pin_df)
 
-    expect_true(nrow(processed_df) < nrow(input_pin_df))
-})
+        expect_true(nrow(processed_df) < nrow(input_pin_df))
+    })
 
 test_that("`get_biogrid_pin()` -- returns a path to a valid PIN file", {
     mockery::stub(get_biogrid_pin, "utils::download.file", NULL)
@@ -23,7 +25,8 @@ test_that("`get_biogrid_pin()` -- returns a path to a valid PIN file", {
     expected_biogrid_pin_df <- toy_biogrid_pin
     colnames(expected_biogrid_pin_df) <- c("Interactor_A", "Interactor_B")
     expected_biogrid_pin_df <- process_pin(expected_biogrid_pin_df)
-    expected_biogrid_pin_df <- data.frame(V1 = expected_biogrid_pin_df$Interactor_A, V2 = "pp", V3 = expected_biogrid_pin_df$Interactor_B)
+    expected_biogrid_pin_df <- data.frame(V1 = expected_biogrid_pin_df$Interactor_A,
+        V2 = "pp", V3 = expected_biogrid_pin_df$Interactor_B)
 
     pin_path <- get_biogrid_pin()
     pin_df <- read.delim(pin_path, header = FALSE)
@@ -34,7 +37,8 @@ test_that("`get_biogrid_pin()` -- returns a path to a valid PIN file", {
 
 test_that("`get_biogrid_pin()` -- error check works", {
     # invalid organism error
-    expect_error(get_biogrid_pin(org = "Hsapiens"), paste("Hsapiens is not a valid Biogrid organism.", "Available organisms are listed on: https://wiki.thebiogrid.org/doku.php/statistics"))
+    expect_error(get_biogrid_pin(org = "Hsapiens"), paste("Hsapiens is not a valid Biogrid organism.",
+        "Available organisms are listed on: https://wiki.thebiogrid.org/doku.php/statistics"))
 })
 
 test_that("`get_pin_file()` -- works as expected", {
@@ -47,7 +51,8 @@ test_that("`get_pin_file()` -- works as expected", {
 })
 
 test_that("`gset_list_from_gmt()` -- works as expected", {
-    gmt_list <- list(GSA = sample(gene_pool, 80), GSB = sample(gene_pool, 100), GSC = sample(gene_pool, 33))
+    gmt_list <- list(GSA = sample(gene_pool, 80), GSB = sample(gene_pool, 100), GSC = sample(gene_pool,
+        33))
     description_vec <- c(GSA = "gene set A", GSB = "gene set B", GSC = "gene set C")
 
     gmt_df <- c()
@@ -58,7 +63,8 @@ test_that("`gset_list_from_gmt()` -- works as expected", {
     }
 
     path2gmt <- tempfile()
-    write.table(gmt_df, path2gmt, sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
+    write.table(gmt_df, path2gmt, sep = "\t", col.names = FALSE, row.names = FALSE,
+        quote = FALSE)
 
     expect_is(res <- gset_list_from_gmt(path2gmt), "list")
     expect_identical(res$gene_sets, gmt_list)
@@ -91,7 +97,9 @@ test_that("`get_reactome_gsets()` -- works as expected", {
 test_that("`get_mgsigdb_gsets()` -- works as expected", {
     toy_msigdb_df <- c()
     for (gs_idx in 1:5) {
-        toy_msigdb_df <- rbind(toy_msigdb_df, data.frame(gene_symbol = sample(gene_pool, sample(25:75, 1)), gs_id = paste0("GS", gs_idx), gs_name = paste("Gene Set", gs_idx)))
+        toy_msigdb_df <- rbind(toy_msigdb_df, data.frame(gene_symbol = sample(gene_pool,
+            sample(25:75, 1)), gs_id = paste0("GS", gs_idx), gs_name = paste("Gene Set",
+            gs_idx)))
     }
     mockery::stub(get_mgsigdb_gsets, "msigdbr::msigdbr", toy_msigdb_df)
 
@@ -103,7 +111,8 @@ test_that("`get_mgsigdb_gsets()` -- works as expected", {
 
 test_that("`get_mgsigdb_gsets()` -- error works", {
     all_collections <- c("H", "C1", "C2", "C3", "C4", "C5", "C6", "C7")
-    expect_error(pathfindR:::get_mgsigdb_gsets(collection = "INVALID"), paste0("`collection` should be one of ", paste(dQuote(all_collections), collapse = ", ")))
+    expect_error(pathfindR:::get_mgsigdb_gsets(collection = "INVALID"), paste0("`collection` should be one of ",
+        paste(dQuote(all_collections), collapse = ", ")))
 })
 
 test_that("`get_gene_sets_list()` works", {
@@ -114,5 +123,6 @@ test_that("`get_gene_sets_list()` works", {
     mockery::stub(get_gene_sets_list, "get_mgsigdb_gsets", NULL)
     expect_silent(kegg <- get_gene_sets_list(org_code = "vcn"))
     expect_message(rctm <- get_gene_sets_list("Reactome"))
-    expect_silent(msig <- get_gene_sets_list("MSigDB", species = "Mus musculus", collection = "C3", subcollection = "MIR:MIR_Legacy"))
+    expect_silent(msig <- get_gene_sets_list("MSigDB", species = "Mus musculus",
+        collection = "C3", subcollection = "MIR:MIR_Legacy"))
 })

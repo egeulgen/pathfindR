@@ -21,9 +21,11 @@ test_that("`run_pathfindR()` -- works as expected", {
     mockery::stub(run_pathfindR, "annotate_term_genes", mock_annotate_term_genes)
     mockery::stub(run_pathfindR, "graphics::plot", mock_plot)
 
-    expected_messages <- paste(c("The input looks OK", "Plotting the enrichment bubble chart", paste(c(paste0("Found ", nrow(example_pathfindR_output),
-        " enriched terms\n"), "You may run:", "- cluster_enriched_terms() for clustering enriched terms", "- visualize_terms() for visualizing enriched term diagrams\n"),
-        collapse = "\n")), collapse = "|")
+    expected_messages <- paste(c("The input looks OK", "Plotting the enrichment bubble chart",
+        paste(c(paste0("Found ", nrow(example_pathfindR_output), " enriched terms\n"),
+            "You may run:", "- cluster_enriched_terms() for clustering enriched terms",
+            "- visualize_terms() for visualizing enriched term diagrams\n"), collapse = "\n")),
+        collapse = "|")
     # wrapper functions correctly
     expected_out_dir <- file.path(tempdir(check = TRUE), "pathfindR_results")
     expect_message(res <- run_pathfindR(input_data_frame), expected_messages)
@@ -44,6 +46,8 @@ test_that("`run_pathfindR()` -- works as expected", {
 })
 
 test_that("`run_pathfindR()` argument checks work", {
-    expect_error(run_pathfindR(input_data_frame, plot_enrichment_chart = "INVALID"), "`plot_enrichment_chart` should be either TRUE or FALSE")
-    expect_error(run_pathfindR(input_data_frame, list_active_snw_genes = "INVALID"), "`list_active_snw_genes` should be either TRUE or FALSE")
+    expect_error(run_pathfindR(input_data_frame, plot_enrichment_chart = "INVALID"),
+        "`plot_enrichment_chart` should be either TRUE or FALSE")
+    expect_error(run_pathfindR(input_data_frame, list_active_snw_genes = "INVALID"),
+        "`list_active_snw_genes` should be either TRUE or FALSE")
 })
