@@ -47,6 +47,7 @@ create_kappa_matrix <- function(enrichment_res,
   if (use_active_snw_genes) {
     nec_cols <- c(nec_cols, "non_Signif_Snw_Genes")
   }
+
   if (!all(nec_cols %in% colnames(enrichment_res))) {
     stop(
       "`enrichment_res` should contain all of ",
@@ -164,8 +165,8 @@ hierarchical_term_clustering <- function(kappa_mat,
                                          plot_hmap = FALSE, plot_dend = TRUE) {
   ### Set ID/Name index
   chosen_id <- ifelse(use_description,
-    which(colnames(enrichment_res) == "Term_Description"),
-    which(colnames(enrichment_res) == "ID")
+                      which(colnames(enrichment_res) == "Term_Description"),
+                      which(colnames(enrichment_res) == "ID")
   )
 
   ### Argument checks
@@ -178,11 +179,11 @@ hierarchical_term_clustering <- function(kappa_mat,
   }
 
   if (!is.logical(plot_hmap)) {
-    stop("`plot_hmap` should be logical")
+    stop("`plot_hmap` should be TRUE or FALSE")
   }
 
   if (!is.logical(plot_dend)) {
-    stop("`plot_dend` should be logical")
+    stop("`plot_dend` should be TRUE or FALSE")
   }
 
   ### Add excluded (zero-length) genes
@@ -190,31 +191,31 @@ hierarchical_term_clustering <- function(kappa_mat,
   cond <- !enrichment_res[, chosen_id] %in% rownames(kappa_mat2)
   outliers <- enrichment_res[cond, chosen_id]
   outliers_mat <- matrix(-1,
-    nrow = nrow(kappa_mat2), ncol = length(outliers),
-    dimnames = list(rownames(kappa_mat2), outliers)
+                         nrow = nrow(kappa_mat2), ncol = length(outliers),
+                         dimnames = list(rownames(kappa_mat2), outliers)
   )
   kappa_mat2 <- cbind(kappa_mat2, outliers_mat)
   outliers_mat <- matrix(-1,
-    nrow = length(outliers), ncol = ncol(kappa_mat2),
-    dimnames = list(outliers, colnames(kappa_mat2))
+                         nrow = length(outliers), ncol = ncol(kappa_mat2),
+                         dimnames = list(outliers, colnames(kappa_mat2))
   )
   kappa_mat2 <- rbind(kappa_mat2, outliers_mat)
 
-  ### Hierarchical clustering
+  ### Perform hierarchical clustering
   clu <- stats::hclust(stats::as.dist(1 - kappa_mat2), method = clu_method)
 
   if (plot_hmap) {
     stats::heatmap(kappa_mat2,
-      distfun = function(x) stats::as.dist(1 - x),
-      hclustfun = function(x) stats::hclust(x, method = clu_method)
+                   distfun = function(x) stats::as.dist(1 - x),
+                   hclustfun = function(x) stats::hclust(x, method = clu_method)
     )
   }
 
-  ### Choose optimal k if not specified
+  ### Choose optimal k (if not specified)
   if (is.null(num_clusters)) {
     kmax <- max(nrow(kappa_mat2) %/% 2, 2)
 
-    # sequence of k (num clusters) to try
+    # sequence of k (number of clusters) to try
     if (kmax <= 20) {
       kseq <- 2:kmax
     } else if (kmax <= 100) {
@@ -226,12 +227,12 @@ hierarchical_term_clustering <- function(kappa_mat,
       )
     }
 
-    # calculate average sil. width per k in sequence
+    # calculate average silhouette width per k in sequence
     avg_sils <- c()
     for (k in kseq) {
       avg_sils <- c(avg_sils, fpc::cluster.stats(stats::as.dist(1 - kappa_mat2),
-        stats::cutree(clu, k = k),
-        silhouette = TRUE
+                                                 stats::cutree(clu, k = k),
+                                                 silhouette = TRUE
       )$avg.silwidth)
     }
 
@@ -248,11 +249,10 @@ hierarchical_term_clustering <- function(kappa_mat,
 
 
   if (plot_dend) {
-    plot(clu)
+    graphics::plot(clu)
     stats::rect.hclust(clu, k = k_opt)
   }
 
-  ### Return clusters
   clusters <- stats::cutree(clu, k = k_opt)
 
   return(clusters)
@@ -365,12 +365,12 @@ fuzzy_term_clustering <- function(kappa_mat, enrichment_res,
   names(clusters) <- base::seq_len(length(clusters))
 
   cluster_mat <- matrix(FALSE,
-    nrow = nrow(enrichment_res),
-    ncol = length(clusters),
-    dimnames = list(
-      enrichment_res[, chosen_id],
-      names(clusters)
-    )
+                        nrow = nrow(enrichment_res),
+                        ncol = length(clusters),
+                        dimnames = list(
+                          enrichment_res[, chosen_id],
+                          names(clusters)
+                        )
   )
   for (clu in names(clusters)) {
     clu_terms <- clusters[[clu]]
@@ -619,28 +619,28 @@ cluster_enriched_terms <- function(enrichment_res,
   ### Cluster Terms
   if (method == "hierarchical") {
     clu_obj <- R.utils::doCall("hierarchical_term_clustering",
-      kappa_mat = kappa_mat,
-      enrichment_res = enrichment_res,
-      use_description = use_description,
-      ...
+                               kappa_mat = kappa_mat,
+                               enrichment_res = enrichment_res,
+                               use_description = use_description,
+                               ...
     )
   } else {
     clu_obj <- R.utils::doCall("fuzzy_term_clustering",
-      kappa_mat = kappa_mat,
-      enrichment_res = enrichment_res,
-      use_description = use_description,
-      ...
+                               kappa_mat = kappa_mat,
+                               enrichment_res = enrichment_res,
+                               use_description = use_description,
+                               ...
     )
   }
 
   ### Graph Visualization of Clusters
   if (plot_clusters_graph) {
     R.utils::doCall("cluster_graph_vis",
-      clu_obj = clu_obj,
-      kappa_mat = kappa_mat,
-      enrichment_res = enrichment_res,
-      use_description = use_description,
-      ...
+                    clu_obj = clu_obj,
+                    kappa_mat = kappa_mat,
+                    enrichment_res = enrichment_res,
+                    use_description = use_description,
+                    ...
     )
   }
 
@@ -649,8 +649,8 @@ cluster_enriched_terms <- function(enrichment_res,
 
   ### Set ID/Name index
   chosen_id <- ifelse(use_description,
-    which(colnames(enrichment_res) == "Term_Description"),
-    which(colnames(enrichment_res) == "ID")
+                      which(colnames(enrichment_res) == "Term_Description"),
+                      which(colnames(enrichment_res) == "ID")
   )
 
   if (method == "hierarchical") {
@@ -658,8 +658,8 @@ cluster_enriched_terms <- function(enrichment_res,
     clu_idx <- match(clustered_df[, chosen_id], names(clu_obj))
     clustered_df$Cluster <- clu_obj[clu_idx]
     clustered_df <- clustered_df[order(clustered_df$Cluster,
-      clustered_df$lowest_p,
-      decreasing = FALSE
+                                       clustered_df$lowest_p,
+                                       decreasing = FALSE
     ), ]
 
     tmp <- tapply(clustered_df[, chosen_id], clustered_df$Cluster, function(x) x[1])
@@ -685,8 +685,8 @@ cluster_enriched_terms <- function(enrichment_res,
 
     clustered_df <- clustered_df2
     clustered_df <- clustered_df[order(clustered_df$Cluster,
-      clustered_df$lowest_p,
-      decreasing = FALSE
+                                       clustered_df$lowest_p,
+                                       decreasing = FALSE
     ), ]
 
     tmp <- tapply(clustered_df[, chosen_id], clustered_df$Cluster, function(x) x[1])

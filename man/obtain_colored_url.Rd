@@ -16,7 +16,7 @@ obtain_colored_url(pw_id, KEGG_gene_ids, fg_cols, bg_cols)
 \item{bg_cols}{background colors of the objects in a pathway diagram.}
 }
 \value{
-download status
+URL for colored KEGG pathway diagram
 }
 \description{
 Obtain URL for a KEGG pathway diagram with a given set of genes marked

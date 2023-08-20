@@ -4,7 +4,7 @@
 \alias{get_biogrid_pin}
 \title{Retrieve the Requested Release of Organism-specific BioGRID PIN}
 \usage{
-get_biogrid_pin(org = "Homo_sapiens", path2pin, release = "4.4.211")
+get_biogrid_pin(org = "Homo_sapiens", path2pin, release = "4.4.224")
 }
 \arguments{
 \item{org}{organism name. BioGRID naming requires underscores for spaces so
@@ -15,7 +15,7 @@ list of available organisms (default = "Homo_sapiens")}
 \item{path2pin}{the path of the file to save the PIN data. By default, the
 PIN data is saved in a temporary file}
 
-\item{release}{the requested BioGRID release (default = "4.4.211")}
+\item{release}{the requested BioGRID release (default = "4.4.224")}
 }
 \value{
 the path of the file in which the PIN data was saved. If

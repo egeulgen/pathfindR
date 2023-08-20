@@ -1,125 +1,134 @@
-##################################################
-## Package: pathfindR
-## Script purpose: Unit testing script for
-## functions related to data generation
-## Date: Apr 27, 2023
-## Author: Ege Ulgen
-##################################################
+## Tests for functions related to data generation - Aug 2023
 
-org_met <- getOption("download.file.method")
-org_extra <- getOption("download.file.extra")
-options(download.file.method = "curl", download.file.extra = "-k -L")
+set.seed(123)
+gene_pool <- paste0("Gene", 1:100)
+toy_biogrid_pin <- data.frame(A = sample(gene_pool, 25), B = sample(gene_pool, 25))
+colnames(toy_biogrid_pin) <- c("Official Symbol Interactor A", "Official Symbol Interactor B")
 
-# get_biogrid_pin ---------------------------------------------------------
-test_that("`get_biogrid_pin()` returns a path to a valid PIN file", {
-  skip_on_cran()
-  # v4.4.198
-  pin_path <- pathfindR:::get_biogrid_pin(org = "Pan_troglodytes")
-  pin_df <- read.delim(pin_path, header = FALSE)
-  expect_true(ncol(pin_df) == 3)
-  expect_true(all(pin_df[, 2] == "pp"))
+test_that("`process_pin()` -- removes self-interactions and duplicated interactions",
+    {
+        input_pin_df <- toy_biogrid_pin
+        colnames(input_pin_df) <- c("Interactor_A", "Interactor_B")
+        input_pin_df <- rbind(input_pin_df, data.frame(Interactor_A = input_pin_df$Interactor_B[1:5],
+            Interactor_B = input_pin_df$Interactor_A[1:5]))
+
+        processed_df <- process_pin(input_pin_df)
+
+        expect_true(nrow(processed_df) < nrow(input_pin_df))
+    })
+
+test_that("`get_biogrid_pin()` -- returns a path to a valid PIN file", {
+    mockery::stub(get_biogrid_pin, "utils::download.file", NULL)
+    mockery::stub(get_biogrid_pin, "utils::unzip", list(Name = "BIOGRID-ORGANISM-Homo_sapiens-4.4.211.tab3.txt"))
+    mockery::stub(get_biogrid_pin, "utils::read.delim", toy_biogrid_pin)
+
+    expected_biogrid_pin_df <- toy_biogrid_pin
+    colnames(expected_biogrid_pin_df) <- c("Interactor_A", "Interactor_B")
+    expected_biogrid_pin_df <- process_pin(expected_biogrid_pin_df)
+    expected_biogrid_pin_df <- data.frame(V1 = expected_biogrid_pin_df$Interactor_A,
+        V2 = "pp", V3 = expected_biogrid_pin_df$Interactor_B)
+
+    pin_path <- get_biogrid_pin()
+    pin_df <- read.delim(pin_path, header = FALSE)
+    expect_true(ncol(pin_df) == 3)
+    expect_true(all(pin_df[, 2] == "pp"))
+    expect_identical(pin_df, expected_biogrid_pin_df)
 })
 
-test_that("`get_biogrid_pin()` error check works", {
-  # invalid organism error
-  expect_error(
-    pathfindR:::get_biogrid_pin(org = "Hsapiens"),
-    paste(
-      "Hsapiens is not a valid Biogrid organism.",
-      "Available organisms are listed on: https://wiki.thebiogrid.org/doku.php/statistics"
-    )
-  )
+test_that("`get_biogrid_pin()` -- error check works", {
+    # invalid organism error
+    expect_error(get_biogrid_pin(org = "Hsapiens"), paste("Hsapiens is not a valid Biogrid organism.",
+        "Available organisms are listed on: https://wiki.thebiogrid.org/doku.php/statistics"))
 })
 
-# get_pin_file ------------------------------------------------------------
-test_that("`get_pin_file()` works", {
-  # unimplemented error
-  expect_error(
-    get_pin_file(source = "STRING"),
-    "As of this version, this function is implemented to get data from BioGRID only"
-  )
+test_that("`get_pin_file()` -- works as expected", {
+    with_mocked_bindings({
+        pin_path <- get_pin_file()
+        expect_identical(pin_path, "/path/to/some/PIN/file")
+    }, get_biogrid_pin = function(...) "/path/to/some/PIN/file", .package = "pathfindR")
 
-  skip_on_cran()
-  pin_path <- get_pin_file(
-    source = "BioGRID",
-    org = "Pan_troglodytes",
-    release = "3.5.179"
-  )
-  pin_df <- read.delim(pin_path, header = FALSE)
-  expect_true(ncol(pin_df) == 3)
-  expect_true(all(pin_df[, 2] == "pp"))
+    expect_error(get_pin_file(source = "STRING"), "As of this version, this function is implemented to get data from BioGRID only")
 })
 
-options(download.file.method = org_met, download.file.extra = org_extra)
-# get_kegg_gsets ----------------------------------------------------------
-test_that("`get_kegg_gsets() works`", {
-  skip_on_cran()
-  # hsa - default
-  expect_silent(hsa_kegg <- pathfindR:::get_kegg_gsets())
-  expect_length(hsa_kegg, 2)
-  expect_true(all(names(hsa_kegg) == c("gene_sets", "descriptions")))
-  expect_true(all(names(hsa_kegg[["gene_sets"]] %in% names(hsa_kegg[["descriptions"]]))))
+test_that("`gset_list_from_gmt()` -- works as expected", {
+    gmt_list <- list(GSA = sample(gene_pool, 80), GSB = sample(gene_pool, 100), GSC = sample(gene_pool,
+        33))
+    description_vec <- c(GSA = "gene set A", GSB = "gene set B", GSC = "gene set C")
+
+    gmt_df <- c()
+    for (gset in names(gmt_list)) {
+        tmp <- c(gset, description_vec[gset])
+        tmp <- c(tmp, gmt_list[[gset]], rep("", 100 - length(gmt_list[[gset]])))
+        gmt_df <- rbind(gmt_df, tmp)
+    }
+
+    path2gmt <- tempfile()
+    write.table(gmt_df, path2gmt, sep = "\t", col.names = FALSE, row.names = FALSE,
+        quote = FALSE)
+
+    expect_is(res <- gset_list_from_gmt(path2gmt), "list")
+    expect_identical(res$gene_sets, gmt_list)
+    expect_identical(res$descriptions, description_vec)
 })
 
-options(download.file.method = "curl", download.file.extra = "-k -L")
-# get_reactome_gsets ------------------------------------------------------
-test_that("`get_reactome_gsets()` works", {
-  skip_on_cran()
-  expect_silent(reactome <- pathfindR:::get_reactome_gsets())
-  expect_length(reactome, 2)
-  expect_true(all(names(reactome) == c("gene_sets", "descriptions")))
-  expect_true(all(names(reactome[["gene_sets"]] %in% names(reactome[["descriptions"]]))))
+
+test_that("`get_kegg_gsets()` -- works as expected", {
+    skip_on_cran()
+    toy_kegg_pw_list <- KEGGREST::keggList("pathway", "hsa")[10:11]
+    mockery::stub(get_kegg_gsets, "KEGGREST::keggList", toy_kegg_pw_list)
+
+    expect_is(hsa_kegg <- get_kegg_gsets(), "list")
+    expect_length(hsa_kegg, 2)
+    expect_true(all(names(hsa_kegg) == c("gene_sets", "descriptions")))
+    expect_true(all(names(hsa_kegg[["gene_sets"]]) %in% names(hsa_kegg[["descriptions"]])))
+    toy_kegg_pw_list <- sub(" & .*$", "", sub("-([^-]*)$", "&\\1", toy_kegg_pw_list))
+    expect_true(all(toy_kegg_pw_list %in% hsa_kegg$descriptions))
+    expect_true(all(names(toy_kegg_pw_list) %in% names(hsa_kegg[["gene_sets"]])))
+
+    toy_kegg_pw_list2 <- KEGGREST::keggList("pathway", "hsa")[1]
+    mockery::stub(get_kegg_gsets, "KEGGREST::keggList", toy_kegg_pw_list2)
+    expect_is(res <- get_kegg_gsets(), "list")
+    expect_length(res$gene_sets, 0)
+    expect_length(res$descriptions, 0)
 })
 
-# get_mgsigdb_gsets -------------------------------------------------------
-test_that("`get_mgsigdb_gsets()` works", {
-  skip_on_cran()
-  expect_silent(hsa_C2_cgp <- pathfindR:::get_mgsigdb_gsets(
-    collection = "C3",
-    subcollection = "MIR:MIR_Legacy"
-  ))
-  expect_length(hsa_C2_cgp, 2)
-  expect_true(all(names(hsa_C2_cgp) == c("gene_sets", "descriptions")))
-  expect_true(all(names(hsa_C2_cgp[["gene_sets"]] %in% names(hsa_C2_cgp[["descriptions"]]))))
+test_that("`get_reactome_gsets()` -- works as expected", {
+    skip_on_cran()
+    expect_is(reactome <- get_reactome_gsets(), "list")
+    expect_length(reactome, 2)
+    expect_true(all(names(reactome) == c("gene_sets", "descriptions")))
+    expect_true(all(names(reactome[["gene_sets"]] %in% names(reactome[["descriptions"]]))))
 })
 
-test_that("`get_mgsigdb_gsets()` errors work", {
-  all_collections <- c("H", "C1", "C2", "C3", "C4", "C5", "C6", "C7")
-  expect_error(
-    pathfindR:::get_mgsigdb_gsets(collection = "INVALID"),
-    paste0(
-      "`collection` should be one of ",
-      paste(dQuote(all_collections), collapse = ", ")
-    )
-  )
-  skip_on_cran()
-  species <- "Homo sapiens"
-  collection <- "C2"
-  subcollection <- "INVALID"
-  expect_error(
-    pathfindR:::get_mgsigdb_gsets(
-      species = species,
-      collection = collection,
-      subcollection = subcollection
-    ),
-    "unknown subcategory"
-  )
+test_that("`get_mgsigdb_gsets()` -- works as expected", {
+    toy_msigdb_df <- c()
+    for (gs_idx in 1:5) {
+        toy_msigdb_df <- rbind(toy_msigdb_df, data.frame(gene_symbol = sample(gene_pool,
+            sample(25:75, 1)), gs_id = paste0("GS", gs_idx), gs_name = paste("Gene Set",
+            gs_idx)))
+    }
+    mockery::stub(get_mgsigdb_gsets, "msigdbr::msigdbr", toy_msigdb_df)
+
+    expect_is(res_msig_db <- get_mgsigdb_gsets(collection = "C1"), "list")
+    expect_length(res_msig_db, 2)
+    expect_true(all(names(res_msig_db) == c("gene_sets", "descriptions")))
+    expect_true(all(names(res_msig_db[["gene_sets"]] %in% names(res_msig_db[["descriptions"]]))))
 })
 
-# get_gene_sets_list ------------------------------------------------------
+test_that("`get_mgsigdb_gsets()` -- error works", {
+    all_collections <- c("H", "C1", "C2", "C3", "C4", "C5", "C6", "C7")
+    expect_error(pathfindR:::get_mgsigdb_gsets(collection = "INVALID"), paste0("`collection` should be one of ",
+        paste(dQuote(all_collections), collapse = ", ")))
+})
+
 test_that("`get_gene_sets_list()` works", {
-  expect_error(
-    gsets <- get_gene_sets_list("Wiki"),
-    "As of this version, this function is implemented to get data from KEGG, Reactome and MSigDB only"
-  )
+    expect_error(gsets <- get_gene_sets_list("Wiki"), "As of this version, this function is implemented to get data from KEGG, Reactome and MSigDB only")
 
-  skip_on_cran()
-  expect_silent(kegg <- get_gene_sets_list(org_code = "vcn"))
-  expect_message(rctm <- get_gene_sets_list("Reactome"))
-  expect_silent(msig <- get_gene_sets_list("MSigDB",
-    species = "Mus musculus",
-    collection = "C3",
-    subcollection = "MIR:MIR_Legacy"
-  ))
+    mockery::stub(get_gene_sets_list, "get_kegg_gsets", NULL)
+    mockery::stub(get_gene_sets_list, "get_reactome_gsets", NULL)
+    mockery::stub(get_gene_sets_list, "get_mgsigdb_gsets", NULL)
+    expect_silent(kegg <- get_gene_sets_list(org_code = "vcn"))
+    expect_message(rctm <- get_gene_sets_list("Reactome"))
+    expect_silent(msig <- get_gene_sets_list("MSigDB", species = "Mus musculus",
+        collection = "C3", subcollection = "MIR:MIR_Legacy"))
 })
-options(download.file.method = org_met, download.file.extra = org_extra)

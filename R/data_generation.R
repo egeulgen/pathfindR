@@ -25,12 +25,12 @@ process_pin <- function(pin_df) {
 #' list of available organisms (default = "Homo_sapiens")
 #' @param path2pin the path of the file to save the PIN data. By default, the
 #' PIN data is saved in a temporary file
-#' @param release the requested BioGRID release (default = "4.4.211")
+#' @param release the requested BioGRID release (default = "4.4.224")
 #'
 #' @return the path of the file in which the PIN data was saved. If
 #' \code{path2pin} was not supplied by the user, the PIN data is saved in a
 #' temporary file
-get_biogrid_pin <- function(org = "Homo_sapiens", path2pin, release = "4.4.211") {
+get_biogrid_pin <- function(org = "Homo_sapiens", path2pin, release = "4.4.224") {
   # check organism name
   all_org_names <- c(
     "Anopheles_gambiae_PEST", "Apis_mellifera",
@@ -100,21 +100,18 @@ get_biogrid_pin <- function(org = "Homo_sapiens", path2pin, release = "4.4.211")
   # process and save organism PIN file
   biogrid_df <- utils::read.delim(unz(tmp, org_file),
     check.names = FALSE,
-    colClasses = "character",
-    stringsAsFactors = FALSE
+    colClasses = "character"
   )
   biogrid_pin <- data.frame(
     Interactor_A = biogrid_df[, "Official Symbol Interactor A"],
-    Interactor_B = biogrid_df[, "Official Symbol Interactor B"],
-    stringsAsFactors = FALSE
+    Interactor_B = biogrid_df[, "Official Symbol Interactor B"]
   )
   biogrid_pin <- process_pin(biogrid_pin)
 
   final_pin <- data.frame(
     intA = biogrid_pin$Interactor_A,
     pp = "pp",
-    intB = biogrid_pin$Interactor_B,
-    stringsAsFactors = FALSE
+    intB = biogrid_pin$Interactor_B
   )
 
   if (missing(path2pin)) {
@@ -158,36 +155,36 @@ get_pin_file <- function(source = "BioGRID", org = "Homo_sapiens", path2pin, ...
 #' Retrieve Gene Sets from GMT-format File
 #'
 #' @param path2gmt path to the gmt file
+#' @param descriptions_idx index for descriptions (default = 2)
 #'
 #' @return list containing 2 elements: \itemize{
 #' \item{gene_sets}{A list containing the genes involved in each gene set}
 #' \item{descriptions}{A named vector containing the descriptions for each gene set}
 #' }
-gset_list_from_gmt <- function(path2gmt) {
+gset_list_from_gmt <- function(path2gmt, descriptions_idx = 2) {
+  gset_names_idx <- ifelse(descriptions_idx == 2, 1, 2)
   gmt_lines <- readLines(path2gmt)
 
   ## Genes list
   genes_list <- lapply(gmt_lines, function(x) {
     x <- unlist(strsplit(x, "\t"))
     x <- unique(x[3:length(x)])
+    x <- x[x != ""]
     return(x)
   })
 
   names(genes_list) <- vapply(gmt_lines, function(x) {
     x <- unlist(strsplit(x, "\t"))
-    return(x[2])
+    return(x[gset_names_idx])
   }, "a")
 
-  ## Decriptions vector
+  ## Descriptions vector
   descriptions_vec <- vapply(gmt_lines, function(x) {
     x <- unlist(strsplit(x, "\t"))
-    return(x[1])
+    return(x[descriptions_idx])
   }, "a")
 
-  names(descriptions_vec) <- vapply(gmt_lines, function(x) {
-    x <- unlist(strsplit(x, "\t"))
-    return(x[2])
-  }, "a")
+  names(descriptions_vec) <- names(genes_list)
 
   # remove empty gene sets (if any)
   genes_list <- genes_list[vapply(genes_list, length, 1) != 0]
@@ -261,7 +258,7 @@ get_reactome_gsets <- function() {
   utils::download.file(reactome_url, tmp, method = getOption("download.file.method"))
 
   reactome_gmt <- unz(tmp, "ReactomePathways.gmt")
-  result <- gset_list_from_gmt(reactome_gmt)
+  result <- gset_list_from_gmt(reactome_gmt, descriptions_idx = 1)
   close(reactome_gmt)
 
   # fix illegal char(s)

@@ -363,7 +363,7 @@ visualize_active_subnetworks <- function(active_snw_path, genes_df,
   pin_path <- return_pin_path(pin_name_path)
   pin <- utils::read.delim(
     file = pin_path,
-    header = FALSE, stringsAsFactors = FALSE
+    header = FALSE
   )
   pin$V2 <- NULL
 

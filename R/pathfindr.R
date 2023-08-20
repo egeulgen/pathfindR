@@ -34,3 +34,5 @@
 #' @import pathfindR.data
 #' @name pathfindR
 "_PACKAGE"
+
+globalVariables(c("for_coloring", "size"))

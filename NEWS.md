@@ -3,6 +3,7 @@
 - added the `disable_parallel` argument in `active_snw_enrichment_wrapper()` to be able to disable parallel runs via `foreach` 
 - fixed the issue encountered on CentOS where `forech` wasn't loading `pathfindR` (#164)
 - fixed a CRAN error due to a package documentation issue (#172)
+- performed some refactoring and updated/improved all tests
 
 # pathfindR 2.1.0
 ## Minor Changes and Bug Fixes

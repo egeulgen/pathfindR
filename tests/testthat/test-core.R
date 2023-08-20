@@ -1,109 +1,53 @@
-##################################################
-## Package: pathfindR
-## Script purpose: Unit testing script for
-## core function
-## Date: Apr 27, 2023
-## Author: Ege Ulgen
-##################################################
+## Tests for core function - Aug 2023
 
-test_that("`run_pathfindR()` works as expected", {
-  skip_on_cran()
+# set up input data
+input_data_frame <- example_pathfindR_input[1:10, c(1, 3)]
+colnames(input_data_frame) <- c("GENE", "P_VALUE")
 
-  out_dir <- file.path(tempdir(check = TRUE), "pathfindR_results")
-  ## GR
-  expect_is(
-    run_pathfindR(
-      input = example_pathfindR_input[1:50, ],
-      iterations = 1,
-      score_quan_thr = 0.8
-    ),
-    "data.frame"
-  )
-  expect_true(dir.exists(out_dir))
+test_that("`run_pathfindR()` -- works as expected", {
+    mock_fetch_gene_set <- mockery::mock(list(), cycle = TRUE)
+    mock_return_pin_path <- mockery::mock("/path/to/some/PIN/SIF", cycle = TRUE)
+    mock_input_processing <- mockery::mock(input_data_frame, cycle = TRUE)
+    mock_active_snw_enrichment_wrapper <- mockery::mock(data.frame(), c())
+    mock_summarize_enrichment_results <- mockery::mock(data.frame())
+    mock_annotate_term_genes <- mockery::mock(example_pathfindR_output)
+    mock_plot <- mockery::mock(NULL)
 
-  expect_is(
-    run_pathfindR(
-      input = example_pathfindR_input[1:50, ],
-      iterations = 2,
-      n_processes = 5,
-      gene_sets = "BioCarta",
-      pin_name_path = "GeneMania",
-      score_quan_thr = 0.8,
-      plot_enrichment_chart = FALSE,
-      output_dir = out_dir
-    ),
-    "data.frame"
-  )
-  expect_true(dir.exists(paste0(out_dir, "(1)")))
+    mockery::stub(run_pathfindR, "fetch_gene_set", mock_fetch_gene_set)
+    mockery::stub(run_pathfindR, "return_pin_path", mock_return_pin_path)
+    mockery::stub(run_pathfindR, "input_processing", mock_input_processing)
+    mockery::stub(run_pathfindR, "active_snw_enrichment_wrapper", mock_active_snw_enrichment_wrapper)
+    mockery::stub(run_pathfindR, "summarize_enrichment_results", mock_summarize_enrichment_results)
+    mockery::stub(run_pathfindR, "annotate_term_genes", mock_annotate_term_genes)
+    mockery::stub(run_pathfindR, "graphics::plot", mock_plot)
 
-  ## GA - n_processes <- 1 and n_processes <- iterations (iterations < n_processes)
-  expected_warns <- c(
-    "Did not find any enriched terms!",
-    "`iterations` is set to 1 because `search_method = \"GA\""
-  )
-  expect_warning(
-    run_pathfindR(
-      input = example_pathfindR_input[3:4, ],
-      search_method = "GA",
-      iterations = 2,
-      score_quan_thr = 0.8,
-      pin_name_path = "KEGG",
-      output_dir = file.path(tempdir(), "GA_example")
-    ),
-    paste0(paste(expected_warns, collapse = "|")),
-    all = TRUE, perl = TRUE
-  )
+    expected_messages <- paste(c("The input looks OK", "Plotting the enrichment bubble chart",
+        paste(c(paste0("Found ", nrow(example_pathfindR_output), " enriched terms\n"),
+            "You may run:", "- cluster_enriched_terms() for clustering enriched terms",
+            "- visualize_terms() for visualizing enriched term diagrams\n"), collapse = "\n")),
+        collapse = "|")
+    # wrapper functions correctly
+    expected_out_dir <- file.path(tempdir(check = TRUE), "pathfindR_results")
+    expect_message(res <- run_pathfindR(input_data_frame), expected_messages)
+    expect_is(res, "data.frame")
+    expect_identical(res, example_pathfindR_output)
+    expect_true(dir.exists(expected_out_dir))
+    mockery::expect_called(mock_fetch_gene_set, 1)
+    mockery::expect_called(mock_return_pin_path, 1)
+    mockery::expect_called(mock_input_processing, 1)
+    mockery::expect_called(mock_active_snw_enrichment_wrapper, 1)
+    mockery::expect_called(mock_summarize_enrichment_results, 1)
+    mockery::expect_called(mock_annotate_term_genes, 1)
+    mockery::expect_called(mock_plot, 1)
 
-  skip("will test SA and GA if we can create a suitable (faster and non-empty) test case")
-
-  ## SA
-  expect_is(
-    run_pathfindR(
-      input = example_pathfindR_input[1:50, ],
-      iterations = 1,
-      gene_sets = "GO-BP",
-      pin_name_path = "GeneMania",
-      search_method = "SA",
-      plot_enrichment_chart = FALSE,
-      output_dir = out_dir
-    ),
-    "data.frame"
-  )
-
-  ## GA
-  expect_is(
-    run_pathfindR(
-      input = example_pathfindR_input[1:50, ],
-      gene_sets = "GO-BP",
-      pin_name_path = "GeneMania",
-      search_method = "GA",
-      plot_enrichment_chart = FALSE,
-      output_dir = out_dir
-    ),
-    "data.frame"
-  )
-})
-
-test_that("Expect warning with empty result from `run_pathfindR()`", {
-  expect_warning(
-    res <- run_pathfindR(
-      input = example_pathfindR_input[1:2, ],
-      iterations = 1,
-      output_dir = file.path(tempdir(check = TRUE), "pathfindR_results")
-    ),
-    "Did not find any enriched terms!"
-  )
-  expect_identical(res, data.frame())
+    # warning raised as expected when no results found
+    expect_warning(res <- run_pathfindR(input_data_frame), "Did not find any enriched terms!")
+    expect_identical(res, data.frame())
 })
 
 test_that("`run_pathfindR()` argument checks work", {
-  expect_error(
-    run_pathfindR(example_pathfindR_input, plot_enrichment_chart = "INVALID"),
-    "`plot_enrichment_chart` should be either TRUE or FALSE"
-  )
-
-  expect_error(
-    run_pathfindR(example_pathfindR_input, list_active_snw_genes = "INVALID"),
-    "`list_active_snw_genes` should be either TRUE or FALSE"
-  )
+    expect_error(run_pathfindR(input_data_frame, plot_enrichment_chart = "INVALID"),
+        "`plot_enrichment_chart` should be either TRUE or FALSE")
+    expect_error(run_pathfindR(input_data_frame, list_active_snw_genes = "INVALID"),
+        "`list_active_snw_genes` should be either TRUE or FALSE")
 })

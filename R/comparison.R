@@ -158,8 +158,7 @@ combined_results_graph <- function(combined_df, selected_terms = "common",
         graph_df,
         data.frame(
           Term = combined_df[i, ID_column],
-          Gene = gene,
-          stringsAsFactors = FALSE
+          Gene = gene
         )
       )
     }
@@ -231,36 +230,42 @@ combined_results_graph <- function(combined_df, selected_terms = "common",
   )
 
   ### Create graph
-  p <- ggraph::ggraph(g, layout = layout)
-  p <- p + ggraph::geom_edge_link(alpha = .8, colour = "darkgrey")
-  p <- p + ggraph::geom_node_point(ggplot2::aes_(color = ~for_coloring, size = ~size))
-  p <- p + ggplot2::scale_size(
-    range = c(5, 10),
-    breaks = round(seq(round(min(igraph::V(g)$size)),
-      round(max(igraph::V(g)$size)),
-      length.out = 4
-    )),
-    name = size_label
-  )
-  p <- p + ggplot2::theme_void()
-  p <- p + suppressWarnings(ggraph::geom_node_text(ggplot2::aes_(label = ~name),
-    nudge_y = .2,
-    repel = TRUE, max.overlaps = 20
-  ))
+  create_graph <- function(g, for_coloring, size) {
+    color_var <- ggplot2::enquo(for_coloring)
+    size_var <- ggplot2::enquo(size)
+    p <- ggraph::ggraph(g, layout = layout)
+    p <- p + ggraph::geom_edge_link(alpha = .8, colour = "darkgrey")
+    p <- p + ggraph::geom_node_point(ggplot2::aes(color = !!color_var, size = !!size_var))
+    p <- p + ggplot2::scale_size(
+      range = c(5, 10),
+      breaks = round(seq(round(min(igraph::V(g)$size)),
+                         round(max(igraph::V(g)$size)),
+                         length.out = 4
+      )),
+      name = size_label
+    )
+    p <- p + ggplot2::theme_void()
+    p <- p + suppressWarnings(ggraph::geom_node_text(ggplot2::aes_(label = ~name),
+                                                     nudge_y = .2,
+                                                     repel = TRUE, max.overlaps = 20
+    ))
 
-  vertex_cols <- c(
-    "Common term" = "#FCCA46",
-    "A-only term" = "#9FB8AD",
-    "B-only term" = "#619B8A",
-    "Up gene" = "green",
-    "Down gene" = "red",
-    "Conflicting gene" = "gray"
-  )
-  p <- p + ggplot2::scale_colour_manual(
-    values = vertex_cols,
-    name = NULL
-  )
-  p <- p + ggplot2::ggtitle("Combined Terms Graph")
-  p <- p + ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
-  return(p)
+    vertex_cols <- c(
+      "Common term" = "#FCCA46",
+      "A-only term" = "#9FB8AD",
+      "B-only term" = "#619B8A",
+      "Up gene" = "green",
+      "Down gene" = "red",
+      "Conflicting gene" = "gray"
+    )
+    p <- p + ggplot2::scale_colour_manual(
+      values = vertex_cols,
+      name = NULL
+    )
+    p <- p + ggplot2::ggtitle("Combined Terms Graph")
+    p <- p + ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
+    return(p)
+  }
+
+  return(create_graph(g, for_coloring, size))
 }
