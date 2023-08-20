@@ -39,14 +39,9 @@ create_kappa_matrix <- function(enrichment_res,
   }
 
   nec_cols <- c("Down_regulated", "Up_regulated")
-  if (use_description) {
-    nec_cols <- c("Term_Description", nec_cols)
-  } else {
-    nec_cols <- c("ID", nec_cols)
-  }
-  if (use_active_snw_genes) {
-    nec_cols <- c(nec_cols, "non_Signif_Snw_Genes")
-  }
+  nec_cols <- ifelse(use_description, c("Term_Description", nec_cols), c("ID", nec_cols))
+  nec_cols <- ifelse(use_active_snw_genes, c(nec_cols, "non_Signif_Snw_Genes"), nec_cols)
+
   if (!all(nec_cols %in% colnames(enrichment_res))) {
     stop(
       "`enrichment_res` should contain all of ",
