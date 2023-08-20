@@ -343,7 +343,7 @@ input_processing <- function(input, p_val_threshold = 0.05,
   ## load and prep pin
   pin <- utils::read.delim(
     file = pin_path,
-    header = FALSE, stringsAsFactors = FALSE
+    header = FALSE
   )
 
   ## Genes not in pin
@@ -686,8 +686,7 @@ return_pin_path <- function(pin_name_path = "Biogrid") {
         function(i, nm, val) {
           data.frame(base::toupper(nm[[i]]),
             "pp",
-            base::toupper(val[[i]]),
-            stringsAsFactors = FALSE
+            base::toupper(val[[i]])
           )
         },
         val = adj_list, nm = names(adj_list)
@@ -706,7 +705,7 @@ return_pin_path <- function(pin_name_path = "Biogrid") {
     path <- normalizePath(pin_name_path)
     pin <- utils::read.delim(
       file = path, quote = "",
-      header = FALSE, stringsAsFactors = FALSE
+      header = FALSE
     )
     if (ncol(pin) != 3) {
       stop("The PIN file must have 3 columns and be tab-separated")

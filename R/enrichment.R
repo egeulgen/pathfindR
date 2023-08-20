@@ -231,8 +231,7 @@ enrichment_analyses <- function(snws,
   ### Load PIN Data
   pin_path <- return_pin_path(pin_name_path)
   pin <- utils::read.delim(
-    file = pin_path, header = FALSE,
-    stringsAsFactors = FALSE
+    file = pin_path, header = FALSE
   )
 
   background_genes <- unique(c(pin[, 1], pin[, 3]))

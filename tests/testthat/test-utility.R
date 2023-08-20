@@ -452,8 +452,7 @@ test_that("`return_pin_path()` returns the absolute path to PIN file", {
 
   # custom PIN
   custom_pin <- read.delim(return_pin_path("KEGG"),
-    header = FALSE,
-    stringsAsFactors = FALSE
+    header = FALSE
   )
   custom_pin <- custom_pin[1:10, ]
   custom_pin$V1 <- tolower(custom_pin$V1)

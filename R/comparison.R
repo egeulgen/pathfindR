@@ -158,8 +158,7 @@ combined_results_graph <- function(combined_df, selected_terms = "common",
         graph_df,
         data.frame(
           Term = combined_df[i, ID_column],
-          Gene = gene,
-          stringsAsFactors = FALSE
+          Gene = gene
         )
       )
     }

@@ -100,21 +100,18 @@ get_biogrid_pin <- function(org = "Homo_sapiens", path2pin, release = "4.4.224")
   # process and save organism PIN file
   biogrid_df <- utils::read.delim(unz(tmp, org_file),
     check.names = FALSE,
-    colClasses = "character",
-    stringsAsFactors = FALSE
+    colClasses = "character"
   )
   biogrid_pin <- data.frame(
     Interactor_A = biogrid_df[, "Official Symbol Interactor A"],
-    Interactor_B = biogrid_df[, "Official Symbol Interactor B"],
-    stringsAsFactors = FALSE
+    Interactor_B = biogrid_df[, "Official Symbol Interactor B"]
   )
   biogrid_pin <- process_pin(biogrid_pin)
 
   final_pin <- data.frame(
     intA = biogrid_pin$Interactor_A,
     pp = "pp",
-    intB = biogrid_pin$Interactor_B,
-    stringsAsFactors = FALSE
+    intB = biogrid_pin$Interactor_B
   )
 
   if (missing(path2pin)) {
