@@ -67,9 +67,11 @@ test_that("`active_snw_enrichment_wrapper()` -- argument checks work", {
 })
 
 test_that("`configure_output_dir()` -- works as expected", {
-    expect_equal(configure_output_dir(), file.path(tempdir(check = TRUE), "pathfindR_results"))
+    expected_dir <- file.path(tempdir(), "test_pathfindR_results")
+    mockery::stub(configure_output_dir, "file.path", expected_dir)
+    expect_equal(configure_output_dir(), expected_dir)
 
-    test_out_dir <- file.path(tempdir(check = TRUE), "TEST")
+    test_out_dir <- file.path(tempdir(), "TEST")
     for (i in 1:3) {
         actual_dir <- configure_output_dir(test_out_dir)
         dir_to_check <- test_out_dir
