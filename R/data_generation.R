@@ -160,31 +160,30 @@ get_pin_file <- function(source = "BioGRID", org = "Homo_sapiens", path2pin, ...
 #' \item{gene_sets}{A list containing the genes involved in each gene set}
 #' \item{descriptions}{A named vector containing the descriptions for each gene set}
 #' }
-gset_list_from_gmt <- function(path2gmt) {
+gset_list_from_gmt <- function(path2gmt, descriptions_idx = 2) {
+  gset_names_idx <- ifelse(descriptions_idx == 2, 1, 2)
   gmt_lines <- readLines(path2gmt)
 
   ## Genes list
   genes_list <- lapply(gmt_lines, function(x) {
     x <- unlist(strsplit(x, "\t"))
     x <- unique(x[3:length(x)])
+    x <- x[x != ""]
     return(x)
   })
 
   names(genes_list) <- vapply(gmt_lines, function(x) {
     x <- unlist(strsplit(x, "\t"))
-    return(x[2])
+    return(x[gset_names_idx])
   }, "a")
 
-  ## Decriptions vector
+  ## Descriptions vector
   descriptions_vec <- vapply(gmt_lines, function(x) {
     x <- unlist(strsplit(x, "\t"))
-    return(x[1])
+    return(x[descriptions_idx])
   }, "a")
 
-  names(descriptions_vec) <- vapply(gmt_lines, function(x) {
-    x <- unlist(strsplit(x, "\t"))
-    return(x[2])
-  }, "a")
+  names(descriptions_vec) <- names(genes_list)
 
   # remove empty gene sets (if any)
   genes_list <- genes_list[vapply(genes_list, length, 1) != 0]
@@ -258,7 +257,7 @@ get_reactome_gsets <- function() {
   utils::download.file(reactome_url, tmp, method = getOption("download.file.method"))
 
   reactome_gmt <- unz(tmp, "ReactomePathways.gmt")
-  result <- gset_list_from_gmt(reactome_gmt)
+  result <- gset_list_from_gmt(reactome_gmt, descriptions_idx = 1)
   close(reactome_gmt)
 
   # fix illegal char(s)
