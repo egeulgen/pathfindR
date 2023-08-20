@@ -154,7 +154,7 @@ test_that("`summarize_enrichment_results()` -- returns summarized enrichment res
         expect_true(nrow(summ_res2) <= nrow(combined_res))
     })
 
-test_that("summarize_enrichment_results() -- argument checks work", {
+test_that("`summarize_enrichment_results()` -- argument checks work", {
     expect_error(summarize_enrichment_results(enrichment_res = combined_res, list_active_snw_genes = "INVALID"),
         "`list_active_snw_genes` should be either TRUE or FALSE")
 
