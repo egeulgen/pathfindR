@@ -109,6 +109,19 @@ test_that("`fetch_gene_set()` -- can fetch all gene set objects", {
     expect_true(min(tmp) >= 20 & max(tmp) <= 200)
 })
 
+test_that("`create_HTML_report()` -- works a expected", {
+  mock_render <- mockery::mock(NULL, cycle = TRUE)
+  mockery::stub(create_HTML_report, "rmarkdown::render", mock_render)
+
+  create_HTML_report(
+    input = data.frame(),
+    input_processed = data.frame(),
+    final_res = data.frame(),
+    dir_for_report = "/path/to/report/dir"
+  )
+  mockery::expect_called(mock_render, 3)
+})
+
 test_that("`fetch_gene_set()` -- min/max_gset_size args correctly filter gene sets",
     {
         skip_on_cran()
