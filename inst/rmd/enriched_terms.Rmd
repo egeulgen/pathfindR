@@ -1,0 +1,21 @@
+---
+title: '`r logo_path <- system.file("extdata", "logo.png", package = "pathfindR"); knitr::opts_chunk$set(out.width="15%"); knitr::include_graphics(logo_path)` pathfindR - All Enriched Terms' 
+output: html_document
+params:
+  df: ""
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r table, echo = F, comment=NA}
+result_df <- params$df
+result_df$lowest_p <- format(result_df$lowest_p, digits = 2)
+result_df$highest_p <- format(result_df$highest_p, digits = 2)
+
+create_link <- function(text, link)
+  return(paste0("[", text, "]", "(", link, ")"))
+
+knitr::kable(result_df, align = "c", table.caption.prefix ="")
+```

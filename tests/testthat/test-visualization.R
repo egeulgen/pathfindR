@@ -121,17 +121,23 @@ test_that("`visualize_hsa_KEGG()` -- argument checks work", {
 
 test_that("`color_kegg_pathway()` -- works as expected", {
     skip_on_cran()
-    pw_id <- "hsa00010"
-    change_vec <- c(-2, 4, 6)
-    names(change_vec) <- c("hsa:2821", "hsa:226", "hsa:229")
-    expect_is(result <- color_kegg_pathway(pw_id, change_vec), "list")
-    expect_length(result, 3)
-    expect_true(file.exists(result$file_path))
-    expect_true(length(result$all_key_cols) == length(result$all_brks) - 1)
-    expect_true(all(result$all_brks >= -1 & result$all_brks <= 1))
+    with_mocked_bindings({
+      pw_id <- "hsa00010"
+      change_vec <- c(-2, 4, 6)
+      names(change_vec) <- c("hsa:2821", "hsa:226", "hsa:229")
 
-    names(change_vec) <- rep("missing", 3)
-    expect_null(result <- color_kegg_pathway(pw_id, change_vec), "list")
+      mockery::mock(color_kegg_pathway,"is.na", FALSE)
+
+      expect_is(result <- color_kegg_pathway(pw_id, change_vec), "list")
+      expect_length(result, 3)
+      expect_is(result$file_path, "character")
+      expect_true(length(result$all_key_cols) == length(result$all_brks) - 1)
+      expect_true(all(result$all_brks >= -1 & result$all_brks <= 1))
+
+      names(change_vec) <- rep("missing", 3)
+      expect_null(result <- color_kegg_pathway(pw_id, change_vec), "list")
+
+    }, obtain_colored_url = function(...) NULL, download_kegg_png = function(...) 0, .package = "pathfindR")
 })
 
 test_that("`color_kegg_pathway()` -- exceptions are handled properly", {
