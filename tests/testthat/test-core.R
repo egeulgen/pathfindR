@@ -20,18 +20,19 @@ test_that("`run_pathfindR()` -- works as expected", {
     mockery::stub(run_pathfindR, "summarize_enrichment_results", mock_summarize_enrichment_results)
     mockery::stub(run_pathfindR, "annotate_term_genes", mock_annotate_term_genes)
     mockery::stub(run_pathfindR, "graphics::plot", mock_plot)
+    mockery::stub(run_pathfindR, "create_HTML_report", NULL)
 
     expected_messages <- paste(c("The input looks OK", "Plotting the enrichment bubble chart",
         paste(c(paste0("Found ", nrow(example_pathfindR_output), " enriched terms\n"),
             "You may run:", "- cluster_enriched_terms() for clustering enriched terms",
             "- visualize_terms() for visualizing enriched term diagrams\n"), collapse = "\n")),
         collapse = "|")
-    # wrapper functions correctly
-    expected_out_dir <- file.path(tempdir(check = TRUE), "pathfindR_results")
-    expect_message(res <- run_pathfindR(input_data_frame), expected_messages)
+    # wrapper functions correctly - with output_dir provided
+    out_dir <- file.path(tempdir(check = TRUE), "core_test")
+    expect_message(res <- run_pathfindR(input_data_frame, output_dir = out_dir), expected_messages)
     expect_is(res, "data.frame")
     expect_identical(res, example_pathfindR_output)
-    expect_true(dir.exists(expected_out_dir))
+    expect_true(dir.exists(out_dir))
     mockery::expect_called(mock_fetch_gene_set, 1)
     mockery::expect_called(mock_return_pin_path, 1)
     mockery::expect_called(mock_input_processing, 1)
