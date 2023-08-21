@@ -35,7 +35,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.2.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.2.0.9001</span>
       </span>
     </div>
 
@@ -268,8 +268,9 @@ p-values &lt; 0.05. To change this threshold, use
 <h4 id="output-directory">Output Directory<a class="anchor" aria-label="anchor" href="#output-directory"></a>
 </h4>
 <p>By default, <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code> creates a temporary
-directory for writing the output files, i.e. active subnetwork search
-results. To set the output directory, use <code>output_dir</code>:</p>
+directory for writing the output files, including active subnetwork
+search results and a HTML report. To set the output directory, use
+<code>output_dir</code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span><span class="va">example_pathfindR_input</span>, output_dir <span class="op">=</span> <span class="st">"this_is_my_output_directory"</span><span class="op">)</span></span></code></pre></div>
 <p>This creates <code>"this_is_my_output_directory"</code> under the
@@ -496,6 +497,36 @@ the function <code><a href="../reference/enrichment_chart.html">enrichment_chart
 <span>  result_df <span class="op">=</span> <span class="va">example_pathfindR_output</span>,</span>
 <span>  top_terms <span class="op">=</span> <span class="fl">15</span></span>
 <span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="html-report-created-when-output_dir-is-set">HTML Report (created when <code>output_dir</code> is set)<a class="anchor" aria-label="anchor" href="#html-report-created-when-output_dir-is-set"></a>
+</h4>
+<p>The function also creates an HTML report <code>results.html</code>
+that is saved in the output directory if it’s set. This report contains
+links to two other HTML files:</p>
+<p><strong>1. <code>enriched_terms.html</code></strong></p>
+<p>This document contains the table of the active subnetwork-oriented
+enrichment results (same as the returned data frame).</p>
+<p><strong>2. <code>conversion_table.html</code></strong></p>
+<p>This document contains the table of converted gene symbols. Columns
+are:</p>
+<ul>
+<li>Old Symbol: the original gene symbol</li>
+<li>Converted Symbol: the alias symbol that was found in the PIN</li>
+<li>Change: the provided change value</li>
+<li>p-value: the provided adjusted p value</li>
+</ul>
+<blockquote>
+<p>During input processing, gene symbols that are not in the PIN are
+identified and excluded. For human genes, if aliases of these missing
+gene symbols are found in the PIN, these symbols are converted to the
+corresponding aliases (controlled by the argument
+<code>convert2alias</code>). This step is performed to best map the
+input data onto the PIN.</p>
+</blockquote>
+<p>The document contains a second table of genes for which <strong>no
+interactions</strong> were identified after checking for alias symbols
+(so these could not be used during the analysis).</p>
 </div>
 </div>
 <div class="section level3">
