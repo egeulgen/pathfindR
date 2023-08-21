@@ -1,4 +1,6 @@
 # pathfindR (development version)
+## Major Changes
+- reverted removal of `create_HTML_report()` so `run_pathfindR()` once again generates HTML reports
 
 # pathfindR 2.2.0
 ## Minor Changes and Bug Fixes
