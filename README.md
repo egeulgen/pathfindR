@@ -44,7 +44,7 @@ install.packages("pathfindR")
 - Since version 2.1.0, you may also install `pathfindR` via conda:
 
 ``` bash
-conda install -c egeulgen r-pathfindr
+conda install -c bioconda r-pathfindr
 ```
 
 - Via [pak](https://pak.r-lib.org/) (this might be preferable given
