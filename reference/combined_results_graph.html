@@ -100,22 +100,22 @@
 
 <dt>selected_terms</dt>
 <dd><p>the vector of selected terms for creating the graph
-(either IDs or term descriptions). If set to <code>"common"</code>, all of the
-common terms are used. (default = "common")</p></dd>
+(either IDs or term descriptions). If set to <code>'common'</code>, all of the
+common terms are used. (default = 'common')</p></dd>
 
 
 <dt>use_description</dt>
 <dd><p>Boolean argument to indicate whether term descriptions
-(in the "Term_Description" column) should be used. (default = <code>FALSE</code>)</p></dd>
+(in the 'Term_Description' column) should be used. (default = <code>FALSE</code>)</p></dd>
 
 
 <dt>layout</dt>
-<dd><p>The type of layout to create (see <code><a href="https://ggraph.data-imaginist.com/reference/ggraph.html" class="external-link">ggraph</a></code> for details. Default = "stress")</p></dd>
+<dd><p>The type of layout to create (see <code><a href="https://ggraph.data-imaginist.com/reference/ggraph.html" class="external-link">ggraph</a></code> for details. Default = 'stress')</p></dd>
 
 
 <dt>node_size</dt>
-<dd><p>Argument to indicate whether to use number of significant genes ("num_genes")
-or the -log10(lowest p value) ("p_val") for adjusting the node sizes (default = "num_genes")</p></dd>
+<dd><p>Argument to indicate whether to use number of significant genes ('num_genes')
+or the -log10(lowest p value) ('p_val') for adjusting the node sizes (default = 'num_genes')</p></dd>
 
 </dl></div>
     <div id="value">
@@ -128,8 +128,8 @@ or the -log10(lowest p value) ("p_val") for adjusting the node sizes (default = 
  a conflicting (i.e. up in one analysis, down in the other or vice versa) gene
  (gray). An edge between a term and a gene indicates
  that the given term involves the gene. Size of a term node is proportional
- to either the number of genes (if <code>node_size = "num_genes"</code>) or
- the -log10(lowest p value) (if <code>node_size = "p_val"</code>).</p>
+ to either the number of genes (if <code>node_size = 'num_genes'</code>) or
+ the -log10(lowest p value) (if <code>node_size = 'p_val'</code>).</p>
     </div>
 
     <div id="ref-examples">

@@ -113,10 +113,10 @@
 
 <dt>gene_sets</dt>
 <dd><p>Name of the gene sets to be used for enrichment analysis.
-Available gene sets are "KEGG", "Reactome", "BioCarta", "GO-All",
-"GO-BP", "GO-CC", "GO-MF", "cell_markers", "mmu_KEGG" or "Custom".
-If "Custom", the arguments <code>custom_genes</code> and <code>custom_descriptions</code>
-must be specified. (Default = "KEGG")</p></dd>
+Available gene sets are 'KEGG', 'Reactome', 'BioCarta', 'GO-All',
+'GO-BP', 'GO-CC', 'GO-MF', 'cell_markers', 'mmu_KEGG' or 'Custom'.
+If 'Custom', the arguments <code>custom_genes</code> and <code>custom_descriptions</code>
+must be specified. (Default = 'KEGG')</p></dd>
 
 
 <dt>min_gset_size</dt>
@@ -141,8 +141,8 @@ terms.</p></dd>
 
 <dt>pin_name_path</dt>
 <dd><p>Name of the chosen PIN or absolute/path/to/PIN.sif. If PIN name,
-must be one of c("Biogrid", "STRING", "GeneMania", "IntAct", "KEGG", "mmu_STRING"). If
-path/to/PIN.sif, the file must comply with the PIN specifications. (Default = "Biogrid")</p></dd>
+must be one of c('Biogrid', 'STRING', 'GeneMania', 'IntAct', 'KEGG', 'mmu_STRING'). If
+path/to/PIN.sif, the file must comply with the PIN specifications. (Default = 'Biogrid')</p></dd>
 
 
 <dt>p_val_threshold</dt>
@@ -219,7 +219,7 @@ the given term with the lowest p value (default = <code>FALSE</code>)</p></dd>
 </dl><p>The function also creates an HTML report with the pathfindR enrichment
  results linked to the visualizations of the enriched terms in addition to
  the table of converted gene symbols. This report can be found in
- "<code>output_dir</code>/results.html" under the current working directory.</p>
+ '<code>output_dir</code>/results.html' under the current working directory.</p>
 
 
 <p>By default, a bubble chart of top 10 enrichment results are plotted. The x-axis
@@ -245,8 +245,8 @@ are reported for each enriched term.</p>
     <div id="warning">
     <h2>Warning</h2>
     <p>Especially depending on the protein interaction network,
- the algorithm and the number of iterations you choose, "active subnetwork
- search + enrichment" component of <code>run_pathfindR</code> may take a long time to finish.</p>
+ the algorithm and the number of iterations you choose, 'active subnetwork
+ search + enrichment' component of <code>run_pathfindR</code> may take a long time to finish.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>

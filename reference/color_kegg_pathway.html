@@ -109,9 +109,9 @@
 <dt>node_cols</dt>
 <dd><p>low, middle and high color values for coloring the pathway nodes
 (default = <code>NULL</code>). If <code>node_cols=NULL</code>, the low, middle and high color
-are set as "green", "gray" and "red". If all change values are 1e6 (in case no
+are set as 'green', 'gray' and 'red'. If all change values are 1e6 (in case no
 changes are supplied, this dummy value is assigned by
-<code><a href="input_processing.html">input_processing</a></code>), only one color ("#F38F18" if NULL) is used.</p></dd>
+<code><a href="input_processing.html">input_processing</a></code>), only one color ('#F38F18' if NULL) is used.</p></dd>
 
 
 <dt>quiet</dt>
@@ -131,9 +131,9 @@ progress bar while downloading file(s)</p></dd>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="va">pw_id</span> <span class="op">&lt;-</span> <span class="st">"hsa00010"</span></span></span>
+<span class="r-in"><span><span class="va">pw_id</span> <span class="op">&lt;-</span> <span class="st">'hsa00010'</span></span></span>
 <span class="r-in"><span><span class="va">change_vec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>, <span class="fl">4</span>, <span class="fl">6</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">change_vec</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hsa:2821"</span>, <span class="st">"hsa:226"</span>, <span class="st">"hsa:229"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">change_vec</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'hsa:2821'</span>, <span class="st">'hsa:226'</span>, <span class="st">'hsa:229'</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">pathfindR</span><span class="fu">:::</span><span class="fu">color_kegg_pathway</span><span class="op">(</span><span class="va">pw_id</span>, <span class="va">change_vec</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>

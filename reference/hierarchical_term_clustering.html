@@ -102,9 +102,9 @@
 
 <dt>enrichment_res</dt>
 <dd><p>data frame of pathfindR enrichment results. Must-have
-columns are "Term_Description" (if <code>use_description = TRUE</code>) or "ID"
-(if <code>use_description = FALSE</code>), "Down_regulated", and "Up_regulated".
-If <code>use_active_snw_genes = TRUE</code>, "non_Signif_Snw_Genes" must also be
+columns are 'Term_Description' (if <code>use_description = TRUE</code>) or 'ID'
+(if <code>use_description = FALSE</code>), 'Down_regulated', and 'Up_regulated'.
+If <code>use_active_snw_genes = TRUE</code>, 'non_Signif_Snw_Genes' must also be
 provided.</p></dd>
 
 
@@ -116,12 +116,12 @@ which yields the highest average silhouette width.</p></dd>
 
 <dt>use_description</dt>
 <dd><p>Boolean argument to indicate whether term descriptions
-(in the "Term_Description" column) should be used. (default = <code>FALSE</code>)</p></dd>
+(in the 'Term_Description' column) should be used. (default = <code>FALSE</code>)</p></dd>
 
 
 <dt>clu_method</dt>
 <dd><p>the agglomeration method to be used
-(default = "average", see <code><a href="https://rdrr.io/r/stats/hclust.html" class="external-link">hclust</a></code>)</p></dd>
+(default = 'average', see <code><a href="https://rdrr.io/r/stats/hclust.html" class="external-link">hclust</a></code>)</p></dd>
 
 
 <dt>plot_hmap</dt>
@@ -155,7 +155,7 @@ determined as the k value which yields the highest average silhouette width.
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="fu">hierarchical_term_clustering</span><span class="op">(</span><span class="va">kappa_mat</span>, <span class="va">enrichment_res</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">hierarchical_term_clustering</span><span class="op">(</span><span class="va">kappa_mat</span>, <span class="va">enrichment_res</span>, method <span class="op">=</span> <span class="st">"complete"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">hierarchical_term_clustering</span><span class="op">(</span><span class="va">kappa_mat</span>, <span class="va">enrichment_res</span>, method <span class="op">=</span> <span class="st">'complete'</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>

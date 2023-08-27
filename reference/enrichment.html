@@ -114,7 +114,7 @@ gene sets. Names of this vector are gene set IDs (default = kegg_descriptions)</
 
 <dt>adj_method</dt>
 <dd><p>correction method to be used for adjusting p-values.
-(default = "bonferroni")</p></dd>
+(default = 'bonferroni')</p></dd>
 
 
 <dt>enrichment_threshold</dt>
@@ -150,8 +150,8 @@ the background genes are taken as all genes in the PIN
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">enrichment</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  input_genes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PER1"</span>, <span class="st">"PER2"</span>, <span class="st">"CRY1"</span>, <span class="st">"CREB1"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  sig_genes_vec <span class="op">=</span> <span class="st">"PER1"</span>,</span></span>
+<span class="r-in"><span>  input_genes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'PER1'</span>, <span class="st">'PER2'</span>, <span class="st">'CRY1'</span>, <span class="st">'CREB1'</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  sig_genes_vec <span class="op">=</span> <span class="st">'PER1'</span>,</span></span>
 <span class="r-in"><span>  background_genes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="fu">pathfindR.data</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/pathfindR.data/man/kegg_genes.html" class="external-link">kegg_genes</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                ID      Term_Description Fold_Enrichment      p_value</span>

@@ -94,7 +94,7 @@
     <h2>Arguments</h2>
     <dl><dt>result_df</dt>
 <dd><p>data frame of enrichment results.
-The only must-have column is "ID".</p></dd>
+The only must-have column is 'ID'.</p></dd>
 
 
 <dt>input_processed</dt>
@@ -122,7 +122,7 @@ this list are gene set IDs (default = kegg_genes)</p></dd>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">example_gene_data</span> <span class="op">&lt;-</span> <span class="va">example_pathfindR_input</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">example_gene_data</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"GENE"</span>, <span class="st">"CHANGE"</span>, <span class="st">"P_VALUE"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">example_gene_data</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'GENE'</span>, <span class="st">'CHANGE'</span>, <span class="st">'P_VALUE'</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">annotated_result</span> <span class="op">&lt;-</span> <span class="fu">annotate_term_genes</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  result_df <span class="op">=</span> <span class="va">example_pathfindR_output</span>,</span></span>

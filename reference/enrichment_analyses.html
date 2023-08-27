@@ -108,8 +108,8 @@ package, these are the input genes that were used for active subnetwork search</
 
 <dt>pin_name_path</dt>
 <dd><p>Name of the chosen PIN or absolute/path/to/PIN.sif. If PIN name,
-must be one of c("Biogrid", "STRING", "GeneMania", "IntAct", "KEGG", "mmu_STRING"). If
-path/to/PIN.sif, the file must comply with the PIN specifications. (Default = "Biogrid")</p></dd>
+must be one of c('Biogrid', 'STRING', 'GeneMania', 'IntAct', 'KEGG', 'mmu_STRING'). If
+path/to/PIN.sif, the file must comply with the PIN specifications. (Default = 'Biogrid')</p></dd>
 
 
 <dt>genes_by_term</dt>
@@ -124,7 +124,7 @@ gene sets. Names of this vector are gene set IDs (default = kegg_descriptions)</
 
 <dt>adj_method</dt>
 <dd><p>correction method to be used for adjusting p-values.
-(default = "bonferroni")</p></dd>
+(default = 'bonferroni')</p></dd>
 
 
 <dt>enrichment_threshold</dt>
@@ -175,7 +175,7 @@ the given term with the lowest p value (default = <code>FALSE</code>)</p></dd>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">enr_res</span> <span class="op">&lt;-</span> <span class="fu">enrichment_analyses</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  snws <span class="op">=</span> <span class="va">example_active_snws</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>,</span></span>
 <span class="r-in"><span>  sig_genes_vec <span class="op">=</span> <span class="va">example_pathfindR_input</span><span class="op">$</span><span class="va">Gene.symbol</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">25</span><span class="op">]</span>,</span></span>
-<span class="r-in"><span>  pin_name_path <span class="op">=</span> <span class="st">"KEGG"</span></span></span>
+<span class="r-in"><span>  pin_name_path <span class="op">=</span> <span class="st">'KEGG'</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>

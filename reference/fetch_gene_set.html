@@ -98,10 +98,10 @@ be used for enrichment analysis.</p>
     <h2>Arguments</h2>
     <dl><dt>gene_sets</dt>
 <dd><p>Name of the gene sets to be used for enrichment analysis.
-Available gene sets are "KEGG", "Reactome", "BioCarta", "GO-All",
-"GO-BP", "GO-CC", "GO-MF", "cell_markers", "mmu_KEGG" or "Custom".
-If "Custom", the arguments <code>custom_genes</code> and <code>custom_descriptions</code>
-must be specified. (Default = "KEGG")</p></dd>
+Available gene sets are 'KEGG', 'Reactome', 'BioCarta', 'GO-All',
+'GO-BP', 'GO-CC', 'GO-MF', 'cell_markers', 'mmu_KEGG' or 'Custom'.
+If 'Custom', the arguments <code>custom_genes</code> and <code>custom_descriptions</code>
+must be specified. (Default = 'KEGG')</p></dd>
 
 
 <dt>min_gset_size</dt>
@@ -140,7 +140,7 @@ terms.</p></dd>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">KEGG_gset</span> <span class="op">&lt;-</span> <span class="fu">fetch_gene_set</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">GO_MF_gset</span> <span class="op">&lt;-</span> <span class="fu">fetch_gene_set</span><span class="op">(</span><span class="st">"GO-MF"</span>, min_gset_size <span class="op">=</span> <span class="fl">20</span>, max_gset_size <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">GO_MF_gset</span> <span class="op">&lt;-</span> <span class="fu">fetch_gene_set</span><span class="op">(</span><span class="st">'GO-MF'</span>, min_gset_size <span class="op">=</span> <span class="fl">20</span>, max_gset_size <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>

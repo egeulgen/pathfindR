@@ -126,13 +126,13 @@ must be a data frame containing at least these 2 columns:</p><dl><dt>GENE</dt>
 
 <dt>pin_name_path</dt>
 <dd><p>Name of the chosen PIN or absolute/path/to/PIN.sif. If PIN name,
-must be one of c("Biogrid", "STRING", "GeneMania", "IntAct", "KEGG", "mmu_STRING"). If
-path/to/PIN.sif, the file must comply with the PIN specifications. (Default = "Biogrid")</p></dd>
+must be one of c('Biogrid', 'STRING', 'GeneMania', 'IntAct', 'KEGG', 'mmu_STRING'). If
+path/to/PIN.sif, the file must comply with the PIN specifications. (Default = 'Biogrid')</p></dd>
 
 
 <dt>snws_file</dt>
 <dd><p>name for active subnetwork search output data
-<strong>without file extension</strong> (default = "active_snws")</p></dd>
+<strong>without file extension</strong> (default = 'active_snws')</p></dd>
 
 
 <dt>dir_for_parallel_run</dt>
@@ -155,7 +155,7 @@ is set to 2</p></dd>
 <dt>search_method</dt>
 <dd><p>algorithm to use when performing active subnetwork
 search. Options are greedy search (GR), simulated annealing (SA) or genetic
-algorithm (GA) for the search (default = "GR").</p></dd>
+algorithm (GA) for the search (default = 'GR').</p></dd>
 
 
 <dt>seedForRandom</dt>
@@ -237,17 +237,17 @@ the `score_quan_thr`th quantile and that has at least `sig_gene_thr` affected ge
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">processed_df</span> <span class="op">&lt;-</span> <span class="va">example_pathfindR_input</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">15</span>, <span class="op">-</span><span class="fl">2</span><span class="op">]</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">processed_df</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"GENE"</span>, <span class="st">"P_VALUE"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">processed_df</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'GENE'</span>, <span class="st">'P_VALUE'</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">GR_snws</span> <span class="op">&lt;-</span> <span class="fu">active_snw_search</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  input_for_search <span class="op">=</span> <span class="va">processed_df</span>,</span></span>
-<span class="r-in"><span>  pin_name_path <span class="op">=</span> <span class="st">"KEGG"</span>,</span></span>
-<span class="r-in"><span>  search_method <span class="op">=</span> <span class="st">"GR"</span>,</span></span>
+<span class="r-in"><span>  pin_name_path <span class="op">=</span> <span class="st">'KEGG'</span>,</span></span>
+<span class="r-in"><span>  search_method <span class="op">=</span> <span class="st">'GR'</span>,</span></span>
 <span class="r-in"><span>  score_quan_thr <span class="op">=</span> <span class="fl">0.8</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Found 2 active subnetworks</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co"># clean-up</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="st">"active_snw_search"</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="st">'active_snw_search'</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>

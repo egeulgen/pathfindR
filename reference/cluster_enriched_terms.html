@@ -97,14 +97,14 @@
     <h2>Arguments</h2>
     <dl><dt>enrichment_res</dt>
 <dd><p>data frame of pathfindR enrichment results. Must-have
-columns are "Term_Description" (if <code>use_description = TRUE</code>) or "ID"
-(if <code>use_description = FALSE</code>), "Down_regulated", and "Up_regulated".
-If <code>use_active_snw_genes = TRUE</code>, "non_Signif_Snw_Genes" must also be
+columns are 'Term_Description' (if <code>use_description = TRUE</code>) or 'ID'
+(if <code>use_description = FALSE</code>), 'Down_regulated', and 'Up_regulated'.
+If <code>use_active_snw_genes = TRUE</code>, 'non_Signif_Snw_Genes' must also be
 provided.</p></dd>
 
 
 <dt>method</dt>
-<dd><p>Either "hierarchical" or "fuzzy". Details of clustering are
+<dd><p>Either 'hierarchical' or 'fuzzy'. Details of clustering are
 provided in the corresponding functions <code><a href="hierarchical_term_clustering.html">hierarchical_term_clustering</a></code>,
 and <code><a href="fuzzy_term_clustering.html">fuzzy_term_clustering</a></code></p></dd>
 
@@ -116,7 +116,7 @@ the graph diagram of clustering results (default = TRUE)</p></dd>
 
 <dt>use_description</dt>
 <dd><p>Boolean argument to indicate whether term descriptions
-(in the "Term_Description" column) should be used. (default = <code>FALSE</code>)</p></dd>
+(in the 'Term_Description' column) should be used. (default = <code>FALSE</code>)</p></dd>
 
 
 <dt>use_active_snw_genes</dt>
@@ -135,9 +135,9 @@ See documentation of these functions for more details.</p></dd>
     <h2>Value</h2>
     
 
-<p>a data frame of clustering results. For "hierarchical", the cluster
+<p>a data frame of clustering results. For 'hierarchical', the cluster
 assignments (Cluster) and whether the term is representative of its cluster
-(Status) is added as columns. For "fuzzy", terms that are in multiple
+(Status) is added as columns. For 'fuzzy', terms that are in multiple
 clusters are provided for each cluster. The cluster assignments (Cluster)
 and whether the term is representative of its cluster (Status) is
 added as columns.</p>
@@ -161,7 +161,7 @@ See <code><a href="cluster_graph_vis.html">cluster_graph_vis</a></code> for grap
 <span class="r-plt img"><img src="cluster_enriched_terms-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="va">example_clustered</span> <span class="op">&lt;-</span> <span class="fu">cluster_enriched_terms</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">example_pathfindR_output</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="op">]</span>,</span></span>
-<span class="r-in"><span>  method <span class="op">=</span> <span class="st">"fuzzy"</span>, plot_clusters_graph <span class="op">=</span> <span class="cn">FALSE</span></span></span>
+<span class="r-in"><span>  method <span class="op">=</span> <span class="st">'fuzzy'</span>, plot_clusters_graph <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
