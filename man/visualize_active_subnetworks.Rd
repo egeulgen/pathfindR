@@ -32,7 +32,7 @@ path/to/PIN.sif, the file must comply with the PIN specifications. (Default = "B
 \item{num_snws}{number of top subnetworks to be visualized (leave blank if
 you want to visualize all subnetworks)}
 
-\item{layout}{The type of layout to create (see \code{\link[ggraph]{ggraph}} for details. Default = "stress")}
+\item{layout}{The type of layout to create (see \code{\link[ggraph]{ggraph}} for details. Default = 'stress')}
 
 \item{score_quan_thr}{active subnetwork score quantile threshold. Must be
 between 0 and 1 or set to -1 for not filtering. (Default = 0.8)}

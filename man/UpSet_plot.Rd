@@ -35,11 +35,11 @@ UpSet_plot(
 \item{num_terms}{Number of top enriched terms to use while creating the plot. Set to \code{NULL} to use
 all enriched terms (default = 10)}
 
-\item{method}{the option for producing the plot. Options include "heatmap",
-"boxplot" and "barplot". (default = "heatmap")}
+\item{method}{the option for producing the plot. Options include 'heatmap',
+'boxplot' and 'barplot'. (default = 'heatmap')}
 
 \item{use_description}{Boolean argument to indicate whether term descriptions
-(in the "Term_Description" column) should be used. (default = \code{FALSE})}
+(in the 'Term_Description' column) should be used. (default = \code{FALSE})}
 
 \item{low}{a string indicating the color of 'low' values in the coloring gradient (default = 'green')}
 
@@ -54,11 +54,11 @@ all enriched terms (default = 10)}
 UpSet plots are plots of the intersections of sets as a matrix. This
 function creates a ggplot object of an UpSet plot where the x-axis is the
 UpSet plot of intersections of enriched terms. By default (i.e.
-\code{method = "heatmap"}) the main plot is a heatmap of genes at the
+\code{method = 'heatmap'}) the main plot is a heatmap of genes at the
 corresponding intersections, colored by up/down regulation (if
 \code{genes_df} is provided, colored by change values). If
-\code{method = "barplot"}, the main plot is bar plots of the number of genes
-at the corresponding intersections. Finally, if \code{method = "boxplot"} and
+\code{method = 'barplot'}, the main plot is bar plots of the number of genes
+at the corresponding intersections. Finally, if \code{method = 'boxplot'} and
 if \code{genes_df} is provided, then the main plot displays the boxplots of
 change values of the genes at the corresponding intersections.
 }

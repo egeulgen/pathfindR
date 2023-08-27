@@ -23,9 +23,9 @@ visualize_hsa_KEGG(
 
 \item{node_cols}{low, middle and high color values for coloring the pathway nodes
 (default = \code{NULL}). If \code{node_cols=NULL}, the low, middle and high color
-are set as "green", "gray" and "red". If all change values are 1e6 (in case no
+are set as 'green', 'gray' and 'red'. If all change values are 1e6 (in case no
 changes are supplied, this dummy value is assigned by
-\code{\link{input_processing}}), only one color ("#F38F18" if NULL) is used.}
+\code{\link{input_processing}}), only one color ('#F38F18' if NULL) is used.}
 
 \item{quiet}{If \code{TRUE}, suppress status messages (if any), and the
 progress bar while downloading file(s)}
@@ -38,7 +38,7 @@ progress bar while downloading file(s)}
 }
 \value{
 Creates colored visualizations of the enriched human KEGG pathways
-and saves them in the folder "term_visualizations" under the current working
+and saves them in the folder 'term_visualizations' under the current working
 directory.
 }
 \description{

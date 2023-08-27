@@ -37,7 +37,7 @@ term_gene_heatmap(
 all enriched terms (default = 10)}
 
 \item{use_description}{Boolean argument to indicate whether term descriptions
-(in the "Term_Description" column) should be used. (default = \code{FALSE})}
+(in the 'Term_Description' column) should be used. (default = \code{FALSE})}
 
 \item{low}{a string indicating the color of 'low' values in the coloring gradient (default = 'green')}
 
@@ -45,7 +45,7 @@ all enriched terms (default = 10)}
 
 \item{high}{a string indicating the color of 'high' values in the coloring gradient (default = 'red')}
 
-\item{legend_title}{legend title (defaut = "change")}
+\item{legend_title}{legend title (defaut = 'change')}
 
 \item{sort_terms_by_p}{boolean to indicate whether to sort terms by 'lowest_p'
 (\code{TRUE}) or by number of genes (\code{FALSE}) (default = \code{FALSE})}
