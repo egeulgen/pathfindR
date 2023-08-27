@@ -29,7 +29,7 @@ names and row names must contain the gene symbols.}
 case/control experiment. (default = NULL)}
 
 \item{use_description}{Boolean argument to indicate whether term descriptions
-(in the "Term_Description" column) should be used. (default = \code{FALSE})}
+(in the 'Term_Description' column) should be used. (default = \code{FALSE})}
 
 \item{plot_hmap}{Boolean value to indicate whether or not to draw the
 heatmap plot of the scores. (default = TRUE)}

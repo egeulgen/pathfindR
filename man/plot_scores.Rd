@@ -25,9 +25,9 @@ case/control experiment. (default = NULL)}
 \item{label_samples}{Boolean value to indicate whether or not to label the
 samples in the heatmap plot (default = TRUE)}
 
-\item{case_title}{Naming of the 'Case' group (as in \code{cases}) (default = "Case")}
+\item{case_title}{Naming of the 'Case' group (as in \code{cases}) (default = 'Case')}
 
-\item{control_title}{Naming of the 'Control' group (default = "Control")}
+\item{control_title}{Naming of the 'Control' group (default = 'Control')}
 
 \item{low}{a string indicating the color of 'low' values in the coloring gradient (default = 'green')}
 
@@ -37,7 +37,7 @@ samples in the heatmap plot (default = TRUE)}
 }
 \value{
 A `ggplot2` object containing the heatmap plot. x-axis indicates
-the samples. y-axis indicates the enriched terms. "Score" indicates the
+the samples. y-axis indicates the enriched terms. 'Score' indicates the
 score of the term in a given sample. If \code{cases} are provided, the plot is
 divided into 2 facets, named by \code{case_title} and \code{control_title}.
 }
