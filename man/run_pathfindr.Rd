@@ -89,7 +89,7 @@ Data frame of pathfindR enrichment results. Columns are: \describe{
  The function also creates an HTML report with the pathfindR enrichment
  results linked to the visualizations of the enriched terms in addition to
  the table of converted gene symbols. This report can be found in
- "\code{output_dir}/results.html" under the current working directory.
+ '\code{output_dir}/results.html' under the current working directory.
 
  By default, a bubble chart of top 10 enrichment results are plotted. The x-axis
  corresponds to fold enrichment values while the y-axis indicates the enriched
@@ -115,8 +115,8 @@ are reported for each enriched term.
 }
 \section{Warning}{
  Especially depending on the protein interaction network,
- the algorithm and the number of iterations you choose, "active subnetwork
- search + enrichment" component of \code{run_pathfindR} may take a long time to finish.
+ the algorithm and the number of iterations you choose, 'active subnetwork
+ search + enrichment' component of \code{run_pathfindR} may take a long time to finish.
 }
 
 \examples{
