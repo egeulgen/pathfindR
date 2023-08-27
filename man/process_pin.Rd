@@ -8,7 +8,7 @@ process_pin(pin_df)
 }
 \arguments{
 \item{pin_df}{data frame of protein-protein interactions with 2 columns:
-"Interactor_A" and "Interactor_B"}
+'Interactor_A' and 'Interactor_B'}
 }
 \value{
 processed PIN data frame (removes self-interactions and

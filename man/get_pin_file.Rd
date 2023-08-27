@@ -8,13 +8,13 @@ get_pin_file(source = "BioGRID", org = "Homo_sapiens", path2pin, ...)
 }
 \arguments{
 \item{source}{As of this version, this function is implemented to get data
-from "BioGRID" only. This argument (and this wrapper function) was implemented
+from 'BioGRID' only. This argument (and this wrapper function) was implemented
 for future utility}
 
 \item{org}{organism name. BioGRID naming requires underscores for spaces so
-"Homo sapiens" becomes "Homo_sapiens", "Mus musculus" becomes "Mus_musculus"
+'Homo sapiens' becomes 'Homo_sapiens', 'Mus musculus' becomes 'Mus_musculus'
 etc. See \url{https://wiki.thebiogrid.org/doku.php/statistics} for a full
-list of available organisms (default = "Homo_sapiens")}
+list of available organisms (default = 'Homo_sapiens')}
 
 \item{path2pin}{the path of the file to save the PIN data. By default, the
 PIN data is saved in a temporary file}

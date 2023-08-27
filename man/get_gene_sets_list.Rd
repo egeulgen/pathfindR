@@ -13,28 +13,28 @@ get_gene_sets_list(
 )
 }
 \arguments{
-\item{source}{As of this version, either "KEGG", "Reactome" or "MSigDB" (default = "KEGG")}
+\item{source}{As of this version, either 'KEGG', 'Reactome' or 'MSigDB' (default = 'KEGG')}
 
-\item{org_code}{(Used for "KEGG" only) KEGG organism code for the selected organism. For a full list
+\item{org_code}{(Used for 'KEGG' only) KEGG organism code for the selected organism. For a full list
 of all available organisms, see \url{https://www.genome.jp/kegg/catalog/org_list.html}}
 
-\item{species}{(Used for "MSigDB" only) species name, such as Homo sapiens, Mus musculus, etc.
+\item{species}{(Used for 'MSigDB' only) species name, such as Homo sapiens, Mus musculus, etc.
 See \code{\link[msigdbr]{msigdbr_show_species}} for all the species available in
-the msigdbr package (default = "Homo sapiens")}
+the msigdbr package (default = 'Homo sapiens')}
 
-\item{collection}{(Used for "MSigDB" only) collection. i.e., H, C1, C2, C3, C4, C5, C6, C7.}
+\item{collection}{(Used for 'MSigDB' only) collection. i.e., H, C1, C2, C3, C4, C5, C6, C7.}
 
-\item{subcollection}{(Used for "MSigDB" only)  sub-collection, such as CGP, MIR, BP, etc. (default = NULL,
+\item{subcollection}{(Used for 'MSigDB' only)  sub-collection, such as CGP, MIR, BP, etc. (default = NULL,
 i.e. list all gene sets in collection)}
 }
 \value{
 A list containing 2 elements: \itemize{
 \item{gene_sets}{A list containing the genes involved in each gene set}
 \item{descriptions}{A named vector containing the descriptions for each gene set}
-}. For "KEGG" and "MSigDB", it is possible to choose a specific organism. For a full list
+}. For 'KEGG' and 'MSigDB', it is possible to choose a specific organism. For a full list
 of all available KEGG organisms, see \url{https://www.genome.jp/kegg/catalog/org_list.html}.
 See \code{\link[msigdbr]{msigdbr_show_species}} for all the species available in
-the msigdbr package used for obtaining "MSigDB" gene sets.
+the msigdbr package used for obtaining 'MSigDB' gene sets.
 For Reactome, there is only one collection of pathway gene sets.
 }
 \description{
