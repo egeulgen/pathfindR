@@ -26,7 +26,7 @@ this list are gene set IDs (default = kegg_genes)}
 gene sets. Names of this vector are gene set IDs (default = kegg_descriptions)}
 
 \item{adj_method}{correction method to be used for adjusting p-values.
-(default = "bonferroni")}
+(default = 'bonferroni')}
 
 \item{enrichment_threshold}{adjusted-p value threshold used when filtering
 enrichment results (default = 0.05)}
@@ -46,8 +46,8 @@ Perform Enrichment Analysis for a Single Gene Set
 }
 \examples{
 enrichment(
-  input_genes = c("PER1", "PER2", "CRY1", "CREB1"),
-  sig_genes_vec = "PER1",
+  input_genes = c('PER1', 'PER2', 'CRY1', 'CREB1'),
+  sig_genes_vec = 'PER1',
   background_genes = unlist(pathfindR.data::kegg_genes)
 )
 }

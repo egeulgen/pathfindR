@@ -91,7 +91,7 @@ nodes. In SA, initializes candidate solution with all positive nodes. (default =
 \item{gset_list}{list for gene sets}
 
 \item{adj_method}{correction method to be used for adjusting p-values.
-(default = "bonferroni")}
+(default = 'bonferroni')}
 
 \item{enrichment_threshold}{adjusted-p value threshold used when filtering
 enrichment results (default = 0.05)}

@@ -32,7 +32,7 @@ this list are gene set IDs (default = kegg_genes)}
 gene sets. Names of this vector are gene set IDs (default = kegg_descriptions)}
 
 \item{adj_method}{correction method to be used for adjusting p-values.
-(default = "bonferroni")}
+(default = 'bonferroni')}
 
 \item{enrichment_threshold}{adjusted-p value threshold used when filtering
 enrichment results (default = 0.05)}
@@ -59,7 +59,7 @@ Perform Enrichment Analyses on the Input Subnetworks
 enr_res <- enrichment_analyses(
   snws = example_active_snws[1:2],
   sig_genes_vec = example_pathfindR_input$Gene.symbol[1:25],
-  pin_name_path = "KEGG"
+  pin_name_path = 'KEGG'
 )
 }
 \seealso{
