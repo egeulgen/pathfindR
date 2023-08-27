@@ -22,9 +22,9 @@ test_that("`active_snw_enrichment_wrapper()` -- works as expected", {
             gset_list = list(), enrichment_threshold = 0.05, list_active_snw_genes = FALSE,
             iterations = 2, disable_parallel = TRUE), "data.frame")
 
-        expect_warning(active_snw_enrichment_wrapper(input_processed = input_df, pin_path = "Biogrid",
-            gset_list = list(), enrichment_threshold = 0.05, list_active_snw_genes = FALSE, search_method = "GA",
-            iterations = 2))
+        expect_warning(active_snw_enrichment_wrapper(input_processed = input_df,
+            pin_path = "Biogrid", gset_list = list(), enrichment_threshold = 0.05,
+            list_active_snw_genes = FALSE, search_method = "GA", iterations = 2))
     }, single_iter_wrapper = function(...) example_pathfindR_output, .package = "pathfindR")
 
     skip_on_cran()
@@ -110,16 +110,12 @@ test_that("`fetch_gene_set()` -- can fetch all gene set objects", {
 })
 
 test_that("`create_HTML_report()` -- works a expected", {
-  mock_render <- mockery::mock(NULL, cycle = TRUE)
-  mockery::stub(create_HTML_report, "rmarkdown::render", mock_render)
+    mock_render <- mockery::mock(NULL, cycle = TRUE)
+    mockery::stub(create_HTML_report, "rmarkdown::render", mock_render)
 
-  create_HTML_report(
-    input = data.frame(),
-    input_processed = data.frame(),
-    final_res = data.frame(),
-    dir_for_report = "/path/to/report/dir"
-  )
-  mockery::expect_called(mock_render, 3)
+    create_HTML_report(input = data.frame(), input_processed = data.frame(), final_res = data.frame(),
+        dir_for_report = "/path/to/report/dir")
+    mockery::expect_called(mock_render, 3)
 })
 
 test_that("`fetch_gene_set()` -- min/max_gset_size args correctly filter gene sets",

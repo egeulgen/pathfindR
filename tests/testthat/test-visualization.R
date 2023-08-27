@@ -81,11 +81,11 @@ test_that("`visualize_hsa_KEGG()` -- creates expected png file(s)", {
 
 
     mock_color_kegg_pw <- list(file_path = system.file("extdata", "logo.png", package = "pathfindR"),
-                               all_key_cols = "green", all_brks = c(0.5, 3, 5.5, 8, 10.5))
+        all_key_cols = "green", all_brks = c(0.5, 3, 5.5, 8, 10.5))
     constant_input <- processed_input
-    constant_input$CHANGE <- 1e6
+    constant_input$CHANGE <- 1e+06
     with_mocked_bindings({
-      expect_null(visualize_hsa_KEGG(hsa_kegg_ids = single_result$ID, input_processed = constant_input))
+        expect_null(visualize_hsa_KEGG(hsa_kegg_ids = single_result$ID, input_processed = constant_input))
     }, color_kegg_pathway = function(...) mock_color_kegg_pw, .package = "pathfindR")
     expect_true(file.exists(expected_out_file))
 })
@@ -122,22 +122,23 @@ test_that("`visualize_hsa_KEGG()` -- argument checks work", {
 test_that("`color_kegg_pathway()` -- works as expected", {
     skip_on_cran()
     with_mocked_bindings({
-      pw_id <- "hsa00010"
-      change_vec <- c(-2, 4, 6)
-      names(change_vec) <- c("hsa:2821", "hsa:226", "hsa:229")
+        pw_id <- "hsa00010"
+        change_vec <- c(-2, 4, 6)
+        names(change_vec) <- c("hsa:2821", "hsa:226", "hsa:229")
 
-      mockery::mock(color_kegg_pathway,"is.na", FALSE)
+        mockery::mock(color_kegg_pathway, "is.na", FALSE)
 
-      expect_is(result <- color_kegg_pathway(pw_id, change_vec), "list")
-      expect_length(result, 3)
-      expect_is(result$file_path, "character")
-      expect_true(length(result$all_key_cols) == length(result$all_brks) - 1)
-      expect_true(all(result$all_brks >= -1 & result$all_brks <= 1))
+        expect_is(result <- color_kegg_pathway(pw_id, change_vec), "list")
+        expect_length(result, 3)
+        expect_is(result$file_path, "character")
+        expect_true(length(result$all_key_cols) == length(result$all_brks) - 1)
+        expect_true(all(result$all_brks >= -1 & result$all_brks <= 1))
 
-      names(change_vec) <- rep("missing", 3)
-      expect_null(result <- color_kegg_pathway(pw_id, change_vec), "list")
+        names(change_vec) <- rep("missing", 3)
+        expect_null(result <- color_kegg_pathway(pw_id, change_vec), "list")
 
-    }, obtain_colored_url = function(...) NULL, download_kegg_png = function(...) 0, .package = "pathfindR")
+    }, obtain_colored_url = function(...) NULL, download_kegg_png = function(...) 0,
+        .package = "pathfindR")
 })
 
 test_that("`color_kegg_pathway()` -- exceptions are handled properly", {
@@ -155,11 +156,13 @@ test_that("`color_kegg_pathway()` -- exceptions are handled properly", {
 
     skip_on_cran()
 
-    constant_vec <- rep(1e6, 3)
+    constant_vec <- rep(1e+06, 3)
     names(constant_vec) <- c("hsa:2821", "hsa:226", "hsa:229")
 
-    expect_silent(color_kegg_pathway(pw_id = "hsa03040", change_vec = change_vec, node_cols = c("red", "blue", "green")))
-    expect_message(color_kegg_pathway(pw_id = "hsa03040", change_vec = constant_vec, node_cols = c("red", "blue", "green")))
+    expect_silent(color_kegg_pathway(pw_id = "hsa03040", change_vec = change_vec,
+        node_cols = c("red", "blue", "green")))
+    expect_message(color_kegg_pathway(pw_id = "hsa03040", change_vec = constant_vec,
+        node_cols = c("red", "blue", "green")))
 
     expect_null(suppressWarnings(color_kegg_pathway(pw_id = "hsa03040", change_vec = NULL)))
     expect_message(color_kegg_pathway(pw_id = "hsa11111", change_vec = c()))
