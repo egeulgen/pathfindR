@@ -12,7 +12,7 @@ annotate_term_genes(
 }
 \arguments{
 \item{result_df}{data frame of enrichment results.
-The only must-have column is "ID".}
+The only must-have column is 'ID'.}
 
 \item{input_processed}{input data processed via \code{\link{input_processing}}}
 
@@ -30,7 +30,7 @@ Function to annotate the involved affected (input) genes in each term.
 }
 \examples{
 example_gene_data <- example_pathfindR_input
-colnames(example_gene_data) <- c("GENE", "CHANGE", "P_VALUE")
+colnames(example_gene_data) <- c('GENE', 'CHANGE', 'P_VALUE')
 
 annotated_result <- annotate_term_genes(
   result_df = example_pathfindR_output,

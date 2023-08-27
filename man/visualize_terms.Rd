@@ -25,8 +25,8 @@ not necessary when \code{hsa_KEGG = FALSE}}
 enrichment analysis or not (default = \code{TRUE})}
 
 \item{pin_name_path}{Name of the chosen PIN or absolute/path/to/PIN.sif. If PIN name,
-must be one of c("Biogrid", "STRING", "GeneMania", "IntAct", "KEGG", "mmu_STRING"). If
-path/to/PIN.sif, the file must comply with the PIN specifications. (Default = "Biogrid")}
+must be one of c('Biogrid', 'STRING', 'GeneMania', 'IntAct', 'KEGG', 'mmu_STRING'). If
+path/to/PIN.sif, the file must comply with the PIN specifications. (Default = 'Biogrid')}
 
 \item{...}{additional arguments for \code{\link{visualize_hsa_KEGG}} (used
 when \code{hsa_kegg = TRUE}) or \code{\link{visualize_term_interactions}}

@@ -30,10 +30,10 @@ run_pathfindR(
 }}
 
 \item{gene_sets}{Name of the gene sets to be used for enrichment analysis.
-Available gene sets are "KEGG", "Reactome", "BioCarta", "GO-All",
-"GO-BP", "GO-CC", "GO-MF", "cell_markers", "mmu_KEGG" or "Custom".
-If "Custom", the arguments \code{custom_genes} and \code{custom_descriptions}
-must be specified. (Default = "KEGG")}
+Available gene sets are 'KEGG', 'Reactome', 'BioCarta', 'GO-All',
+'GO-BP', 'GO-CC', 'GO-MF', 'cell_markers', 'mmu_KEGG' or 'Custom'.
+If 'Custom', the arguments \code{custom_genes} and \code{custom_descriptions}
+must be specified. (Default = 'KEGG')}
 
 \item{min_gset_size}{minimum number of genes a term must contain (default = 10)}
 
@@ -48,8 +48,8 @@ custom  term. Names of the vector should correspond to the IDs of the custom
 terms.}
 
 \item{pin_name_path}{Name of the chosen PIN or absolute/path/to/PIN.sif. If PIN name,
-must be one of c("Biogrid", "STRING", "GeneMania", "IntAct", "KEGG", "mmu_STRING"). If
-path/to/PIN.sif, the file must comply with the PIN specifications. (Default = "Biogrid")}
+must be one of c('Biogrid', 'STRING', 'GeneMania', 'IntAct', 'KEGG', 'mmu_STRING'). If
+path/to/PIN.sif, the file must comply with the PIN specifications. (Default = 'Biogrid')}
 
 \item{p_val_threshold}{the p value threshold to use when filtering
 the input data frame. Must a numeric value between 0 and 1. (default = 0.05)}

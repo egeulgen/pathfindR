@@ -11,8 +11,8 @@ visualize_term_interactions(result_df, pin_name_path, show_legend = TRUE)
 are: 'Term_Description', 'Up_regulated' and 'Down_regulated'}
 
 \item{pin_name_path}{Name of the chosen PIN or absolute/path/to/PIN.sif. If PIN name,
-must be one of c("Biogrid", "STRING", "GeneMania", "IntAct", "KEGG", "mmu_STRING"). If
-path/to/PIN.sif, the file must comply with the PIN specifications. (Default = "Biogrid")}
+must be one of c('Biogrid', 'STRING', 'GeneMania', 'IntAct', 'KEGG', 'mmu_STRING'). If
+path/to/PIN.sif, the file must comply with the PIN specifications. (Default = 'Biogrid')}
 
 \item{show_legend}{Boolean to indicate whether to display the legend (\code{TRUE})
 or not (\code{FALSE}) (default: \code{TRUE})}

@@ -23,8 +23,8 @@ input_processing(
 the input data frame. Must a numeric value between 0 and 1. (default = 0.05)}
 
 \item{pin_name_path}{Name of the chosen PIN or absolute/path/to/PIN.sif. If PIN name,
-must be one of c("Biogrid", "STRING", "GeneMania", "IntAct", "KEGG", "mmu_STRING"). If
-path/to/PIN.sif, the file must comply with the PIN specifications. (Default = "Biogrid")}
+must be one of c('Biogrid', 'STRING', 'GeneMania', 'IntAct', 'KEGG', 'mmu_STRING'). If
+path/to/PIN.sif, the file must comply with the PIN specifications. (Default = 'Biogrid')}
 
 \item{convert2alias}{boolean to indicate whether or not to convert gene symbols
 in the input that are not found in the PIN to an alias symbol found in the PIN
@@ -44,11 +44,11 @@ Process Input
 \examples{
 processed_df <- input_processing(
   input = example_pathfindR_input[1:5, ],
-  pin_name_path = "KEGG"
+  pin_name_path = 'KEGG'
 )
 processed_df <- input_processing(
   input = example_pathfindR_input[1:10, ],
-  pin_name_path = "KEGG",
+  pin_name_path = 'KEGG',
   convert2alias = FALSE
 )
 }
