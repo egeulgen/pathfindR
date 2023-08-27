@@ -18,9 +18,9 @@ hierarchical_term_clustering(
 \item{kappa_mat}{matrix of kappa statistics (output of \code{\link{create_kappa_matrix}})}
 
 \item{enrichment_res}{data frame of pathfindR enrichment results. Must-have
-columns are "Term_Description" (if \code{use_description = TRUE}) or "ID"
-(if \code{use_description = FALSE}), "Down_regulated", and "Up_regulated".
-If \code{use_active_snw_genes = TRUE}, "non_Signif_Snw_Genes" must also be
+columns are 'Term_Description' (if \code{use_description = TRUE}) or 'ID'
+(if \code{use_description = FALSE}), 'Down_regulated', and 'Up_regulated'.
+If \code{use_active_snw_genes = TRUE}, 'non_Signif_Snw_Genes' must also be
 provided.}
 
 \item{num_clusters}{number of clusters to be formed (default = \code{NULL}).
@@ -28,10 +28,10 @@ If \code{NULL}, the optimal number of clusters is determined as the number
 which yields the highest average silhouette width.}
 
 \item{use_description}{Boolean argument to indicate whether term descriptions
-(in the "Term_Description" column) should be used. (default = \code{FALSE})}
+(in the 'Term_Description' column) should be used. (default = \code{FALSE})}
 
 \item{clu_method}{the agglomeration method to be used
-(default = "average", see \code{\link[stats]{hclust}})}
+(default = 'average', see \code{\link[stats]{hclust}})}
 
 \item{plot_hmap}{boolean to indicate whether to plot the kappa statistics
 clustering heatmap or not (default = FALSE)}
@@ -57,6 +57,6 @@ determined as the k value which yields the highest average silhouette width.
 \examples{
 \dontrun{
 hierarchical_term_clustering(kappa_mat, enrichment_res)
-hierarchical_term_clustering(kappa_mat, enrichment_res, method = "complete")
+hierarchical_term_clustering(kappa_mat, enrichment_res, method = 'complete')
 }
 }

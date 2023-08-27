@@ -22,16 +22,16 @@ cluster_graph_vis(
 \item{kappa_mat}{matrix of kappa statistics (output of \code{\link{create_kappa_matrix}})}
 
 \item{enrichment_res}{data frame of pathfindR enrichment results. Must-have
-columns are "Term_Description" (if \code{use_description = TRUE}) or "ID"
-(if \code{use_description = FALSE}), "Down_regulated", and "Up_regulated".
-If \code{use_active_snw_genes = TRUE}, "non_Signif_Snw_Genes" must also be
+columns are 'Term_Description' (if \code{use_description = TRUE}) or 'ID'
+(if \code{use_description = FALSE}), 'Down_regulated', and 'Up_regulated'.
+If \code{use_active_snw_genes = TRUE}, 'non_Signif_Snw_Genes' must also be
 provided.}
 
 \item{kappa_threshold}{threshold for kappa statistics, defining strong
 relation (default = 0.35)}
 
 \item{use_description}{Boolean argument to indicate whether term descriptions
-(in the "Term_Description" column) should be used. (default = \code{FALSE})}
+(in the 'Term_Description' column) should be used. (default = \code{FALSE})}
 
 \item{vertex.label.cex}{font size for vertex labels; it is interpreted as a multiplication factor of some device-dependent base font size (default = 0.7)}
 

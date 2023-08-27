@@ -15,12 +15,12 @@ cluster_enriched_terms(
 }
 \arguments{
 \item{enrichment_res}{data frame of pathfindR enrichment results. Must-have
-columns are "Term_Description" (if \code{use_description = TRUE}) or "ID"
-(if \code{use_description = FALSE}), "Down_regulated", and "Up_regulated".
-If \code{use_active_snw_genes = TRUE}, "non_Signif_Snw_Genes" must also be
+columns are 'Term_Description' (if \code{use_description = TRUE}) or 'ID'
+(if \code{use_description = FALSE}), 'Down_regulated', and 'Up_regulated'.
+If \code{use_active_snw_genes = TRUE}, 'non_Signif_Snw_Genes' must also be
 provided.}
 
-\item{method}{Either "hierarchical" or "fuzzy". Details of clustering are
+\item{method}{Either 'hierarchical' or 'fuzzy'. Details of clustering are
 provided in the corresponding functions \code{\link{hierarchical_term_clustering}},
 and \code{\link{fuzzy_term_clustering}}}
 
@@ -28,7 +28,7 @@ and \code{\link{fuzzy_term_clustering}}}
 the graph diagram of clustering results (default = TRUE)}
 
 \item{use_description}{Boolean argument to indicate whether term descriptions
-(in the "Term_Description" column) should be used. (default = \code{FALSE})}
+(in the 'Term_Description' column) should be used. (default = \code{FALSE})}
 
 \item{use_active_snw_genes}{boolean to indicate whether or not to use
 non-input active subnetwork genes in the calculation of kappa statistics
@@ -39,9 +39,9 @@ non-input active subnetwork genes in the calculation of kappa statistics
 See documentation of these functions for more details.}
 }
 \value{
-a data frame of clustering results. For "hierarchical", the cluster
+a data frame of clustering results. For 'hierarchical', the cluster
 assignments (Cluster) and whether the term is representative of its cluster
-(Status) is added as columns. For "fuzzy", terms that are in multiple
+(Status) is added as columns. For 'fuzzy', terms that are in multiple
 clusters are provided for each cluster. The cluster assignments (Cluster)
 and whether the term is representative of its cluster (Status) is
 added as columns.
@@ -56,7 +56,7 @@ example_clustered <- cluster_enriched_terms(
 )
 example_clustered <- cluster_enriched_terms(
   example_pathfindR_output[1:3, ],
-  method = "fuzzy", plot_clusters_graph = FALSE
+  method = 'fuzzy', plot_clusters_graph = FALSE
 )
 }
 \seealso{
