@@ -36,8 +36,8 @@ Parse Active Subnetwork Search Output File and Filter the Subnetworks
 }
 \examples{
 path2snw_list <- system.file(
-  "extdata/resultActiveSubnetworkSearch.txt",
-  package = "pathfindR"
+  'extdata/resultActiveSubnetworkSearch.txt',
+  package = 'pathfindR'
 )
 filtered <- filterActiveSnws(
   active_snw_path = path2snw_list,
