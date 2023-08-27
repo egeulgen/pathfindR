@@ -52,7 +52,7 @@ is set to 2}
 
 \item{search_method}{algorithm to use when performing active subnetwork
 search. Options are greedy search (GR), simulated annealing (SA) or genetic
-algorithm (GA) for the search (default = "GR").}
+algorithm (GA) for the search (default = 'GR').}
 
 \item{silent_option}{boolean value indicating whether to print the messages
 to the console (FALSE) or not (TRUE, this will print to a temp. file) during
@@ -91,7 +91,7 @@ nodes. In SA, initializes candidate solution with all positive nodes. (default =
 \item{gset_list}{list for gene sets}
 
 \item{adj_method}{correction method to be used for adjusting p-values.
-(default = "bonferroni")}
+(default = 'bonferroni')}
 
 \item{enrichment_threshold}{adjusted-p value threshold used when filtering
 enrichment results (default = 0.05)}

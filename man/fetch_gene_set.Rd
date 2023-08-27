@@ -14,10 +14,10 @@ fetch_gene_set(
 }
 \arguments{
 \item{gene_sets}{Name of the gene sets to be used for enrichment analysis.
-Available gene sets are "KEGG", "Reactome", "BioCarta", "GO-All",
-"GO-BP", "GO-CC", "GO-MF", "cell_markers", "mmu_KEGG" or "Custom".
-If "Custom", the arguments \code{custom_genes} and \code{custom_descriptions}
-must be specified. (Default = "KEGG")}
+Available gene sets are 'KEGG', 'Reactome', 'BioCarta', 'GO-All',
+'GO-BP', 'GO-CC', 'GO-MF', 'cell_markers', 'mmu_KEGG' or 'Custom'.
+If 'Custom', the arguments \code{custom_genes} and \code{custom_descriptions}
+must be specified. (Default = 'KEGG')}
 
 \item{min_gset_size}{minimum number of genes a term must contain (default = 10)}
 
@@ -43,5 +43,5 @@ be used for enrichment analysis.
 }
 \examples{
 KEGG_gset <- fetch_gene_set()
-GO_MF_gset <- fetch_gene_set("GO-MF", min_gset_size = 20, max_gset_size = 100)
+GO_MF_gset <- fetch_gene_set('GO-MF', min_gset_size = 20, max_gset_size = 100)
 }

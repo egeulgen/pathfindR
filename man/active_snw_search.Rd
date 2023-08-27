@@ -38,11 +38,11 @@ must be a data frame containing at least these 2 columns: \describe{
 }}
 
 \item{pin_name_path}{Name of the chosen PIN or absolute/path/to/PIN.sif. If PIN name,
-must be one of c("Biogrid", "STRING", "GeneMania", "IntAct", "KEGG", "mmu_STRING"). If
-path/to/PIN.sif, the file must comply with the PIN specifications. (Default = "Biogrid")}
+must be one of c('Biogrid', 'STRING', 'GeneMania', 'IntAct', 'KEGG', 'mmu_STRING'). If
+path/to/PIN.sif, the file must comply with the PIN specifications. (Default = 'Biogrid')}
 
 \item{snws_file}{name for active subnetwork search output data
-\strong{without file extension} (default = "active_snws")}
+\strong{without file extension} (default = 'active_snws')}
 
 \item{dir_for_parallel_run}{(previously created) directory for a parallel run iteration.
 Used in the wrapper function (see ?run_pathfindR) (Default = NULL)}
@@ -57,7 +57,7 @@ is set to 2}
 
 \item{search_method}{algorithm to use when performing active subnetwork
 search. Options are greedy search (GR), simulated annealing (SA) or genetic
-algorithm (GA) for the search (default = "GR").}
+algorithm (GA) for the search (default = 'GR').}
 
 \item{seedForRandom}{seed for reproducibility while running the java modules (applies for GR and SA)}
 
@@ -104,13 +104,13 @@ Perform Active Subnetwork Search
 }
 \examples{
 processed_df <- example_pathfindR_input[1:15, -2]
-colnames(processed_df) <- c("GENE", "P_VALUE")
+colnames(processed_df) <- c('GENE', 'P_VALUE')
 GR_snws <- active_snw_search(
   input_for_search = processed_df,
-  pin_name_path = "KEGG",
-  search_method = "GR",
+  pin_name_path = 'KEGG',
+  search_method = 'GR',
   score_quan_thr = 0.8
 )
 # clean-up
-unlink("active_snw_search", recursive = TRUE)
+unlink('active_snw_search', recursive = TRUE)
 }

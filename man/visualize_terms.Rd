@@ -14,9 +14,9 @@ visualize_terms(
 }
 \arguments{
 \item{result_df}{Data frame of enrichment results. Must-have columns for
- KEGG human pathway diagrams (\code{hsa_kegg = TRUE}) are: "ID" and "Term_Description".
- Must-have columns for the rest are: "Term_Description", "Up_regulated" and
-"Down_regulated"}
+ KEGG human pathway diagrams (\code{hsa_kegg = TRUE}) are: 'ID' and 'Term_Description'.
+ Must-have columns for the rest are: 'Term_Description', 'Up_regulated' and
+'Down_regulated'}
 
 \item{input_processed}{input data processed via \code{\link{input_processing}},
 not necessary when \code{hsa_KEGG = FALSE}}
@@ -25,8 +25,8 @@ not necessary when \code{hsa_KEGG = FALSE}}
 enrichment analysis or not (default = \code{TRUE})}
 
 \item{pin_name_path}{Name of the chosen PIN or absolute/path/to/PIN.sif. If PIN name,
-must be one of c("Biogrid", "STRING", "GeneMania", "IntAct", "KEGG", "mmu_STRING"). If
-path/to/PIN.sif, the file must comply with the PIN specifications. (Default = "Biogrid")}
+must be one of c('Biogrid', 'STRING', 'GeneMania', 'IntAct', 'KEGG', 'mmu_STRING'). If
+path/to/PIN.sif, the file must comply with the PIN specifications. (Default = 'Biogrid')}
 
 \item{...}{additional arguments for \code{\link{visualize_hsa_KEGG}} (used
 when \code{hsa_kegg = TRUE}) or \code{\link{visualize_term_interactions}}
@@ -35,7 +35,7 @@ when \code{hsa_kegg = TRUE}) or \code{\link{visualize_term_interactions}}
 \value{
 Depending on the argument \code{hsa_KEGG}, creates visualization of
  interactions of genes involved in the list of enriched terms in
- \code{result_df} and saves them in the folder "term_visualizations" under
+ \code{result_df} and saves them in the folder 'term_visualizations' under
  the current working directory.
 }
 \description{
@@ -50,7 +50,7 @@ algorithm) and are visualized (colored by change status) using igraph.
 \examples{
 \dontrun{
 visualize_terms(result_df, input_processed)
-visualize_terms(result_df, hsa_KEGG = FALSE, pin_name_path = "IntAct")
+visualize_terms(result_df, hsa_KEGG = FALSE, pin_name_path = 'IntAct')
 }
 }
 \seealso{

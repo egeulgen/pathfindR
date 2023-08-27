@@ -7,7 +7,7 @@
 check_java_version(version = NULL)
 }
 \arguments{
-\item{version}{character vector containing the output of "java -version". If
+\item{version}{character vector containing the output of 'java -version'. If
 NULL, result of \code{\link{fetch_java_version}} is used (default = NULL)}
 }
 \value{

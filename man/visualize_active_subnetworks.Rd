@@ -26,13 +26,13 @@ visualize_active_subnetworks(
 } The change values in this data frame are used to color the affected genes}
 
 \item{pin_name_path}{Name of the chosen PIN or absolute/path/to/PIN.sif. If PIN name,
-must be one of c("Biogrid", "STRING", "GeneMania", "IntAct", "KEGG", "mmu_STRING"). If
-path/to/PIN.sif, the file must comply with the PIN specifications. (Default = "Biogrid")}
+must be one of c('Biogrid', 'STRING', 'GeneMania', 'IntAct', 'KEGG', 'mmu_STRING'). If
+path/to/PIN.sif, the file must comply with the PIN specifications. (Default = 'Biogrid')}
 
 \item{num_snws}{number of top subnetworks to be visualized (leave blank if
 you want to visualize all subnetworks)}
 
-\item{layout}{The type of layout to create (see \code{\link[ggraph]{ggraph}} for details. Default = "stress")}
+\item{layout}{The type of layout to create (see \code{\link[ggraph]{ggraph}} for details. Default = 'stress')}
 
 \item{score_quan_thr}{active subnetwork score quantile threshold. Must be
 between 0 and 1 or set to -1 for not filtering. (Default = 0.8)}
@@ -54,14 +54,14 @@ Visualize Active Subnetworks
 }
 \examples{
 path2snw_list <- system.file(
-  "extdata/resultActiveSubnetworkSearch.txt",
-  package = "pathfindR"
+  'extdata/resultActiveSubnetworkSearch.txt',
+  package = 'pathfindR'
 )
 # visualize top 2 active subnetworks
 g_list <- visualize_active_subnetworks(
   active_snw_path = path2snw_list,
   genes_df = example_pathfindR_input[1:10, ],
-  pin_name_path = "KEGG",
+  pin_name_path = 'KEGG',
   num_snws = 2
 )
 }

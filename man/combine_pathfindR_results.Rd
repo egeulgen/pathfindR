@@ -31,7 +31,7 @@ Data frame of combined pathfindR enrichment results. Columns are: \describe{
   \item{Up_regulated_B}{the up-regulated genes in the input involved in the given term's gene set, comma-separated}
   \item{Down_regulated_B}{the down-regulated genes in the input involved in the given term's gene set, comma-separated}
   \item{combined_p}{the combined p value (via Fisher's method)}
-  \item{status}{whether the term is found in both analyses ("common"), found only in the first ("A only") or found only in the second ("B only)}
+  \item{status}{whether the term is found in both analyses ('common'), found only in the first ('A only') or found only in the second ('B only)}
 }
 By default, the function also displays the term-gene graph of the common terms
 }

@@ -22,7 +22,7 @@ enrichment_chart(
   \item{Cluster(OPTIONAL)}{the cluster to which the enriched term is assigned}
 }}
 
-\item{top_terms}{number of top terms (according to the "lowest_p" column)
+\item{top_terms}{number of top terms (according to the 'lowest_p' column)
 to plot (default = 10). If \code{plot_by_cluster = TRUE}, selects the top
 \code{top_terms} terms per each cluster. Set \code{top_terms = NULL} to plot
 for all terms.If the total number of terms is less than \code{top_terms},
@@ -30,7 +30,7 @@ all terms are plotted.}
 
 \item{plot_by_cluster}{boolean value indicating whether or not to group the
 enriched terms by cluster (works if \code{result_df} contains a
-"Cluster" column).}
+'Cluster' column).}
 
 \item{num_bubbles}{number of sizes displayed in the legend \code{# genes}
 (Default = 4)}
@@ -47,7 +47,7 @@ The x-axis corresponds to fold enrichment values while the y-axis indicates
 the enriched terms. Size of the bubble indicates the number of significant
 genes in the given enriched term. Color indicates the -log10(lowest-p) value.
 The closer the color is to red, the more significant the enrichment is.
-Optionally, if "Cluster" is a column of \code{result_df} and
+Optionally, if 'Cluster' is a column of \code{result_df} and
 \code{plot_by_cluster == TRUE}, the enriched terms are grouped by clusters.
 }
 \description{

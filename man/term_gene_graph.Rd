@@ -24,21 +24,21 @@ term_gene_graph(
 \item{num_terms}{Number of top enriched terms to use while creating the graph. Set to \code{NULL} to use
 all enriched terms (default = 10, i.e. top 10 terms)}
 
-\item{layout}{The type of layout to create (see \code{\link[ggraph]{ggraph}} for details. Default = "stress")}
+\item{layout}{The type of layout to create (see \code{\link[ggraph]{ggraph}} for details. Default = 'stress')}
 
 \item{use_description}{Boolean argument to indicate whether term descriptions
-(in the "Term_Description" column) should be used. (default = \code{FALSE})}
+(in the 'Term_Description' column) should be used. (default = \code{FALSE})}
 
-\item{node_size}{Argument to indicate whether to use number of significant genes ("num_genes")
-or the -log10(lowest p value) ("p_val") for adjusting the node sizes (default = "num_genes")}
+\item{node_size}{Argument to indicate whether to use number of significant genes ('num_genes')
+or the -log10(lowest p value) ('p_val') for adjusting the node sizes (default = 'num_genes')}
 }
 \value{
 a  \code{\link[ggraph]{ggraph}} object containing the term-gene graph.
  Each node corresponds to an enriched term (beige), an up-regulated gene (green)
  or a down-regulated gene (red). An edge between a term and a gene indicates
  that the given term involves the gene. Size of a term node is proportional
- to either the number of genes (if \code{node_size = "num_genes"}) or
- the -log10(lowest p value) (if \code{node_size = "p_val"}).
+ to either the number of genes (if \code{node_size = 'num_genes'}) or
+ the -log10(lowest p value) (if \code{node_size = 'p_val'}).
 }
 \description{
 Create Term-Gene Graph
@@ -55,5 +55,5 @@ by identifying shared and distinct significant term-related genes.
 \examples{
 p <- term_gene_graph(example_pathfindR_output)
 p <- term_gene_graph(example_pathfindR_output, num_terms = 5)
-p <- term_gene_graph(example_pathfindR_output, node_size = "p_val")
+p <- term_gene_graph(example_pathfindR_output, node_size = 'p_val')
 }

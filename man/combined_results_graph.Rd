@@ -16,16 +16,16 @@ combined_results_graph(
 \item{combined_df}{Data frame of combined pathfindR enrichment results}
 
 \item{selected_terms}{the vector of selected terms for creating the graph
-(either IDs or term descriptions). If set to \code{"common"}, all of the
-common terms are used. (default = "common")}
+(either IDs or term descriptions). If set to \code{'common'}, all of the
+common terms are used. (default = 'common')}
 
 \item{use_description}{Boolean argument to indicate whether term descriptions
-(in the "Term_Description" column) should be used. (default = \code{FALSE})}
+(in the 'Term_Description' column) should be used. (default = \code{FALSE})}
 
-\item{layout}{The type of layout to create (see \code{\link[ggraph]{ggraph}} for details. Default = "stress")}
+\item{layout}{The type of layout to create (see \code{\link[ggraph]{ggraph}} for details. Default = 'stress')}
 
-\item{node_size}{Argument to indicate whether to use number of significant genes ("num_genes")
-or the -log10(lowest p value) ("p_val") for adjusting the node sizes (default = "num_genes")}
+\item{node_size}{Argument to indicate whether to use number of significant genes ('num_genes')
+or the -log10(lowest p value) ('p_val') for adjusting the node sizes (default = 'num_genes')}
 }
 \value{
 a  \code{\link[ggraph]{ggraph}} object containing the combined term-gene graph.
@@ -34,8 +34,8 @@ a  \code{\link[ggraph]{ggraph}} object containing the combined term-gene graph.
  a conflicting (i.e. up in one analysis, down in the other or vice versa) gene
  (gray). An edge between a term and a gene indicates
  that the given term involves the gene. Size of a term node is proportional
- to either the number of genes (if \code{node_size = "num_genes"}) or
- the -log10(lowest p value) (if \code{node_size = "p_val"}).
+ to either the number of genes (if \code{node_size = 'num_genes'}) or
+ the -log10(lowest p value) (if \code{node_size = 'p_val'}).
 }
 \description{
 Combined Results Graph

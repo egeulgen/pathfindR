@@ -8,11 +8,11 @@ visualize_term_interactions(result_df, pin_name_path, show_legend = TRUE)
 }
 \arguments{
 \item{result_df}{Data frame of enrichment results. Must-have columns
-are: "Term_Description", "Up_regulated" and "Down_regulated"}
+are: 'Term_Description', 'Up_regulated' and 'Down_regulated'}
 
 \item{pin_name_path}{Name of the chosen PIN or absolute/path/to/PIN.sif. If PIN name,
-must be one of c("Biogrid", "STRING", "GeneMania", "IntAct", "KEGG", "mmu_STRING"). If
-path/to/PIN.sif, the file must comply with the PIN specifications. (Default = "Biogrid")}
+must be one of c('Biogrid', 'STRING', 'GeneMania', 'IntAct', 'KEGG', 'mmu_STRING'). If
+path/to/PIN.sif, the file must comply with the PIN specifications. (Default = 'Biogrid')}
 
 \item{show_legend}{Boolean to indicate whether to display the legend (\code{TRUE})
 or not (\code{FALSE}) (default: \code{TRUE})}
@@ -21,7 +21,7 @@ or not (\code{FALSE}) (default: \code{TRUE})}
 Creates PNG files visualizing the interactions of genes involved
 in the given enriched terms (annotated in the \code{result_df}) in the PIN used
 for enrichment analysis (specified by \code{pin_name_path}). The PNG files are
-saved in the folder "term_visualizations" under the current working directory.
+saved in the folder 'term_visualizations' under the current working directory.
 }
 \description{
 Visualize Interactions of Genes Involved in the Given Enriched Terms
@@ -39,7 +39,7 @@ of genes involved for each enriched term: \enumerate{
 }
 \examples{
 \dontrun{
-visualize_term_interactions(result_df, pin_name_path = "IntAct")
+visualize_term_interactions(result_df, pin_name_path = 'IntAct')
 }
 }
 \seealso{

@@ -7,7 +7,7 @@
 fetch_java_version()
 }
 \value{
-character vector containing the output of "java -version"
+character vector containing the output of 'java -version'
 }
 \description{
 Obtain Java Version

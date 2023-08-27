@@ -21,9 +21,9 @@ color_kegg_pathway(
 
 \item{node_cols}{low, middle and high color values for coloring the pathway nodes
 (default = \code{NULL}). If \code{node_cols=NULL}, the low, middle and high color
-are set as "green", "gray" and "red". If all change values are 1e6 (in case no
+are set as 'green', 'gray' and 'red'. If all change values are 1e6 (in case no
 changes are supplied, this dummy value is assigned by
-\code{\link{input_processing}}), only one color ("#F38F18" if NULL) is used.}
+\code{\link{input_processing}}), only one color ('#F38F18' if NULL) is used.}
 
 \item{quiet}{If \code{TRUE}, suppress status messages (if any), and the
 progress bar while downloading file(s)}
@@ -40,9 +40,9 @@ Color hsa KEGG pathway
 }
 \examples{
 \dontrun{
-pw_id <- "hsa00010"
+pw_id <- 'hsa00010'
 change_vec <- c(-2, 4, 6)
-names(change_vec) <- c("hsa:2821", "hsa:226", "hsa:229")
+names(change_vec) <- c('hsa:2821', 'hsa:226', 'hsa:229')
 result <- pathfindR:::color_kegg_pathway(pw_id, change_vec)
 }
 }

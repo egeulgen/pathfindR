@@ -48,11 +48,11 @@ the non-significant active subnetwork genes for the active subnetwork which was 
 the given term with the lowest p value (default = \code{FALSE})}
 
 \item{adj_method}{correction method to be used for adjusting p-values.
-(default = "bonferroni")}
+(default = 'bonferroni')}
 
 \item{search_method}{algorithm to use when performing active subnetwork
 search. Options are greedy search (GR), simulated annealing (SA) or genetic
-algorithm (GA) for the search (default = "GR").}
+algorithm (GA) for the search (default = 'GR').}
 
 \item{disable_parallel}{boolean to indicate whether to disable parallel runs
 via \code{foreach} (default = FALSE)}

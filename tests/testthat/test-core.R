@@ -29,7 +29,8 @@ test_that("`run_pathfindR()` -- works as expected", {
         collapse = "|")
     # wrapper functions correctly - with output_dir provided
     out_dir <- file.path(tempdir(check = TRUE), "core_test")
-    expect_message(res <- run_pathfindR(input_data_frame, output_dir = out_dir), expected_messages)
+    expect_message(res <- run_pathfindR(input_data_frame, output_dir = out_dir),
+        expected_messages)
     expect_is(res, "data.frame")
     expect_identical(res, example_pathfindR_output)
     expect_true(dir.exists(out_dir))

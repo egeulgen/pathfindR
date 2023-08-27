@@ -38,7 +38,7 @@
 #'  The function also creates an HTML report with the pathfindR enrichment
 #'  results linked to the visualizations of the enriched terms in addition to
 #'  the table of converted gene symbols. This report can be found in
-#'  "\code{output_dir}/results.html" under the current working directory.
+#'  '\code{output_dir}/results.html' under the current working directory.
 #'
 #'  By default, a bubble chart of top 10 enrichment results are plotted. The x-axis
 #'  corresponds to fold enrichment values while the y-axis indicates the enriched
@@ -56,8 +56,8 @@
 #' @export
 #'
 #' @section Warning: Especially depending on the protein interaction network,
-#'  the algorithm and the number of iterations you choose, "active subnetwork
-#'  search + enrichment" component of \code{run_pathfindR} may take a long time to finish.
+#'  the algorithm and the number of iterations you choose, 'active subnetwork
+#'  search + enrichment' component of \code{run_pathfindR} may take a long time to finish.
 #'
 #' @seealso
 #' \code{\link{input_testing}} for input testing, \code{\link{input_processing}} for input processing,
@@ -74,101 +74,68 @@
 #' \dontrun{
 #' run_pathfindR(example_pathfindR_input)
 #' }
-run_pathfindR <- function(input,
-                          gene_sets = "KEGG",
-                          min_gset_size = 10,
-                          max_gset_size = 300,
-                          custom_genes = NULL, custom_descriptions = NULL,
-                          pin_name_path = "Biogrid",
-                          p_val_threshold = 5e-2,
-                          enrichment_threshold = 5e-2,
-                          convert2alias = TRUE,
-                          plot_enrichment_chart = TRUE,
-                          output_dir = NULL,
-                          list_active_snw_genes = FALSE,
-                          ...) {
-  ############ Argument checks
-  if (!is.logical(plot_enrichment_chart)) {
-    stop("`plot_enrichment_chart` should be either TRUE or FALSE")
-  }
-  if (!is.logical(list_active_snw_genes)) {
-    stop("`list_active_snw_genes` should be either TRUE or FALSE")
-  }
+run_pathfindR <- function(input, gene_sets = "KEGG", min_gset_size = 10, max_gset_size = 300,
+    custom_genes = NULL, custom_descriptions = NULL, pin_name_path = "Biogrid", p_val_threshold = 0.05,
+    enrichment_threshold = 0.05, convert2alias = TRUE, plot_enrichment_chart = TRUE,
+    output_dir = NULL, list_active_snw_genes = FALSE, ...) {
+    ############ Argument checks
+    if (!is.logical(plot_enrichment_chart)) {
+        stop("`plot_enrichment_chart` should be either TRUE or FALSE")
+    }
+    if (!is.logical(list_active_snw_genes)) {
+        stop("`list_active_snw_genes` should be either TRUE or FALSE")
+    }
 
-  gset_list <- fetch_gene_set(
-    gene_sets = gene_sets,
-    min_gset_size = min_gset_size,
-    max_gset_size = max_gset_size,
-    custom_genes = custom_genes,
-    custom_descriptions = custom_descriptions
-  )
+    gset_list <- fetch_gene_set(gene_sets = gene_sets, min_gset_size = min_gset_size,
+        max_gset_size = max_gset_size, custom_genes = custom_genes, custom_descriptions = custom_descriptions)
 
-  ## absolute path to PIN
-  pin_path <- return_pin_path(pin_name_path)
+    ## absolute path to PIN
+    pin_path <- return_pin_path(pin_name_path)
 
-  ## create output dir
-  output_dir_org <- output_dir
-  output_dir <- configure_output_dir(output_dir)
-  # on exit, set working directory back to original working directory
-  org_dir <- getwd()
-  on.exit(setwd(org_dir))
-  # create and change working directory into the output directory
-  dir.create(output_dir, recursive = TRUE)
-  output_dir <- normalizePath(output_dir)
-  setwd(output_dir)
+    ## create output dir
+    output_dir_org <- output_dir
+    output_dir <- configure_output_dir(output_dir)
+    # on exit, set working directory back to original working directory
+    org_dir <- getwd()
+    on.exit(setwd(org_dir))
+    # create and change working directory into the output directory
+    dir.create(output_dir, recursive = TRUE)
+    output_dir <- normalizePath(output_dir)
+    setwd(output_dir)
 
-  input_testing(input, p_val_threshold)
+    input_testing(input, p_val_threshold)
 
-  input_processed <- input_processing(
-    input, p_val_threshold,
-    pin_path, convert2alias
-  )
+    input_processed <- input_processing(input, p_val_threshold, pin_path, convert2alias)
 
-  combined_res <- active_snw_enrichment_wrapper(
-    input_processed,
-    pin_path,
-    gset_list,
-    enrichment_threshold,
-    list_active_snw_genes,
-    ...
-  )
-  setwd(output_dir)
+    combined_res <- active_snw_enrichment_wrapper(input_processed, pin_path, gset_list,
+        enrichment_threshold, list_active_snw_genes, ...)
+    setwd(output_dir)
 
-  ## In case no enrichment was found
-  if (is.null(combined_res)) {
-    warning("Did not find any enriched terms!", call. = FALSE)
-    return(data.frame())
-  }
+    ## In case no enrichment was found
+    if (is.null(combined_res)) {
+        warning("Did not find any enriched terms!", call. = FALSE)
+        return(data.frame())
+    }
 
-  final_res <- summarize_enrichment_results(
-    combined_res,
-    list_active_snw_genes
-  )
+    final_res <- summarize_enrichment_results(combined_res, list_active_snw_genes)
 
 
-  final_res <- annotate_term_genes(
-    result_df = final_res,
-    input_processed = input_processed,
-    genes_by_term = gset_list$genes_by_term
-  )
+    final_res <- annotate_term_genes(result_df = final_res, input_processed = input_processed,
+        genes_by_term = gset_list$genes_by_term)
 
-  if (!is.null(output_dir_org)) {
-    create_HTML_report(
-      input = input,
-      input_processed = input_processed,
-      final_res = final_res,
-      dir_for_report = output_dir
-    )
-  }
+    if (!is.null(output_dir_org)) {
+        create_HTML_report(input = input, input_processed = input_processed, final_res = final_res,
+            dir_for_report = output_dir)
+    }
 
-  if (plot_enrichment_chart) {
-    graphics::plot(enrichment_chart(result_df = final_res))
-  }
+    if (plot_enrichment_chart) {
+        graphics::plot(enrichment_chart(result_df = final_res))
+    }
 
-  message(paste0("Found ", nrow(final_res), " enriched terms\n\n"))
-  message("You may run:\n")
-  message("- cluster_enriched_terms() for clustering enriched terms\n")
-  message("- visualize_terms() for visualizing enriched term diagrams\n\n")
+    message(paste0("Found ", nrow(final_res), " enriched terms\n\n"))
+    message("You may run:\n")
+    message("- cluster_enriched_terms() for clustering enriched terms\n")
+    message("- visualize_terms() for visualizing enriched term diagrams\n\n")
 
-  return(final_res)
+    return(final_res)
 }
