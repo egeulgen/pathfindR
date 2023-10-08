@@ -43,14 +43,14 @@ test_that("`enrichment()` -- returns a data frame", {
 
     # higher threshold - no filter
     expect_is(enr_res2 <- enrichment(input_genes = example_pathfindR_input$Gene.symbol,
-        sig_genes_vec = c(), background_genes = c(), enrichment_threshold = 1), "data.frame")
+        sig_genes_vec = c("DummyGene"), background_genes = c("DummyGene"), enrichment_threshold = 1), "data.frame")
     expect_equal(nrow(enr_res2), 50)
     expect_true(any(enr_res2$non_Signif_Snw_Genes != ""))
 
     # no enrichment case
     mockery::stub(enrichment, "stats::p.adjust", rep(1, 50))
     expect_null(enr_res3 <- enrichment(input_genes = example_pathfindR_input$Gene.symbol,
-        sig_genes_vec = c(), background_genes = c()))
+        sig_genes_vec = c("DummyGene"), background_genes = c("DummyGene")))
 })
 
 test_that("`enrichment()` -- argument checks work", {
