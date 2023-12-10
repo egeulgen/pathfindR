@@ -1,4 +1,4 @@
-## Tests for agglomerated term scoring functions - Aug 2023
+## Tests for agglomerated term scoring functions - Dec 2023
 
 test_that("`score_terms()` -- returns score matrix", {
     mockery::stub(score_terms, "graphics::plot", NULL)
@@ -83,7 +83,10 @@ test_that("`plot_scores()` -- creates term score heatmap ggplot object with corr
     })
 
 test_that("`plot_scores()` -- argument checks work", {
+    expect_error(plot_scores(score_matrix = c()), "`score_matrix` should be a matrix")
+    expect_error(plot_scores(score_matrix = data.frame()), "`score_matrix` should be a matrix")
     expect_error(plot_scores(score_matrix = list()), "`score_matrix` should be a matrix")
+
     mat <- matrix(1, nrow = 3, ncol = 2, dimnames = list(paste0("T", 1:3), c("A",
         "B")))
 
@@ -97,4 +100,8 @@ test_that("`plot_scores()` -- argument checks work", {
 
     expect_error(plot_scores(score_matrix = mat, control_title = 1), "`control_title` should be a single character value")
     expect_error(plot_scores(score_matrix = mat, control_title = rep("z", 3)), "`control_title` should be a single character value")
+
+    expect_error(plot_scores(score_matrix = mat, low = ""))
+    expect_error(plot_scores(score_matrix = mat, mid = ""))
+    expect_error(plot_scores(score_matrix = mat, high = ""))
 })
