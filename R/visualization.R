@@ -1,3 +1,13 @@
+#' Check if value is a valid color
+#'
+#' @param x value
+#'
+#' @return TRUE if x is a valid color, otherwise FALSE
+isColor <- function(x) {
+  tryCatch(is.matrix(grDevices::col2rgb(x)), error = function(e) FALSE)
+}
+
+
 #' Create Diagrams for Enriched Terms
 #'
 #' @param result_df Data frame of enrichment results. Must-have columns for
@@ -407,10 +417,6 @@ color_kegg_pathway <- function(pw_id, change_vec, scale_vals = TRUE, node_cols =
 
         if (!all(change_vec == 1e+06) & length(node_cols) != 3) {
             stop("the length of `node_cols` should be 3")
-        }
-
-        isColor <- function(x) {
-            tryCatch(is.matrix(grDevices::col2rgb(x)), error = function(e) FALSE)
         }
 
         if (!all(vapply(node_cols, isColor, TRUE))) {
@@ -841,6 +847,10 @@ term_gene_graph <- function(result_df, num_terms = 10, layout = "stress", use_de
             collapse = " "))
     }
 
+    if (!is.atomic(node_colors)) {
+      stop("`node_colors` should be a vector of colors")
+    }
+
     if (!all(vapply(node_colors, isColor, TRUE))) {
       stop("`node_colors` should be a vector of valid colors")
     }
@@ -997,6 +1007,18 @@ term_gene_heatmap <- function(result_df, genes_df, num_terms = 10, use_descripti
         if (num_terms < 1) {
             stop("`num_terms` should be > 0 or NULL")
         }
+    }
+
+    if (!isColor(low)) {
+      stop("`low` should be a valid color")
+    }
+
+    if (!isColor(mid)) {
+      stop("`mid` should be a valid color")
+    }
+
+    if (!isColor(high)) {
+      stop("`high` should be a valid color")
     }
 
     ############ Init prep steps
@@ -1185,6 +1207,18 @@ UpSet_plot <- function(result_df, genes_df, num_terms = 10, method = "heatmap", 
     valid_opts <- c("heatmap", "boxplot", "barplot")
     if (!method %in% valid_opts) {
         stop("`method` should be one of` ", paste(dQuote(valid_opts), collapse = ", "))
+    }
+
+    if (!isColor(low)) {
+      stop("`low` should be a valid color")
+    }
+
+    if (!isColor(mid)) {
+      stop("`mid` should be a valid color")
+    }
+
+    if (!isColor(high)) {
+      stop("`high` should be a valid color")
     }
 
     ########## Init prep steps
