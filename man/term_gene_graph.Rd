@@ -9,7 +9,8 @@ term_gene_graph(
   num_terms = 10,
   layout = "stress",
   use_description = FALSE,
-  node_size = "num_genes"
+  node_size = "num_genes",
+  node_colors = c("#E5D7BF", "green", "red")
 )
 }
 \arguments{
@@ -31,6 +32,8 @@ all enriched terms (default = 10, i.e. top 10 terms)}
 
 \item{node_size}{Argument to indicate whether to use number of significant genes ('num_genes')
 or the -log10(lowest p value) ('p_val') for adjusting the node sizes (default = 'num_genes')}
+
+\item{node_colors}{vector of 3 colors to be used for coloring nodes (colors for term nodes, up, and down, respectively)}
 }
 \value{
 a  \code{\link[ggraph]{ggraph}} object containing the term-gene graph.

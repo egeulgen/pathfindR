@@ -216,6 +216,17 @@ plot_scores <- function(score_matrix, cases = NULL, label_samples = TRUE, case_t
         stop("`control_title` should be a single character value")
     }
 
+    if (!isColor(low)) {
+      stop("`low` should be a valid color")
+    }
+
+    if (!isColor(mid)) {
+      stop("`mid` should be a valid color")
+    }
+
+    if (!isColor(high)) {
+      stop("`high` should be a valid color")
+    }
 
     #### Create plot sort according to activity (up/down)
     if (!is.null(cases)) {

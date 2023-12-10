@@ -89,3 +89,4 @@ reference:
       - download_KGML_file
       - obtain_colored_url
       - create_HTML_report
+      - isColor

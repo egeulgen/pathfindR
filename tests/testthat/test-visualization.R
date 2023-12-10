@@ -1,4 +1,5 @@
-## Tests for functions related to various visualization functions - Aug 2023
+## Tests for functions related to various visualization functions - Dec 2023
+
 single_result <- example_pathfindR_output[1, ]
 processed_input <- example_pathfindR_input[, c(1, 1, 2, 3)]
 colnames(processed_input) <- c("old_GENE", "GENE", "CHANGE", "P_VALUE")
@@ -341,6 +342,10 @@ test_that("`term_gene_graph()` -- argument checks work", {
     expect_error(term_gene_graph(wrong_df, use_description = TRUE), paste(c("All of",
         paste(necessary_cols, collapse = ", "), "must be present in `results_df`!"),
         collapse = " "))
+
+    expect_error(term_gene_graph(example_pathfindR_output, node_colors = list()))
+    expect_error(term_gene_graph(example_pathfindR_output, node_colors = c(1, 2, 3)))
+    expect_error(term_gene_graph(example_pathfindR_output, node_colors = c("red", "blue")))
 })
 
 test_that("`term_gene_heatmap()` -- produces a ggplot object using the correct data",
@@ -421,6 +426,10 @@ test_that("`term_gene_graph()` -- argument checks work", {
 
     expect_error(term_gene_heatmap(result_df = example_pathfindR_output, num_terms = -1),
         "`num_terms` should be > 0 or NULL")
+
+    expect_error(term_gene_heatmap(example_pathfindR_output, low = ""))
+    expect_error(term_gene_heatmap(example_pathfindR_output, mid = ""))
+    expect_error(term_gene_heatmap(example_pathfindR_output, high = ""))
 })
 
 test_that("`UpSet_plot()` -- produces a ggplot object", {
@@ -489,4 +498,23 @@ test_that("`UpSet_plot()` -- argument checks work", {
 
     expect_error(UpSet_plot(result_df = example_pathfindR_output, method = "boxplot"),
         "For `method = boxplot`, you must provide `genes_df`")
+
+    expect_error(UpSet_plot(example_pathfindR_output, low = ""))
+    expect_error(UpSet_plot(example_pathfindR_output, mid = ""))
+    expect_error(UpSet_plot(example_pathfindR_output, high = ""))
+})
+
+test_that("`isColor()` -- identifies colors correctly", {
+  expect_true(isColor("red"))
+  expect_true(isColor("green"))
+  expect_true(isColor("black"))
+  expect_true(isColor("gray60"))
+  expect_true(isColor("#E5D7BF"))
+
+  expect_false(isColor(""))
+  expect_false(isColor("a"))
+  expect_false(isColor(FALSE))
+  expect_false(isColor(1))
+  expect_false(isColor(c()))
+  expect_false(isColor(list()))
 })
