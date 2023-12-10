@@ -88,7 +88,8 @@
 <span>  num_terms <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>  layout <span class="op">=</span> <span class="st">"stress"</span>,</span>
 <span>  use_description <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  node_size <span class="op">=</span> <span class="st">"num_genes"</span></span>
+<span>  node_size <span class="op">=</span> <span class="st">"num_genes"</span>,</span>
+<span>  node_colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#E5D7BF"</span>, <span class="st">"green"</span>, <span class="st">"red"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -131,6 +132,10 @@ all enriched terms (default = 10, i.e. top 10 terms)</p></dd>
 <dt>node_size</dt>
 <dd><p>Argument to indicate whether to use number of significant genes ('num_genes')
 or the -log10(lowest p value) ('p_val') for adjusting the node sizes (default = 'num_genes')</p></dd>
+
+
+<dt>node_colors</dt>
+<dd><p>vector of 3 colors to be used for coloring nodes (colors for term nodes, up, and down, respectively)</p></dd>
 
 </dl></div>
     <div id="value">
