@@ -4,6 +4,9 @@
 #'
 #' @return TRUE if x is a valid color, otherwise FALSE
 isColor <- function(x) {
+  if (!is.character(x) | length(x) != 1) {
+    return(FALSE)
+  }
   tryCatch(is.matrix(grDevices::col2rgb(x)), error = function(e) FALSE)
 }
 
