@@ -114,16 +114,21 @@ score_terms <- function(enrichment_table, exp_mat, cases = NULL, use_description
 
         genes <- c(up_genes, down_genes)
 
+        # convert gene symbols to upper case for comparison
+        genes <- toupper(genes)
+        exp_mat_genes <- rownames(exp_mat)
+        exp_mat_genes <- toupper(exp_mat_genes)
+
         # some genes may not be in exp. matrix
-        genes <- genes[genes %in% rownames(exp_mat)]
+        genes <- genes[genes %in% exp_mat_genes]
 
         if (length(genes) != 0) {
             # subset exp. matrix to include only genes
-            sub_mat <- exp_mat[rownames(exp_mat) %in% genes, , drop = FALSE]
+            sub_mat <- exp_mat[exp_mat_genes %in% genes, , drop = FALSE]
 
             current_term_score_matrix <- c()
             for (gene in genes) {
-                gene_vec <- sub_mat[rownames(sub_mat) == gene, ]
+                gene_vec <- sub_mat[toupper(rownames(sub_mat)) == gene, ]
                 gene_vec <- as.numeric(gene_vec)
                 names(gene_vec) <- colnames(sub_mat)
 
