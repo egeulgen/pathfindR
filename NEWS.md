@@ -47,7 +47,7 @@
 - updated the `term_gene_heatmap()` function so that legend title is shown and can be customized
 - updated the `term_gene_heatmap()` function so that coloring is proper when no change values are provided in `genes_df`
 - added the `sort_terms_by_p` argument to the `term_gene_heatmap()` function to enable sorting of terms by 'lowest_p'
-- in visualization functions, made coloring of up-/down-regrulated genes consistent (#126)
+- in visualization functions, made coloring of up-/down-regulated genes consistent (#126)
 - added the `vertex.label.cex` and `vertex.size.scaling` arguments to `cluster_graph_vis()`
 - added the `show_legend` argument to `visualize_term_interactions()` to toggle the legend
 

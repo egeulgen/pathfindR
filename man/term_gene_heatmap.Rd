@@ -45,7 +45,7 @@ all enriched terms (default = 10)}
 
 \item{high}{a string indicating the color of 'high' values in the coloring gradient (default = 'red')}
 
-\item{legend_title}{legend title (defaut = 'change')}
+\item{legend_title}{legend title (default = 'change')}
 
 \item{sort_terms_by_p}{boolean to indicate whether to sort terms by 'lowest_p'
 (\code{TRUE}) or by number of genes (\code{FALSE}) (default = \code{FALSE})}

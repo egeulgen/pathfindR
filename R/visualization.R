@@ -964,7 +964,7 @@ term_gene_graph <- function(result_df, num_terms = 10, layout = "stress", use_de
 #'  all enriched terms (default = 10)
 #' @inheritParams term_gene_graph
 #' @inheritParams plot_scores
-#' @param legend_title legend title (defaut = 'change')
+#' @param legend_title legend title (default = 'change')
 #' @param sort_terms_by_p boolean to indicate whether to sort terms by 'lowest_p'
 #' (\code{TRUE}) or by number of genes (\code{FALSE}) (default = \code{FALSE})
 #' @param ... additional arguments for \code{\link{input_processing}} (used if
