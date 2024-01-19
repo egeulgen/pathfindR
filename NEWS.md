@@ -1,4 +1,4 @@
-# pathfindR (development version)
+# pathfindR 2.3.1
 
 ## Minor Changes and Bug Fixes
 - fixed a bug in the `UpSet_plot()` plot function regarding the interaction with `ggupset` package that was discovered in a reverse dependency check for `ggplot2 3.5.0` (#189)
