@@ -13,8 +13,8 @@ gset_list_from_gmt(path2gmt, descriptions_idx = 2)
 }
 \value{
 list containing 2 elements: \itemize{
-\item{gene_sets}{A list containing the genes involved in each gene set}
-\item{descriptions}{A named vector containing the descriptions for each gene set}
+\item{gene_sets - A list containing the genes involved in each gene set}
+\item{descriptions - A named vector containing the descriptions for each gene set}
 }
 }
 \description{

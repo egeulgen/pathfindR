@@ -18,8 +18,8 @@ i.e. list all gene sets in collection)}
 }
 \value{
 Retrieves the MSigDB gene sets and returns a list containing 2 elements: \itemize{
-\item{gene_sets}{A list containing the genes involved in each of the selected MSigDB gene sets}
-\item{descriptions}{A named vector containing the descriptions for each selected MSigDB gene set}
+\item{gene_sets - A list containing the genes involved in each of the selected MSigDB gene sets}
+\item{descriptions - A named vector containing the descriptions for each selected MSigDB gene set}
 }
 }
 \description{

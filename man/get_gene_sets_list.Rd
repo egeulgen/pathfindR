@@ -29,8 +29,8 @@ i.e. list all gene sets in collection)}
 }
 \value{
 A list containing 2 elements: \itemize{
-\item{gene_sets}{A list containing the genes involved in each gene set}
-\item{descriptions}{A named vector containing the descriptions for each gene set}
+\item{gene_sets - A list containing the genes involved in each gene set}
+\item{descriptions - A named vector containing the descriptions for each gene set}
 }. For 'KEGG' and 'MSigDB', it is possible to choose a specific organism. For a full list
 of all available KEGG organisms, see \url{https://www.genome.jp/kegg/catalog/org_list.html}.
 See \code{\link[msigdbr]{msigdbr_show_species}} for all the species available in

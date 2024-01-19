@@ -126,8 +126,8 @@ get_pin_file <- function(source = "BioGRID", org = "Homo_sapiens", path2pin, ...
 #' @param descriptions_idx index for descriptions (default = 2)
 #'
 #' @return list containing 2 elements: \itemize{
-#' \item{gene_sets}{A list containing the genes involved in each gene set}
-#' \item{descriptions}{A named vector containing the descriptions for each gene set}
+#' \item{gene_sets - A list containing the genes involved in each gene set}
+#' \item{descriptions - A named vector containing the descriptions for each gene set}
 #' }
 gset_list_from_gmt <- function(path2gmt, descriptions_idx = 2) {
     gset_names_idx <- ifelse(descriptions_idx == 2, 1, 2)
@@ -167,8 +167,8 @@ gset_list_from_gmt <- function(path2gmt, descriptions_idx = 2) {
 #' of all available organisms, see \url{https://www.genome.jp/kegg/catalog/org_list.html}
 #'
 #' @return list containing 2 elements: \itemize{
-#' \item{gene_sets}{A list containing the genes involved in each KEGG pathway}
-#' \item{descriptions}{A named vector containing the descriptions for each KEGG pathway}
+#' \item{gene_sets - A list containing the genes involved in each KEGG pathway}
+#' \item{descriptions - A named vector containing the descriptions for each KEGG pathway}
 #' }
 get_kegg_gsets <- function(org_code = "hsa") {
     # created named list, eg: path:map00010: 'Glycolysis / Gluconeogenesis'
@@ -216,8 +216,8 @@ get_kegg_gsets <- function(org_code = "hsa") {
 #'
 #' @return Gets the latest Reactome pathways gene sets in gmt format. Parses the
 #' gmt file and returns a list containing 2 elements: \itemize{
-#' \item{gene_sets}{A list containing the genes involved in each Reactome pathway}
-#' \item{descriptions}{A named vector containing the descriptions for each Reactome pathway}
+#' \item{gene_sets - A list containing the genes involved in each Reactome pathway}
+#' \item{descriptions - A named vector containing the descriptions for each Reactome pathway}
 #' }
 #'
 get_reactome_gsets <- function() {
@@ -244,8 +244,8 @@ get_reactome_gsets <- function() {
 #' i.e. list all gene sets in collection)
 #'
 #' @return Retrieves the MSigDB gene sets and returns a list containing 2 elements: \itemize{
-#' \item{gene_sets}{A list containing the genes involved in each of the selected MSigDB gene sets}
-#' \item{descriptions}{A named vector containing the descriptions for each selected MSigDB gene set}
+#' \item{gene_sets - A list containing the genes involved in each of the selected MSigDB gene sets}
+#' \item{descriptions - A named vector containing the descriptions for each selected MSigDB gene set}
 #' }
 #'
 #' @details this function utilizes the function \code{\link[msigdbr]{msigdbr}}
@@ -296,8 +296,8 @@ get_mgsigdb_gsets <- function(species = "Homo sapiens", collection, subcollectio
 #' i.e. list all gene sets in collection)
 #'
 #' @return A list containing 2 elements: \itemize{
-#' \item{gene_sets}{A list containing the genes involved in each gene set}
-#' \item{descriptions}{A named vector containing the descriptions for each gene set}
+#' \item{gene_sets - A list containing the genes involved in each gene set}
+#' \item{descriptions - A named vector containing the descriptions for each gene set}
 #' }. For 'KEGG' and 'MSigDB', it is possible to choose a specific organism. For a full list
 #' of all available KEGG organisms, see \url{https://www.genome.jp/kegg/catalog/org_list.html}.
 #' See \code{\link[msigdbr]{msigdbr_show_species}} for all the species available in

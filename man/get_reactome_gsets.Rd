@@ -9,8 +9,8 @@ get_reactome_gsets()
 \value{
 Gets the latest Reactome pathways gene sets in gmt format. Parses the
 gmt file and returns a list containing 2 elements: \itemize{
-\item{gene_sets}{A list containing the genes involved in each Reactome pathway}
-\item{descriptions}{A named vector containing the descriptions for each Reactome pathway}
+\item{gene_sets - A list containing the genes involved in each Reactome pathway}
+\item{descriptions - A named vector containing the descriptions for each Reactome pathway}
 }
 }
 \description{
