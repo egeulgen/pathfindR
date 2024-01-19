@@ -1,5 +1,10 @@
 # pathfindR (development version)
 
+## Minor Changes and Bug Fixes
+- fixed a bug in the `UpSet_plot()` plot function regarding the interaction with `ggupset` package that was discovered in a reverse dependency check for `ggplot2 3.5.0` (#189)
+- fixed gene symbol case mismatch issue in `score_terms()` (#186)
+- applied enhancement suggestion from #184 to enable scale fill manual for `term_gene_graph()`
+
 # pathfindR 2.3.0
 ## Major Changes
 - reverted removal of `create_HTML_report()` so `run_pathfindR()` once again generates HTML reports

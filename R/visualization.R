@@ -1286,8 +1286,13 @@ UpSet_plot <- function(result_df, genes_df, num_terms = 10, method = "heatmap", 
 
     terms_lists <- rev(split(term_genes_df$Enriched_Term, term_genes_df$Symbol))
 
-    plot_df <- data.frame(Gene = names(terms_lists), Term = I(terms_lists), Up_Down = ifelse(names(terms_lists) %in%
-        unlist(up_genes), "up", "down"), stringsAsFactors = FALSE)
+    plot_df <- data.frame(
+      Gene = names(terms_lists),
+      Up_Down = ifelse(names(terms_lists) %in% unlist(up_genes), "up", "down"),
+      stringsAsFactors = FALSE
+    )
+
+    plot_df$Term <- terms_lists
 
     bg_df <- expand.grid(Gene = unique(plot_df$Gene), Term = unique(plot_df$Term))
 
