@@ -1,0 +1,24 @@
+name: Branch Naming Policy Action
+
+on:
+  create:
+  delete:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  branch-naming-policy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Branch Naming Policy Action
+        uses: nicklegan/github-repo-branch-naming-policy-action@v1.1.1
+        if: github.ref_type == 'branch' || github.ref_type == 'pull_request'
+        with:
+          token: ${{ secrets.REPO_TOKEN }}
+          regex: '^(feature|fix|docs|refactor|test|release|chore|experiment)\/[a-zA-Z0-9-]+$'
+          delete: true
