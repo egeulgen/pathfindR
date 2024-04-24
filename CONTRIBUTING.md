@@ -57,5 +57,41 @@ To contribute a change to pathfindR, you follow these steps:
 
 If you're not familiar with git or github, please start by reading <http://r-pkgs.had.co.nz/git.html>
 
+## Branch Naming Conventions
+
+We want to follow the branch following naming convention during development:
+
+### Feature Development:
+- Use the prefix `feature/` followed by a brief description of the feature.
+- Example: `feature/add-new-method`, `feature/update-active-snw-search`
+
+### Bug Fixes:
+- Use the prefix `fix/` followed by a description of the fix or the issue number.
+- Example: `fix/correct-typo`, `fix/#123`
+
+### Documentation:
+- Use the prefix `docs/` for updates exclusively in the documentation.
+- Example: `docs/update-readme`, `docs/add-examples`
+
+### Refactoring:
+- Use `refactor/` when modifying the structure and organization of code without changing its external behavior.
+- Example: `refactor/reorganize-tests`, `refactor/optimization-code`
+
+### Testing:
+- Use `test/` for changes related to testing only.
+- Example: `test/add-unit-tests`, `test/expand-tests`
+
+### Releases (for maintainers only):
+- Use `release/` for preparing a new version release.
+- Example: `release/v1.0.0`, `release/v2.0.0`
+
+### Chore/Maintenance (mostly for maintainers):
+- Use `chore/` for mundane tasks like updating dependencies or minor tasks that don't modify the source code.
+- Example: `chore/update-packages`, `chore/license-update`
+
+### Experimental:
+- Use `experiment/` for experimental work that might not be merged into the `master`
+- Example: `experiment/new-algorithm`, `exp/test-new-library`
+
 # Attribution
 This Contributing guide was adapted from [ggplot2](https://github.com/tidyverse/ggplot2)
