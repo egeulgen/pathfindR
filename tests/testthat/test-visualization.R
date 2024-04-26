@@ -1,4 +1,4 @@
-## Tests for functions related to various visualization functions - Dec 2023
+## Tests for functions related to various visualization functions - Apr 2024
 
 single_result <- example_pathfindR_output[1, ]
 processed_input <- example_pathfindR_input[, c(1, 1, 2, 3)]
@@ -6,140 +6,100 @@ colnames(processed_input) <- c("old_GENE", "GENE", "CHANGE", "P_VALUE")
 
 test_that("`visualize_terms()` -- calls the appropriate function", {
     mock_vis_kegg <- mockery::mock(NULL)
-    mockery::stub(visualize_terms, "visualize_hsa_KEGG", mock_vis_kegg)
+    mockery::stub(visualize_terms, "visualize_KEGG_diagram", mock_vis_kegg)
     expect_silent(visualize_terms(result_df = single_result, input_processed = data.frame(),
-        hsa_KEGG = TRUE))
+        is_KEGG_result = TRUE))
     mockery::expect_called(mock_vis_kegg, 1)
 
     mock_vis_term_inter <- mockery::mock(NULL)
     mockery::stub(visualize_terms, "visualize_term_interactions", mock_vis_term_inter)
-    expect_silent(visualize_terms(result_df = single_result, hsa_KEGG = FALSE))
+    expect_silent(visualize_terms(result_df = single_result, is_KEGG_result = FALSE))
     mockery::expect_called(mock_vis_term_inter, 1)
 })
 
 test_that("`visualize_terms()` -- argumment checks work", {
     expect_error(visualize_terms(result_df = "INVALID"), "`result_df` should be a data frame")
 
-    # hsa_KEGG = TRUE
+    # is_KEGG_result = TRUE
     nec_cols <- "ID"
-    expect_error(visualize_terms(single_result[, -1], hsa_KEGG = TRUE), paste0("`result_df` should contain the following columns: ",
+    expect_error(visualize_terms(single_result[, -1], is_KEGG_result = TRUE), paste0("`result_df` should contain the following columns: ",
         paste(dQuote(nec_cols), collapse = ", ")))
-    # hsa_KEGG = FALSE
+    # is_KEGG_result = FALSE
     nec_cols <- c("Term_Description", "Up_regulated", "Down_regulated")
-    expect_error(visualize_terms(single_result[, -2], hsa_KEGG = FALSE), paste0("`result_df` should contain the following columns: ",
+    expect_error(visualize_terms(single_result[, -2], is_KEGG_result = FALSE), paste0("`result_df` should contain the following columns: ",
         paste(dQuote(nec_cols), collapse = ", ")))
 
-    expect_error(visualize_terms(result_df = single_result, hsa_KEGG = TRUE), "`input_processed` should be specified when `hsa_KEGG = TRUE`")
+    expect_error(visualize_terms(result_df = single_result, is_KEGG_result = TRUE), "`input_processed` should be specified when `is_KEGG_result = TRUE`")
 
-    expect_error(visualize_terms(result_df = single_result, hsa_KEGG = "INVALID"),
-        "the argument `hsa_KEGG` should be either TRUE or FALSE")
+    expect_error(visualize_terms(result_df = single_result, is_KEGG_result = "INVALID"),
+        "the argument `is_KEGG_result` should be either TRUE or FALSE")
 })
 
-test_that("`visualize_term_interactions()` -- creates expected png file(s)", {
+test_that("`visualize_term_interactions()` -- creates expected list of ggraph objects", {
     skip_on_cran()
-    expected_out_file <- file.path(tempdir(check = TRUE), "term_visualizations",
-        paste0(gsub("\\s", "_", single_result$Term_Description), ".png"))
-
-    mockery::stub(visualize_term_interactions, "dir.create", dir.create(dirname(expected_out_file),
-        showWarnings = FALSE))
-    mockery::stub(visualize_term_interactions, "file.path", expected_out_file)
-
-    expect_null(visualize_term_interactions(single_result, pin_name_path = "Biogrid"))
-    expect_true(file.exists(expected_out_file))
+    expect_is(res <- visualize_term_interactions(single_result, pin_name_path = "Biogrid"), "list")
+    expect_is(res[[1]], "ggraph")
 
     tmp_res <- rbind(single_result, single_result)
     tmp_res$Term_Description[2] <- "SKIP"
     tmp_res$Up_regulated[2] <- "Gene1"
     tmp_res$Down_regulated[2] <- ""
-    expect_message(visualize_term_interactions(tmp_res, pin_name_path = "KEGG"),
+    expect_message(res <- visualize_term_interactions(tmp_res, pin_name_path = "KEGG"),
         paste0("< 2 genes, skipping visualization of ", tmp_res$Term_Description[2]))
 
     # Non-empty non_Signif_Snw_Genes
-    unlink(expected_out_file)
     tmp_res <- single_result
     tmp_res$non_Signif_Snw_Genes <- example_pathfindR_output$Up_regulated[2]
-    expect_null(visualize_term_interactions(tmp_res, pin_name_path = "Biogrid"))
-    expect_true(file.exists(expected_out_file))
+    expect_is(res <- visualize_term_interactions(tmp_res, pin_name_path = "Biogrid"), "list")
+    expect_is(res[[1]], "ggraph")
 })
 
-test_that("`visualize_hsa_KEGG()` -- creates expected png file(s)", {
+test_that("`visualize_KEGG_diagram()` -- creates expected list of ggraph objects", {
     skip_on_cran()
-    expected_out_file <- file.path(tempdir(check = TRUE), "term_visualizations",
-        paste0(single_result$ID, "_pathfindR.png"))
 
-    mockery::stub(visualize_hsa_KEGG, "dir.create", dir.create(dirname(expected_out_file),
-        showWarnings = FALSE))
-    mockery::stub(visualize_hsa_KEGG, "file.path", expected_out_file)
+    expect_is(res <- visualize_KEGG_diagram(kegg_pw_ids = single_result$ID, input_processed = processed_input), "list")
+    expect_is(res[[1]], "ggraph")
 
-
-    mock_color_kegg_pw <- list(file_path = system.file("extdata", "logo.png", package = "pathfindR"),
-        all_key_cols = "green", all_brks = c(0.5, 3, 5.5, 8, 10.5))
-
-    with_mocked_bindings({
-        expect_null(visualize_hsa_KEGG(hsa_kegg_ids = single_result$ID, input_processed = processed_input))
-    }, color_kegg_pathway = function(...) mock_color_kegg_pw, .package = "pathfindR")
-    expect_true(file.exists(expected_out_file))
-
-
-    mock_color_kegg_pw <- list(file_path = system.file("extdata", "logo.png", package = "pathfindR"),
-        all_key_cols = "green", all_brks = c(0.5, 3, 5.5, 8, 10.5))
     constant_input <- processed_input
     constant_input$CHANGE <- 1e+06
-    with_mocked_bindings({
-        expect_null(visualize_hsa_KEGG(hsa_kegg_ids = single_result$ID, input_processed = constant_input))
-    }, color_kegg_pathway = function(...) mock_color_kegg_pw, .package = "pathfindR")
-    expect_true(file.exists(expected_out_file))
+    expect_is(visualize_KEGG_diagram(kegg_pw_ids = single_result$ID, input_processed = constant_input), "list")
+    expect_is(res[[1]], "ggraph")
 })
 
-test_that("`visualize_hsa_KEGG()` -- skips if non-existent", {
+test_that("`visualize_KEGG_diagram()` -- skips pathway if non-existent", {
     skip_on_cran()
     temp_res <- example_pathfindR_output[1:2, ]
     temp_res$ID[2] <- "hsa12345"
-    expected_out_files <- file.path(tempdir(check = TRUE), "term_visualizations",
-        paste0(temp_res$ID, "_pathfindR.png"))
 
-    mockery::stub(visualize_hsa_KEGG, "dir.create", dir.create(dirname(expected_out_files[1]),
-        showWarnings = FALSE))
-    mock_out <- mockery::mock(expected_out_files[1], expected_out_files[2])
-    mockery::stub(visualize_hsa_KEGG, "file.path", mock_out)
-
-    expect_null(visualize_hsa_KEGG(hsa_kegg_ids = temp_res$ID, input_processed = processed_input))
-    expect_equal(file.exists(expected_out_files), c(TRUE, FALSE))
+    expect_is(res <- visualize_KEGG_diagram(kegg_pw_ids = temp_res$ID, input_processed = processed_input), "list")
+    expect_is(res[[1]], "ggraph")
+    expect_length(expect_is, 1)
 })
 
-test_that("`visualize_hsa_KEGG()` -- argument checks work", {
-    expect_error(visualize_hsa_KEGG(hsa_kegg_ids = list(), input_processed = processed_input),
-        "`hsa_kegg_ids` should be a vector of hsa KEGG IDs")
-    expect_error(visualize_hsa_KEGG(hsa_kegg_ids = c("X", "Y", "Z"), input_processed = processed_input),
-        "`hsa_kegg_ids` should be a vector of valid hsa KEGG IDs")
+test_that("`visualize_KEGG_diagram()` -- argument checks work", {
+    expect_error(visualize_KEGG_diagram(kegg_pw_ids = list(), input_processed = processed_input),
+        "`kegg_pw_ids` should be a vector of KEGG IDs")
+    expect_error(visualize_KEGG_diagram(kegg_pw_ids = c("X", "Y", "Z"), input_processed = processed_input),
+        "`kegg_pw_ids` should be a vector of valid hsa KEGG IDs")
 
-    expect_error(visualize_hsa_KEGG(hsa_kegg_ids = single_result$ID, input_processed = list()),
+    expect_error(visualize_KEGG_diagram(kegg_pw_ids = "abc12345", input_processed = list()),
         "`input_processed` should be a data frame")
-    expect_error(visualize_hsa_KEGG(hsa_kegg_ids = single_result$ID, input_processed = processed_input[,
+    expect_error(visualize_KEGG_diagram(kegg_pw_ids = "abc12345", input_processed = processed_input[,
         -2]), paste0("`input_processed` should contain the following columns: ",
         paste(dQuote(c("GENE", "CHANGE")), collapse = ", ")))
 })
 
 test_that("`color_kegg_pathway()` -- works as expected", {
-    skip_on_cran()
-    with_mocked_bindings({
-        pw_id <- "hsa00010"
-        change_vec <- c(-2, 4, 6)
-        names(change_vec) <- c("hsa:2821", "hsa:226", "hsa:229")
+  skip_on_cran()
 
-        mockery::mock(color_kegg_pathway, "is.na", FALSE)
+  pw_id <- "hsa00010"
+  change_vec <- c(-2, 4, 6)
+  names(change_vec) <- c("hsa:2821", "hsa:226", "hsa:229")
 
-        expect_is(result <- color_kegg_pathway(pw_id, change_vec), "list")
-        expect_length(result, 3)
-        expect_is(result$file_path, "character")
-        expect_true(length(result$all_key_cols) == length(result$all_brks) - 1)
-        expect_true(all(result$all_brks >= -1 & result$all_brks <= 1))
+  expect_is(result <- color_kegg_pathway(pw_id, change_vec), "ggraph")
 
-        names(change_vec) <- rep("missing", 3)
-        expect_null(result <- color_kegg_pathway(pw_id, change_vec), "list")
-
-    }, obtain_colored_url = function(...) NULL, download_kegg_png = function(...) 0,
-        .package = "pathfindR")
+  names(change_vec) <- rep("missing", 3)
+  expect_is(result <- color_kegg_pathway(pw_id, change_vec), "NULL")
 })
 
 test_that("`color_kegg_pathway()` -- exceptions are handled properly", {
@@ -167,43 +127,6 @@ test_that("`color_kegg_pathway()` -- exceptions are handled properly", {
 
     expect_null(suppressWarnings(color_kegg_pathway(pw_id = "hsa03040", change_vec = NULL)))
     expect_message(color_kegg_pathway(pw_id = "hsa11111", change_vec = c()))
-})
-
-test_that("`download_KGML_file()` -- works as expected", {
-    skip_on_cran()
-    tmp_file <- tempfile()
-    expect_silent(download_KGML_file("hsa03040", tmp_file))
-    file.exists(tmp_file)
-
-    expect_message(tmp <- download_KGML_file("INVAID", tempfile()))
-    expect_true(is.na(tmp))
-
-    mockery::stub(download_KGML_file, "KEGGgraph::getKGMLurl", function(...) stop())
-    expect_message(tmp <- download_KGML_file("hsa11111", tempfile()))
-    expect_true(is.na(tmp))
-})
-
-test_that("`obtain_colored_url()` -- works as expected", {
-    skip_on_cran()
-    expect_silent(res <- obtain_colored_url("hsa03040", c("hsa:2821", "hsa:226",
-        "hsa:229"), rep("red", 3), rep("white", 3)))
-    expect_true(grepl("https://www.kegg.jp/.+", res))
-
-    expect_message(tmp <- obtain_colored_url("INVALID", "INVALID", "white", "white"))
-    expect_true(is.na(tmp))
-})
-
-
-test_that("`download_kegg_png()` -- works as expected", {
-    skip_on_cran()
-    tmp_file <- tempfile()
-    url <- obtain_colored_url("hsa03040", c("hsa:2821", "hsa:226", "hsa:229"), rep("red",
-        3), rep("white", 3))
-    expect_silent(download_kegg_png(url, tmp_file))
-    expect_true(file.exists(tmp_file))
-
-    expect_message(tmp <- suppressWarnings(download_kegg_png("INVALID", tmp_file)))
-    expect_true(is.na(tmp))
 })
 
 test_that("`enrichment_chart()` -- produces a ggplot object with correct labels",

@@ -323,7 +323,7 @@ visualize_KEGG_diagram <- function(
 #' names(change_vec) <- c('hsa:2821', 'hsa:226', 'hsa:229')
 #' result <- pathfindR:::color_kegg_pathway(pw_id, change_vec)
 #' }
-color_kegg_pathway <- function(pw_id, change_vec, scale_vals = TRUE, node_cols = NULL, legend.position) {
+color_kegg_pathway <- function(pw_id, change_vec, scale_vals = TRUE, node_cols = NULL, legend.position = "top") {
     ############ Arg checks
     if (!is.logical(scale_vals)) {
         stop("`scale_vals` should be logical")
@@ -365,7 +365,25 @@ color_kegg_pathway <- function(pw_id, change_vec, scale_vals = TRUE, node_cols =
 
     ############ Assign the input change values to any corresponding pathway gene nodes
     # create pathway graph object and collect all pathway genes
-    g <- ggkegg::pathway(pid = pw_id, directory = tempdir())
+
+    g <- tryCatch({
+      ggkegg::pathway(pid = pw_id, directory = tempdir(), use_cache = FALSE)
+    }, error = function(e) {
+      message(paste("Cannot parse KEGG pathway for:", pw_id))
+      message("Here's the original error message:")
+      message(e$message)
+      return(NULL)
+    }, warning = function(w) {
+      message(paste("Cannot parse KEGG pathway for:", pw_id))
+      message("Here's the original error message:")
+      message(w$message)
+      return(NULL)
+    })
+
+    if (is.null(g)) {
+      return(NULL)
+    }
+
     gene_nodes <- names(igraph::V(g))[igraph::V(g)$type == "gene"]
 
     ## aggregate change values over all pathway gene nodes
@@ -402,7 +420,7 @@ color_kegg_pathway <- function(pw_id, change_vec, scale_vals = TRUE, node_cols =
 
     p <- ggraph::ggraph(g, layout="manual", x = x, y = y)
     p <- p + ggkegg::geom_node_rect(ggplot2::aes(filter = !is.na(.data$change_value), fill = .data$change_value))
-    p <- p + ggkegg::overlay_raw_map(pw_id)
+    p <- p + ggkegg::overlay_raw_map(pw_id, directory = tempdir(), use_cache = FALSE)
     p <- p + ggplot2::scale_fill_gradient2(low = low_col, mid = mid_col, high = high_col)
     p <- p + ggplot2::theme(
       legend.title = ggplot2::element_blank(),
