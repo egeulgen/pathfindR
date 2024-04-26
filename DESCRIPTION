@@ -47,10 +47,10 @@ Imports:
     fpc,
     ggkegg,
     grDevices,
+    httr,
     igraph,
     R.utils,
     msigdbr,
-    KEGGREST,
     knitr
 Depends: R (>= 4.0),
     pathfindR.data (>= 2.0)

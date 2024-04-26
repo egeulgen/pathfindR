@@ -73,23 +73,21 @@ test_that("`gset_list_from_gmt()` -- works as expected", {
 
 
 test_that("`get_kegg_gsets()` -- works as expected", {
-    skip_on_cran()
-    toy_kegg_pw_list <- KEGGREST::keggList("pathway", "hsa")[10:11]
-    mockery::stub(get_kegg_gsets, "KEGGREST::keggList", toy_kegg_pw_list)
+  skip_on_cran()
+  mock_content <- "hsa04972\tdescription\nhsa04962\tdescription2"
+  with_mock(`httr::content` = function(...) mock_content, {
+    expect_is(hsa_kegg <- pathfindR:::get_kegg_gsets(), "list")
+  })
 
-    expect_is(hsa_kegg <- get_kegg_gsets(), "list")
-    expect_length(hsa_kegg, 2)
-    expect_true(all(names(hsa_kegg) == c("gene_sets", "descriptions")))
-    expect_true(all(names(hsa_kegg[["gene_sets"]]) %in% names(hsa_kegg[["descriptions"]])))
-    toy_kegg_pw_list <- sub(" & .*$", "", sub("-([^-]*)$", "&\\1", toy_kegg_pw_list))
-    expect_true(all(toy_kegg_pw_list %in% hsa_kegg$descriptions))
-    expect_true(all(names(toy_kegg_pw_list) %in% names(hsa_kegg[["gene_sets"]])))
+  expect_length(hsa_kegg, 2)
+  expect_true(all(names(hsa_kegg) == c("gene_sets", "descriptions")))
+  expect_true(all(names(hsa_kegg[["gene_sets"]]) %in% names(hsa_kegg[["descriptions"]])))
 
-    toy_kegg_pw_list2 <- KEGGREST::keggList("pathway", "hsa")[1]
-    mockery::stub(get_kegg_gsets, "KEGGREST::keggList", toy_kegg_pw_list2)
-    expect_is(res <- get_kegg_gsets(), "list")
-    expect_length(res$gene_sets, 0)
-    expect_length(res$descriptions, 0)
+  expect_equal(hsa_kegg[["descriptions"]]["hsa04972"], "description")
+  expect_equal(hsa_kegg[["descriptions"]]["hsa04962"], "description2")
+
+  expect_length(hsa_kegg[["gene_sets"]][["hsa04972"]], 102)
+  expect_length(hsa_kegg[["gene_sets"]][["hsa04962"]], 44)
 })
 
 test_that("`get_reactome_gsets()` -- works as expected", {
