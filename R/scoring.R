@@ -253,8 +253,8 @@ plot_scores <- function(score_matrix, cases = NULL, label_samples = TRUE, case_t
         score_df$Type <- factor(score_df$Type, levels = c(case_title, control_title))
     }
 
-    g <- ggplot2::ggplot(score_df, ggplot2::aes_(x = ~Sample, y = ~Term))
-    g <- g + ggplot2::geom_tile(ggplot2::aes_(fill = ~scores), color = "white")
+    g <- ggplot2::ggplot(score_df, ggplot2::aes(x = .data$Sample, y = .data$Term))
+    g <- g + ggplot2::geom_tile(ggplot2::aes(fill = .data$scores), color = "white")
     g <- g + ggplot2::scale_fill_gradient2(low = low, mid = mid, high = high)
     g <- g + ggplot2::theme(axis.title.x = ggplot2::element_blank(), axis.title.y = ggplot2::element_blank(),
         axis.text.x = ggplot2::element_text(angle = 45, hjust = 1), legend.title = ggplot2::element_text(size = 10),
