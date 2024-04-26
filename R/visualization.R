@@ -241,7 +241,7 @@ visualize_term_interactions <- function(result_df, pin_name_path, show_legend = 
 #' @examples
 #' input_processed <- data.frame(
 #'   GENE = c("PKLR", "GPI", "CREB1", "INS"),
-#'   CHANGE = c(1.5, -2, 3, 5, -1)
+#'   CHANGE = c(1.5, -2, 3, 5)
 #' )
 #' gg_list <- visualize_KEGG_diagram(c("hsa00010", "hsa04911"), input_processed)
 visualize_KEGG_diagram <- function(
