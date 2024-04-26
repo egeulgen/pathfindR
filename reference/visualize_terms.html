@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.3.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.3.1.9001</span>
       </span>
     </div>
 
@@ -86,7 +86,7 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">visualize_terms</span><span class="op">(</span></span>
 <span>  <span class="va">result_df</span>,</span>
 <span>  input_processed <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  hsa_KEGG <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  is_KEGG_result <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  pin_name_path <span class="op">=</span> <span class="st">"Biogrid"</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -96,18 +96,18 @@
     <h2>Arguments</h2>
     <dl><dt>result_df</dt>
 <dd><p>Data frame of enrichment results. Must-have columns for
- KEGG human pathway diagrams (<code>hsa_kegg = TRUE</code>) are: 'ID' and 'Term_Description'.
+ KEGG human pathway diagrams (<code>is_KEGG_result = TRUE</code>) are: 'ID' and 'Term_Description'.
  Must-have columns for the rest are: 'Term_Description', 'Up_regulated' and
 'Down_regulated'</p></dd>
 
 
 <dt>input_processed</dt>
 <dd><p>input data processed via <code><a href="input_processing.html">input_processing</a></code>,
-not necessary when <code>hsa_KEGG = FALSE</code></p></dd>
+not necessary when <code>is_KEGG_result = FALSE</code></p></dd>
 
 
-<dt>hsa_KEGG</dt>
-<dd><p>boolean to indicate whether human KEGG gene sets were used for
+<dt>is_KEGG_result</dt>
+<dd><p>boolean to indicate whether KEGG gene sets were used for
 enrichment analysis or not (default = <code>TRUE</code>)</p></dd>
 
 
@@ -118,32 +118,31 @@ path/to/PIN.sif, the file must comply with the PIN specifications. (Default = 'B
 
 
 <dt>...</dt>
-<dd><p>additional arguments for <code><a href="visualize_hsa_KEGG.html">visualize_hsa_KEGG</a></code> (used
-when <code>hsa_kegg = TRUE</code>) or <code><a href="visualize_term_interactions.html">visualize_term_interactions</a></code>
-(used when <code>hsa_kegg = FALSE</code>)</p></dd>
+<dd><p>additional arguments for <code><a href="visualize_KEGG_diagram.html">visualize_KEGG_diagram</a></code> (used
+when <code>is_KEGG_result = TRUE</code>) or <code><a href="visualize_term_interactions.html">visualize_term_interactions</a></code>
+(used when <code>is_KEGG_result = FALSE</code>)</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
     
 
-<p>Depending on the argument <code>hsa_KEGG</code>, creates visualization of
+<p>Depending on the argument <code>is_KEGG_result</code>, creates visualization of
  interactions of genes involved in the list of enriched terms in</p>
 <p></p>
-<p><code>result_df</code> and saves them in the folder 'term_visualizations' under
- the current working directory.</p>
+<p><code>result_df</code>. Returns a list of ggplot objects named by Term ID.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
-    <p>For <code>hsa_KEGG = TRUE</code>, KEGG human pathway diagrams are created,
+    <p>For <code>is_KEGG_result = TRUE</code>, KEGG pathway diagrams are created,
 affected nodes colored by up/down regulation status.
 For other gene sets, interactions of affected genes are determined (via a shortest-path
 algorithm) and are visualized (colored by change status) using igraph.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p>See <code><a href="visualize_hsa_KEGG.html">visualize_hsa_KEGG</a></code> for the visualization function
-of human KEGG diagrams. See <code><a href="visualize_term_interactions.html">visualize_term_interactions</a></code> for the
+    <div class="dont-index"><p>See <code><a href="visualize_KEGG_diagram.html">visualize_KEGG_diagram</a></code> for the visualization function
+of KEGG diagrams. See <code><a href="visualize_term_interactions.html">visualize_term_interactions</a></code> for the
 visualization function that generates diagrams showing the interactions of
 input genes in the PIN. See <code><a href="run_pathfindr.html">run_pathfindR</a></code> for the wrapper
 function of the pathfindR workflow.</p></div>
@@ -151,10 +150,18 @@ function of the pathfindR workflow.</p></div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="fu">visualize_terms</span><span class="op">(</span><span class="va">result_df</span>, <span class="va">input_processed</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">visualize_terms</span><span class="op">(</span><span class="va">result_df</span>, hsa_KEGG <span class="op">=</span> <span class="cn">FALSE</span>, pin_name_path <span class="op">=</span> <span class="st">'IntAct'</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">input_processed</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  GENE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PARP1"</span>, <span class="st">"NDUFA1"</span>, <span class="st">"STX6"</span>, <span class="st">"SNAP23"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  CHANGE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.5</span>, <span class="op">-</span><span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">result_df</span> <span class="op">&lt;-</span> <span class="va">example_pathfindR_output</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="op">]</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">gg_list</span> <span class="op">&lt;-</span> <span class="fu">visualize_terms</span><span class="op">(</span><span class="va">result_df</span>, <span class="va">input_processed</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> This function utilises one functionality of `ggkegg`. For more options, visit https://github.com/noriakis/ggkegg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Generating pathway diagrams of 2 KEGG pathways</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="va">gg_list2</span> <span class="op">&lt;-</span> <span class="fu">visualize_terms</span><span class="op">(</span><span class="va">result_df</span>, is_KEGG_result <span class="op">=</span> <span class="cn">FALSE</span>, pin_name_path <span class="op">=</span> <span class="st">'IntAct'</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Visualizing: (1) Diabetic cardiomyopathy                                                                                                                                                                                                          Visualizing: (2) SNARE interactions in vesicular transport                                                                                                                                                                                                          </span>
 </code></pre></div>
     </div>
   </div>

@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.3.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.3.1.9001</span>
       </span>
     </div>
 
@@ -88,7 +88,7 @@
 <span>  <span class="va">change_vec</span>,</span>
 <span>  scale_vals <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  node_cols <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  quiet <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  legend.position <span class="op">=</span> <span class="st">"top"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -114,19 +114,17 @@ changes are supplied, this dummy value is assigned by
 <code><a href="input_processing.html">input_processing</a></code>), only one color ('#F38F18' if NULL) is used.</p></dd>
 
 
-<dt>quiet</dt>
-<dd><p>If <code>TRUE</code>, suppress status messages (if any), and the
-progress bar while downloading file(s)</p></dd>
+<dt>legend.position</dt>
+<dd><p>the default position of legends ("none", "left",
+"right", "bottom", "top", "inside")</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
     
 
-<p>list containing:</p><ol><li><p>file_path: path to colored hsa KEGG pathway diagram</p></li>
-<li><p>all_key_cols: colors used for each change value bin</p></li>
-<li><p>all_brks: breaks used for separating change values into bins</p></li>
-</ol></div>
+<p>a ggplot object containing the colored KEGG pathway diagram visualization</p>
+    </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>

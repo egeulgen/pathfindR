@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.3.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.3.1.9001</span>
       </span>
     </div>
 
@@ -95,11 +95,11 @@
 <div class="section level3">
 <h3 id="minor-changes-and-bug-fixes-1-5-0">Minor Changes and Bug Fixes<a class="anchor" aria-label="anchor" href="#minor-changes-and-bug-fixes-1-5-0"></a></h3>
 <ul><li>fixed an issue regarding <code><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">parallel::makeCluster()</a></code> in <code><a href="../reference/run_pathfindr.html">run_pathfindR()</a></code> (<a href="https://github.com/egeulgen/pathfindR/issues/45" class="external-link">#45</a>)</li>
-<li>fixed save-related issue in <code><a href="../reference/download_kegg_png.html">download_kegg_png()</a></code> (<a href="https://github.com/egeulgen/pathfindR/issues/37" class="external-link">#37</a>, <a href="https://github.com/rix133" class="external-link">@rix133</a>)</li>
+<li>fixed save-related issue in <code>download_kegg_png()</code> (<a href="https://github.com/egeulgen/pathfindR/issues/37" class="external-link">#37</a>, <a href="https://github.com/rix133" class="external-link">@rix133</a>)</li>
 <li>added the output data <code>RA_comparison_output</code> of pathfindR results on another RA-related dataset (GSE84074)</li>
-<li>in <code><a href="../reference/visualize_hsa_KEGG.html">visualize_hsa_KEGG()</a></code>, fixed the issue where &gt;1 entrez ids were returned for a gene symbol (the first one is kept)</li>
-<li>in <code><a href="../reference/visualize_hsa_KEGG.html">visualize_hsa_KEGG()</a></code>, implemented a tryCatch to avoid any issues when <code><a href="https://rdrr.io/pkg/KEGGREST/man/mark.pathway.by.objects.html" class="external-link">KEGGREST::color.pathway.by.objects()</a></code> might fail (<a href="https://github.com/egeulgen/pathfindR/issues/28" class="external-link">#28</a>)</li>
-<li>in <code><a href="../reference/visualize_hsa_KEGG.html">visualize_hsa_KEGG()</a></code>, now limiting the number of genes passes onto <code><a href="https://rdrr.io/pkg/KEGGREST/man/mark.pathway.by.objects.html" class="external-link">KEGGREST::color.pathway.by.objects()</a></code> to &lt; 60 (because the KEGG API now limits the number?)</li>
+<li>in <code>visualize_hsa_KEGG()</code>, fixed the issue where &gt;1 entrez ids were returned for a gene symbol (the first one is kept)</li>
+<li>in <code>visualize_hsa_KEGG()</code>, implemented a tryCatch to avoid any issues when <code><a href="https://rdrr.io/pkg/KEGGREST/man/mark.pathway.by.objects.html" class="external-link">KEGGREST::color.pathway.by.objects()</a></code> might fail (<a href="https://github.com/egeulgen/pathfindR/issues/28" class="external-link">#28</a>)</li>
+<li>in <code>visualize_hsa_KEGG()</code>, now limiting the number of genes passes onto <code><a href="https://rdrr.io/pkg/KEGGREST/man/mark.pathway.by.objects.html" class="external-link">KEGGREST::color.pathway.by.objects()</a></code> to &lt; 60 (because the KEGG API now limits the number?)</li>
 <li>changed default visualization in <code><a href="../reference/term_gene_heatmap.html">term_gene_heatmap()</a></code> (i.e. when <code>genes_df</code> is not provided) to binary colored heatmap (by default, “green” and “red”, controlled by <code>low</code> and <code>high</code>) by up-/down- regulation status</li>
 <li>update the vignette “pathfindR Analysis for non-Homo-sapiens organisms” to reflect new data generation functions <code><a href="../reference/get_pin_file.html">get_pin_file()</a></code> and <code><a href="../reference/get_gene_sets_list.html">get_gene_sets_list()</a></code> and fixed a minor issue in the vignette (<a href="https://github.com/egeulgen/pathfindR/issues/46" class="external-link">#46</a>)</li>
 </ul></div>

@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.3.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.3.1.9001</span>
       </span>
     </div>
 
@@ -108,10 +108,9 @@ or not (<code>FALSE</code>) (default: <code>TRUE</code>)</p></dd>
     <h2>Value</h2>
     
 
-<p>Creates PNG files visualizing the interactions of genes involved
+<p>list of ggplot objects (named by Term ID) visualizing the interactions of genes involved
 in the given enriched terms (annotated in the <code>result_df</code>) in the PIN used
-for enrichment analysis (specified by <code>pin_name_path</code>). The PNG files are
-saved in the folder 'term_visualizations' under the current working directory.</p>
+for enrichment analysis (specified by <code>pin_name_path</code>).</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -121,7 +120,7 @@ of genes involved for each enriched term:</p><ol><li><p>shortest paths between a
 <li><p>the PIN is subsetted using the merged nodes (genes)</p></li>
 <li><p>using the PIN subset, the graph showing the interactions is generated</p></li>
 <li><p>the final graph is visualized using <code><a href="https://r.igraph.org/reference/aaa-igraph-package.html" class="external-link">igraph</a></code>, colored by changed
-  status (if provided), and is saved as a PNG file.</p></li>
+  status (if provided)</p></li>
 </ol></div>
     <div id="see-also">
     <h2>See also</h2>
@@ -132,9 +131,9 @@ of genes involved for each enriched term:</p><ol><li><p>shortest paths between a
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="fu">visualize_term_interactions</span><span class="op">(</span><span class="va">result_df</span>, pin_name_path <span class="op">=</span> <span class="st">'IntAct'</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">result_df</span> <span class="op">&lt;-</span> <span class="va">example_pathfindR_output</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">gg_list</span> <span class="op">&lt;-</span> <span class="fu">visualize_term_interactions</span><span class="op">(</span><span class="va">result_df</span>, pin_name_path <span class="op">=</span> <span class="st">'IntAct'</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Visualizing: (1) Diabetic cardiomyopathy                                                                                                                                                                                                          Visualizing: (2) SNARE interactions in vesicular transport                                                                                                                                                                                                          </span>
 </code></pre></div>
     </div>
   </div>

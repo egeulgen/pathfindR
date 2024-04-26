@@ -118,12 +118,6 @@
     <loc>https://egeulgen.github.io/pathfindR/reference/create_kappa_matrix.html</loc>
   </url>
   <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/download_KGML_file.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/download_kegg_png.html</loc>
-  </url>
-  <url>
     <loc>https://egeulgen.github.io/pathfindR/reference/enrichment.html</loc>
   </url>
   <url>
@@ -184,9 +178,6 @@
     <loc>https://egeulgen.github.io/pathfindR/reference/isColor.html</loc>
   </url>
   <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/obtain_colored_url.html</loc>
-  </url>
-  <url>
     <loc>https://egeulgen.github.io/pathfindR/reference/pathfindr.html</loc>
   </url>
   <url>
@@ -217,10 +208,10 @@
     <loc>https://egeulgen.github.io/pathfindR/reference/term_gene_heatmap.html</loc>
   </url>
   <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/visualize_active_subnetworks.html</loc>
+    <loc>https://egeulgen.github.io/pathfindR/reference/visualize_KEGG_diagram.html</loc>
   </url>
   <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/visualize_hsa_KEGG.html</loc>
+    <loc>https://egeulgen.github.io/pathfindR/reference/visualize_active_subnetworks.html</loc>
   </url>
   <url>
     <loc>https://egeulgen.github.io/pathfindR/reference/visualize_term_interactions.html</loc>
