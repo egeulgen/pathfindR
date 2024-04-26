@@ -83,8 +83,8 @@ test_that("`get_kegg_gsets()` -- works as expected", {
   expect_true(all(names(hsa_kegg) == c("gene_sets", "descriptions")))
   expect_true(all(names(hsa_kegg[["gene_sets"]]) %in% names(hsa_kegg[["descriptions"]])))
 
-  expect_equal(hsa_kegg[["descriptions"]]["hsa04972"], "description")
-  expect_equal(hsa_kegg[["descriptions"]]["hsa04962"], "description2")
+  expect_true(hsa_kegg[["descriptions"]]["hsa04972"] == "description")
+  expect_true(hsa_kegg[["descriptions"]]["hsa04962"] == "description2")
 
   expect_length(hsa_kegg[["gene_sets"]][["hsa04972"]], 102)
   expect_length(hsa_kegg[["gene_sets"]][["hsa04962"]], 44)
