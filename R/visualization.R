@@ -14,25 +14,24 @@ isColor <- function(x) {
 #' Create Diagrams for Enriched Terms
 #'
 #' @param result_df Data frame of enrichment results. Must-have columns for
-#'  KEGG human pathway diagrams (\code{hsa_kegg = TRUE}) are: 'ID' and 'Term_Description'.
+#'  KEGG human pathway diagrams (\code{is_KEGG_result = TRUE}) are: 'ID' and 'Term_Description'.
 #'  Must-have columns for the rest are: 'Term_Description', 'Up_regulated' and
 #' 'Down_regulated'
 #' @param input_processed input data processed via \code{\link{input_processing}},
-#'  not necessary when \code{hsa_KEGG = FALSE}
-#' @param hsa_KEGG boolean to indicate whether human KEGG gene sets were used for
+#'  not necessary when \code{is_KEGG_result = FALSE}
+#' @param is_KEGG_result boolean to indicate whether KEGG gene sets were used for
 #'  enrichment analysis or not (default = \code{TRUE})
 #' @inheritParams return_pin_path
-#' @param ... additional arguments for \code{\link{visualize_hsa_KEGG}} (used
-#' when \code{hsa_kegg = TRUE}) or \code{\link{visualize_term_interactions}}
-#' (used when \code{hsa_kegg = FALSE})
+#' @param ... additional arguments for \code{\link{visualize_KEGG_diagram}} (used
+#' when \code{is_KEGG_result = TRUE}) or \code{\link{visualize_term_interactions}}
+#' (used when \code{is_KEGG_result = FALSE})
 #'
-#' @return Depending on the argument \code{hsa_KEGG}, creates visualization of
+#' @return Depending on the argument \code{is_KEGG_result}, creates visualization of
 #'  interactions of genes involved in the list of enriched terms in
-#'  \code{result_df} and saves them in the folder 'term_visualizations' under
-#'  the current working directory.
+#'  \code{result_df}. Returns a list of ggplot objects named by Term ID.
 #'
 #'
-#' @details For \code{hsa_KEGG = TRUE}, KEGG human pathway diagrams are created,
+#' @details For \code{is_KEGG_result = TRUE}, KEGG pathway diagrams are created,
 #' affected nodes colored by up/down regulation status.
 #' For other gene sets, interactions of affected genes are determined (via a shortest-path
 #' algorithm) and are visualized (colored by change status) using igraph.
@@ -40,29 +39,34 @@ isColor <- function(x) {
 #'
 #' @export
 #'
-#' @seealso See \code{\link{visualize_hsa_KEGG}} for the visualization function
-#' of human KEGG diagrams. See \code{\link{visualize_term_interactions}} for the
+#' @seealso See \code{\link{visualize_KEGG_diagram}} for the visualization function
+#' of KEGG diagrams. See \code{\link{visualize_term_interactions}} for the
 #' visualization function that generates diagrams showing the interactions of
 #' input genes in the PIN. See \code{\link{run_pathfindR}} for the wrapper
 #' function of the pathfindR workflow.
 #'
 #' @examples
-#' \dontrun{
-#' visualize_terms(result_df, input_processed)
-#' visualize_terms(result_df, hsa_KEGG = FALSE, pin_name_path = 'IntAct')
-#' }
-visualize_terms <- function(result_df, input_processed = NULL, hsa_KEGG = TRUE, pin_name_path = "Biogrid",
-    ...) {
+#' input_processed <- data.frame(
+#'   GENE = c("PARP1", "NDUFA1", "STX6", "SNAP23"),
+#'   CHANGE = c(1.5, -2, 3, 5, -1)
+#' )
+#' result_df <- example_pathfindR_output[1:2, ]
+#'
+#' gg_list <- visualize_terms(result_df, input_processed)
+#' gg_list2 <- visualize_terms(result_df, is_KEGG_result = FALSE, pin_name_path = 'IntAct')
+visualize_terms <- function(
+    result_df, input_processed = NULL, is_KEGG_result = TRUE, pin_name_path = "Biogrid", ...
+) {
     ############ Argument Checks
     if (!is.data.frame(result_df)) {
         stop("`result_df` should be a data frame")
     }
 
-    if (!is.logical(hsa_KEGG)) {
-        stop("the argument `hsa_KEGG` should be either TRUE or FALSE")
+    if (!is.logical(is_KEGG_result)) {
+        stop("the argument `is_KEGG_result` should be either TRUE or FALSE")
     }
 
-    if (hsa_KEGG) {
+    if (is_KEGG_result) {
         nec_cols <- "ID"
     } else {
         nec_cols <- c("Term_Description", "Up_regulated", "Down_regulated")
@@ -72,20 +76,22 @@ visualize_terms <- function(result_df, input_processed = NULL, hsa_KEGG = TRUE, 
             collapse = ", "))
     }
 
-    if (hsa_KEGG) {
+    if (is_KEGG_result) {
         if (is.null(input_processed)) {
-            stop("`input_processed` should be specified when `hsa_KEGG = TRUE`")
+            stop("`input_processed` should be specified when `is_KEGG_result = TRUE`")
         }
     }
 
-    ############ Generate Diagrams
-    if (hsa_KEGG) {
-        visualize_hsa_KEGG(hsa_kegg_ids = result_df$ID, input_processed = input_processed,
-            ...)
-    } else {
-        visualize_term_interactions(result_df = result_df, pin_name_path = pin_name_path,
-            ...)
-    }
+  ############ Generate Diagrams
+  if (is_KEGG_result) {
+    visualize_KEGG_diagram(
+      kegg_pw_ids = result_df$ID, input_processed = input_processed, ...
+    )
+  } else {
+    visualize_term_interactions(
+      result_df = result_df, pin_name_path = pin_name_path, ...
+    )
+  }
 }
 
 #' Visualize Interactions of Genes Involved in the Given Enriched Terms
@@ -96,10 +102,9 @@ visualize_terms <- function(result_df, input_processed = NULL, hsa_KEGG = TRUE, 
 #' @param show_legend Boolean to indicate whether to display the legend (\code{TRUE})
 #' or not (\code{FALSE}) (default: \code{TRUE})
 #'
-#' @return Creates PNG files visualizing the interactions of genes involved
+#' @return list of ggplot objects (named by Term ID) visualizing the interactions of genes involved
 #' in the given enriched terms (annotated in the \code{result_df}) in the PIN used
-#' for enrichment analysis (specified by \code{pin_name_path}). The PNG files are
-#' saved in the folder 'term_visualizations' under the current working directory.
+#' for enrichment analysis (specified by \code{pin_name_path}).
 #'
 #' @details The following steps are performed for the visualization of interactions
 #' of genes involved for each enriched term: \enumerate{
@@ -108,7 +113,7 @@ visualize_terms <- function(result_df, input_processed = NULL, hsa_KEGG = TRUE, 
 #'   \item the PIN is subsetted using the merged nodes (genes)
 #'   \item using the PIN subset, the graph showing the interactions is generated
 #'   \item the final graph is visualized using \code{\link[igraph]{igraph}}, colored by changed
-#'   status (if provided), and is saved as a PNG file.
+#'   status (if provided)
 #' }
 #'
 #' @export
@@ -118,16 +123,15 @@ visualize_terms <- function(result_df, input_processed = NULL, hsa_KEGG = TRUE, 
 #'   wrapper function of the pathfindR enrichment workflow.
 #'
 #' @examples
-#' \dontrun{
+#' result_df <- example_pathfindR_output[1:2, ]
 #' visualize_term_interactions(result_df, pin_name_path = 'IntAct')
-#' }
 visualize_term_interactions <- function(result_df, pin_name_path, show_legend = TRUE) {
     ############ Initial Steps fix naming issue
     result_df$Term_Description <- gsub("\\/", "-", result_df$Term_Description)
 
     ## load PIN
     pin_path <- return_pin_path(pin_name_path)
-    pin <- utils::read.delim(file = pin_path, header = FALSE, stringsAsFactors = FALSE)
+    pin <- utils::read.delim(file = pin_path, header = FALSE)
     pin$V2 <- NULL
 
     pin[, 1] <- base::toupper(pin[, 1])
@@ -136,10 +140,8 @@ visualize_term_interactions <- function(result_df, pin_name_path, show_legend = 
     ## pin graph
     pin_g <- igraph::graph_from_data_frame(pin, directed = FALSE)
 
-    ## Create visualization output directory
-    dir.create("term_visualizations", showWarnings = FALSE)
-
     ############ Visualize interactions by enriched term
+    pw_vis_list <- list()
     for (i in base::seq_len(nrow(result_df))) {
         current_row <- result_df[i, ]
 
@@ -159,7 +161,7 @@ visualize_term_interactions <- function(result_df, pin_name_path, show_legend = 
         if (length(current_genes) < 2) {
             message(paste0("< 2 genes, skipping visualization of ", current_row$Term_Description))
         } else {
-            cat("Visualizing:", current_row$Term_Description, paste(rep(" ", 200),
+            cat("Visualizing:", paste0("(", i, ")") , current_row$Term_Description, paste(rep(" ", 200),
                 collapse = ""), "\r")
 
             ## Find genes without direct interaction
@@ -189,69 +191,46 @@ visualize_term_interactions <- function(result_df, pin_name_path, show_legend = 
             cond1 <- names(igraph::V(g)) %in% up_genes
             cond2 <- names(igraph::V(g)) %in% down_genes
             cond3 <- names(igraph::V(g)) %in% snw_genes
-            igraph::V(g)$color <- ifelse(cond1, "green", ifelse(cond2, "red", ifelse(cond3,
-                "blue", "gray60")))
+            node_type <- as.factor(ifelse(cond1, "up",
+                                          ifelse(cond2, "down",
+                                                 ifelse(cond3,
+                                                        "interactor", "none"))))
+            igraph::V(g)$type <- node_type
 
-            #### Generate diagram
-            term_diagram <- magick::image_graph(width = 1200, height = 900, res = 100)
-            # Plot the tree object
-            igraph::plot.igraph(g, layout = igraph::layout.fruchterman.reingold,
-                edge.curved = FALSE, vertex.size = 10, vertex.label.dist = 0, vertex.label.color = "black",
-                asp = FALSE, vertex.label.cex = 0.8, edge.width = 1.2, edge.arrow.mode = 0,
-                main = paste(current_row$Term_Description, "\n Involved Gene Interactions in",
-                  pin_name_path))
+            node_colors <- c("green", "red", "blue", "gray")
+            names(node_colors) <- c("up", "down", "interactor", "none")
+            node_colors <- node_colors[levels(node_type)]
 
-            if (show_legend) {
-                if (is.null(snw_genes)) {
-                  graphics::legend("topleft", legend = c("Upregulated Input Genes",
-                    "Downregulated Input Genes", "Other"), col = c("green", "red",
-                    "gray60"), pch = 19, cex = 1.5, bty = "n")
-                } else {
-                  graphics::legend("topleft", legend = c("Non-input Active Snw. Genes",
-                    "Upregulated Input Genes", "Downregulated Input Genes", "Other"),
-                    col = c("blue", "green", "red", "gray60"), pch = 19, cex = 1.5,
-                    bty = "n")
-                }
-            }
-            grDevices::dev.off()
+            type_descriptions <- c(
+              none = "other", up = "up-regulated gene", down = "down-regulated gene", interactor = "interacting non-input gene"
+            )
+            type_descriptions <- type_descriptions[levels(node_type)]
 
-            #### Add logo to diagram Read logo
-            path_logo <- system.file("extdata", "logo.png", package = "pathfindR")
-            logo_img <- magick::image_read(path_logo)
-
-            ### Add logo
-            term_diagram <- magick::image_composite(term_diagram, magick::image_scale(logo_img,
-                "x100"), gravity = "northeast", offset = "+10+10")
-
-            # remove forbidden characters
-            current_row$Term_Description <- gsub("[, :<>?*|\"/\\]", "_", current_row$Term_Description)
-
-            # limit to 100 characters
-            current_row$Term_Description <- substr(current_row$Term_Description,
-                1, min(50, nchar(current_row$Term_Description)))
-
-            path_to_png <- file.path("term_visualizations", paste0(current_row$Term_Description,
-                ".png"))
-
-            #### Save file
-            magick::image_write(term_diagram, path = path_to_png, format = "png")
+            p <- ggraph::ggraph(g, layout = "stress")
+            p <- p + ggraph::geom_edge_link(alpha = 0.8, colour = "darkgrey", linewidth = 0.5)
+            p <- p + ggraph::geom_node_point(ggplot2::aes(color = .data$type), size = 5)
+            p <- p + ggplot2::theme_void()
+            p <- p + suppressWarnings(ggraph::geom_node_text(ggplot2::aes(label = .data$name),
+                                                             nudge_y = 0.2, repel = TRUE, max.overlaps = 20))
+            p <- p + ggplot2::scale_color_manual(values = node_colors, name = NULL,
+                                                 labels = type_descriptions)
+            p <- p + ggplot2::ggtitle(
+              paste(current_row$Term_Description, "\n Involved Gene Interactions in", pin_name_path)
+            )
+            pw_vis_list[[current_row$ID]] <- p
         }
     }
+    return(pw_vis_list)
 }
 
 #' Visualize Human KEGG Pathways
 #'
-#' @param hsa_kegg_ids hsa KEGG ids of pathways to be colored and visualized
+#' @param kegg_pw_ids KEGG ids of pathways to be colored and visualized
 #' @param input_processed input data processed via \code{\link{input_processing}}
 #' @inheritParams color_kegg_pathway
-#' @param key_gravity gravity value (character) for the color key legend placement
-#' (see \code{\link[magick]{gravity_types}})
-#' @param logo_gravity gravity value (character) for the logo placement
-#' (see \code{\link[magick]{gravity_types}})
 #'
 #' @return Creates colored visualizations of the enriched human KEGG pathways
-#' and saves them in the folder 'term_visualizations' under the current working
-#' directory.
+#' and returns them as a list of ggplot objects, named by Term ID.
 #'
 #' @seealso See \code{\link{visualize_terms}} for the wrapper function for
 #' creating enriched term diagrams. See \code{\link{run_pathfindR}} for the
@@ -260,19 +239,26 @@ visualize_term_interactions <- function(result_df, pin_name_path, show_legend = 
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#' visualize_hsa_KEGG(hsa_kegg_ids, input_processed)
-#' }
-visualize_hsa_KEGG <- function(hsa_kegg_ids, input_processed, scale_vals = TRUE,
-    node_cols = NULL, quiet = TRUE, key_gravity = "northeast", logo_gravity = "southeast") {
+#' input_processed <- data.frame(
+#'   GENE = c("PKLR", "GPI", "CREB1", "INS"),
+#'   CHANGE = c(1.5, -2, 3, 5, -1)
+#' )
+#' gg_list <- visualize_KEGG_diagram(c("hsa00010", "hsa04911"), input_processed)
+visualize_KEGG_diagram <- function(
+    kegg_pw_ids,
+    input_processed,
+    scale_vals = TRUE,
+    node_cols = NULL,
+    legend.position = "top"
+) {
     ############ Arg checks
 
-    ### hsa_kegg_ids
-    if (!is.atomic(hsa_kegg_ids)) {
-        stop("`hsa_kegg_ids` should be a vector of hsa KEGG IDs")
+    ### kegg_pw_ids
+    if (!is.atomic(kegg_pw_ids)) {
+        stop("`kegg_pw_ids` should be a vector of KEGG IDs")
     }
-    if (!all(grepl("^hsa[0-9]{5}$", hsa_kegg_ids))) {
-        stop("`hsa_kegg_ids` should be a vector of valid hsa KEGG IDs")
+    if (!all(grepl("^[a-z]{3}[0-9]{5}$", kegg_pw_ids))) {
+        stop("`kegg_pw_ids` should be a vector of valid hsa KEGG IDs")
     }
 
     ### input_processed
@@ -301,82 +287,18 @@ visualize_hsa_KEGG <- function(hsa_kegg_ids, input_processed, scale_vals = TRUE,
     change_vec <- input_processed$CHANGE
     names(change_vec) <- input_processed$KEGG_ID
 
-    cat("Downloading pathway diagrams of", length(hsa_kegg_ids), "KEGG pathways\n\n")
-    pw_vis_list <- list()
-    pb <- utils::txtProgressBar(min = 0, max = length(hsa_kegg_ids), style = 3)
-    for (i in seq_len(length(hsa_kegg_ids))) {
-        pw_id <- hsa_kegg_ids[i]
+    cat("Generating pathway diagrams of", length(kegg_pw_ids), "KEGG pathways\n\n")
+    pw_vis_list <- lapply(
+      kegg_pw_ids,
+      color_kegg_pathway,
+      change_vec=change_vec,
+      scale_vals = scale_vals,
+      node_cols = node_cols,
+      legend.position = legend.position
+    )
+    names(pw_vis_list) <- kegg_pw_ids
 
-        pw_vis_list[[pw_id]] <- color_kegg_pathway(pw_id = pw_id, change_vec = change_vec,
-            scale_vals = scale_vals, node_cols = node_cols, quiet = quiet)
-
-        utils::setTxtProgressBar(pb, i)
-    }
-    close(pb)
-
-    ############ Add logo and color key legend per each diagram
-
-    ### Read logo
-    path_logo <- system.file("extdata", "logo.png", package = "pathfindR")
-    logo_img <- magick::image_read(path_logo)
-
-    dir.create("term_visualizations", showWarnings = FALSE)
-
-    cat("Saving colored pathway diagrams of", length(pw_vis_list), "KEGG pathways\n\n")
-    if (length(pw_vis_list) != 0) {
-        pb <- utils::txtProgressBar(min = 0, max = length(pw_vis_list), style = 3)
-        for (i in seq_len(length(pw_vis_list))) {
-            ### Read image
-            f_path <- pw_vis_list[[i]]$file_path
-            pw_diag <- magick::image_read(f_path)
-
-            ### Add logo
-            pw_diag <- magick::image_composite(pw_diag, magick::image_scale(logo_img,
-                "x90"), gravity = logo_gravity, offset = "+10+10")
-
-            ### Prep for color keys
-            key_col_df <- data.frame(bin_val = seq_along(pw_vis_list[[i]]$all_key_cols),
-                color = pw_vis_list[[i]]$all_key_cols, y_val = 1)
-
-            key_breaks <- pw_vis_list[[i]]$all_brks
-            names(key_breaks) <- seq_along(key_breaks)
-            key_breaks <- c(key_breaks[1], mean(key_breaks[1:6]), key_breaks[6],
-                mean(key_breaks[6:11]), key_breaks[11])
-            brks <- c(0.5, 3, 5.5, 8, 10.5)
-
-            ### Generate color legend image
-            col_key_legend <- magick::image_graph(width = 200, height = 90, res = 100)
-            g <- ggplot2::ggplot(key_col_df, ggplot2::aes(.data$bin_val, .data$y_val))
-            g <- g + ggplot2::geom_tile(fill = key_col_df$color, colour = "black")
-            g <- g + ggplot2::scale_x_continuous(expand = c(0, 0), breaks = brks,
-                labels = base::format(key_breaks, digits = 2))
-            g <- g + ggplot2::scale_y_discrete(expand = c(0, 0))
-            g <- g + ggplot2::theme_bw()
-            g <- g + ggplot2::theme(panel.grid.major = ggplot2::element_blank(),
-                panel.grid.minor = ggplot2::element_blank(), axis.title.x = ggplot2::element_blank(),
-                axis.title.y = ggplot2::element_blank(), axis.ticks = ggplot2::element_line(colour = "black",
-                  linewidth = 0.6), axis.ticks.length = ggplot2::unit(0.2, "cm"),
-                axis.text.x = ggplot2::element_text(size = 14, face = "bold"), panel.border = ggplot2::element_rect(colour = "black",
-                  fill = NA, linewidth = 0.5), plot.margin = ggplot2::unit(c(0, 0.7,
-                  0, 0.7), "cm"))
-            print(g)
-            grDevices::dev.off()
-
-            ### Add color key legend
-            if (all(change_vec == 1e+06)) {
-                final_pw_img <- pw_diag
-            } else {
-                final_pw_img <- magick::image_composite(pw_diag, magick::image_scale(col_key_legend,
-                  "x45"), gravity = key_gravity, offset = "+10+10")
-            }
-
-            final_path <- file.path("term_visualizations", basename(f_path))
-            magick::image_write(final_pw_img, path = final_path, format = "png")
-
-            utils::setTxtProgressBar(pb, i)
-        }
-        close(pb)
-    }
+    return(pw_vis_list)
 }
 
 #' Color hsa KEGG pathway
@@ -389,14 +311,9 @@ visualize_hsa_KEGG <- function(hsa_kegg_ids, input_processed, scale_vals = TRUE,
 #' are set as 'green', 'gray' and 'red'. If all change values are 1e6 (in case no
 #' changes are supplied, this dummy value is assigned by
 #' \code{\link{input_processing}}), only one color ('#F38F18' if NULL) is used.
-#' @param quiet If \code{TRUE}, suppress status messages (if any), and the
-#' progress bar while downloading file(s)
+#' @inheritParams ggplot2::theme
 #'
-#' @return list containing: \enumerate{
-#'    \item file_path: path to colored hsa KEGG pathway diagram
-#'    \item all_key_cols: colors used for each change value bin
-#'    \item all_brks: breaks used for separating change values into bins
-#' }
+#' @return a ggplot object containing the colored KEGG pathway diagram visualization
 #'
 #' @examples
 #' \dontrun{
@@ -405,8 +322,7 @@ visualize_hsa_KEGG <- function(hsa_kegg_ids, input_processed, scale_vals = TRUE,
 #' names(change_vec) <- c('hsa:2821', 'hsa:226', 'hsa:229')
 #' result <- pathfindR:::color_kegg_pathway(pw_id, change_vec)
 #' }
-color_kegg_pathway <- function(pw_id, change_vec, scale_vals = TRUE, node_cols = NULL,
-    quiet = TRUE) {
+color_kegg_pathway <- function(pw_id, change_vec, scale_vals = TRUE, node_cols = NULL, legend.position) {
     ############ Arg checks
     if (!is.logical(scale_vals)) {
         stop("`scale_vals` should be logical")
@@ -487,7 +403,10 @@ color_kegg_pathway <- function(pw_id, change_vec, scale_vals = TRUE, node_cols =
     p <- p + ggkegg::geom_node_rect(ggplot2::aes(filter = !is.na(.data$change_value), fill = .data$change_value))
     p <- p + ggkegg::overlay_raw_map(pw_id)
     p <- p + ggplot2::scale_fill_gradient2(low = low_col, mid = mid_col, high = high_col)
-    p <- p + ggplot2::theme(legend.title = ggplot2::element_blank())
+    p <- p + ggplot2::theme(
+      legend.title = ggplot2::element_blank(),
+      legend.position = legend.position
+    )
     p <- p + ggplot2::theme_void()
 
     return(p)
