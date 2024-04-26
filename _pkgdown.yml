@@ -70,8 +70,7 @@ reference:
       Visualization-related functions
     contents:
       - color_kegg_pathway
-      - download_kegg_png
-      - visualize_hsa_KEGG
+      - visualize_KEGG_diagram
       - visualize_term_interactions
   - title: "Misc. functions"
     desc: >
