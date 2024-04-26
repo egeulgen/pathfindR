@@ -124,7 +124,7 @@ visualize_terms <- function(
 #'
 #' @examples
 #' result_df <- example_pathfindR_output[1:2, ]
-#' visualize_term_interactions(result_df, pin_name_path = 'IntAct')
+#' gg_list <- visualize_term_interactions(result_df, pin_name_path = 'IntAct')
 visualize_term_interactions <- function(result_df, pin_name_path, show_legend = TRUE) {
     ############ Initial Steps fix naming issue
     result_df$Term_Description <- gsub("\\/", "-", result_df$Term_Description)
@@ -422,11 +422,11 @@ color_kegg_pathway <- function(pw_id, change_vec, scale_vals = TRUE, node_cols =
     p <- p + ggkegg::geom_node_rect(ggplot2::aes(filter = !is.na(.data$change_value), fill = .data$change_value))
     p <- p + ggkegg::overlay_raw_map(pw_id, directory = tempdir(), use_cache = FALSE)
     p <- p + ggplot2::scale_fill_gradient2(low = low_col, mid = mid_col, high = high_col)
+    p <- p + ggplot2::theme_void()
     p <- p + ggplot2::theme(
       legend.title = ggplot2::element_blank(),
       legend.position = legend.position
     )
-    p <- p + ggplot2::theme_void()
 
     return(p)
 }
