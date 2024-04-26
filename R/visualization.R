@@ -418,7 +418,7 @@ color_kegg_pathway <- function(pw_id, change_vec, scale_vals = TRUE, node_cols =
     igraph::V(g)$change_value <- NA
     igraph::V(g)$change_value[match(names(pw_vis_changes), names(igraph::V(g)))] <- pw_vis_changes
 
-    p <- ggraph::ggraph(g, layout="manual", x = x, y = y)
+    p <- ggraph::ggraph(g, layout="manual", x=igraph::V(g)$x, y=igraph::V(g)$y)
     p <- p + ggkegg::geom_node_rect(ggplot2::aes(filter = !is.na(.data$change_value), fill = .data$change_value))
     p <- p + ggkegg::overlay_raw_map(pw_id, directory = tempdir(), use_cache = FALSE)
     p <- p + ggplot2::scale_fill_gradient2(low = low_col, mid = mid_col, high = high_col)
