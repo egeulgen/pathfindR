@@ -251,6 +251,7 @@ visualize_KEGG_diagram <- function(
     node_cols = NULL,
     legend.position = "top"
 ) {
+    message("This function utilises one functionality of `ggkegg`. For more options, visit https://github.com/noriakis/ggkegg")
     ############ Arg checks
 
     ### kegg_pw_ids
