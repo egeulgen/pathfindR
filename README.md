@@ -220,40 +220,38 @@ clustered_df_fuzzy <- cluster_enriched_terms(output_df, method="fuzzy")
 ## Enriched Term Diagrams
 
 For H.sapiens KEGG enrichment analyses, `visualize_terms()` can be used
-to generate KEGG pathway diagrams that are saved as PNG files in a
-directory called “term_visualizations” under the current working
-directory:
+to generate KEGG pathway diagrams as `ggraph` (inherits from `ggplot`)
+objects (using [`ggkegg`](https://github.com/noriakis/ggkegg)):
 
 ``` r
 input_processed <- input_processing(example_pathfindR_input)
-visualize_terms(
-  result_df=example_pathfindR_output,
-  input_processed=input_processed,
-  hsa_KEGG=TRUE
-)
+gg_list <- visualize_terms(
+  result_df = example_pathfindR_output,
+  input_processed = input_processed,
+  is_KEGG_result = TRUE
+)  # this function returns a list of ggraph objects (named by Term ID)
 ```
 
 <figure>
 <img
-src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/hsaKEGG_diagram.png?raw=true"
-title="Pathway Diagram" alt="Pathway Diagram" />
-<figcaption aria-hidden="true">Pathway Diagram</figcaption>
+src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/example_kegg_pathway_diagram.png?raw=true"
+title="KEGG Pathway Diagram" alt="KEGG Pathway Diagram" />
+<figcaption aria-hidden="true">KEGG Pathway Diagram</figcaption>
 </figure>
 
-Alternatively (i.e., for other types of non-KEGG/non-H.sapiens
-enrichment analyses), an interaction diagram per enriched term can be
-generated again via `visualize_terms()`. These diagrams are also saved
-as PNG files in a directory called “term_visualizations” under the
-current working directory:
+Alternatively (i.e., for other types of (non-KEGG) enrichment analyses),
+an interaction diagram per enriched term can be generated again via
+`visualize_terms()`. These diagrams are also returned as `ggraph`
+objects:
 
 ``` r
 input_processed <- input_processing(example_pathfindR_input)
-visualize_terms(
-  result_df=example_pathfindR_output,
-  input_processed=input_processed,
-  hsa_KEGG=FALSE,
-  pin_name_path="Biogrid"
-)
+gg_list <- visualize_terms(
+  result_df = example_pathfindR_output,
+  input_processed = input_processed,
+  is_KEGG_result = FALSE,
+  pin_name_path = "Biogrid"
+)  # this function returns a list of ggraph objects (named by Term ID)
 ```
 
 <figure>
