@@ -48,7 +48,7 @@ isColor <- function(x) {
 #' @examples
 #' input_processed <- data.frame(
 #'   GENE = c("PARP1", "NDUFA1", "STX6", "SNAP23"),
-#'   CHANGE = c(1.5, -2, 3, 5, -1)
+#'   CHANGE = c(1.5, -2, 3, 5)
 #' )
 #' result_df <- example_pathfindR_output[1:2, ]
 #'
