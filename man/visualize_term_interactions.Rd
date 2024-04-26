@@ -18,10 +18,9 @@ path/to/PIN.sif, the file must comply with the PIN specifications. (Default = 'B
 or not (\code{FALSE}) (default: \code{TRUE})}
 }
 \value{
-Creates PNG files visualizing the interactions of genes involved
+list of ggplot objects (named by Term ID) visualizing the interactions of genes involved
 in the given enriched terms (annotated in the \code{result_df}) in the PIN used
-for enrichment analysis (specified by \code{pin_name_path}). The PNG files are
-saved in the folder 'term_visualizations' under the current working directory.
+for enrichment analysis (specified by \code{pin_name_path}).
 }
 \description{
 Visualize Interactions of Genes Involved in the Given Enriched Terms
@@ -34,13 +33,12 @@ of genes involved for each enriched term: \enumerate{
   \item the PIN is subsetted using the merged nodes (genes)
   \item using the PIN subset, the graph showing the interactions is generated
   \item the final graph is visualized using \code{\link[igraph]{igraph}}, colored by changed
-  status (if provided), and is saved as a PNG file.
+  status (if provided)
 }
 }
 \examples{
-\dontrun{
+result_df <- example_pathfindR_output[1:2, ]
 visualize_term_interactions(result_df, pin_name_path = 'IntAct')
-}
 }
 \seealso{
 See \code{\link{visualize_terms}} for the wrapper function

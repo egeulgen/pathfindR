@@ -1,5 +1,11 @@
 # pathfindR (development version)
 
+## Major Changes
+
+- implemented a new `color_kegg_pathway()` function using `ggkegg` to create colored KEGG pathway ggplot objects (instead of using `KEGGREST` to obtain the colored PNG files, which no longer works #169)
+- renamed the `visualize_hsa_KEGG` to `visualize_KEGG_diagram()` to reflect this is now able to handle KEGG pathway enrichment results from any organism
+- updated the `visualize_term_interactions()` and `visualize_KEGG_diagram()` functions so that they now return a list of ggplot objects (named by term ID)
+
 # pathfindR 2.3.1
 
 ## Minor Changes and Bug Fixes
