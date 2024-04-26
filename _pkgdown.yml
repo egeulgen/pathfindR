@@ -85,6 +85,5 @@ reference:
       - get_reactome_gsets
       - get_mgsigdb_gsets
       - gset_list_from_gmt
-      - obtain_colored_url
       - create_HTML_report
       - isColor
