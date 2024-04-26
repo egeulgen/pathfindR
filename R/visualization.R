@@ -446,208 +446,51 @@ color_kegg_pathway <- function(pw_id, change_vec, scale_vals = TRUE, node_cols =
         high_col <- "green"
     }
 
-    ############ Summarization for genes that are in the same node and handling
-    ############ of non-input pathway genes download KGML to determine gene
-    ############ nodes
-    pwKGML <- tempfile()
-    KGML_download_status <- download_KGML_file(pw_id, pwKGML, quiet)
+    ############ Assign the input change values to any corresponding pathway gene nodes
+    # create pathway graph object and collect all pathway genes
+    g <- ggkegg::pathway(pid = pw_id, directory = tempdir())
+    gene_nodes <- names(igraph::V(g))[igraph::V(g)$type == "gene"]
 
-    if (is.na(KGML_download_status) | is.na(file.info(pwKGML)$size)) {
-        return(NULL)
-    }
-
-    current_pw <- KEGGgraph::parseKGML(pwKGML)
-
-    all_nodes <- KEGGgraph::nodes(current_pw)
-    gene_nodes <- list()
-    for (node in all_nodes) {
-        if (KEGGgraph::getType(node) == "gene") {
-            gene_nodes[[KEGGgraph::getEntryID(node)]] <- KEGGgraph::getName(node)
-        }
-    }
-    gene_nodes <- unique(gene_nodes)
-    gene_nodes <- gene_nodes[order(vapply(gene_nodes, length, 1L))]
-
-    ## summarize over all pathway gene nodes keeping one unique gene per each
-    ## node
+    ## aggregate change values over all pathway gene nodes
     pw_vis_changes <- c()
     for (i in seq_len(length(gene_nodes))) {
-        node <- gene_nodes[[i]]
+        node_name <- gene_nodes[i]
+        node <- unlist(strsplit(node_name, " "))
         cond <- names(change_vec) %in% node
 
-        tmp_val <- mean(change_vec[cond])
-
-        if (length(node) != 1) {
-            rest_nodes <- unlist(gene_nodes[-i])
-            chosen_nm <- setdiff(node, rest_nodes)
-        } else {
-            chosen_nm <- node
+        if (any(cond)) {
+          node_val <- mean(change_vec[cond])
+          names(node_val) <- node_name
+          pw_vis_changes <- c(pw_vis_changes, node_val)
         }
-
-        chosen_nm <- chosen_nm[!chosen_nm %in% names(pw_vis_changes)][1]
-        if (is.na(chosen_nm)) {
-            tmp <- node[!node %in% names(pw_vis_changes)]
-            chosen_nm <- ifelse(length(tmp) == 0, node[1], tmp[1])
-        }
-
-        names(tmp_val) <- chosen_nm
-        pw_vis_changes <- c(pw_vis_changes, tmp_val)
     }
     ## if no input genes present in chosen pathway
     if (all(is.na(pw_vis_changes))) {
         return(NULL)
     }
 
-    ## average over duplicate node names
-    if (anyDuplicated(names(pw_vis_changes))) {
-        dup_names <- names(pw_vis_changes)[duplicated(names(pw_vis_changes))]
-        for (dup_name in dup_names) {
-            tmp <- mean(pw_vis_changes[names(pw_vis_changes) == dup_name])
-            names(tmp) <- dup_name
-            pw_vis_changes <- pw_vis_changes[names(pw_vis_changes) != dup_name]
-            pw_vis_changes <- c(pw_vis_changes, tmp)
-        }
-    }
-
     ############ Determine node colors
-    vals <- pw_vis_changes[!is.na(pw_vis_changes)]
-    ### Scaling
-    if (!all(vals == 1e+06) & scale_vals) {
-        pos_idx <- which(vals >= 0)
-        neg_idx <- which(vals < 0)
-
-        UL <- max(abs(vals))
-
-        pos_vals <- c(UL, vals[pos_idx])
-        pos_vals <- (pos_vals - min(pos_vals))/diff(range(pos_vals))
-
-        neg_vals <- c(-UL, vals[neg_idx])
-        neg_vals <- (neg_vals - min(neg_vals))/diff(range(neg_vals)) - 1
-
-        vals[pos_idx] <- pos_vals[-1]
-        vals[neg_idx] <- neg_vals[-1]
+    ### scaling
+    if (!all(pw_vis_changes == 1e+06) & scale_vals) {
+      common_limit <- max(abs(pw_vis_changes))
+      pw_vis_changes <- ifelse(pw_vis_changes < 0,
+                               -abs(pw_vis_changes) / common_limit,
+                               pw_vis_changes / common_limit)
     }
 
-    ### determine limit
-    lim <- round(max(abs(vals)), 2)
-    ### if no vals exist set lim to 1 maybe raise a warning also
-    lim <- ifelse(is.na(lim), 1, lim)
 
-    ### generate low colors
-    low_vals <- vals[vals < 0]
-    low_brks <- seq(from = -lim, to = 0, length.out = 6)
-    low_bins <- cut(low_vals, breaks = low_brks, ordered_result = TRUE, include.lowest = TRUE)
-    key_col_fn <- grDevices::colorRampPalette(c(low_col, mid_col))
-    low_key_cols <- key_col_fn(5)
-    names(low_key_cols) <- levels(low_bins)
-    names(low_bins) <- names(low_vals)
+    ############ Create pathway diagram visualisation
+    igraph::V(g)$change_value <- NA
+    igraph::V(g)$change_value[match(names(pw_vis_changes), names(igraph::V(g)))] <- pw_vis_changes
 
-    ### generate high colors
-    high_vals <- vals[vals > 0]
-    high_brks <- seq(from = 0, to = lim, length.out = 6)
-    high_bins <- cut(high_vals, breaks = high_brks, ordered_result = TRUE, include.lowest = TRUE)
-    key_col_fn <- grDevices::colorRampPalette(c(mid_col, high_col))
-    high_key_cols <- key_col_fn(5)
-    names(high_key_cols) <- levels(high_bins)
-    names(high_bins) <- names(high_vals)
+    p <- ggraph::ggraph(g, layout="manual", x = x, y = y)
+    p <- p + ggkegg::geom_node_rect(ggplot2::aes(filter = !is.na(.data$change_value), fill = .data$change_value))
+    p <- p + ggkegg::overlay_raw_map(pw_id)
+    p <- p + ggplot2::scale_fill_gradient2(low = low_col, mid = mid_col, high = high_col)
+    p <- p + ggplot2::theme(legend.title = ggplot2::element_blank())
+    p <- p + ggplot2::theme_void()
 
-    all_brks <- c(low_brks, high_brks[-1])
-    all_key_cols <- c(low_key_cols, high_key_cols)
-
-    ############ Label each pw gene with the appropriate color
-    fg_cols <- ifelse(names(pw_vis_changes) %in% names(low_bins), low_key_cols[low_bins[names(pw_vis_changes)]],
-        ifelse(names(pw_vis_changes) %in% names(high_bins), high_key_cols[high_bins[names(pw_vis_changes)]],
-            "#ffffff"))
-    bg_cols <- rep("#000000", length(pw_vis_changes))
-
-    ## if leq than 60, disregard non-input genes
-    if (length(fg_cols) >= 60) {
-        keep <- fg_cols != "#ffffff"
-        fg_cols <- fg_cols[keep]
-        bg_cols <- bg_cols[keep]
-        pw_vis_changes <- pw_vis_changes[keep]
-    }
-
-    ############ Download colored KEGG pathway diagram
-    pw_url <- obtain_colored_url(pw_id = pw_id, KEGG_gene_ids = names(pw_vis_changes),
-        fg_cols = fg_cols, bg_cols = bg_cols)
-
-    fname <- paste0(pw_id, "_pathfindR.png")
-    f_path <- file.path(tempdir(check = TRUE), fname)
-
-    dl_stat <- download_kegg_png(pw_url, f_path, quiet)
-
-    if (!is.na(dl_stat)) {
-        return(list(file_path = f_path, all_key_cols = all_key_cols, all_brks = all_brks))
-    }
-}
-
-
-#' Obtain KGML file for a KEGG pathway (hsa)
-#'
-#' @param pw_id KEGG pathway ID
-#' @param pwKGML destination file
-#' @inheritParams color_kegg_pathway
-#'
-#' @return download status (0 for success), if warning/error returns NA
-download_KGML_file <- function(pw_id, pwKGML, quiet = TRUE) {
-    status <- tryCatch({
-        utils::download.file(url = KEGGgraph::getKGMLurl(pathwayid = sub("hsa", "",
-            pw_id), organism = "hsa"), destfile = pwKGML, quiet = quiet)
-    }, error = function(e) {
-        message(paste("Cannot download KGML file for:", pw_id))
-        message("Here's the original error message:")
-        message(e$message)
-        return(NA)
-    }, warning = function(w) {
-        message(paste("Cannot download KGML file for:", pw_id))
-        message("Here's the original error message:")
-        message(w$message)
-        return(NA)
-    })
-    return(status)
-}
-
-
-#' Obtain URL for a KEGG pathway diagram with a given set of genes marked
-#'
-#' @param pw_id KEGG pathway ID
-#' @param KEGG_gene_ids KEGG gene IDs for marking
-#' @param fg_cols colors for the text and border
-#' @param bg_cols background colors of the objects in a pathway diagram.
-#'
-#' @return URL for colored KEGG pathway diagram
-obtain_colored_url <- function(pw_id, KEGG_gene_ids, fg_cols, bg_cols) {
-    pw_url <- tryCatch({
-        KEGGREST::color.pathway.by.objects(pathway.id = pw_id, object.id.list = KEGG_gene_ids,
-            fg.color.list = bg_cols, bg.color.list = fg_cols)
-    }, error = function(e) {
-        message(paste("Cannot retrieve PNG url:", pw_id))
-        message("Here's the original error message:")
-        message(e$message)
-        return(NA)
-    })
-    return(pw_url)
-}
-
-
-#' Download Colored KEGG Diagram PNG
-#'
-#' @param pw_url url to download
-#' @param f_path local path to save the file
-#' @inheritParams color_kegg_pathway
-#'
-#' @return download status
-download_kegg_png <- function(pw_url, f_path, quiet = TRUE) {
-    res <- tryCatch({
-        utils::download.file(url = pw_url, destfile = f_path, mode = "wb", quiet = quiet)
-    }, error = function(e) {
-        message(paste("Cannot download PNG file:", pw_url))
-        message("Here's the original error message:")
-        message(e$message)
-        return(NA)
-    })
-    return(res)
+    return(p)
 }
 
 #' Create Bubble Chart of Enrichment Results
