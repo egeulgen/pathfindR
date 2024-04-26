@@ -7,55 +7,58 @@
 visualize_terms(
   result_df,
   input_processed = NULL,
-  hsa_KEGG = TRUE,
+  is_KEGG_result = TRUE,
   pin_name_path = "Biogrid",
   ...
 )
 }
 \arguments{
 \item{result_df}{Data frame of enrichment results. Must-have columns for
- KEGG human pathway diagrams (\code{hsa_kegg = TRUE}) are: 'ID' and 'Term_Description'.
+ KEGG human pathway diagrams (\code{is_KEGG_result = TRUE}) are: 'ID' and 'Term_Description'.
  Must-have columns for the rest are: 'Term_Description', 'Up_regulated' and
 'Down_regulated'}
 
 \item{input_processed}{input data processed via \code{\link{input_processing}},
-not necessary when \code{hsa_KEGG = FALSE}}
+not necessary when \code{is_KEGG_result = FALSE}}
 
-\item{hsa_KEGG}{boolean to indicate whether human KEGG gene sets were used for
+\item{is_KEGG_result}{boolean to indicate whether KEGG gene sets were used for
 enrichment analysis or not (default = \code{TRUE})}
 
 \item{pin_name_path}{Name of the chosen PIN or absolute/path/to/PIN.sif. If PIN name,
 must be one of c('Biogrid', 'STRING', 'GeneMania', 'IntAct', 'KEGG', 'mmu_STRING'). If
 path/to/PIN.sif, the file must comply with the PIN specifications. (Default = 'Biogrid')}
 
-\item{...}{additional arguments for \code{\link{visualize_hsa_KEGG}} (used
-when \code{hsa_kegg = TRUE}) or \code{\link{visualize_term_interactions}}
-(used when \code{hsa_kegg = FALSE})}
+\item{...}{additional arguments for \code{\link{visualize_KEGG_diagram}} (used
+when \code{is_KEGG_result = TRUE}) or \code{\link{visualize_term_interactions}}
+(used when \code{is_KEGG_result = FALSE})}
 }
 \value{
-Depending on the argument \code{hsa_KEGG}, creates visualization of
+Depending on the argument \code{is_KEGG_result}, creates visualization of
  interactions of genes involved in the list of enriched terms in
- \code{result_df} and saves them in the folder 'term_visualizations' under
- the current working directory.
+ \code{result_df}. Returns a list of ggplot objects named by Term ID.
 }
 \description{
 Create Diagrams for Enriched Terms
 }
 \details{
-For \code{hsa_KEGG = TRUE}, KEGG human pathway diagrams are created,
+For \code{is_KEGG_result = TRUE}, KEGG pathway diagrams are created,
 affected nodes colored by up/down regulation status.
 For other gene sets, interactions of affected genes are determined (via a shortest-path
 algorithm) and are visualized (colored by change status) using igraph.
 }
 \examples{
-\dontrun{
-visualize_terms(result_df, input_processed)
-visualize_terms(result_df, hsa_KEGG = FALSE, pin_name_path = 'IntAct')
-}
+input_processed <- data.frame(
+  GENE = c("PARP1", "NDUFA1", "STX6", "SNAP23"),
+  CHANGE = c(1.5, -2, 3, 5)
+)
+result_df <- example_pathfindR_output[1:2, ]
+
+gg_list <- visualize_terms(result_df, input_processed)
+gg_list2 <- visualize_terms(result_df, is_KEGG_result = FALSE, pin_name_path = 'IntAct')
 }
 \seealso{
-See \code{\link{visualize_hsa_KEGG}} for the visualization function
-of human KEGG diagrams. See \code{\link{visualize_term_interactions}} for the
+See \code{\link{visualize_KEGG_diagram}} for the visualization function
+of KEGG diagrams. See \code{\link{visualize_term_interactions}} for the
 visualization function that generates diagrams showing the interactions of
 input genes in the PIN. See \code{\link{run_pathfindR}} for the wrapper
 function of the pathfindR workflow.

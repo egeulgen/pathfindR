@@ -9,7 +9,7 @@ color_kegg_pathway(
   change_vec,
   scale_vals = TRUE,
   node_cols = NULL,
-  quiet = TRUE
+  legend.position = "top"
 )
 }
 \arguments{
@@ -25,15 +25,11 @@ are set as 'green', 'gray' and 'red'. If all change values are 1e6 (in case no
 changes are supplied, this dummy value is assigned by
 \code{\link{input_processing}}), only one color ('#F38F18' if NULL) is used.}
 
-\item{quiet}{If \code{TRUE}, suppress status messages (if any), and the
-progress bar while downloading file(s)}
+\item{legend.position}{the default position of legends ("none", "left",
+"right", "bottom", "top", "inside")}
 }
 \value{
-list containing: \enumerate{
-   \item file_path: path to colored hsa KEGG pathway diagram
-   \item all_key_cols: colors used for each change value bin
-   \item all_brks: breaks used for separating change values into bins
-}
+a ggplot object containing the colored KEGG pathway diagram visualization
 }
 \description{
 Color hsa KEGG pathway

@@ -171,45 +171,46 @@ gset_list_from_gmt <- function(path2gmt, descriptions_idx = 2) {
 #' \item{descriptions - A named vector containing the descriptions for each KEGG pathway}
 #' }
 get_kegg_gsets <- function(org_code = "hsa") {
-    # created named list, eg: path:map00010: 'Glycolysis / Gluconeogenesis'
-    pathways_list <- KEGGREST::keggList("pathway", org_code)
 
-    # make them into KEGG-style pathway identifiers
-    pathway_codes <- sub("path:", "", names(pathways_list))
+  message("Grab a cup of coffee, this will take a while...")
 
-    # parse pathway genes
-    genes_by_pathway <- lapply(pathway_codes, function(pwid) {
-        pw <- KEGGREST::keggGet(pwid)
+  url <- paste0("https://rest.kegg.jp/list/pathway/", org_code)
+  result <- httr::GET(url)
+  result <- httr::content(result, "text")
 
-        ## get gene symbols
-        all_entries <- pw[[1]]$GENE
-        if (is.null(all_entries)) {
-            return(NULL)
-        }
-        tmp <- c(TRUE, FALSE)
-        if (grepl(";", all_entries[2])) {
-            tmp <- c(FALSE, TRUE)
-        }
-        pw <- all_entries[tmp]
+  parsed_result <- strsplit(result, "\n")[[1]]
+  pathway_ids <- vapply(parsed_result, function(x) unlist(strsplit(x, "\t"))[1], "id")
+  pathway_descriptons <- vapply(parsed_result, function(x) unlist(strsplit(x, "\t"))[2], "description")
+  names(pathway_descriptons) <- pathway_ids
 
-        pw <- sub(";.+", "", pw)  ## discard any description
-        pw <- pw[grep("^[A-Za-z0-9_-]+(\\@)?$", pw)]  ## remove mistaken lines
-        pw <- unique(pw)  ## keep unique genes
-        return(pw)
-    })
+  genes_by_pathway <- lapply(pathway_ids, function(pw_id) {
+    pathways_graph <- ggkegg::pathway(pid = pw_id, directory = tempdir(), use_cache = FALSE, return_tbl_graph = FALSE)
+    all_pw_gene_ids <- igraph::V(pathways_graph)$name[igraph::V(pathways_graph)$type == "gene"]
+    all_pw_gene_ids <- unlist(strsplit(all_pw_gene_ids, " "))
+    all_pw_gene_ids <- unique(all_pw_gene_ids)
+    all_pw_gene_ids <- sub("^hsa:", "", all_pw_gene_ids)
 
-    names(genes_by_pathway) <- pathway_codes
+    all_pw_gene_symbols <- AnnotationDbi::mget(
+      all_pw_gene_ids, org.Hs.eg.db::org.Hs.egSYMBOL, ifnotfound = NA
+    )
 
-    # remove empty gene sets (metabolic pathways)
-    kegg_genes <- genes_by_pathway[vapply(genes_by_pathway, length, 1) != 0]
+    all_pw_gene_symbols <- unique(unname(unlist(all_pw_gene_symbols)))
+    all_pw_gene_symbols <- all_pw_gene_symbols[!is.na(all_pw_gene_symbols)]
 
-    kegg_descriptions <- pathways_list
-    names(kegg_descriptions) <- sub("path:", "", names(kegg_descriptions))
-    kegg_descriptions <- sub(" & .*$", "", sub("-([^-]*)$", "&\\1", kegg_descriptions))
-    kegg_descriptions <- kegg_descriptions[names(kegg_descriptions) %in% names(kegg_genes)]
+    return(all_pw_gene_symbols)
+  })
 
-    result <- list(gene_sets = kegg_genes, descriptions = kegg_descriptions)
-    return(result)
+  names(genes_by_pathway) <- pathway_ids
+
+  # remove empty gene sets (e.g. pure metabolic pathways)
+  kegg_genes <- genes_by_pathway[vapply(genes_by_pathway, length, 1) != 0]
+
+  kegg_descriptions <- pathway_descriptons
+  kegg_descriptions <- sub(" & .*$", "", sub("-([^-]*)$", "&\\1", kegg_descriptions))
+  kegg_descriptions <- kegg_descriptions[names(kegg_descriptions) %in% names(kegg_genes)]
+
+  result <- list(gene_sets = kegg_genes, descriptions = kegg_descriptions)
+  return(result)
 }
 
 #' Retrieve Reactome Pathway Gene Sets
