@@ -9,7 +9,7 @@ color_kegg_pathway(
   change_vec,
   scale_vals = TRUE,
   node_cols = NULL,
-  legend.position
+  legend.position = "top"
 )
 }
 \arguments{

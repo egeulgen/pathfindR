@@ -38,7 +38,7 @@ of genes involved for each enriched term: \enumerate{
 }
 \examples{
 result_df <- example_pathfindR_output[1:2, ]
-visualize_term_interactions(result_df, pin_name_path = 'IntAct')
+gg_list <- visualize_term_interactions(result_df, pin_name_path = 'IntAct')
 }
 \seealso{
 See \code{\link{visualize_terms}} for the wrapper function
