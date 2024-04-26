@@ -174,13 +174,25 @@ get_kegg_gsets <- function(org_code = "hsa") {
 
   message("Grab a cup of coffee, this will take a while...")
 
-  url <- paste0("https://rest.kegg.jp/list/pathway/", org_code)
-  result <- httr::GET(url)
-  result <- httr::content(result, "text")
+  gene_table_url <- paste0("https://rest.kegg.jp/list/", org_code)
+  gene_table_result <- httr::GET(gene_table_url)
+  gene_table_result <- httr::content(gene_table_result, "text")
 
-  parsed_result <- strsplit(result, "\n")[[1]]
-  pathway_ids <- vapply(parsed_result, function(x) unlist(strsplit(x, "\t"))[1], "id")
-  pathway_descriptons <- vapply(parsed_result, function(x) unlist(strsplit(x, "\t"))[2], "description")
+  parsed_gene_table_result <- strsplit(gene_table_result, "\n")[[1]]
+  kegg_gene_table <- data.frame(
+    kegg_id = unname(vapply(parsed_gene_table_result, function(x) unlist(strsplit(x, "\t"))[1], "org:123")),
+    symbol = unname(vapply(parsed_gene_table_result, function(x) unlist(strsplit(unlist(strsplit(x, "\t"))[4], ";"))[1], "symbol"))
+  )
+  # remove mistaken lines
+  kegg_gene_table <- kegg_gene_table[grep("^((,\\s)?[A-Za-z0-9_-]+(\\@)?)+$", kegg_gene_table$symbol), ]
+
+
+  all_pathways_url <- paste0("https://rest.kegg.jp/list/pathway/", org_code)
+  all_pathways_result <- httr::GET(all_pathways_url)
+  all_pathways_result <- httr::content(all_pathways_result, "text")
+  parsed_all_pathways_result <- strsplit(all_pathways_result, "\n")[[1]]
+  pathway_ids <- vapply(parsed_all_pathways_result, function(x) unlist(strsplit(x, "\t"))[1], "id")
+  pathway_descriptons <- vapply(parsed_all_pathways_result, function(x) unlist(strsplit(x, "\t"))[2], "description")
   names(pathway_descriptons) <- pathway_ids
 
   genes_by_pathway <- lapply(pathway_ids, function(pw_id) {
@@ -188,14 +200,11 @@ get_kegg_gsets <- function(org_code = "hsa") {
     all_pw_gene_ids <- igraph::V(pathways_graph)$name[igraph::V(pathways_graph)$type == "gene"]
     all_pw_gene_ids <- unlist(strsplit(all_pw_gene_ids, " "))
     all_pw_gene_ids <- unique(all_pw_gene_ids)
-    all_pw_gene_ids <- sub("^hsa:", "", all_pw_gene_ids)
 
-    all_pw_gene_symbols <- AnnotationDbi::mget(
-      all_pw_gene_ids, org.Hs.eg.db::org.Hs.egSYMBOL, ifnotfound = NA
-    )
-
-    all_pw_gene_symbols <- unique(unname(unlist(all_pw_gene_symbols)))
+    all_pw_gene_symbols <- kegg_gene_table$symbol[match(all_pw_gene_ids, kegg_gene_table$kegg_id)]
     all_pw_gene_symbols <- all_pw_gene_symbols[!is.na(all_pw_gene_symbols)]
+    all_pw_gene_symbols <- unname(vapply(all_pw_gene_symbols, function(x) unlist(strsplit(x, ", "))[1], "symbol"))
+    all_pw_gene_symbols <- unique(all_pw_gene_symbols)
 
     return(all_pw_gene_symbols)
   })
