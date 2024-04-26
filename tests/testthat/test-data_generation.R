@@ -74,20 +74,35 @@ test_that("`gset_list_from_gmt()` -- works as expected", {
 
 test_that("`get_kegg_gsets()` -- works as expected", {
   skip_on_cran()
-  mock_content <- "hsa04972\tdescription\nhsa04962\tdescription2"
-  with_mock(`httr::content` = function(...) mock_content, {
-    expect_is(hsa_kegg <- pathfindR:::get_kegg_gsets(), "list")
+  mock_responses <- c(
+    httr::content(httr::GET(paste0("https://rest.kegg.jp/list/eco")), "text"),
+    "eco00010\tdescription\neco00071\tdescription2"
+  )
+
+  call_count <- 0
+
+  # function to manage sequential responses
+  mock_content <- function(...) {
+    call_count <<- call_count + 1
+    return(mock_responses[call_count])
+  }
+
+
+  with_mock(`httr::content` = mock_content, {
+    expect_is(toy_eco_kegg <- pathfindR:::get_kegg_gsets(), "list")
   })
 
-  expect_length(hsa_kegg, 2)
-  expect_true(all(names(hsa_kegg) == c("gene_sets", "descriptions")))
-  expect_true(all(names(hsa_kegg[["gene_sets"]]) %in% names(hsa_kegg[["descriptions"]])))
+  expect_length(toy_eco_kegg, 2)
+  expect_true(all(names(toy_eco_kegg) == c("gene_sets", "descriptions")))
+  expect_true(all(names(toy_eco_kegg[["gene_sets"]]) %in% names(toy_eco_kegg[["descriptions"]])))
+  expect_length(toy_eco_kegg[["gene_sets"]], 2)
+  expect_length(toy_eco_kegg[["descriptions"]], 2)
 
-  expect_true(hsa_kegg[["descriptions"]]["hsa04972"] == "description")
-  expect_true(hsa_kegg[["descriptions"]]["hsa04962"] == "description2")
+  expect_true(toy_eco_kegg[["descriptions"]]["eco00010"] == "description")
+  expect_true(toy_eco_kegg[["descriptions"]]["eco00071"] == "description2")
 
-  expect_length(hsa_kegg[["gene_sets"]][["hsa04972"]], 102)
-  expect_length(hsa_kegg[["gene_sets"]][["hsa04962"]], 44)
+  expect_length(toy_eco_kegg[["gene_sets"]][["eco00010"]], 47)
+  expect_length(toy_eco_kegg[["gene_sets"]][["eco00071"]], 15)
 })
 
 test_that("`get_reactome_gsets()` -- works as expected", {
