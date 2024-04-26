@@ -49,7 +49,6 @@ Imports:
     grDevices,
     igraph,
     R.utils,
-    magick,
     msigdbr,
     KEGGREST,
     knitr
