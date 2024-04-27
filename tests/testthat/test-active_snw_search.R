@@ -4,7 +4,7 @@
 input_data_frame <- example_pathfindR_input[1:10, c(1, 3)]
 colnames(input_data_frame) <- c("GENE", "P_VALUE")
 
-example_snws_len <- 20
+example_snws_len <- 1000
 example_snw_output <- system.file("extdata", "resultActiveSubnetworkSearch.txt",
     package = "pathfindR")
 mock_file_path <- function(...) {
@@ -195,5 +195,5 @@ test_that("`visualize_active_subnetworks()` -- returns list of ggraph objects", 
         num_snws = 21)
     expect_is(g_list, "list")
     expect_is(g_list[[1]], "ggraph")
-    expect_length(g_list, 3)
+    expect_length(g_list, 13)
 })
