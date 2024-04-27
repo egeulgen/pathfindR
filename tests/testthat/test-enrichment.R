@@ -98,7 +98,7 @@ tmp_gset_genes <- kegg_genes[example_pathfindR_output$ID[order(example_pathfindR
 tmp_gset_desc <- kegg_descriptions[names(tmp_gset_genes)]
 
 all_iter_enr_res <- list(NULL, NULL, NULL)
-subnw_start_idx <- c(1, 4, 7)
+subnw_start_idx <- 1:3
 for (idx in seq_along(subnw_start_idx)) {
     j <- subnw_start_idx[idx]
     res <- enrichment_analyses(snws = example_active_snws[j:j + 2], sig_genes_vec = example_pathfindR_input$Gene.symbol,
