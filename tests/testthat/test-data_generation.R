@@ -28,11 +28,29 @@ test_that("`get_biogrid_pin()` -- returns a path to a valid PIN file", {
     expected_biogrid_pin_df <- data.frame(V1 = expected_biogrid_pin_df$Interactor_A,
         V2 = "pp", V3 = expected_biogrid_pin_df$Interactor_B)
 
-    pin_path <- get_biogrid_pin()
+    pin_path <- get_biogrid_pin(release = "4.4.211")
     pin_df <- read.delim(pin_path, header = FALSE)
     expect_true(ncol(pin_df) == 3)
     expect_true(all(pin_df[, 2] == "pp"))
     expect_identical(pin_df, expected_biogrid_pin_df)
+})
+
+test_that("`get_biogrid_pin()` -- determines and downloads the latest version", {
+  mockery::stub(get_biogrid_pin, "utils::download.file", NULL)
+  mockery::stub(get_biogrid_pin, "utils::unzip", list(Name = "BIOGRID-ORGANISM-Homo_sapiens-X.X.X.tab3.txt"))
+  mockery::stub(get_biogrid_pin, "utils::read.delim", toy_biogrid_pin)
+
+  expected_biogrid_pin_df <- toy_biogrid_pin
+  colnames(expected_biogrid_pin_df) <- c("Interactor_A", "Interactor_B")
+  expected_biogrid_pin_df <- process_pin(expected_biogrid_pin_df)
+  expected_biogrid_pin_df <- data.frame(V1 = expected_biogrid_pin_df$Interactor_A,
+                                        V2 = "pp", V3 = expected_biogrid_pin_df$Interactor_B)
+
+  pin_path <- get_biogrid_pin()
+  pin_df <- read.delim(pin_path, header = FALSE)
+  expect_true(ncol(pin_df) == 3)
+  expect_true(all(pin_df[, 2] == "pp"))
+  expect_identical(pin_df, expected_biogrid_pin_df)
 })
 
 test_that("`get_biogrid_pin()` -- error check works", {
