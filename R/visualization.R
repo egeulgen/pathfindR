@@ -46,6 +46,7 @@ isColor <- function(x) {
 #' function of the pathfindR workflow.
 #'
 #' @examples
+#' \dontrun{
 #' input_processed <- data.frame(
 #'   GENE = c("PARP1", "NDUFA1", "STX6", "SNAP23"),
 #'   CHANGE = c(1.5, -2, 3, 5)
@@ -54,6 +55,7 @@ isColor <- function(x) {
 #'
 #' gg_list <- visualize_terms(result_df, input_processed)
 #' gg_list2 <- visualize_terms(result_df, is_KEGG_result = FALSE, pin_name_path = 'IntAct')
+#' }
 visualize_terms <- function(
     result_df, input_processed = NULL, is_KEGG_result = TRUE, pin_name_path = "Biogrid", ...
 ) {
@@ -123,8 +125,10 @@ visualize_terms <- function(
 #'   wrapper function of the pathfindR enrichment workflow.
 #'
 #' @examples
+#' \dontrun{
 #' result_df <- example_pathfindR_output[1:2, ]
 #' gg_list <- visualize_term_interactions(result_df, pin_name_path = 'IntAct')
+#' }
 visualize_term_interactions <- function(result_df, pin_name_path, show_legend = TRUE) {
     ############ Initial Steps fix naming issue
     result_df$Term_Description <- gsub("\\/", "-", result_df$Term_Description)
@@ -239,11 +243,13 @@ visualize_term_interactions <- function(result_df, pin_name_path, show_legend = 
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' input_processed <- data.frame(
 #'   GENE = c("PKLR", "GPI", "CREB1", "INS"),
 #'   CHANGE = c(1.5, -2, 3, 5)
 #' )
 #' gg_list <- visualize_KEGG_diagram(c("hsa00010", "hsa04911"), input_processed)
+#' }
 visualize_KEGG_diagram <- function(
     kegg_pw_ids,
     input_processed,

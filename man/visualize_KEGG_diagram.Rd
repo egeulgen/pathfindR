@@ -36,11 +36,13 @@ and returns them as a list of ggplot objects, named by Term ID.
 Visualize Human KEGG Pathways
 }
 \examples{
+\dontrun{
 input_processed <- data.frame(
   GENE = c("PKLR", "GPI", "CREB1", "INS"),
   CHANGE = c(1.5, -2, 3, 5)
 )
 gg_list <- visualize_KEGG_diagram(c("hsa00010", "hsa04911"), input_processed)
+}
 }
 \seealso{
 See \code{\link{visualize_terms}} for the wrapper function for
