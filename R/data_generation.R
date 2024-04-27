@@ -25,12 +25,12 @@ process_pin <- function(pin_df) {
 #' list of available organisms (default = 'Homo_sapiens')
 #' @param path2pin the path of the file to save the PIN data. By default, the
 #' PIN data is saved in a temporary file
-#' @param release the requested BioGRID release (default = '4.4.224')
+#' @param release the requested BioGRID release (default = 'latest')
 #'
 #' @return the path of the file in which the PIN data was saved. If
 #' \code{path2pin} was not supplied by the user, the PIN data is saved in a
 #' temporary file
-get_biogrid_pin <- function(org = "Homo_sapiens", path2pin, release = "4.4.224") {
+get_biogrid_pin <- function(org = "Homo_sapiens", path2pin, release = "latest") {
     # check organism name
     all_org_names <- c("Anopheles_gambiae_PEST", "Apis_mellifera", "Arabidopsis_thaliana_Columbia",
         "Bacillus_subtilis_168", "Bos_taurus", "Caenorhabditis_elegans", "Candida_albicans_SC5314",
@@ -53,6 +53,14 @@ get_biogrid_pin <- function(org = "Homo_sapiens", path2pin, release = "4.4.224")
         "Vaccinia_Virus", "Vitis_vinifera", "Xenopus_laevis", "Zea_mays")
     if (!org %in% all_org_names) {
         stop(paste(org, "is not a valid Biogrid organism.", "Available organisms are listed on: https://wiki.thebiogrid.org/doku.php/statistics"))
+    }
+
+    if (release == "latest") {
+      result <- httr::GET("https://downloads.thebiogrid.org/BioGRID/Latest-Release/")
+      result <- httr::content(result, "text")
+
+      h2_matches <- regexpr("(?<=<h2>BioGRID Release\\s)(\\d\\.\\d\\.\\d+)", result, perl = TRUE)
+      release <- regmatches(result, h2_matches)
     }
 
     # release directory for download
