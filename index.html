@@ -249,25 +249,39 @@ pathfindR Enrichment Chart
 <h2 id="enriched-term-diagrams">Enriched Term Diagrams<a class="anchor" aria-label="anchor" href="#enriched-term-diagrams"></a>
 </h2>
 <p>For H.sapiens KEGG enrichment analyses, <code><a href="reference/visualize_terms.html">visualize_terms()</a></code> can be used to generate KEGG pathway diagrams as <code>ggraph</code> (inherits from <code>ggplot</code>) objects (using <a href="https://github.com/noriakis/ggkegg" class="external-link"><code>ggkegg</code></a>):</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">input_processed</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/input_processing.html">input_processing</a></span><span class="op">(</span><span class="va">example_pathfindR_input</span><span class="op">)</span></span>
-<span><span class="va">gg_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/visualize_terms.html">visualize_terms</a></span><span class="op">(</span></span>
-<span>  result_df <span class="op">=</span> <span class="va">example_pathfindR_output</span>,</span>
-<span>  input_processed <span class="op">=</span> <span class="va">input_processed</span>,</span>
-<span>  is_KEGG_result <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span>  <span class="co"># this function returns a list of ggraph objects (named by Term ID)</span></span></code></pre></div>
-<figure><img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/example_kegg_pathway_diagram.png?raw=true" title="KEGG Pathway Diagram" alt="KEGG Pathway Diagram"><figcaption aria-hidden="true">
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>input_processed <span class="ot">&lt;-</span> <span class="fu">input_processing</span>(example_pathfindR_input)</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>gg_list <span class="ot">&lt;-</span> <span class="fu">visualize_terms</span>(</span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>  <span class="at">result_df =</span> example_pathfindR_output,</span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>  <span class="at">input_processed =</span> input_processed,</span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>  <span class="at">is_KEGG_result =</span> <span class="cn">TRUE</span></span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a>)  <span class="co"># this function returns a list of ggraph objects (named by Term ID)</span></span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a><span class="co"># save one of the plots as PDF image</span></span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggsave</span>(</span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a>  <span class="st">"hsa04911_diagram.pdf"</span>,   <span class="co"># path to output, format is determined by extension</span></span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a>  gg_list<span class="sc">$</span>hsa04911,         <span class="co"># what to plot</span></span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a>  <span class="at">width =</span> <span class="dv">5</span>                 <span class="co"># adjust width</span></span>
+<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a>  <span class="at">height =</span> <span class="dv">5</span>                <span class="co"># adjust height</span></span>
+<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a>) </span></code></pre></div>
+<figure><img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/example_kegg_pathway_diagram.png?raw=true" alt="KEGG Pathway Diagram"><figcaption aria-hidden="true">
 KEGG Pathway Diagram
 </figcaption></figure><p>Alternatively (i.e., for other types of (non-KEGG) enrichment analyses), an interaction diagram per enriched term can be generated again via <code><a href="reference/visualize_terms.html">visualize_terms()</a></code>. These diagrams are also returned as <code>ggraph</code> objects:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">input_processed</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/input_processing.html">input_processing</a></span><span class="op">(</span><span class="va">example_pathfindR_input</span><span class="op">)</span></span>
-<span><span class="va">gg_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/visualize_terms.html">visualize_terms</a></span><span class="op">(</span></span>
-<span>  result_df <span class="op">=</span> <span class="va">example_pathfindR_output</span>,</span>
-<span>  input_processed <span class="op">=</span> <span class="va">input_processed</span>,</span>
-<span>  is_KEGG_result <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  pin_name_path <span class="op">=</span> <span class="st">"Biogrid"</span></span>
-<span><span class="op">)</span>  <span class="co"># this function returns a list of ggraph objects (named by Term ID)</span></span></code></pre></div>
-<figure><img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/example_interaction_vis.png?raw=true" title="Interaction Diagram" alt="Interaction Diagram"><figcaption aria-hidden="true">
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>input_processed <span class="ot">&lt;-</span> <span class="fu">input_processing</span>(example_pathfindR_input)</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>gg_list <span class="ot">&lt;-</span> <span class="fu">visualize_terms</span>(</span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>  <span class="at">result_df =</span> example_pathfindR_output,</span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>  <span class="at">input_processed =</span> input_processed,</span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a>  <span class="at">is_KEGG_result =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a>  <span class="at">pin_name_path =</span> <span class="st">"Biogrid"</span></span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a>)  <span class="co"># this function returns a list of ggraph objects (named by Term ID)</span></span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a><span class="co"># save one of the plots as PDF image</span></span>
+<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggsave</span>(</span>
+<span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a>  <span class="st">"diabetic_cardiomyopathy_interactions.pdf"</span>,   <span class="co"># path to output, format is determined by extension</span></span>
+<span id="cb11-12"><a href="#cb11-12" tabindex="-1"></a>  gg_list<span class="sc">$</span>hsa04911,                             <span class="co"># what to plot</span></span>
+<span id="cb11-13"><a href="#cb11-13" tabindex="-1"></a>  <span class="at">width =</span> <span class="dv">10</span>                                    <span class="co"># adjust width</span></span>
+<span id="cb11-14"><a href="#cb11-14" tabindex="-1"></a>  <span class="at">height =</span> <span class="dv">6</span>                                    <span class="co"># adjust height</span></span>
+<span id="cb11-15"><a href="#cb11-15" tabindex="-1"></a>) </span></code></pre></div>
+<figure><img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/example_interaction_vis.png?raw=true" alt="Interaction Diagram"><figcaption aria-hidden="true">
 Interaction Diagram
 </figcaption></figure>
 </div>
