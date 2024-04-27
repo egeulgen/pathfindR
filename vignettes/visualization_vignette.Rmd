@@ -55,11 +55,19 @@ For KEGG enrichment analyses, `visualize_terms()` can be used to generate KEGG p
 
 ```{r KEGG_vis, eval=FALSE}
 input_processed <- input_processing(example_pathfindR_input)
-visualize_terms(
+gg_list <- visualize_terms(
   result_df = example_pathfindR_output,
   input_processed = input_processed,
   is_KEGG_result = TRUE
 )  # this function returns a list of ggraph objects (named by Term ID)
+
+# save one of the plots as PDF image
+ggplot2::ggsave(
+  "hsa04911_diagram.pdf",   # path to output, format is determined by extension
+  gg_list$hsa04911,         # what to plot
+  width = 5                 # adjust width
+  height = 5                # adjust height
+) 
 ```
 
 <img src="./example_kegg_pathway_diagram.png" style="max-width:100%;" />
@@ -68,12 +76,20 @@ Alternatively (i.e., for other types of non-KEGG enrichment analyses), an intera
 
 ```{r nonKEGG_viss, eval=FALSE}
 input_processed <- input_processing(example_pathfindR_input)
-visualize_terms(
+gg_list <- visualize_terms(
   result_df = example_pathfindR_output,
   input_processed = input_processed,
   is_KEGG_result = FALSE,
   pin_name_path = "Biogrid"
 )  # this function returns a list of ggraph objects (named by Term ID)
+
+# save one of the plots as PDF image
+ggplot2::ggsave(
+  "diabetic_cardiomyopathy_interactions.pdf",   # path to output, format is determined by extension
+  gg_list$hsa04911,                             # what to plot
+  width = 10                                    # adjust width
+  height = 6                                    # adjust height
+) 
 ```
 
 <img src="./example_interaction_vis.png" style="max-width:100%;" />

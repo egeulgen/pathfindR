@@ -172,9 +172,17 @@ gg_list <- visualize_terms(
   input_processed = input_processed,
   is_KEGG_result = TRUE
 )  # this function returns a list of ggraph objects (named by Term ID)
+
+# save one of the plots as PDF image
+ggplot2::ggsave(
+  "hsa04911_diagram.pdf",   # path to output, format is determined by extension
+  gg_list$hsa04911,         # what to plot
+  width = 5                 # adjust width
+  height = 5                # adjust height
+) 
 ```
 
-![KEGG Pathway Diagram](https://github.com/egeulgen/pathfindR/blob/master/vignettes/example_kegg_pathway_diagram.png?raw=true "KEGG Pathway Diagram")
+![KEGG Pathway Diagram](https://github.com/egeulgen/pathfindR/blob/master/vignettes/example_kegg_pathway_diagram.png?raw=true)
 
 Alternatively (i.e., for other types of (non-KEGG) enrichment analyses), an interaction diagram per enriched term can be generated again via `visualize_terms()`. These diagrams are also returned as `ggraph` objects:
 
@@ -186,9 +194,17 @@ gg_list <- visualize_terms(
   is_KEGG_result = FALSE,
   pin_name_path = "Biogrid"
 )  # this function returns a list of ggraph objects (named by Term ID)
+
+# save one of the plots as PDF image
+ggplot2::ggsave(
+  "diabetic_cardiomyopathy_interactions.pdf",   # path to output, format is determined by extension
+  gg_list$hsa04911,                             # what to plot
+  width = 10                                    # adjust width
+  height = 6                                    # adjust height
+) 
 ```
 
-![Interaction Diagram](https://github.com/egeulgen/pathfindR/blob/master/vignettes/example_interaction_vis.png?raw=true "Interaction Diagram")
+![Interaction Diagram](https://github.com/egeulgen/pathfindR/blob/master/vignettes/example_interaction_vis.png?raw=true)
 
 ## Term-Gene Heatmap
 
