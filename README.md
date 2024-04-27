@@ -230,12 +230,20 @@ gg_list <- visualize_terms(
   input_processed = input_processed,
   is_KEGG_result = TRUE
 )  # this function returns a list of ggraph objects (named by Term ID)
+
+# save one of the plots as PDF image
+ggplot2::ggsave(
+  "hsa04911_diagram.pdf",   # path to output, format is determined by extension
+  gg_list$hsa04911,         # what to plot
+  width = 5                 # adjust width
+  height = 5                # adjust height
+) 
 ```
 
 <figure>
 <img
 src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/example_kegg_pathway_diagram.png?raw=true"
-title="KEGG Pathway Diagram" alt="KEGG Pathway Diagram" />
+alt="KEGG Pathway Diagram" />
 <figcaption aria-hidden="true">KEGG Pathway Diagram</figcaption>
 </figure>
 
@@ -252,12 +260,20 @@ gg_list <- visualize_terms(
   is_KEGG_result = FALSE,
   pin_name_path = "Biogrid"
 )  # this function returns a list of ggraph objects (named by Term ID)
+
+# save one of the plots as PDF image
+ggplot2::ggsave(
+  "diabetic_cardiomyopathy_interactions.pdf",   # path to output, format is determined by extension
+  gg_list$hsa04911,                             # what to plot
+  width = 10                                    # adjust width
+  height = 6                                    # adjust height
+) 
 ```
 
 <figure>
 <img
 src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/example_interaction_vis.png?raw=true"
-title="Interaction Diagram" alt="Interaction Diagram" />
+alt="Interaction Diagram" />
 <figcaption aria-hidden="true">Interaction Diagram</figcaption>
 </figure>
 
