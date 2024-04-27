@@ -8,6 +8,10 @@
 - updated the `get_kegg_gsets()` function to also use `ggkegg` for fetching genes per pathway data
 - removed unneeded dependencies: `magick`, `KEGGgraph` and `KEGGREST`
 
+## Minor Changes and Bug Fixes
+
+- updated the `get_biogrid_pin()` function so that it can now determine the latest version and download/process it from BioGRID (via setting `release = "latest"`, which is now the default behavior) 
+
 # pathfindR 2.3.1
 
 ## Minor Changes and Bug Fixes
