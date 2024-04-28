@@ -124,11 +124,42 @@ test_that("`get_kegg_gsets()` -- works as expected", {
 })
 
 test_that("`get_reactome_gsets()` -- works as expected", {
-    skip_on_cran()
-    expect_is(reactome <- get_reactome_gsets(), "list")
-    expect_length(reactome, 2)
-    expect_true(all(names(reactome) == c("gene_sets", "descriptions")))
-    expect_true(all(names(reactome[["gene_sets"]] %in% names(reactome[["descriptions"]]))))
+  skip_on_cran()
+
+  pw1 <- "Pathway1"
+  pw2 <- "Pathway2"
+  desc1 <- "Description1"
+  desc2 <- "Description2"
+  genes1 <- c("GeneA", "GeneB")
+  genes2 <- c("GeneC", "GeneD", "GeneE")
+
+  gmt_content <- paste(
+    c(
+      paste(c(desc1, pw1, genes1), collapse = "\t"),
+      paste(c(desc2, pw2, genes2), collapse = "\t")
+    ),
+    collapse = "\n"
+  )
+
+  mockery::stub(get_reactome_gsets, "utils::download.file", NULL)
+
+  unz_mock <- function(zipfile, filename, ...) {
+    textConnection(gmt_content)
+  }
+  mockery::stub(get_reactome_gsets, "unz", unz_mock)
+
+  expected_gsets <- list(genes1, genes2)
+  names(expected_gsets) <- c(pw1, pw2)
+  expect_descriptions <- c(desc1, desc2)
+  names(expect_descriptions) <- c(pw1, pw2)
+
+  expect_is(reactome <- get_reactome_gsets(), "list")
+  expect_length(reactome, 2)
+  expect_length(reactome$gene_sets, 2)
+  expect_length(reactome$descriptions, 2)
+  expect_equal(names(reactome$gene_sets), names(reactome$descriptions))
+  expect_equal(reactome$gene_sets, expected_gsets)
+  expect_equal(reactome$descriptions, expect_descriptions)
 })
 
 test_that("`get_mgsigdb_gsets()` -- works as expected", {
