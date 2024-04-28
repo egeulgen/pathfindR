@@ -82,8 +82,8 @@
 <div class="section level3">
 <h3 id="major-changes-2-4-0">Major Changes<a class="anchor" aria-label="anchor" href="#major-changes-2-4-0"></a></h3>
 <ul><li>implemented a new <code><a href="../reference/color_kegg_pathway.html">color_kegg_pathway()</a></code> function using <code>ggkegg</code> to create colored KEGG pathway ggplot objects (instead of using <code>KEGGREST</code> to obtain the colored PNG files, which no longer works <a href="https://github.com/egeulgen/pathfindR/issues/169" class="external-link">#169</a>)</li>
-<li>renamed the <code>visualize_hsa_KEGG</code> to <code><a href="../reference/visualize_KEGG_diagram.html">visualize_KEGG_diagram()</a></code> to reflect this is now able to handle KEGG pathway enrichment results from any organism</li>
-<li>updated the <code><a href="../reference/visualize_term_interactions.html">visualize_term_interactions()</a></code> and <code><a href="../reference/visualize_KEGG_diagram.html">visualize_KEGG_diagram()</a></code> functions so that they now return a list of ggplot objects (named by term ID)</li>
+<li>renamed the <code>visualize_hsa_KEGG</code> function to <code><a href="../reference/visualize_KEGG_diagram.html">visualize_KEGG_diagram()</a></code> to reflect this is now able to handle KEGG pathway enrichment results from any organism</li>
+<li>updated the <code><a href="../reference/visualize_terms.html">visualize_terms()</a></code>, <code><a href="../reference/visualize_term_interactions.html">visualize_term_interactions()</a></code> and <code><a href="../reference/visualize_KEGG_diagram.html">visualize_KEGG_diagram()</a></code> functions so that they now return a list of ggplot objects (named by term ID)</li>
 <li>updated the <code><a href="../reference/get_kegg_gsets.html">get_kegg_gsets()</a></code> function to also use <code>ggkegg</code> for fetching genes per pathway data</li>
 <li>removed unneeded dependencies: <code>magick</code>, <code>KEGGgraph</code> and <code>KEGGREST</code>
 </li>
