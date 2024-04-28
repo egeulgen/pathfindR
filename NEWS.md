@@ -1,4 +1,4 @@
-# pathfindR (development version)
+# pathfindR 2.4.0
 
 ## Major Changes
 
