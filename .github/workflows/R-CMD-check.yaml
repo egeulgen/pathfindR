@@ -46,6 +46,7 @@ jobs:
         run: |
           install.packages(c("remotes", "rcmdcheck"))
           remotes::install_deps(dependencies = TRUE)
+          remotes::install_bioc("BiocGenerics")
         shell: Rscript {0}
 
       - uses: r-lib/actions/setup-r-dependencies@v2
