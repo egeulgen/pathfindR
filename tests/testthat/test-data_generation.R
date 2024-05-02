@@ -92,17 +92,11 @@ test_that("`gset_list_from_gmt()` -- works as expected", {
 
 test_that("`get_kegg_gsets()` -- works as expected", {
   skip_on_cran()
-  mock_responses <- c(
-    httr::content(httr::GET(paste0("https://rest.kegg.jp/list/eco")), "text"),
-    "eco00010\tdescription\neco00071\tdescription2"
-  )
-
-  call_count <- 0
+  mock_response <- "eco00010\tdescription\neco00071\tdescription2"
 
   # function to manage sequential responses
   mock_content <- function(...) {
-    call_count <<- call_count + 1
-    return(mock_responses[call_count])
+    return(mock_response)
   }
 
 

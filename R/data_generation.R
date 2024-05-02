@@ -175,25 +175,12 @@ gset_list_from_gmt <- function(path2gmt, descriptions_idx = 2) {
 #' of all available organisms, see \url{https://www.genome.jp/kegg/catalog/org_list.html}
 #'
 #' @return list containing 2 elements: \itemize{
-#' \item{gene_sets - A list containing the genes involved in each KEGG pathway}
+#' \item{gene_sets - A list containing KEGG IDs for the genes involved in each KEGG pathway}
 #' \item{descriptions - A named vector containing the descriptions for each KEGG pathway}
 #' }
 get_kegg_gsets <- function(org_code = "hsa") {
 
   message("Grab a cup of coffee, this will take a while...")
-
-  gene_table_url <- paste0("https://rest.kegg.jp/list/", org_code)
-  gene_table_result <- httr::GET(gene_table_url)
-  gene_table_result <- httr::content(gene_table_result, "text")
-
-  parsed_gene_table_result <- strsplit(gene_table_result, "\n")[[1]]
-  kegg_gene_table <- data.frame(
-    kegg_id = unname(vapply(parsed_gene_table_result, function(x) unlist(strsplit(x, "\t"))[1], "org:123")),
-    symbol = unname(vapply(parsed_gene_table_result, function(x) unlist(strsplit(unlist(strsplit(x, "\t"))[4], ";"))[1], "symbol"))
-  )
-  # remove mistaken lines
-  kegg_gene_table <- kegg_gene_table[grep("^((,\\s)?[A-Za-z0-9_-]+(\\@)?)+$", kegg_gene_table$symbol), ]
-
 
   all_pathways_url <- paste0("https://rest.kegg.jp/list/pathway/", org_code)
   all_pathways_result <- httr::GET(all_pathways_url)
@@ -205,16 +192,10 @@ get_kegg_gsets <- function(org_code = "hsa") {
 
   genes_by_pathway <- lapply(pathway_ids, function(pw_id) {
     pathways_graph <- ggkegg::pathway(pid = pw_id, directory = tempdir(), use_cache = FALSE, return_tbl_graph = FALSE)
-    all_pw_gene_ids <- igraph::V(pathways_graph)$name[igraph::V(pathways_graph)$type == "gene"]
-    all_pw_gene_ids <- unlist(strsplit(all_pw_gene_ids, " "))
-    all_pw_gene_ids <- unique(all_pw_gene_ids)
-
-    all_pw_gene_symbols <- kegg_gene_table$symbol[match(all_pw_gene_ids, kegg_gene_table$kegg_id)]
-    all_pw_gene_symbols <- all_pw_gene_symbols[!is.na(all_pw_gene_symbols)]
-    all_pw_gene_symbols <- unname(vapply(all_pw_gene_symbols, function(x) unlist(strsplit(x, ", "))[1], "symbol"))
-    all_pw_gene_symbols <- unique(all_pw_gene_symbols)
-
-    return(all_pw_gene_symbols)
+    all_pw_kegg_ids <- igraph::V(pathways_graph)$name[igraph::V(pathways_graph)$type == "gene"]
+    all_pw_kegg_ids <- unlist(strsplit(all_pw_kegg_ids, " "))
+    all_pw_kegg_ids <- unique(all_pw_kegg_ids)
+    return(all_pw_kegg_ids)
   })
 
   names(genes_by_pathway) <- pathway_ids
