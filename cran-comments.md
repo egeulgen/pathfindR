@@ -8,7 +8,8 @@
 ## R CMD check results
   There were no ERRORs, WARNINGs or NOTEs.
   
-  This is a minor version update for 'pathfindR' adding new functionality.
+  This is a patch version update for 'pathfindR' fixing an issue in getting 
+  KEGG pathway gene sets.
   
 ## Downstream dependencies
   There are currently no downstream dependencies for this package.
