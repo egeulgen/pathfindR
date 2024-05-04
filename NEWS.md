@@ -1,6 +1,6 @@
 # pathfindR 2.4.1
 
-# Minor Changes and Bug Fixes
+## Minor Changes and Bug Fixes
 
 - fixed a bug regarding KEGG gene set fetching: removed the conversion functionality in `get_kegg_gsets()` which now returns KEGG IDs so that the user can convert the returned identifiers using a more appropriate tool (e.g. BioMart) should they wish
 
