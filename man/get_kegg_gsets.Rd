@@ -12,7 +12,7 @@ of all available organisms, see \url{https://www.genome.jp/kegg/catalog/org_list
 }
 \value{
 list containing 2 elements: \itemize{
-\item{gene_sets - A list containing NCBI gene IDs for the genes involved in each KEGG pathway}
+\item{gene_sets - A list containing KEGG IDs for the genes involved in each KEGG pathway}
 \item{descriptions - A named vector containing the descriptions for each KEGG pathway}
 }
 }
