@@ -373,7 +373,7 @@ color_kegg_pathway <- function(pw_id, change_vec, scale_vals = TRUE, node_cols =
     # create pathway graph object and collect all pathway genes
 
     g <- tryCatch({
-      ggkegg::pathway(pid = pw_id, directory = tempdir(), use_cache = FALSE)
+      ggkegg::pathway(pid = pw_id, directory = tempdir())
     }, error = function(e) {
       message(paste("Cannot parse KEGG pathway for:", pw_id))
       message("Here's the original error message:")
@@ -426,7 +426,7 @@ color_kegg_pathway <- function(pw_id, change_vec, scale_vals = TRUE, node_cols =
 
     p <- ggraph::ggraph(g, layout="manual", x=igraph::V(g)$x, y=igraph::V(g)$y)
     p <- p + ggkegg::geom_node_rect(ggplot2::aes(filter = !is.na(.data$change_value), fill = .data$change_value))
-    p <- p + ggkegg::overlay_raw_map(pw_id, directory = tempdir(), use_cache = FALSE)
+    p <- p + ggkegg::overlay_raw_map(pw_id, directory = tempdir())
     p <- p + ggplot2::scale_fill_gradient2(low = low_col, mid = mid_col, high = high_col)
     p <- p + ggplot2::theme_void()
     p <- p + ggplot2::theme(
