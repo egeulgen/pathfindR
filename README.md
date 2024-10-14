@@ -9,7 +9,7 @@
 [![Codecov test
 coverage](https://codecov.io/gh/egeulgen/pathfindR/branch/master/graph/badge.svg)](https://app.codecov.io/gh/egeulgen/pathfindR)
 [![CRAN
-version](http://www.r-pkg.org/badges/version-ago/pathfindR)](https://cran.r-project.org/package=pathfindR)
+version](https://www.r-pkg.org/badges/version/pathfindR)](https://cran.r-project.org/package=pathfindR)
 [![CRAN total
 downloads](https://cranlogs.r-pkg.org/badges/grand-total/pathfindR)](https://cran.r-project.org/package=pathfindR)
 [![install with

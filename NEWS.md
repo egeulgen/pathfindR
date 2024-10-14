@@ -1,5 +1,10 @@
 # pathfindR (development version)
 
+## Minor Changes and Bug Fixes
+
+- fixed a bug in `visualize_KEGG_diagram()` where `ggkegg` was raising an error (#214)
+
+
 # pathfindR 2.4.1
 
 ## Minor Changes and Bug Fixes
