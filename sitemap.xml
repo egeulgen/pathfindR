@@ -1,225 +1,65 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/404.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/CODE_OF_CONDUCT.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/CONTRIBUTING.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/articles/comparing_results.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/articles/intro_vignette.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/articles/manual_execution.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/articles/non_hs_analysis.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/articles/obtain_data.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/articles/visualization_vignette.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/index.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/news/news-1.1.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/news/news-1.2.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/news/news-1.3.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/news/news-1.4.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/news/news-1.5.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/news/news-1.6.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/news/news-2.0.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/news/news-2.1.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/news/news-2.2.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/news/news-2.3.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/news/news-2.4.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/news/news-dev.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/UpSet_plot.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/active_snw_enrichment_wrapper.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/active_snw_search.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/annotate_term_genes.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/check_java_version.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/cluster_enriched_terms.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/cluster_graph_vis.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/color_kegg_pathway.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/combine_pathfindR_results.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/combined_results_graph.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/configure_output_dir.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/create_HTML_report.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/create_kappa_matrix.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/enrichment.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/enrichment_analyses.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/enrichment_chart.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/fetch_gene_set.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/fetch_java_version.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/filterActiveSnws.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/fuzzy_term_clustering.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/get_biogrid_pin.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/get_gene_sets_list.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/get_kegg_gsets.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/get_mgsigdb_gsets.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/get_pin_file.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/get_reactome_gsets.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/gset_list_from_gmt.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/hierarchical_term_clustering.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/hyperg_test.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/input_processing.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/input_testing.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/isColor.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/pathfindr.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/plot_scores.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/process_pin.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/return_pin_path.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/run_pathfindr.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/score_terms.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/single_iter_wrapper.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/summarize_enrichment_results.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/term_gene_graph.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/term_gene_heatmap.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/visualize_KEGG_diagram.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/visualize_active_subnetworks.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/visualize_term_interactions.html</loc>
-  </url>
-  <url>
-    <loc>https://egeulgen.github.io/pathfindR/reference/visualize_terms.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://egeulgen.github.io/pathfindR/404.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/CODE_OF_CONDUCT.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/CONTRIBUTING.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/LICENSE-text.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/LICENSE.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/articles/comparing_results.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/articles/index.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/articles/intro_vignette.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/articles/manual_execution.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/articles/non_hs_analysis.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/articles/obtain_data.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/articles/visualization_vignette.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/authors.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/index.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/news/index.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/UpSet_plot.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/active_snw_enrichment_wrapper.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/active_snw_search.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/annotate_term_genes.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/check_java_version.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/cluster_enriched_terms.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/cluster_graph_vis.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/color_kegg_pathway.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/combine_pathfindR_results.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/combined_results_graph.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/configure_output_dir.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/create_HTML_report.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/create_kappa_matrix.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/enrichment.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/enrichment_analyses.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/enrichment_chart.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/fetch_gene_set.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/fetch_java_version.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/filterActiveSnws.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/fuzzy_term_clustering.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/get_biogrid_pin.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/get_gene_sets_list.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/get_kegg_gsets.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/get_mgsigdb_gsets.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/get_pin_file.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/get_reactome_gsets.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/gset_list_from_gmt.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/hierarchical_term_clustering.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/hyperg_test.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/index.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/input_processing.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/input_testing.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/isColor.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/pathfindr.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/plot_scores.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/process_pin.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/return_pin_path.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/run_pathfindr.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/score_terms.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/single_iter_wrapper.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/summarize_enrichment_results.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/term_gene_graph.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/term_gene_heatmap.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/visualize_KEGG_diagram.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/visualize_active_subnetworks.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/visualize_term_interactions.html</loc></url>
+<url><loc>https://egeulgen.github.io/pathfindR/reference/visualize_terms.html</loc></url>
 </urlset>
+
