@@ -111,17 +111,18 @@ active_snw_search <- function(input_for_search, pin_name_path = "Biogrid", snws_
     active_search_jar_path <- system.file("java/ActiveSubnetworkSearch.jar", package = "pathfindR")
 
     ## create directory for active subnetworks
-    if (!dir.exists(file.path(tempdir(check = TRUE), "active_snw_search"))) {
-        dir.create(file.path(tempdir(check = TRUE), "active_snw_search"))
+    active_snw_search_dir <- file.path(tempdir(check = TRUE), "active_snw_search")
+    if (!dir.exists(active_snw_search_dir)) {
+        dir.create(active_snw_search_dir)
     }
 
-    if (!file.exists(file.path(tempdir(check = TRUE), "active_snw_search/input_for_search.txt"))) {
+    input_path <- file.path(active_snw_search_dir, "input_for_search.txt")
+    input_path <- normalizePath(input_path)
+    if (!file.exists(input_path)) {
         input_for_search$GENE <- base::toupper(input_for_search$GENE)
-        utils::write.table(input_for_search[, c("GENE", "P_VALUE")], file.path(tempdir(check = TRUE), "active_snw_search/input_for_search.txt"),
+        utils::write.table(input_for_search[, c("GENE", "P_VALUE")], input_path),
             col.names = FALSE, row.names = FALSE, quote = FALSE, sep = "\t")
     }
-
-    input_path <- normalizePath(file.path(tempdir(check = TRUE), "active_snw_search/input_for_search.txt"))
 
     ############ Run active Subnetwork Search running Active Subnetwork Search
     system(paste0("java -Xss4m -jar \"", active_search_jar_path, "\"", " -sif=\"",
@@ -133,7 +134,7 @@ active_snw_search <- function(input_for_search, pin_name_path = "Biogrid", snws_
         " -grSearchDepth=", grSearchDepth, " -grOverlap=", grOverlap, " -grSubNum=",
         grSubNum, silent_option))
 
-    snws_file <- file.path(tempdir(check = TRUE), "active_snw_search", paste0(snws_file, ".txt"))
+    snws_file <- file.path(active_snw_search_dir, paste0(snws_file, ".txt"))
     file.rename(from = "resultActiveSubnetworkSearch.txt", to = snws_file)
 
     ############ Parse and filter active subnetworks
