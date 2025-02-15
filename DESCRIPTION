@@ -45,7 +45,7 @@ Imports:
     ggraph,
     ggupset,
     fpc,
-    ggkegg (>= 1.4.1),
+    ggkegg (>= 1.4.0),
     grDevices,
     httr,
     igraph,
