@@ -51,7 +51,8 @@ Imports:
     igraph,
     R.utils,
     msigdbr,
-    knitr
+    knitr,
+    BiocFileCache
 Depends: R (>= 4.0),
     pathfindR.data (>= 2.0)
 Suggests: 
