@@ -8,7 +8,7 @@ get_mgsigdb_gsets(species = "Homo sapiens", collection, subcollection = NULL)
 }
 \arguments{
 \item{species}{species name, such as Homo sapiens, Mus musculus, etc.
-See \code{\link[msigdbr]{msigdbr_show_species}} for all the species available in
+See \code{\link[msigdbr]{msigdbr_species}} for all the species available in
 the msigdbr package}
 
 \item{collection}{collection. i.e., H, C1, C2, C3, C4, C5, C6, C7.}

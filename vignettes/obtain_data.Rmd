@@ -101,8 +101,8 @@ gsets_list <- get_gene_sets_list(
 ```
 
 ```{r, eval=TRUE}
-## see msigdbr::msigdbr_show_species() for all available organisms
-msigdbr::msigdbr_show_species()
+## see msigdbr::msigdbr_species() for all available organisms
+msigdbr::msigdbr_species()
 ```
 
 You may also obtain the gene sets for a subcollection by setting the `subcollection` argument:
