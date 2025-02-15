@@ -199,21 +199,31 @@ argument:</p>
 <span>  collection <span class="op">=</span> <span class="st">"C5"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## see msigdbr::msigdbr_show_species() for all available organisms</span></span>
-<span><span class="fu">msigdbr</span><span class="fu">::</span><span class="fu"><a href="https://igordot.github.io/msigdbr/reference/msigdbr_show_species.html" class="external-link">msigdbr_show_species</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in msigdbr::msigdbr_show_species(): 'msigdbr::msigdbr_show_species' is deprecated.</span></span>
-<span><span class="co">#&gt; Use 'msigdbr_species' instead.</span></span>
-<span><span class="co">#&gt; See help("Deprecated")</span></span>
-<span><span class="co">#&gt;  [1] "Anolis carolinensis"             "Bos taurus"                     </span></span>
-<span><span class="co">#&gt;  [3] "Caenorhabditis elegans"          "Canis lupus familiaris"         </span></span>
-<span><span class="co">#&gt;  [5] "Danio rerio"                     "Drosophila melanogaster"        </span></span>
-<span><span class="co">#&gt;  [7] "Equus caballus"                  "Felis catus"                    </span></span>
-<span><span class="co">#&gt;  [9] "Gallus gallus"                   "Homo sapiens"                   </span></span>
-<span><span class="co">#&gt; [11] "Macaca mulatta"                  "Monodelphis domestica"          </span></span>
-<span><span class="co">#&gt; [13] "Mus musculus"                    "Ornithorhynchus anatinus"       </span></span>
-<span><span class="co">#&gt; [15] "Pan troglodytes"                 "Rattus norvegicus"              </span></span>
-<span><span class="co">#&gt; [17] "Saccharomyces cerevisiae"        "Schizosaccharomyces pombe 972h-"</span></span>
-<span><span class="co">#&gt; [19] "Sus scrofa"                      "Xenopus tropicalis"</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## see msigdbr::msigdbr_species() for all available organisms</span></span>
+<span><span class="fu">msigdbr</span><span class="fu">::</span><span class="fu"><a href="https://igordot.github.io/msigdbr/reference/msigdbr_species.html" class="external-link">msigdbr_species</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 20 × 2</span></span></span>
+<span><span class="co">#&gt;    species_name                    species_common_name                          </span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Anolis carolinensis             Carolina anole, green anole                  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Bos taurus                      bovine, cattle, cow, dairy cow, domestic cat…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Caenorhabditis elegans          <span style="color: #BB0000;">NA</span>                                           </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Canis lupus familiaris          dog, dogs                                    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Danio rerio                     leopard danio, zebra danio, zebra fish, zebr…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> Drosophila melanogaster         fruit fly                                    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> Equus caballus                  domestic horse, equine, horse                </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Felis catus                     cat, cats, domestic cat                      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Gallus gallus                   bantam, chicken, chickens, Gallus domesticus </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Homo sapiens                    human                                        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> Macaca mulatta                  rhesus macaque, rhesus macaques, Rhesus monk…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> Monodelphis domestica           gray short-tailed opossum                    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> Mus musculus                    house mouse, mouse                           </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span> Ornithorhynchus anatinus        duck-billed platypus, duckbill platypus, pla…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span> Pan troglodytes                 chimpanzee                                   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">16</span> Rattus norvegicus               brown rat, Norway rat, rat, rats             </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span> Saccharomyces cerevisiae        baker's yeast, brewer's yeast, S. cerevisiae </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span> Schizosaccharomyces pombe 972h- <span style="color: #BB0000;">NA</span>                                           </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">19</span> Sus scrofa                      pig, pigs, swine, wild boar                  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span> Xenopus tropicalis              tropical clawed frog, western clawed frog</span></span></code></pre></div>
 <p>You may also obtain the gene sets for a subcollection by setting the
 <code>subcollection</code> argument:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
