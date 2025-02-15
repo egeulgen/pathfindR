@@ -287,7 +287,7 @@ input_testing <- function(input, p_val_threshold = 0.05) {
 #'   pin_name_path = 'KEGG'
 #' )
 #' processed_df <- input_processing(
-#'   input = example_pathfindR_input[1:10, ],
+#'   input = example_pathfindR_input[1:5, ],
 #'   pin_name_path = 'KEGG',
 #'   convert2alias = FALSE
 #' )
