@@ -371,7 +371,7 @@ color_kegg_pathway <- function(pw_id, change_vec, scale_vals = TRUE, node_cols =
 
     ############ Assign the input change values to any corresponding pathway gene nodes
     # create pathway graph object and collect all pathway genes
-    ggkegg_temp_dir <- tempdir()
+    ggkegg_temp_dir <- tempdir(check = TRUE)
 
     g <- tryCatch({
       ggkegg::pathway(pid = pw_id, directory = ggkegg_temp_dir)
