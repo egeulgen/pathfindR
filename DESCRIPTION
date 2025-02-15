@@ -52,7 +52,7 @@ Imports:
     R.utils,
     msigdbr,
     knitr
-Depends: R (>= 4.0),
+Depends: R (>= 4.3.0),
     pathfindR.data (>= 2.0)
 Suggests: 
     testthat (>= 2.3.2),
