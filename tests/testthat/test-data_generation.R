@@ -94,15 +94,13 @@ test_that("`get_kegg_gsets()` -- works as expected", {
   skip_on_cran()
   mock_response <- "eco00010\tdescription\neco00071\tdescription2"
 
-  # function to manage sequential responses
-  mock_content <- function(...) {
-    return(mock_response)
-  }
-
-
-  with_mock(`httr::content` = mock_content, {
-    expect_is(toy_eco_kegg <- pathfindR:::get_kegg_gsets(), "list")
-  })
+  # mocked binding to manage sequential responses
+  with_mocked_bindings(
+    {
+      expect_is(toy_eco_kegg <- pathfindR:::get_kegg_gsets(), "list")
+    },
+    content = function(...) mock_response, .package = "httr"
+  )
 
   expect_length(toy_eco_kegg, 2)
   expect_true(all(names(toy_eco_kegg) == c("gene_sets", "descriptions")))
