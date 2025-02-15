@@ -4,23 +4,23 @@
     "Repositories": [
       {
         "Name": "BioCsoft",
-        "URL": "https://bioconductor.org/packages/3.19/bioc"
+        "URL": "https://bioconductor.org/packages/3.20/bioc"
       },
       {
         "Name": "BioCann",
-        "URL": "https://bioconductor.org/packages/3.19/data/annotation"
+        "URL": "https://bioconductor.org/packages/3.20/data/annotation"
       },
       {
         "Name": "BioCexp",
-        "URL": "https://bioconductor.org/packages/3.19/data/experiment"
+        "URL": "https://bioconductor.org/packages/3.20/data/experiment"
       },
       {
         "Name": "BioCworkflows",
-        "URL": "https://bioconductor.org/packages/3.19/workflows"
+        "URL": "https://bioconductor.org/packages/3.20/workflows"
       },
       {
         "Name": "BioCbooks",
-        "URL": "https://bioconductor.org/packages/3.19/books"
+        "URL": "https://bioconductor.org/packages/3.20/books"
       },
       {
         "Name": "CRAN",
@@ -187,32 +187,6 @@
         "R"
       ],
       "Hash": "c3c792a7b7f2677be56e8632c5b7543d"
-    },
-    "GetoptLong": {
-      "Package": "GetoptLong",
-      "Version": "1.0.5",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "GlobalOptions",
-        "R",
-        "crayon",
-        "methods",
-        "rjson"
-      ],
-      "Hash": "61fac01c73abf03ac72e88dc3952c1e3"
-    },
-    "GlobalOptions": {
-      "Package": "GlobalOptions",
-      "Version": "0.1.2",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "R",
-        "methods",
-        "utils"
-      ],
-      "Hash": "c3f7b221e60c28f5f3533d74c6fef024"
     },
     "IRanges": {
       "Package": "IRanges",
@@ -913,13 +887,11 @@
     },
     "ggkegg": {
       "Package": "ggkegg",
-      "Version": "1.2.3",
+      "Version": "1.4.1",
       "Source": "Bioconductor",
-      "Repository": "Bioconductor 3.19",
+      "Repository": "Bioconductor 3.20",
       "Requirements": [
-        "AnnotationDbi",
         "BiocFileCache",
-        "GetoptLong",
         "R",
         "XML",
         "data.table",
@@ -931,7 +903,6 @@
         "igraph",
         "magick",
         "methods",
-        "org.Hs.eg.db",
         "patchwork",
         "shadowtext",
         "stats",
@@ -940,7 +911,7 @@
         "tidygraph",
         "utils"
       ],
-      "Hash": "2a22b530a009c9533ecef6e85038068c"
+      "Hash": "db4d84b130a2b35a884318c9c06d78f0"
     },
     "ggplot2": {
       "Package": "ggplot2",
@@ -1546,16 +1517,6 @@
         "utils"
       ],
       "Hash": "397b7b2a265bc5a7a06852524dabae20"
-    },
-    "rjson": {
-      "Package": "rjson",
-      "Version": "0.2.21",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "R"
-      ],
-      "Hash": "f9da75e6444e95a1baf8ca24909d63b9"
     },
     "rlang": {
       "Package": "rlang",

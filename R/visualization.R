@@ -371,8 +371,11 @@ color_kegg_pathway <- function(pw_id, change_vec, scale_vals = TRUE, node_cols =
 
     ############ Assign the input change values to any corresponding pathway gene nodes
     # create pathway graph object and collect all pathway genes
+    ggkegg_temp_dir <- file.path(tempdir(check = TRUE), "ggkegg")
+    dir.create(ggkegg_temp_dir, showWarnings = FALSE)
+
     g <- tryCatch({
-      ggkegg::pathway(pid = pw_id, use_cache = TRUE)
+      ggkegg::pathway(pid = pw_id, directory = ggkegg_temp_dir)
     }, error = function(e) {
       message(paste("Cannot parse KEGG pathway for:", pw_id))
       message("Here's the original error message:")
