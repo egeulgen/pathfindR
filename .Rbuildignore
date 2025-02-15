@@ -1,3 +1,5 @@
+^renv$
+^renv\.lock$
 ^slides$
 ^CODE_OF_CONDUCT\.md$
 ^CONTRIBUTING.md$
