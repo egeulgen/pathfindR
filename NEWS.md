@@ -1,3 +1,5 @@
+# pathfindR (development version)
+
 # pathfindR 2.4.2
 
 ## Minor Changes and Bug Fixes
