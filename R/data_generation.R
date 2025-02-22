@@ -252,6 +252,8 @@ get_reactome_gsets <- function() {
 #' \item{gene_sets - A list containing the genes involved in each of the selected MSigDB gene sets}
 #' \item{descriptions - A named vector containing the descriptions for each selected MSigDB gene set}
 #' }
+#' 
+#' @importFrom msigdbdf msigdbdf
 #'
 #' @details this function utilizes the function \code{\link[msigdbr]{msigdbr}}
 #' from the \code{msigdbr} package to retrieve the 'Molecular Signatures Database'
