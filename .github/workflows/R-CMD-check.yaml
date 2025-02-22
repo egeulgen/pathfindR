@@ -45,7 +45,7 @@ jobs:
         run: |
           Rscript -e "install.packages('renv', repos='https://cloud.r-project.org/')"
           Rscript -e "renv::restore()"
-          Rscript -e "if (!requireNamespace('rcmdcheck', quietly = TRUE)) install.packages('rcmdcheck', repos='https://cloud.r-project.org/')"
+          Rscript -e "missing <- setdiff(c('rcmdcheck', 'testthat', 'mockery', 'covr'), installed.packages()[, 'Package']); if (length(missing)) install.packages(missing, repos='https://cloud.r-project.org/')"
 
       # - uses: r-lib/actions/setup-r-dependencies@v2
       #   with:
