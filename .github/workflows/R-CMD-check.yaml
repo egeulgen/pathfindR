@@ -45,11 +45,12 @@ jobs:
         run: |
           Rscript -e "install.packages('renv', repos='https://cloud.r-project.org/')"
           Rscript -e "renv::restore()"
+          Rscript -e "if (!requireNamespace('rcmdcheck', quietly = TRUE)) install.packages('rcmdcheck', repos='https://cloud.r-project.org/')"
 
-      - uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          extra-packages: any::rcmdcheck
-          needs: check
+      # - uses: r-lib/actions/setup-r-dependencies@v2
+      #   with:
+      #     extra-packages: any::rcmdcheck
+      #     needs: check
 
       - uses: r-lib/actions/check-r-package@v2
         with:
