@@ -8,6 +8,7 @@ get_gene_sets_list(
   source = "KEGG",
   org_code = "hsa",
   species = "Homo sapiens",
+  db_species = "HS",
   collection,
   subcollection = NULL
 )
@@ -18,14 +19,21 @@ get_gene_sets_list(
 \item{org_code}{(Used for 'KEGG' only) KEGG organism code for the selected organism. For a full list
 of all available organisms, see \url{https://www.genome.jp/kegg/catalog/org_list.html}}
 
-\item{species}{(Used for 'MSigDB' only) species name, such as Homo sapiens, Mus musculus, etc.
+\item{species}{species name for output genes, such as Homo sapiens, Mus musculus, etc.
 See \code{\link[msigdbr]{msigdbr_species}} for all the species available in
-the msigdbr package (default = 'Homo sapiens')}
+the msigdbr package.}
 
-\item{collection}{(Used for 'MSigDB' only) collection. i.e., H, C1, C2, C3, C4, C5, C6, C7.}
+\item{db_species}{Species abbreviation for the human or mouse databases ("HS" or "MM").}
 
-\item{subcollection}{(Used for 'MSigDB' only)  sub-collection, such as CGP, MIR, BP, etc. (default = NULL,
-i.e. list all gene sets in collection)}
+\item{collection}{collection. e.g., H, C1. (default = NULL,
+i.e. list all gene sets in collection). 
+See \code{\link[msigdbr]{msigdbr_collections}} for all available options
+the msigdbr package.}
+
+\item{subcollection}{sub-collection, such as CGP, BP, etc. (default = NULL,
+i.e. list all gene sets in collection). 
+See \code{\link[msigdbr]{msigdbr_collections}} for all available options
+the msigdbr package.}
 }
 \value{
 A list containing 2 elements: \itemize{

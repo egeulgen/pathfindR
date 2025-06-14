@@ -1,7 +1,7 @@
 Package: pathfindR
 Type: Package
 Title: Enrichment Analysis Utilizing Active Subnetworks
-Version: 2.4.2.9000
+Version: 2.4.2.9001
 Authors@R: c(person("Ege", "Ulgen",
                     role = c("cre", "cph"), 
                     email = "egeulgen@gmail.com",
@@ -50,7 +50,7 @@ Imports:
     httr,
     igraph,
     R.utils,
-    msigdbr,
+    msigdbr (>= 24.1.0),
     knitr
 Depends: R (>= 4.3.0),
     pathfindR.data (>= 2.0)
@@ -58,5 +58,5 @@ Suggests:
     testthat (>= 2.3.2),
     covr,
     mockery
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 VignetteBuilder: knitr

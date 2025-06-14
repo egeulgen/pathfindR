@@ -235,12 +235,18 @@ get_reactome_gsets <- function() {
 
 #' Retrieve Organism-specific MSigDB Gene Sets
 #'
-#' @param species species name, such as Homo sapiens, Mus musculus, etc.
+#' @param species species name for output genes, such as Homo sapiens, Mus musculus, etc.
 #' See \code{\link[msigdbr]{msigdbr_species}} for all the species available in
-#' the msigdbr package
-#' @param collection collection. i.e., H, C1, C2, C3, C4, C5, C6, C7.
+#' the msigdbr package.
+#' @param db_species Species abbreviation for the human or mouse databases ("HS" or "MM").
+#' @param collection collection. e.g., H, C1. (default = NULL,
+#' i.e. list all gene sets in collection). 
+#' See \code{\link[msigdbr]{msigdbr_collections}} for all available options
+#' the msigdbr package.
 #' @param subcollection sub-collection, such as CGP, BP, etc. (default = NULL,
-#' i.e. list all gene sets in collection)
+#' i.e. list all gene sets in collection). 
+#' See \code{\link[msigdbr]{msigdbr_collections}} for all available options
+#' the msigdbr package.
 #'
 #' @return Retrieves the MSigDB gene sets and returns a list containing 2 elements: \itemize{
 #' \item{gene_sets - A list containing the genes involved in each of the selected MSigDB gene sets}
@@ -254,22 +260,20 @@ get_reactome_gsets <- function() {
 #' Available collections are: H: hallmark gene sets, C1: positional gene sets,
 #' C2: curated gene sets, C3: motif gene sets, C4: computational gene sets,
 #' C5: GO gene sets, C6: oncogenic signatures and C7: immunologic signatures
-get_mgsigdb_gsets <- function(species = "Homo sapiens", collection, subcollection = NULL) {
-    # arg check
-    all_collections <- c("H", "C1", "C2", "C3", "C4", "C5", "C6", "C7")
-    if (!collection %in% all_collections) {
-        stop("`collection` should be one of ", paste(dQuote(all_collections), collapse = ", "))
-    }
-
-    # retrieve msigdbr df
-    msig_df <- msigdbr::msigdbr(species = species, category = collection, subcategory = subcollection)
+get_mgsigdb_gsets <- function(species = "Homo sapiens", db_species = "HS", collection = NULL, subcollection = NULL) {
+    msig_df <- msigdbr::msigdbr(
+      species = species, 
+      collection = collection, 
+      subcollection = subcollection, 
+      db_species = db_species
+    )
 
     ### create gene sets list
     all_gs_ids <- unique(msig_df$gs_id)
     msig_gsets_list <- list()
     for (id in all_gs_ids) {
         sub_df <- msig_df[msig_df$gs_id == id, ]
-        msig_gsets_list[[id]] <- sub_df$gene_symbol
+        msig_gsets_list[[id]] <- unique(sub_df$gene_symbol)
     }
     ### create gene sets descriptions
     msig_gsets_descriptions <- msig_df[, c("gs_name", "gs_id")]
@@ -287,12 +291,7 @@ get_mgsigdb_gsets <- function(species = "Homo sapiens", collection, subcollectio
 #' @param source As of this version, either 'KEGG', 'Reactome' or 'MSigDB' (default = 'KEGG')
 #' @param org_code (Used for 'KEGG' only) KEGG organism code for the selected organism. For a full list
 #' of all available organisms, see \url{https://www.genome.jp/kegg/catalog/org_list.html}
-#' @param species (Used for 'MSigDB' only) species name, such as Homo sapiens, Mus musculus, etc.
-#' See \code{\link[msigdbr]{msigdbr_species}} for all the species available in
-#' the msigdbr package (default = 'Homo sapiens')
-#' @param collection (Used for 'MSigDB' only) collection. i.e., H, C1, C2, C3, C4, C5, C6, C7.
-#' @param subcollection (Used for 'MSigDB' only)  sub-collection, such as CGP, MIR, BP, etc. (default = NULL,
-#' i.e. list all gene sets in collection)
+#' @inheritParams get_mgsigdb_gsets
 #'
 #' @return A list containing 2 elements: \itemize{
 #' \item{gene_sets - A list containing the genes involved in each gene set}
@@ -304,8 +303,8 @@ get_mgsigdb_gsets <- function(species = "Homo sapiens", collection, subcollectio
 #' For Reactome, there is only one collection of pathway gene sets.
 #' @export
 #'
-get_gene_sets_list <- function(source = "KEGG", org_code = "hsa", species = "Homo sapiens",
-    collection, subcollection = NULL) {
+get_gene_sets_list <- function(source = "KEGG", org_code = "hsa", species = "Homo sapiens", 
+                               db_species = "HS", collection, subcollection = NULL) {
     if (source == "KEGG") {
         return(get_kegg_gsets(org_code))
     } else if (source == "Reactome") {
