@@ -1,4 +1,4 @@
-# pathfindR (development version)
+# pathfindR 2.5.0
 
 ## Major Changes
 - updated dependencies so that `pathfindR` depends on `msigdbr (>= 24.1.0)`
