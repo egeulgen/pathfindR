@@ -4,17 +4,29 @@
 \alias{get_mgsigdb_gsets}
 \title{Retrieve Organism-specific MSigDB Gene Sets}
 \usage{
-get_mgsigdb_gsets(species = "Homo sapiens", collection, subcollection = NULL)
+get_mgsigdb_gsets(
+  species = "Homo sapiens",
+  db_species = "HS",
+  collection = NULL,
+  subcollection = NULL
+)
 }
 \arguments{
-\item{species}{species name, such as Homo sapiens, Mus musculus, etc.
+\item{species}{species name for output genes, such as Homo sapiens, Mus musculus, etc.
 See \code{\link[msigdbr]{msigdbr_species}} for all the species available in
-the msigdbr package}
+the msigdbr package.}
 
-\item{collection}{collection. i.e., H, C1, C2, C3, C4, C5, C6, C7.}
+\item{db_species}{Species abbreviation for the human or mouse databases ("HS" or "MM").}
+
+\item{collection}{collection. e.g., H, C1. (default = NULL,
+i.e. list all gene sets in collection). 
+See \code{\link[msigdbr]{msigdbr_collections}} for all available options
+the msigdbr package.}
 
 \item{subcollection}{sub-collection, such as CGP, BP, etc. (default = NULL,
-i.e. list all gene sets in collection)}
+i.e. list all gene sets in collection). 
+See \code{\link[msigdbr]{msigdbr_collections}} for all available options
+the msigdbr package.}
 }
 \value{
 Retrieves the MSigDB gene sets and returns a list containing 2 elements: \itemize{

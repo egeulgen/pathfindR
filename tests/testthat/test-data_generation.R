@@ -1,4 +1,4 @@
-## Tests for functions related to data generation - Aug 2023
+## Tests for functions related to data generation - June 2025
 
 set.seed(123)
 gene_pool <- paste0("Gene", 1:100)
@@ -169,12 +169,6 @@ test_that("`get_mgsigdb_gsets()` -- works as expected", {
     expect_true(all(names(res_msig_db[["gene_sets"]] %in% names(res_msig_db[["descriptions"]]))))
 })
 
-test_that("`get_mgsigdb_gsets()` -- error works", {
-    all_collections <- c("H", "C1", "C2", "C3", "C4", "C5", "C6", "C7")
-    expect_error(pathfindR:::get_mgsigdb_gsets(collection = "INVALID"), paste0("`collection` should be one of ",
-        paste(dQuote(all_collections), collapse = ", ")))
-})
-
 test_that("`get_gene_sets_list()` works", {
     expect_error(gsets <- get_gene_sets_list("Wiki"), "As of this version, this function is implemented to get data from KEGG, Reactome and MSigDB only")
 
@@ -183,6 +177,6 @@ test_that("`get_gene_sets_list()` works", {
     mockery::stub(get_gene_sets_list, "get_mgsigdb_gsets", NULL)
     expect_silent(kegg <- get_gene_sets_list(org_code = "vcn"))
     expect_message(rctm <- get_gene_sets_list("Reactome"))
-    expect_silent(msig <- get_gene_sets_list("MSigDB", species = "Mus musculus",
+    expect_silent(msig <- get_gene_sets_list("MSigDB", species = "Mus musculus", db_species = "MS",
         collection = "C3", subcollection = "MIR:MIR_Legacy"))
 })
