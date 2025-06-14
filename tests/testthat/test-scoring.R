@@ -88,30 +88,38 @@ test_that("`plot_scores()` -- creates term score heatmap ggplot object with corr
         # default
         g <- plot_scores(score_mat)
         expect_is(g, "ggplot")
-        expect_identical(g$labels$fill, "Score")
-        expect_identical(g$labels$x, "Sample")
-        expect_identical(g$labels$y, "Term")
+        
+        labels <- ggplot2::get_labs(g)
+        expect_identical(labels$fill, "Score")
+        expect_identical(labels$x, "Sample")
+        expect_identical(labels$y, "Term")
 
         # cases provided
         g <- plot_scores(score_mat, cases = colnames(score_mat)[1:3])
         expect_is(g, "ggplot")
-        expect_identical(g$labels$fill, "Score")
-        expect_identical(g$labels$x, "Sample")
-        expect_identical(g$labels$y, "Term")
+        
+        labels <- ggplot2::get_labs(g)
+        expect_identical(labels$fill, "Score")
+        expect_identical(labels$x, "Sample")
+        expect_identical(labels$y, "Term")
 
         # default - label_samples = FALSE
         g <- plot_scores(score_mat, label_samples = FALSE)
         expect_is(g, "ggplot")
-        expect_identical(g$labels$fill, "Score")
-        expect_identical(g$labels$x, "Sample")
-        expect_identical(g$labels$y, "Term")
+        
+        labels <- ggplot2::get_labs(g)
+        expect_identical(labels$fill, "Score")
+        expect_identical(labels$x, "Sample")
+        expect_identical(labels$y, "Term")
 
         # cases provided - label_samples = FALSE
         g <- plot_scores(score_mat, cases = colnames(score_mat)[1:3], label_samples = FALSE)
         expect_is(g, "ggplot")
-        expect_identical(g$labels$fill, "Score")
-        expect_identical(g$labels$x, "Sample")
-        expect_identical(g$labels$y, "Term")
+        
+        labels <- ggplot2::get_labs(g)
+        expect_identical(labels$fill, "Score")
+        expect_identical(labels$x, "Sample")
+        expect_identical(labels$y, "Term")
     })
 
 test_that("`plot_scores()` -- argument checks work", {
