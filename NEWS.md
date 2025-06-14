@@ -1,5 +1,12 @@
 # pathfindR (development version)
 
+## Major Changes
+- updated dependencies so that `pathfindR` depends on `msigdbr (>= 24.1.0)`
+- added the new `db_species` argument to the `get_mgsigdb_gsets()` data generation function
+
+## Minor Changes and Bug Fixes
+- fixed test assertions that will break as part of the latest `ggplot2` update (#223)
+
 # pathfindR 2.4.2
 
 ## Minor Changes and Bug Fixes

@@ -6,8 +6,7 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/egeulgen/pathfindR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/egeulgen/pathfindR/actions/workflows/R-CMD-check.yaml)
-[![Codecov test
-coverage](https://codecov.io/gh/egeulgen/pathfindR/branch/master/graph/badge.svg)](https://app.codecov.io/gh/egeulgen/pathfindR)
+[![codecov](https://codecov.io/gh/egeulgen/pathfindR/graph/badge.svg?token=8m9aPaXzNr)](https://codecov.io/gh/egeulgen/pathfindR)
 [![CRAN
 version](https://www.r-pkg.org/badges/version/pathfindR)](https://cran.r-project.org/package=pathfindR)
 [![CRAN total
