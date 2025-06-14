@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.4.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.4.2.9001</span>
       </span>
     </div>
 
@@ -83,7 +83,12 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_mgsigdb_gsets</span><span class="op">(</span>species <span class="op">=</span> <span class="st">"Homo sapiens"</span>, <span class="va">collection</span>, subcollection <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_mgsigdb_gsets</span><span class="op">(</span></span>
+<span>  species <span class="op">=</span> <span class="st">"Homo sapiens"</span>,</span>
+<span>  db_species <span class="op">=</span> <span class="st">"HS"</span>,</span>
+<span>  collection <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  subcollection <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -91,18 +96,27 @@
 
 
 <dl><dt id="arg-species">species<a class="anchor" aria-label="anchor" href="#arg-species"></a></dt>
-<dd><p>species name, such as Homo sapiens, Mus musculus, etc.
+<dd><p>species name for output genes, such as Homo sapiens, Mus musculus, etc.
 See <code><a href="https://igordot.github.io/msigdbr/reference/msigdbr_species.html" class="external-link">msigdbr_species</a></code> for all the species available in
-the msigdbr package</p></dd>
+the msigdbr package.</p></dd>
+
+
+<dt id="arg-db-species">db_species<a class="anchor" aria-label="anchor" href="#arg-db-species"></a></dt>
+<dd><p>Species abbreviation for the human or mouse databases ("HS" or "MM").</p></dd>
 
 
 <dt id="arg-collection">collection<a class="anchor" aria-label="anchor" href="#arg-collection"></a></dt>
-<dd><p>collection. i.e., H, C1, C2, C3, C4, C5, C6, C7.</p></dd>
+<dd><p>collection. e.g., H, C1. (default = NULL,
+i.e. list all gene sets in collection).
+See <code><a href="https://igordot.github.io/msigdbr/reference/msigdbr_collections.html" class="external-link">msigdbr_collections</a></code> for all available options
+the msigdbr package.</p></dd>
 
 
 <dt id="arg-subcollection">subcollection<a class="anchor" aria-label="anchor" href="#arg-subcollection"></a></dt>
 <dd><p>sub-collection, such as CGP, BP, etc. (default = NULL,
-i.e. list all gene sets in collection)</p></dd>
+i.e. list all gene sets in collection).
+See <code><a href="https://igordot.github.io/msigdbr/reference/msigdbr_collections.html" class="external-link">msigdbr_collections</a></code> for all available options
+the msigdbr package.</p></dd>
 
 </dl></div>
     <div id="value">
