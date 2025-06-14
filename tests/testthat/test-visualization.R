@@ -137,8 +137,8 @@ test_that("`enrichment_chart()` -- produces a ggplot object with correct labels"
         expect_equal(ggplot2::quo_name(g$mapping$y), "Term_Description")
         expect_equal(g$labels$size, "# genes")
         expect_equal(g$labels$colour, expression(-log[10](p)))
-        expect_equal(g$labels$x, "Fold Enrichment")
-        expect_equal(g$labels$y, "Term_Description")
+        expect_equal(ggplot2::get_labs(g)$x, "Fold Enrichment")
+        expect_equal(ggplot2::get_labs(g)$y, "Term_Description")
 
         # plot_by_cluster
         expect_is(g <- enrichment_chart(example_pathfindR_output_clustered, plot_by_cluster = TRUE),
@@ -147,8 +147,8 @@ test_that("`enrichment_chart()` -- produces a ggplot object with correct labels"
         expect_equal(ggplot2::quo_name(g$mapping$y), "Term_Description")
         expect_equal(g$labels$size, "# genes")
         expect_equal(g$labels$colour, expression(-log[10](p)))
-        expect_equal(g$labels$x, "Fold Enrichment")
-        expect_equal(g$labels$y, "Term_Description")
+        expect_equal(ggplot2::get_labs(g)$x, "Fold Enrichment")
+        expect_equal(ggplot2::get_labs(g)$y, "Term_Description")
 
         # chang top_terms
         expect_is(g <- enrichment_chart(example_pathfindR_output, top_terms = NULL),
@@ -157,8 +157,8 @@ test_that("`enrichment_chart()` -- produces a ggplot object with correct labels"
         expect_equal(ggplot2::quo_name(g$mapping$y), "Term_Description")
         expect_equal(g$labels$size, "# genes")
         expect_equal(g$labels$colour, expression(-log[10](p)))
-        expect_equal(g$labels$x, "Fold Enrichment")
-        expect_equal(g$labels$y, "Term_Description")
+        expect_equal(ggplot2::get_labs(g)$x, "Fold Enrichment")
+        expect_equal(ggplot2::get_labs(g)$y, "Term_Description")
 
         expect_is(g <- enrichment_chart(example_pathfindR_output, top_terms = 1000),
             "ggplot")
@@ -166,8 +166,8 @@ test_that("`enrichment_chart()` -- produces a ggplot object with correct labels"
         expect_equal(ggplot2::quo_name(g$mapping$y), "Term_Description")
         expect_equal(g$labels$size, "# genes")
         expect_equal(g$labels$colour, expression(-log[10](p)))
-        expect_equal(g$labels$x, "Fold Enrichment")
-        expect_equal(g$labels$y, "Term_Description")
+        expect_equal(ggplot2::get_labs(g)$x, "Fold Enrichment")
+        expect_equal(ggplot2::get_labs(g)$y, "Term_Description")
 
         # change num_bubbles
         expect_is(g <- enrichment_chart(example_pathfindR_output_clustered, num_bubbles = 30),
@@ -176,8 +176,8 @@ test_that("`enrichment_chart()` -- produces a ggplot object with correct labels"
         expect_equal(ggplot2::quo_name(g$mapping$y), "Term_Description")
         expect_equal(g$labels$size, "# genes")
         expect_equal(g$labels$colour, expression(-log[10](p)))
-        expect_equal(g$labels$x, "Fold Enrichment")
-        expect_equal(g$labels$y, "Term_Description")
+        expect_equal(ggplot2::get_labs(g)$x, "Fold Enrichment")
+        expect_equal(ggplot2::get_labs(g)$y, "Term_Description")
 
         # change even_breaks
         expect_is(g <- enrichment_chart(example_pathfindR_output_clustered, even_breaks = FALSE),
@@ -186,8 +186,8 @@ test_that("`enrichment_chart()` -- produces a ggplot object with correct labels"
         expect_equal(ggplot2::quo_name(g$mapping$y), "Term_Description")
         expect_equal(g$labels$size, "# genes")
         expect_equal(g$labels$colour, expression(-log[10](p)))
-        expect_equal(g$labels$x, "Fold Enrichment")
-        expect_equal(g$labels$y, "Term_Description")
+        expect_equal(ggplot2::get_labs(g)$x, "Fold Enrichment")
+        expect_equal(ggplot2::get_labs(g)$y, "Term_Description")
     })
 
 test_that("`enrichment_chart()` -- argument checks work", {
