@@ -8,8 +8,8 @@
 ## R CMD check results
   There were no ERRORs, WARNINGs or NOTEs.
   
-  This is a minor version update for 'pathfindR' fixing issue with the 'ggplot2'
-  and 'msigdbr' dependencies. Added minimum version for 'msigdbr'.
+  This is a patch version update for 'pathfindR' fixing an issue related to
+  upcoming changes to a dependency ('igraph').
   
 ## Downstream dependencies
   There are currently no downstream dependencies for this package.
