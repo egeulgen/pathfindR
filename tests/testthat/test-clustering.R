@@ -189,7 +189,7 @@ test_that("`cluster_graph_vis()` -- coloring of 'extra' clusters work", {
     ### more than 41 clusters (number of colors available)
     selected_num_terms <- 45
     clu_input_df <- example_pathfindR_output[seq_len(selected_num_terms), ]
-    mock_kappa_mat <- matrix(NA, nrow = selected_num_terms, ncol = selected_num_terms,
+    mock_kappa_mat <- matrix(0, nrow = selected_num_terms, ncol = selected_num_terms,
         dimnames = list(clu_input_df$ID, clu_input_df$ID))
 
     # dummy hierarchical result

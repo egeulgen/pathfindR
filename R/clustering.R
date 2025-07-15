@@ -104,7 +104,7 @@ create_kappa_matrix <- function(enrichment_res, use_description = FALSE, use_act
             kappa_mat[j, i] <- kappa_mat[i, j] <- (observed - chance)/(1 - chance)
         }
     }
-
+    kappa_mat[is.na(kappa_mat)] <- 0
     return(kappa_mat)
 }
 
