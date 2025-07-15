@@ -1,4 +1,4 @@
-# pathfindR (development version)
+# pathfindR 2.5.1
 
 ## Minor Changes and Bug Fixes
 - fixed NA values in kappa matrix generation that will cause error as part of the latest `igraph` update (#227)
