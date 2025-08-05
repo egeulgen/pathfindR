@@ -311,7 +311,12 @@ get_gene_sets_list <- function(source = "KEGG", org_code = "hsa", species = "Hom
         message("For Reactome, there is only one collection of pathway gene sets.")
         return(get_reactome_gsets())
     } else if (source == "MSigDB") {
-        return(get_mgsigdb_gsets(species = species, collection = collection, subcollection = subcollection))
+        return(get_mgsigdb_gsets(
+          species = species, 
+          db_species= db_species, 
+          collection = collection, 
+          subcollection = subcollection)
+        )
     } else {
         stop("As of this version, this function is implemented to get data from KEGG, Reactome and MSigDB only")
     }
