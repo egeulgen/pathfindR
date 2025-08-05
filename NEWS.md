@@ -1,5 +1,8 @@
 # pathfindR (development version)
 
+## Minor Changes and Bug Fixes
+- fixed missing argument issue in `get_gene_sets_list`(#230)
+
 # pathfindR 2.5.1
 
 ## Minor Changes and Bug Fixes
