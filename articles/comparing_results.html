@@ -34,7 +34,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.5.1.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.5.1.9002</span>
       </span>
     </div>
 
@@ -131,7 +131,9 @@ plotting the graph, set <code>plot_common = FALSE</code>.</p>
 create this graph (using only selected terms etc.) later on. By default,
 the function creates the graph using all common terms:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/combined_results_graph.html">combined_results_graph</a></span><span class="op">(</span><span class="va">combined_df</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/combined_results_graph.html">combined_results_graph</a></span><span class="op">(</span><span class="va">combined_df</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: ggrepel: 138 unlabeled data points (too many overlaps). Consider</span></span>
+<span><span class="co">#&gt; increasing max.overlaps</span></span></code></pre></div>
 <p><img src="comparing_results_files/figure-html/compare_graph1-1.png" width="768" style="display: block; margin: auto;"></p>
 <p>By supplying a vector of selected terms to the
 <code>selected_terms</code> arguments, you may plot the term-gene graph

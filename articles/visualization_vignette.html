@@ -34,7 +34,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.5.1.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.5.1.9002</span>
       </span>
     </div>
 
@@ -103,7 +103,7 @@
       <h1 data-toc-skip>Visualization of pathfindR Enrichment
 Results</h1>
             
-            <h4 data-toc-skip class="date">2025-08-05</h4>
+            <h4 data-toc-skip class="date">2025-09-18</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/master/vignettes/visualization_vignette.Rmd" class="external-link"><code>vignettes/visualization_vignette.Rmd</code></a></small>
       <div class="hidden name"><code>visualization_vignette.Rmd</code></div>
@@ -238,7 +238,9 @@ the enriched terms by identifying shared and/or distinct significant
 genes. By default, the function visualizes the term-gene graph for the
 top 10 enriched terms:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/term_gene_graph.html">term_gene_graph</a></span><span class="op">(</span><span class="va">example_pathfindR_output</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/term_gene_graph.html">term_gene_graph</a></span><span class="op">(</span><span class="va">example_pathfindR_output</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: ggrepel: 62 unlabeled data points (too many overlaps). Consider</span></span>
+<span><span class="co">#&gt; increasing max.overlaps</span></span></code></pre></div>
 <p><img src="visualization_vignette_files/figure-html/term_gene1-1.png" width="768" style="display: block; margin: auto;"></p>
 <p>To plot all of the enriched terms in the enrichment results, set
 <code>num_terms = NULL</code> (not advised due to cluttered
@@ -270,7 +272,14 @@ default (<code>method = "heatmap"</code>), the main plot is a heatmap of
 genes at the corresponding intersections, colored by up/down
 regulation:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span><span class="op">(</span><span class="va">example_pathfindR_output</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/UpSet_plot.html">UpSet_plot</a></span><span class="op">(</span><span class="va">example_pathfindR_output</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Please use `linewidth` instead.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">ggupset</span> package.</span></span>
+<span><span class="co">#&gt;   Please report the issue at <span style="color: #0000BB; font-style: italic;">&lt;https://github.com/const-ae/ggupset/issues&gt;</span>.</span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">This warning is displayed once every 8 hours.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">generated.</span></span></span></code></pre></div>
 <p><img src="visualization_vignette_files/figure-html/upset1-1.png" width="768" style="display: block; margin: auto;"></p>
 <p>If genes_df is provided, the heatmap tiles are colored by change
 values:</p>
