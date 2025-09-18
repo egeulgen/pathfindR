@@ -1,4 +1,61 @@
-## Tests for functions related to data generation - June 2025
+## Tests for functions related to data generation - September 2025
+library(httr)
+
+test_that("safe_get_content handles GET error via mocking", {
+  fake_GET <- function(...) stop("Simulated connection failure")
+  
+  with_mocked_bindings(
+    {
+      expect_error(
+        safe_get_content("http://example.com"),
+        regexp = "Failed to retrieve resource"
+      )
+    },
+    GET = fake_GET
+  )
+})
+
+test_that("safe_get_content handles HTTP error via mocking", {
+  fake_GET <- function(...) {
+    structure(
+      list(status_code = 500L),
+      class = "response"
+    )
+  }
+  
+  with_mocked_bindings(
+    {
+      expect_error(
+        safe_get_content("http://example.com"),
+        regexp = "unavailable"
+      )
+    },
+    GET = fake_GET
+  )
+})
+
+test_that("safe_get_content handles content parsing failure via mocking", {
+  fake_GET <- function(...) {
+    structure(
+      list(status_code = 200L),
+      class = "response"
+    )
+  }
+  
+  fake_content <- function(...) stop("Simulated parsing failure")
+  
+  with_mocked_bindings(
+    {
+      expect_error(
+        safe_get_content("http://example.com"),
+        regexp = "Failed to parse content"
+      )
+    },
+    GET = fake_GET,
+    content = fake_content
+  )
+})
+
 
 set.seed(123)
 gene_pool <- paste0("Gene", 1:100)
@@ -36,6 +93,7 @@ test_that("`get_biogrid_pin()` -- returns a path to a valid PIN file", {
 })
 
 test_that("`get_biogrid_pin()` -- determines and downloads the latest version", {
+  mockery::stub(get_biogrid_pin, "pathfindR:::safe_get_content", NULL)
   mockery::stub(get_biogrid_pin, "utils::download.file", NULL)
   mockery::stub(get_biogrid_pin, "utils::unzip", list(Name = "BIOGRID-ORGANISM-Homo_sapiens-X.X.X.tab3.txt"))
   mockery::stub(get_biogrid_pin, "utils::read.delim", toy_biogrid_pin)
@@ -99,7 +157,7 @@ test_that("`get_kegg_gsets()` -- works as expected", {
     {
       expect_is(toy_eco_kegg <- pathfindR:::get_kegg_gsets(), "list")
     },
-    content = function(...) mock_response, .package = "httr"
+    safe_get_content = function(...) mock_response
   )
 
   expect_length(toy_eco_kegg, 2)

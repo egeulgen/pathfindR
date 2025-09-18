@@ -1,3 +1,59 @@
+#' Safely download and parse web content
+#'
+#' This helper function retrieves content from a given URL using \pkg{httr}.  
+#' It ensures that common issues (e.g. no internet, timeouts, HTTP errors, 
+#' or parsing errors) are handled gracefully with clear, informative error messages.  
+#'
+#' @param url Character string. The URL of the resource to download.
+#' @param ... Additional arguments passed to \code{\link[httr]{GET}}.
+#' @param timeout_sec Numeric. Timeout in seconds for the request (default = 10).
+#'
+#' @return A character string containing the parsed content of the response 
+#'   (UTF-8 encoded). On failure, an error is raised with a clear message.
+#'
+#' @details
+#' This function is intended for use inside package functions.  
+#' For examples, vignettes, or tests, wrap calls in a connectivity check 
+#' (e.g. using \code{http_error(HEAD(url))}) to avoid CRAN failures 
+#' when the resource is temporarily unavailable.
+#'
+#' @examples
+#' \dontrun{
+#' # Retrieve the latest BioGRID release page
+#' result <- safe_get_content("https://downloads.thebiogrid.org/BioGRID/Latest-Release/")
+#' }
+#' 
+#' @importFrom httr GET timeout http_error status_code content
+safe_get_content <- function(url, ..., timeout_sec = 10) {
+  res <- tryCatch(
+    {
+      GET(url, timeout(timeout_sec), ...)
+    },
+    error = function(e) {
+      stop("Failed to retrieve resource from ", url, 
+           ". Error: ", conditionMessage(e), call. = FALSE)
+    }
+  )
+  
+  # Check HTTP status
+  if (http_error(res)) {
+    stop("The resource at ", url, " is unavailable. HTTP status: ",
+         status_code(res), call. = FALSE)
+  }
+  
+  # Return parsed content (default: text if HTML, raw if binary, etc.)
+  content <- tryCatch(
+    content(res, as = "text", encoding = "UTF-8"),
+    error = function(e) {
+      stop("Failed to parse content from ", url, 
+           ". Error: ", conditionMessage(e), call. = FALSE)
+    }
+  )
+  
+  return(content)
+}
+
+
 #' Process Data frame of Protein-protein Interactions
 #'
 #' @param pin_df data frame of protein-protein interactions with 2 columns:
@@ -56,9 +112,8 @@ get_biogrid_pin <- function(org = "Homo_sapiens", path2pin, release = "latest") 
     }
 
     if (release == "latest") {
-      result <- httr::GET("https://downloads.thebiogrid.org/BioGRID/Latest-Release/")
-      result <- httr::content(result, "text")
-
+      result <- safe_get_content("https://downloads.thebiogrid.org/BioGRID/Latest-Release/")
+      
       h2_matches <- regexpr("(?<=<h2>BioGRID Release\\s)(\\d\\.\\d\\.\\d+)", result, perl = TRUE)
       release <- regmatches(result, h2_matches)
     }
@@ -183,8 +238,7 @@ get_kegg_gsets <- function(org_code = "hsa") {
   message("Grab a cup of coffee, this will take a while...")
 
   all_pathways_url <- paste0("https://rest.kegg.jp/list/pathway/", org_code)
-  all_pathways_result <- httr::GET(all_pathways_url)
-  all_pathways_result <- httr::content(all_pathways_result, "text")
+  all_pathways_result <- safe_get_content(all_pathways_url)
   parsed_all_pathways_result <- strsplit(all_pathways_result, "\n")[[1]]
   pathway_ids <- vapply(parsed_all_pathways_result, function(x) unlist(strsplit(x, "\t"))[1], "id")
   pathway_descriptons <- vapply(parsed_all_pathways_result, function(x) unlist(strsplit(x, "\t"))[2], "description")
