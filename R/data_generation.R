@@ -233,6 +233,7 @@ gset_list_from_gmt <- function(path2gmt, descriptions_idx = 2) {
 #' \item{gene_sets - A list containing KEGG IDs for the genes involved in each KEGG pathway}
 #' \item{descriptions - A named vector containing the descriptions for each KEGG pathway}
 #' }
+#' @importFrom ggkegg pathway
 get_kegg_gsets <- function(org_code = "hsa") {
 
   message("Grab a cup of coffee, this will take a while...")
@@ -245,7 +246,7 @@ get_kegg_gsets <- function(org_code = "hsa") {
   names(pathway_descriptons) <- pathway_ids
 
   genes_by_pathway <- lapply(pathway_ids, function(pw_id) {
-    pathways_graph <- ggkegg::pathway(pid = pw_id, directory = tempdir(), use_cache = FALSE, return_tbl_graph = FALSE)
+    pathways_graph <- pathway(pid = pw_id, directory = tempdir(), use_cache = FALSE, return_tbl_graph = FALSE)
     all_pw_kegg_ids <- igraph::V(pathways_graph)$name[igraph::V(pathways_graph)$type == "gene"]
     all_pw_kegg_ids <- unlist(strsplit(all_pw_kegg_ids, " "))
     all_pw_kegg_ids <- unique(all_pw_kegg_ids)
