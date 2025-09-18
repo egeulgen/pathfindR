@@ -1,4 +1,62 @@
-## Tests for functions related to data generation - June 2025
+## Tests for functions related to data generation - September 2025
+library(httr)
+library(ggkegg)
+
+test_that("safe_get_content handles GET error via mocking", {
+  fake_GET <- function(...) stop("Simulated connection failure")
+  
+  with_mocked_bindings(
+    {
+      expect_error(
+        safe_get_content("http://example.com"),
+        regexp = "Failed to retrieve resource"
+      )
+    },
+    GET = fake_GET
+  )
+})
+
+test_that("safe_get_content handles HTTP error via mocking", {
+  fake_GET <- function(...) {
+    structure(
+      list(status_code = 500L),
+      class = "response"
+    )
+  }
+  
+  with_mocked_bindings(
+    {
+      expect_error(
+        safe_get_content("http://example.com"),
+        regexp = "unavailable"
+      )
+    },
+    GET = fake_GET
+  )
+})
+
+test_that("safe_get_content handles content parsing failure via mocking", {
+  fake_GET <- function(...) {
+    structure(
+      list(status_code = 200L),
+      class = "response"
+    )
+  }
+  
+  fake_content <- function(...) stop("Simulated parsing failure")
+  
+  with_mocked_bindings(
+    {
+      expect_error(
+        safe_get_content("http://example.com"),
+        regexp = "Failed to parse content"
+      )
+    },
+    GET = fake_GET,
+    content = fake_content
+  )
+})
+
 
 set.seed(123)
 gene_pool <- paste0("Gene", 1:100)
@@ -36,6 +94,7 @@ test_that("`get_biogrid_pin()` -- returns a path to a valid PIN file", {
 })
 
 test_that("`get_biogrid_pin()` -- determines and downloads the latest version", {
+  mockery::stub(get_biogrid_pin, "pathfindR:::safe_get_content", NULL)
   mockery::stub(get_biogrid_pin, "utils::download.file", NULL)
   mockery::stub(get_biogrid_pin, "utils::unzip", list(Name = "BIOGRID-ORGANISM-Homo_sapiens-X.X.X.tab3.txt"))
   mockery::stub(get_biogrid_pin, "utils::read.delim", toy_biogrid_pin)
@@ -92,14 +151,40 @@ test_that("`gset_list_from_gmt()` -- works as expected", {
 
 test_that("`get_kegg_gsets()` -- works as expected", {
   skip_on_cran()
-  mock_response <- "eco00010\tdescription\neco00071\tdescription2"
-
-  # mocked binding to manage sequential responses
+  mock_response <- "pathway1\tdescription\npathway2\tdescription2"
+  
+  mock_pw_graph1 <- igraph::graph_from_data_frame(
+    data.frame(from = c("A", "B"), to = c("B", "C")),
+    vertices = data.frame(
+      name = c("A", "B", "C"),
+      type = c("gene", "not_gene", "gene")
+    )
+  )
+  
+  mock_pw_graph2 <- igraph::graph_from_data_frame(
+    data.frame(from = c("D", "F"), to = c("E", "G")),
+    vertices = data.frame(
+      name = c("D", "E", "F", "G"),
+      type = c("gene", "gene", "not_gene", "gene")
+    )
+  )
+  
+  mock_pathway <- function(pid, ...) {
+    if (pid == "pathway1") {
+      return(mock_pw_graph1)
+    } else if (pid == "pathway2") {
+      return(mock_pw_graph2)
+    } else {
+      stop("Unknown pid")
+    }
+  }
+  
   with_mocked_bindings(
     {
       expect_is(toy_eco_kegg <- pathfindR:::get_kegg_gsets(), "list")
     },
-    content = function(...) mock_response, .package = "httr"
+    safe_get_content = function(...) mock_response,
+    pathway = mock_pathway
   )
 
   expect_length(toy_eco_kegg, 2)
@@ -108,11 +193,11 @@ test_that("`get_kegg_gsets()` -- works as expected", {
   expect_length(toy_eco_kegg[["gene_sets"]], 2)
   expect_length(toy_eco_kegg[["descriptions"]], 2)
 
-  expect_true(toy_eco_kegg[["descriptions"]]["eco00010"] == "description")
-  expect_true(toy_eco_kegg[["descriptions"]]["eco00071"] == "description2")
+  expect_true(toy_eco_kegg[["descriptions"]]["pathway1"] == "description")
+  expect_true(toy_eco_kegg[["descriptions"]]["pathway2"] == "description2")
 
-  expect_length(toy_eco_kegg[["gene_sets"]][["eco00010"]], 47)
-  expect_length(toy_eco_kegg[["gene_sets"]][["eco00071"]], 15)
+  expect_identical(toy_eco_kegg[["gene_sets"]][["pathway1"]], c("A", "C"))
+  expect_identical(toy_eco_kegg[["gene_sets"]][["pathway2"]], c("D", "E", "G"))
 })
 
 test_that("`get_reactome_gsets()` -- works as expected", {
