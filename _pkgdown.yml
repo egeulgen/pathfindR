@@ -87,3 +87,4 @@ reference:
       - gset_list_from_gmt
       - create_HTML_report
       - isColor
+      - safe_get_content
