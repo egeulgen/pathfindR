@@ -94,7 +94,7 @@ test_that("`get_biogrid_pin()` -- returns a path to a valid PIN file", {
 })
 
 test_that("`get_biogrid_pin()` -- determines and downloads the latest version", {
-  mockery::stub(get_biogrid_pin, "pathfindR:::safe_get_content", NULL)
+  mockery::stub(get_biogrid_pin, "safe_get_content", "<h2>BioGRID Release 3.5.183")
   mockery::stub(get_biogrid_pin, "utils::download.file", NULL)
   mockery::stub(get_biogrid_pin, "utils::unzip", list(Name = "BIOGRID-ORGANISM-Homo_sapiens-X.X.X.tab3.txt"))
   mockery::stub(get_biogrid_pin, "utils::read.delim", toy_biogrid_pin)
