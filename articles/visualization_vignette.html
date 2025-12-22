@@ -103,9 +103,9 @@
       <h1 data-toc-skip>Visualization of pathfindR Enrichment
 Results</h1>
             
-            <h4 data-toc-skip class="date">2025-09-18</h4>
+            <h4 data-toc-skip class="date">2025-12-22</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/master/vignettes/visualization_vignette.Rmd" class="external-link"><code>vignettes/visualization_vignette.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/v2.6.0/vignettes/visualization_vignette.Rmd" class="external-link"><code>vignettes/visualization_vignette.Rmd</code></a></small>
       <div class="hidden name"><code>visualization_vignette.Rmd</code></div>
 
     </div>
@@ -145,7 +145,7 @@ to be grouped by clusters:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/enrichment_chart.html">enrichment_chart</a></span><span class="op">(</span><span class="va">example_pathfindR_output_clustered</span>, plot_by_cluster <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Plotting the enrichment bubble chart</span></span></code></pre></div>
-<p><img src="visualization_vignette_files/figure-html/enr_chart3-1.png" width="768" style="display: block; margin: auto;"></p>
+<p><img src="visualization_vignette_files/figure-html/enr_chart3-1.png" class="r-plt" alt="" width="768" style="display: block; margin: auto;"></p>
 <p>See <code><a href="../reference/enrichment_chart.html">?enrichment_chart</a></code> for more details.</p>
 </div>
 <div class="section level2">
@@ -203,7 +203,7 @@ enriched terms, as well as the common or distinct genes between
 different terms.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/term_gene_heatmap.html">term_gene_heatmap</a></span><span class="op">(</span><span class="va">example_pathfindR_output</span><span class="op">)</span></span></code></pre></div>
-<p><img src="visualization_vignette_files/figure-html/hmap-1.png" width="768" style="display: block; margin: auto;"></p>
+<p><img src="visualization_vignette_files/figure-html/hmap-1.png" class="r-plt" alt="" width="768" style="display: block; margin: auto;"></p>
 <p>By default, the heatmap is generated for the top 10 terms. This can
 be controlled by the <code>num_terms</code> argument:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
@@ -241,7 +241,7 @@ top 10 enriched terms:</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/term_gene_graph.html">term_gene_graph</a></span><span class="op">(</span><span class="va">example_pathfindR_output</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning: ggrepel: 62 unlabeled data points (too many overlaps). Consider</span></span>
 <span><span class="co">#&gt; increasing max.overlaps</span></span></code></pre></div>
-<p><img src="visualization_vignette_files/figure-html/term_gene1-1.png" width="768" style="display: block; margin: auto;"></p>
+<p><img src="visualization_vignette_files/figure-html/term_gene1-1.png" class="r-plt" alt="" width="768" style="display: block; margin: auto;"></p>
 <p>To plot all of the enriched terms in the enrichment results, set
 <code>num_terms = NULL</code> (not advised due to cluttered
 visualization):</p>
@@ -280,7 +280,7 @@ regulation:</p>
 <span><span class="co">#&gt; <span style="color: #555555;">This warning is displayed once every 8 hours.</span></span></span>
 <span><span class="co">#&gt; <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
 <span><span class="co">#&gt; <span style="color: #555555;">generated.</span></span></span></code></pre></div>
-<p><img src="visualization_vignette_files/figure-html/upset1-1.png" width="768" style="display: block; margin: auto;"></p>
+<p><img src="visualization_vignette_files/figure-html/upset1-1.png" class="r-plt" alt="" width="768" style="display: block; margin: auto;"></p>
 <p>If genes_df is provided, the heatmap tiles are colored by change
 values:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
@@ -322,7 +322,7 @@ the genes within the corresponding intersections:</p>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer>
