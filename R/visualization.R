@@ -258,6 +258,17 @@ visualize_KEGG_diagram <- function(
     legend.position = "top"
 ) {
     message("This function utilises one functionality of `ggkegg`. For more options, visit https://github.com/noriakis/ggkegg")
+     
+    if (!requireNamespace("org.Hs.eg.db", quietly = TRUE)) {
+      message(
+        "Package 'org.Hs.eg.db' is not installed; returning empty list.\n",
+        "Install it with:\n",
+        "  if (!requireNamespace('BiocManager', quietly = TRUE)) install.packages('BiocManager')\n",
+        "  BiocManager::install('TxDb.Hsapiens.UCSC.hg19.knownGene')",
+      )
+      return(list())
+    }
+    
     ############ Arg checks
 
     ### kegg_pw_ids

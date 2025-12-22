@@ -1,7 +1,7 @@
 Package: pathfindR
 Type: Package
 Title: Enrichment Analysis Utilizing Active Subnetworks
-Version: 2.6.0.9000
+Version: 2.6.0.9001
 Authors@R: c(person("Ege", "Ulgen",
                     role = c("cre", "cph"), 
                     email = "egeulgen@gmail.com",
@@ -40,7 +40,6 @@ Imports:
     doParallel,
     foreach,
     rmarkdown,
-    org.Hs.eg.db,
     ggplot2,
     ggraph,
     ggupset,
@@ -55,8 +54,9 @@ Imports:
 Depends: R (>= 4.3.0),
     pathfindR.data (>= 2.0)
 Suggests: 
+    org.Hs.eg.db,
     testthat (>= 2.3.2),
     covr,
     mockery
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 VignetteBuilder: knitr

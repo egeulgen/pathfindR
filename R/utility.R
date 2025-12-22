@@ -347,6 +347,18 @@ input_processing <- function(input, p_val_threshold = 0.05, pin_name_path = "Bio
     missing_symbols <- input$GENE[!base::toupper(input$GENE) %in% PIN_genes]
     non_missing_symbols <- input$GENE[base::toupper(input$GENE) %in% PIN_genes]
 
+    
+    if (convert2alias & !requireNamespace("org.Hs.eg.db", quietly = TRUE)) {
+      message(
+        "Package 'org.Hs.eg.db' is not installed; returning input genes unchanged.\n",
+        "Install it with:\n",
+        "  if (!requireNamespace('BiocManager', quietly = TRUE)) install.packages('BiocManager')\n",
+        "  BiocManager::install('TxDb.Hsapiens.UCSC.hg19.knownGene')",
+      )
+      convert2alias <- False
+    }
+    
+    
     if (convert2alias & length(missing_symbols) != 0) {
         ## use SQL to get alias table and gene_info table (contains the
         ## symbols) first open the database connection
