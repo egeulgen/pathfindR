@@ -96,17 +96,6 @@ run_pathfindR <- function(
   ## absolute path to PIN
   pin_path <- return_pin_path(pin_name_path)
 
-  ## create output dir
-  output_dir_org <- output_dir
-  output_dir <- configure_output_dir(output_dir)
-  # on exit, set working directory back to original working directory
-  org_dir <- getwd()
-  on.exit(setwd(org_dir))
-  # create and change working directory into the output directory
-  dir.create(output_dir, recursive = TRUE)
-  output_dir <- normalizePath(output_dir)
-  setwd(output_dir)
-
   input_testing(input, p_val_threshold)
 
   input_processed <- input_processing(input, p_val_threshold, pin_path, convert2alias)
@@ -115,7 +104,6 @@ run_pathfindR <- function(
     input_processed, pin_path, gset_list,
     enrichment_threshold, list_active_snw_genes, ...
   )
-  setwd(output_dir)
 
   ## In case no enrichment was found
   if (is.null(combined_res)) {
@@ -131,7 +119,7 @@ run_pathfindR <- function(
     genes_by_term = gset_list$genes_by_term
   )
 
-  if (!is.null(output_dir_org)) {
+  if (!is.null(output_dir)) {
     create_HTML_report(
       input = input, input_processed = input_processed, final_res = final_res,
       dir_for_report = output_dir
