@@ -7,8 +7,6 @@
 get_active_subnetworks(
   input_for_search,
   pin_name_path = "Biogrid",
-  snws_file = "active_snws",
-  dir_for_parallel_run = NULL,
   score_quan_thr = 0.8,
   sig_gene_thr = 0.02,
   search_method = "GR",
@@ -40,12 +38,6 @@ must be a data frame containing at least these 2 columns: \describe{
 \item{pin_name_path}{Name of the chosen PIN or absolute/path/to/PIN.sif. If PIN name,
 must be one of c('Biogrid', 'STRING', 'GeneMania', 'IntAct', 'KEGG', 'mmu_STRING'). If
 path/to/PIN.sif, the file must comply with the PIN specifications. (Default = 'Biogrid')}
-
-\item{snws_file}{name for active subnetwork search output data
-\strong{without file extension} (default = 'active_snws')}
-
-\item{dir_for_parallel_run}{(previously created) directory for a parallel run iteration.
-Used in the wrapper function (see ?run_pathfindR) (Default = NULL)}
 
 \item{score_quan_thr}{active subnetwork score quantile threshold. Must be
 between 0 and 1 or set to -1 for not filtering. (Default = 0.8)}
@@ -94,6 +86,12 @@ nodes. In SA, initializes candidate solution with all positive nodes. (default =
 \item{grOverlap}{Overlap threshold for results of greedy search (default = 0.5)}
 
 \item{grSubNum}{Number of subnetworks to be presented in the results (default = 1000)}
+
+\item{snws_file}{name for active subnetwork search output data
+\strong{without file extension} (default = 'active_snws')}
+
+\item{dir_for_parallel_run}{(previously created) directory for a parallel run iteration.
+Used in the wrapper function (see ?run_pathfindR) (Default = NULL)}
 }
 \value{
 A list of genes in every identified active subnetwork that has a score greater than

@@ -49,3 +49,58 @@ test_that("`return_pin_path()` -- returns the absolute path to PIN file", {
     paste(dQuote(valid_opts), collapse = ", ")
   ))
 })
+
+
+test_that("`parse_pin_into_adj_list()` -- parses SIF into correct adjacency list", {
+  sif_file <- file.path(tempdir(), "test.sif")
+
+  sif_data <- data.frame(
+    V1 = c("A", "A", "B", "C"),
+    V2 = c("pp", "pp", "pp", "pp"),
+    V3 = c("B", "C", "D", "A")
+  )
+
+  utils::write.table(
+    sif_data,
+    sif_file,
+    sep = "\t",
+    row.names = FALSE,
+    col.names = FALSE,
+    quote = FALSE
+  )
+
+  adj <- parse_pin_into_adj_list(sif_file)
+
+  expect_type(adj, "list")
+  expect_true(all(c("A", "B", "C", "D") %in% names(adj)))
+
+  # Check undirected edges
+  expect_true("B" %in% adj[["A"]])
+  expect_true("C" %in% adj[["A"]])
+  expect_true("A" %in% adj[["B"]])
+  expect_true("A" %in% adj[["C"]])
+  expect_true("B" %in% adj[["D"]])
+})
+
+test_that("`parse_pin_into_adj_list()` -- errors on invalid SIF format", {
+  bad_file <- file.path(tempdir(), "bad.sif")
+
+  bad_data <- data.frame(
+    V1 = c("A", "B"),
+    V2 = c("pp", "pp")
+  )
+
+  utils::write.table(
+    bad_data,
+    bad_file,
+    sep = "\t",
+    row.names = FALSE,
+    col.names = FALSE,
+    quote = FALSE
+  )
+
+  expect_error(
+    parse_pin_into_adj_list(bad_file),
+    "SIF file must contain at least 3 columns"
+  )
+})
