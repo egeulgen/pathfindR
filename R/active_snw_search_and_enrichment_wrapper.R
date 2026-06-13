@@ -150,7 +150,7 @@ single_iter_wrapper <- function(i = NULL, dirs, input_processed, pin_path, score
   }
   snws <- get_active_subnetworks(
     input_for_search = input_processed, pin_name_path = pin_path,
-    snws_file = snws_file, dir_for_parallel_run = dir_for_parallel_run, score_quan_thr = score_quan_thr,
+    score_quan_thr = score_quan_thr,
     sig_gene_thr = sig_gene_thr, search_method = search_method, seedForRandom = ifelse(is.null(i),
       1234, i
     ), silent_option = silent_option, use_all_positives = use_all_positives,

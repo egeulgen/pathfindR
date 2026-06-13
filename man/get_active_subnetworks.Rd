@@ -86,12 +86,6 @@ nodes. In SA, initializes candidate solution with all positive nodes. (default =
 \item{grOverlap}{Overlap threshold for results of greedy search (default = 0.5)}
 
 \item{grSubNum}{Number of subnetworks to be presented in the results (default = 1000)}
-
-\item{snws_file}{name for active subnetwork search output data
-\strong{without file extension} (default = 'active_snws')}
-
-\item{dir_for_parallel_run}{(previously created) directory for a parallel run iteration.
-Used in the wrapper function (see ?run_pathfindR) (Default = NULL)}
 }
 \value{
 A list of genes in every identified active subnetwork that has a score greater than
