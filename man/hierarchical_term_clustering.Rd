@@ -57,6 +57,6 @@ determined as the k value which yields the highest average silhouette width.
 \examples{
 \dontrun{
 hierarchical_term_clustering(kappa_mat, enrichment_res)
-hierarchical_term_clustering(kappa_mat, enrichment_res, method = 'complete')
+hierarchical_term_clustering(kappa_mat, enrichment_res, method = "complete")
 }
 }

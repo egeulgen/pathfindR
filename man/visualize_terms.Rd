@@ -55,7 +55,7 @@ input_processed <- data.frame(
 result_df <- example_pathfindR_output[1:2, ]
 
 gg_list <- visualize_terms(result_df, input_processed)
-gg_list2 <- visualize_terms(result_df, is_KEGG_result = FALSE, pin_name_path = 'IntAct')
+gg_list2 <- visualize_terms(result_df, is_KEGG_result = FALSE, pin_name_path = "IntAct")
 }
 }
 \seealso{

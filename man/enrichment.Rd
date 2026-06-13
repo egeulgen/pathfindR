@@ -46,8 +46,8 @@ Perform Enrichment Analysis for a Single Gene Set
 }
 \examples{
 enrichment(
-  input_genes = c('PER1', 'PER2', 'CRY1', 'CREB1'),
-  sig_genes_vec = 'PER1',
+  input_genes = c("PER1", "PER2", "CRY1", "CREB1"),
+  sig_genes_vec = "PER1",
   background_genes = unlist(pathfindR.data::kegg_genes)
 )
 }

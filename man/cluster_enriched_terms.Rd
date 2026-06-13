@@ -56,7 +56,7 @@ example_clustered <- cluster_enriched_terms(
 )
 example_clustered <- cluster_enriched_terms(
   example_pathfindR_output[1:3, ],
-  method = 'fuzzy', plot_clusters_graph = FALSE
+  method = "fuzzy", plot_clusters_graph = FALSE
 )
 }
 \seealso{

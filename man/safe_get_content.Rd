@@ -14,18 +14,18 @@ safe_get_content(url, ..., timeout_sec = 10)
 \item{timeout_sec}{Numeric. Timeout in seconds for the request (default = 10).}
 }
 \value{
-A character string containing the parsed content of the response 
+A character string containing the parsed content of the response
   (UTF-8 encoded). On failure, an error is raised with a clear message.
 }
 \description{
-This helper function retrieves content from a given URL using \pkg{httr}.  
-It ensures that common issues (e.g. no internet, timeouts, HTTP errors, 
+This helper function retrieves content from a given URL using \pkg{httr}.
+It ensures that common issues (e.g. no internet, timeouts, HTTP errors,
 or parsing errors) are handled gracefully with clear, informative error messages.
 }
 \details{
-This function is intended for use inside package functions.  
-For examples, vignettes, or tests, wrap calls in a connectivity check 
-(e.g. using \code{http_error(HEAD(url))}) to avoid CRAN failures 
+This function is intended for use inside package functions.
+For examples, vignettes, or tests, wrap calls in a connectivity check
+(e.g. using \code{http_error(HEAD(url))}) to avoid CRAN failures
 when the resource is temporarily unavailable.
 }
 \examples{

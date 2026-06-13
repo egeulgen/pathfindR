@@ -25,7 +25,7 @@ rows consisting of 'pp'.
 }
 \examples{
 \dontrun{
-pin_path <- return_pin_path('GeneMania')
+pin_path <- return_pin_path("GeneMania")
 }
 }
 \seealso{

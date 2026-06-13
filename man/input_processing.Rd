@@ -44,11 +44,11 @@ Process Input
 \examples{
 processed_df <- input_processing(
   input = example_pathfindR_input[1:5, ],
-  pin_name_path = 'KEGG'
+  pin_name_path = "KEGG"
 )
 processed_df <- input_processing(
   input = example_pathfindR_input[1:5, ],
-  pin_name_path = 'KEGG',
+  pin_name_path = "KEGG",
   convert2alias = FALSE
 )
 }

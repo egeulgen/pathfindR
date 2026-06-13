@@ -26,12 +26,12 @@ the msigdbr package.}
 \item{db_species}{Species abbreviation for the human or mouse databases ("HS" or "MM").}
 
 \item{collection}{collection. e.g., H, C1. (default = NULL,
-i.e. list all gene sets in collection). 
+i.e. list all gene sets in collection).
 See \code{\link[msigdbr]{msigdbr_collections}} for all available options
 the msigdbr package.}
 
 \item{subcollection}{sub-collection, such as CGP, BP, etc. (default = NULL,
-i.e. list all gene sets in collection). 
+i.e. list all gene sets in collection).
 See \code{\link[msigdbr]{msigdbr_collections}} for all available options
 the msigdbr package.}
 }
