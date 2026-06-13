@@ -53,7 +53,6 @@ get_active_subnetworks <- function(
   gaCrossover = 1, gaMut = 0, grMaxDepth = 1, grSearchDepth = 1, grOverlap = 0.5,
   grSubNum = 1000
 ) {
-  ############ Argument checks input_for_search
   if (!is.data.frame(input_for_search)) {
     stop("`input_for_search` should be data frame")
   }
@@ -63,9 +62,6 @@ get_active_subnetworks <- function(
       collapse = ","
     ))
   }
-
-  # pin_name_path (fetch pin path)
-  pin_path <- return_pin_path(pin_name_path)
 
   # search_method
   valid_mets <- c("GR", "SA", "GA")
@@ -82,6 +78,8 @@ get_active_subnetworks <- function(
   if (!is.logical(use_all_positives)) {
     stop("`use_all_positives` should be either TRUE or FALSE")
   }
+
+  pin_path <- return_pin_path(pin_name_path)
 
   input_for_search$GENE <- base::toupper(input_for_search$GENE)
   experiment_df <- input_for_search[, c("GENE", "P_VALUE")]
