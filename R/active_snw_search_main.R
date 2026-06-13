@@ -95,18 +95,30 @@ active_subnetwork_search <- function(pin_path,
     seed                     = seed
   )
 
+  if (verbose) {
+    message("Building network")
+  }
   network <- .build_network(pin_path)
   if (length(network$nodes) == 0L) {
     return(list())
   }
 
+  if (verbose) {
+    message("Building score context")
+  }
   sc <- .build_score_context(network, experiment, params)
 
+  if (verbose) {
+    message("Searching subnetworks")
+  }
   subnetworks <- switch(method,
     GR = .greedy_search(network, sc, params, verbose),
     SA = .simulated_annealing(network, sc, params, verbose),
     GA = .genetic_algorithm(network, sc, params, verbose)
   )
+  if (verbose) {
+    message("Finished searching subnetworks")
+  }
 
   subnetworks <- .sort_subnetworks_desc(subnetworks)
   if (length(subnetworks) > 0L) {
