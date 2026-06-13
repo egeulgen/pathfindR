@@ -63,10 +63,10 @@ gg_list <- visualize_terms(
 
 # save one of the plots as PDF image
 ggplot2::ggsave(
-  "hsa04911_diagram.pdf",   # path to output, format is determined by extension
-  gg_list$hsa04911,         # what to plot
-  width = 5                 # adjust width
-  height = 5                # adjust height
+  "hsa04911_diagram.pdf",
+  gg_list$hsa04911,
+  width = 5,
+  height = 5
 ) 
 ```
 
@@ -85,10 +85,10 @@ gg_list <- visualize_terms(
 
 # save one of the plots as PDF image
 ggplot2::ggsave(
-  "diabetic_cardiomyopathy_interactions.pdf",   # path to output, format is determined by extension
-  gg_list$hsa04911,                             # what to plot
-  width = 10                                    # adjust width
-  height = 6                                    # adjust height
+  "diabetic_cardiomyopathy_interactions.pdf",
+  gg_list$hsa04911,
+  width = 10,
+  height = 6
 ) 
 ```
 
