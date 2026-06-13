@@ -18,14 +18,16 @@
 #'   "extdata/resultActiveSubnetworkSearch.txt",
 #'   package = "pathfindR"
 #' )
+#' active_snws <- readLines(path2snw_list)
+#'
 #' # visualize top 2 active subnetworks
 #' g_list <- visualize_active_subnetworks(
-#'   active_snw_path = path2snw_list,
+#'   active_snws = active_snws,
 #'   genes_df = example_pathfindR_input[1:10, ],
 #'   pin_name_path = "KEGG",
 #'   num_snws = 2
 #' )
-visualize_active_subnetworks <- function(active_snw_path, genes_df, pin_name_path = "Biogrid",
+visualize_active_subnetworks <- function(active_snws, genes_df, pin_name_path = "Biogrid",
                                          num_snws, layout = "stress", score_quan_thr = 0.8, sig_gene_thr = 0.02, ...) {
   # process input data frame
   processed_input <- input_processing(genes_df,
@@ -35,7 +37,7 @@ visualize_active_subnetworks <- function(active_snw_path, genes_df, pin_name_pat
 
   # parse and filter active subnetworks
   active_snw_list <- filterActiveSnws(
-    active_snw_path = active_snw_path, sig_genes_vec = processed_input$GENE,
+    active_snws = active_snws, sig_genes_vec = processed_input$GENE,
     score_quan_thr = score_quan_thr, sig_gene_thr = sig_gene_thr
   )
   if (is.null(active_snw_list) | length(active_snw_list$scores) == 0) {

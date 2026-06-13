@@ -149,9 +149,11 @@ get_active_subnetworks <- function(
   snws_file <- file.path("active_snw_search", paste0(snws_file, ".txt"))
   file.rename(from = "resultActiveSubnetworkSearch.txt", to = snws_file)
 
+  output <- readLines(snws_file)
+
   ############ Parse and filter active subnetworks
   filtered_snws <- filterActiveSnws(
-    active_snw_path = snws_file, sig_genes_vec = input_for_search$GENE,
+    active_snws = output, sig_genes_vec = input_for_search$GENE,
     score_quan_thr = score_quan_thr, sig_gene_thr = sig_gene_thr
   )
 

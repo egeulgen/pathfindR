@@ -5,14 +5,14 @@
 \title{Parse Active Subnetwork Search Output File and Filter the Subnetworks}
 \usage{
 filterActiveSnws(
-  active_snw_path,
+  active_snws,
   sig_genes_vec,
   score_quan_thr = 0.8,
   sig_gene_thr = 0.02
 )
 }
 \arguments{
-\item{active_snw_path}{path to the output of an Active Subnetwork Search}
+\item{active_snws}{active subnetwork search results. A list containing input \code{subnetworks}.}
 
 \item{sig_genes_vec}{vector of significant gene symbols. In the scope of this
 package, these are the input genes that were used for active subnetwork search}
@@ -39,8 +39,9 @@ path2snw_list <- system.file(
   "extdata/resultActiveSubnetworkSearch.txt",
   package = "pathfindR"
 )
+active_snws <- readLines(path2snw_list)
 filtered <- filterActiveSnws(
-  active_snw_path = path2snw_list,
+  active_snws = active_snws,
   sig_genes_vec = example_pathfindR_input$Gene.symbol
 )
 }
