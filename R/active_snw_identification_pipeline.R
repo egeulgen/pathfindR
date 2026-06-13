@@ -19,7 +19,7 @@
 #'  nodes. In SA, initializes candidate solution with all positive nodes. (default = FALSE)
 #' @param gene_init_prob For SA and GA, probability of adding a gene in initial solution (default = 0.1)
 #' @param sa_initial_temp Initial temperature for SA (default = 1.0)
-#' @param saTemp1 Final temperature for SA (default = 0.01)
+#' @param sa_final_temp Final temperature for SA (default = 0.01)
 #' @param saIter Iteration number for SA (default = 10000)
 #' @param gaPop Population size for GA (default = 400)
 #' @param gaIter Iteration number for GA (default = 200)
@@ -46,7 +46,7 @@ get_active_subnetworks <- function(
   input_for_search, pin_name_path = "Biogrid",
   score_quan_thr = 0.8, sig_gene_thr = 0.02, search_method = "GR",
   seedForRandom = 1234, verbose = FALSE, start_with_all_positives = FALSE, gene_init_prob = 0.1,
-  sa_initial_temp = 1, saTemp1 = 0.01, saIter = 10000, gaPop = 400, gaIter = 10000, gaThread = 5,
+  sa_initial_temp = 1, sa_final_temp = 0.01, saIter = 10000, gaPop = 400, gaIter = 10000, gaThread = 5,
   gaCrossover = 1, gaMut = 0, grMaxDepth = 1, grSearchDepth = 1, grOverlap = 0.5,
   grSubNum = 1000
 ) {
@@ -86,7 +86,7 @@ get_active_subnetworks <- function(
     start_with_all_positives = start_with_all_positives,
     gene_init_prob = gene_init_prob,
     sa_initial_temp = sa_initial_temp,
-    sa_final_temp = saTemp1,
+    sa_final_temp = sa_final_temp,
     sa_iterations = saIter,
     ga_population_size = gaPop,
     ga_iterations = gaIter,
