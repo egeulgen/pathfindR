@@ -21,15 +21,14 @@ active_snw_enrichment_wrapper(
   sa_initial_temp = 1,
   sa_final_temp = 0.01,
   sa_iterations = 10000,
-  gaPop = 400,
-  gaIter = 200,
-  gaThread = 5,
-  gaCrossover = 1,
-  gaMut = 0,
-  grMaxDepth = 1,
-  grSearchDepth = 1,
-  grOverlap = 0.5,
-  grSubNum = 1000,
+  ga_population_size = 400,
+  ga_iterations = 200,
+  ga_crossover_rate = 1,
+  ga_mutation_rate = 0,
+  gr_max_depth = 1,
+  gr_search_depth = 1,
+  gr_overlap_threshold = 0.5,
+  gr_subnetwork_num = 1000,
   verbose = FALSE
 )
 }
@@ -81,23 +80,21 @@ is set to 2}
 
 \item{sa_iterations}{Iteration number for SA (default = 10000)}
 
-\item{gaPop}{Population size for GA (default = 400)}
+\item{ga_population_size}{Population size for GA (default = 400)}
 
-\item{gaIter}{Iteration number for GA (default = 200)}
+\item{ga_iterations}{Iteration number for GA (default = 200)}
 
-\item{gaThread}{Number of threads to be used in GA (default = 5)}
+\item{ga_crossover_rate}{Applies crossover with the given probability in GA (default = 1, i.e. always perform crossover)}
 
-\item{gaCrossover}{Applies crossover with the given probability in GA (default = 1, i.e. always perform crossover)}
+\item{ga_mutation_rate}{For GA, applies mutation with given mutation rate (default = 0, i.e. mutation off)}
 
-\item{gaMut}{For GA, applies mutation with given mutation rate (default = 0, i.e. mutation off)}
+\item{gr_max_depth}{Sets max depth in greedy search, 0 for no limit (default = 1)}
 
-\item{grMaxDepth}{Sets max depth in greedy search, 0 for no limit (default = 1)}
+\item{gr_search_depth}{Search depth in greedy search (default = 1)}
 
-\item{grSearchDepth}{Search depth in greedy search (default = 1)}
+\item{gr_overlap_threshold}{Overlap threshold for results of greedy search (default = 0.5)}
 
-\item{grOverlap}{Overlap threshold for results of greedy search (default = 0.5)}
-
-\item{grSubNum}{Number of subnetworks to be presented in the results (default = 1000)}
+\item{gr_subnetwork_num}{Number of subnetworks to be presented in the results (default = 1000)}
 
 \item{verbose}{boolean value indicating whether to print messages (default=FALSE)}
 }

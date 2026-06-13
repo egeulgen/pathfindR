@@ -18,15 +18,15 @@ single_iter_wrapper(
   sa_initial_temp,
   sa_final_temp,
   sa_iterations,
-  gaPop,
-  gaIter,
+  ga_population_size,
+  ga_iterations,
   gaThread,
-  gaCrossover,
-  gaMut,
-  grMaxDepth,
-  grSearchDepth,
-  grOverlap,
-  grSubNum,
+  ga_crossover_rate,
+  ga_mutation_rate,
+  gr_max_depth,
+  gr_search_depth,
+  gr_overlap_threshold,
+  gr_subnetwork_num,
   gset_list,
   adj_method,
   enrichment_threshold,
@@ -67,23 +67,23 @@ nodes. In SA, initializes candidate solution with all positive nodes. (default =
 
 \item{sa_iterations}{Iteration number for SA (default = 10000)}
 
-\item{gaPop}{Population size for GA (default = 400)}
+\item{ga_population_size}{Population size for GA (default = 400)}
 
-\item{gaIter}{Iteration number for GA (default = 200)}
+\item{ga_iterations}{Iteration number for GA (default = 200)}
 
 \item{gaThread}{Number of threads to be used in GA (default = 5)}
 
-\item{gaCrossover}{Applies crossover with the given probability in GA (default = 1, i.e. always perform crossover)}
+\item{ga_crossover_rate}{Applies crossover with the given probability in GA (default = 1, i.e. always perform crossover)}
 
-\item{gaMut}{For GA, applies mutation with given mutation rate (default = 0, i.e. mutation off)}
+\item{ga_mutation_rate}{For GA, applies mutation with given mutation rate (default = 0, i.e. mutation off)}
 
-\item{grMaxDepth}{Sets max depth in greedy search, 0 for no limit (default = 1)}
+\item{gr_max_depth}{Sets max depth in greedy search, 0 for no limit (default = 1)}
 
-\item{grSearchDepth}{Search depth in greedy search (default = 1)}
+\item{gr_search_depth}{Search depth in greedy search (default = 1)}
 
-\item{grOverlap}{Overlap threshold for results of greedy search (default = 0.5)}
+\item{gr_overlap_threshold}{Overlap threshold for results of greedy search (default = 0.5)}
 
-\item{grSubNum}{Number of subnetworks to be presented in the results (default = 1000)}
+\item{gr_subnetwork_num}{Number of subnetworks to be presented in the results (default = 1000)}
 
 \item{gset_list}{list for gene sets.}
 

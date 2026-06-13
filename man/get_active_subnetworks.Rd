@@ -10,22 +10,22 @@ get_active_subnetworks(
   score_quan_thr = 0.8,
   sig_gene_thr = 0.02,
   search_method = "GR",
-  seedForRandom = 1234,
+  seed_for_stochastic_methods = 1234,
   verbose = FALSE,
   start_with_all_positives = FALSE,
   gene_init_prob = 0.1,
   sa_initial_temp = 1,
   sa_final_temp = 0.01,
   sa_iterations = 10000,
-  gaPop = 400,
-  gaIter = 10000,
+  ga_population_size = 400,
+  ga_iterations = 10000,
   gaThread = 5,
-  gaCrossover = 1,
-  gaMut = 0,
-  grMaxDepth = 1,
-  grSearchDepth = 1,
-  grOverlap = 0.5,
-  grSubNum = 1000
+  ga_crossover_rate = 1,
+  ga_mutation_rate = 0,
+  gr_max_depth = 1,
+  gr_search_depth = 1,
+  gr_overlap_threshold = 0.5,
+  gr_subnetwork_num = 1000
 )
 }
 \arguments{
@@ -51,7 +51,7 @@ is set to 2}
 search. Options are greedy search (GR), simulated annealing (SA) or genetic
 algorithm (GA) for the search (default = 'GR').}
 
-\item{seedForRandom}{seed for reproducibility while running active subnetwork search (applies for GR and SA)}
+\item{seed_for_stochastic_methods}{seed for reproducibility while running active subnetwork search (applies for GR and SA)}
 
 \item{verbose}{boolean value indicating whether to print messages (default=FALSE)}
 
@@ -66,23 +66,23 @@ nodes. In SA, initializes candidate solution with all positive nodes. (default =
 
 \item{sa_iterations}{Iteration number for SA (default = 10000)}
 
-\item{gaPop}{Population size for GA (default = 400)}
+\item{ga_population_size}{Population size for GA (default = 400)}
 
-\item{gaIter}{Iteration number for GA (default = 200)}
+\item{ga_iterations}{Iteration number for GA (default = 200)}
 
 \item{gaThread}{Number of threads to be used in GA (default = 5)}
 
-\item{gaCrossover}{Applies crossover with the given probability in GA (default = 1, i.e. always perform crossover)}
+\item{ga_crossover_rate}{Applies crossover with the given probability in GA (default = 1, i.e. always perform crossover)}
 
-\item{gaMut}{For GA, applies mutation with given mutation rate (default = 0, i.e. mutation off)}
+\item{ga_mutation_rate}{For GA, applies mutation with given mutation rate (default = 0, i.e. mutation off)}
 
-\item{grMaxDepth}{Sets max depth in greedy search, 0 for no limit (default = 1)}
+\item{gr_max_depth}{Sets max depth in greedy search, 0 for no limit (default = 1)}
 
-\item{grSearchDepth}{Search depth in greedy search (default = 1)}
+\item{gr_search_depth}{Search depth in greedy search (default = 1)}
 
-\item{grOverlap}{Overlap threshold for results of greedy search (default = 0.5)}
+\item{gr_overlap_threshold}{Overlap threshold for results of greedy search (default = 0.5)}
 
-\item{grSubNum}{Number of subnetworks to be presented in the results (default = 1000)}
+\item{gr_subnetwork_num}{Number of subnetworks to be presented in the results (default = 1000)}
 }
 \value{
 A list of genes in every identified active subnetwork that has a score greater than

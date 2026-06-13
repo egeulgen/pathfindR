@@ -18,9 +18,9 @@
 active_snw_enrichment_wrapper <- function(input_processed, pin_path, gset_list, enrichment_threshold,
                                           list_active_snw_genes, adj_method = "bonferroni", search_method = "GR", disable_parallel = FALSE,
                                           start_with_all_positives = FALSE, iterations = 10, n_processes = NULL, score_quan_thr = 0.8,
-                                          sig_gene_thr = 0.02, sa_initial_temp = 1, sa_final_temp = 0.01, sa_iterations = 10000, gaPop = 400,
-                                          gaIter = 200, gaThread = 5, gaCrossover = 1, gaMut = 0, grMaxDepth = 1, grSearchDepth = 1,
-                                          grOverlap = 0.5, grSubNum = 1000, verbose = FALSE) {
+                                          sig_gene_thr = 0.02, sa_initial_temp = 1, sa_final_temp = 0.01, sa_iterations = 10000, ga_population_size = 400,
+                                          ga_iterations = 200, ga_crossover_rate = 1, ga_mutation_rate = 0, gr_max_depth = 1, gr_search_depth = 1,
+                                          gr_overlap_threshold = 0.5, gr_subnetwork_num = 1000, verbose = FALSE) {
   message("## Performing Active Subnetwork Search and Enrichment")
   ############ Argument checks Active Subnetwork Search Method
   valid_mets <- c("GR", "SA", "GA")
@@ -89,8 +89,8 @@ active_snw_enrichment_wrapper <- function(input_processed, pin_path, gset_list, 
     combined_res <- single_iter_wrapper(
       i = NULL, dirs, input_processed, pin_path,
       score_quan_thr, sig_gene_thr, search_method, verbose, start_with_all_positives,
-      gene_init_prob, sa_initial_temp, sa_final_temp, sa_iterations, gaPop, gaIter, gaThread, gaCrossover,
-      gaMut, grMaxDepth, grSearchDepth, grOverlap, grSubNum, gset_list, adj_method,
+      gene_init_prob, sa_initial_temp, sa_final_temp, sa_iterations, ga_population_size, ga_iterations, gaThread, ga_crossover_rate,
+      ga_mutation_rate, gr_max_depth, gr_search_depth, gr_overlap_threshold, gr_subnetwork_num, gset_list, adj_method,
       enrichment_threshold, list_active_snw_genes
     )
   } else {
@@ -105,8 +105,8 @@ active_snw_enrichment_wrapper <- function(input_processed, pin_path, gset_list, 
         single_iter_wrapper(
           i, dirs, input_processed, pin_path, score_quan_thr,
           sig_gene_thr, search_method, verbose, start_with_all_positives,
-          gene_init_prob, sa_initial_temp, sa_final_temp, sa_iterations, gaPop, gaIter, gaThread,
-          gaCrossover, gaMut, grMaxDepth, grSearchDepth, grOverlap, grSubNum,
+          gene_init_prob, sa_initial_temp, sa_final_temp, sa_iterations, ga_population_size, ga_iterations, gaThread,
+          ga_crossover_rate, ga_mutation_rate, gr_max_depth, gr_search_depth, gr_overlap_threshold, gr_subnetwork_num,
           gset_list, adj_method, enrichment_threshold, list_active_snw_genes
         )
       }
@@ -117,8 +117,8 @@ active_snw_enrichment_wrapper <- function(input_processed, pin_path, gset_list, 
         current_res <- single_iter_wrapper(
           i, dirs, score_quan_thr, sig_gene_thr,
           search_method, verbose, start_with_all_positives, gene_init_prob,
-          sa_initial_temp, sa_final_temp, sa_iterations, gaPop, gaIter, gaThread, gaCrossover,
-          gaMut, grMaxDepth, grSearchDepth, grOverlap, grSubNum, gset_list,
+          sa_initial_temp, sa_final_temp, sa_iterations, ga_population_size, ga_iterations, gaThread, ga_crossover_rate,
+          ga_mutation_rate, gr_max_depth, gr_search_depth, gr_overlap_threshold, gr_subnetwork_num, gset_list,
           adj_method, enrichment_threshold, list_active_snw_genes
         )
         combined_res <- rbind(combined_res, current_res)
@@ -139,8 +139,8 @@ active_snw_enrichment_wrapper <- function(input_processed, pin_path, gset_list, 
 #' @return Data frame of enrichment results using active subnetwork search results
 single_iter_wrapper <- function(i = NULL, dirs, input_processed, pin_path, score_quan_thr,
                                 sig_gene_thr, search_method, verbose, start_with_all_positives, gene_init_prob,
-                                sa_initial_temp, sa_final_temp, sa_iterations, gaPop, gaIter, gaThread, gaCrossover, gaMut, grMaxDepth,
-                                grSearchDepth, grOverlap, grSubNum, gset_list, adj_method, enrichment_threshold,
+                                sa_initial_temp, sa_final_temp, sa_iterations, ga_population_size, ga_iterations, gaThread, ga_crossover_rate, ga_mutation_rate, gr_max_depth,
+                                gr_search_depth, gr_overlap_threshold, gr_subnetwork_num, gset_list, adj_method, enrichment_threshold,
                                 list_active_snw_genes) {
   snws_file <- "active_snws"
   dir_for_parallel_run <- NULL
@@ -151,13 +151,13 @@ single_iter_wrapper <- function(i = NULL, dirs, input_processed, pin_path, score
   snws <- get_active_subnetworks(
     input_for_search = input_processed, pin_name_path = pin_path,
     score_quan_thr = score_quan_thr,
-    sig_gene_thr = sig_gene_thr, search_method = search_method, seedForRandom = ifelse(is.null(i),
+    sig_gene_thr = sig_gene_thr, search_method = search_method, seed_for_stochastic_methods = ifelse(is.null(i),
       1234, i
     ), verbose = verbose, start_with_all_positives = start_with_all_positives,
     gene_init_prob = ifelse(!is.null(i), gene_init_prob[i], gene_init_prob), sa_initial_temp = sa_initial_temp,
-    sa_final_temp = sa_final_temp, sa_iterations = sa_iterations, gaPop = gaPop, gaIter = gaIter, gaThread = gaThread,
-    gaCrossover = gaCrossover, gaMut = gaMut, grMaxDepth = grMaxDepth, grSearchDepth = grSearchDepth,
-    grOverlap = grOverlap, grSubNum = grSubNum
+    sa_final_temp = sa_final_temp, sa_iterations = sa_iterations, ga_population_size = ga_population_size, ga_iterations = ga_iterations, gaThread = gaThread,
+    ga_crossover_rate = ga_crossover_rate, ga_mutation_rate = ga_mutation_rate, gr_max_depth = gr_max_depth, gr_search_depth = gr_search_depth,
+    gr_overlap_threshold = gr_overlap_threshold, gr_subnetwork_num = gr_subnetwork_num
   )
   enrichment_res <- enrichment_analyses(
     snws = snws, sig_genes_vec = input_processed$GENE,

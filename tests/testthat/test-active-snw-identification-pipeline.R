@@ -99,7 +99,7 @@ test_that("`get_active_subnetworks()` -- results are reproducible", {
     seed <- seed_vals[idx]
     snw_lists[[idx]] <- get_active_subnetworks(
       input_for_search = input_data_frame,
-      seedForRandom = seed
+      seed_for_stochastic_methods = seed
     )
   }
   expect_identical(snw_lists[[1]], snw_lists[[2]])
