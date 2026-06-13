@@ -540,15 +540,15 @@ used to generate KEGG pathway diagrams that are returned as a list of
 <span>  result_df <span class="op">=</span> <span class="va">example_pathfindR_output</span>,</span>
 <span>  input_processed <span class="op">=</span> <span class="va">input_processed</span>,</span>
 <span>  is_KEGG_result <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span>  <span class="co"># this function returns a list of ggraph objects (named by Term ID)</span></span>
+<span><span class="op">)</span> <span class="co"># this function returns a list of ggraph objects (named by Term ID)</span></span>
 <span></span>
 <span><span class="co"># save one of the plots as PDF image</span></span>
 <span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span></span>
-<span>  <span class="st">"hsa04911_diagram.pdf"</span>,   <span class="co"># path to output, format is determined by extension</span></span>
-<span>  <span class="va">gg_list</span><span class="op">$</span><span class="va">hsa04911</span>,         <span class="co"># what to plot</span></span>
-<span>  width <span class="op">=</span> <span class="fl">5</span>,                 <span class="co"># adjust width</span></span>
-<span>  height <span class="op">=</span> <span class="fl">5</span>                <span class="co"># adjust height</span></span>
-<span><span class="op">)</span> </span></code></pre></div>
+<span>  <span class="st">"hsa04911_diagram.pdf"</span>,</span>
+<span>  <span class="va">gg_list</span><span class="op">$</span><span class="va">hsa04911</span>,</span>
+<span>  width <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  height <span class="op">=</span> <span class="fl">5</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>Alternatively (i.e., for other types of non-KEGG enrichment
 analyses), an interaction diagram per enriched term can be generated
 again via <code><a href="../reference/visualize_terms.html">visualize_terms()</a></code>. These diagrams are also
@@ -560,15 +560,15 @@ returned as a list of <code>ggraph</code> objects:</p>
 <span>  input_processed <span class="op">=</span> <span class="va">input_processed</span>,</span>
 <span>  is_KEGG_result <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  pin_name_path <span class="op">=</span> <span class="st">"Biogrid"</span></span>
-<span><span class="op">)</span>  <span class="co"># this function returns a list of ggraph objects (named by Term ID)</span></span>
+<span><span class="op">)</span> <span class="co"># this function returns a list of ggraph objects (named by Term ID)</span></span>
 <span></span>
 <span><span class="co"># save one of the plots as PDF image</span></span>
 <span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span></span>
-<span>  <span class="st">"diabetic_cardiomyopathy_interactions.pdf"</span>,   <span class="co"># path to output, format is determined by extension</span></span>
-<span>  <span class="va">gg_list</span><span class="op">$</span><span class="va">hsa04911</span>,                             <span class="co"># what to plot</span></span>
-<span>  width <span class="op">=</span> <span class="fl">10</span>,                                    <span class="co"># adjust width</span></span>
-<span>  height <span class="op">=</span> <span class="fl">6</span>                                    <span class="co"># adjust height</span></span>
-<span><span class="op">)</span> </span></code></pre></div>
+<span>  <span class="st">"diabetic_cardiomyopathy_interactions.pdf"</span>,</span>
+<span>  <span class="va">gg_list</span><span class="op">$</span><span class="va">hsa04911</span>,</span>
+<span>  width <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  height <span class="op">=</span> <span class="fl">6</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -1111,7 +1111,7 @@ sets:</p>
 <span>  gene_sets <span class="op">=</span> <span class="st">"Custom"</span>,</span>
 <span>  custom_genes <span class="op">=</span> <span class="va">custom_genes</span>,</span>
 <span>  custom_descriptions <span class="op">=</span> <span class="va">custom_descriptions</span>,</span>
-<span>  min_gset_size <span class="op">=</span> <span class="fl">1</span>,   <span class="co"># do not limit the gene set size for demo</span></span>
+<span>  min_gset_size <span class="op">=</span> <span class="fl">1</span>, <span class="co"># do not limit the gene set size for demo</span></span>
 <span>  max_gset_size <span class="op">=</span> <span class="cn">Inf</span>, <span class="co"># do not limit the gene set size for demo</span></span>
 <span><span class="op">)</span></span>
 <span></span>

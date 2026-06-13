@@ -199,23 +199,23 @@ pathfindR Enrichment Workflow
 pathfindR Enrichment Chart
 </figcaption></figure><p>Some useful arguments are:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># set an output directory for saving active subnetworks and creating an HTML report </span></span>
+<code class="sourceCode R"><span><span class="co"># set an output directory for saving active subnetworks and creating an HTML report</span></span>
 <span><span class="co"># (default=NULL, sets a temporary directory)</span></span>
-<span><span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, output_dir<span class="op">=</span><span class="st">"/top/secret/results"</span><span class="op">)</span></span>
+<span><span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, output_dir <span class="op">=</span> <span class="st">"/top/secret/results"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># change the gene sets used for analysis (default="KEGG")</span></span>
-<span><span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, gene_sets<span class="op">=</span><span class="st">"GO-MF"</span><span class="op">)</span></span>
+<span><span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, gene_sets <span class="op">=</span> <span class="st">"GO-MF"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># change the PIN for active subnetwork search (default=Biogrid)</span></span>
-<span><span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, pin_name_path<span class="op">=</span><span class="st">"IntAct"</span><span class="op">)</span></span>
+<span><span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, pin_name_path <span class="op">=</span> <span class="st">"IntAct"</span><span class="op">)</span></span>
 <span><span class="co"># or use an external PIN of your choice</span></span>
-<span><span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, pin_name_path<span class="op">=</span><span class="st">"/path/to/my/PIN.sif"</span><span class="op">)</span></span>
+<span><span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, pin_name_path <span class="op">=</span> <span class="st">"/path/to/my/PIN.sif"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># change the number of iterations (default=10)</span></span>
-<span><span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, iterations<span class="op">=</span><span class="fl">25</span><span class="op">)</span> </span>
+<span><span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, iterations <span class="op">=</span> <span class="fl">25</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># report the non-significant active subnetwork genes (for later analyses)</span></span>
-<span><span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, list_active_snw_genes<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">output_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pathfindr.html">run_pathfindR</a></span><span class="op">(</span><span class="va">input_df</span>, list_active_snw_genes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>The available PINs are “Biogrid”, “STRING”, “GeneMania”, “IntAct”, “KEGG” and “mmu_STRING”. The available gene sets are “KEGG”, “Reactome”, “BioCarta”, “GO-All”, “GO-BP”, “GO-CC”, “GO-MF”, and “mmu_KEGG”. You also use a custom PIN (see <code><a href="reference/return_pin_path.html">?return_pin_path</a></code>) or a custom gene set (see <code><a href="reference/fetch_gene_sets.html">?fetch_gene_sets</a></code>)</p>
 <blockquote>
 <p>As of the latest development version, pathfindR offers utility functions for obtaining organism-specific PIN data (for now, only BioGRID PINs) and organism-specific gene sets (KEGG and Reactome) data via <code><a href="reference/get_pin_file.html">get_pin_file()</a></code> and <code><a href="reference/get_gene_sets_list.html">get_gene_sets_list()</a></code>, respectively.</p>
@@ -231,16 +231,16 @@ pathfindR Enrichment Chart
 <span><span class="va">clustered_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cluster_enriched_terms.html">cluster_enriched_terms</a></span><span class="op">(</span><span class="va">output_df</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># display the heatmap of hierarchical clustering</span></span>
-<span><span class="va">clustered_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cluster_enriched_terms.html">cluster_enriched_terms</a></span><span class="op">(</span><span class="va">output_df</span>, plot_hmap<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">clustered_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cluster_enriched_terms.html">cluster_enriched_terms</a></span><span class="op">(</span><span class="va">output_df</span>, plot_hmap <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># display the dendrogram and automatically-determined clusters</span></span>
-<span><span class="va">clustered_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cluster_enriched_terms.html">cluster_enriched_terms</a></span><span class="op">(</span><span class="va">output_df</span>, plot_dend<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">clustered_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cluster_enriched_terms.html">cluster_enriched_terms</a></span><span class="op">(</span><span class="va">output_df</span>, plot_dend <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># change agglomeration method (default="average") for hierarchical clustering</span></span>
-<span><span class="va">clustered_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cluster_enriched_terms.html">cluster_enriched_terms</a></span><span class="op">(</span><span class="va">output_df</span>, clu_method<span class="op">=</span><span class="st">"centroid"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">clustered_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cluster_enriched_terms.html">cluster_enriched_terms</a></span><span class="op">(</span><span class="va">output_df</span>, clu_method <span class="op">=</span> <span class="st">"centroid"</span><span class="op">)</span></span></code></pre></div>
 <p>Alternatively, the <code>fuzzy</code> clustering method (as described in Huang DW, Sherman BT, Tan Q, et al. The DAVID Gene Functional Classification Tool: a novel biological module-centric algorithm to functionally analyze large gene lists. Genome Biol. 2007;8(9):R183.) can be used:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">clustered_df_fuzzy</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cluster_enriched_terms.html">cluster_enriched_terms</a></span><span class="op">(</span><span class="va">output_df</span>, method<span class="op">=</span><span class="st">"fuzzy"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">clustered_df_fuzzy</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cluster_enriched_terms.html">cluster_enriched_terms</a></span><span class="op">(</span><span class="va">output_df</span>, method <span class="op">=</span> <span class="st">"fuzzy"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level1">
 <h1 id="visualization-of-enrichment-results">Visualization of Enrichment Results<a class="anchor" aria-label="anchor" href="#visualization-of-enrichment-results"></a>
@@ -249,38 +249,40 @@ pathfindR Enrichment Chart
 <h2 id="enriched-term-diagrams">Enriched Term Diagrams<a class="anchor" aria-label="anchor" href="#enriched-term-diagrams"></a>
 </h2>
 <p>For H.sapiens KEGG enrichment analyses, <code><a href="reference/visualize_terms.html">visualize_terms()</a></code> can be used to generate KEGG pathway diagrams as <code>ggraph</code> (inherits from <code>ggplot</code>) objects (using <a href="https://github.com/noriakis/ggkegg" class="external-link"><code>ggkegg</code></a>):</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>input_processed <span class="ot">&lt;-</span> <span class="fu">input_processing</span>(example_pathfindR_input)</span>
-<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>gg_list <span class="ot">&lt;-</span> <span class="fu">visualize_terms</span>(</span>
-<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>  <span class="at">result_df =</span> example_pathfindR_output,</span>
-<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>  <span class="at">input_processed =</span> input_processed,</span>
-<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>  <span class="at">is_KEGG_result =</span> <span class="cn">TRUE</span></span>
-<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a>)  <span class="co"># this function returns a list of ggraph objects (named by Term ID)</span></span>
-<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a></span>
-<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a><span class="co"># save one of the plots as PDF image</span></span>
-<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggsave</span>(</span>
-<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a>  <span class="st">"hsa04911_diagram.pdf"</span>,   <span class="co"># path to output, format is determined by extension</span></span>
-<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a>  gg_list<span class="sc">$</span>hsa04911,         <span class="co"># what to plot</span></span>
-<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a>  <span class="at">width =</span> <span class="dv">5</span>                 <span class="co"># adjust width</span></span>
-<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a>  <span class="at">height =</span> <span class="dv">5</span>                <span class="co"># adjust height</span></span>
-<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a>) </span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">input_processed</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/input_processing.html">input_processing</a></span><span class="op">(</span><span class="va">example_pathfindR_input</span><span class="op">)</span></span>
+<span><span class="va">gg_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/visualize_terms.html">visualize_terms</a></span><span class="op">(</span></span>
+<span>  result_df <span class="op">=</span> <span class="va">example_pathfindR_output</span>,</span>
+<span>  input_processed <span class="op">=</span> <span class="va">input_processed</span>,</span>
+<span>  is_KEGG_result <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span> <span class="co"># this function returns a list of ggraph objects (named by Term ID)</span></span>
+<span></span>
+<span><span class="co"># save one of the plots as PDF image</span></span>
+<span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span></span>
+<span>  <span class="st">"hsa04911_diagram.pdf"</span>,</span>
+<span>  <span class="va">gg_list</span><span class="op">$</span><span class="va">hsa04911</span>,</span>
+<span>  width <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  height <span class="op">=</span> <span class="fl">5</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <figure><img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/example_kegg_pathway_diagram.png?raw=true" alt="KEGG Pathway Diagram"><figcaption aria-hidden="true">
 KEGG Pathway Diagram
 </figcaption></figure><p>Alternatively (i.e., for other types of (non-KEGG) enrichment analyses), an interaction diagram per enriched term can be generated again via <code><a href="reference/visualize_terms.html">visualize_terms()</a></code>. These diagrams are also returned as <code>ggraph</code> objects:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>input_processed <span class="ot">&lt;-</span> <span class="fu">input_processing</span>(example_pathfindR_input)</span>
-<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>gg_list <span class="ot">&lt;-</span> <span class="fu">visualize_terms</span>(</span>
-<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>  <span class="at">result_df =</span> example_pathfindR_output,</span>
-<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>  <span class="at">input_processed =</span> input_processed,</span>
-<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a>  <span class="at">is_KEGG_result =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a>  <span class="at">pin_name_path =</span> <span class="st">"Biogrid"</span></span>
-<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a>)  <span class="co"># this function returns a list of ggraph objects (named by Term ID)</span></span>
-<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a></span>
-<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a><span class="co"># save one of the plots as PDF image</span></span>
-<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggsave</span>(</span>
-<span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a>  <span class="st">"diabetic_cardiomyopathy_interactions.pdf"</span>,   <span class="co"># path to output, format is determined by extension</span></span>
-<span id="cb11-12"><a href="#cb11-12" tabindex="-1"></a>  gg_list<span class="sc">$</span>hsa04911,                             <span class="co"># what to plot</span></span>
-<span id="cb11-13"><a href="#cb11-13" tabindex="-1"></a>  <span class="at">width =</span> <span class="dv">10</span>                                    <span class="co"># adjust width</span></span>
-<span id="cb11-14"><a href="#cb11-14" tabindex="-1"></a>  <span class="at">height =</span> <span class="dv">6</span>                                    <span class="co"># adjust height</span></span>
-<span id="cb11-15"><a href="#cb11-15" tabindex="-1"></a>) </span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">input_processed</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/input_processing.html">input_processing</a></span><span class="op">(</span><span class="va">example_pathfindR_input</span><span class="op">)</span></span>
+<span><span class="va">gg_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/visualize_terms.html">visualize_terms</a></span><span class="op">(</span></span>
+<span>  result_df <span class="op">=</span> <span class="va">example_pathfindR_output</span>,</span>
+<span>  input_processed <span class="op">=</span> <span class="va">input_processed</span>,</span>
+<span>  is_KEGG_result <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  pin_name_path <span class="op">=</span> <span class="st">"Biogrid"</span></span>
+<span><span class="op">)</span> <span class="co"># this function returns a list of ggraph objects (named by Term ID)</span></span>
+<span></span>
+<span><span class="co"># save one of the plots as PDF image</span></span>
+<span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span></span>
+<span>  <span class="st">"diabetic_cardiomyopathy_interactions.pdf"</span>,</span>
+<span>  <span class="va">gg_list</span><span class="op">$</span><span class="va">hsa04911</span>,</span>
+<span>  width <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  height <span class="op">=</span> <span class="fl">6</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <figure><img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/example_interaction_vis.png?raw=true" alt="Interaction Diagram"><figcaption aria-hidden="true">
 Interaction Diagram
 </figcaption></figure>
@@ -323,12 +325,12 @@ Agglomerated Scores for all Enriched Terms per Sample
 <p>The function <code><a href="reference/combine_pathfindR_results.html">combine_pathfindR_results()</a></code> allows combining two pathfindR analysis results for investigating common and distinct terms between the groups. Below is an example for comparing two different results using rheumatoid arthritis-related data.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">combined_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/combine_pathfindR_results.html">combine_pathfindR_results</a></span><span class="op">(</span></span>
-<span>  result_A<span class="op">=</span><span class="va">an_output_df</span>, </span>
-<span>  result_B<span class="op">=</span><span class="va">another_output_df</span></span>
+<span>  result_A <span class="op">=</span> <span class="va">an_output_df</span>,</span>
+<span>  result_B <span class="op">=</span> <span class="va">another_output_df</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>By default, <code><a href="reference/combine_pathfindR_results.html">combine_pathfindR_results()</a></code> plots the term-gene graph for the common terms in the combined results. The function <code><a href="reference/combined_results_graph.html">combined_results_graph()</a></code> can be used to create this graph (using only selected terms etc.) later on.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/combined_results_graph.html">combined_results_graph</a></span><span class="op">(</span><span class="va">combined_df</span>, selected_terms<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hsa04144"</span>, <span class="st">"hsa04141"</span>, <span class="st">"hsa04140"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/combined_results_graph.html">combined_results_graph</a></span><span class="op">(</span><span class="va">combined_df</span>, selected_terms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hsa04144"</span>, <span class="st">"hsa04141"</span>, <span class="st">"hsa04140"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <figure><img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/combined_graph.png?raw=true" title="Combined Results Graph" alt="Combined Results Graph"><figcaption aria-hidden="true">
 Combined Results Graph
 </figcaption></figure>
