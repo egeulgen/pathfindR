@@ -205,7 +205,12 @@
 
   # --- Integer Mapping Initialization ---
   node_map <- stats::setNames(seq_len(n_nodes), nodes)
-  nbr_idx <- lapply(nodes, function(node) unname(node_map[network$nbr[[node]]]))
+  # Only allow neighbors that aren't actively penalizing the subnetwork score
+  nbr_idx <- lapply(seq_len(n_nodes), function(i) {
+    all_nbrs <- unname(node_map[network$nbr[[nodes[i]]]])
+    # Filter out neighbors with terrible z-scores (taken here as z < -1) to prevent searching dead space
+    all_nbrs[sc$z_vec[all_nbrs] > -1.0]
+  })
   sc$z_vec <- as.numeric(sc$z[nodes]) # Faster aligned vector access
 
   # Fast structure to store the best component score seen for each integer node ID
@@ -214,59 +219,82 @@
 
   percent <- 0L
   for (seed_id in seq_len(n_nodes)) {
-    seed_name <- nodes[seed_id]
+    # --- Fast Percentile Seed Selection ---
+    # Target the top 5% highest z-scores (95th percentile)
+    percentile_target <- 0.95
+    z_cutoff <- stats::quantile(sc$z_vec, probs = percentile_target, na.rm = TRUE)
 
-    if (verbose) {
-      new_percent <- (100L * (seed_id - 1L)) %/% n_nodes
-      if (new_percent > percent) {
-        percent <- new_percent
-        message(percent, "% of seeds checked")
+    # Identify seeds matching the threshold
+    promising_seeds <- which(sc$z_vec >= z_cutoff)
+
+    # Safety fallbacks:
+    # 1. Ensure we don't accidentally select thousands of identical zero/negative ties
+    # 2. Ensure we have at least a few seeds if the network is tiny
+    if (length(promising_seeds) > (n_nodes * 0.20)) {
+      # If a massive tie-break group blows past 20% of the network, take a hard top slice instead
+      promising_seeds <- order(sc$z_vec, decreasing = TRUE)[1:as.integer(n_nodes * 0.05)]
+    } else if (length(promising_seeds) < 50L && n_nodes >= 50L) {
+      promising_seeds <- order(sc$z_vec, decreasing = TRUE)[1:50L]
+    }
+
+    percent <- 0L
+    n_seeds <- length(promising_seeds)
+    for (i in seq_along(promising_seeds)) {
+      seed_id <- promising_seeds[i]
+      seed_name <- nodes[seed_id]
+
+      if (verbose) {
+        new_percent <- (100L * (seed_id - 1L)) %/% n_nodes
+        if (new_percent > percent) {
+          percent <- new_percent
+          message(percent, "% of selected seeds checked (", i, "/", n_seeds, ")")
+        }
       }
-    }
 
-    if (max_depth == 0L) {
-      within_vec <- NULL
-    } else {
-      within_vec <- logical(n_nodes)
-      .greedy_init_max_depth_idx(nbr_idx, within_vec, seed_id, max_depth)
-    }
+      if (max_depth == 0L) {
+        within_vec <- NULL
+      } else {
+        within_vec <- logical(n_nodes)
+        .greedy_init_max_depth_idx(nbr_idx, within_vec, seed_id, max_depth)
+      }
 
-    # Tracking states initialized as flat structures
-    comp_state <- list(
-      size = 1L,
-      zsum = sc$z_vec[seed_id],
-      score = .score_subnetwork(sc, 1L, sc$z_vec[seed_id], TRUE),
-      best_score = -Inf
-    )
+      # Tracking states initialized as flat structures
+      comp_state <- list(
+        size = 1L,
+        zsum = sc$z_vec[seed_id],
+        score = .score_subnetwork(sc, 1L, sc$z_vec[seed_id], TRUE),
+        best_score = -Inf
+      )
 
-    comp_members <- logical(n_nodes)
-    comp_members[seed_id] <- TRUE
-    removable_vec <- logical(n_nodes)
-    node2predecessor <- integer(n_nodes)
-    node2dependent_count <- integer(n_nodes)
-    node2dependent_count[seed_id] <- 1L
+      comp_members <- logical(n_nodes)
+      comp_members[seed_id] <- TRUE
+      removable_vec <- logical(n_nodes)
+      node2predecessor <- integer(n_nodes)
+      node2dependent_count <- integer(n_nodes)
+      node2dependent_count[seed_id] <- 1L
 
-    .greedy_expand_idx(
-      nbr_idx, sc, within_vec, search_depth, search_depth,
-      comp_state, comp_members, seed_id, removable_vec,
-      node2predecessor, node2dependent_count
-    )
+      .greedy_expand_idx(
+        nbr_idx, sc, within_vec, search_depth, search_depth,
+        comp_state, comp_members, seed_id, removable_vec,
+        node2predecessor, node2dependent_count
+      )
 
-    .greedy_removal_idx(
-      comp_state, comp_members, removable_vec,
-      node2predecessor, node2dependent_count, sc
-    )
+      .greedy_removal_idx(
+        comp_state, comp_members, removable_vec,
+        node2predecessor, node2dependent_count, sc
+      )
 
-    # If the constructed component beats previous paths holding these nodes, capture it
-    final_nodes_idx <- which(comp_members)
-    final_score <- comp_state$best_score
+      # If the constructed component beats previous paths holding these nodes, capture it
+      final_nodes_idx <- which(comp_members)
+      final_score <- comp_state$best_score
 
-    if (length(final_nodes_idx) > 0L) {
-      comp_obj <- list(nodes = nodes[final_nodes_idx], score = final_score)
-      for (node_idx in final_nodes_idx) {
-        if (best_score_per_node[node_idx] < final_score) {
-          best_score_per_node[node_idx] <- final_score
-          best_comp_per_node[[node_idx]] <- comp_obj
+      if (length(final_nodes_idx) > 0L) {
+        comp_obj <- list(nodes = nodes[final_nodes_idx], score = final_score)
+        for (node_idx in final_nodes_idx) {
+          if (best_score_per_node[node_idx] < final_score) {
+            best_score_per_node[node_idx] <- final_score
+            best_comp_per_node[[node_idx]] <- comp_obj
+          }
         }
       }
     }
