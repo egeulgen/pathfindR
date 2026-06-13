@@ -32,7 +32,7 @@ test_that("`get_active_subnetworks()` -- returns a list object", {
   expect_true(length(snw_list) > 0)
 
   # Expect no active snws
-  mockery::stub(get_active_subnetworks, "filterActiveSnws", NULL)
+  mockery::stub(get_active_subnetworks, "filter_active_subnetworks", NULL)
   expect_message(
     snw_list <- get_active_subnetworks(input_for_search = input_data_frame),
     "Found 0 active subnetworks"

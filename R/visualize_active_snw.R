@@ -1,6 +1,6 @@
 #' Visualize Active Subnetworks
 #'
-#' @inheritParams filterActiveSnws
+#' @inheritParams filter_active_subnetworks
 #' @inheritParams term_gene_heatmap
 #' @inheritParams return_pin_path
 #' @param num_snws number of top subnetworks to be visualized (leave blank if
@@ -36,7 +36,7 @@ visualize_active_subnetworks <- function(active_snws, genes_df, pin_name_path = 
   )
 
   # parse and filter active subnetworks
-  active_snw_list <- filterActiveSnws(
+  active_snw_list <- filter_active_subnetworks(
     active_snws = active_snws, sig_genes_vec = processed_input$GENE,
     score_quan_thr = score_quan_thr, sig_gene_thr = sig_gene_thr
   )

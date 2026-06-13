@@ -25,12 +25,12 @@
 #'   package = "pathfindR"
 #' )
 #' active_snws <- readLines(path2snw_list)
-#' filtered <- filterActiveSnws(
+#' filtered <- filter_active_subnetworks(
 #'   active_snws = active_snws,
 #'   sig_genes_vec = example_pathfindR_input$Gene.symbol
 #' )
-filterActiveSnws <- function(active_snws, sig_genes_vec, score_quan_thr = 0.8,
-                             sig_gene_thr = 0.02) {
+filter_active_subnetworks <- function(active_snws, sig_genes_vec, score_quan_thr = 0.8,
+                                      sig_gene_thr = 0.02) {
   ## Arg. checks
   if (!is.atomic(sig_genes_vec)) {
     stop("`sig_genes_vec` should be a vector")

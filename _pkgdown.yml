@@ -53,7 +53,7 @@ reference:
       - enrichment
       - enrichment_analyses
       - fetch_gene_sets
-      - filterActiveSnws
+      - filter_active_subnetworks
       - hyperg_test
       - input_processing
       - input_testing

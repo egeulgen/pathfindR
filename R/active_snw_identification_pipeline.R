@@ -13,7 +13,7 @@
 #' \strong{without file extension} (default = 'active_snws')
 #' @param dir_for_parallel_run (previously created) directory for a parallel run iteration.
 #' Used in the wrapper function (see ?run_pathfindR) (Default = NULL)
-#' @inheritParams filterActiveSnws
+#' @inheritParams filter_active_subnetworks
 #' @param search_method algorithm to use when performing active subnetwork
 #'  search. Options are greedy search (GR), simulated annealing (SA) or genetic
 #'  algorithm (GA) for the search (default = 'GR').
@@ -152,7 +152,7 @@ get_active_subnetworks <- function(
   output <- readLines(snws_file)
 
   ############ Parse and filter active subnetworks
-  filtered_snws <- filterActiveSnws(
+  filtered_snws <- filter_active_subnetworks(
     active_snws = output, sig_genes_vec = input_for_search$GENE,
     score_quan_thr = score_quan_thr, sig_gene_thr = sig_gene_thr
   )

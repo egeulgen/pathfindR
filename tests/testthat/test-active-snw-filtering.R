@@ -7,8 +7,8 @@ example_snw_output <- system.file("extdata", "resultActiveSubnetworkSearch.txt",
 )
 example_snws <- readLines(example_snw_output)
 
-test_that("`filterActiveSnws()` -- returns expected list object", {
-  snws_filtered <- filterActiveSnws(active_snws = example_snws, sig_genes_vec = input_data_frame$GENE)
+test_that("`filter_active_subnetworks()` -- returns expected list object", {
+  snws_filtered <- filter_active_subnetworks(active_snws = example_snws, sig_genes_vec = input_data_frame$GENE)
   expect_is(snws_filtered, "list")
   expect_length(snws_filtered, 2)
   expect_is(snws_filtered$subnetworks, "list")
@@ -19,18 +19,18 @@ test_that("`filterActiveSnws()` -- returns expected list object", {
 
   # empty file case
   empty_snws <- list()
-  expect_null(suppressWarnings(filterActiveSnws(active_snws = empty_snws, sig_genes_vec = input_data_frame$GENE)))
+  expect_null(suppressWarnings(filter_active_subnetworks(active_snws = empty_snws, sig_genes_vec = input_data_frame$GENE)))
 })
 
-test_that("`filterActiveSnws()` -- `score_quan_thr` works", {
-  snws_filtered <- filterActiveSnws(
+test_that("`filter_active_subnetworks()` -- `score_quan_thr` works", {
+  snws_filtered <- filter_active_subnetworks(
     active_snws = example_snws, sig_genes_vec = example_pathfindR_input$Gene.symbol,
     score_quan_thr = -1, sig_gene_thr = 0
   )
   expect_length(snws_filtered$subnetworks, example_snws_len)
 
   for (q_thr in seq(0.1, 1, by = 0.1)) {
-    snws_filtered <- filterActiveSnws(
+    snws_filtered <- filter_active_subnetworks(
       active_snws = example_snws, sig_genes_vec = example_pathfindR_input$Gene.symbol,
       score_quan_thr = q_thr, sig_gene_thr = 0
     )
@@ -39,12 +39,12 @@ test_that("`filterActiveSnws()` -- `score_quan_thr` works", {
   }
 })
 
-test_that("`filterActiveSnws()` -- `sig_gene_thr` works", {
-  snws_filtered1 <- filterActiveSnws(
+test_that("`filter_active_subnetworks()` -- `sig_gene_thr` works", {
+  snws_filtered1 <- filter_active_subnetworks(
     active_snws = example_snws, sig_genes_vec = example_pathfindR_input$Gene.symbol,
     sig_gene_thr = 0.02, score_quan_thr = -1
   )
-  snws_filtered2 <- filterActiveSnws(
+  snws_filtered2 <- filter_active_subnetworks(
     active_snws = example_snws, sig_genes_vec = example_pathfindR_input$Gene.symbol,
     sig_gene_thr = 0.1, score_quan_thr = -1
   )
@@ -53,30 +53,30 @@ test_that("`filterActiveSnws()` -- `sig_gene_thr` works", {
   expect_true(length(snws_filtered1$subnetworks) > length(snws_filtered2$subnetworks))
 })
 
-test_that("`filterActiveSnws()` -- argument checks work", {
+test_that("`filter_active_subnetworks()` -- argument checks work", {
   expect_error(
-    filterActiveSnws(active_snws = example_snws, sig_genes_vec = list()),
+    filter_active_subnetworks(active_snws = example_snws, sig_genes_vec = list()),
     "`sig_genes_vec` should be a vector"
   )
 
-  expect_error(filterActiveSnws(
+  expect_error(filter_active_subnetworks(
     active_snws = example_snws, sig_genes_vec = example_pathfindR_input$Gene.symbol,
     score_quan_thr = "INVALID"
   ), "`score_quan_thr` should be numeric")
-  expect_error(filterActiveSnws(
+  expect_error(filter_active_subnetworks(
     active_snws = example_snws, sig_genes_vec = example_pathfindR_input$Gene.symbol,
     score_quan_thr = -2
   ), "`score_quan_thr` should be in \\[0, 1\\] or -1 \\(if not filtering\\)")
-  expect_error(filterActiveSnws(
+  expect_error(filter_active_subnetworks(
     active_snws = example_snws, sig_genes_vec = example_pathfindR_input$Gene.symbol,
     score_quan_thr = 2
   ), "`score_quan_thr` should be in \\[0, 1\\] or -1 \\(if not filtering\\)")
 
-  expect_error(filterActiveSnws(
+  expect_error(filter_active_subnetworks(
     active_snws = example_snws, sig_genes_vec = example_pathfindR_input$Gene.symbol,
     sig_gene_thr = "INVALID"
   ), "`sig_gene_thr` should be numeric")
-  expect_error(filterActiveSnws(
+  expect_error(filter_active_subnetworks(
     active_snws = example_snws, sig_genes_vec = example_pathfindR_input$Gene.symbol,
     sig_gene_thr = -1
   ), "`sig_gene_thr` should be in \\[0, 1\\]")
