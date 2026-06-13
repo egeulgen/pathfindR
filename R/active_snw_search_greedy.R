@@ -6,129 +6,129 @@
 # by score, size and mutual overlap.
 # =============================================================================
 
-#' Mark every node within \code{depth} hops of \code{current}
+#' Mark every node within \code{depth} hops of \code{current} using integer IDs
 #'
-#' Populates the \code{within} environment (used as a hash set) with the names
-#' of nodes that lie within the allowed depth of the starting node.
-#'
-#' @param network A network from \code{.build_network()}.
-#' @param within An environment used as a set of reachable node names.
-#' @param current The node currently being expanded.
+#' @param nbr_idx A list of integer vectors representing node neighbors.
+#' @param within_vec A logical vector acting as a set of reachable node IDs.
+#' @param current The integer node ID currently being expanded.
 #' @param depth Remaining depth budget.
 #'
-#' @return Invisibly \code{NULL}; \code{within} is modified in place.
-.greedy_init_max_depth <- function(network, within, current, depth) {
-  assign(current, TRUE, envir = within)
+#' @return Invisibly \code{NULL}; \code{within_vec} is modified in place via assignment.
+.greedy_init_max_depth_idx <- function(nbr_idx, within_vec, current, depth) {
+  within_vec[current] <<- TRUE
   if (depth > 0) {
-    for (nb in network$nbr[[current]]) {
-      if (!exists(nb, envir = within, inherits = FALSE)) {
-        .greedy_init_max_depth(network, within, nb, depth - 1L)
+    for (nb in nbr_idx[[current]]) {
+      if (!within_vec[nb]) {
+        .greedy_init_max_depth_idx(nbr_idx, within_vec, nb, depth - 1L)
       }
     }
   }
   invisible(NULL)
 }
 
-#' Recursive greedy expansion of a component
+#' Recursive greedy expansion of a component using flat vectors
 #'
-#' Adds neighbouring nodes as long as doing so improves the best score seen
-#' from the current starting point; the search depth is refreshed each time an
-#' improvement is found.
-#'
-#' @param network A network from \code{.build_network()}.
-#' @param gs A greedy-state environment holding \code{bestScore},
-#'   \code{node2Predecessor} and \code{node2DependentCount}.
-#' @param within Either \code{NULL} (no depth limit) or an environment of nodes
-#'   within the allowed depth.
+#' @param nbr_idx A list of integer vectors of neighbors.
+#' @param sc A score context.
+#' @param within_vec Either NULL or a logical vector of allowed nodes.
 #' @param search_depth The depth budget restored on every improvement.
 #' @param depth The remaining depth budget.
-#' @param comp A mutable component environment.
-#' @param last_added The node added most recently.
-#' @param removable An environment used as a set of removable nodes.
+#' @param comp_state A list environment holding mutable running state:
+#'   \code{size}, \code{zsum}, \code{score}, and \code{best_score}.
+#' @param comp_members A logical vector tracking if a node ID is in the component.
+#' @param last_added The integer node ID added most recently.
+#' @param removable_vec A logical vector acting as a set of removable node IDs.
+#' @param node2predecessor An integer vector tracking the path.
+#' @param node2dependent_count An integer vector tracking dependency counts.
 #'
 #' @return Logical; whether the best score improved on this branch.
-.greedy_expand <- function(network, gs, within, search_depth, depth,
-                           comp, last_added, removable) {
+.greedy_expand_idx <- function(nbr_idx, sc, within_vec, search_depth, depth,
+                               comp_state, comp_members, last_added, removable_vec,
+                               node2predecessor, node2dependent_count) {
   improved <- FALSE
 
-  if (comp$score > gs$bestScore) {
+  if (comp_state$score > comp_state$best_score) {
     depth <- search_depth
     improved <- TRUE
-    gs$bestScore <- comp$score
+    comp_state$best_score <- comp_state$score
   }
 
   if (depth > 0) {
     any_improved <- FALSE
-    if (exists(last_added, envir = removable, inherits = FALSE)) {
-      rm(list = last_added, envir = removable)
-    }
+    removable_vec[last_added] <- FALSE
     dependent_count <- 0L
 
-    for (new_neighbor in network$nbr[[last_added]]) {
-      within_ok <- is.null(within) ||
-        exists(new_neighbor, envir = within, inherits = FALSE)
-      if (within_ok && !.component_contains(comp, new_neighbor)) {
-        .component_add(comp, new_neighbor)
-        assign(new_neighbor, TRUE, envir = removable)
+    for (new_neighbor in nbr_idx[[last_added]]) {
+      within_ok <- is.null(within_vec) || within_vec[new_neighbor]
+      if (within_ok && !comp_members[new_neighbor]) {
+        # Inlined component add step
+        comp_state$size <- comp_state$size + 1L
+        comp_members[new_neighbor] <- TRUE
+        comp_state$zsum <- comp_state$zsum + sc$z_vec[new_neighbor]
+        comp_state$score <- .score_subnetwork(sc, comp_state$size, comp_state$zsum, TRUE)
+        removable_vec[new_neighbor] <- TRUE
 
-        this_improved <- .greedy_expand(
-          network, gs, within, search_depth,
-          depth - 1L, comp, new_neighbor,
-          removable
+        this_improved <- .greedy_expand_idx(
+          nbr_idx, sc, within_vec, search_depth, depth - 1L,
+          comp_state, comp_members, new_neighbor, removable_vec,
+          node2predecessor, node2dependent_count
         )
+
         if (!this_improved) {
-          .component_remove(comp, new_neighbor)
-          if (exists(new_neighbor, envir = removable, inherits = FALSE)) {
-            rm(list = new_neighbor, envir = removable)
-          }
+          # Inlined component remove step
+          comp_state$size <- comp_state$size - 1L
+          comp_members[new_neighbor] <- FALSE
+          comp_state$zsum <- comp_state$zsum - sc$z_vec[new_neighbor]
+          comp_state$score <- .score_subnetwork(sc, comp_state$size, comp_state$zsum, TRUE)
+          removable_vec[new_neighbor] <- FALSE
         } else {
           dependent_count <- dependent_count + 1L
           any_improved <- TRUE
-          assign(new_neighbor, last_added, envir = gs$node2Predecessor)
+          node2predecessor[new_neighbor] <- last_added
         }
       }
     }
 
     improved <- improved || any_improved
     if (dependent_count > 0L) {
-      if (exists(last_added, envir = removable, inherits = FALSE)) {
-        rm(list = last_added, envir = removable)
-      }
-      assign(last_added, dependent_count, envir = gs$node2DependentCount)
+      removable_vec[last_added] <- FALSE
+      node2dependent_count[last_added] <- dependent_count
     }
   }
 
   improved
 }
 
-#' Greedy removal pass
-#'
-#' Tries to remove each removable node; a removal is accepted when it improves
-#' the best score, otherwise the node is put back.
-#'
-#' @param gs A greedy-state environment.
-#' @param comp A mutable component environment.
-#' @param removable An environment used as a set of removable nodes.
+#' Greedy removal pass using vector indexing
 #'
 #' @return Invisibly \code{NULL}.
-.greedy_removal <- function(gs, comp, removable) {
-  snapshot <- ls(removable)
+.greedy_removal_idx <- function(comp_state, comp_members, removable_vec,
+                                node2predecessor, node2dependent_count, sc) {
+  snapshot <- which(removable_vec)
   for (current in snapshot) {
-    .component_remove(comp, current)
-    score <- comp$score
-    if (score > gs$bestScore) {
-      gs$bestScore <- score
-      if (exists(current, envir = gs$node2Predecessor, inherits = FALSE)) {
-        predecessor <- get(current, envir = gs$node2Predecessor)
-        dependent_count <- get(predecessor, envir = gs$node2DependentCount) - 1L
-        if (dependent_count == 0L) {
-          assign(predecessor, TRUE, envir = removable)
+    # Inlined component remove step
+    comp_state$size <- comp_state$size - 1L
+    comp_members[current] <- FALSE
+    comp_state$zsum <- comp_state$zsum - sc$z_vec[current]
+    comp_state$score <- .score_subnetwork(sc, comp_state$size, comp_state$zsum, TRUE)
+
+    if (comp_state$score > comp_state$best_score) {
+      comp_state$best_score <- comp_state$score
+      predecessor <- node2predecessor[current]
+      if (predecessor > 0L) {
+        dep_count <- node2dependent_count[predecessor] - 1L
+        if (dep_count == 0L) {
+          removable_vec[predecessor] <- TRUE
         } else {
-          assign(predecessor, dependent_count, envir = gs$node2DependentCount)
+          node2dependent_count[predecessor] <- dep_count
         }
       }
     } else {
-      .component_add(comp, current)
+      # Inlined component put back step
+      comp_state$size <- comp_state$size + 1L
+      comp_members[current] <- TRUE
+      comp_state$zsum <- comp_state$zsum + sc$z_vec[current]
+      comp_state$score <- .score_subnetwork(sc, comp_state$size, comp_state$zsum, TRUE)
     }
   }
   invisible(NULL)
@@ -140,39 +140,44 @@
 #' subnetwork whose overlap with a kept one exceeds the threshold, up to a
 #' maximum number of results.
 #'
-#' @param comps A score-sorted list of subnetwork objects.
-#' @param overlap_threshold Overlap above which a subnetwork is discarded.
-#' @param subnetwork_num Maximum number of subnetworks to keep.
-#'
-#' @return A filtered list of subnetwork objects.
+#' @param comps components
+#' @param ovelap_threshold overlap threshold
+#' @param subnetwork_num number of subnetworks
+#' @return filtered components
 .greedy_filter <- function(comps, overlap_threshold, subnetwork_num) {
   n <- length(comps)
   if (n == 0L) {
     return(list())
   }
 
+  node_lists <- lapply(comps, function(s) s$nodes)
+  all_nodes <- unique(unlist(node_lists, use.names = FALSE))
+  id_map <- stats::setNames(seq_along(all_nodes), all_nodes)
+  ids <- lapply(node_lists, function(ns) unname(id_map[ns]))
+  sizes <- lengths(ids)
+
+  mark <- logical(length(all_nodes))
   to_delete <- logical(n)
-  filtered <- list()
+  filtered <- vector("list", 0L)
 
   i <- 1L
   while (i < n && length(filtered) < subnetwork_num) {
     if (!to_delete[i]) {
-      s1 <- comps[[i]]
-      s1_nodes <- s1$nodes
-      s1_size <- length(s1_nodes)
-      filtered[[length(filtered) + 1L]] <- s1
+      s1_ids <- ids[[i]]
+      s1_size <- sizes[i]
+      filtered[[length(filtered) + 1L]] <- comps[[i]]
 
+      mark[s1_ids] <- TRUE
       for (j in (i + 1L):n) {
         if (!to_delete[j]) {
-          s2 <- comps[[j]]
-          common <- length(intersect(s1_nodes, s2$nodes))
-          size <- min(s1_size, length(s2$nodes))
-          overlap <- common / size
-          if (overlap > overlap_threshold) {
+          common <- sum(mark[ids[[j]]])
+          size <- if (s1_size < sizes[j]) s1_size else sizes[j]
+          if (common / size > overlap_threshold) {
             to_delete[j] <- TRUE
           }
         }
       }
+      mark[s1_ids] <- FALSE
     }
     i <- i + 1L
   }
@@ -198,14 +203,21 @@
   max_depth <- params$gr_max_depth
   search_depth <- params$gr_search_depth
 
-  node2best <- new.env(parent = emptyenv())
+  # --- Integer Mapping Initialization ---
+  node_map <- stats::setNames(seq_len(n_nodes), nodes)
+  nbr_idx <- lapply(nodes, function(node) unname(node_map[network$nbr[[node]]]))
+  sc$z_vec <- as.numeric(sc$z[nodes]) # Faster aligned vector access
+
+  # Fast structure to store the best component score seen for each integer node ID
+  best_score_per_node <- rep(-Inf, n_nodes)
+  best_comp_per_node <- vector("list", n_nodes)
 
   percent <- 0L
-  for (node_no in seq_len(n_nodes)) {
-    seed <- nodes[node_no]
+  for (seed_id in seq_len(n_nodes)) {
+    seed_name <- nodes[seed_id]
 
     if (verbose) {
-      new_percent <- (100L * (node_no - 1L)) %/% n_nodes
+      new_percent <- (100L * (seed_id - 1L)) %/% n_nodes
       if (new_percent > percent) {
         percent <- new_percent
         message(percent, "% of seeds checked")
@@ -213,48 +225,58 @@
     }
 
     if (max_depth == 0L) {
-      within <- NULL
+      within_vec <- NULL
     } else {
-      within <- new.env(parent = emptyenv())
-      .greedy_init_max_depth(network, within, seed, max_depth)
+      within_vec <- logical(n_nodes)
+      .greedy_init_max_depth_idx(nbr_idx, within_vec, seed_id, max_depth)
     }
 
-    comp <- .component_new(sc, seed)
-    gs <- new.env(parent = emptyenv())
-    gs$bestScore <- -Inf
-    gs$node2Predecessor <- new.env(parent = emptyenv())
-    gs$node2DependentCount <- new.env(parent = emptyenv())
-    assign(seed, 1L, envir = gs$node2DependentCount)
-    removable <- new.env(parent = emptyenv())
-
-    .greedy_expand(
-      network, gs, within, search_depth, search_depth,
-      comp, seed, removable
+    # Tracking states initialized as flat structures
+    comp_state <- list(
+      size = 1L,
+      zsum = sc$z_vec[seed_id],
+      score = .score_subnetwork(sc, 1L, sc$z_vec[seed_id], TRUE),
+      best_score = -Inf
     )
-    .greedy_removal(gs, comp, removable)
 
-    comp_nodes <- comp$nodes
-    comp_score <- comp$score
-    for (node in comp_nodes) {
-      old <- if (exists(node, envir = node2best, inherits = FALSE)) {
-        get(node, envir = node2best)
-      } else {
-        NULL
-      }
-      if (is.null(old) || old$score < comp_score) {
-        assign(node, list(nodes = comp_nodes, score = comp_score),
-          envir = node2best
-        )
+    comp_members <- logical(n_nodes)
+    comp_members[seed_id] <- TRUE
+    removable_vec <- logical(n_nodes)
+    node2predecessor <- integer(n_nodes)
+    node2dependent_count <- integer(n_nodes)
+    node2dependent_count[seed_id] <- 1L
+
+    .greedy_expand_idx(
+      nbr_idx, sc, within_vec, search_depth, search_depth,
+      comp_state, comp_members, seed_id, removable_vec,
+      node2predecessor, node2dependent_count
+    )
+
+    .greedy_removal_idx(
+      comp_state, comp_members, removable_vec,
+      node2predecessor, node2dependent_count, sc
+    )
+
+    # If the constructed component beats previous paths holding these nodes, capture it
+    final_nodes_idx <- which(comp_members)
+    final_score <- comp_state$best_score
+
+    if (length(final_nodes_idx) > 0L) {
+      comp_obj <- list(nodes = nodes[final_nodes_idx], score = final_score)
+      for (node_idx in final_nodes_idx) {
+        if (best_score_per_node[node_idx] < final_score) {
+          best_score_per_node[node_idx] <- final_score
+          best_comp_per_node[[node_idx]] <- comp_obj
+        }
       }
     }
   }
   if (verbose) message("100%")
 
-  keys <- ls(node2best)
-  comps <- lapply(keys, function(k) get(k, envir = node2best))
+  # Extract valid components and clean up null items
+  comps <- best_comp_per_node[!vapply(best_comp_per_node, is.null, logical(1))]
 
-  # collapse identical components (the same component is referenced by each
-  # of its member nodes)
+  # Collapse identical components
   if (length(comps) > 0L) {
     sig <- vapply(
       comps,

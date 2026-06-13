@@ -7,14 +7,14 @@
 .greedy_filter(comps, overlap_threshold, subnetwork_num)
 }
 \arguments{
-\item{comps}{A score-sorted list of subnetwork objects.}
+\item{comps}{components}
 
-\item{overlap_threshold}{Overlap above which a subnetwork is discarded.}
+\item{subnetwork_num}{number of subnetworks}
 
-\item{subnetwork_num}{Maximum number of subnetworks to keep.}
+\item{ovelap_threshold}{overlap threshold}
 }
 \value{
-A filtered list of subnetwork objects.
+filtered components
 }
 \description{
 Walks the score-sorted list keeping a subnetwork and discarding any later
