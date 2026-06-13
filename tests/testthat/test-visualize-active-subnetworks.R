@@ -1,7 +1,8 @@
 input_data_frame <- example_pathfindR_input[1:10, c(1, 3)]
 
 example_snw_output <- system.file("extdata", "resultActiveSubnetworkSearch.txt",
-                                  package = "pathfindR")
+  package = "pathfindR"
+)
 example_snws_len <- 1000
 
 test_that("`visualize_active_subnetworks()` -- returns list of ggraph objects", {
@@ -19,7 +20,8 @@ test_that("`visualize_active_subnetworks()` -- returns list of ggraph objects", 
 
   # set `num_snws` to larger than actual number
   g_list <- visualize_active_subnetworks(example_snw_output, input_data_frame,
-                                         num_snws = 21)
+    num_snws = 21
+  )
   expect_is(g_list, "list")
   expect_is(g_list[[1]], "ggraph")
   expect_length(g_list, 13)

@@ -20,92 +20,95 @@
 #' sub_df <- example_pathfindR_output[1:3, ]
 #' create_kappa_matrix(sub_df)
 create_kappa_matrix <- function(enrichment_res, use_description = FALSE, use_active_snw_genes = FALSE) {
-    ### Argument checks
-    if (!is.logical(use_description)) {
-        stop("`use_description` should be TRUE or FALSE")
+  ### Argument checks
+  if (!is.logical(use_description)) {
+    stop("`use_description` should be TRUE or FALSE")
+  }
+
+  if (!is.logical(use_active_snw_genes)) {
+    stop("`use_active_snw_genes` should be TRUE or FALSE")
+  }
+
+  if (!is.data.frame(enrichment_res)) {
+    stop("`enrichment_res` should be a data frame of enrichment results")
+  }
+  if (nrow(enrichment_res) < 2) {
+    stop("`enrichment_res` should contain at least 2 rows")
+  }
+
+  nec_cols <- c("Down_regulated", "Up_regulated")
+  if (use_description) {
+    nec_cols <- c("Term_Description", nec_cols)
+  } else {
+    nec_cols <- c("ID", nec_cols)
+  }
+  if (use_active_snw_genes) {
+    nec_cols <- c(nec_cols, "non_Signif_Snw_Genes")
+  }
+
+  if (!all(nec_cols %in% colnames(enrichment_res))) {
+    stop("`enrichment_res` should contain all of ", paste(dQuote(nec_cols), collapse = ", "))
+  }
+
+  ### Initial steps Column to use for gene set names
+  chosen_id <- ifelse(use_description, which(colnames(enrichment_res) == "Term_Description"),
+    which(colnames(enrichment_res) == "ID")
+  )
+
+  # list of genes
+  down_idx <- which(colnames(enrichment_res) == "Down_regulated")
+  up_idx <- which(colnames(enrichment_res) == "Up_regulated")
+
+  genes_lists <- apply(enrichment_res, 1, function(x) {
+    base::toupper(c(unlist(strsplit(as.character(x[up_idx]), ", ")), unlist(strsplit(
+      as.character(x[down_idx]),
+      ", "
+    ))))
+  })
+
+  if (use_active_snw_genes) {
+    active_idx <- which(colnames(enrichment_res) == "non_Signif_Snw_Genes")
+
+    genes_lists <- mapply(function(x, y) {
+      c(x, unlist(strsplit(as.character(y), ", ")))
+    }, genes_lists, enrichment_res[, active_idx])
+  }
+
+  # Exclude zero-length gene sets
+  excluded_idx <- which(vapply(genes_lists, length, 1) == 0)
+  if (length(excluded_idx) != 0) {
+    genes_lists <- genes_lists[-excluded_idx]
+    enrichment_res <- enrichment_res[-excluded_idx, ]
+  }
+
+  ### Create Kappa Matrix
+  all_genes <- unique(unlist(genes_lists, use.names = FALSE))
+  N <- nrow(enrichment_res)
+  term_names <- enrichment_res[, chosen_id]
+
+  kappa_mat <- matrix(0, nrow = N, ncol = N, dimnames = list(term_names, term_names))
+  diag(kappa_mat) <- 1
+
+  total <- length(all_genes)
+  for (i in 1:(N - 1)) {
+    for (j in (i + 1):N) {
+      genes_i <- genes_lists[[i]]
+      genes_j <- genes_lists[[j]]
+
+      both <- length(intersect(genes_i, genes_j))
+      term_i <- length(base::setdiff(genes_i, genes_j))
+      term_j <- length(base::setdiff(genes_j, genes_i))
+      no_terms <- total - sum(both, term_i, term_j)
+
+      observed <- (both + no_terms) / total
+      chance <- (both + term_i) * (both + term_j)
+      chance <- chance + (term_j + no_terms) * (term_i + no_terms)
+      chance <- chance / total^2
+      kappa_mat[j, i] <- kappa_mat[i, j] <- (observed - chance) / (1 - chance)
     }
-
-    if (!is.logical(use_active_snw_genes)) {
-        stop("`use_active_snw_genes` should be TRUE or FALSE")
-    }
-
-    if (!is.data.frame(enrichment_res)) {
-        stop("`enrichment_res` should be a data frame of enrichment results")
-    }
-    if (nrow(enrichment_res) < 2) {
-        stop("`enrichment_res` should contain at least 2 rows")
-    }
-
-    nec_cols <- c("Down_regulated", "Up_regulated")
-    if (use_description) {
-        nec_cols <- c("Term_Description", nec_cols)
-    } else {
-        nec_cols <- c("ID", nec_cols)
-    }
-    if (use_active_snw_genes) {
-        nec_cols <- c(nec_cols, "non_Signif_Snw_Genes")
-    }
-
-    if (!all(nec_cols %in% colnames(enrichment_res))) {
-        stop("`enrichment_res` should contain all of ", paste(dQuote(nec_cols), collapse = ", "))
-    }
-
-    ### Initial steps Column to use for gene set names
-    chosen_id <- ifelse(use_description, which(colnames(enrichment_res) == "Term_Description"),
-        which(colnames(enrichment_res) == "ID"))
-
-    # list of genes
-    down_idx <- which(colnames(enrichment_res) == "Down_regulated")
-    up_idx <- which(colnames(enrichment_res) == "Up_regulated")
-
-    genes_lists <- apply(enrichment_res, 1, function(x) {
-        base::toupper(c(unlist(strsplit(as.character(x[up_idx]), ", ")), unlist(strsplit(as.character(x[down_idx]),
-            ", "))))
-    })
-
-    if (use_active_snw_genes) {
-        active_idx <- which(colnames(enrichment_res) == "non_Signif_Snw_Genes")
-
-        genes_lists <- mapply(function(x, y) {
-            c(x, unlist(strsplit(as.character(y), ", ")))
-        }, genes_lists, enrichment_res[, active_idx])
-    }
-
-    # Exclude zero-length gene sets
-    excluded_idx <- which(vapply(genes_lists, length, 1) == 0)
-    if (length(excluded_idx) != 0) {
-        genes_lists <- genes_lists[-excluded_idx]
-        enrichment_res <- enrichment_res[-excluded_idx, ]
-    }
-
-    ### Create Kappa Matrix
-    all_genes <- unique(unlist(genes_lists, use.names = FALSE))
-    N <- nrow(enrichment_res)
-    term_names <- enrichment_res[, chosen_id]
-
-    kappa_mat <- matrix(0, nrow = N, ncol = N, dimnames = list(term_names, term_names))
-    diag(kappa_mat) <- 1
-
-    total <- length(all_genes)
-    for (i in 1:(N - 1)) {
-        for (j in (i + 1):N) {
-            genes_i <- genes_lists[[i]]
-            genes_j <- genes_lists[[j]]
-
-            both <- length(intersect(genes_i, genes_j))
-            term_i <- length(base::setdiff(genes_i, genes_j))
-            term_j <- length(base::setdiff(genes_j, genes_i))
-            no_terms <- total - sum(both, term_i, term_j)
-
-            observed <- (both + no_terms)/total
-            chance <- (both + term_i) * (both + term_j)
-            chance <- chance + (term_j + no_terms) * (term_i + no_terms)
-            chance <- chance/total^2
-            kappa_mat[j, i] <- kappa_mat[i, j] <- (observed - chance)/(1 - chance)
-        }
-    }
-    kappa_mat[is.na(kappa_mat)] <- 0
-    return(kappa_mat)
+  }
+  kappa_mat[is.na(kappa_mat)] <- 0
+  return(kappa_mat)
 }
 
 
@@ -137,87 +140,101 @@ create_kappa_matrix <- function(enrichment_res, use_description = FALSE, use_act
 #' @examples
 #' \dontrun{
 #' hierarchical_term_clustering(kappa_mat, enrichment_res)
-#' hierarchical_term_clustering(kappa_mat, enrichment_res, method = 'complete')
+#' hierarchical_term_clustering(kappa_mat, enrichment_res, method = "complete")
 #' }
-hierarchical_term_clustering <- function(kappa_mat, enrichment_res, num_clusters = NULL,
-    use_description = FALSE, clu_method = "average", plot_hmap = FALSE, plot_dend = TRUE) {
-    ### Set ID/Name index
-    chosen_id <- ifelse(use_description, which(colnames(enrichment_res) == "Term_Description"),
-        which(colnames(enrichment_res) == "ID"))
+hierarchical_term_clustering <- function(
+  kappa_mat, enrichment_res, num_clusters = NULL,
+  use_description = FALSE, clu_method = "average", plot_hmap = FALSE, plot_dend = TRUE
+) {
+  ### Set ID/Name index
+  chosen_id <- ifelse(use_description, which(colnames(enrichment_res) == "Term_Description"),
+    which(colnames(enrichment_res) == "ID")
+  )
 
-    ### Argument checks
-    if (!isSymmetric.matrix(kappa_mat)) {
-        stop("`kappa_mat` should be a symmetric matrix")
-    }
+  ### Argument checks
+  if (!isSymmetric.matrix(kappa_mat)) {
+    stop("`kappa_mat` should be a symmetric matrix")
+  }
 
-    if (!all(colnames(kappa_mat) %in% enrichment_res[, chosen_id])) {
-        stop("All terms in `kappa_mat` should be present in `enrichment_res`")
-    }
+  if (!all(colnames(kappa_mat) %in% enrichment_res[, chosen_id])) {
+    stop("All terms in `kappa_mat` should be present in `enrichment_res`")
+  }
 
-    if (!is.logical(plot_hmap)) {
-        stop("`plot_hmap` should be TRUE or FALSE")
-    }
+  if (!is.logical(plot_hmap)) {
+    stop("`plot_hmap` should be TRUE or FALSE")
+  }
 
-    if (!is.logical(plot_dend)) {
-        stop("`plot_dend` should be TRUE or FALSE")
-    }
+  if (!is.logical(plot_dend)) {
+    stop("`plot_dend` should be TRUE or FALSE")
+  }
 
-    ### Add excluded (zero-length) genes
-    kappa_mat2 <- kappa_mat
-    cond <- !enrichment_res[, chosen_id] %in% rownames(kappa_mat2)
-    outliers <- enrichment_res[cond, chosen_id]
-    outliers_mat <- matrix(-1, nrow = nrow(kappa_mat2), ncol = length(outliers),
-        dimnames = list(rownames(kappa_mat2), outliers))
-    kappa_mat2 <- cbind(kappa_mat2, outliers_mat)
-    outliers_mat <- matrix(-1, nrow = length(outliers), ncol = ncol(kappa_mat2),
-        dimnames = list(outliers, colnames(kappa_mat2)))
-    kappa_mat2 <- rbind(kappa_mat2, outliers_mat)
+  ### Add excluded (zero-length) genes
+  kappa_mat2 <- kappa_mat
+  cond <- !enrichment_res[, chosen_id] %in% rownames(kappa_mat2)
+  outliers <- enrichment_res[cond, chosen_id]
+  outliers_mat <- matrix(-1,
+    nrow = nrow(kappa_mat2), ncol = length(outliers),
+    dimnames = list(rownames(kappa_mat2), outliers)
+  )
+  kappa_mat2 <- cbind(kappa_mat2, outliers_mat)
+  outliers_mat <- matrix(-1,
+    nrow = length(outliers), ncol = ncol(kappa_mat2),
+    dimnames = list(outliers, colnames(kappa_mat2))
+  )
+  kappa_mat2 <- rbind(kappa_mat2, outliers_mat)
 
-    ### Perform hierarchical clustering
-    clu <- stats::hclust(stats::as.dist(1 - kappa_mat2), method = clu_method)
+  ### Perform hierarchical clustering
+  clu <- stats::hclust(stats::as.dist(1 - kappa_mat2), method = clu_method)
 
-    if (plot_hmap) {
-        stats::heatmap(kappa_mat2, distfun = function(x) stats::as.dist(1 - x), hclustfun = function(x) stats::hclust(x,
-            method = clu_method))
-    }
+  if (plot_hmap) {
+    stats::heatmap(kappa_mat2, distfun = function(x) stats::as.dist(1 - x), hclustfun = function(x) {
+      stats::hclust(x,
+        method = clu_method
+      )
+    })
+  }
 
-    ### Choose optimal k (if not specified)
-    if (is.null(num_clusters)) {
-        kmax <- max(nrow(kappa_mat2)%/%2, 2)
+  ### Choose optimal k (if not specified)
+  if (is.null(num_clusters)) {
+    kmax <- max(nrow(kappa_mat2) %/% 2, 2)
 
-        # sequence of k (number of clusters) to try
-        if (kmax <= 20) {
-            kseq <- 2:kmax
-        } else if (kmax <= 100) {
-            kseq <- c(2:19, seq(20, kmax%/%10 * 10, 10))
-        } else {
-            kseq <- c(2:19, seq(20, 99, 10), seq(100, kmax%/%50 * 50, 50))
-        }
-
-        # calculate average silhouette width per k in sequence
-        avg_sils <- c()
-        for (k in kseq) {
-            avg_sils <- c(avg_sils, fpc::cluster.stats(stats::as.dist(1 - kappa_mat2),
-                stats::cutree(clu, k = k), silhouette = TRUE)$avg.silwidth)
-        }
-
-        k_opt <- kseq[which.max(avg_sils)]
-
-        message(paste("The maximum average silhouette width was", round(max(avg_sils),
-            2), "for k =", k_opt, "\n\n"))
+    # sequence of k (number of clusters) to try
+    if (kmax <= 20) {
+      kseq <- 2:kmax
+    } else if (kmax <= 100) {
+      kseq <- c(2:19, seq(20, kmax %/% 10 * 10, 10))
     } else {
-        k_opt <- num_clusters
+      kseq <- c(2:19, seq(20, 99, 10), seq(100, kmax %/% 50 * 50, 50))
     }
 
-
-    if (plot_dend) {
-        graphics::plot(clu)
-        stats::rect.hclust(clu, k = k_opt)
+    # calculate average silhouette width per k in sequence
+    avg_sils <- c()
+    for (k in kseq) {
+      avg_sils <- c(avg_sils, fpc::cluster.stats(stats::as.dist(1 - kappa_mat2),
+        stats::cutree(clu, k = k),
+        silhouette = TRUE
+      )$avg.silwidth)
     }
 
-    clusters <- stats::cutree(clu, k = k_opt)
+    k_opt <- kseq[which.max(avg_sils)]
 
-    return(clusters)
+    message(paste("The maximum average silhouette width was", round(
+      max(avg_sils),
+      2
+    ), "for k =", k_opt, "\n\n"))
+  } else {
+    k_opt <- num_clusters
+  }
+
+
+  if (plot_dend) {
+    graphics::plot(clu)
+    stats::rect.hclust(clu, k = k_opt)
+  }
+
+  clusters <- stats::cutree(clu, k = k_opt)
+
+  return(clusters)
 }
 
 #' Heuristic Fuzzy Multiple-linkage Partitioning of Enriched Terms
@@ -241,93 +258,98 @@ hierarchical_term_clustering <- function(kappa_mat, enrichment_res, num_clusters
 #' fuzzy_term_clustering(kappa_mat, enrichment_res)
 #' fuzzy_term_clustering(kappa_mat, enrichment_res, kappa_threshold = 0.45)
 #' }
-fuzzy_term_clustering <- function(kappa_mat, enrichment_res, kappa_threshold = 0.35,
-    use_description = FALSE) {
-    ### Set ID/Name index
-    chosen_id <- ifelse(use_description, which(colnames(enrichment_res) == "Term_Description"),
-        which(colnames(enrichment_res) == "ID"))
+fuzzy_term_clustering <- function(
+  kappa_mat, enrichment_res, kappa_threshold = 0.35,
+  use_description = FALSE
+) {
+  ### Set ID/Name index
+  chosen_id <- ifelse(use_description, which(colnames(enrichment_res) == "Term_Description"),
+    which(colnames(enrichment_res) == "ID")
+  )
 
-    ### Argument checks
-    if (!isSymmetric.matrix(kappa_mat)) {
-        stop("`kappa_mat` should be a symmetric matrix")
+  ### Argument checks
+  if (!isSymmetric.matrix(kappa_mat)) {
+    stop("`kappa_mat` should be a symmetric matrix")
+  }
+
+  if (!all(colnames(kappa_mat) %in% enrichment_res[, chosen_id])) {
+    stop("All terms in `kappa_mat` should be present in `enrichment_res`")
+  }
+
+  if (!is.numeric(kappa_threshold)) {
+    stop("`kappa_threshold` should be numeric")
+  }
+
+  if (kappa_threshold > 1) {
+    stop("`kappa_threshold` should be at most 1 as kappa statistic is always <= 1")
+  }
+
+  ### Find Qualified Seeds
+  qualified_seeds <- list()
+  j <- 1
+  for (i in base::seq_len(nrow(kappa_mat))) {
+    current_term <- rownames(kappa_mat)[i]
+    current_term_kappa <- kappa_mat[i, ]
+
+
+    init_membership_cond <- current_term_kappa >= kappa_threshold
+    if (sum(init_membership_cond) > 3) {
+      related_terms <- names(current_term_kappa)[init_membership_cond]
+      terms <- c(current_term, related_terms)
+      related_kappa <- kappa_mat[rownames(kappa_mat) %in% terms, colnames(kappa_mat) %in%
+        terms]
+      diag(related_kappa) <- 0
+      tight_relationship_cond <- sum(related_kappa >= kappa_threshold) / (nrow(related_kappa)^2) >=
+        0.5
+
+      if (tight_relationship_cond) {
+        qualified_seeds[[j]] <- related_terms
+        names(qualified_seeds)[j] <- current_term
+        j <- j + 1
+      }
     }
+  }
 
-    if (!all(colnames(kappa_mat) %in% enrichment_res[, chosen_id])) {
-        stop("All terms in `kappa_mat` should be present in `enrichment_res`")
+  ### Fuzzy Clustering
+  clusters <- unique(qualified_seeds)
+  i <- 1
+  j <- i + 1
+  while (i < length(clusters)) {
+    common_terms <- intersect(clusters[[i]], clusters[[j]])
+    all_terms <- union(clusters[[i]], clusters[[j]])
+
+    if (length(common_terms) / length(all_terms) > 0.5 & i != j) {
+      clusters[[i]] <- all_terms
+      clusters[[j]] <- NULL
+      i <- 1
+      j <- i + 1
+    } else if (j < length(clusters)) {
+      j <- j + 1
+    } else {
+      i <- i + 1
+      j <- 1
     }
+  }
 
-    if (!is.numeric(kappa_threshold)) {
-        stop("`kappa_threshold` should be numeric")
-    }
+  ### Find Outliers
+  cond <- !enrichment_res[, chosen_id] %in% c(names(clusters), unlist(clusters))
+  outliers <- enrichment_res[cond, chosen_id]
+  for (outlier in outliers) {
+    clusters[[outlier]] <- outlier
+  }
+  ### Return Cluster Matrix
+  names(clusters) <- base::seq_len(length(clusters))
 
-    if (kappa_threshold > 1) {
-        stop("`kappa_threshold` should be at most 1 as kappa statistic is always <= 1")
-    }
+  cluster_mat <- matrix(FALSE,
+    nrow = nrow(enrichment_res), ncol = length(clusters),
+    dimnames = list(enrichment_res[, chosen_id], names(clusters))
+  )
+  for (clu in names(clusters)) {
+    clu_terms <- clusters[[clu]]
+    cluster_mat[clu_terms, clu] <- TRUE
+  }
 
-    ### Find Qualified Seeds
-    qualified_seeds <- list()
-    j <- 1
-    for (i in base::seq_len(nrow(kappa_mat))) {
-        current_term <- rownames(kappa_mat)[i]
-        current_term_kappa <- kappa_mat[i, ]
-
-
-        init_membership_cond <- current_term_kappa >= kappa_threshold
-        if (sum(init_membership_cond) > 3) {
-            related_terms <- names(current_term_kappa)[init_membership_cond]
-            terms <- c(current_term, related_terms)
-            related_kappa <- kappa_mat[rownames(kappa_mat) %in% terms, colnames(kappa_mat) %in%
-                terms]
-            diag(related_kappa) <- 0
-            tight_relationship_cond <- sum(related_kappa >= kappa_threshold)/(nrow(related_kappa)^2) >=
-                0.5
-
-            if (tight_relationship_cond) {
-                qualified_seeds[[j]] <- related_terms
-                names(qualified_seeds)[j] <- current_term
-                j <- j + 1
-            }
-        }
-    }
-
-    ### Fuzzy Clustering
-    clusters <- unique(qualified_seeds)
-    i <- 1
-    j <- i + 1
-    while (i < length(clusters)) {
-        common_terms <- intersect(clusters[[i]], clusters[[j]])
-        all_terms <- union(clusters[[i]], clusters[[j]])
-
-        if (length(common_terms)/length(all_terms) > 0.5 & i != j) {
-            clusters[[i]] <- all_terms
-            clusters[[j]] <- NULL
-            i <- 1
-            j <- i + 1
-        } else if (j < length(clusters)) {
-            j <- j + 1
-        } else {
-            i <- i + 1
-            j <- 1
-        }
-    }
-
-    ### Find Outliers
-    cond <- !enrichment_res[, chosen_id] %in% c(names(clusters), unlist(clusters))
-    outliers <- enrichment_res[cond, chosen_id]
-    for (outlier in outliers) {
-        clusters[[outlier]] <- outlier
-    }
-    ### Return Cluster Matrix
-    names(clusters) <- base::seq_len(length(clusters))
-
-    cluster_mat <- matrix(FALSE, nrow = nrow(enrichment_res), ncol = length(clusters),
-        dimnames = list(enrichment_res[, chosen_id], names(clusters)))
-    for (clu in names(clusters)) {
-        clu_terms <- clusters[[clu]]
-        cluster_mat[clu_terms, clu] <- TRUE
-    }
-
-    return(cluster_mat)
+  return(cluster_mat)
 }
 
 #' Cluster Enriched Terms
@@ -359,83 +381,96 @@ fuzzy_term_clustering <- function(kappa_mat, enrichment_res, kappa_threshold = 0
 #' )
 #' example_clustered <- cluster_enriched_terms(
 #'   example_pathfindR_output[1:3, ],
-#'   method = 'fuzzy', plot_clusters_graph = FALSE
+#'   method = "fuzzy", plot_clusters_graph = FALSE
 #' )
 #' @seealso See \code{\link{hierarchical_term_clustering}} for hierarchical
 #' clustering of enriched terms.
 #' See \code{\link{fuzzy_term_clustering}} for fuzzy clustering of enriched terms.
 #' See \code{\link{cluster_graph_vis}} for graph visualization of clustering.
-cluster_enriched_terms <- function(enrichment_res, method = "hierarchical", plot_clusters_graph = TRUE,
-    use_description = FALSE, use_active_snw_genes = FALSE, ...) {
-    ### Argument Checks
-    if (!method %in% c("hierarchical", "fuzzy")) {
-        stop("the clustering `method` must either be \"hierarchical\" or \"fuzzy\"")
+cluster_enriched_terms <- function(
+  enrichment_res, method = "hierarchical", plot_clusters_graph = TRUE,
+  use_description = FALSE, use_active_snw_genes = FALSE, ...
+) {
+  ### Argument Checks
+  if (!method %in% c("hierarchical", "fuzzy")) {
+    stop("the clustering `method` must either be \"hierarchical\" or \"fuzzy\"")
+  }
+
+  if (!is.logical(plot_clusters_graph)) {
+    stop("`plot_clusters_graph` must be logical!")
+  }
+
+  ### Create Kappa Matrix
+  kappa_mat <- create_kappa_matrix(
+    enrichment_res = enrichment_res, use_description = use_description,
+    use_active_snw_genes = use_active_snw_genes
+  )
+  kappa_mat[is.na(kappa_mat)] <- 0
+
+  ### Cluster Terms
+  if (method == "hierarchical") {
+    clu_obj <- R.utils::doCall("hierarchical_term_clustering",
+      kappa_mat = kappa_mat,
+      enrichment_res = enrichment_res, use_description = use_description, ...
+    )
+  } else {
+    clu_obj <- R.utils::doCall("fuzzy_term_clustering",
+      kappa_mat = kappa_mat,
+      enrichment_res = enrichment_res, use_description = use_description, ...
+    )
+  }
+
+  ### Graph Visualization of Clusters
+  if (plot_clusters_graph) {
+    R.utils::doCall("cluster_graph_vis",
+      clu_obj = clu_obj, kappa_mat = kappa_mat,
+      enrichment_res = enrichment_res, use_description = use_description, ...
+    )
+  }
+
+  ### Returned Data Frame with Cluster Information
+  clustered_df <- enrichment_res
+
+  ### Set ID/Name index
+  chosen_id <- ifelse(use_description, which(colnames(enrichment_res) == "Term_Description"),
+    which(colnames(enrichment_res) == "ID")
+  )
+
+  if (method == "hierarchical") {
+    ### Assign Clusters and Representatives
+    clu_idx <- match(clustered_df[, chosen_id], names(clu_obj))
+    clustered_df$Cluster <- clu_obj[clu_idx]
+    clustered_df <- clustered_df[order(clustered_df$Cluster, clustered_df$lowest_p,
+      decreasing = FALSE
+    ), ]
+
+    tmp <- tapply(clustered_df[, chosen_id], clustered_df$Cluster, function(x) x[1])
+    stat_cond <- clustered_df[, chosen_id] %in% tmp
+    clustered_df$Status <- ifelse(stat_cond, "Representative", "Member")
+  } else {
+    term_list <- list()
+    for (term in rownames(clu_obj)) {
+      term_list[[term]] <- which(clu_obj[term, ])
+    }
+    ### Assign Clusters and Representatives
+    clustered_df2 <- c()
+    for (i in base::seq_len(nrow(clustered_df))) {
+      current_row <- clustered_df[i, ]
+      current_clusters <- term_list[[current_row[, chosen_id]]]
+      for (clu in current_clusters) {
+        clustered_df2 <- rbind(clustered_df2, data.frame(current_row, Cluster = clu))
+      }
     }
 
-    if (!is.logical(plot_clusters_graph)) {
-        stop("`plot_clusters_graph` must be logical!")
-    }
+    clustered_df <- clustered_df2
+    clustered_df <- clustered_df[order(clustered_df$Cluster, clustered_df$lowest_p,
+      decreasing = FALSE
+    ), ]
 
-    ### Create Kappa Matrix
-    kappa_mat <- create_kappa_matrix(enrichment_res = enrichment_res, use_description = use_description,
-        use_active_snw_genes = use_active_snw_genes)
-    kappa_mat[is.na(kappa_mat)] <- 0
+    tmp <- tapply(clustered_df[, chosen_id], clustered_df$Cluster, function(x) x[1])
+    stat_cond <- clustered_df[, chosen_id] %in% tmp
+    clustered_df$Status <- ifelse(stat_cond, "Representative", "Member")
+  }
 
-    ### Cluster Terms
-    if (method == "hierarchical") {
-        clu_obj <- R.utils::doCall("hierarchical_term_clustering", kappa_mat = kappa_mat,
-            enrichment_res = enrichment_res, use_description = use_description, ...)
-    } else {
-        clu_obj <- R.utils::doCall("fuzzy_term_clustering", kappa_mat = kappa_mat,
-            enrichment_res = enrichment_res, use_description = use_description, ...)
-    }
-
-    ### Graph Visualization of Clusters
-    if (plot_clusters_graph) {
-        R.utils::doCall("cluster_graph_vis", clu_obj = clu_obj, kappa_mat = kappa_mat,
-            enrichment_res = enrichment_res, use_description = use_description, ...)
-    }
-
-    ### Returned Data Frame with Cluster Information
-    clustered_df <- enrichment_res
-
-    ### Set ID/Name index
-    chosen_id <- ifelse(use_description, which(colnames(enrichment_res) == "Term_Description"),
-        which(colnames(enrichment_res) == "ID"))
-
-    if (method == "hierarchical") {
-        ### Assign Clusters and Representatives
-        clu_idx <- match(clustered_df[, chosen_id], names(clu_obj))
-        clustered_df$Cluster <- clu_obj[clu_idx]
-        clustered_df <- clustered_df[order(clustered_df$Cluster, clustered_df$lowest_p,
-            decreasing = FALSE), ]
-
-        tmp <- tapply(clustered_df[, chosen_id], clustered_df$Cluster, function(x) x[1])
-        stat_cond <- clustered_df[, chosen_id] %in% tmp
-        clustered_df$Status <- ifelse(stat_cond, "Representative", "Member")
-    } else {
-        term_list <- list()
-        for (term in rownames(clu_obj)) {
-            term_list[[term]] <- which(clu_obj[term, ])
-        }
-        ### Assign Clusters and Representatives
-        clustered_df2 <- c()
-        for (i in base::seq_len(nrow(clustered_df))) {
-            current_row <- clustered_df[i, ]
-            current_clusters <- term_list[[current_row[, chosen_id]]]
-            for (clu in current_clusters) {
-                clustered_df2 <- rbind(clustered_df2, data.frame(current_row, Cluster = clu))
-            }
-        }
-
-        clustered_df <- clustered_df2
-        clustered_df <- clustered_df[order(clustered_df$Cluster, clustered_df$lowest_p,
-            decreasing = FALSE), ]
-
-        tmp <- tapply(clustered_df[, chosen_id], clustered_df$Cluster, function(x) x[1])
-        stat_cond <- clustered_df[, chosen_id] %in% tmp
-        clustered_df$Status <- ifelse(stat_cond, "Representative", "Member")
-    }
-
-    return(clustered_df)
+  return(clustered_df)
 }

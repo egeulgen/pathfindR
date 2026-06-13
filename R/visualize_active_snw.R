@@ -15,25 +15,29 @@
 #'
 #' @examples
 #' path2snw_list <- system.file(
-#'   'extdata/resultActiveSubnetworkSearch.txt',
-#'   package = 'pathfindR'
+#'   "extdata/resultActiveSubnetworkSearch.txt",
+#'   package = "pathfindR"
 #' )
 #' # visualize top 2 active subnetworks
 #' g_list <- visualize_active_subnetworks(
 #'   active_snw_path = path2snw_list,
 #'   genes_df = example_pathfindR_input[1:10, ],
-#'   pin_name_path = 'KEGG',
+#'   pin_name_path = "KEGG",
 #'   num_snws = 2
 #' )
 visualize_active_subnetworks <- function(active_snw_path, genes_df, pin_name_path = "Biogrid",
                                          num_snws, layout = "stress", score_quan_thr = 0.8, sig_gene_thr = 0.02, ...) {
   # process input data frame
-  processed_input <- input_processing(genes_df, pin_name_path = pin_name_path,
-                                      ...)
+  processed_input <- input_processing(genes_df,
+    pin_name_path = pin_name_path,
+    ...
+  )
 
   # parse and filter active subnetworks
-  active_snw_list <- filterActiveSnws(active_snw_path = active_snw_path, sig_genes_vec = processed_input$GENE,
-                                      score_quan_thr = score_quan_thr, sig_gene_thr = sig_gene_thr)
+  active_snw_list <- filterActiveSnws(
+    active_snw_path = active_snw_path, sig_genes_vec = processed_input$GENE,
+    score_quan_thr = score_quan_thr, sig_gene_thr = sig_gene_thr
+  )
   if (is.null(active_snw_list) | length(active_snw_list$scores) == 0) {
     return(NULL)
   }
@@ -63,26 +67,29 @@ visualize_active_subnetworks <- function(active_snw_path, genes_df, pin_name_pat
     snw <- subnetworks[[idx]]
 
     num_input_genes <- sum(processed_input$GENE %in% snw)
-    perc_input_genes <- round(num_input_genes/length(processed_input$GENE) *
-                                100, 2)
+    perc_input_genes <- round(num_input_genes / length(processed_input$GENE) *
+      100, 2)
 
     snw_interactions <- pin[pin[, 1] %in% snw & pin[, 2] %in% snw, ]
     g <- igraph::graph_from_data_frame(snw_interactions, directed = FALSE)
     cond_up_gene <- names(igraph::V(g)) %in% processed_input$GENE[processed_input$CHANGE >
-                                                                    0]
+      0]
     cond_down_gene <- names(igraph::V(g)) %in% processed_input$GENE[processed_input$CHANGE <
-                                                                      0]
+      0]
     igraph::V(g)$type <- ifelse(cond_up_gene, "up", ifelse(cond_down_gene, "down",
-                                                           "non-input"))
+      "non-input"
+    ))
 
     igraph::V(g)$label.cex <- 0.5
     igraph::V(g)$frame.color <- "gray"
     igraph::V(g)$color <- ifelse(igraph::V(g)$type == "non-input", "#FFD500",
-                                 ifelse(igraph::V(g)$type == "up", "#D2222D", "#35CD35"))
+      ifelse(igraph::V(g)$type == "up", "#D2222D", "#35CD35")
+    )
 
-    color_lookup <- c(`#35CD35` = "down-regulated gene", `#D2222D` = "up-regulated gene",
-                      `#FFD500` = "non-input gene")
-
+    color_lookup <- c(
+      `#35CD35` = "down-regulated gene", `#D2222D` = "up-regulated gene",
+      `#FFD500` = "non-input gene"
+    )
 
 
     p <- ggraph::ggraph(g, layout = layout)
@@ -90,13 +97,19 @@ visualize_active_subnetworks <- function(active_snw_path, genes_df, pin_name_pat
     p <- p + ggraph::geom_node_point(ggplot2::aes(color = .data$color), size = 2)
     p <- p + ggplot2::theme_void()
     p <- p + ggraph::geom_node_text(ggplot2::aes(label = .data$name), nudge_y = 0.2)
-    p <- p + ggplot2::scale_colour_manual(values = unique(igraph::V(g)$color),
-                                          name = NULL, labels = color_lookup[unique(igraph::V(g)$color)])
-    p <- p + ggplot2::labs(title = paste0("Active Subnetwork #", idx), subtitle = paste0("Score=",
-                                                                                         round(score_vec[idx], 2), ", ", num_input_genes, "(", perc_input_genes,
-                                                                                         "%) input genes"))
-    p <- p + ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5),
-                            plot.subtitle = ggplot2::element_text(hjust = 0.5), legend.position = "bottom")
+    p <- p + ggplot2::scale_colour_manual(
+      values = unique(igraph::V(g)$color),
+      name = NULL, labels = color_lookup[unique(igraph::V(g)$color)]
+    )
+    p <- p + ggplot2::labs(title = paste0("Active Subnetwork #", idx), subtitle = paste0(
+      "Score=",
+      round(score_vec[idx], 2), ", ", num_input_genes, "(", perc_input_genes,
+      "%) input genes"
+    ))
+    p <- p + ggplot2::theme(
+      plot.title = ggplot2::element_text(hjust = 0.5),
+      plot.subtitle = ggplot2::element_text(hjust = 0.5), legend.position = "bottom"
+    )
     graphs_list[[idx]] <- p
   }
 

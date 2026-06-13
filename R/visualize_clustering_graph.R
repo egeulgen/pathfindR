@@ -23,15 +23,18 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res, kappa_threshol
                               use_description = FALSE, vertex.label.cex = 0.7, vertex.size.scaling = 2.5) {
   ### Set ID/Name index
   chosen_id <- ifelse(use_description, which(colnames(enrichment_res) == "Term_Description"),
-                      which(colnames(enrichment_res) == "ID"))
+    which(colnames(enrichment_res) == "ID")
+  )
 
   ### For coloring nodes
-  all_cols <- c("#E41A1C", "#377EB8", "#4DAF4A", "#984EA3", "#FF7F00", "#FFFF33",
-                "#A65628", "#F781BF", "#999999", "#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3",
-                "#A6D854", "#FFD92F", "#E5C494", "#B3B3B3", "#8DD3C7", "#FFFFB3", "#BEBADA",
-                "#FB8072", "#80B1D3", "#FDB462", "#B3DE69", "#FCCDE5", "#D9D9D9", "#BC80BD",
-                "#CCEBC5", "#FFED6F", "#A6CEE3", "#1F78B4", "#B2DF8A", "#33A02C", "#FB9A99",
-                "#E31A1C", "#FDBF6F", "#FF7F00", "#CAB2D6", "#6A3D9A", "#FFFF99", "#B15928")
+  all_cols <- c(
+    "#E41A1C", "#377EB8", "#4DAF4A", "#984EA3", "#FF7F00", "#FFFF33",
+    "#A65628", "#F781BF", "#999999", "#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3",
+    "#A6D854", "#FFD92F", "#E5C494", "#B3B3B3", "#8DD3C7", "#FFFFB3", "#BEBADA",
+    "#FB8072", "#80B1D3", "#FDB462", "#B3DE69", "#FCCDE5", "#D9D9D9", "#BC80BD",
+    "#CCEBC5", "#FFED6F", "#A6CEE3", "#1F78B4", "#B2DF8A", "#33A02C", "#FB9A99",
+    "#E31A1C", "#FDBF6F", "#FF7F00", "#CAB2D6", "#6A3D9A", "#FFFF99", "#B15928"
+  )
 
   if (is.matrix(clu_obj)) {
     ### Argument checks
@@ -46,19 +49,23 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res, kappa_threshol
 
     # Add missing terms
     missing <- rownames(clu_obj)[!rownames(clu_obj) %in% colnames(kappa_mat2)]
-    missing_mat <- matrix(0, nrow = nrow(kappa_mat2), ncol = length(missing),
-                          dimnames = list(rownames(kappa_mat2), missing))
+    missing_mat <- matrix(0,
+      nrow = nrow(kappa_mat2), ncol = length(missing),
+      dimnames = list(rownames(kappa_mat2), missing)
+    )
     kappa_mat2 <- cbind(kappa_mat2, missing_mat)
     missing <- rownames(clu_obj)[!rownames(clu_obj) %in% rownames(kappa_mat2)]
-    missing_mat <- matrix(0, nrow = length(missing), ncol = ncol(kappa_mat2),
-                          dimnames = list(missing, colnames(kappa_mat2)))
+    missing_mat <- matrix(0,
+      nrow = length(missing), ncol = ncol(kappa_mat2),
+      dimnames = list(missing, colnames(kappa_mat2))
+    )
     kappa_mat2 <- rbind(kappa_mat2, missing_mat)
 
     ### Create Graph, Set Color, Size and Percentages
     values <- apply(clu_obj, 1, function(x) which(x))
     percs <- list()
     for (i in base::seq_len(length(values))) {
-      percs[[i]] <- rep(1/length(values[[i]]), length(values[[i]]))
+      percs[[i]] <- rep(1 / length(values[[i]]), length(values[[i]]))
     }
 
     g <- igraph::graph_from_adjacency_matrix(kappa_mat2, weighted = TRUE)
@@ -83,10 +90,12 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res, kappa_threshol
     igraph::V(g)$size <- transformed_p * vertex.size.scaling
 
     ### Plot Graph
-    igraph::plot.igraph(g, vertex.pie = percs, vertex.pie.color = cols, layout = igraph::layout_nicely(g),
-                        edge.curved = FALSE, vertex.label.dist = 0, vertex.label.color = "black",
-                        asp = 1, vertex.label.cex = vertex.label.cex, edge.width = igraph::E(g)$weight,
-                        edge.arrow.mode = 0)
+    igraph::plot.igraph(g,
+      vertex.pie = percs, vertex.pie.color = cols, layout = igraph::layout_nicely(g),
+      edge.curved = FALSE, vertex.label.dist = 0, vertex.label.color = "black",
+      asp = 1, vertex.label.cex = vertex.label.cex, edge.width = igraph::E(g)$weight,
+      edge.arrow.mode = 0
+    )
   } else if (is.integer(clu_obj)) {
     ### Argument checks
     if (!all(names(clu_obj) %in% colnames(kappa_mat))) {
@@ -100,12 +109,16 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res, kappa_threshol
 
     # Add missing terms
     missing <- names(clu_obj)[!names(clu_obj) %in% colnames(kappa_mat2)]
-    missing_mat <- matrix(0, nrow = nrow(kappa_mat2), ncol = length(missing),
-                          dimnames = list(rownames(kappa_mat2), missing))
+    missing_mat <- matrix(0,
+      nrow = nrow(kappa_mat2), ncol = length(missing),
+      dimnames = list(rownames(kappa_mat2), missing)
+    )
     kappa_mat2 <- cbind(kappa_mat2, missing_mat)
     missing <- names(clu_obj)[!names(clu_obj) %in% rownames(kappa_mat2)]
-    missing_mat <- matrix(0, nrow = length(missing), ncol = ncol(kappa_mat2),
-                          dimnames = list(missing, colnames(kappa_mat2)))
+    missing_mat <- matrix(0,
+      nrow = length(missing), ncol = ncol(kappa_mat2),
+      dimnames = list(missing, colnames(kappa_mat2))
+    )
     kappa_mat2 <- rbind(kappa_mat2, missing_mat)
 
     ### Create Graph, Set Colors and Sizes
@@ -128,9 +141,11 @@ cluster_graph_vis <- function(clu_obj, kappa_mat, enrichment_res, kappa_threshol
     igraph::V(g)$size <- transformed_p * vertex.size.scaling
 
     ### Plot graph
-    igraph::plot.igraph(g, layout = igraph::layout_nicely(g), edge.curved = FALSE,
-                        vertex.label.dist = 0, vertex.label.color = "black", asp = 0, vertex.label.cex = vertex.label.cex,
-                        edge.width = igraph::E(g)$weight, edge.arrow.mode = 0)
+    igraph::plot.igraph(g,
+      layout = igraph::layout_nicely(g), edge.curved = FALSE,
+      vertex.label.dist = 0, vertex.label.color = "black", asp = 0, vertex.label.cex = vertex.label.cex,
+      edge.width = igraph::E(g)$weight, edge.arrow.mode = 0
+    )
   } else {
     stop("Invalid class for `clu_obj`!")
   }

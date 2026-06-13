@@ -41,10 +41,10 @@
 #' result_df <- example_pathfindR_output[1:2, ]
 #'
 #' gg_list <- visualize_terms(result_df, input_processed)
-#' gg_list2 <- visualize_terms(result_df, is_KEGG_result = FALSE, pin_name_path = 'IntAct')
+#' gg_list2 <- visualize_terms(result_df, is_KEGG_result = FALSE, pin_name_path = "IntAct")
 #' }
 visualize_terms <- function(
-    result_df, input_processed = NULL, is_KEGG_result = TRUE, pin_name_path = "Biogrid", ...
+  result_df, input_processed = NULL, is_KEGG_result = TRUE, pin_name_path = "Biogrid", ...
 ) {
   ############ Argument Checks
   if (!is.data.frame(result_df)) {
@@ -62,7 +62,8 @@ visualize_terms <- function(
   }
   if (!all(nec_cols %in% colnames(result_df))) {
     stop("`result_df` should contain the following columns: ", paste(dQuote(nec_cols),
-                                                                     collapse = ", "))
+      collapse = ", "
+    ))
   }
 
   if (is_KEGG_result) {
@@ -114,7 +115,7 @@ visualize_terms <- function(
 #' @examples
 #' \dontrun{
 #' result_df <- example_pathfindR_output[1:2, ]
-#' gg_list <- visualize_term_interactions(result_df, pin_name_path = 'IntAct')
+#' gg_list <- visualize_term_interactions(result_df, pin_name_path = "IntAct")
 #' }
 visualize_term_interactions <- function(result_df, pin_name_path, show_legend = TRUE) {
   ############ Initial Steps fix naming issue
@@ -152,8 +153,9 @@ visualize_term_interactions <- function(result_df, pin_name_path, show_legend = 
     if (length(current_genes) < 2) {
       message(paste0("< 2 genes, skipping visualization of ", current_row$Term_Description))
     } else {
-      cat("Visualizing:", paste0("(", i, ")") , current_row$Term_Description, paste(rep(" ", 200),
-                                                                                    collapse = ""), "\r")
+      cat("Visualizing:", paste0("(", i, ")"), current_row$Term_Description, paste(rep(" ", 200),
+        collapse = ""
+      ), "\r")
 
       ## Find genes without direct interaction
       cond1 <- pin$V1 %in% current_genes
@@ -166,9 +168,11 @@ visualize_term_interactions <- function(result_df, pin_name_path, show_legend = 
       ## other current_genes
       s_path_genes <- c()
       for (gene in missing_genes) {
-        tmp <- suppressWarnings(igraph::shortest_paths(pin_g, from = which(names(igraph::V(pin_g)) ==
-                                                                             gene), to = which(names(igraph::V(pin_g)) %in% current_genes),
-                                                       output = "vpath"))
+        tmp <- suppressWarnings(igraph::shortest_paths(pin_g,
+          from = which(names(igraph::V(pin_g)) ==
+            gene), to = which(names(igraph::V(pin_g)) %in% current_genes),
+          output = "vpath"
+        ))
         tmp <- unique(unlist(lapply(tmp$vpath, function(x) names(x))))
         s_path_genes <- unique(c(s_path_genes, tmp))
       }
@@ -183,9 +187,12 @@ visualize_term_interactions <- function(result_df, pin_name_path, show_legend = 
       cond2 <- names(igraph::V(g)) %in% down_genes
       cond3 <- names(igraph::V(g)) %in% snw_genes
       node_type <- as.factor(ifelse(cond1, "up",
-                                    ifelse(cond2, "down",
-                                           ifelse(cond3,
-                                                  "interactor", "none"))))
+        ifelse(cond2, "down",
+          ifelse(cond3,
+            "interactor", "none"
+          )
+        )
+      ))
       igraph::V(g)$type <- node_type
 
       node_colors <- c("green", "red", "blue", "gray")
@@ -202,9 +209,12 @@ visualize_term_interactions <- function(result_df, pin_name_path, show_legend = 
       p <- p + ggraph::geom_node_point(ggplot2::aes(color = .data$type), size = 5)
       p <- p + ggplot2::theme_void()
       p <- p + suppressWarnings(ggraph::geom_node_text(ggplot2::aes(label = .data$name),
-                                                       nudge_y = 0.2, repel = TRUE, max.overlaps = 20))
-      p <- p + ggplot2::scale_color_manual(values = node_colors, name = NULL,
-                                           labels = type_descriptions)
+        nudge_y = 0.2, repel = TRUE, max.overlaps = 20
+      ))
+      p <- p + ggplot2::scale_color_manual(
+        values = node_colors, name = NULL,
+        labels = type_descriptions
+      )
       p <- p + ggplot2::ggtitle(
         paste(current_row$Term_Description, "\n Involved Gene Interactions in", pin_name_path)
       )
@@ -238,11 +248,11 @@ visualize_term_interactions <- function(result_df, pin_name_path, show_legend = 
 #' gg_list <- visualize_KEGG_diagram(c("hsa00010", "hsa04911"), input_processed)
 #' }
 visualize_KEGG_diagram <- function(
-    kegg_pw_ids,
-    input_processed,
-    scale_vals = TRUE,
-    node_cols = NULL,
-    legend.position = "top"
+  kegg_pw_ids,
+  input_processed,
+  scale_vals = TRUE,
+  node_cols = NULL,
+  legend.position = "top"
 ) {
   message("This function utilises one functionality of `ggkegg`. For more options, visit https://github.com/noriakis/ggkegg")
 
@@ -264,7 +274,8 @@ visualize_KEGG_diagram <- function(
   nec_cols <- c("GENE", "CHANGE")
   if (!all(nec_cols %in% colnames(input_processed))) {
     stop("`input_processed` should contain the following columns: ", paste(dQuote(nec_cols),
-                                                                           collapse = ", "))
+      collapse = ", "
+    ))
   }
 
   if (!requireNamespace("org.Hs.eg.db", quietly = TRUE)) {
@@ -279,7 +290,8 @@ visualize_KEGG_diagram <- function(
 
   ############ Create change vector Convert gene symbols into NCBI gene IDs
   tmp <- AnnotationDbi::mget(input_processed$GENE, AnnotationDbi::revmap(org.Hs.eg.db::org.Hs.egSYMBOL),
-                             ifnotfound = NA)
+    ifnotfound = NA
+  )
   input_processed$EG_ID <- vapply(tmp, function(x) as.character(x[1]), "EGID")
   input_processed <- input_processed[!is.na(input_processed$EG_ID), ]
 
@@ -296,7 +308,7 @@ visualize_KEGG_diagram <- function(
   pw_vis_list <- lapply(
     kegg_pw_ids,
     color_kegg_pathway,
-    change_vec=change_vec,
+    change_vec = change_vec,
     scale_vals = scale_vals,
     node_cols = node_cols,
     legend.position = legend.position

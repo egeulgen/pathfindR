@@ -19,8 +19,10 @@ test_that("`cluster_graph_vis()` -- coloring of 'extra' clusters work", {
   ### more than 41 clusters (number of colors available)
   selected_num_terms <- 45
   clu_input_df <- example_pathfindR_output[seq_len(selected_num_terms), ]
-  mock_kappa_mat <- matrix(0, nrow = selected_num_terms, ncol = selected_num_terms,
-                           dimnames = list(clu_input_df$ID, clu_input_df$ID))
+  mock_kappa_mat <- matrix(0,
+    nrow = selected_num_terms, ncol = selected_num_terms,
+    dimnames = list(clu_input_df$ID, clu_input_df$ID)
+  )
 
   # dummy hierarchical result
   hierarchical_clu_obj <- seq_len(selected_num_terms)
@@ -28,8 +30,10 @@ test_that("`cluster_graph_vis()` -- coloring of 'extra' clusters work", {
   expect_silent(cluster_graph_vis(hierarchical_clu_obj, mock_kappa_mat, clu_input_df))
 
   # dummy fuzzy result
-  fuzzy_clu_obj <- matrix(FALSE, nrow = selected_num_terms, ncol = selected_num_terms,
-                          dimnames = list(clu_input_df$ID, seq_len(selected_num_terms)))
+  fuzzy_clu_obj <- matrix(FALSE,
+    nrow = selected_num_terms, ncol = selected_num_terms,
+    dimnames = list(clu_input_df$ID, seq_len(selected_num_terms))
+  )
   diag(fuzzy_clu_obj) <- TRUE
   expect_silent(cluster_graph_vis(fuzzy_clu_obj, mock_kappa_mat, clu_input_df))
 })
@@ -39,11 +43,15 @@ test_that("`cluster_graph_vis()` -- check errors are raised appropriately", {
 
   # hierarchical - missing terms in kappa matrix
   clu_obj <- hierarchical_term_clustering(input_kappa_mat, enrichment_res, plot_dend = FALSE)
-  expect_error(cluster_graph_vis(c(clu_obj, EXTRA = 1L), input_kappa_mat, enrichment_res),
-               "Not all terms in `clu_obj` present in `kappa_mat`!")
+  expect_error(
+    cluster_graph_vis(c(clu_obj, EXTRA = 1L), input_kappa_mat, enrichment_res),
+    "Not all terms in `clu_obj` present in `kappa_mat`!"
+  )
 
   # fuzzy - missing terms in kappa matrix
   clu_obj <- fuzzy_term_clustering(input_kappa_mat, enrichment_res)
-  expect_error(cluster_graph_vis(rbind(clu_obj, EXTRA = rep(FALSE, ncol(clu_obj))),
-                                 input_kappa_mat, enrichment_res), "Not all terms in `clu_obj` present in `kappa_mat`!")
+  expect_error(cluster_graph_vis(
+    rbind(clu_obj, EXTRA = rep(FALSE, ncol(clu_obj))),
+    input_kappa_mat, enrichment_res
+  ), "Not all terms in `clu_obj` present in `kappa_mat`!")
 })

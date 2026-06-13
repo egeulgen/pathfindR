@@ -5,10 +5,12 @@ output: github_document
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, include=FALSE}
-knitr::opts_chunk$set(collapse=TRUE,
-                      comment="#>",
-                      fig.path="inst/extdata/",
-                      out.width="100%")
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "inst/extdata/",
+  out.width = "100%"
+)
 suppressPackageStartupMessages(library(pathfindR))
 ```
 
@@ -83,10 +85,10 @@ This workflow takes in a data frame consisting of "gene symbols", "change values
 
 ```{r example_input, echo=FALSE}
 tmp <- example_pathfindR_input[1:4, ]
-tmp$logFC <- round(tmp$logFC,2)
-tmp$adj.P.Val <- format(tmp$adj.P.Val, digits=2)
+tmp$logFC <- round(tmp$logFC, 2)
+tmp$adj.P.Val <- format(tmp$adj.P.Val, digits = 2)
 colnames(tmp) <- c("Gene_symbol", "logFC", "FDR_p")
-knitr::kable(tmp, align=c("l", "c", "c"))
+knitr::kable(tmp, align = c("l", "c", "c"))
 ```
 
 After input testing, any gene symbol that is not in the chosen protein-protein interaction network (PIN) is converted to an alias symbol if there is an alias that is found in the PIN. After mapping the input genes with the associated p-values onto the PIN, active subnetwork search is performed. The resulting active subnetworks are then filtered based on their scores and the number of significant genes they contain. 
@@ -109,23 +111,23 @@ This wrapper function performs the active-subnetwork-oriented enrichment analysi
 Some useful arguments are:
 
 ```{r useful_args, eval=FALSE}
-# set an output directory for saving active subnetworks and creating an HTML report 
+# set an output directory for saving active subnetworks and creating an HTML report
 # (default=NULL, sets a temporary directory)
-output_df <- run_pathfindR(input_df, output_dir="/top/secret/results")
+output_df <- run_pathfindR(input_df, output_dir = "/top/secret/results")
 
 # change the gene sets used for analysis (default="KEGG")
-output_df <- run_pathfindR(input_df, gene_sets="GO-MF")
+output_df <- run_pathfindR(input_df, gene_sets = "GO-MF")
 
 # change the PIN for active subnetwork search (default=Biogrid)
-output_df <- run_pathfindR(input_df, pin_name_path="IntAct")
+output_df <- run_pathfindR(input_df, pin_name_path = "IntAct")
 # or use an external PIN of your choice
-output_df <- run_pathfindR(input_df, pin_name_path="/path/to/my/PIN.sif")
+output_df <- run_pathfindR(input_df, pin_name_path = "/path/to/my/PIN.sif")
 
 # change the number of iterations (default=10)
-output_df <- run_pathfindR(input_df, iterations=25) 
+output_df <- run_pathfindR(input_df, iterations = 25)
 
 # report the non-significant active subnetwork genes (for later analyses)
-output_df <- run_pathfindR(input_df, list_active_snw_genes=TRUE)
+output_df <- run_pathfindR(input_df, list_active_snw_genes = TRUE)
 ```
 
 The available PINs are "Biogrid", "STRING", "GeneMania", "IntAct", "KEGG" and "mmu_STRING". The available gene sets are "KEGG", "Reactome", "BioCarta", "GO-All", "GO-BP", "GO-CC", "GO-MF", and "mmu_KEGG". You also use a custom PIN (see `?return_pin_path`) or a custom gene set (see `?fetch_gene_sets`)
@@ -144,19 +146,19 @@ This workflow first calculates the pairwise kappa statistics between the enriche
 clustered_df <- cluster_enriched_terms(output_df)
 
 # display the heatmap of hierarchical clustering
-clustered_df <- cluster_enriched_terms(output_df, plot_hmap=TRUE)
+clustered_df <- cluster_enriched_terms(output_df, plot_hmap = TRUE)
 
 # display the dendrogram and automatically-determined clusters
-clustered_df <- cluster_enriched_terms(output_df, plot_dend=TRUE)
+clustered_df <- cluster_enriched_terms(output_df, plot_dend = TRUE)
 
 # change agglomeration method (default="average") for hierarchical clustering
-clustered_df <- cluster_enriched_terms(output_df, clu_method="centroid")
+clustered_df <- cluster_enriched_terms(output_df, clu_method = "centroid")
 ```
 
 Alternatively, the `fuzzy` clustering method (as described in Huang DW, Sherman BT, Tan Q, et al. The DAVID Gene Functional Classification Tool: a novel biological module-centric algorithm to functionally analyze large gene lists. Genome Biol. 2007;8(9):R183.) can be used:
 
 ```{r clustering_f, eval=FALSE}
-clustered_df_fuzzy <- cluster_enriched_terms(output_df, method="fuzzy")
+clustered_df_fuzzy <- cluster_enriched_terms(output_df, method = "fuzzy")
 ```
 
 # Visualization of Enrichment Results
@@ -171,7 +173,7 @@ gg_list <- visualize_terms(
   result_df = example_pathfindR_output,
   input_processed = input_processed,
   is_KEGG_result = TRUE
-)  # this function returns a list of ggraph objects (named by Term ID)
+) # this function returns a list of ggraph objects (named by Term ID)
 
 # save one of the plots as PDF image
 ggplot2::ggsave(
@@ -179,7 +181,7 @@ ggplot2::ggsave(
   gg_list$hsa04911,
   width = 5,
   height = 5
-) 
+)
 ```
 
 ![KEGG Pathway Diagram](https://github.com/egeulgen/pathfindR/blob/master/vignettes/example_kegg_pathway_diagram.png?raw=true)
@@ -193,7 +195,7 @@ gg_list <- visualize_terms(
   input_processed = input_processed,
   is_KEGG_result = FALSE,
   pin_name_path = "Biogrid"
-)  # this function returns a list of ggraph objects (named by Term ID)
+) # this function returns a list of ggraph objects (named by Term ID)
 
 # save one of the plots as PDF image
 ggplot2::ggsave(
@@ -201,7 +203,7 @@ ggplot2::ggsave(
   gg_list$hsa04911,
   width = 10,
   height = 6
-) 
+)
 ```
 
 ![Interaction Diagram](https://github.com/egeulgen/pathfindR/blob/master/vignettes/example_interaction_vis.png?raw=true)
@@ -236,15 +238,15 @@ The function `combine_pathfindR_results()` allows combining two pathfindR analys
 
 ```{r compare2res, eval=FALSE}
 combined_df <- combine_pathfindR_results(
-  result_A=an_output_df, 
-  result_B=another_output_df
+  result_A = an_output_df,
+  result_B = another_output_df
 )
 ```
 
 By default, `combine_pathfindR_results()` plots the term-gene graph for the common terms in the combined results. The function `combined_results_graph()` can be used to create this graph (using only selected terms etc.) later on.
 
 ```{r compare_graph, eval=FALSE}
-combined_results_graph(combined_df, selected_terms=c("hsa04144", "hsa04141", "hsa04140"))
+combined_results_graph(combined_df, selected_terms = c("hsa04144", "hsa04141", "hsa04140"))
 ```
 
 ![Combined Results Graph](https://github.com/egeulgen/pathfindR/blob/master/vignettes/combined_graph.png?raw=true "Combined Results Graph")

@@ -48,7 +48,8 @@ term_gene_heatmap <- function(result_df, genes_df, num_terms = 10, use_descripti
   nec_cols <- c(ID_column, "lowest_p", "Up_regulated", "Down_regulated")
   if (!all(nec_cols %in% colnames(result_df))) {
     stop("`result_df` should have the following columns: ", paste(dQuote(nec_cols),
-                                                                  collapse = ", "))
+      collapse = ", "
+    ))
   }
 
   if (!missing(genes_df)) {
@@ -113,8 +114,10 @@ term_gene_heatmap <- function(result_df, genes_df, num_terms = 10, use_descripti
   all_genes <- all_genes[!is.na(all_genes)]
   all_terms <- result_df[, ID_column]
 
-  term_genes_mat <- matrix(0, nrow = nrow(result_df), ncol = length(all_genes),
-                           dimnames = list(all_terms, all_genes))
+  term_genes_mat <- matrix(0,
+    nrow = nrow(result_df), ncol = length(all_genes),
+    dimnames = list(all_terms, all_genes)
+  )
   for (i in seq_len(nrow(term_genes_mat))) {
     current_term <- rownames(term_genes_mat)[i]
     current_genes <- c(up_genes[[current_term]], down_genes[[current_term]])
@@ -132,7 +135,8 @@ term_gene_heatmap <- function(result_df, genes_df, num_terms = 10, use_descripti
     return(row %*% pow)
   }
   term_genes_mat <- term_genes_mat[order(apply(term_genes_mat, 1, ordering_func),
-                                         decreasing = TRUE), ]
+    decreasing = TRUE
+  ), ]
 
   ### Transform the matrix
   var_names <- list()
@@ -148,8 +152,10 @@ term_gene_heatmap <- function(result_df, genes_df, num_terms = 10, use_descripti
 
   bg_df <- expand.grid(Enriched_Term = all_terms, Symbol = all_genes)
   if (sort_terms_by_p) {
-    bg_df$Enriched_Term <- factor(bg_df$Enriched_Term, levels = rev(result_df[,
-                                                                              ID_column]))
+    bg_df$Enriched_Term <- factor(bg_df$Enriched_Term, levels = rev(result_df[
+      ,
+      ID_column
+    ]))
   } else {
     bg_df$Enriched_Term <- factor(bg_df$Enriched_Term, levels = rev(rownames(term_genes_mat)))
   }
@@ -162,7 +168,8 @@ term_gene_heatmap <- function(result_df, genes_df, num_terms = 10, use_descripti
       if (!is.na(term_genes_df$value[i])) {
         if (all(genes_df$CHANGE == 1e+06)) {
           term_genes_df$value[i] <- ifelse(term_genes_df$Symbol[i] %in% up_genes[[as.character(term_genes_df$Enriched_Term[i])]],
-                                           1, -1)
+            1, -1
+          )
         } else {
           term_genes_df$value[i] <- genes_df$CHANGE[genes_df$GENE == term_genes_df$Symbol[i]]
         }
@@ -176,31 +183,44 @@ term_gene_heatmap <- function(result_df, genes_df, num_terms = 10, use_descripti
     for (i in seq_len(nrow(term_genes_df))) {
       if (!is.na(term_genes_df$value[i])) {
         term_genes_df$value[i] <- ifelse(term_genes_df$Symbol[i] %in% unlist(up_genes),
-                                         "up", "down")
+          "up", "down"
+        )
       }
     }
   }
 
   g <- ggplot2::ggplot(bg_df, ggplot2::aes(x = .data$Symbol, y = .data$Enriched_Term))
   g <- g + ggplot2::geom_tile(fill = "white", color = "white")
-  g <- g + ggplot2::theme(axis.ticks.y = ggplot2::element_blank(), axis.text.x = ggplot2::element_text(angle = 90,
-                                                                                                       hjust = 1), axis.text.y = ggplot2::element_text(colour = "#000000"), axis.title.x = ggplot2::element_blank(),
-                          axis.title.y = ggplot2::element_blank(), panel.grid.major.x = ggplot2::element_blank(),
-                          panel.grid.major.y = ggplot2::element_blank(), panel.grid.minor.x = ggplot2::element_blank(),
-                          panel.grid.minor.y = ggplot2::element_blank(), panel.background = ggplot2::element_rect(fill = "#ffffff"))
-  g <- g + ggplot2::geom_tile(data = term_genes_df, ggplot2::aes(fill = .data$value),
-                              color = "gray60")
+  g <- g + ggplot2::theme(
+    axis.ticks.y = ggplot2::element_blank(), axis.text.x = ggplot2::element_text(
+      angle = 90,
+      hjust = 1
+    ), axis.text.y = ggplot2::element_text(colour = "#000000"), axis.title.x = ggplot2::element_blank(),
+    axis.title.y = ggplot2::element_blank(), panel.grid.major.x = ggplot2::element_blank(),
+    panel.grid.major.y = ggplot2::element_blank(), panel.grid.minor.x = ggplot2::element_blank(),
+    panel.grid.minor.y = ggplot2::element_blank(), panel.background = ggplot2::element_rect(fill = "#ffffff")
+  )
+  g <- g + ggplot2::geom_tile(
+    data = term_genes_df, ggplot2::aes(fill = .data$value),
+    color = "gray60"
+  )
   if (!missing(genes_df)) {
     if (all(genes_df$CHANGE == 1e+06)) {
-      g <- g + ggplot2::scale_fill_manual(values = c(low, high), na.value = "white",
-                                          name = legend_title)
+      g <- g + ggplot2::scale_fill_manual(
+        values = c(low, high), na.value = "white",
+        name = legend_title
+      )
     } else {
-      g <- g + ggplot2::scale_fill_gradient2(low = low, mid = mid, high = high,
-                                             na.value = "white", name = legend_title)
+      g <- g + ggplot2::scale_fill_gradient2(
+        low = low, mid = mid, high = high,
+        na.value = "white", name = legend_title
+      )
     }
   } else {
-    g <- g + ggplot2::scale_fill_manual(values = c(low, high), na.value = "white",
-                                        name = legend_title)
+    g <- g + ggplot2::scale_fill_manual(
+      values = c(low, high), na.value = "white",
+      name = legend_title
+    )
   }
   return(g)
 }

@@ -6,7 +6,8 @@
 configure_output_dir <- function(output_dir = NULL) {
   output_dir_init <- output_dir
   output_dir <- ifelse(is.null(output_dir), file.path(tempdir(check = TRUE), "pathfindR_results"),
-                       output_dir)
+    output_dir
+  )
   dir_changed <- FALSE
   while (dir.exists(output_dir)) {
     output_dir <- sub("/$", "", output_dir)
@@ -21,8 +22,10 @@ configure_output_dir <- function(output_dir = NULL) {
   }
 
   if (dir_changed & !is.null(output_dir_init)) {
-    message(paste0("There is already a directory named \"", output_dir_init,
-                   "\".\nWriting the result to \"", output_dir, "\" not to overwrite any previous results."))
+    message(paste0(
+      "There is already a directory named \"", output_dir_init,
+      "\".\nWriting the result to \"", output_dir, "\" not to overwrite any previous results."
+    ))
   }
   return(output_dir)
 }

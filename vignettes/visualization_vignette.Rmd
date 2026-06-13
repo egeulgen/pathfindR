@@ -59,7 +59,7 @@ gg_list <- visualize_terms(
   result_df = example_pathfindR_output,
   input_processed = input_processed,
   is_KEGG_result = TRUE
-)  # this function returns a list of ggraph objects (named by Term ID)
+) # this function returns a list of ggraph objects (named by Term ID)
 
 # save one of the plots as PDF image
 ggplot2::ggsave(
@@ -67,7 +67,7 @@ ggplot2::ggsave(
   gg_list$hsa04911,
   width = 5,
   height = 5
-) 
+)
 ```
 
 <img src="./example_kegg_pathway_diagram.png" style="max-width:100%;" />
@@ -81,7 +81,7 @@ gg_list <- visualize_terms(
   input_processed = input_processed,
   is_KEGG_result = FALSE,
   pin_name_path = "Biogrid"
-)  # this function returns a list of ggraph objects (named by Term ID)
+) # this function returns a list of ggraph objects (named by Term ID)
 
 # save one of the plots as PDF image
 ggplot2::ggsave(
@@ -89,7 +89,7 @@ ggplot2::ggsave(
   gg_list$hsa04911,
   width = 10,
   height = 6
-) 
+)
 ```
 
 <img src="./example_interaction_vis.png" style="max-width:100%;" />

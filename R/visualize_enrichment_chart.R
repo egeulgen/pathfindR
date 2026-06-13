@@ -43,8 +43,10 @@
 enrichment_chart <- function(result_df, top_terms = 10, plot_by_cluster = FALSE,
                              num_bubbles = 4, even_breaks = TRUE) {
   message("Plotting the enrichment bubble chart")
-  necessary <- c("Term_Description", "Fold_Enrichment", "lowest_p", "Up_regulated",
-                 "Down_regulated")
+  necessary <- c(
+    "Term_Description", "Fold_Enrichment", "lowest_p", "Up_regulated",
+    "Down_regulated"
+  )
 
   if (!all(necessary %in% colnames(result_df))) {
     stop("The input data frame must have the columns:\n", paste(necessary, collapse = ", "))
@@ -80,10 +82,18 @@ enrichment_chart <- function(result_df, top_terms = 10, plot_by_cluster = FALSE,
     }
   }
 
-  num_genes <- vapply(result_df$Up_regulated, function(x) length(unlist(strsplit(x,
-                                                                                 ", "))), 1)
-  num_genes <- num_genes + vapply(result_df$Down_regulated, function(x) length(unlist(strsplit(x,
-                                                                                               ", "))), 1)
+  num_genes <- vapply(result_df$Up_regulated, function(x) {
+    length(unlist(strsplit(
+      x,
+      ", "
+    )))
+  }, 1)
+  num_genes <- num_genes + vapply(result_df$Down_regulated, function(x) {
+    length(unlist(strsplit(
+      x,
+      ", "
+    )))
+  }, 1)
 
   result_df$Term_Description <- factor(result_df$Term_Description, levels = rev(unique(result_df$Term_Description)))
 
@@ -92,8 +102,10 @@ enrichment_chart <- function(result_df, top_terms = 10, plot_by_cluster = FALSE,
   g <- ggplot2::ggplot(result_df, ggplot2::aes(.data$Fold_Enrichment, .data$Term_Description))
   g <- g + ggplot2::geom_point(ggplot2::aes(color = log_p, size = num_genes), na.rm = TRUE)
   g <- g + ggplot2::theme_bw()
-  g <- g + ggplot2::theme(axis.text.x = ggplot2::element_text(size = 10), axis.text.y = ggplot2::element_text(size = 10),
-                          plot.title = ggplot2::element_blank())
+  g <- g + ggplot2::theme(
+    axis.text.x = ggplot2::element_text(size = 10), axis.text.y = ggplot2::element_text(size = 10),
+    plot.title = ggplot2::element_blank()
+  )
   g <- g + ggplot2::xlab("Fold Enrichment")
   g <- g + ggplot2::theme(axis.title.y = ggplot2::element_blank())
   g <- g + ggplot2::labs(size = "# genes", color = expression(-log[10](p)))
@@ -103,11 +115,11 @@ enrichment_chart <- function(result_df, top_terms = 10, plot_by_cluster = FALSE,
     g <- g + ggplot2::scale_size_continuous(breaks = seq(0, max(num_genes)))
   } else {
     if (even_breaks) {
-      brks <- base::seq(0, max(num_genes), round(max(num_genes)/(num_bubbles +
-                                                                   1)))
+      brks <- base::seq(0, max(num_genes), round(max(num_genes) / (num_bubbles +
+        1)))
     } else {
       brks <- base::round(base::seq(0, max(num_genes), length.out = num_bubbles +
-                                      1))
+        1))
     }
     g <- g + ggplot2::scale_size_continuous(breaks = brks)
   }
@@ -115,8 +127,10 @@ enrichment_chart <- function(result_df, top_terms = 10, plot_by_cluster = FALSE,
   g <- g + ggplot2::scale_color_gradient(low = "#f5efef", high = "red")
 
   if (plot_by_cluster & "Cluster" %in% colnames(result_df)) {
-    g <- g + ggplot2::facet_grid(result_df$Cluster ~ ., scales = "free_y", space = "free",
-                                 drop = TRUE)
+    g <- g + ggplot2::facet_grid(result_df$Cluster ~ .,
+      scales = "free_y", space = "free",
+      drop = TRUE
+    )
   } else if (plot_by_cluster) {
     message("For plotting by cluster, there must a column named `Cluster` in the input data frame!")
   }

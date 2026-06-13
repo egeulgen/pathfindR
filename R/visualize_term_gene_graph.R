@@ -37,7 +37,7 @@
 #' @examples
 #' p <- term_gene_graph(example_pathfindR_output)
 #' p <- term_gene_graph(example_pathfindR_output, num_terms = 5)
-#' p <- term_gene_graph(example_pathfindR_output, node_size = 'p_val')
+#' p <- term_gene_graph(example_pathfindR_output, node_size = "p_val")
 term_gene_graph <- function(result_df, num_terms = 10, layout = "stress", use_description = FALSE,
                             node_size = "num_genes", node_colors = c("#E5D7BF", "green", "red")) {
   ############ Argument Checks Check num_terms is NULL or numeric
@@ -68,7 +68,8 @@ term_gene_graph <- function(result_df, num_terms = 10, layout = "stress", use_de
 
   if (!all(necessary_cols %in% colnames(result_df))) {
     stop(paste(c("All of", paste(necessary_cols, collapse = ", "), "must be present in `results_df`!"),
-               collapse = " "))
+      collapse = " "
+    ))
   }
 
   if (!is.atomic(node_colors)) {
@@ -103,8 +104,10 @@ term_gene_graph <- function(result_df, num_terms = 10, layout = "stress", use_de
     up_genes <- unlist(strsplit(result_df$Up_regulated[i], ", "))
     down_genes <- unlist(strsplit(result_df$Down_regulated[i], ", "))
     for (gene in c(up_genes, down_genes)) {
-      graph_df <- rbind(graph_df, data.frame(Term = result_df[i, ID_column],
-                                             Gene = gene))
+      graph_df <- rbind(graph_df, data.frame(
+        Term = result_df[i, ID_column],
+        Gene = gene
+      ))
     }
   }
 
@@ -116,12 +119,12 @@ term_gene_graph <- function(result_df, num_terms = 10, layout = "stress", use_de
   cond_term <- names(igraph::V(g)) %in% result_df[, ID_column]
   cond_up_gene <- names(igraph::V(g)) %in% up_genes
 
-  node_type <-  ifelse(cond_term, "term", ifelse(cond_up_gene, "up", "down"))
+  node_type <- ifelse(cond_term, "term", ifelse(cond_up_gene, "up", "down"))
   node_type <- factor(node_type, levels = c("term", "up", "down"))
   node_type <- droplevels(node_type)
   igraph::V(g)$type <- node_type
 
-  type_descriptions <- c(term="enriched term", up="up-regulated gene", down="down-regulated gene")
+  type_descriptions <- c(term = "enriched term", up = "up-regulated gene", down = "down-regulated gene")
   type_descriptions <- type_descriptions[levels(node_type)]
 
   names(node_colors) <- c("term", "up", "down")
@@ -147,17 +150,24 @@ term_gene_graph <- function(result_df, num_terms = 10, layout = "stress", use_de
   p <- p + ggraph::geom_edge_link(alpha = 0.8, colour = "darkgrey")
   p <- p + ggraph::geom_node_point(ggplot2::aes(color = .data$type, size = .data$size))
   p <- p + ggplot2::scale_size(range = c(5, 10), breaks = round(seq(round(min(igraph::V(g)$size)),
-                                                                    round(max(igraph::V(g)$size)), length.out = 4)), name = size_label)
+    round(max(igraph::V(g)$size)),
+    length.out = 4
+  )), name = size_label)
   p <- p + ggplot2::theme_void()
   p <- p + suppressWarnings(ggraph::geom_node_text(ggplot2::aes(label = .data$name),
-                                                   nudge_y = 0.2, repel = TRUE, max.overlaps = 20))
-  p <- p + ggplot2::scale_color_manual(values = node_colors, name = NULL,
-                                       labels = type_descriptions)
+    nudge_y = 0.2, repel = TRUE, max.overlaps = 20
+  ))
+  p <- p + ggplot2::scale_color_manual(
+    values = node_colors, name = NULL,
+    labels = type_descriptions
+  )
   if (is.null(num_terms)) {
     p <- p + ggplot2::ggtitle("Term-Gene Graph")
   } else {
-    p <- p + ggplot2::ggtitle("Term-Gene Graph", subtitle = paste(c("Top", num_terms,
-                                                                    "terms"), collapse = " "))
+    p <- p + ggplot2::ggtitle("Term-Gene Graph", subtitle = paste(c(
+      "Top", num_terms,
+      "terms"
+    ), collapse = " "))
   }
 
   p <- p + ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5), plot.subtitle = ggplot2::element_text(hjust = 0.5))

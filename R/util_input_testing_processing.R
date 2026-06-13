@@ -79,11 +79,11 @@ input_testing <- function(input, p_val_threshold = 0.05) {
 #' @examples
 #' processed_df <- input_processing(
 #'   input = example_pathfindR_input[1:5, ],
-#'   pin_name_path = 'KEGG'
+#'   pin_name_path = "KEGG"
 #' )
 #' processed_df <- input_processing(
 #'   input = example_pathfindR_input[1:5, ],
-#'   pin_name_path = 'KEGG',
+#'   pin_name_path = "KEGG",
 #'   convert2alias = FALSE
 #' )
 input_processing <- function(input, p_val_threshold = 0.05, pin_name_path = "Biogrid",
@@ -98,8 +98,10 @@ input_processing <- function(input, p_val_threshold = 0.05, pin_name_path = "Bio
   pin_path <- return_pin_path(pin_name_path)
 
   if (ncol(input) == 2) {
-    input <- data.frame(GENE = input[, 1], CHANGE = rep(1e+06, nrow(input)),
-                        P_VALUE = input[, 2])
+    input <- data.frame(
+      GENE = input[, 1], CHANGE = rep(1e+06, nrow(input)),
+      P_VALUE = input[, 2]
+    )
   }
 
   colnames(input) <- c("GENE", "CHANGE", "P_VALUE")
@@ -113,8 +115,10 @@ input_processing <- function(input, p_val_threshold = 0.05, pin_name_path = "Bio
   message("Number of genes provided in input: ", nrow(input))
   ## Discard larger than p-value threshold
   if (sum(input$P_VALUE <= p_val_threshold) == 0) {
-    stop("No input p value is lower than the provided threshold (", p_val_threshold,
-         ")")
+    stop(
+      "No input p value is lower than the provided threshold (", p_val_threshold,
+      ")"
+    )
   }
   input <- input[input$P_VALUE <= p_val_threshold, ]
   message("Number of genes in input after p-value filtering: ", nrow(input))
@@ -122,7 +126,8 @@ input_processing <- function(input, p_val_threshold = 0.05, pin_name_path = "Bio
   ## Choose lowest p for each gene
   if (anyDuplicated(input$GENE)) {
     warning("Duplicated genes found! The lowest p value for each gene was selected",
-            call. = FALSE)
+      call. = FALSE
+    )
 
     input <- input[order(input$P_VALUE, decreasing = FALSE), ]
     input <- input[!duplicated(input$GENE), ]
@@ -176,12 +181,16 @@ input_processing <- function(input, p_val_threshold = 0.05, pin_name_path = "Bio
     ## loop for getting all symbols
     converted <- c()
     for (i in base::seq_len(length(missing_symbols))) {
-      result <- hsa_alias_df[hsa_alias_df$alias_symbol == missing_symbols[i],
-                             c("alias_symbol", "symbol")]
-      result <- hsa_alias_df[hsa_alias_df$symbol %in% result$symbol, c("alias_symbol",
-                                                                       "symbol")]
+      result <- hsa_alias_df[
+        hsa_alias_df$alias_symbol == missing_symbols[i],
+        c("alias_symbol", "symbol")
+      ]
+      result <- hsa_alias_df[hsa_alias_df$symbol %in% result$symbol, c(
+        "alias_symbol",
+        "symbol"
+      )]
       result <- result$alias_symbol[base::toupper(result$alias_symbol) %in%
-                                      PIN_genes]
+        PIN_genes]
       ## avoid duplicate entries
       to_add <- select_alias(result, converted, length(result))
       converted <- rbind(converted, c(missing_symbols[i], to_add))
@@ -196,7 +205,7 @@ input_processing <- function(input, p_val_threshold = 0.05, pin_name_path = "Bio
 
   ## number and percent still missing
   n <- sum(input$new_gene == "NOT_FOUND")
-  perc <- n/nrow(input) * 100
+  perc <- n / nrow(input) * 100
 
   if (n == nrow(input)) {
     stop("None of the genes were in the PIN\nPlease check your gene symbols")
@@ -204,8 +213,10 @@ input_processing <- function(input, p_val_threshold = 0.05, pin_name_path = "Bio
 
   ## Give out warning indicating the number of still missing
   if (n != 0) {
-    message(paste0("Could not find any interactions for ", n, " (", round(perc,
-                                                                          2), "%) genes in the PIN"))
+    message(paste0("Could not find any interactions for ", n, " (", round(
+      perc,
+      2
+    ), "%) genes in the PIN"))
   } else {
     message(paste0("Found interactions for all genes in the PIN"))
   }

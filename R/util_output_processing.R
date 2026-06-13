@@ -16,7 +16,7 @@
 #'
 #' @examples
 #' example_gene_data <- example_pathfindR_input
-#' colnames(example_gene_data) <- c('GENE', 'CHANGE', 'P_VALUE')
+#' colnames(example_gene_data) <- c("GENE", "CHANGE", "P_VALUE")
 #'
 #' annotated_result <- annotate_term_genes(
 #'   result_df = example_pathfindR_output,
@@ -57,9 +57,11 @@ annotate_term_genes <- function(result_df, input_processed, genes_by_term = path
     idx <- which(names(genes_by_term) == annotated_df$ID[i])
     temp <- genes_by_term[[idx]]
     annotated_df$Up_regulated[i] <- paste(temp[base::toupper(temp) %in% upreg],
-                                          collapse = ", ")
+      collapse = ", "
+    )
     annotated_df$Down_regulated[i] <- paste(temp[base::toupper(temp) %in% downreg],
-                                            collapse = ", ")
+      collapse = ", "
+    )
   }
 
   return(annotated_df)
@@ -73,10 +75,16 @@ annotate_term_genes <- function(result_df, input_processed, genes_by_term = path
 #' @param dir_for_report directory to render the report in
 create_HTML_report <- function(input, input_processed, final_res, dir_for_report) {
   message("## Creating HTML report")
-  rmarkdown::render(input = system.file("rmd", "results.Rmd", package = "pathfindR"),
-                    output_dir = dir_for_report)
-  rmarkdown::render(input = system.file("rmd", "enriched_terms.Rmd", package = "pathfindR"),
-                    params = list(df = final_res), output_dir = dir_for_report)
-  rmarkdown::render(input = system.file("rmd", "conversion_table.Rmd", package = "pathfindR"),
-                    params = list(df = input_processed, original_df = input), output_dir = dir_for_report)
+  rmarkdown::render(
+    input = system.file("rmd", "results.Rmd", package = "pathfindR"),
+    output_dir = dir_for_report
+  )
+  rmarkdown::render(
+    input = system.file("rmd", "enriched_terms.Rmd", package = "pathfindR"),
+    params = list(df = final_res), output_dir = dir_for_report
+  )
+  rmarkdown::render(
+    input = system.file("rmd", "conversion_table.Rmd", package = "pathfindR"),
+    params = list(df = input_processed, original_df = input), output_dir = dir_for_report
+  )
 }

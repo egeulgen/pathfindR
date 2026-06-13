@@ -26,12 +26,14 @@
 #'
 #' @examples
 #' KEGG_gset <- fetch_gene_sets()
-#' GO_MF_gset <- fetch_gene_sets('GO-MF', min_gset_size = 20, max_gset_size = 100)
+#' GO_MF_gset <- fetch_gene_sets("GO-MF", min_gset_size = 20, max_gset_size = 100)
 fetch_gene_sets <- function(gene_sets = "KEGG", min_gset_size = 10, max_gset_size = 300,
-                           custom_genes = NULL, custom_descriptions = NULL) {
+                            custom_genes = NULL, custom_descriptions = NULL) {
   ### Argument checks
-  all_gs_opts <- c("KEGG", "Reactome", "BioCarta", "GO-All", "GO-BP", "GO-CC",
-                   "GO-MF", "cell_markers", "mmu_KEGG", "Custom")
+  all_gs_opts <- c(
+    "KEGG", "Reactome", "BioCarta", "GO-All", "GO-BP", "GO-CC",
+    "GO-MF", "cell_markers", "mmu_KEGG", "Custom"
+  )
   if (!gene_sets %in% all_gs_opts) {
     stop("`gene_sets` should be one of ", paste(dQuote(all_gs_opts), collapse = ", "))
   }

@@ -5,8 +5,10 @@ colnames(processed_input) <- c("old_GENE", "GENE", "CHANGE", "P_VALUE")
 test_that("`visualize_terms()` -- calls the appropriate function", {
   mock_vis_kegg <- mockery::mock(NULL)
   mockery::stub(visualize_terms, "visualize_KEGG_diagram", mock_vis_kegg)
-  expect_silent(visualize_terms(result_df = single_result, input_processed = data.frame(),
-                                is_KEGG_result = TRUE))
+  expect_silent(visualize_terms(
+    result_df = single_result, input_processed = data.frame(),
+    is_KEGG_result = TRUE
+  ))
   mockery::expect_called(mock_vis_kegg, 1)
 
   mock_vis_term_inter <- mockery::mock(NULL)
@@ -20,17 +22,23 @@ test_that("`visualize_terms()` -- argumment checks work", {
 
   # is_KEGG_result = TRUE
   nec_cols <- "ID"
-  expect_error(visualize_terms(single_result[, -1], is_KEGG_result = TRUE), paste0("`result_df` should contain the following columns: ",
-                                                                                   paste(dQuote(nec_cols), collapse = ", ")))
+  expect_error(visualize_terms(single_result[, -1], is_KEGG_result = TRUE), paste0(
+    "`result_df` should contain the following columns: ",
+    paste(dQuote(nec_cols), collapse = ", ")
+  ))
   # is_KEGG_result = FALSE
   nec_cols <- c("Term_Description", "Up_regulated", "Down_regulated")
-  expect_error(visualize_terms(single_result[, -2], is_KEGG_result = FALSE), paste0("`result_df` should contain the following columns: ",
-                                                                                    paste(dQuote(nec_cols), collapse = ", ")))
+  expect_error(visualize_terms(single_result[, -2], is_KEGG_result = FALSE), paste0(
+    "`result_df` should contain the following columns: ",
+    paste(dQuote(nec_cols), collapse = ", ")
+  ))
 
   expect_error(visualize_terms(result_df = single_result, is_KEGG_result = TRUE), "`input_processed` should be specified when `is_KEGG_result = TRUE`")
 
-  expect_error(visualize_terms(result_df = single_result, is_KEGG_result = "INVALID"),
-               "the argument `is_KEGG_result` should be either TRUE or FALSE")
+  expect_error(
+    visualize_terms(result_df = single_result, is_KEGG_result = "INVALID"),
+    "the argument `is_KEGG_result` should be either TRUE or FALSE"
+  )
 })
 
 test_that("`visualize_term_interactions()` -- creates expected list of ggraph objects", {
@@ -42,8 +50,10 @@ test_that("`visualize_term_interactions()` -- creates expected list of ggraph ob
   tmp_res$Term_Description[2] <- "SKIP"
   tmp_res$Up_regulated[2] <- "Gene1"
   tmp_res$Down_regulated[2] <- ""
-  expect_message(res <- visualize_term_interactions(tmp_res, pin_name_path = "KEGG"),
-                 paste0("< 2 genes, skipping visualization of ", tmp_res$Term_Description[2]))
+  expect_message(
+    res <- visualize_term_interactions(tmp_res, pin_name_path = "KEGG"),
+    paste0("< 2 genes, skipping visualization of ", tmp_res$Term_Description[2])
+  )
 
   # Non-empty non_Signif_Snw_Genes
   tmp_res <- single_result
@@ -77,14 +87,24 @@ test_that("`visualize_KEGG_diagram()` -- skips pathway if non-existent", {
 })
 
 test_that("`visualize_KEGG_diagram()` -- argument checks work", {
-  expect_error(visualize_KEGG_diagram(kegg_pw_ids = list(), input_processed = processed_input),
-               "`kegg_pw_ids` should be a vector of KEGG IDs")
-  expect_error(visualize_KEGG_diagram(kegg_pw_ids = c("X", "Y", "Z"), input_processed = processed_input),
-               "`kegg_pw_ids` should be a vector of valid hsa KEGG IDs")
+  expect_error(
+    visualize_KEGG_diagram(kegg_pw_ids = list(), input_processed = processed_input),
+    "`kegg_pw_ids` should be a vector of KEGG IDs"
+  )
+  expect_error(
+    visualize_KEGG_diagram(kegg_pw_ids = c("X", "Y", "Z"), input_processed = processed_input),
+    "`kegg_pw_ids` should be a vector of valid hsa KEGG IDs"
+  )
 
-  expect_error(visualize_KEGG_diagram(kegg_pw_ids = "abc12345", input_processed = list()),
-               "`input_processed` should be a data frame")
-  expect_error(visualize_KEGG_diagram(kegg_pw_ids = "abc12345", input_processed = processed_input[,
-                                                                                                  -2]), paste0("`input_processed` should contain the following columns: ",
-                                                                                                               paste(dQuote(c("GENE", "CHANGE")), collapse = ", ")))
+  expect_error(
+    visualize_KEGG_diagram(kegg_pw_ids = "abc12345", input_processed = list()),
+    "`input_processed` should be a data frame"
+  )
+  expect_error(visualize_KEGG_diagram(kegg_pw_ids = "abc12345", input_processed = processed_input[
+    ,
+    -2
+  ]), paste0(
+    "`input_processed` should contain the following columns: ",
+    paste(dQuote(c("GENE", "CHANGE")), collapse = ", ")
+  ))
 })

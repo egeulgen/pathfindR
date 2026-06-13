@@ -59,109 +59,118 @@
 #'   example_experiment_matrix,
 #'   plot_hmap = FALSE
 #' )
-score_terms <- function(enrichment_table, exp_mat, cases = NULL, use_description = FALSE,
-    plot_hmap = TRUE, ...) {
-    #### Argument Checks
-    if (!is.logical(use_description)) {
-        stop("`use_description` should either be TRUE or FALSE")
+score_terms <- function(
+  enrichment_table, exp_mat, cases = NULL, use_description = FALSE,
+  plot_hmap = TRUE, ...
+) {
+  #### Argument Checks
+  if (!is.logical(use_description)) {
+    stop("`use_description` should either be TRUE or FALSE")
+  }
+
+  if (!is.logical(plot_hmap)) {
+    stop("`plot_hmap` should either be TRUE or FALSE")
+  }
+
+  if (!is.data.frame(enrichment_table)) {
+    stop("`enrichment_table` should be a data frame of enrichment results")
+  }
+  ID_column <- ifelse(use_description, "Term_Description", "ID")
+  nec_cols <- c(ID_column, "Up_regulated", "Down_regulated")
+  if (!all(nec_cols %in% colnames(enrichment_table))) {
+    stop("`enrichment_table` should contain all of ", paste(dQuote(nec_cols),
+      collapse = ", "
+    ))
+  }
+
+  if (!is.matrix(exp_mat)) {
+    stop("`exp_mat` should be a matrix")
+  }
+
+  if (!is.null(cases)) {
+    if (!is.atomic(cases)) {
+      stop("`cases` should be a vector")
     }
 
-    if (!is.logical(plot_hmap)) {
-        stop("`plot_hmap` should either be TRUE or FALSE")
+    if (!all(cases %in% colnames(exp_mat))) {
+      stop("Missing `cases` in `exp_mat`")
     }
+  }
 
-    if (!is.data.frame(enrichment_table)) {
-        stop("`enrichment_table` should be a data frame of enrichment results")
+  ## fix duplicated term descriptions (if using description)
+  if (use_description) {
+    dup_desc <- enrichment_table$Term_Description[duplicated(enrichment_table$Term_Description)]
+
+    tmp <- ifelse(enrichment_table$Term_Description %in% dup_desc, paste0(
+      enrichment_table$Term_Description,
+      "_", enrichment_table$ID
+    ), enrichment_table$Term_Description)
+    enrichment_table$Term_Description <- tmp
+  }
+
+  #### Create score matrix
+  all_scores_matrix <- c()
+  for (i in base::seq_len(nrow(enrichment_table))) {
+    # Get signif. genes
+    up_genes <- enrichment_table$Up_regulated[i]
+    down_genes <- enrichment_table$Down_regulated[i]
+    up_genes <- unlist(strsplit(up_genes, ", "))
+    down_genes <- unlist(strsplit(down_genes, ", "))
+
+    genes <- c(up_genes, down_genes)
+
+    # convert gene symbols to upper case for comparison
+    genes <- toupper(genes)
+    exp_mat_genes <- rownames(exp_mat)
+    exp_mat_genes <- toupper(exp_mat_genes)
+
+    # some genes may not be in exp. matrix
+    genes <- genes[genes %in% exp_mat_genes]
+
+    if (length(genes) != 0) {
+      # subset exp. matrix to include only genes
+      sub_mat <- exp_mat[exp_mat_genes %in% genes, , drop = FALSE]
+
+      current_term_score_matrix <- c()
+      for (gene in genes) {
+        gene_vec <- sub_mat[toupper(rownames(sub_mat)) == gene, ]
+        gene_vec <- as.numeric(gene_vec)
+        names(gene_vec) <- colnames(sub_mat)
+
+        # calculate mean and sd across samples
+        gene_mean <- base::mean(gene_vec)
+        gene_sd <- stats::sd(gene_vec)
+
+        gene_scores <- vapply(
+          gene_vec, function(x) (x - gene_mean) / gene_sd,
+          1.2
+        )
+        current_term_score_matrix <- rbind(current_term_score_matrix, gene_scores)
+        rownames(current_term_score_matrix)[nrow(current_term_score_matrix)] <- gene
+      }
+
+      current_term_scores <- apply(current_term_score_matrix, 2, base::mean)
+      all_scores_matrix <- rbind(all_scores_matrix, current_term_scores)
+      rownames(all_scores_matrix)[nrow(all_scores_matrix)] <- enrichment_table[
+        i,
+        ID_column
+      ]
     }
-    ID_column <- ifelse(use_description, "Term_Description", "ID")
-    nec_cols <- c(ID_column, "Up_regulated", "Down_regulated")
-    if (!all(nec_cols %in% colnames(enrichment_table))) {
-        stop("`enrichment_table` should contain all of ", paste(dQuote(nec_cols),
-            collapse = ", "))
-    }
+  }
 
-    if (!is.matrix(exp_mat)) {
-        stop("`exp_mat` should be a matrix")
-    }
+  if (!is.null(cases)) {
+    ## order as cases, then controls
+    match1 <- match(cases, colnames(all_scores_matrix))
+    match2 <- setdiff(base::seq_len(ncol(all_scores_matrix)), match1)
+    all_scores_matrix <- all_scores_matrix[, c(match1, match2)]
+  }
 
-    if (!is.null(cases)) {
-        if (!is.atomic(cases)) {
-            stop("`cases` should be a vector")
-        }
+  if (plot_hmap) {
+    heatmap <- plot_scores(score_matrix = all_scores_matrix, cases = cases, ...)
+    graphics::plot(heatmap)
+  }
 
-        if (!all(cases %in% colnames(exp_mat))) {
-            stop("Missing `cases` in `exp_mat`")
-        }
-    }
-
-    ## fix duplicated term descriptions (if using description)
-    if (use_description) {
-        dup_desc <- enrichment_table$Term_Description[duplicated(enrichment_table$Term_Description)]
-
-        tmp <- ifelse(enrichment_table$Term_Description %in% dup_desc, paste0(enrichment_table$Term_Description,
-            "_", enrichment_table$ID), enrichment_table$Term_Description)
-        enrichment_table$Term_Description <- tmp
-    }
-
-    #### Create score matrix
-    all_scores_matrix <- c()
-    for (i in base::seq_len(nrow(enrichment_table))) {
-        # Get signif. genes
-        up_genes <- enrichment_table$Up_regulated[i]
-        down_genes <- enrichment_table$Down_regulated[i]
-        up_genes <- unlist(strsplit(up_genes, ", "))
-        down_genes <- unlist(strsplit(down_genes, ", "))
-
-        genes <- c(up_genes, down_genes)
-
-        # convert gene symbols to upper case for comparison
-        genes <- toupper(genes)
-        exp_mat_genes <- rownames(exp_mat)
-        exp_mat_genes <- toupper(exp_mat_genes)
-
-        # some genes may not be in exp. matrix
-        genes <- genes[genes %in% exp_mat_genes]
-
-        if (length(genes) != 0) {
-            # subset exp. matrix to include only genes
-            sub_mat <- exp_mat[exp_mat_genes %in% genes, , drop = FALSE]
-
-            current_term_score_matrix <- c()
-            for (gene in genes) {
-                gene_vec <- sub_mat[toupper(rownames(sub_mat)) == gene, ]
-                gene_vec <- as.numeric(gene_vec)
-                names(gene_vec) <- colnames(sub_mat)
-
-                # calculate mean and sd across samples
-                gene_mean <- base::mean(gene_vec)
-                gene_sd <- stats::sd(gene_vec)
-
-                gene_scores <- vapply(gene_vec, function(x) (x - gene_mean)/gene_sd,
-                  1.2)
-                current_term_score_matrix <- rbind(current_term_score_matrix, gene_scores)
-                rownames(current_term_score_matrix)[nrow(current_term_score_matrix)] <- gene
-            }
-
-            current_term_scores <- apply(current_term_score_matrix, 2, base::mean)
-            all_scores_matrix <- rbind(all_scores_matrix, current_term_scores)
-            rownames(all_scores_matrix)[nrow(all_scores_matrix)] <- enrichment_table[i,
-                ID_column]
-        }
-    }
-
-    if (!is.null(cases)) {
-        ## order as cases, then controls
-        match1 <- match(cases, colnames(all_scores_matrix))
-        match2 <- setdiff(base::seq_len(ncol(all_scores_matrix)), match1)
-        all_scores_matrix <- all_scores_matrix[, c(match1, match2)]
-    }
-
-    if (plot_hmap) {
-        heatmap <- plot_scores(score_matrix = all_scores_matrix, cases = cases, ...)
-        graphics::plot(heatmap)
-    }
-
-    return(all_scores_matrix)
+  return(all_scores_matrix)
 }
 
 #' Plot the Heatmap of Score Matrix of Enriched Terms per Sample
@@ -192,80 +201,84 @@ score_terms <- function(enrichment_table, exp_mat, cases = NULL, use_description
 #'   plot_hmap = FALSE
 #' )
 #' hmap <- plot_scores(score_matrix)
-plot_scores <- function(score_matrix, cases = NULL, label_samples = TRUE, case_title = "Case",
-    control_title = "Control", low = "green", mid = "black", high = "red") {
-    #### Argument Checks
-    if (!is.matrix(score_matrix)) {
-        stop("`score_matrix` should be a matrix")
+plot_scores <- function(
+  score_matrix, cases = NULL, label_samples = TRUE, case_title = "Case",
+  control_title = "Control", low = "green", mid = "black", high = "red"
+) {
+  #### Argument Checks
+  if (!is.matrix(score_matrix)) {
+    stop("`score_matrix` should be a matrix")
+  }
+
+  if (!is.null(cases)) {
+    if (!is.atomic(cases)) {
+      stop("`cases` should be a vector")
     }
 
-    if (!is.null(cases)) {
-        if (!is.atomic(cases)) {
-            stop("`cases` should be a vector")
-        }
-
-        if (!all(cases %in% colnames(score_matrix))) {
-            stop("Missing `cases` in `score_matrix`")
-        }
+    if (!all(cases %in% colnames(score_matrix))) {
+      stop("Missing `cases` in `score_matrix`")
     }
+  }
 
-    if (!is.logical(label_samples)) {
-        stop("`label_samples` should be TRUE or FALSE")
-    }
+  if (!is.logical(label_samples)) {
+    stop("`label_samples` should be TRUE or FALSE")
+  }
 
-    if (!is.character(case_title) | length(case_title) != 1) {
-        stop("`case_title` should be a single character value")
-    }
+  if (!is.character(case_title) | length(case_title) != 1) {
+    stop("`case_title` should be a single character value")
+  }
 
-    if (!is.character(control_title) | length(control_title) != 1) {
-        stop("`control_title` should be a single character value")
-    }
+  if (!is.character(control_title) | length(control_title) != 1) {
+    stop("`control_title` should be a single character value")
+  }
 
-    if (!isColor(low)) {
-      stop("`low` should be a valid color")
-    }
+  if (!isColor(low)) {
+    stop("`low` should be a valid color")
+  }
 
-    if (!isColor(mid)) {
-      stop("`mid` should be a valid color")
-    }
+  if (!isColor(mid)) {
+    stop("`mid` should be a valid color")
+  }
 
-    if (!isColor(high)) {
-      stop("`high` should be a valid color")
-    }
+  if (!isColor(high)) {
+    stop("`high` should be a valid color")
+  }
 
-    #### Create plot sort according to activity (up/down)
-    if (!is.null(cases)) {
-        tmp <- rowMeans(score_matrix[, cases, drop = FALSE])
-        score_matrix <- score_matrix[c(which(tmp >= 0), which(tmp < 0)), ]
-    }
+  #### Create plot sort according to activity (up/down)
+  if (!is.null(cases)) {
+    tmp <- rowMeans(score_matrix[, cases, drop = FALSE])
+    score_matrix <- score_matrix[c(which(tmp >= 0), which(tmp < 0)), ]
+  }
 
-    ## transform the matrix
-    var_names <- list()
-    var_names[["Term"]] <- factor(rownames(score_matrix), levels = rev(rownames(score_matrix)))
-    var_names[["Sample"]] <- factor(colnames(score_matrix), levels = colnames(score_matrix))
+  ## transform the matrix
+  var_names <- list()
+  var_names[["Term"]] <- factor(rownames(score_matrix), levels = rev(rownames(score_matrix)))
+  var_names[["Sample"]] <- factor(colnames(score_matrix), levels = colnames(score_matrix))
 
-    score_df <- expand.grid(var_names, KEEP.OUT.ATTRS = FALSE, stringsAsFactors = FALSE)
-    scores <- as.vector(score_matrix)
-    scores <- data.frame(scores)
-    score_df <- cbind(score_df, scores)
-    if (!is.null(cases)) {
-        score_df$Type <- ifelse(score_df$Sample %in% cases, case_title, control_title)
-        score_df$Type <- factor(score_df$Type, levels = c(case_title, control_title))
-    }
+  score_df <- expand.grid(var_names, KEEP.OUT.ATTRS = FALSE, stringsAsFactors = FALSE)
+  scores <- as.vector(score_matrix)
+  scores <- data.frame(scores)
+  score_df <- cbind(score_df, scores)
+  if (!is.null(cases)) {
+    score_df$Type <- ifelse(score_df$Sample %in% cases, case_title, control_title)
+    score_df$Type <- factor(score_df$Type, levels = c(case_title, control_title))
+  }
 
-    g <- ggplot2::ggplot(score_df, ggplot2::aes(x = .data$Sample, y = .data$Term))
-    g <- g + ggplot2::geom_tile(ggplot2::aes(fill = .data$scores), color = "white")
-    g <- g + ggplot2::scale_fill_gradient2(low = low, mid = mid, high = high)
-    g <- g + ggplot2::theme(axis.title.x = ggplot2::element_blank(), axis.title.y = ggplot2::element_blank(),
-        axis.text.x = ggplot2::element_text(angle = 45, hjust = 1), legend.title = ggplot2::element_text(size = 10),
-        legend.text = ggplot2::element_text(size = 12))
-    g <- g + ggplot2::labs(fill = "Score")
-    if (!is.null(cases)) {
-        g <- g + ggplot2::facet_grid(~Type, scales = "free_x", space = "free")
-        g <- g + ggplot2::theme(strip.text.x = ggplot2::element_text(size = 12, face = "bold"))
-    }
-    if (!label_samples) {
-        g <- g + ggplot2::theme(axis.text.x = ggplot2::element_blank(), axis.ticks.x = ggplot2::element_blank())
-    }
-    return(g)
+  g <- ggplot2::ggplot(score_df, ggplot2::aes(x = .data$Sample, y = .data$Term))
+  g <- g + ggplot2::geom_tile(ggplot2::aes(fill = .data$scores), color = "white")
+  g <- g + ggplot2::scale_fill_gradient2(low = low, mid = mid, high = high)
+  g <- g + ggplot2::theme(
+    axis.title.x = ggplot2::element_blank(), axis.title.y = ggplot2::element_blank(),
+    axis.text.x = ggplot2::element_text(angle = 45, hjust = 1), legend.title = ggplot2::element_text(size = 10),
+    legend.text = ggplot2::element_text(size = 12)
+  )
+  g <- g + ggplot2::labs(fill = "Score")
+  if (!is.null(cases)) {
+    g <- g + ggplot2::facet_grid(~Type, scales = "free_x", space = "free")
+    g <- g + ggplot2::theme(strip.text.x = ggplot2::element_text(size = 12, face = "bold"))
+  }
+  if (!label_samples) {
+    g <- g + ggplot2::theme(axis.text.x = ggplot2::element_blank(), axis.ticks.x = ggplot2::element_blank())
+  }
+  return(g)
 }

@@ -26,9 +26,9 @@ isColor <- function(x) {
 #'
 #' @examples
 #' \dontrun{
-#' pw_id <- 'hsa00010'
+#' pw_id <- "hsa00010"
 #' change_vec <- c(-2, 4, 6)
-#' names(change_vec) <- c('hsa:2821', 'hsa:226', 'hsa:229')
+#' names(change_vec) <- c("hsa:2821", "hsa:226", "hsa:229")
 #' result <- pathfindR:::color_kegg_pathway(pw_id, change_vec)
 #' }
 color_kegg_pathway <- function(pw_id, change_vec, scale_vals = TRUE, node_cols = NULL, legend.position = "top") {
@@ -76,19 +76,23 @@ color_kegg_pathway <- function(pw_id, change_vec, scale_vals = TRUE, node_cols =
   ggkegg_temp_dir <- file.path(tempdir(check = TRUE), "ggkegg")
   dir.create(ggkegg_temp_dir, showWarnings = FALSE)
 
-  g <- tryCatch({
-    ggkegg::pathway(pid = pw_id, directory = ggkegg_temp_dir)
-  }, error = function(e) {
-    message(paste("Cannot parse KEGG pathway for:", pw_id))
-    message("Here's the original error message:")
-    message(e$message)
-    return(NULL)
-  }, warning = function(w) {
-    message(paste("Cannot parse KEGG pathway for:", pw_id))
-    message("Here's the original error message:")
-    message(w$message)
-    return(NULL)
-  })
+  g <- tryCatch(
+    {
+      ggkegg::pathway(pid = pw_id, directory = ggkegg_temp_dir)
+    },
+    error = function(e) {
+      message(paste("Cannot parse KEGG pathway for:", pw_id))
+      message("Here's the original error message:")
+      message(e$message)
+      return(NULL)
+    },
+    warning = function(w) {
+      message(paste("Cannot parse KEGG pathway for:", pw_id))
+      message("Here's the original error message:")
+      message(w$message)
+      return(NULL)
+    }
+  )
 
   if (is.null(g)) {
     return(NULL)
@@ -119,8 +123,9 @@ color_kegg_pathway <- function(pw_id, change_vec, scale_vals = TRUE, node_cols =
   if (!all(pw_vis_changes == 1e+06) & scale_vals) {
     common_limit <- max(abs(pw_vis_changes))
     pw_vis_changes <- ifelse(pw_vis_changes < 0,
-                             -abs(pw_vis_changes) / common_limit,
-                             pw_vis_changes / common_limit)
+      -abs(pw_vis_changes) / common_limit,
+      pw_vis_changes / common_limit
+    )
   }
 
 
@@ -128,7 +133,7 @@ color_kegg_pathway <- function(pw_id, change_vec, scale_vals = TRUE, node_cols =
   igraph::V(g)$change_value <- NA
   igraph::V(g)$change_value[match(names(pw_vis_changes), names(igraph::V(g)))] <- pw_vis_changes
 
-  p <- ggraph::ggraph(g, layout="manual", x=igraph::V(g)$x, y=igraph::V(g)$y)
+  p <- ggraph::ggraph(g, layout = "manual", x = igraph::V(g)$x, y = igraph::V(g)$y)
   p <- p + ggkegg::geom_node_rect(ggplot2::aes(filter = !is.na(.data$change_value), fill = .data$change_value))
   p <- p + ggkegg::overlay_raw_map(pw_id)
   p <- p + ggplot2::scale_fill_gradient2(low = low_col, mid = mid_col, high = high_col)

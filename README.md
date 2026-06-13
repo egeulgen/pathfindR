@@ -149,23 +149,23 @@ title="Enrichment Chart" alt="pathfindR Enrichment Chart" />
 Some useful arguments are:
 
 ``` r
-# set an output directory for saving active subnetworks and creating an HTML report 
+# set an output directory for saving active subnetworks and creating an HTML report
 # (default=NULL, sets a temporary directory)
-output_df <- run_pathfindR(input_df, output_dir="/top/secret/results")
+output_df <- run_pathfindR(input_df, output_dir = "/top/secret/results")
 
 # change the gene sets used for analysis (default="KEGG")
-output_df <- run_pathfindR(input_df, gene_sets="GO-MF")
+output_df <- run_pathfindR(input_df, gene_sets = "GO-MF")
 
 # change the PIN for active subnetwork search (default=Biogrid)
-output_df <- run_pathfindR(input_df, pin_name_path="IntAct")
+output_df <- run_pathfindR(input_df, pin_name_path = "IntAct")
 # or use an external PIN of your choice
-output_df <- run_pathfindR(input_df, pin_name_path="/path/to/my/PIN.sif")
+output_df <- run_pathfindR(input_df, pin_name_path = "/path/to/my/PIN.sif")
 
 # change the number of iterations (default=10)
-output_df <- run_pathfindR(input_df, iterations=25) 
+output_df <- run_pathfindR(input_df, iterations = 25)
 
 # report the non-significant active subnetwork genes (for later analyses)
-output_df <- run_pathfindR(input_df, list_active_snw_genes=TRUE)
+output_df <- run_pathfindR(input_df, list_active_snw_genes = TRUE)
 ```
 
 The available PINs are “Biogrid”, “STRING”, “GeneMania”, “IntAct”,
@@ -196,13 +196,13 @@ cluster assignments.
 clustered_df <- cluster_enriched_terms(output_df)
 
 # display the heatmap of hierarchical clustering
-clustered_df <- cluster_enriched_terms(output_df, plot_hmap=TRUE)
+clustered_df <- cluster_enriched_terms(output_df, plot_hmap = TRUE)
 
 # display the dendrogram and automatically-determined clusters
-clustered_df <- cluster_enriched_terms(output_df, plot_dend=TRUE)
+clustered_df <- cluster_enriched_terms(output_df, plot_dend = TRUE)
 
 # change agglomeration method (default="average") for hierarchical clustering
-clustered_df <- cluster_enriched_terms(output_df, clu_method="centroid")
+clustered_df <- cluster_enriched_terms(output_df, clu_method = "centroid")
 ```
 
 Alternatively, the `fuzzy` clustering method (as described in Huang DW,
@@ -211,7 +211,7 @@ a novel biological module-centric algorithm to functionally analyze
 large gene lists. Genome Biol. 2007;8(9):R183.) can be used:
 
 ``` r
-clustered_df_fuzzy <- cluster_enriched_terms(output_df, method="fuzzy")
+clustered_df_fuzzy <- cluster_enriched_terms(output_df, method = "fuzzy")
 ```
 
 # Visualization of Enrichment Results
@@ -228,7 +228,7 @@ gg_list <- visualize_terms(
   result_df = example_pathfindR_output,
   input_processed = input_processed,
   is_KEGG_result = TRUE
-)  # this function returns a list of ggraph objects (named by Term ID)
+) # this function returns a list of ggraph objects (named by Term ID)
 
 # save one of the plots as PDF image
 ggplot2::ggsave(
@@ -236,7 +236,7 @@ ggplot2::ggsave(
   gg_list$hsa04911,
   width = 5,
   height = 5
-) 
+)
 ```
 
 <figure>
@@ -258,7 +258,7 @@ gg_list <- visualize_terms(
   input_processed = input_processed,
   is_KEGG_result = FALSE,
   pin_name_path = "Biogrid"
-)  # this function returns a list of ggraph objects (named by Term ID)
+) # this function returns a list of ggraph objects (named by Term ID)
 
 # save one of the plots as PDF image
 ggplot2::ggsave(
@@ -266,7 +266,7 @@ ggplot2::ggsave(
   gg_list$hsa04911,
   width = 10,
   height = 6
-) 
+)
 ```
 
 <figure>
@@ -356,8 +356,8 @@ results using rheumatoid arthritis-related data.
 
 ``` r
 combined_df <- combine_pathfindR_results(
-  result_A=an_output_df, 
-  result_B=another_output_df
+  result_A = an_output_df,
+  result_B = another_output_df
 )
 ```
 
@@ -367,7 +367,7 @@ the common terms in the combined results. The function
 selected terms etc.) later on.
 
 ``` r
-combined_results_graph(combined_df, selected_terms=c("hsa04144", "hsa04141", "hsa04140"))
+combined_results_graph(combined_df, selected_terms = c("hsa04144", "hsa04141", "hsa04140"))
 ```
 
 <figure>

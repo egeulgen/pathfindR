@@ -21,8 +21,8 @@
 #'
 #' @examples
 #' path2snw_list <- system.file(
-#'   'extdata/resultActiveSubnetworkSearch.txt',
-#'   package = 'pathfindR'
+#'   "extdata/resultActiveSubnetworkSearch.txt",
+#'   package = "pathfindR"
 #' )
 #' filtered <- filterActiveSnws(
 #'   active_snw_path = path2snw_list,
