@@ -42,10 +42,10 @@ test_that("`get_active_subnetworks()` -- argument checks work", {
     paste0("`search_method` should be one of ", paste(dQuote(valid_mets), collapse = ", "))
   )
 
-  # silent_option
+  # verbose
   expect_error(
-    get_active_subnetworks(input_for_search = input_data_frame, silent_option = "WRONG"),
-    "`silent_option` should be either TRUE or FALSE"
+    get_active_subnetworks(input_for_search = input_data_frame, verbose = "WRONG"),
+    "`verbose` should be either TRUE or FALSE"
   )
 
   expect_error(

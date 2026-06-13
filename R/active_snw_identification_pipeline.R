@@ -14,10 +14,7 @@
 #'  search. Options are greedy search (GR), simulated annealing (SA) or genetic
 #'  algorithm (GA) for the search (default = 'GR').
 #' @param seedForRandom seed for reproducibility while running active subnetwork search (applies for GR and SA)
-#' @param silent_option boolean value indicating whether to print the messages
-#' to the console (FALSE) or not (TRUE, this will print to a temp. file) during
-#' active subnetwork search (default = TRUE). This option was added because
-#' during parallel runs, the console messages get disorderly printed.
+#' @param verbose boolean value indicating whether to print messages (default=FALSE)
 #' @param use_all_positives if TRUE: in GA, adds an individual with all positive
 #'  nodes. In SA, initializes candidate solution with all positive nodes. (default = FALSE)
 #' @param geneInitProbs For SA and GA, probability of adding a gene in initial solution (default = 0.1)
@@ -48,7 +45,7 @@
 get_active_subnetworks <- function(
   input_for_search, pin_name_path = "Biogrid",
   score_quan_thr = 0.8, sig_gene_thr = 0.02, search_method = "GR",
-  seedForRandom = 1234, silent_option = TRUE, use_all_positives = FALSE, geneInitProbs = 0.1,
+  seedForRandom = 1234, verbose = FALSE, use_all_positives = FALSE, geneInitProbs = 0.1,
   saTemp0 = 1, saTemp1 = 0.01, saIter = 10000, gaPop = 400, gaIter = 10000, gaThread = 5,
   gaCrossover = 1, gaMut = 0, grMaxDepth = 1, grSearchDepth = 1, grOverlap = 0.5,
   grSubNum = 1000
@@ -63,18 +60,15 @@ get_active_subnetworks <- function(
     ))
   }
 
-  # search_method
   valid_mets <- c("GR", "SA", "GA")
   if (!search_method %in% valid_mets) {
     stop("`search_method` should be one of ", paste(dQuote(valid_mets), collapse = ", "))
   }
 
-  # silent_option
-  if (!is.logical(silent_option)) {
-    stop("`silent_option` should be either TRUE or FALSE")
+  if (!is.logical(verbose)) {
+    stop("`verbose` should be either TRUE or FALSE")
   }
 
-  # use_all_positives
   if (!is.logical(use_all_positives)) {
     stop("`use_all_positives` should be either TRUE or FALSE")
   }
@@ -103,7 +97,7 @@ get_active_subnetworks <- function(
     gr_overlap_threshold = grOverlap,
     gr_subnetwork_num = grSubNum,
     seed = seedForRandom,
-    verbose = !silent_option
+    verbose = verbose
   )
 
   ############ Parse and filter active subnetworks

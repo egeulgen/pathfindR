@@ -12,7 +12,7 @@ single_iter_wrapper(
   score_quan_thr,
   sig_gene_thr,
   search_method,
-  silent_option,
+  verbose,
   use_all_positives,
   geneInitProbs,
   saTemp0,
@@ -54,10 +54,7 @@ is set to 2}
 search. Options are greedy search (GR), simulated annealing (SA) or genetic
 algorithm (GA) for the search (default = 'GR').}
 
-\item{silent_option}{boolean value indicating whether to print the messages
-to the console (FALSE) or not (TRUE, this will print to a temp. file) during
-active subnetwork search (default = TRUE). This option was added because
-during parallel runs, the console messages get disorderly printed.}
+\item{verbose}{boolean value indicating whether to print messages (default=FALSE)}
 
 \item{use_all_positives}{if TRUE: in GA, adds an individual with all positive
 nodes. In SA, initializes candidate solution with all positive nodes. (default = FALSE)}

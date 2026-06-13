@@ -65,8 +65,8 @@ test_that("`active_snw_enrichment_wrapper()` -- argument checks work", {
   expect_error(active_snw_enrichment_wrapper(
     input_processed = input_processed,
     pin_path = pin_path, gset_list = list(), enrichment_threshold = 0.05, list_active_snw_genes = FALSE,
-    silent_option = "INVALID"
-  ), "`silent_option` should be either TRUE or FALSE")
+    verbose = "INVALID"
+  ), "`verbose` should be either TRUE or FALSE")
 
   expect_error(active_snw_enrichment_wrapper(
     input_processed = input_processed,

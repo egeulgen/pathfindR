@@ -30,7 +30,7 @@ active_snw_enrichment_wrapper(
   grSearchDepth = 1,
   grOverlap = 0.5,
   grSubNum = 1000,
-  silent_option = TRUE
+  verbose = FALSE
 )
 }
 \arguments{
@@ -99,10 +99,7 @@ is set to 2}
 
 \item{grSubNum}{Number of subnetworks to be presented in the results (default = 1000)}
 
-\item{silent_option}{boolean value indicating whether to print the messages
-to the console (FALSE) or not (TRUE, this will print to a temp. file) during
-active subnetwork search (default = TRUE). This option was added because
-during parallel runs, the console messages get disorderly printed.}
+\item{verbose}{boolean value indicating whether to print messages (default=FALSE)}
 }
 \value{
 Data frame of combined pathfindR enrichment results

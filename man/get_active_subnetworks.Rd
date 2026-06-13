@@ -11,7 +11,7 @@ get_active_subnetworks(
   sig_gene_thr = 0.02,
   search_method = "GR",
   seedForRandom = 1234,
-  silent_option = TRUE,
+  verbose = FALSE,
   use_all_positives = FALSE,
   geneInitProbs = 0.1,
   saTemp0 = 1,
@@ -53,10 +53,7 @@ algorithm (GA) for the search (default = 'GR').}
 
 \item{seedForRandom}{seed for reproducibility while running active subnetwork search (applies for GR and SA)}
 
-\item{silent_option}{boolean value indicating whether to print the messages
-to the console (FALSE) or not (TRUE, this will print to a temp. file) during
-active subnetwork search (default = TRUE). This option was added because
-during parallel runs, the console messages get disorderly printed.}
+\item{verbose}{boolean value indicating whether to print messages (default=FALSE)}
 
 \item{use_all_positives}{if TRUE: in GA, adds an individual with all positive
 nodes. In SA, initializes candidate solution with all positive nodes. (default = FALSE)}

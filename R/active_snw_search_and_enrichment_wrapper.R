@@ -20,7 +20,7 @@ active_snw_enrichment_wrapper <- function(input_processed, pin_path, gset_list, 
                                           use_all_positives = FALSE, iterations = 10, n_processes = NULL, score_quan_thr = 0.8,
                                           sig_gene_thr = 0.02, saTemp0 = 1, saTemp1 = 0.01, saIter = 10000, gaPop = 400,
                                           gaIter = 200, gaThread = 5, gaCrossover = 1, gaMut = 0, grMaxDepth = 1, grSearchDepth = 1,
-                                          grOverlap = 0.5, grSubNum = 1000, silent_option = TRUE) {
+                                          grOverlap = 0.5, grSubNum = 1000, verbose = FALSE) {
   message("## Performing Active Subnetwork Search and Enrichment")
   ############ Argument checks Active Subnetwork Search Method
   valid_mets <- c("GR", "SA", "GA")
@@ -58,8 +58,8 @@ active_snw_enrichment_wrapper <- function(input_processed, pin_path, gset_list, 
     stop("`use_all_positives` should be either TRUE or FALSE")
   }
 
-  if (!is.logical(silent_option)) {
-    stop("`silent_option` should be either TRUE or FALSE")
+  if (!is.logical(verbose)) {
+    stop("`verbose` should be either TRUE or FALSE")
   }
 
   if (!is.logical(disable_parallel)) {
@@ -88,7 +88,7 @@ active_snw_enrichment_wrapper <- function(input_processed, pin_path, gset_list, 
   if (iterations == 1) {
     combined_res <- single_iter_wrapper(
       i = NULL, dirs, input_processed, pin_path,
-      score_quan_thr, sig_gene_thr, search_method, silent_option, use_all_positives,
+      score_quan_thr, sig_gene_thr, search_method, verbose, use_all_positives,
       geneInitProbs, saTemp0, saTemp1, saIter, gaPop, gaIter, gaThread, gaCrossover,
       gaMut, grMaxDepth, grSearchDepth, grOverlap, grSubNum, gset_list, adj_method,
       enrichment_threshold, list_active_snw_genes
@@ -104,7 +104,7 @@ active_snw_enrichment_wrapper <- function(input_processed, pin_path, gset_list, 
       ) %dopar% {
         single_iter_wrapper(
           i, dirs, input_processed, pin_path, score_quan_thr,
-          sig_gene_thr, search_method, silent_option, use_all_positives,
+          sig_gene_thr, search_method, verbose, use_all_positives,
           geneInitProbs, saTemp0, saTemp1, saIter, gaPop, gaIter, gaThread,
           gaCrossover, gaMut, grMaxDepth, grSearchDepth, grOverlap, grSubNum,
           gset_list, adj_method, enrichment_threshold, list_active_snw_genes
@@ -116,7 +116,7 @@ active_snw_enrichment_wrapper <- function(input_processed, pin_path, gset_list, 
       for (i in 1:iterations) {
         current_res <- single_iter_wrapper(
           i, dirs, score_quan_thr, sig_gene_thr,
-          search_method, silent_option, use_all_positives, geneInitProbs,
+          search_method, verbose, use_all_positives, geneInitProbs,
           saTemp0, saTemp1, saIter, gaPop, gaIter, gaThread, gaCrossover,
           gaMut, grMaxDepth, grSearchDepth, grOverlap, grSubNum, gset_list,
           adj_method, enrichment_threshold, list_active_snw_genes
@@ -138,7 +138,7 @@ active_snw_enrichment_wrapper <- function(input_processed, pin_path, gset_list, 
 #'
 #' @return Data frame of enrichment results using active subnetwork search results
 single_iter_wrapper <- function(i = NULL, dirs, input_processed, pin_path, score_quan_thr,
-                                sig_gene_thr, search_method, silent_option, use_all_positives, geneInitProbs,
+                                sig_gene_thr, search_method, verbose, use_all_positives, geneInitProbs,
                                 saTemp0, saTemp1, saIter, gaPop, gaIter, gaThread, gaCrossover, gaMut, grMaxDepth,
                                 grSearchDepth, grOverlap, grSubNum, gset_list, adj_method, enrichment_threshold,
                                 list_active_snw_genes) {
@@ -153,7 +153,7 @@ single_iter_wrapper <- function(i = NULL, dirs, input_processed, pin_path, score
     score_quan_thr = score_quan_thr,
     sig_gene_thr = sig_gene_thr, search_method = search_method, seedForRandom = ifelse(is.null(i),
       1234, i
-    ), silent_option = silent_option, use_all_positives = use_all_positives,
+    ), verbose = verbose, use_all_positives = use_all_positives,
     geneInitProbs = ifelse(!is.null(i), geneInitProbs[i], geneInitProbs), saTemp0 = saTemp0,
     saTemp1 = saTemp1, saIter = saIter, gaPop = gaPop, gaIter = gaIter, gaThread = gaThread,
     gaCrossover = gaCrossover, gaMut = gaMut, grMaxDepth = grMaxDepth, grSearchDepth = grSearchDepth,
