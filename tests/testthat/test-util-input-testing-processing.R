@@ -1,3 +1,5 @@
+set.seed(123)
+
 test_that("`input_testing()` -- works as expected", {
   expect_message(
     input_testing(input = example_pathfindR_input, p_val_threshold = 0.05),
