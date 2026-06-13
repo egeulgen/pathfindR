@@ -1,7 +1,8 @@
 {
-  "bioconductor.version": "3.21",
+  "bioconductor.version": null,
   "external.libraries": [],
   "ignored.packages": [],
+  "lockfile.sanitize": true,
   "package.dependency.fields": [
     "Imports",
     "Depends",
@@ -10,6 +11,7 @@
   "ppm.enabled": null,
   "ppm.ignored.urls": [],
   "r.version": null,
+  "snapshot.dev": false,
   "snapshot.type": "explicit",
   "use.cache": true,
   "vcs.ignore.cellar": true,
