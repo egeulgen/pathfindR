@@ -2,6 +2,7 @@ input_data_frame <- example_pathfindR_input[1:10, c(1, 3)]
 
 example_snw_output <- system.file("extdata", "resultActiveSubnetworkSearch.txt",
                                   package = "pathfindR")
+example_snws_len <- 1000
 
 test_that("`visualize_active_subnetworks()` -- returns list of ggraph objects", {
   # empty file case
