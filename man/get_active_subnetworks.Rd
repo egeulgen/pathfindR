@@ -51,7 +51,7 @@ is set to 2}
 search. Options are greedy search (GR), simulated annealing (SA) or genetic
 algorithm (GA) for the search (default = 'GR').}
 
-\item{seedForRandom}{seed for reproducibility while running the java modules (applies for GR and SA)}
+\item{seedForRandom}{seed for reproducibility while running active subnetwork search (applies for GR and SA)}
 
 \item{silent_option}{boolean value indicating whether to print the messages
 to the console (FALSE) or not (TRUE, this will print to a temp. file) during
