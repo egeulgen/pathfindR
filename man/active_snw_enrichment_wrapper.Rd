@@ -18,7 +18,7 @@ active_snw_enrichment_wrapper(
   n_processes = NULL,
   score_quan_thr = 0.8,
   sig_gene_thr = 0.02,
-  saTemp0 = 1,
+  sa_initial_temp = 1,
   saTemp1 = 0.01,
   saIter = 10000,
   gaPop = 400,
@@ -75,7 +75,7 @@ the subnetwork (Default = 0.02) If the number of genes to use as threshold is
 calculated to be < 2 (e.g. 50 signif. genes x 0.01 = 0.5), the threshold number
 is set to 2}
 
-\item{saTemp0}{Initial temperature for SA (default = 1.0)}
+\item{sa_initial_temp}{Initial temperature for SA (default = 1.0)}
 
 \item{saTemp1}{Final temperature for SA (default = 0.01)}
 

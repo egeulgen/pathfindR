@@ -15,7 +15,7 @@ single_iter_wrapper(
   verbose,
   start_with_all_positives,
   gene_init_prob,
-  saTemp0,
+  sa_initial_temp,
   saTemp1,
   saIter,
   gaPop,
@@ -61,7 +61,7 @@ nodes. In SA, initializes candidate solution with all positive nodes. (default =
 
 \item{gene_init_prob}{For SA and GA, probability of adding a gene in initial solution (default = 0.1)}
 
-\item{saTemp0}{Initial temperature for SA (default = 1.0)}
+\item{sa_initial_temp}{Initial temperature for SA (default = 1.0)}
 
 \item{saTemp1}{Final temperature for SA (default = 0.01)}
 
