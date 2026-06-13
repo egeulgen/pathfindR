@@ -18,7 +18,7 @@
 active_snw_enrichment_wrapper <- function(input_processed, pin_path, gset_list, enrichment_threshold,
                                           list_active_snw_genes, adj_method = "bonferroni", search_method = "GR", disable_parallel = FALSE,
                                           start_with_all_positives = FALSE, iterations = 10, n_processes = NULL, score_quan_thr = 0.8,
-                                          sig_gene_thr = 0.02, sa_initial_temp = 1, sa_final_temp = 0.01, saIter = 10000, gaPop = 400,
+                                          sig_gene_thr = 0.02, sa_initial_temp = 1, sa_final_temp = 0.01, sa_iterations = 10000, gaPop = 400,
                                           gaIter = 200, gaThread = 5, gaCrossover = 1, gaMut = 0, grMaxDepth = 1, grSearchDepth = 1,
                                           grOverlap = 0.5, grSubNum = 1000, verbose = FALSE) {
   message("## Performing Active Subnetwork Search and Enrichment")
@@ -89,7 +89,7 @@ active_snw_enrichment_wrapper <- function(input_processed, pin_path, gset_list, 
     combined_res <- single_iter_wrapper(
       i = NULL, dirs, input_processed, pin_path,
       score_quan_thr, sig_gene_thr, search_method, verbose, start_with_all_positives,
-      gene_init_prob, sa_initial_temp, sa_final_temp, saIter, gaPop, gaIter, gaThread, gaCrossover,
+      gene_init_prob, sa_initial_temp, sa_final_temp, sa_iterations, gaPop, gaIter, gaThread, gaCrossover,
       gaMut, grMaxDepth, grSearchDepth, grOverlap, grSubNum, gset_list, adj_method,
       enrichment_threshold, list_active_snw_genes
     )
@@ -105,7 +105,7 @@ active_snw_enrichment_wrapper <- function(input_processed, pin_path, gset_list, 
         single_iter_wrapper(
           i, dirs, input_processed, pin_path, score_quan_thr,
           sig_gene_thr, search_method, verbose, start_with_all_positives,
-          gene_init_prob, sa_initial_temp, sa_final_temp, saIter, gaPop, gaIter, gaThread,
+          gene_init_prob, sa_initial_temp, sa_final_temp, sa_iterations, gaPop, gaIter, gaThread,
           gaCrossover, gaMut, grMaxDepth, grSearchDepth, grOverlap, grSubNum,
           gset_list, adj_method, enrichment_threshold, list_active_snw_genes
         )
@@ -117,7 +117,7 @@ active_snw_enrichment_wrapper <- function(input_processed, pin_path, gset_list, 
         current_res <- single_iter_wrapper(
           i, dirs, score_quan_thr, sig_gene_thr,
           search_method, verbose, start_with_all_positives, gene_init_prob,
-          sa_initial_temp, sa_final_temp, saIter, gaPop, gaIter, gaThread, gaCrossover,
+          sa_initial_temp, sa_final_temp, sa_iterations, gaPop, gaIter, gaThread, gaCrossover,
           gaMut, grMaxDepth, grSearchDepth, grOverlap, grSubNum, gset_list,
           adj_method, enrichment_threshold, list_active_snw_genes
         )
@@ -139,7 +139,7 @@ active_snw_enrichment_wrapper <- function(input_processed, pin_path, gset_list, 
 #' @return Data frame of enrichment results using active subnetwork search results
 single_iter_wrapper <- function(i = NULL, dirs, input_processed, pin_path, score_quan_thr,
                                 sig_gene_thr, search_method, verbose, start_with_all_positives, gene_init_prob,
-                                sa_initial_temp, sa_final_temp, saIter, gaPop, gaIter, gaThread, gaCrossover, gaMut, grMaxDepth,
+                                sa_initial_temp, sa_final_temp, sa_iterations, gaPop, gaIter, gaThread, gaCrossover, gaMut, grMaxDepth,
                                 grSearchDepth, grOverlap, grSubNum, gset_list, adj_method, enrichment_threshold,
                                 list_active_snw_genes) {
   snws_file <- "active_snws"
@@ -155,7 +155,7 @@ single_iter_wrapper <- function(i = NULL, dirs, input_processed, pin_path, score
       1234, i
     ), verbose = verbose, start_with_all_positives = start_with_all_positives,
     gene_init_prob = ifelse(!is.null(i), gene_init_prob[i], gene_init_prob), sa_initial_temp = sa_initial_temp,
-    sa_final_temp = sa_final_temp, saIter = saIter, gaPop = gaPop, gaIter = gaIter, gaThread = gaThread,
+    sa_final_temp = sa_final_temp, sa_iterations = sa_iterations, gaPop = gaPop, gaIter = gaIter, gaThread = gaThread,
     gaCrossover = gaCrossover, gaMut = gaMut, grMaxDepth = grMaxDepth, grSearchDepth = grSearchDepth,
     grOverlap = grOverlap, grSubNum = grSubNum
   )

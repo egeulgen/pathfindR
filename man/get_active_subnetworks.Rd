@@ -16,7 +16,7 @@ get_active_subnetworks(
   gene_init_prob = 0.1,
   sa_initial_temp = 1,
   sa_final_temp = 0.01,
-  saIter = 10000,
+  sa_iterations = 10000,
   gaPop = 400,
   gaIter = 10000,
   gaThread = 5,
@@ -64,7 +64,7 @@ nodes. In SA, initializes candidate solution with all positive nodes. (default =
 
 \item{sa_final_temp}{Final temperature for SA (default = 0.01)}
 
-\item{saIter}{Iteration number for SA (default = 10000)}
+\item{sa_iterations}{Iteration number for SA (default = 10000)}
 
 \item{gaPop}{Population size for GA (default = 400)}
 

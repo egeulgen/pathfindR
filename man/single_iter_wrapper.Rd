@@ -17,7 +17,7 @@ single_iter_wrapper(
   gene_init_prob,
   sa_initial_temp,
   sa_final_temp,
-  saIter,
+  sa_iterations,
   gaPop,
   gaIter,
   gaThread,
@@ -65,7 +65,7 @@ nodes. In SA, initializes candidate solution with all positive nodes. (default =
 
 \item{sa_final_temp}{Final temperature for SA (default = 0.01)}
 
-\item{saIter}{Iteration number for SA (default = 10000)}
+\item{sa_iterations}{Iteration number for SA (default = 10000)}
 
 \item{gaPop}{Population size for GA (default = 400)}
 

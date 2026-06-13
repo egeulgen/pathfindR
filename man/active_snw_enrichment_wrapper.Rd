@@ -20,7 +20,7 @@ active_snw_enrichment_wrapper(
   sig_gene_thr = 0.02,
   sa_initial_temp = 1,
   sa_final_temp = 0.01,
-  saIter = 10000,
+  sa_iterations = 10000,
   gaPop = 400,
   gaIter = 200,
   gaThread = 5,
@@ -79,7 +79,7 @@ is set to 2}
 
 \item{sa_final_temp}{Final temperature for SA (default = 0.01)}
 
-\item{saIter}{Iteration number for SA (default = 10000)}
+\item{sa_iterations}{Iteration number for SA (default = 10000)}
 
 \item{gaPop}{Population size for GA (default = 400)}
 
