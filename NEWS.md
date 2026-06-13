@@ -1,5 +1,9 @@
 # pathfindR (development version)
 
+## Minor Changes and Bug Fixes
+- renamed `fetch_gene_set()` utility function to `fetch_gene_sets()`
+- removed the package start up message
+
 # pathfindR 2.7.0
 ## Minor Changes and Bug Fixes
 - Moved org.Hs.eg.db from "Imports" to "Suggests" per new CRAN policy. Relevant functions revert to default behaviour if the required package is not installed.
