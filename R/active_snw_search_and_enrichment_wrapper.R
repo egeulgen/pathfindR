@@ -73,10 +73,10 @@ active_snw_enrichment_wrapper <- function(input_processed, pin_path, gset_list, 
     stop("`iterations` should be >= 1")
   }
 
-  geneInitProbs <- 0.1
+  gene_init_prob <- 0.1
   dirs <- c()
   if (iterations > 1) {
-    geneInitProbs <- seq(from = 0.01, to = 0.2, length.out = iterations)
+    gene_init_prob <- seq(from = 0.01, to = 0.2, length.out = iterations)
 
     for (i in base::seq_len(iterations)) {
       dir_i <- file.path("active_snw_searches", paste0("Iteration_", i))
@@ -89,7 +89,7 @@ active_snw_enrichment_wrapper <- function(input_processed, pin_path, gset_list, 
     combined_res <- single_iter_wrapper(
       i = NULL, dirs, input_processed, pin_path,
       score_quan_thr, sig_gene_thr, search_method, verbose, start_with_all_positives,
-      geneInitProbs, saTemp0, saTemp1, saIter, gaPop, gaIter, gaThread, gaCrossover,
+      gene_init_prob, saTemp0, saTemp1, saIter, gaPop, gaIter, gaThread, gaCrossover,
       gaMut, grMaxDepth, grSearchDepth, grOverlap, grSubNum, gset_list, adj_method,
       enrichment_threshold, list_active_snw_genes
     )
@@ -105,7 +105,7 @@ active_snw_enrichment_wrapper <- function(input_processed, pin_path, gset_list, 
         single_iter_wrapper(
           i, dirs, input_processed, pin_path, score_quan_thr,
           sig_gene_thr, search_method, verbose, start_with_all_positives,
-          geneInitProbs, saTemp0, saTemp1, saIter, gaPop, gaIter, gaThread,
+          gene_init_prob, saTemp0, saTemp1, saIter, gaPop, gaIter, gaThread,
           gaCrossover, gaMut, grMaxDepth, grSearchDepth, grOverlap, grSubNum,
           gset_list, adj_method, enrichment_threshold, list_active_snw_genes
         )
@@ -116,7 +116,7 @@ active_snw_enrichment_wrapper <- function(input_processed, pin_path, gset_list, 
       for (i in 1:iterations) {
         current_res <- single_iter_wrapper(
           i, dirs, score_quan_thr, sig_gene_thr,
-          search_method, verbose, start_with_all_positives, geneInitProbs,
+          search_method, verbose, start_with_all_positives, gene_init_prob,
           saTemp0, saTemp1, saIter, gaPop, gaIter, gaThread, gaCrossover,
           gaMut, grMaxDepth, grSearchDepth, grOverlap, grSubNum, gset_list,
           adj_method, enrichment_threshold, list_active_snw_genes
@@ -138,7 +138,7 @@ active_snw_enrichment_wrapper <- function(input_processed, pin_path, gset_list, 
 #'
 #' @return Data frame of enrichment results using active subnetwork search results
 single_iter_wrapper <- function(i = NULL, dirs, input_processed, pin_path, score_quan_thr,
-                                sig_gene_thr, search_method, verbose, start_with_all_positives, geneInitProbs,
+                                sig_gene_thr, search_method, verbose, start_with_all_positives, gene_init_prob,
                                 saTemp0, saTemp1, saIter, gaPop, gaIter, gaThread, gaCrossover, gaMut, grMaxDepth,
                                 grSearchDepth, grOverlap, grSubNum, gset_list, adj_method, enrichment_threshold,
                                 list_active_snw_genes) {
@@ -154,7 +154,7 @@ single_iter_wrapper <- function(i = NULL, dirs, input_processed, pin_path, score
     sig_gene_thr = sig_gene_thr, search_method = search_method, seedForRandom = ifelse(is.null(i),
       1234, i
     ), verbose = verbose, start_with_all_positives = start_with_all_positives,
-    geneInitProbs = ifelse(!is.null(i), geneInitProbs[i], geneInitProbs), saTemp0 = saTemp0,
+    gene_init_prob = ifelse(!is.null(i), gene_init_prob[i], gene_init_prob), saTemp0 = saTemp0,
     saTemp1 = saTemp1, saIter = saIter, gaPop = gaPop, gaIter = gaIter, gaThread = gaThread,
     gaCrossover = gaCrossover, gaMut = gaMut, grMaxDepth = grMaxDepth, grSearchDepth = grSearchDepth,
     grOverlap = grOverlap, grSubNum = grSubNum

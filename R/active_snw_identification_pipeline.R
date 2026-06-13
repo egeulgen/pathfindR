@@ -17,7 +17,7 @@
 #' @param verbose boolean value indicating whether to print messages (default=FALSE)
 #' @param start_with_all_positives if TRUE: in GA, adds an individual with all positive
 #'  nodes. In SA, initializes candidate solution with all positive nodes. (default = FALSE)
-#' @param geneInitProbs For SA and GA, probability of adding a gene in initial solution (default = 0.1)
+#' @param gene_init_prob For SA and GA, probability of adding a gene in initial solution (default = 0.1)
 #' @param saTemp0 Initial temperature for SA (default = 1.0)
 #' @param saTemp1 Final temperature for SA (default = 0.01)
 #' @param saIter Iteration number for SA (default = 10000)
@@ -45,7 +45,7 @@
 get_active_subnetworks <- function(
   input_for_search, pin_name_path = "Biogrid",
   score_quan_thr = 0.8, sig_gene_thr = 0.02, search_method = "GR",
-  seedForRandom = 1234, verbose = FALSE, start_with_all_positives = FALSE, geneInitProbs = 0.1,
+  seedForRandom = 1234, verbose = FALSE, start_with_all_positives = FALSE, gene_init_prob = 0.1,
   saTemp0 = 1, saTemp1 = 0.01, saIter = 10000, gaPop = 400, gaIter = 10000, gaThread = 5,
   gaCrossover = 1, gaMut = 0, grMaxDepth = 1, grSearchDepth = 1, grOverlap = 0.5,
   grSubNum = 1000
@@ -84,7 +84,7 @@ get_active_subnetworks <- function(
     experiment = experiment_df,
     method = search_method,
     start_with_all_positives = start_with_all_positives,
-    gene_init_prob = geneInitProbs,
+    gene_init_prob = gene_init_prob,
     sa_initial_temp = saTemp0,
     sa_final_temp = saTemp1,
     sa_iterations = saIter,
