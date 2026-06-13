@@ -2,26 +2,7 @@
 input_data_frame <- example_pathfindR_input[1:10, c(1, 3)]
 colnames(input_data_frame) <- c("GENE", "P_VALUE")
 
-example_snws_len <- 1000
-example_snw_output <- system.file("extdata", "resultActiveSubnetworkSearch.txt",
-  package = "pathfindR"
-)
-mock_file_path <- function(...) {
-  args <- list(...)
-  if (args[[1]] == "active_snw_search") {
-    return(example_snw_output)
-  }
-  return(file.path(...))
-}
-
 test_that("`get_active_subnetworks()` -- returns a list object", {
-  mockery::stub(get_active_subnetworks, "dir.exists", TRUE)
-  mockery::stub(get_active_subnetworks, "file.exists", TRUE)
-  mockery::stub(get_active_subnetworks, "normalizePath", NULL)
-  mockery::stub(get_active_subnetworks, "system", NULL)
-  mockery::stub(get_active_subnetworks, "file.path", mock_file_path)
-  mockery::stub(get_active_subnetworks, "file.rename", NULL)
-
   # Expect > 0 active snws
   expect_message(
     snw_list <- get_active_subnetworks(input_for_search = input_data_frame),
@@ -40,20 +21,6 @@ test_that("`get_active_subnetworks()` -- returns a list object", {
   expect_identical(snw_list, list())
 })
 
-test_that("`get_active_subnetworks()` -- `dir_for_parallel_run` arg is used when provided", {
-  mockery::stub(get_active_subnetworks, "dir.exists", TRUE)
-  mockery::stub(get_active_subnetworks, "file.exists", TRUE)
-  mockery::stub(get_active_subnetworks, "normalizePath", NULL)
-  mockery::stub(get_active_subnetworks, "system", NULL)
-  mockery::stub(get_active_subnetworks, "file.path", mock_file_path)
-  mockery::stub(get_active_subnetworks, "file.rename", NULL)
-
-  m <- mockery::mock(NULL, cycle = TRUE)
-  mockery::stub(get_active_subnetworks, "setwd", m)
-  res <- get_active_subnetworks(input_for_search = input_data_frame, dir_for_parallel_run = tempdir())
-  mockery::expect_called(m, 2)
-})
-
 test_that("`get_active_subnetworks()` -- argument checks work", {
   # input_for_search
   expect_error(snw_list <- get_active_subnetworks(input_for_search = list()), "`input_for_search` should be data frame")
@@ -67,12 +34,6 @@ test_that("`get_active_subnetworks()` -- argument checks work", {
       "P_VALUE"
     )), collapse = ","))
   )
-
-  # snws_file
-  expect_error(snw_list <- get_active_subnetworks(
-    input_for_search = input_data_frame,
-    snws_file = "[/]"
-  ), "`snws_file` may be containing forbidden characters. Please change and try again")
 
   # search_method
   valid_mets <- c("GR", "SA", "GA")
@@ -99,7 +60,7 @@ test_that("`get_active_subnetworks()` -- all search methods work", {
   expect_message(
     snw_list <- get_active_subnetworks(
       input_for_search = input_data_frame,
-      pin_name_path = "Biogrid", search_method = "GR", dir_for_parallel_run = tempdir(check = TRUE)
+      pin_name_path = "Biogrid", search_method = "GR"
     ),
     "Found [1-9]\\d* active subnetworks"
   )
@@ -111,7 +72,7 @@ test_that("`get_active_subnetworks()` -- all search methods work", {
   expect_message(
     snw_list <- get_active_subnetworks(
       input_for_search = input_data_frame,
-      pin_name_path = "Biogrid", search_method = "SA", dir_for_parallel_run = tempdir(check = TRUE)
+      pin_name_path = "Biogrid", search_method = "SA"
     ),
     "Found [1-9]\\d* active subnetworks"
   )
@@ -122,7 +83,7 @@ test_that("`get_active_subnetworks()` -- all search methods work", {
   expect_message(
     snw_list <- get_active_subnetworks(
       input_for_search = input_data_frame,
-      pin_name_path = "Biogrid", search_method = "GA", dir_for_parallel_run = tempdir(check = TRUE)
+      pin_name_path = "Biogrid", search_method = "GA"
     ),
     "Found [1-9]\\d* active subnetworks"
   )
@@ -138,7 +99,7 @@ test_that("`get_active_subnetworks()` -- results are reproducible", {
     seed <- seed_vals[idx]
     snw_lists[[idx]] <- get_active_subnetworks(
       input_for_search = input_data_frame,
-      seedForRandom = seed, dir_for_parallel_run = tempdir(check = TRUE)
+      seedForRandom = seed
     )
   }
   expect_identical(snw_lists[[1]], snw_lists[[2]])
