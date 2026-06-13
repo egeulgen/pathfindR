@@ -6,7 +6,7 @@
 #' @param disable_parallel boolean to indicate whether to disable parallel runs
 #'  via \code{foreach} (default = FALSE)
 #' @inheritParams run_pathfindR
-#' @inheritParams active_snw_search
+#' @inheritParams get_active_subnetworks
 #' @inheritParams enrichment_analyses
 #' @param iterations number of iterations for active subnetwork search and
 #'  enrichment analyses (Default = 10)
@@ -132,7 +132,7 @@ active_snw_enrichment_wrapper <- function(input_processed, pin_path, gset_list, 
 #'
 #' @param i current iteration index (default = \code{NULL})
 #' @param dirs vector of directories for parallel runs
-#' @inheritParams active_snw_search
+#' @inheritParams get_active_subnetworks
 #' @inheritParams enrichment_analyses
 #' @inheritParams active_snw_enrichment_wrapper
 #'
@@ -148,7 +148,7 @@ single_iter_wrapper <- function(i = NULL, dirs, input_processed, pin_path, score
     snws_file <- paste0("active_snws_", i)
     dir_for_parallel_run <- dirs[i]
   }
-  snws <- active_snw_search(
+  snws <- get_active_subnetworks(
     input_for_search = input_processed, pin_name_path = pin_path,
     snws_file = snws_file, dir_for_parallel_run = dir_for_parallel_run, score_quan_thr = score_quan_thr,
     sig_gene_thr = sig_gene_thr, search_method = search_method, seedForRandom = ifelse(is.null(i),

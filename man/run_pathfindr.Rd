@@ -126,7 +126,7 @@ run_pathfindR(example_pathfindR_input)
 }
 \seealso{
 \code{\link{input_testing}} for input testing, \code{\link{input_processing}} for input processing,
-\code{\link{active_snw_search}} for active subnetwork search and subnetwork filtering,
+\code{\link{get_active_subnetworks}} for active subnetwork search and subnetwork filtering,
 \code{\link{enrichment_analyses}} for enrichment analysis (using the active subnetworks),
 \code{\link{summarize_enrichment_results}} for summarizing the active-subnetwork-oriented enrichment results,
 \code{\link{annotate_term_genes}} for annotation of affected genes in the given gene sets,

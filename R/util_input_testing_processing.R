@@ -59,7 +59,6 @@ input_testing <- function(input, p_val_threshold = 0.05) {
 
 #' Process Input
 #' @inheritParams input_testing
-#' @inheritParams active_snw_search
 #' @inheritParams return_pin_path
 #' @param convert2alias boolean to indicate whether or not to convert gene symbols
 #' in the input that are not found in the PIN to an alias symbol found in the PIN

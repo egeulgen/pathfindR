@@ -2,6 +2,7 @@
 
 ## Minor Changes and Bug Fixes
 - renamed `fetch_gene_set()` utility function to `fetch_gene_sets()`
+- renamed `active_snw_search()` function to `get_active_subnetworks()`
 - removed the package start up message
 - Split `term_gene_graph` into `create_term_gene_graph` and `create_term_gene_plot`, one creates the `igraph` structure while the other visualises the graph based on the information available in the `igraph` object.
 

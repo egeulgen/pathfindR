@@ -1,4 +1,7 @@
-#' Perform Active Subnetwork Search
+#' Get Active Subnetworks
+#'
+#' Performs active subnetwork search and filters identified active subnetworks
+#' before returning final subnetworks.
 #'
 #' @param input_for_search input the input data that active subnetwork search uses. The input
 #' must be a data frame containing at least these 2 columns: \describe{
@@ -44,7 +47,7 @@
 #' \donttest{
 #' processed_df <- example_pathfindR_input[1:15, -2]
 #' colnames(processed_df) <- c("GENE", "P_VALUE")
-#' GR_snws <- active_snw_search(
+#' GR_snws <- get_active_subnetworks(
 #'   input_for_search = processed_df,
 #'   pin_name_path = "KEGG",
 #'   search_method = "GR",
@@ -53,7 +56,7 @@
 #' # clean-up
 #' unlink("active_snw_search", recursive = TRUE)
 #' }
-active_snw_search <- function(
+get_active_subnetworks <- function(
   input_for_search, pin_name_path = "Biogrid", snws_file = "active_snws",
   dir_for_parallel_run = NULL, score_quan_thr = 0.8, sig_gene_thr = 0.02, search_method = "GR",
   seedForRandom = 1234, silent_option = TRUE, use_all_positives = FALSE, geneInitProbs = 0.1,

@@ -48,7 +48,7 @@ reference:
     contents:
       - active_snw_enrichment_wrapper
       - single_iter_wrapper
-      - active_snw_search
+      - get_active_subnetworks
       - annotate_term_genes
       - enrichment
       - enrichment_analyses

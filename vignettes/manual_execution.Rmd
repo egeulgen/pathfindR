@@ -77,7 +77,7 @@ biocarta_descriptions <- biocarta_list[[2]]
 
 As outlined in the vignette [Introduction to pathfindR](intro_vignette.html), `run_pathfindR()` initially identifies and filters active subnetworks, then performs enrichment analyses on these subnetworks and summarize the results.
 
-To perform these steps manually, we utilize the function `active_snw_search()` for identifying and filtering active subnetworks and the function `enrichment_analyses()` for obtaining enriched terms using these subnetworks. Because the active subnetwork search algorithms are stochastic, we suggest iterating these subnetwork identification and enrichment steps multiple times (especially for "SA")[^1]:
+To perform these steps manually, we utilize the function `get_active_subnetworks()` for identifying and filtering active subnetworks and the function `enrichment_analyses()` for obtaining enriched terms using these subnetworks. Because the active subnetwork search algorithms are stochastic, we suggest iterating these subnetwork identification and enrichment steps multiple times (especially for "SA")[^1]:
 
 [^1]: Here we are using a regular `for` loop. In the wrapper function `run_pathfindR()`, however, a parallel loop (via the package `foreach`) is used.
 
@@ -88,7 +88,7 @@ combined_res <- NULL ## to store the result of each iteration
 for (i in 1:n_iter) {
   ###### Active Subnetwork Search
   snws_file <- paste0("active_snws_", i) # Name of output file
-  active_snws <- active_snw_search(
+  active_snws <- get_active_subnetworks(
     input_for_search = example_processed,
     pin_name_path = "Biogrid",
     snws_file = snws_file,
