@@ -1,4 +1,4 @@
 library(testthat)
 library(pathfindR)
 
-test_check("pathfindR", filter = "^test-util.*")
+test_check("pathfindR", filter = "util")

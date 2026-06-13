@@ -1,3 +1,10 @@
+# set up input data
+input_data_frame <- example_pathfindR_input[1:10, c(1, 3)]
+colnames(input_data_frame) <- c("GENE", "P_VALUE")
+example_snws_len <- 1000
+example_snw_output <- system.file("extdata", "resultActiveSubnetworkSearch.txt",
+                                  package = "pathfindR")
+
 test_that("`filterActiveSnws()` -- returns expected list object", {
   snws_filtered <- filterActiveSnws(active_snw_path = example_snw_output, sig_genes_vec = input_data_frame$GENE)
   expect_is(snws_filtered, "list")

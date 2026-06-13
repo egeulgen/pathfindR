@@ -1,3 +1,5 @@
+input_data_frame <- example_pathfindR_input[1:10, c(1, 3)]
+
 test_that("`visualize_active_subnetworks()` -- returns list of ggraph objects", {
   # empty file case
   empty_path <- tempfile("empty", fileext = ".txt")

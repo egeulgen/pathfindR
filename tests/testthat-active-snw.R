@@ -1,4 +1,4 @@
 library(testthat)
 library(pathfindR)
 
-test_check("pathfindR", filter = "^test-active-snw.*")
+test_check("pathfindR", filter = "active-snw")
