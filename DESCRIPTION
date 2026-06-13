@@ -32,7 +32,6 @@ URL: https://egeulgen.github.io/pathfindR/, https://github.com/egeulgen/pathfind
 BugReports: https://github.com/egeulgen/pathfindR/issues
 Encoding: UTF-8
 LazyData: true
-SystemRequirements: Java (>= 8.0)
 biocViews:
 Imports: 
     DBI,
