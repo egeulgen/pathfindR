@@ -1,4 +1,6 @@
 # pathfindR (development version)
+## Major Changes
+- implemented active subnetwork search methods in R, removing dependency on java
 
 ## Minor Changes and Bug Fixes
 - renamed `fetch_gene_set()` utility function to `fetch_gene_sets()`
