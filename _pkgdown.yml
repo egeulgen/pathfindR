@@ -77,8 +77,6 @@ reference:
     desc: >
       Miscellaneous functions
     contents:
-      - check_java_version
-      - fetch_java_version
       - get_biogrid_pin
       - process_pin
       - get_kegg_gsets
