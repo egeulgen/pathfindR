@@ -12,7 +12,7 @@ get_active_subnetworks(
   search_method = "GR",
   seedForRandom = 1234,
   verbose = FALSE,
-  use_all_positives = FALSE,
+  start_with_all_positives = FALSE,
   geneInitProbs = 0.1,
   saTemp0 = 1,
   saTemp1 = 0.01,
@@ -55,7 +55,7 @@ algorithm (GA) for the search (default = 'GR').}
 
 \item{verbose}{boolean value indicating whether to print messages (default=FALSE)}
 
-\item{use_all_positives}{if TRUE: in GA, adds an individual with all positive
+\item{start_with_all_positives}{if TRUE: in GA, adds an individual with all positive
 nodes. In SA, initializes candidate solution with all positive nodes. (default = FALSE)}
 
 \item{geneInitProbs}{For SA and GA, probability of adding a gene in initial solution (default = 0.1)}

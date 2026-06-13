@@ -49,8 +49,8 @@ test_that("`get_active_subnetworks()` -- argument checks work", {
   )
 
   expect_error(
-    get_active_subnetworks(input_for_search = input_data_frame, use_all_positives = "INVALID"),
-    "`use_all_positives` should be either TRUE or FALSE"
+    get_active_subnetworks(input_for_search = input_data_frame, start_with_all_positives = "INVALID"),
+    "`start_with_all_positives` should be either TRUE or FALSE"
   )
 })
 

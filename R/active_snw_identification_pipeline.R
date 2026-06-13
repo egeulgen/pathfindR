@@ -15,7 +15,7 @@
 #'  algorithm (GA) for the search (default = 'GR').
 #' @param seedForRandom seed for reproducibility while running active subnetwork search (applies for GR and SA)
 #' @param verbose boolean value indicating whether to print messages (default=FALSE)
-#' @param use_all_positives if TRUE: in GA, adds an individual with all positive
+#' @param start_with_all_positives if TRUE: in GA, adds an individual with all positive
 #'  nodes. In SA, initializes candidate solution with all positive nodes. (default = FALSE)
 #' @param geneInitProbs For SA and GA, probability of adding a gene in initial solution (default = 0.1)
 #' @param saTemp0 Initial temperature for SA (default = 1.0)
@@ -45,7 +45,7 @@
 get_active_subnetworks <- function(
   input_for_search, pin_name_path = "Biogrid",
   score_quan_thr = 0.8, sig_gene_thr = 0.02, search_method = "GR",
-  seedForRandom = 1234, verbose = FALSE, use_all_positives = FALSE, geneInitProbs = 0.1,
+  seedForRandom = 1234, verbose = FALSE, start_with_all_positives = FALSE, geneInitProbs = 0.1,
   saTemp0 = 1, saTemp1 = 0.01, saIter = 10000, gaPop = 400, gaIter = 10000, gaThread = 5,
   gaCrossover = 1, gaMut = 0, grMaxDepth = 1, grSearchDepth = 1, grOverlap = 0.5,
   grSubNum = 1000
@@ -69,8 +69,8 @@ get_active_subnetworks <- function(
     stop("`verbose` should be either TRUE or FALSE")
   }
 
-  if (!is.logical(use_all_positives)) {
-    stop("`use_all_positives` should be either TRUE or FALSE")
+  if (!is.logical(start_with_all_positives)) {
+    stop("`start_with_all_positives` should be either TRUE or FALSE")
   }
 
   pin_path <- return_pin_path(pin_name_path)
@@ -83,7 +83,7 @@ get_active_subnetworks <- function(
     pin_path = pin_path,
     experiment = experiment_df,
     method = search_method,
-    start_with_all_positives = use_all_positives,
+    start_with_all_positives = start_with_all_positives,
     gene_init_prob = geneInitProbs,
     sa_initial_temp = saTemp0,
     sa_final_temp = saTemp1,

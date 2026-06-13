@@ -13,7 +13,7 @@ active_snw_enrichment_wrapper(
   adj_method = "bonferroni",
   search_method = "GR",
   disable_parallel = FALSE,
-  use_all_positives = FALSE,
+  start_with_all_positives = FALSE,
   iterations = 10,
   n_processes = NULL,
   score_quan_thr = 0.8,
@@ -57,7 +57,7 @@ algorithm (GA) for the search (default = 'GR').}
 \item{disable_parallel}{boolean to indicate whether to disable parallel runs
 via \code{foreach} (default = FALSE)}
 
-\item{use_all_positives}{if TRUE: in GA, adds an individual with all positive
+\item{start_with_all_positives}{if TRUE: in GA, adds an individual with all positive
 nodes. In SA, initializes candidate solution with all positive nodes. (default = FALSE)}
 
 \item{iterations}{number of iterations for active subnetwork search and

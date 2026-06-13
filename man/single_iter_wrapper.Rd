@@ -13,7 +13,7 @@ single_iter_wrapper(
   sig_gene_thr,
   search_method,
   verbose,
-  use_all_positives,
+  start_with_all_positives,
   geneInitProbs,
   saTemp0,
   saTemp1,
@@ -56,7 +56,7 @@ algorithm (GA) for the search (default = 'GR').}
 
 \item{verbose}{boolean value indicating whether to print messages (default=FALSE)}
 
-\item{use_all_positives}{if TRUE: in GA, adds an individual with all positive
+\item{start_with_all_positives}{if TRUE: in GA, adds an individual with all positive
 nodes. In SA, initializes candidate solution with all positive nodes. (default = FALSE)}
 
 \item{geneInitProbs}{For SA and GA, probability of adding a gene in initial solution (default = 0.1)}
