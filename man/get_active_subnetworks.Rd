@@ -99,13 +99,6 @@ before returning final subnetworks.
 \donttest{
 processed_df <- example_pathfindR_input[1:15, -2]
 colnames(processed_df) <- c("GENE", "P_VALUE")
-GR_snws <- get_active_subnetworks(
-  input_for_search = processed_df,
-  pin_name_path = "KEGG",
-  search_method = "GR",
-  score_quan_thr = 0.8
-)
-# clean-up
-unlink("active_snw_search", recursive = TRUE)
+GR_snws <- get_active_subnetworks(processed_df, pin_name_path = "KEGG")
 }
 }
