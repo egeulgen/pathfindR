@@ -15,7 +15,7 @@
 #' are reported for each enriched term.
 #'
 #' @inheritParams input_processing
-#' @inheritParams fetch_gene_set
+#' @inheritParams fetch_gene_sets
 #' @inheritParams enrichment_analyses
 #' @param plot_enrichment_chart boolean value. If TRUE, a bubble chart displaying
 #'  the enrichment results is plotted. (default = TRUE)
@@ -86,7 +86,7 @@ run_pathfindR <- function(input, gene_sets = "KEGG", min_gset_size = 10, max_gse
         stop("`list_active_snw_genes` should be either TRUE or FALSE")
     }
 
-    gset_list <- fetch_gene_set(gene_sets = gene_sets, min_gset_size = min_gset_size,
+    gset_list <- fetch_gene_sets(gene_sets = gene_sets, min_gset_size = min_gset_size,
         max_gset_size = max_gset_size, custom_genes = custom_genes, custom_descriptions = custom_descriptions)
 
     ## absolute path to PIN

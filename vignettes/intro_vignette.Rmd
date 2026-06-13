@@ -111,7 +111,7 @@ output_df <- run_pathfindR(example_pathfindR_input,
 
 > Note that increasing the number of terms for enrichment analysis may result in significantly longer run time.
 
-If the user prefers to use another gene set source, the `gene_sets` argument should be set to `"Custom"` and the custom gene sets (list) and the custom gene set descriptions (named vector) should be supplied via the arguments `custom_genes` and `custom_descriptions`, respectively. See `?fetch_gene_set` for more details and [Analysis with Custom Gene Sets] for a simple demonstration.
+If the user prefers to use another gene set source, the `gene_sets` argument should be set to `"Custom"` and the custom gene sets (list) and the custom gene set descriptions (named vector) should be supplied via the arguments `custom_genes` and `custom_descriptions`, respectively. See `?fetch_gene_sets` for more details and [Analysis with Custom Gene Sets] for a simple demonstration.
 
 For details on obtaining organism-specific Gene Sets and PIN data, see the vignette [Obtaining PIN and Gene Sets Data](obtain_data.html).
 

@@ -57,11 +57,11 @@ example_processed <- input_processing(
 
 # Obtain Gene Set Data
 
-We obtain the necessary gene sets for enrichment analyses using `fetch_gene_set()`:
+We obtain the necessary gene sets for enrichment analyses using `fetch_gene_sets()`:
 
 ``` {r gene_set}
 # using "BioCarta" as our gene sets for enrichment
-biocarta_list <- fetch_gene_set(
+biocarta_list <- fetch_gene_sets(
   gene_sets = "BioCarta",
   min_gset_size = 10,
   max_gset_size = 300
@@ -70,7 +70,7 @@ biocarta_gsets <- biocarta_list[[1]]
 biocarta_descriptions <- biocarta_list[[2]]
 ```
 
-> The available gene sets in pathfindR are "KEGG", "Reactome", "BioCarta", "GO-All", "GO-BP", "GO-CC" and "GO-MF". If the user prefers to use another gene set source, the `gene_sets` argument should be set to `"Custom"` and the custom gene sets (list) and the custom gene set descriptions (named vector) should be supplied via the arguments `custom_genes` and `custom_descriptions`, respectively. See `?fetch_gene_set` for more details.
+> The available gene sets in pathfindR are "KEGG", "Reactome", "BioCarta", "GO-All", "GO-BP", "GO-CC" and "GO-MF". If the user prefers to use another gene set source, the `gene_sets` argument should be set to `"Custom"` and the custom gene sets (list) and the custom gene set descriptions (named vector) should be supplied via the arguments `custom_genes` and `custom_descriptions`, respectively. See `?fetch_gene_sets` for more details.
 
 
 # Active Subnetwork Search and Enrichment Analyses

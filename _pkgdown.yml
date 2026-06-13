@@ -51,7 +51,7 @@ reference:
       - annotate_term_genes
       - enrichment
       - enrichment_analyses
-      - fetch_gene_set
+      - fetch_gene_sets
       - filterActiveSnws
       - hyperg_test
       - input_processing
