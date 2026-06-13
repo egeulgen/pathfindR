@@ -66,7 +66,6 @@ get_active_subnetworks <- function(
 
   # pin_name_path (fetch pin path)
   pin_path <- return_pin_path(pin_name_path)
-  pin_adj_list <- parse_pin_into_adj_list(pin_path)
 
   # search_method
   valid_mets <- c("GR", "SA", "GA")
@@ -89,7 +88,7 @@ get_active_subnetworks <- function(
 
   ############ Run active Subnetwork Search
   identified_active_snws <- active_subnetwork_search(
-    adjacency = pin_adj_list,
+    pin_path = pin_path,
     experiment = experiment_df,
     method = search_method,
     start_with_all_positives = use_all_positives,

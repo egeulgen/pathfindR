@@ -6,10 +6,8 @@
 #' against a Monte-Carlo background, and one of three search strategies is used
 #' to find high-scoring connected subnetworks.
 #'
-#' @param adjacency A named list describing the interaction network, mapping
-#'   each node to a character vector of its neighbours, e.g.
-#'   \code{list(A = c("B", "C"), C = "X")}. Interactions are treated as
-#'   undirected, self-interactions are dropped and node names are upper-cased.
+#' @param pin_path Character string specifying the path to the SIF file.
+#'   The file should be tab-delimited and contain at least 3 columns.
 #' @param experiment A data frame of gene / p-value pairs. Columns named
 #'   \code{gene} and \code{pvalue} are used if present, otherwise the first two
 #'   columns are taken as gene and p-value. Gene names are upper-cased and, if a
@@ -56,10 +54,10 @@
 #'   gene   = c("A", "B", "C", "D", "E"),
 #'   pvalue = c(0.001, 0.002, 0.001, 0.5, 0.6)
 #' )
-#' active_subnetwork_search(adjacency, experiment, method = "GR")
+#' active_subnetwork_search(pin_path, experiment, method = "GR")
 #'
 #' @export
-active_subnetwork_search <- function(adjacency,
+active_subnetwork_search <- function(pin_path,
                                      experiment,
                                      method = c("GR", "SA", "GA"),
                                      start_with_all_positives = FALSE,
@@ -97,7 +95,7 @@ active_subnetwork_search <- function(adjacency,
     seed                     = seed
   )
 
-  network <- .build_network(adjacency)
+  network <- .build_network(pin_path)
   if (length(network$nodes) == 0L) {
     return(list())
   }

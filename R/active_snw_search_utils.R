@@ -40,52 +40,32 @@
   )
 }
 
-#' Build the undirected interaction network from an adjacency list
+#' Build the undirected interaction network from a SIF file
 #'
-#' The adjacency list is a named list mapping each node to a character vector
-#' of its neighbours, e.g. \code{list(A = c("B", "C"), C = "X")}. Edges are
-#' treated as undirected, self-interactions are dropped, duplicate edges are
-#' collapsed, and all node names are upper-cased. Nodes that only ever appear
-#' in a self-interaction are not added.
+#' Reads a Simple Interaction Format (SIF) file and converts it into an
+#' undirected \code{\link[igraph]{igraph}} graph object. The SIF file is expected to
+#' contain at least three columns where the first and third columns represent
+#' interacting genes or nodes. The second column (interaction type) is ignored.
 #'
-#' @param adjacency A named list describing the interactions.
+#' @param sif_path Character string specifying the path to the SIF file.
+#'   The file should be tab-delimited and contain at least 3 columns.
 #'
 #' @return A list with elements: \code{g} (an \code{igraph} graph),
 #'   \code{nodes} (character vector of node names in graph order),
 #'   \code{nbr} (named list of neighbour-name vectors) and \code{name2id}
 #'   (named integer vector mapping node name to vertex id).
-.build_network <- function(adjacency) {
-  if (!is.list(adjacency)) {
-    stop("`adjacency` must be a named list mapping each node to its neighbours.")
+.build_network <- function(sif_path) {
+  sif <- utils::read.delim(file = sif_path, quote = "", header = FALSE)
+
+  if (ncol(sif) < 3) {
+    stop("SIF file must contain at least 3 columns.")
   }
-  if (length(adjacency) > 0L && is.null(names(adjacency))) {
-    stop("`adjacency` must be a named list mapping each node to its neighbours.")
-  }
 
-  src <- toupper(names(adjacency))
-  tgt <- lapply(adjacency, function(x) toupper(as.character(x)))
-  lens <- lengths(tgt)
+  edges <- sif[, c(1, 3)]
+  colnames(edges) <- c("source", "target")
 
-  from <- rep(src, lens)
-  to <- unlist(tgt, use.names = FALSE)
-
-  keep <- if (length(from) == 0L) logical(0) else from != to
-  from <- from[keep]
-  to <- to[keep]
-
-  all_nodes <- unique(c(from, to))
-
-  if (length(all_nodes) == 0L) {
-    g <- igraph::make_empty_graph(n = 0, directed = FALSE)
-  } else {
-    edges_df <- data.frame(from = from, to = to, stringsAsFactors = FALSE)
-    vertices_df <- data.frame(name = all_nodes, stringsAsFactors = FALSE)
-    g <- igraph::graph_from_data_frame(edges_df,
-      directed = FALSE,
-      vertices = vertices_df
-    )
-    g <- igraph::simplify(g, remove.multiple = TRUE, remove.loops = TRUE)
-  }
+  g <- igraph::graph_from_data_frame(edges, directed = FALSE)
+  g <- igraph::simplify(g, remove.multiple = TRUE, remove.loops = TRUE)
 
   node_names <- igraph::V(g)$name
   if (is.null(node_names)) node_names <- character(0)
@@ -93,10 +73,11 @@
   nbr <- lapply(igraph::adjacent_vertices(g, igraph::V(g)), igraph::as_ids)
   names(nbr) <- node_names
 
-  list(
+  result <- list(
     g       = g,
     nodes   = node_names,
     nbr     = nbr,
     name2id = stats::setNames(seq_along(node_names), node_names)
   )
+  return(result)
 }

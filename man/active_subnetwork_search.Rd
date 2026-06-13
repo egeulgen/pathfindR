@@ -5,7 +5,7 @@
 \title{Active subnetwork search}
 \usage{
 active_subnetwork_search(
-  adjacency,
+  pin_path,
   experiment,
   method = c("GR", "SA", "GA"),
   start_with_all_positives = FALSE,
@@ -26,10 +26,8 @@ active_subnetwork_search(
 )
 }
 \arguments{
-\item{adjacency}{A named list describing the interaction network, mapping
-each node to a character vector of its neighbours, e.g.
-\code{list(A = c("B", "C"), C = "X")}. Interactions are treated as
-undirected, self-interactions are dropped and node names are upper-cased.}
+\item{pin_path}{Character string specifying the path to the SIF file.
+The file should be tab-delimited and contain at least 3 columns.}
 
 \item{experiment}{A data frame of gene / p-value pairs. Columns named
 \code{gene} and \code{pvalue} are used if present, otherwise the first two
@@ -97,6 +95,6 @@ experiment <- data.frame(
   gene   = c("A", "B", "C", "D", "E"),
   pvalue = c(0.001, 0.002, 0.001, 0.5, 0.6)
 )
-active_subnetwork_search(adjacency, experiment, method = "GR")
+active_subnetwork_search(pin_path, experiment, method = "GR")
 
 }

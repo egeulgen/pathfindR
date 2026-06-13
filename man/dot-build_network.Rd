@@ -2,12 +2,13 @@
 % Please edit documentation in R/active_snw_search_utils.R
 \name{.build_network}
 \alias{.build_network}
-\title{Build the undirected interaction network from an adjacency list}
+\title{Build the undirected interaction network from a SIF file}
 \usage{
-.build_network(adjacency)
+.build_network(sif_path)
 }
 \arguments{
-\item{adjacency}{A named list describing the interactions.}
+\item{sif_path}{Character string specifying the path to the SIF file.
+The file should be tab-delimited and contain at least 3 columns.}
 }
 \value{
 A list with elements: \code{g} (an \code{igraph} graph),
@@ -16,9 +17,8 @@ A list with elements: \code{g} (an \code{igraph} graph),
   (named integer vector mapping node name to vertex id).
 }
 \description{
-The adjacency list is a named list mapping each node to a character vector
-of its neighbours, e.g. \code{list(A = c("B", "C"), C = "X")}. Edges are
-treated as undirected, self-interactions are dropped, duplicate edges are
-collapsed, and all node names are upper-cased. Nodes that only ever appear
-in a self-interaction are not added.
+Reads a Simple Interaction Format (SIF) file and converts it into an
+undirected \code{\link[igraph]{igraph}} graph object. The SIF file is expected to
+contain at least three columns where the first and third columns represent
+interacting genes or nodes. The second column (interaction type) is ignored.
 }
