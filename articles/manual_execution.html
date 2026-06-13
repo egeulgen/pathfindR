@@ -34,7 +34,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.7.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.7.0.9001</span>
       </span>
     </div>
 
@@ -104,7 +104,7 @@
 Enrichment Workflow</h1>
                         <h4 data-toc-skip class="author">Ege Ulgen</h4>
             
-            <h4 data-toc-skip class="date">2025-12-22</h4>
+            <h4 data-toc-skip class="date">2026-06-13</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/master/vignettes/manual_execution.Rmd" class="external-link"><code>vignettes/manual_execution.Rmd</code></a></small>
       <div class="hidden name"><code>manual_execution.Rmd</code></div>
@@ -186,10 +186,10 @@ map the input data onto the PIN.</p>
 <h2 id="obtain-gene-set-data">Obtain Gene Set Data<a class="anchor" aria-label="anchor" href="#obtain-gene-set-data"></a>
 </h2>
 <p>We obtain the necessary gene sets for enrichment analyses using
-<code><a href="../reference/fetch_gene_set.html">fetch_gene_set()</a></code>:</p>
+<code><a href="../reference/fetch_gene_sets.html">fetch_gene_sets()</a></code>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># using "BioCarta" as our gene sets for enrichment</span></span>
-<span><span class="va">biocarta_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_gene_set.html">fetch_gene_set</a></span><span class="op">(</span></span>
+<span><span class="va">biocarta_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_gene_sets.html">fetch_gene_sets</a></span><span class="op">(</span></span>
 <span>  gene_sets <span class="op">=</span> <span class="st">"BioCarta"</span>,</span>
 <span>  min_gset_size <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>  max_gset_size <span class="op">=</span> <span class="fl">300</span></span>
@@ -204,7 +204,7 @@ should be set to <code>"Custom"</code> and the custom gene sets (list)
 and the custom gene set descriptions (named vector) should be supplied
 via the arguments <code>custom_genes</code> and
 <code>custom_descriptions</code>, respectively. See
-<code><a href="../reference/fetch_gene_set.html">?fetch_gene_set</a></code> for more details.</p>
+<code><a href="../reference/fetch_gene_sets.html">?fetch_gene_sets</a></code> for more details.</p>
 </blockquote>
 </div>
 <div class="section level2">
