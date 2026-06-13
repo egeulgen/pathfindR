@@ -116,6 +116,5 @@ active_subnetwork_search <- function(adjacency,
     subnetworks <- subnetworks[keep]
   }
 
-  result <- lapply(subnetworks, function(s) s$nodes)
-  return(result)
+  return(subnetworks)
 }

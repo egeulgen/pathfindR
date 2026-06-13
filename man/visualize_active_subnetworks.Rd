@@ -16,7 +16,8 @@ visualize_active_subnetworks(
 )
 }
 \arguments{
-\item{active_snws}{active subnetwork search results. A list containing input \code{subnetworks}.}
+\item{active_snws}{active subnetwork search results.
+A list containing input \code{subnetworks} (nodes) and \code{scores} (score).}
 
 \item{genes_df}{the input data that was used with \code{\link{run_pathfindR}}.
   It must be a data frame with 3 columns: \enumerate{

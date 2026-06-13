@@ -12,7 +12,8 @@ filter_active_subnetworks(
 )
 }
 \arguments{
-\item{active_snws}{active subnetwork search results. A list containing input \code{subnetworks}.}
+\item{active_snws}{active subnetwork search results.
+A list containing input \code{subnetworks} (nodes) and \code{scores} (score).}
 
 \item{sig_genes_vec}{vector of significant gene symbols. In the scope of this
 package, these are the input genes that were used for active subnetwork search}

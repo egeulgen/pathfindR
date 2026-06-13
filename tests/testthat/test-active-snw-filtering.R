@@ -1,11 +1,23 @@
 # set up input data
 input_data_frame <- example_pathfindR_input[1:10, c(1, 3)]
 colnames(input_data_frame) <- c("GENE", "P_VALUE")
+
+
 example_snws_len <- 1000
 example_snw_output <- system.file("extdata", "resultActiveSubnetworkSearch.txt",
   package = "pathfindR"
 )
-example_snws <- readLines(example_snw_output)
+example_snws_raw <- readLines(example_snw_output)
+
+example_snws <- list()
+for (idx in seq_along(example_snws_raw)) {
+  line <- example_snws_raw[idx]
+  current <- list()
+  parsed_line <- unlist(strsplit(line, "\\s"))
+  current[["nodes"]] <- parsed_line[-1]
+  current[["score"]] <- as.numeric(parsed_line[1])
+  example_snws[[idx]] <- current
+}
 
 test_that("`filter_active_subnetworks()` -- returns expected list object", {
   snws_filtered <- filter_active_subnetworks(active_snws = example_snws, sig_genes_vec = input_data_frame$GENE)

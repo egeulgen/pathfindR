@@ -1,6 +1,7 @@
 #' Parse Active Subnetwork Search Output File and Filter the Subnetworks
 #'
-#' @param active_snws active subnetwork search results. A list containing input \code{subnetworks}.
+#' @param active_snws active subnetwork search results.
+#' A list containing input \code{subnetworks} (nodes) and \code{scores} (score).
 #' @param sig_genes_vec vector of significant gene symbols. In the scope of this
 #'   package, these are the input genes that were used for active subnetwork search
 #' @param score_quan_thr active subnetwork score quantile threshold. Must be
@@ -56,13 +57,11 @@ filter_active_subnetworks <- function(active_snws, sig_genes_vec, score_quan_thr
 
   score_vec <- c()
   subnetworks <- list()
-  for (i in base::seq_len(length(active_snws))) {
+  for (i in seq_along(active_snws)) {
     snw <- active_snws[[i]]
 
-    snw <- unlist(strsplit(snw, "\\s"))
-
-    score_vec <- c(score_vec, as.numeric(snw[1]))
-    subnetworks[[i]] <- snw[-1]
+    score_vec <- c(score_vec, snw$score)
+    subnetworks[[i]] <- snw$nodes
   }
 
   # keep subnetworks with score over the 'score_quan_thr'th quantile

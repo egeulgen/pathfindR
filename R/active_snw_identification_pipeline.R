@@ -111,7 +111,7 @@ get_active_subnetworks <- function(
 
   ############ Parse and filter active subnetworks
   filtered_snws <- filter_active_subnetworks(
-    active_snws = identified_active_snws, sig_genes_vec = input_for_search$GENE,
+    active_snws = identified_active_snws, sig_genes_vec = experiment_df$GENE,
     score_quan_thr = score_quan_thr, sig_gene_thr = sig_gene_thr
   )
 
