@@ -19,7 +19,6 @@ get_active_subnetworks(
   sa_iterations = 10000,
   ga_population_size = 400,
   ga_iterations = 10000,
-  gaThread = 5,
   ga_crossover_rate = 1,
   ga_mutation_rate = 0,
   gr_max_depth = 1,
@@ -69,8 +68,6 @@ nodes. In SA, initializes candidate solution with all positive nodes. (default =
 \item{ga_population_size}{Population size for GA (default = 400)}
 
 \item{ga_iterations}{Iteration number for GA (default = 200)}
-
-\item{gaThread}{Number of threads to be used in GA (default = 5)}
 
 \item{ga_crossover_rate}{Applies crossover with the given probability in GA (default = 1, i.e. always perform crossover)}
 

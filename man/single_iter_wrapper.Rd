@@ -20,7 +20,6 @@ single_iter_wrapper(
   sa_iterations,
   ga_population_size,
   ga_iterations,
-  gaThread,
   ga_crossover_rate,
   ga_mutation_rate,
   gr_max_depth,
@@ -70,8 +69,6 @@ nodes. In SA, initializes candidate solution with all positive nodes. (default =
 \item{ga_population_size}{Population size for GA (default = 400)}
 
 \item{ga_iterations}{Iteration number for GA (default = 200)}
-
-\item{gaThread}{Number of threads to be used in GA (default = 5)}
 
 \item{ga_crossover_rate}{Applies crossover with the given probability in GA (default = 1, i.e. always perform crossover)}
 

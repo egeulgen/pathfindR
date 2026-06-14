@@ -89,7 +89,7 @@ active_snw_enrichment_wrapper <- function(input_processed, pin_path, gset_list, 
     combined_res <- single_iter_wrapper(
       i = NULL, dirs, input_processed, pin_path,
       score_quan_thr, sig_gene_thr, search_method, verbose, start_with_all_positives,
-      gene_init_prob, sa_initial_temp, sa_final_temp, sa_iterations, ga_population_size, ga_iterations, gaThread, ga_crossover_rate,
+      gene_init_prob, sa_initial_temp, sa_final_temp, sa_iterations, ga_population_size, ga_iterations, ga_crossover_rate,
       ga_mutation_rate, gr_max_depth, gr_search_depth, gr_overlap_threshold, gr_subnetwork_num, gset_list, adj_method,
       enrichment_threshold, list_active_snw_genes
     )
@@ -105,7 +105,7 @@ active_snw_enrichment_wrapper <- function(input_processed, pin_path, gset_list, 
         single_iter_wrapper(
           i, dirs, input_processed, pin_path, score_quan_thr,
           sig_gene_thr, search_method, verbose, start_with_all_positives,
-          gene_init_prob, sa_initial_temp, sa_final_temp, sa_iterations, ga_population_size, ga_iterations, gaThread,
+          gene_init_prob, sa_initial_temp, sa_final_temp, sa_iterations, ga_population_size, ga_iterations,
           ga_crossover_rate, ga_mutation_rate, gr_max_depth, gr_search_depth, gr_overlap_threshold, gr_subnetwork_num,
           gset_list, adj_method, enrichment_threshold, list_active_snw_genes
         )
@@ -117,7 +117,7 @@ active_snw_enrichment_wrapper <- function(input_processed, pin_path, gset_list, 
         current_res <- single_iter_wrapper(
           i, dirs, score_quan_thr, sig_gene_thr,
           search_method, verbose, start_with_all_positives, gene_init_prob,
-          sa_initial_temp, sa_final_temp, sa_iterations, ga_population_size, ga_iterations, gaThread, ga_crossover_rate,
+          sa_initial_temp, sa_final_temp, sa_iterations, ga_population_size, ga_iterations, ga_crossover_rate,
           ga_mutation_rate, gr_max_depth, gr_search_depth, gr_overlap_threshold, gr_subnetwork_num, gset_list,
           adj_method, enrichment_threshold, list_active_snw_genes
         )
@@ -139,7 +139,7 @@ active_snw_enrichment_wrapper <- function(input_processed, pin_path, gset_list, 
 #' @return Data frame of enrichment results using active subnetwork search results
 single_iter_wrapper <- function(i = NULL, dirs, input_processed, pin_path, score_quan_thr,
                                 sig_gene_thr, search_method, verbose, start_with_all_positives, gene_init_prob,
-                                sa_initial_temp, sa_final_temp, sa_iterations, ga_population_size, ga_iterations, gaThread, ga_crossover_rate, ga_mutation_rate, gr_max_depth,
+                                sa_initial_temp, sa_final_temp, sa_iterations, ga_population_size, ga_iterations, ga_crossover_rate, ga_mutation_rate, gr_max_depth,
                                 gr_search_depth, gr_overlap_threshold, gr_subnetwork_num, gset_list, adj_method, enrichment_threshold,
                                 list_active_snw_genes) {
   snws_file <- "active_snws"
@@ -155,7 +155,7 @@ single_iter_wrapper <- function(i = NULL, dirs, input_processed, pin_path, score
       1234, i
     ), verbose = verbose, start_with_all_positives = start_with_all_positives,
     gene_init_prob = ifelse(!is.null(i), gene_init_prob[i], gene_init_prob), sa_initial_temp = sa_initial_temp,
-    sa_final_temp = sa_final_temp, sa_iterations = sa_iterations, ga_population_size = ga_population_size, ga_iterations = ga_iterations, gaThread = gaThread,
+    sa_final_temp = sa_final_temp, sa_iterations = sa_iterations, ga_population_size = ga_population_size, ga_iterations = ga_iterations,
     ga_crossover_rate = ga_crossover_rate, ga_mutation_rate = ga_mutation_rate, gr_max_depth = gr_max_depth, gr_search_depth = gr_search_depth,
     gr_overlap_threshold = gr_overlap_threshold, gr_subnetwork_num = gr_subnetwork_num
   )

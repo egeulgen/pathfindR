@@ -23,7 +23,6 @@
 #' @param sa_iterations Iteration number for SA (default = 10000)
 #' @param ga_population_size Population size for GA (default = 400)
 #' @param ga_iterations Iteration number for GA (default = 200)
-#' @param gaThread Number of threads to be used in GA (default = 5)
 #' @param ga_crossover_rate Applies crossover with the given probability in GA (default = 1, i.e. always perform crossover)
 #' @param ga_mutation_rate For GA, applies mutation with given mutation rate (default = 0, i.e. mutation off)
 #' @param gr_max_depth Sets max depth in greedy search, 0 for no limit (default = 1)
@@ -46,7 +45,7 @@ get_active_subnetworks <- function(
   input_for_search, pin_name_path = "Biogrid",
   score_quan_thr = 0.8, sig_gene_thr = 0.02, search_method = "GR",
   seed_for_stochastic_methods = 1234, verbose = FALSE, start_with_all_positives = FALSE, gene_init_prob = 0.1,
-  sa_initial_temp = 1, sa_final_temp = 0.01, sa_iterations = 10000, ga_population_size = 400, ga_iterations = 10000, gaThread = 5,
+  sa_initial_temp = 1, sa_final_temp = 0.01, sa_iterations = 10000, ga_population_size = 400, ga_iterations = 10000,
   ga_crossover_rate = 1, ga_mutation_rate = 0, gr_max_depth = 1, gr_search_depth = 1, gr_overlap_threshold = 0.5,
   gr_subnetwork_num = 1000
 ) {
