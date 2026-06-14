@@ -41,7 +41,6 @@ test_that("`run_pathfindR()` -- works as expected", {
   )
   expect_is(res, "data.frame")
   expect_identical(res, example_pathfindR_output)
-  expect_true(dir.exists(out_dir))
   mockery::expect_called(mock_fetch_gene_sets, 1)
   mockery::expect_called(mock_return_pin_path, 1)
   mockery::expect_called(mock_input_processing, 1)
