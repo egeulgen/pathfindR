@@ -24,6 +24,7 @@
   search_depth <- as.integer(params$gr_search_depth)
   ol_threshold <- as.numeric(params$gr_overlap_threshold)
   max_output <- as.integer(params$gr_subnetwork_num)
+  seed <- as.integer(params$seed)
 
   nbr_idx <- lapply(igraph::adjacent_vertices(network$g, igraph::V(network$g)), as.integer)
 
@@ -42,7 +43,8 @@
     search_depth       = search_depth,
     n_nodes            = n_nodes,
     overlap_threshold  = ol_threshold,
-    subnetwork_num     = max_output
+    subnetwork_num     = max_output,
+    seed               = seed
   )
   return(candidates)
 }

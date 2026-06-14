@@ -85,7 +85,8 @@ ExpandResult greedy_expand(
     const int* flat_nbrs, const int* nbr_offsets,
     const double* z_vec, const double* sc_means, const double* sc_stds,
     bool use_within, int search_depth, int depth, int size, double zsum,
-    double score, double best_score, SearchState& state, int last_added
+    double score, double best_score, SearchState& state, int last_added,
+    int seed
 ) {
   bool improved = false;
   if (score > best_score) {
@@ -109,7 +110,7 @@ ExpandResult greedy_expand(
       neighbors.push_back(flat_nbrs[i]);
     }
 
-    std::mt19937 g(42);
+    std::mt19937 g(seed);
     std::shuffle(neighbors.begin(), neighbors.end(), g);
 
     for (int nb : neighbors) {
@@ -126,7 +127,7 @@ ExpandResult greedy_expand(
         ExpandResult res = greedy_expand(
           flat_nbrs, nbr_offsets, z_vec, sc_means, sc_stds, use_within,
           search_depth, depth - 1, new_size, new_zsum, new_score, best_score,
-          state, nb
+          state, nb, seed
         );
         best_score = res.best_score;
 
@@ -189,7 +190,7 @@ double greedy_removal(
 List run_greedy_search(
     List nbr_idx, NumericVector z_vec, NumericVector sc_means, NumericVector sc_stds,
     CharacterVector node_names, int max_depth, int search_depth, int n_nodes,
-    double overlap_threshold, int subnetwork_num
+    double overlap_threshold, int subnetwork_num, int seed
 ) {
   // 1. Flatten the R List into contiguous standard vectors
   std::vector<int> flat_nbrs;
@@ -247,7 +248,7 @@ List run_greedy_search(
 
     ExpandResult res = greedy_expand(
       p_flat_nbrs, p_nbr_offsets, p_z_vec, p_sc_means, p_sc_stds, use_within,
-      search_depth, search_depth, 1, seed_zsum, 0.0, -1e9, state, seed_id
+      search_depth, search_depth, 1, seed_zsum, 0.0, -1e9, state, seed_id, seed
     );
 
     double final_best = greedy_removal(
