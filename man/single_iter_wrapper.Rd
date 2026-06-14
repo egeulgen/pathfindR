@@ -40,7 +40,7 @@ single_iter_wrapper(
 
 \item{pin_path}{path/to/PIN/file}
 
-\item{network}{Prebuilt network object as returned by \code{.build_network()},
+\item{network}{Prebuilt network object as returned by \code{build_network()},
 built once by \code{active_snw_enrichment_wrapper} and passed to every
 iteration to avoid redundant PIN file I/O.}
 

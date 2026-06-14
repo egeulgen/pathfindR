@@ -8,14 +8,16 @@
 #' gene appears more than once, and network nodes without a p-value are given
 #' \code{params$p_for_nonsignificant}.
 #'
-#' @param network A network as returned by \code{.build_network()}.
+#' @param network A network as returned by \code{build_network()}.
 #' @param experiment A data frame of gene / p-value pairs.
 #' @param params A list of run parameters.
 #'
 #' @return A list with elements \code{z} (named z-score vector),
 #'   \code{means} and \code{stds} (numeric vectors indexed by subnetwork size),
 #'   and \code{nodes}.
-.build_score_context <- function(network, experiment, params) {
+#'
+#' @export
+build_score_context <- function(network, experiment, params) {
   set.seed(params$seed)
   nodes <- network$nodes
   N <- length(nodes)
@@ -84,7 +86,7 @@
 #' \code{zsum / sqrt(n)}, optionally calibrated against the Monte-Carlo
 #' distribution and optionally penalised for size.
 #'
-#' @param sc A score context from \code{.build_score_context()}.
+#' @param sc A score context from \code{build_score_context()}.
 #' @param n Number of nodes in the subnetwork.
 #' @param zsum Sum of the z-scores of the subnetwork nodes.
 #' @param normalize Logical; whether to calibrate the score.
@@ -124,7 +126,7 @@
 #' Returns one group of node names per connected component of the subgraph
 #' induced by \code{on_names} (isolated nodes form singleton components).
 #'
-#' @param network A network from \code{.build_network()}.
+#' @param network A network from \code{build_network()}.
 #' @param on_names Character vector of node names that are switched on.
 #'
 #' @return A list of character vectors, one per component.
@@ -139,7 +141,7 @@
 
 #' Find the scored subnetworks among a set of "on" nodes
 #'
-#' @param network A network from \code{.build_network()}.
+#' @param network A network from \code{build_network()}.
 #' @param sc A score context.
 #' @param on_names Character vector of node names that are switched on.
 #'

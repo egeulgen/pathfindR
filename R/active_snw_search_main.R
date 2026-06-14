@@ -6,8 +6,8 @@
 #' against a Monte-Carlo background, and one of three search strategies is used
 #' to find high-scoring connected subnetworks.
 #'
-#' @param network A network list as returned by \code{.build_network()}.
-#' @param score_context A score context list as returned by \code{.build_score_context()}.
+#' @param network A network list as returned by \code{build_network()}.
+#' @param score_context A score context list as returned by \code{build_score_context()}.
 #' @param method Search strategy: \code{"GR"} (greedy, the default),
 #'   \code{"SA"} (simulated annealing) or \code{"GA"} (genetic algorithm).
 #' @param params A fully-formed params list controlling the search, as built
@@ -58,8 +58,8 @@
 #'   seed                     = 1234L
 #' )
 #'
-#' network <- .build_network(sif_path)
-#' sc <- .build_score_context(network, experiment, params)
+#' network <- build_network(sif_path)
+#' sc <- build_score_context(network, experiment, params)
 #' snws <- active_subnetwork_search(network, sc, method = "GR", params = params)
 #' }
 #'

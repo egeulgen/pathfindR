@@ -7,7 +7,7 @@
 .score_subnetwork(sc, n, zsum, normalize)
 }
 \arguments{
-\item{sc}{A score context from \code{.build_score_context()}.}
+\item{sc}{A score context from \code{build_score_context()}.}
 
 \item{n}{Number of nodes in the subnetwork.}
 

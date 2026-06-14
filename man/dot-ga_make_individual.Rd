@@ -7,9 +7,9 @@
 .ga_make_individual(network, sc, rep_logical)
 }
 \arguments{
-\item{network}{A network from \code{.build_network()}.}
+\item{network}{A network from \code{build_network()}.}
 
-\item{sc}{A score context from \code{.build_score_context()}.}
+\item{sc}{A score context from \code{build_score_context()}.}
 
 \item{rep_logical}{A logical vector aligned to \code{network$nodes}
 (\code{TRUE} = node on). May be empty.}

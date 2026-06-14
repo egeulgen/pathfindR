@@ -31,13 +31,13 @@ write.table(
   quote = FALSE
 )
 
-network <- .build_network(sif_file)
+network <- build_network(sif_file)
 
 base_params <- list(
   p_for_nonsignificant = 0.5,
   seed                 = 1234L
 )
-score_context <- .build_score_context(network, input_data_frame, base_params)
+score_context <- build_score_context(network, input_data_frame, base_params)
 
 test_that("`get_active_subnetworks()` -- returns a list object", {
   # Expect > 0 active snws
@@ -154,8 +154,8 @@ test_that("`get_active_subnetworks()` -- results are reproducible", {
     quote = FALSE
   )
 
-  larger_network <- .build_network(sif_file)
-  larger_score_context <- .build_score_context(larger_network, input_data_frame, base_params)
+  larger_network <- build_network(sif_file)
+  larger_score_context <- build_score_context(larger_network, input_data_frame, base_params)
 
   snw_lists <- list()
   seed_vals <- c(123, 456, 123)

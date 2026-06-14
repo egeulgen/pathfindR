@@ -216,8 +216,8 @@
 
 #' Run the greedy active subnetwork search
 #'
-#' @param network  A network from \code{.build_network()}.
-#' @param sc       A score context from \code{.build_score_context()}.
+#' @param network  A network from \code{build_network()}.
+#' @param sc       A score context from \code{build_score_context()}.
 #' @param params   A list of run parameters.
 #' @param verbose  Logical; emit progress messages.
 #' @return A list of subnetwork objects.

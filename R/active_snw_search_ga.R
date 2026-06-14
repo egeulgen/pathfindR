@@ -11,8 +11,8 @@
 #' Computes the connected subnetworks induced by the on-nodes and stores their
 #' scores (sorted descending) for fast fitness comparison.
 #'
-#' @param network A network from \code{.build_network()}.
-#' @param sc A score context from \code{.build_score_context()}.
+#' @param network A network from \code{build_network()}.
+#' @param sc A score context from \code{build_score_context()}.
 #' @param rep_logical A logical vector aligned to \code{network$nodes}
 #'   (\code{TRUE} = node on). May be empty.
 #'
@@ -208,8 +208,8 @@
 #' \code{params$ga_iterations} generations or
 #' once the best individual is unchanged for 50 generations.
 #'
-#' @param network A network from \code{.build_network()}.
-#' @param sc A score context from \code{.build_score_context()}.
+#' @param network A network from \code{build_network()}.
+#' @param sc A score context from \code{build_score_context()}.
 #' @param params A list of run parameters.
 #' @param verbose Logical; emit progress messages.
 #'

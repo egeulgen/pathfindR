@@ -7,7 +7,7 @@
 .find_components_named(network, on_names)
 }
 \arguments{
-\item{network}{A network from \code{.build_network()}.}
+\item{network}{A network from \code{build_network()}.}
 
 \item{on_names}{Character vector of node names that are switched on.}
 }

@@ -86,9 +86,9 @@ active_snw_enrichment_wrapper <- function(input_processed, pin_path, gset_list, 
   ## iterations.  Only the per-iteration seed and gene_init_prob vary,
   ## and those affect only the stochastic search itself, not the context.
   message("## Building network and score context (once for all iterations)")
-  network <- .build_network(pin_path)
+  network <- build_network(pin_path)
 
-  ## Construct the base params needed by .build_score_context.
+  ## Construct the base params needed by build_score_context.
   ## seed = 1234L here is used only for the MC permutation; the actual
   ## per-iteration search seed is supplied separately via single_iter_wrapper.
   base_params <- list(
@@ -99,7 +99,7 @@ active_snw_enrichment_wrapper <- function(input_processed, pin_path, gset_list, 
     gene = base::toupper(input_processed$GENE),
     pvalue = input_processed$P_VALUE
   )
-  score_context <- .build_score_context(network, experiment_df, base_params)
+  score_context <- build_score_context(network, experiment_df, base_params)
 
   if (iterations == 1) {
     combined_res <- single_iter_wrapper(

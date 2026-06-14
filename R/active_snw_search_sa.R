@@ -13,8 +13,8 @@
 #' decays geometrically from \code{sa_initial_temp} to \code{sa_final_temp}
 #' over \code{sa_iterations} steps.
 #'
-#' @param network A network from \code{.build_network()}.
-#' @param sc A score context from \code{.build_score_context()}.
+#' @param network A network from \code{build_network()}.
+#' @param sc A score context from \code{build_score_context()}.
 #' @param params A list of run parameters.
 #' @param verbose Logical; emit progress messages.
 #'

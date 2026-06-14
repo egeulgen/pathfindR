@@ -29,10 +29,10 @@
 #' @param gr_search_depth Search depth in greedy search (default = 1)
 #' @param gr_overlap_threshold Overlap threshold for results of greedy search (default = 0.5)
 #' @param gr_subnetwork_num Number of subnetworks to be presented in the results (default = 1000)
-#' @param network Prebuilt network object as returned by \code{.build_network()},
+#' @param network Prebuilt network object as returned by \code{build_network()},
 #'   built once by \code{active_snw_enrichment_wrapper} and passed to every
 #'   iteration to avoid redundant PIN file I/O.
-#' @param score_context Prebuilt score context as returned by \code{.build_score_context()},
+#' @param score_context Prebuilt score context as returned by \code{build_score_context()},
 #'   built once by \code{active_snw_enrichment_wrapper} and passed to every
 #'   iteration to avoid redundant Monte-Carlo calibration.
 #'
@@ -46,16 +46,16 @@
 #' processed_df <- example_pathfindR_input[1:15, -2]
 #' colnames(processed_df) <- c("GENE", "P_VALUE")
 #' pin_path <- return_pin_path("KEGG")
-#' network <- .build_network(pin_path)
+#' network <- build_network(pin_path)
 #' experiment_df <- data.frame(gene = processed_df$GENE, pvalue = processed_df$P_VALUE)
-#' score_context <- .build_score_context(network, experiment_df, list(p_for_nonsignificant = 0.5, seed = 1234L))
+#' score_context <- build_score_context(network, experiment_df, list(p_for_nonsignificant = 0.5, seed = 1234L))
 #' GR_snws <- get_active_subnetworks(processed_df, network = network, score_context = score_context)
 #' }
 get_active_subnetworks <- function(
   input_for_search, network, score_context,
   score_quan_thr = 0.8, sig_gene_thr = 0.02, search_method = "GR",
   seed_for_stochastic_methods = 1234, verbose = FALSE, start_with_all_positives = FALSE, gene_init_prob = 0.1,
-  sa_initial_temp = 1, sa_final_temp = 0.01, sa_iterations = 10000, ga_population_size = 400, ga_iterations = 10000, gaThread = 5,
+  sa_initial_temp = 1, sa_final_temp = 0.01, sa_iterations = 10000, ga_population_size = 400, ga_iterations = 10000,
   ga_crossover_rate = 1, ga_mutation_rate = 0, gr_max_depth = 1, gr_search_depth = 1, gr_overlap_threshold = 0.5,
   gr_subnetwork_num = 1000
 ) {

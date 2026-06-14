@@ -54,7 +54,9 @@
 #'   \code{nodes} (character vector of node names in graph order),
 #'   \code{nbr} (named list of neighbour-name vectors) and \code{name2id}
 #'   (named integer vector mapping node name to vertex id).
-.build_network <- function(sif_path) {
+#'
+#' @export
+build_network <- function(sif_path) {
   sif <- utils::read.delim(file = sif_path, quote = "", header = FALSE)
 
   if (ncol(sif) < 3) {

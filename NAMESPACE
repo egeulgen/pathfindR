@@ -3,6 +3,8 @@
 export(UpSet_plot)
 export(active_subnetwork_search)
 export(annotate_term_genes)
+export(build_network)
+export(build_score_context)
 export(cluster_enriched_terms)
 export(cluster_graph_vis)
 export(combine_pathfindR_results)

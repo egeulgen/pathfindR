@@ -20,7 +20,6 @@ get_active_subnetworks(
   sa_iterations = 10000,
   ga_population_size = 400,
   ga_iterations = 10000,
-  gaThread = 5,
   ga_crossover_rate = 1,
   ga_mutation_rate = 0,
   gr_max_depth = 1,
@@ -36,11 +35,11 @@ must be a data frame containing at least these 2 columns: \describe{
   \item{P_VALUE}{p value obtained through a test, e.g. differential expression/methylation}
 }}
 
-\item{network}{Prebuilt network object as returned by \code{.build_network()},
+\item{network}{Prebuilt network object as returned by \code{build_network()},
 built once by \code{active_snw_enrichment_wrapper} and passed to every
 iteration to avoid redundant PIN file I/O.}
 
-\item{score_context}{Prebuilt score context as returned by \code{.build_score_context()},
+\item{score_context}{Prebuilt score context as returned by \code{build_score_context()},
 built once by \code{active_snw_enrichment_wrapper} and passed to every
 iteration to avoid redundant Monte-Carlo calibration.}
 
@@ -100,9 +99,9 @@ before returning final subnetworks.
 processed_df <- example_pathfindR_input[1:15, -2]
 colnames(processed_df) <- c("GENE", "P_VALUE")
 pin_path <- return_pin_path("KEGG")
-network <- .build_network(pin_path)
+network <- build_network(pin_path)
 experiment_df <- data.frame(gene = processed_df$GENE, pvalue = processed_df$P_VALUE)
-score_context <- .build_score_context(network, experiment_df, list(p_for_nonsignificant = 0.5, seed = 1234L))
+score_context <- build_score_context(network, experiment_df, list(p_for_nonsignificant = 0.5, seed = 1234L))
 GR_snws <- get_active_subnetworks(processed_df, network = network, score_context = score_context)
 }
 }

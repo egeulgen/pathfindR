@@ -64,11 +64,11 @@ reference:
     - input_processing
     - input_testing
     - return_pin_path
+    - build_score_context
+    - build_network
     - .greedy_search
     - .simulated_annealing
     - .genetic_algorithm
-    - .build_network
-    - .build_score_context
     - .component_new
     - .find_components_named
     - .find_subnetworks

@@ -7,7 +7,7 @@
 .find_subnetworks(network, sc, on_names)
 }
 \arguments{
-\item{network}{A network from \code{.build_network()}.}
+\item{network}{A network from \code{build_network()}.}
 
 \item{sc}{A score context.}
 
