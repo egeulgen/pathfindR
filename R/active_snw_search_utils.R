@@ -53,14 +53,7 @@ build_network <- function(sif_path) {
   src <- toupper(as.character(sif[[1]]))
   tgt <- toupper(as.character(sif[[3]]))
 
-  # Track first-seen insertion order for MC calibration.
-  all_mentioned <- c(rbind(src, tgt))
-  insertion_order <- all_mentioned[!duplicated(all_mentioned)]
-
   # Remove self-loops and duplicate edges before handing off to igraph.
-  # Doing this here (rather than via igraph::simplify) preserves the vertex
-  # insertion order that igraph::graph_from_data_frame produces, which must
-  # match the SIF insertion order above.
   keep <- src != tgt
   src <- src[keep]
   tgt <- tgt[keep]
@@ -83,7 +76,6 @@ build_network <- function(sif_path) {
     g               = g,
     nodes           = node_names,
     nbr             = nbr,
-    name2id         = stats::setNames(seq_along(node_names), node_names),
-    insertion_order = insertion_order
+    name2id         = stats::setNames(seq_along(node_names), node_names)
   )
 }
