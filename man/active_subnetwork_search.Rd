@@ -84,17 +84,26 @@ against a Monte-Carlo background, and one of three search strategies is used
 to find high-scoring connected subnetworks.
 }
 \examples{
-adjacency <- list(
-  A = c("B", "C"),
-  B = c("A", "C"),
-  C = c("A", "B", "D"),
-  D = c("C", "E"),
-  E = "D"
+\dontrun{
+toy_pin_df <- data.frame(
+  V1 = c("A", "A", "B", "B", "C", "C", "C", "D", "D", "E"),
+  V2 = "pp",
+  V3 = c("B", "C", "A", "C", "A", "B", "D", "C", "E", "D")
+)
+
+sif_file <- tempfile(fileext = ".sif")
+write.table(
+  toy_pin_df,
+  sif_file,
+  sep = "\t",
+  row.names = FALSE,
+  col.names = FALSE,
+  quote = FALSE
 )
 experiment <- data.frame(
   gene   = c("A", "B", "C", "D", "E"),
   pvalue = c(0.001, 0.002, 0.001, 0.5, 0.6)
 )
 active_subnetwork_search(pin_path, experiment, method = "GR")
-
+}
 }
