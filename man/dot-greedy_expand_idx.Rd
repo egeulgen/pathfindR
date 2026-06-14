@@ -21,19 +21,19 @@
 )
 }
 \arguments{
-\item{nbr_idx}{List of integer neighbour-index vectors.}
+\item{nbr_idx}{Integer neighbour-index list.}
 
-\item{z_vec}{Numeric z-score vector (integer-indexed).}
+\item{z_vec}{Numeric z-score vector.}
 
-\item{sc_means}{Monte-Carlo means (indexed by subnetwork size).}
+\item{sc_means}{Monte-Carlo means (by subnetwork size).}
 
-\item{sc_stds}{Monte-Carlo stds  (indexed by subnetwork size).}
+\item{sc_stds}{Monte-Carlo stds  (by subnetwork size).}
 
-\item{within_vec}{Logical reachability mask, or NULL for no limit.}
+\item{within_vec}{Logical reachability mask or NULL.}
 
-\item{search_depth}{Depth budget restored on every improvement.}
+\item{search_depth}{Depth budget restored on improvement.}
 
-\item{depth}{Remaining depth budget for this call.}
+\item{depth}{Remaining depth budget.}
 
 \item{size}{Current component size.}
 
@@ -41,22 +41,17 @@
 
 \item{score}{Current calibrated score.}
 
-\item{best_score}{Best score seen anywhere in this subtree so far.}
+\item{best_score}{Best score seen in this subtree.}
 
-\item{vstate}{Environment holding the four mutable node vectors.}
+\item{vstate}{Environment with four mutable node vectors.}
 
 \item{last_added}{Integer node ID most recently added.}
 }
 \value{
-A list with \code{$improved} (logical) and \code{$best_score}
-  (the highest score seen in this subtree).
+List: improved, best_score, size, zsum.
 }
 \description{
-The four hot scalars (size, zsum, score, best_score) are passed as function
-arguments and returned, avoiding \code{env$} overhead on every add/remove.
-The four large vectors live in \code{vstate} (an environment) so mutations
-are immediately visible to all recursive frames.
-}
-\details{
-\code{.score_subnetwork} is inlined: single-node → 0, else calibrated.
+Scalars are passed as arguments and returned to avoid env$ lookup overhead.
+Returns size and zsum alongside improved/best_score so the caller can pass
+them directly to the removal pass (avoids two O(N) sum() scans per seed).
 }

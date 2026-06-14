@@ -11,7 +11,7 @@
 
 \item{n_nodes}{Total node count.}
 
-\item{start}{Integer node ID to expand from.}
+\item{start}{Integer seed node ID.}
 
 \item{depth}{Maximum hop distance.}
 }
@@ -19,7 +19,5 @@
 Logical vector of length \code{n_nodes}.
 }
 \description{
-Returns a logical vector rather than modifying in-place, because \code{<<-}
-resolves through *lexical* parent environments, not the call stack, and
-therefore does not reach a variable in the calling function's local frame.
+Build the within-depth reachability vector via iterative BFS
 }
