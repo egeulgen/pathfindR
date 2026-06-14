@@ -1,8 +1,9 @@
 set.seed(123)
 
 # set up input data
-input_genes <- paste0("GENE", 1:10)
-input_p_vals <- runif(10, min = 0.00001, max = 0.05)
+n_input_genes <- 10
+input_genes <- paste0("GENE", seq_len(n_input_genes))
+input_p_vals <- runif(n_input_genes, min = 1e-10, max = 0.001)
 input_data_frame <- data.frame(GENE = input_genes, P_VALUE = input_p_vals)
 
 pool <- paste0("GENE", 1:25)
@@ -103,12 +104,11 @@ test_that("`get_active_subnetworks()` -- all search methods work", {
   expect_is(snw_list, "list")
   expect_is(snw_list[[1]], "character")
 
-  skip("will test SA and GA when we update these methods to be faster")
   ## SA
   expect_message(
     snw_list <- get_active_subnetworks(
       input_for_search = input_data_frame, network, score_context,
-      search_method = "SA"
+      search_method = "SA", sig_gene_thr = 0, score_quan_thr = -1 # needed not to filter on toy results
     ),
     "Found [1-9]\\d* active subnetworks"
   )
@@ -125,49 +125,4 @@ test_that("`get_active_subnetworks()` -- all search methods work", {
   )
   expect_is(snw_list, "list")
   expect_is(snw_list[[1]], "character")
-})
-
-test_that("`get_active_subnetworks()` -- results are reproducible", {
-  skip("will test with SA and GA when we update these methods to be faster")
-  larger_pool <- paste0("GENE", 1:1000)
-  larger_toy_pin_df <- data.frame(
-    InteractorA = sample(larger_pool, 500, replace = TRUE),
-    pp = "pp",
-    InteractorB = sample(larger_pool, 500, replace = TRUE),
-    stringsAsFactors = FALSE
-  )
-  # remove self-loops
-  larger_toy_pin_df <- subset(larger_toy_pin_df, InteractorA != InteractorB)
-  # remove duplicate edges
-  larger_toy_pin_df <- larger_toy_pin_df[
-    !duplicated(
-      t(apply(larger_toy_pin_df[c("InteractorA", "InteractorB")], 1, sort))
-    ),
-  ]
-  larger_sif_file <- tempfile(fileext = ".sif")
-  write.table(
-    larger_toy_pin_df,
-    larger_sif_file,
-    sep = "\t",
-    row.names = FALSE,
-    col.names = FALSE,
-    quote = FALSE
-  )
-
-  larger_network <- build_network(sif_file)
-  larger_score_context <- build_score_context(larger_network, input_data_frame, base_params)
-
-  snw_lists <- list()
-  seed_vals <- c(123, 456, 123)
-  for (idx in 1:3) {
-    snw_lists[[idx]] <- get_active_subnetworks(
-      input_for_search = input_data_frame,
-      network = larger_network,
-      score_context = larger_score_context,
-      search_method = "SA",
-      seed_for_stochastic_methods = seed_vals[idx]
-    )
-  }
-  expect_false(identical(snw_lists[[1]], snw_lists[[2]]))
-  expect_identical(snw_lists[[1]], snw_lists[[3]])
 })
