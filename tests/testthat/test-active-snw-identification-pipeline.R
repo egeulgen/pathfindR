@@ -1,11 +1,40 @@
+set.seed(123)
+
 # set up input data
-input_data_frame <- example_pathfindR_input[1:10, c(1, 3)]
-colnames(input_data_frame) <- c("GENE", "P_VALUE")
+input_genes <- paste0("GENE", 1:10)
+input_p_vals <- runif(10, min = 0.00001, max = 0.05)
+input_data_frame <- data.frame(GENE = input_genes, P_VALUE = input_p_vals)
+
+pool <- paste0("GENE", 1:50)
+n_edges <- 100
+toy_pin_df <- data.frame(
+  InteractorA = sample(pool, n_edges, replace = TRUE),
+  pp = "pp",
+  InteractorB = sample(pool, n_edges, replace = TRUE),
+  stringsAsFactors = FALSE
+)
+# remove self-loops
+toy_pin_df <- subset(toy_pin_df, InteractorA != InteractorB)
+# remove duplicate edges
+toy_pin_df <- toy_pin_df[
+  !duplicated(
+    t(apply(toy_pin_df[c("InteractorA", "InteractorB")], 1, sort))
+  ),
+]
+sif_file <- tempfile(fileext = ".sif")
+write.table(
+  toy_pin_df,
+  sif_file,
+  sep = "\t",
+  row.names = FALSE,
+  col.names = FALSE,
+  quote = FALSE
+)
 
 test_that("`get_active_subnetworks()` -- returns a list object", {
   # Expect > 0 active snws
   expect_message(
-    snw_list <- get_active_subnetworks(input_for_search = input_data_frame),
+    snw_list <- get_active_subnetworks(input_for_search = input_data_frame, pin_name_path = sif_file),
     "Found [1-9]\\d* active subnetworks"
   )
   expect_is(snw_list, "list")
@@ -15,7 +44,7 @@ test_that("`get_active_subnetworks()` -- returns a list object", {
   # Expect no active snws
   mockery::stub(get_active_subnetworks, "filter_active_subnetworks", NULL)
   expect_message(
-    snw_list <- get_active_subnetworks(input_for_search = input_data_frame),
+    snw_list <- get_active_subnetworks(input_for_search = input_data_frame, pin_name_path = sif_file),
     "Found 0 active subnetworks"
   )
   expect_identical(snw_list, list())
@@ -55,12 +84,11 @@ test_that("`get_active_subnetworks()` -- argument checks work", {
 })
 
 test_that("`get_active_subnetworks()` -- all search methods work", {
-  skip_on_cran()
   ## GR
   expect_message(
     snw_list <- get_active_subnetworks(
       input_for_search = input_data_frame,
-      pin_name_path = "Biogrid", search_method = "GR"
+      pin_name_path = sif_file, search_method = "GR"
     ),
     "Found [1-9]\\d* active subnetworks"
   )
@@ -72,7 +100,7 @@ test_that("`get_active_subnetworks()` -- all search methods work", {
   expect_message(
     snw_list <- get_active_subnetworks(
       input_for_search = input_data_frame,
-      pin_name_path = "Biogrid", search_method = "SA"
+      pin_name_path = sif_file, search_method = "SA"
     ),
     "Found [1-9]\\d* active subnetworks"
   )
@@ -83,7 +111,7 @@ test_that("`get_active_subnetworks()` -- all search methods work", {
   expect_message(
     snw_list <- get_active_subnetworks(
       input_for_search = input_data_frame,
-      pin_name_path = "Biogrid", search_method = "GA"
+      pin_name_path = sif_file, search_method = "GA"
     ),
     "Found [1-9]\\d* active subnetworks"
   )
@@ -92,16 +120,41 @@ test_that("`get_active_subnetworks()` -- all search methods work", {
 })
 
 test_that("`get_active_subnetworks()` -- results are reproducible", {
-  skip_on_cran()
+  larger_pool <- paste0("GENE", 1:1000)
+  toy_pin_df <- data.frame(
+    InteractorA = sample(pool, 500, replace = TRUE),
+    pp = "pp",
+    InteractorB = sample(pool, 500, replace = TRUE),
+    stringsAsFactors = FALSE
+  )
+  # remove self-loops
+  toy_pin_df <- subset(toy_pin_df, InteractorA != InteractorB)
+  # remove duplicate edges
+  toy_pin_df <- toy_pin_df[
+    !duplicated(
+      t(apply(toy_pin_df[c("InteractorA", "InteractorB")], 1, sort))
+    ),
+  ]
+  sif_file <- tempfile(fileext = ".sif")
+  write.table(
+    toy_pin_df,
+    sif_file,
+    sep = "\t",
+    row.names = FALSE,
+    col.names = FALSE,
+    quote = FALSE
+  )
+
   snw_lists <- list()
-  seed_vals <- c(123, 123, 456)
+  seed_vals <- c(123, 456, 123)
   for (idx in 1:3) {
     seed <- seed_vals[idx]
     snw_lists[[idx]] <- get_active_subnetworks(
       input_for_search = input_data_frame,
+      pin_name_path = sif_file,
       seed_for_stochastic_methods = seed
     )
   }
-  expect_identical(snw_lists[[1]], snw_lists[[2]])
-  expect_false(identical(snw_lists[[1]], snw_lists[[3]]))
+  expect_false(identical(snw_lists[[1]], snw_lists[[2]]))
+  expect_identical(snw_lists[[1]], snw_lists[[3]])
 })
