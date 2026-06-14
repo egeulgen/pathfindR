@@ -246,27 +246,21 @@
     s <- row_starts[i]
     e <- row_starts[i + 1L] - 1L
     nb <- if (s <= e) both[s:e, 2L] else integer(0L)
-    nbr_idx[[i]] <- nb[z_vec[nb] > -1.0]
+    nbr_idx[[i]] <- nb
   }
 
-  # Seed selection: top-5% z-score nodes
-  z_cutoff <- stats::quantile(z_vec, probs = 0.95, na.rm = TRUE)
-  promising_seeds <- which(z_vec >= z_cutoff)
-
-  if (length(promising_seeds) > n_nodes * 0.20) {
-    promising_seeds <- order(z_vec, decreasing = TRUE)[
-      seq_len(max(1L, as.integer(n_nodes * 0.05)))
-    ]
-  } else if (length(promising_seeds) < 50L && n_nodes >= 50L) {
-    promising_seeds <- order(z_vec, decreasing = TRUE)[seq_len(50L)]
-  }
+  # Every node is used as a seed (matches the reference algorithm). Restricting
+  # seeds to high-scoring nodes is much faster but changes the result set, so it
+  # is deliberately not done here, can be revisited at a later date
+  promising_seeds <- seq_len(n_nodes)
 
   n_seeds <- length(promising_seeds)
   lv_template <- logical(n_nodes)
   iv_template <- integer(n_nodes)
 
-  # Collect and deduplicate candidates at collection time via hash env
-  seen <- new.env(hash = TRUE, parent = emptyenv())
+  # Keep the best-scoring component for each NODE (node2best), then
+  # collect the distinct components afterwards.
+  node2best <- vector("list", n_nodes)
 
   percent <- 0L
   for (i in seq_along(promising_seeds)) {
@@ -313,19 +307,27 @@
     final_idx <- which(vstate$comp_members)
 
     if (length(final_idx) >= 2L && final_best > 0) {
-      key <- paste0(final_idx, collapse = "\x01")
-      existing <- seen[[key]]
-      if (is.null(existing) || final_best > existing$score) {
-        seen[[key]] <- list(
-          nodes = nodes[final_idx],
-          idx   = final_idx,
-          score = final_best
-        )
+      for (nd in final_idx) {
+        ex <- node2best[[nd]]
+        if (is.null(ex) || final_best > ex$score) {
+          node2best[[nd]] <- list(idx = final_idx, score = final_best)
+        }
       }
     }
   }
   if (verbose) message("100%")
 
+  # Collect the distinct best-per-node components
+  seen <- new.env(hash = TRUE, parent = emptyenv())
+  for (nd in seq_len(n_nodes)) {
+    c <- node2best[[nd]]
+    if (!is.null(c)) {
+      key <- paste0(c$idx, collapse = "\x01")
+      if (is.null(seen[[key]])) {
+        seen[[key]] <- list(nodes = nodes[c$idx], idx = c$idx, score = c$score)
+      }
+    }
+  }
   candidates <- as.list(seen)
   if (length(candidates) == 0L) {
     return(list())
