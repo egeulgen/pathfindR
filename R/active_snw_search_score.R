@@ -42,9 +42,9 @@ build_score_context <- function(network, experiment, params) {
   z <- .upper_tail_zscore(pmap)
   names(z) <- nodes
 
-  # --- Monte-Carlo calibration (vectorised) ---------------------------------
-  # Instead of a pure-R loop over `trials`, we shuffle the full z-vector in a
-  # matrix (rows = trials) and compute prefix sums in one vectorised pass.
+  # --- Monte-Carlo calibration ----------------------------------------------
+  # Accumulate running column sums and squared sums without materialising the
+  # full trials x N matrix.
   means <- numeric(N)
   stds <- numeric(N)
 
@@ -53,23 +53,17 @@ build_score_context <- function(network, experiment, params) {
     trials <- 2000L
     zvec <- as.numeric(z)
     sqrtk <- sqrt(seq_len(N))
+    sums <- numeric(N)
+    sqsums <- numeric(N)
 
-    # Build a (trials x N) matrix where each row is a random permutation
-    idx_mat <- matrix(0L, nrow = trials, ncol = N)
     for (t in seq_len(trials)) {
-      idx_mat[t, ] <- sample.int(N)
+      sc <- cumsum(zvec[sample.int(N)]) / sqrtk
+      sc[1L] <- 0
+      sums <- sums + sc
+      sqsums <- sqsums + sc * sc
     }
-    # z-values for all trials at once
-    z_mat <- matrix(zvec[idx_mat], nrow = trials, ncol = N)
-    # Cumulative sums across columns (within each trial/row)
-    cs_mat <- t(apply(z_mat, 1L, cumsum))
-    # Divide each column k by sqrt(k)
-    score_mat <- sweep(cs_mat, 2L, sqrtk, "/")
-    # Single-node subnetworks score 0
-    score_mat[, 1L] <- 0
-
-    means <- colMeans(score_mat)
-    stds <- sqrt(colMeans(score_mat^2) - means^2 + 1e-7)
+    means <- sums / trials
+    stds <- sqrt(sqsums / trials - means * means + 1e-7)
   }
 
   list(
