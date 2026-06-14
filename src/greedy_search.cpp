@@ -85,8 +85,7 @@ ExpandResult greedy_expand(
     const int* flat_nbrs, const int* nbr_offsets,
     const double* z_vec, const double* sc_means, const double* sc_stds,
     bool use_within, int search_depth, int depth, int size, double zsum,
-    double score, double best_score, SearchState& state, int last_added,
-    int seed
+    double score, double best_score, SearchState& state, int last_added
 ) {
   bool improved = false;
   if (score > best_score) {
@@ -103,17 +102,11 @@ ExpandResult greedy_expand(
     int start_offset = nbr_offsets[last_added];
     int end_offset = nbr_offsets[last_added + 1];
 
-    // Collect neighbors to shuffle them to mimic Java HashSet iteration
     std::vector<int> neighbors;
     neighbors.reserve(end_offset - start_offset);
     for (int i = start_offset; i < end_offset; ++i) {
-      neighbors.push_back(flat_nbrs[i]);
-    }
+      int nb = flat_nbrs[i];
 
-    std::mt19937 g(seed);
-    std::shuffle(neighbors.begin(), neighbors.end(), g);
-
-    for (int nb : neighbors) {
       if (use_within && !state.within_vec[nb]) continue;
 
       if (!state.comp_members[nb]) {
@@ -127,7 +120,7 @@ ExpandResult greedy_expand(
         ExpandResult res = greedy_expand(
           flat_nbrs, nbr_offsets, z_vec, sc_means, sc_stds, use_within,
           search_depth, depth - 1, new_size, new_zsum, new_score, best_score,
-          state, nb, seed
+          state, nb
         );
         best_score = res.best_score;
 
@@ -157,7 +150,7 @@ ExpandResult greedy_expand(
 double greedy_removal(
     SearchState& state, const double* z_vec,
     const double* sc_means, const double* sc_stds,
-    int& size, double& zsum, double best_score, int n_nodes, int seed
+    int& size, double& zsum, double best_score, int n_nodes
 ) {
   std::vector<int> removable_list;
   for (int cur = 0; cur < n_nodes; ++cur) {
@@ -165,10 +158,6 @@ double greedy_removal(
       removable_list.push_back(cur);
     }
   }
-
-  // Shuffle to mimic the arbitrary order of the Java HashSet
-  std::mt19937 g(seed);
-  std::shuffle(removable_list.begin(), removable_list.end(), g);
 
   for (int cur : removable_list) {
     int new_size = size - 1;
@@ -199,7 +188,7 @@ double greedy_removal(
 List run_greedy_search(
     List nbr_idx, NumericVector z_vec, NumericVector sc_means, NumericVector sc_stds,
     CharacterVector node_names, int max_depth, int search_depth, int n_nodes,
-    double overlap_threshold, int subnetwork_num, int seed
+    double overlap_threshold, int subnetwork_num
 ) {
   // 1. Flatten the R List into contiguous standard vectors
   std::vector<int> flat_nbrs;
@@ -257,11 +246,11 @@ List run_greedy_search(
 
     ExpandResult res = greedy_expand(
       p_flat_nbrs, p_nbr_offsets, p_z_vec, p_sc_means, p_sc_stds, use_within,
-      search_depth, search_depth, 1, seed_zsum, 0.0, -1e9, state, seed_id, seed
+      search_depth, search_depth, 1, seed_zsum, 0.0, -1e9, state, seed_id
     );
 
     double final_best = greedy_removal(
-      state, p_z_vec, p_sc_means, p_sc_stds, res.size, res.zsum, res.best_score, n_nodes, seed
+      state, p_z_vec, p_sc_means, p_sc_stds, res.size, res.zsum, res.best_score, n_nodes
     );
 
     if (final_best > 0) {
