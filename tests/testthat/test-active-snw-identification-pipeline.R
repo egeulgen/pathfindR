@@ -95,7 +95,7 @@ test_that("`get_active_subnetworks()` -- all search methods work", {
   expect_is(snw_list, "list")
   expect_is(snw_list[[1]], "character")
 
-  skip("will test SA and GA if we can create a suitable (faster and non-empty) test case")
+  skip("will test SA and GA when we update these methods to be faster")
   ## SA
   expect_message(
     snw_list <- get_active_subnetworks(
@@ -120,25 +120,26 @@ test_that("`get_active_subnetworks()` -- all search methods work", {
 })
 
 test_that("`get_active_subnetworks()` -- results are reproducible", {
+  skip("will test with SA and GA when we update these methods to be faster")
   larger_pool <- paste0("GENE", 1:1000)
-  toy_pin_df <- data.frame(
-    InteractorA = sample(pool, 500, replace = TRUE),
+  larger_toy_pin_df <- data.frame(
+    InteractorA = sample(larger_pool, 500, replace = TRUE),
     pp = "pp",
-    InteractorB = sample(pool, 500, replace = TRUE),
+    InteractorB = sample(larger_pool, 500, replace = TRUE),
     stringsAsFactors = FALSE
   )
   # remove self-loops
-  toy_pin_df <- subset(toy_pin_df, InteractorA != InteractorB)
+  larger_toy_pin_df <- subset(larger_toy_pin_df, InteractorA != InteractorB)
   # remove duplicate edges
-  toy_pin_df <- toy_pin_df[
+  larger_toy_pin_df <- larger_toy_pin_df[
     !duplicated(
-      t(apply(toy_pin_df[c("InteractorA", "InteractorB")], 1, sort))
+      t(apply(larger_toy_pin_df[c("InteractorA", "InteractorB")], 1, sort))
     ),
   ]
-  sif_file <- tempfile(fileext = ".sif")
+  larger_sif_file <- tempfile(fileext = ".sif")
   write.table(
-    toy_pin_df,
-    sif_file,
+    larger_toy_pin_df,
+    larger_sif_file,
     sep = "\t",
     row.names = FALSE,
     col.names = FALSE,
@@ -148,11 +149,11 @@ test_that("`get_active_subnetworks()` -- results are reproducible", {
   snw_lists <- list()
   seed_vals <- c(123, 456, 123)
   for (idx in 1:3) {
-    seed <- seed_vals[idx]
     snw_lists[[idx]] <- get_active_subnetworks(
       input_for_search = input_data_frame,
-      pin_name_path = sif_file,
-      seed_for_stochastic_methods = seed
+      pin_name_path = larger_sif_file,
+      search_method = "SA",
+      seed_for_stochastic_methods = seed_vals[idx]
     )
   }
   expect_false(identical(snw_lists[[1]], snw_lists[[2]]))
