@@ -67,7 +67,6 @@ build_network <- function(sif_path) {
   colnames(edges) <- c("source", "target")
 
   g <- igraph::graph_from_data_frame(edges, directed = FALSE)
-  g <- igraph::simplify(g, remove.multiple = TRUE, remove.loops = TRUE)
 
   node_names <- igraph::V(g)$name
   if (is.null(node_names)) node_names <- character(0)
