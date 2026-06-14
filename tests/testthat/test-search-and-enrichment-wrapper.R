@@ -4,30 +4,25 @@ test_that("`active_snw_enrichment_wrapper()` -- works as expected", {
   input_df <- example_pathfindR_input[, c(1, 3)]
   colnames(input_df) <- c("GENE", "P_VALUE")
 
-  org_dir <- getwd()
-  test_directory <- file.path(tempdir(check = TRUE), "snw_wrapper_test")
-  dir.create(test_directory)
-  setwd(test_directory)
-  on.exit(setwd(org_dir))
-  on.exit(unlink(test_directory), add = TRUE)
+  pin_path <- return_pin_path("Biogrid")
 
   with_mocked_bindings(
     {
       expect_is(active_snw_enrichment_wrapper(
-        input_processed = input_df, pin_path = "Biogrid",
+        input_processed = input_df, pin_path = pin_path,
         gset_list = list(), enrichment_threshold = 0.05, list_active_snw_genes = FALSE,
         iterations = 1
       ), "data.frame")
 
       expect_is(active_snw_enrichment_wrapper(
-        input_processed = input_df, pin_path = "Biogrid",
+        input_processed = input_df, pin_path = pin_path,
         gset_list = list(), enrichment_threshold = 0.05, list_active_snw_genes = FALSE,
         iterations = 2, disable_parallel = TRUE
       ), "data.frame")
 
       expect_warning(active_snw_enrichment_wrapper(
         input_processed = input_df,
-        pin_path = "Biogrid", gset_list = list(), enrichment_threshold = 0.05,
+        pin_path = pin_path, gset_list = list(), enrichment_threshold = 0.05,
         list_active_snw_genes = FALSE, search_method = "GA", iterations = 2
       ))
     },
@@ -38,7 +33,7 @@ test_that("`active_snw_enrichment_wrapper()` -- works as expected", {
   skip_on_cran()
   expect_is(
     active_snw_enrichment_wrapper(
-      input_processed = input_df[1:10, ], pin_path = "Biogrid",
+      input_processed = input_df[1:10, ], pin_path = pin_path,
       gset_list = list(genes_by_term = kegg_genes[1:2], term_descriptions = kegg_descriptions[names(kegg_genes[1:2])]),
       enrichment_threshold = 0.05, list_active_snw_genes = FALSE, iterations = 2
     ),
