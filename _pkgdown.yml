@@ -44,21 +44,47 @@ reference:
       - combined_results_graph
   - title: "Enrichment-related functions"
     desc: >
-      Active subnetwork search- and Enrichment-related functions
+      Enrichment-related functions
     contents:
       - active_snw_enrichment_wrapper
       - single_iter_wrapper
-      - get_active_subnetworks
       - annotate_term_genes
       - enrichment
       - enrichment_analyses
       - fetch_gene_sets
-      - filter_active_subnetworks
       - hyperg_test
-      - input_processing
-      - input_testing
-      - return_pin_path
       - summarize_enrichment_results
+  - title: "Active Subnetwork Search Functions"
+    desc: >
+    Active subnetwork search-related functions
+    contents:
+    - active_subnetwork_search
+    - filter_active_subnetworks
+    - input_processing
+    - input_testing
+    - return_pin_path
+    - .greedy_search
+    - .simulated_annealing
+    - .genetic_algorithm
+    - .build_network
+    - .build_score_context
+    - .component_new
+    - .find_components_named
+    - .find_subnetworks
+    - .ga_compare
+    - .ga_cross_over_mutation
+    - .ga_make_individual
+    - .ga_pick
+    - .ga_score
+    - .ga_sort_desc
+    - .greedy_expand_idx
+    - .greedy_filter_int
+    - .greedy_init_max_depth_idx
+    - .greedy_removal_idx
+    - .make_subnetwork
+    - .parse_experiment
+    - .score_subnetwork
+    - .sort_subnetworks_desc
   - title: "Clustering-related functions"
     desc: >
       Clustering-related functions
