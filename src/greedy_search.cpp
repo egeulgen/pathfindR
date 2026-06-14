@@ -3,15 +3,26 @@
 #include <vector>
 #include <string>
 #include <algorithm>
-#include <set>
 
 using namespace Rcpp;
 
+// Reusable allocation structures to completely eliminate heap allocation during loops
 struct SearchState {
   std::vector<bool> comp_members;
   std::vector<bool> removable_vec;
   std::vector<int> node2predecessor;
   std::vector<int> node2dep_count;
+  std::vector<bool> within_vec;
+  std::vector<int> dist;
+
+  void reset(size_t n) {
+    std::fill(comp_members.begin(), comp_members.end(), false);
+    std::fill(removable_vec.begin(), removable_vec.end(), false);
+    std::fill(node2predecessor.begin(), node2predecessor.end(), 0);
+    std::fill(node2dep_count.begin(), node2dep_count.end(), 0);
+    std::fill(within_vec.begin(), within_vec.end(), false);
+    std::fill(dist.begin(), dist.end(), 0);
+  }
 };
 
 struct ExpandResult {
@@ -21,12 +32,11 @@ struct ExpandResult {
   double zsum;
 };
 
-// Helper struct to sort and filter final modules
 struct Subnetwork {
-  std::vector<int> idx; // 1-based indices for R consistency
+  std::vector<int> idx; // Sorted 1-based indices
   double score;
 
-  // Sort descending by score
+  // Fast descending sort
   bool operator<(const Subnetwork& other) const {
     if (std::abs(score - other.score) > 1e-9) {
       return score > other.score;
@@ -35,43 +45,42 @@ struct Subnetwork {
   }
 };
 
-// 1. Fast C++ BFS
-std::vector<bool> greedy_init_max_depth_cpp(const List& nbr_idx, int n_nodes, int start_idx, int depth) {
-  std::vector<bool> within_vec(n_nodes, false);
-  within_vec[start_idx] = true;
-  if (depth == 0) return within_vec;
+// Fast BFS that modifies state in-place with zero allocations
+void greedy_init_max_depth_fast(const List& nbr_idx, int start_idx, int depth, SearchState& state) {
+  state.within_vec[start_idx] = true;
+  if (depth == 0) return;
 
-  std::vector<int> frontier;
+  // Reusable frontier buffer to avoid reallocation
+  static std::vector<int> frontier;
+  static std::vector<int> next_frontier;
+  frontier.clear();
   frontier.push_back(start_idx);
-  std::vector<int> dist(n_nodes, 0);
 
   while (!frontier.empty()) {
-    std::vector<int> nf;
+    next_frontier.clear();
     for (int cur : frontier) {
-      int d_next = dist[cur] + 1;
+      int d_next = state.dist[cur] + 1;
       if (d_next <= depth) {
         IntegerVector nbrs = nbr_idx[cur];
-        for (int i = 0; i < nbrs.size(); ++i) {
+        int n_nbrs = nbrs.size();
+        for (int i = 0; i < n_nbrs; ++i) {
           int nb = nbrs[i] - 1;
-          if (!within_vec[nb]) {
-            within_vec[nb] = true;
-            dist[nb] = d_next;
-            nf.push_back(nb);
+          if (!state.within_vec[nb]) {
+            state.within_vec[nb] = true;
+            state.dist[nb] = d_next;
+            next_frontier.push_back(nb);
           }
         }
       }
     }
-    frontier = std::move(nf);
+    frontier.swap(next_frontier);
   }
-  return within_vec;
 }
 
-// 2. Fast C++ Recursive Expansion
-ExpandResult greedy_expand_cpp(
+ExpandResult greedy_expand_fast(
     const List& nbr_idx, const NumericVector& z_vec,
     const NumericVector& sc_means, const NumericVector& sc_stds,
-    const std::vector<bool>& within_vec, bool use_within,
-    int search_depth, int depth, int size, double zsum,
+    bool use_within, int search_depth, int depth, int size, double zsum,
     double score, double best_score, SearchState& state, int last_added
 ) {
   bool improved = false;
@@ -87,11 +96,12 @@ ExpandResult greedy_expand_cpp(
     int dep_count = 0;
 
     IntegerVector nbrs = nbr_idx[last_added];
-    for (int i = 0; i < nbrs.size(); ++i) {
+    int n_nbrs = nbrs.size();
+    for (int i = 0; i < n_nbrs; ++i) {
       int nb = nbrs[i] - 1;
-      bool within_ok = !use_within || within_vec[nb];
+      if (use_within && !state.within_vec[nb]) continue;
 
-      if (within_ok && !state.comp_members[nb]) {
+      if (!state.comp_members[nb]) {
         int new_size = size + 1;
         double new_zsum = zsum + z_vec[nb];
         double new_score = (new_zsum / std::sqrt(new_size) - sc_means[new_size - 1]) / sc_stds[new_size - 1];
@@ -99,8 +109,8 @@ ExpandResult greedy_expand_cpp(
         state.comp_members[nb] = true;
         state.removable_vec[nb] = true;
 
-        ExpandResult res = greedy_expand_cpp(
-          nbr_idx, z_vec, sc_means, sc_stds, within_vec, use_within,
+        ExpandResult res = greedy_expand_fast(
+          nbr_idx, z_vec, sc_means, sc_stds, use_within,
           search_depth, depth - 1, new_size, new_zsum, new_score, best_score,
           state, nb
         );
@@ -129,8 +139,8 @@ ExpandResult greedy_expand_cpp(
   return {improved, best_score, size, zsum};
 }
 
-// 3. Removal Pass
-double greedy_removal_cpp(
+// Linear time Removal Pass
+double greedy_removal_fast(
     SearchState& state, const NumericVector& z_vec,
     const NumericVector& sc_means, const NumericVector& sc_stds,
     int& size, double& zsum, double best_score, int n_nodes
@@ -168,87 +178,104 @@ List run_greedy_search(
     CharacterVector node_names, int max_depth, int search_depth, int n_nodes,
     double overlap_threshold, int subnetwork_num
 ) {
-  // 1. Core Map Tracker
   std::vector<Subnetwork> seed_best_subnetworks(n_nodes, {{}, -1e9});
   std::vector<bool> has_valid_subnetwork(n_nodes, false);
 
-  for (int seed_id = 0; seed_id < n_nodes; ++seed_id) {
-    std::vector<bool> within_vec;
-    bool use_within = (max_depth > 0);
-    if (use_within) {
-      within_vec = greedy_init_max_depth_cpp(nbr_idx, n_nodes, seed_id, max_depth);
-    }
+  // Instantiate memory structures once outside the loop
+  SearchState state;
+  state.comp_members.resize(n_nodes);
+  state.removable_vec.resize(n_nodes);
+  state.node2predecessor.resize(n_nodes);
+  state.node2dep_count.resize(n_nodes);
+  state.within_vec.resize(n_nodes);
+  state.dist.resize(n_nodes);
 
-    SearchState state;
-    state.comp_members.assign(n_nodes, false);
-    state.removable_vec.assign(n_nodes, false);
-    state.node2predecessor.assign(n_nodes, 0);
-    state.node2dep_count.assign(n_nodes, 0);
+  bool use_within = (max_depth > 0);
+
+  for (int seed_id = 0; seed_id < n_nodes; ++seed_id) {
+    state.reset(n_nodes); // Linear memset style speed instead of reallocation
+
+    if (use_within) {
+      greedy_init_max_depth_fast(nbr_idx, seed_id, max_depth, state);
+    }
 
     state.comp_members[seed_id] = true;
     state.node2dep_count[seed_id] = 1;
 
     double seed_zsum = z_vec[seed_id];
 
-    ExpandResult res = greedy_expand_cpp(
-      nbr_idx, z_vec, sc_means, sc_stds, within_vec, use_within,
+    ExpandResult res = greedy_expand_fast(
+      nbr_idx, z_vec, sc_means, sc_stds, use_within,
       search_depth, search_depth, 1, seed_zsum, 0.0, -1e9, state, seed_id
     );
 
-    double final_best = greedy_removal_cpp(
+    double final_best = greedy_removal_fast(
       state, z_vec, sc_means, sc_stds, res.size, res.zsum, res.best_score, n_nodes
     );
 
-    std::vector<int> final_idx;
-    for (int i = 0; i < n_nodes; ++i) {
-      if (state.comp_members[i]) {
-        final_idx.push_back(i + 1); // 1-based indexing for R
+    if (final_best > 0) {
+      std::vector<int> final_idx;
+      // Pre-reserve to avoid reallocations
+      final_idx.reserve(res.size);
+      for (int i = 0; i < n_nodes; ++i) {
+        if (state.comp_members[i]) {
+          final_idx.push_back(i + 1); // 1-based for R
+        }
       }
-    }
 
-    if (final_idx.size() >= 2 && final_best > 0) {
-      // Update mapping for all members belonging to this discovery
-      for (int nd : final_idx) {
-        int nd_idx = nd - 1;
-        if (!has_valid_subnetwork[nd_idx] || final_best > seed_best_subnetworks[nd_idx].score) {
-          seed_best_subnetworks[nd_idx] = {final_idx, final_best};
-          has_valid_subnetwork[nd_idx] = true;
+      if (final_idx.size() >= 2) {
+        // Ensure indices are naturally sorted (they are because loop goes 0 to n_nodes)
+        for (int nd : final_idx) {
+          int nd_idx = nd - 1;
+          if (!has_valid_subnetwork[nd_idx] || final_best > seed_best_subnetworks[nd_idx].score) {
+            seed_best_subnetworks[nd_idx] = {final_idx, final_best};
+            has_valid_subnetwork[nd_idx] = true;
+          }
         }
       }
     }
   }
 
-  // 2. De-duplication using std::set
+  // Optimization: Unique checks via raw index vector comparison (Skipping std::set overhead)
   std::vector<Subnetwork> unique_candidates;
-  std::set<std::vector<int>> seen_sets;
+  unique_candidates.reserve(n_nodes);
+
+  // Sort components internally to make duplication checking trivial
+  std::sort(seed_best_subnetworks.begin(), seed_best_subnetworks.end(), [](const Subnetwork& a, const Subnetwork& b){
+    return a.idx < b.idx;
+  });
 
   for (int i = 0; i < n_nodes; ++i) {
-    if (has_valid_subnetwork[i]) {
-      if (seen_sets.find(seed_best_subnetworks[i].idx) == seen_sets.end()) {
-        seen_sets.insert(seed_best_subnetworks[i].idx);
-        unique_candidates.push_back(seed_best_subnetworks[i]);
-      }
+    if (seed_best_subnetworks[i].idx.empty()) continue;
+    if (i == 0 || seed_best_subnetworks[i].idx != seed_best_subnetworks[i-1].idx) {
+      unique_candidates.push_back(seed_best_subnetworks[i]);
     }
   }
 
-  // 3. Sort candidates descending by score
+  // Sort unique modules descending by score
   std::sort(unique_candidates.begin(), unique_candidates.end());
 
-  // 4. Fast Jaccard Overlap Filtering
+  // Two-pointer Jaccard intersect calculation
   std::vector<Subnetwork> filtered_networks;
+  filtered_networks.reserve(subnetwork_num);
 
   for (const auto& cand : unique_candidates) {
     if ((int)filtered_networks.size() >= subnetwork_num) break;
 
     bool keep = true;
-    // Convert current subnetwork to a fast-lookup set
-    std::set<int> cand_set(cand.idx.begin(), cand.idx.end());
-
     for (const auto& accepted : filtered_networks) {
       int intersection_count = 0;
-      for (int id : accepted.idx) {
-        if (cand_set.count(id)) {
+      size_t p1 = 0, p2 = 0;
+
+      // Linear scan because indices are sorted
+      while (p1 < cand.idx.size() && p2 < accepted.idx.size()) {
+        if (cand.idx[p1] == accepted.idx[p2]) {
           intersection_count++;
+          p1++; p2++;
+        } else if (cand.idx[p1] < accepted.idx[p2]) {
+          p1++;
+        } else {
+          p2++;
         }
       }
 
@@ -266,7 +293,7 @@ List run_greedy_search(
     }
   }
 
-  // 5. Build final R output list structure
+  // Export final allocations back to R
   List result_list(filtered_networks.size());
   for (size_t i = 0; i < filtered_networks.size(); ++i) {
     CharacterVector out_nodes(filtered_networks[i].idx.size());
