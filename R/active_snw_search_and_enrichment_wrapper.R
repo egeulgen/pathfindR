@@ -131,7 +131,7 @@ active_snw_enrichment_wrapper <- function(input_processed, pin_path, gset_list, 
       combined_res <- c()
       for (i in 1:iterations) {
         current_res <- single_iter_wrapper(
-          i, dirs, input_processed, pin_path, network, score_context, score_quan_thr, sig_gene_thr,
+          i, input_processed, pin_path, network, score_context, score_quan_thr, sig_gene_thr,
           search_method, verbose, start_with_all_positives, gene_init_prob,
           sa_initial_temp, sa_final_temp, sa_iterations, ga_population_size, ga_iterations, ga_crossover_rate,
           ga_mutation_rate, gr_max_depth, gr_search_depth, gr_overlap_threshold, gr_subnetwork_num, gset_list,
