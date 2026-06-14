@@ -70,7 +70,13 @@
       if (delta > 0.001) {
         keep <- TRUE
         decision <- TRUE
-      } else if (stats::runif(1) > exp(delta / Temp)) {
+      } else if (stats::runif(1) < exp(delta / Temp)) {
+        # Accept worse move with Boltzmann probability exp(delta/T).
+        # delta <= 0 here, so this probability is in (0, 1] and falls
+        # as temperature decreases — the correct SA behaviour.
+        keep <- TRUE
+        decision <- TRUE
+      } else {
         keep <- FALSE
         decision <- TRUE
       }
