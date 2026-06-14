@@ -1,5 +1,9 @@
 # =============================================================================
-# Greedy active subnetwork search
+# Greedy active subnetwork search. Each node is used as a seed and the current
+# subnetwork is recursively expanded through neighbouring nodes whenever the
+# calibrated score improves. A subsequent pruning step removes dispensable
+# nodes, after which duplicate and highly overlapping subnetworks are filtered
+# to yield the final ranked candidates.
 # =============================================================================
 
 #' Build the within-depth reachability vector via iterative BFS
