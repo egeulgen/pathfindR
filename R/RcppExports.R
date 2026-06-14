@@ -5,3 +5,11 @@ run_greedy_search <- function(nbr_idx, z_vec, sc_means, sc_stds, node_names, max
     .Call(`_pathfindR_run_greedy_search`, nbr_idx, z_vec, sc_means, sc_stds, node_names, max_depth, search_depth, n_nodes, overlap_threshold, subnetwork_num)
 }
 
+get_java_zscores <- function(pvals) {
+    .Call(`_pathfindR_get_java_zscores`, pvals)
+}
+
+get_java_mc_calibration <- function(z_scores, trials = 2000L, seed = 42L) {
+    .Call(`_pathfindR_get_java_mc_calibration`, z_scores, trials, seed)
+}
+

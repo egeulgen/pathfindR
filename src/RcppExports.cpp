@@ -30,9 +30,35 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// get_java_zscores
+NumericVector get_java_zscores(NumericVector pvals);
+RcppExport SEXP _pathfindR_get_java_zscores(SEXP pvalsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type pvals(pvalsSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_java_zscores(pvals));
+    return rcpp_result_gen;
+END_RCPP
+}
+// get_java_mc_calibration
+List get_java_mc_calibration(NumericVector z_scores, int trials, int seed);
+RcppExport SEXP _pathfindR_get_java_mc_calibration(SEXP z_scoresSEXP, SEXP trialsSEXP, SEXP seedSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type z_scores(z_scoresSEXP);
+    Rcpp::traits::input_parameter< int >::type trials(trialsSEXP);
+    Rcpp::traits::input_parameter< int >::type seed(seedSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_java_mc_calibration(z_scores, trials, seed));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_pathfindR_run_greedy_search", (DL_FUNC) &_pathfindR_run_greedy_search, 10},
+    {"_pathfindR_get_java_zscores", (DL_FUNC) &_pathfindR_get_java_zscores, 1},
+    {"_pathfindR_get_java_mc_calibration", (DL_FUNC) &_pathfindR_get_java_mc_calibration, 3},
     {NULL, NULL, 0}
 };
 

@@ -18,7 +18,6 @@
 #'
 #' @export
 build_score_context <- function(network, experiment, params) {
-  set.seed(params$seed)
   nodes <- network$nodes
   N <- length(nodes)
 
@@ -39,37 +38,18 @@ build_score_context <- function(network, experiment, params) {
   }
   pmap[is.na(pmap)] <- params$p_for_nonsignificant
 
-  z <- .upper_tail_zscore(pmap)
-  names(z) <- nodes
+  # Use the Java approximation for Z-scores
+  # this is to match version <=2.X.Y behaviour
+  z_vec <- get_java_zscores(as.numeric(pmap))
+  z <- stats::setNames(z_vec, nodes)
 
-  # --- Monte-Carlo calibration ----------------------------------------------
-  # Accumulate running column sums and squared sums without materialising the
-  # full trials x N matrix.
-  means <- numeric(N)
-  stds <- numeric(N)
-
-  if (N > 0L) {
-    set.seed(params$seed)
-    trials <- 2000L
-    zvec <- as.numeric(z)
-    sqrtk <- sqrt(seq_len(N))
-    sums <- numeric(N)
-    sqsums <- numeric(N)
-
-    for (t in seq_len(trials)) {
-      sc <- cumsum(zvec[sample.int(N)]) / sqrtk
-      sc[1L] <- 0
-      sums <- sums + sc
-      sqsums <- sqsums + sc * sc
-    }
-    means <- sums / trials
-    stds <- sqrt(sqsums / trials - means * means + 1e-7)
-  }
+  # Use the C++ Monte Carlo implementation
+  mc_data <- get_java_mc_calibration(z_vec, trials = 2000, seed = params$seed)
 
   list(
     z     = z,
-    means = means,
-    stds  = stds,
+    means = mc_data$means,
+    stds  = mc_data$stds,
     nodes = nodes
   )
 }
