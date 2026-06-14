@@ -25,8 +25,7 @@
   ol_threshold <- as.numeric(params$gr_overlap_threshold)
   max_output <- as.integer(params$gr_subnetwork_num)
 
-  # Ensure deterministic exploration order
-  nbr_idx <- lapply(igraph::adjacent_vertices(network$g, igraph::V(network$g)), function(v) sort(as.integer(v)))
+  nbr_idx <- lapply(igraph::adjacent_vertices(network$g, igraph::V(network$g)), as.integer)
 
   z_vec <- as.numeric(score_context$z[nodes])
   sc_means <- as.numeric(score_context$means)
