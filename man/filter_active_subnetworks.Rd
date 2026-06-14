@@ -36,13 +36,8 @@ and \code{scores} the score of each filtered active subnetwork
 Parse Active Subnetwork Search Output File and Filter the Subnetworks
 }
 \examples{
-path2snw_list <- system.file(
-  "extdata/resultActiveSubnetworkSearch.txt",
-  package = "pathfindR"
-)
-active_snws <- readLines(path2snw_list)
 filtered <- filter_active_subnetworks(
-  active_snws = active_snws,
+  active_snws = example_unfiltered_snws,
   sig_genes_vec = example_pathfindR_input$Gene.symbol
 )
 }

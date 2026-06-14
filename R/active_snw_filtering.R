@@ -21,13 +21,8 @@
 #'   pathfindR enrichment workflow
 #'
 #' @examples
-#' path2snw_list <- system.file(
-#'   "extdata/resultActiveSubnetworkSearch.txt",
-#'   package = "pathfindR"
-#' )
-#' active_snws <- readLines(path2snw_list)
 #' filtered <- filter_active_subnetworks(
-#'   active_snws = active_snws,
+#'   active_snws = example_unfiltered_snws,
 #'   sig_genes_vec = example_pathfindR_input$Gene.symbol
 #' )
 filter_active_subnetworks <- function(active_snws, sig_genes_vec, score_quan_thr = 0.8,

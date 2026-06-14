@@ -14,15 +14,9 @@
 #' @export
 #'
 #' @examples
-#' path2snw_list <- system.file(
-#'   "extdata/resultActiveSubnetworkSearch.txt",
-#'   package = "pathfindR"
-#' )
-#' active_snws <- readLines(path2snw_list)
-#'
 #' # visualize top 2 active subnetworks
 #' g_list <- visualize_active_subnetworks(
-#'   active_snws = active_snws,
+#'   active_snws = example_unfiltered_snws,
 #'   genes_df = example_pathfindR_input[1:10, ],
 #'   pin_name_path = "KEGG",
 #'   num_snws = 2
