@@ -4,12 +4,12 @@
 \alias{.greedy_search}
 \title{Run the greedy active subnetwork search}
 \usage{
-.greedy_search(network, sc, params, verbose = FALSE)
+.greedy_search(network, score_context, params, verbose = FALSE)
 }
 \arguments{
 \item{network}{A network from \code{build_network()}.}
 
-\item{sc}{A score context from \code{build_score_context()}.}
+\item{score_context}{A score context from \code{build_score_context()}.}
 
 \item{params}{A list of run parameters.}
 

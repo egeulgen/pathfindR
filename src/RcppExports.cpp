@@ -10,9 +10,9 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// run_greedy_search_cpp
-List run_greedy_search_cpp(List nbr_idx, NumericVector z_vec, NumericVector sc_means, NumericVector sc_stds, int max_depth, int search_depth, int n_nodes);
-RcppExport SEXP _pathfindR_run_greedy_search_cpp(SEXP nbr_idxSEXP, SEXP z_vecSEXP, SEXP sc_meansSEXP, SEXP sc_stdsSEXP, SEXP max_depthSEXP, SEXP search_depthSEXP, SEXP n_nodesSEXP) {
+// run_greedy_search
+List run_greedy_search(List nbr_idx, NumericVector z_vec, NumericVector sc_means, NumericVector sc_stds, CharacterVector node_names, int max_depth, int search_depth, int n_nodes, double overlap_threshold, int subnetwork_num);
+RcppExport SEXP _pathfindR_run_greedy_search(SEXP nbr_idxSEXP, SEXP z_vecSEXP, SEXP sc_meansSEXP, SEXP sc_stdsSEXP, SEXP node_namesSEXP, SEXP max_depthSEXP, SEXP search_depthSEXP, SEXP n_nodesSEXP, SEXP overlap_thresholdSEXP, SEXP subnetwork_numSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -20,16 +20,19 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< NumericVector >::type z_vec(z_vecSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type sc_means(sc_meansSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type sc_stds(sc_stdsSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type node_names(node_namesSEXP);
     Rcpp::traits::input_parameter< int >::type max_depth(max_depthSEXP);
     Rcpp::traits::input_parameter< int >::type search_depth(search_depthSEXP);
     Rcpp::traits::input_parameter< int >::type n_nodes(n_nodesSEXP);
-    rcpp_result_gen = Rcpp::wrap(run_greedy_search_cpp(nbr_idx, z_vec, sc_means, sc_stds, max_depth, search_depth, n_nodes));
+    Rcpp::traits::input_parameter< double >::type overlap_threshold(overlap_thresholdSEXP);
+    Rcpp::traits::input_parameter< int >::type subnetwork_num(subnetwork_numSEXP);
+    rcpp_result_gen = Rcpp::wrap(run_greedy_search(nbr_idx, z_vec, sc_means, sc_stds, node_names, max_depth, search_depth, n_nodes, overlap_threshold, subnetwork_num));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_pathfindR_run_greedy_search_cpp", (DL_FUNC) &_pathfindR_run_greedy_search_cpp, 7},
+    {"_pathfindR_run_greedy_search", (DL_FUNC) &_pathfindR_run_greedy_search, 10},
     {NULL, NULL, 0}
 };
 

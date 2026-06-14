@@ -3,10 +3,10 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <set>
 
 using namespace Rcpp;
 
-// Structure to track mutable state per seed without R environment overhead
 struct SearchState {
   std::vector<bool> comp_members;
   std::vector<bool> removable_vec;
@@ -21,7 +21,21 @@ struct ExpandResult {
   double zsum;
 };
 
-// 1. Fast C++ BFS for reachability
+// Helper struct to sort and filter final modules
+struct Subnetwork {
+  std::vector<int> idx; // 1-based indices for R consistency
+  double score;
+
+  // Sort descending by score
+  bool operator<(const Subnetwork& other) const {
+    if (std::abs(score - other.score) > 1e-9) {
+      return score > other.score;
+    }
+    return idx.size() > other.idx.size();
+  }
+};
+
+// 1. Fast C++ BFS
 std::vector<bool> greedy_init_max_depth_cpp(const List& nbr_idx, int n_nodes, int start_idx, int depth) {
   std::vector<bool> within_vec(n_nodes, false);
   within_vec[start_idx] = true;
@@ -38,7 +52,7 @@ std::vector<bool> greedy_init_max_depth_cpp(const List& nbr_idx, int n_nodes, in
       if (d_next <= depth) {
         IntegerVector nbrs = nbr_idx[cur];
         for (int i = 0; i < nbrs.size(); ++i) {
-          int nb = nbrs[i] - 1; // R 1-based to C++ 0-based
+          int nb = nbrs[i] - 1;
           if (!within_vec[nb]) {
             within_vec[nb] = true;
             dist[nb] = d_next;
@@ -80,7 +94,6 @@ ExpandResult greedy_expand_cpp(
       if (within_ok && !state.comp_members[nb]) {
         int new_size = size + 1;
         double new_zsum = zsum + z_vec[nb];
-        // sc_means/sc_stds are 1-indexed from R, so new_size maps to new_size - 1
         double new_score = (new_zsum / std::sqrt(new_size) - sc_means[new_size - 1]) / sc_stds[new_size - 1];
 
         state.comp_members[nb] = true;
@@ -101,7 +114,7 @@ ExpandResult greedy_expand_cpp(
           zsum = res.zsum;
           dep_count++;
           any_improved = true;
-          state.node2predecessor[nb] = last_added + 1; // Keep 1-based for R consistency if needed
+          state.node2predecessor[nb] = last_added + 1;
         }
       }
     }
@@ -116,7 +129,7 @@ ExpandResult greedy_expand_cpp(
   return {improved, best_score, size, zsum};
 }
 
-// 3. Fast C++ Removal Pass
+// 3. Removal Pass
 double greedy_removal_cpp(
     SearchState& state, const NumericVector& z_vec,
     const NumericVector& sc_means, const NumericVector& sc_stds,
@@ -149,13 +162,15 @@ double greedy_removal_cpp(
   return best_score;
 }
 
-// 4. Main Exported Driver Loop over all Seeds
 // [[Rcpp::export]]
-List run_greedy_search_cpp(
+List run_greedy_search(
     List nbr_idx, NumericVector z_vec, NumericVector sc_means, NumericVector sc_stds,
-    int max_depth, int search_depth, int n_nodes
+    CharacterVector node_names, int max_depth, int search_depth, int n_nodes,
+    double overlap_threshold, int subnetwork_num
 ) {
-  List node2best(n_nodes);
+  // 1. Core Map Tracker
+  std::vector<Subnetwork> seed_best_subnetworks(n_nodes, {{}, -1e9});
+  std::vector<bool> has_valid_subnetwork(n_nodes, false);
 
   for (int seed_id = 0; seed_id < n_nodes; ++seed_id) {
     std::vector<bool> within_vec;
@@ -184,35 +199,86 @@ List run_greedy_search_cpp(
       state, z_vec, sc_means, sc_stds, res.size, res.zsum, res.best_score, n_nodes
     );
 
-    // Collect final members
     std::vector<int> final_idx;
     for (int i = 0; i < n_nodes; ++i) {
       if (state.comp_members[i]) {
-        final_idx.push_back(i + 1); // Return 1-based indices to R
+        final_idx.push_back(i + 1); // 1-based indexing for R
       }
     }
 
     if (final_idx.size() >= 2 && final_best > 0) {
+      // Update mapping for all members belonging to this discovery
       for (int nd : final_idx) {
         int nd_idx = nd - 1;
-        bool replace = false;
-        if (node2best[nd_idx] == R_NilValue) {
-          replace = true;
-        } else {
-          List ex = node2best[nd_idx];
-          double ex_score = ex["score"];
-          if (final_best > ex_score) replace = true;
-        }
-
-        if (replace) {
-          node2best[nd_idx] = List::create(
-            Named("idx") = wrap(final_idx),
-            Named("score") = final_best
-          );
+        if (!has_valid_subnetwork[nd_idx] || final_best > seed_best_subnetworks[nd_idx].score) {
+          seed_best_subnetworks[nd_idx] = {final_idx, final_best};
+          has_valid_subnetwork[nd_idx] = true;
         }
       }
     }
   }
 
-  return node2best;
+  // 2. De-duplication using std::set
+  std::vector<Subnetwork> unique_candidates;
+  std::set<std::vector<int>> seen_sets;
+
+  for (int i = 0; i < n_nodes; ++i) {
+    if (has_valid_subnetwork[i]) {
+      if (seen_sets.find(seed_best_subnetworks[i].idx) == seen_sets.end()) {
+        seen_sets.insert(seed_best_subnetworks[i].idx);
+        unique_candidates.push_back(seed_best_subnetworks[i]);
+      }
+    }
+  }
+
+  // 3. Sort candidates descending by score
+  std::sort(unique_candidates.begin(), unique_candidates.end());
+
+  // 4. Fast Jaccard Overlap Filtering
+  std::vector<Subnetwork> filtered_networks;
+
+  for (const auto& cand : unique_candidates) {
+    if ((int)filtered_networks.size() >= subnetwork_num) break;
+
+    bool keep = true;
+    // Convert current subnetwork to a fast-lookup set
+    std::set<int> cand_set(cand.idx.begin(), cand.idx.end());
+
+    for (const auto& accepted : filtered_networks) {
+      int intersection_count = 0;
+      for (int id : accepted.idx) {
+        if (cand_set.count(id)) {
+          intersection_count++;
+        }
+      }
+
+      int union_count = cand.idx.size() + accepted.idx.size() - intersection_count;
+      double jaccard_overlap = (double)intersection_count / union_count;
+
+      if (jaccard_overlap > overlap_threshold) {
+        keep = false;
+        break;
+      }
+    }
+
+    if (keep) {
+      filtered_networks.push_back(cand);
+    }
+  }
+
+  // 5. Build final R output list structure
+  List result_list(filtered_networks.size());
+  for (size_t i = 0; i < filtered_networks.size(); ++i) {
+    CharacterVector out_nodes(filtered_networks[i].idx.size());
+    for (size_t j = 0; j < filtered_networks[i].idx.size(); ++j) {
+      out_nodes[j] = node_names[filtered_networks[i].idx[j] - 1];
+    }
+
+    result_list[i] = List::create(
+      Named("nodes") = out_nodes,
+      Named("score") = filtered_networks[i].score
+    );
+  }
+
+  return result_list;
 }
