@@ -2,22 +2,24 @@
 % Please edit documentation in R/active_snw_search_greedy.R
 \name{.greedy_init_max_depth_idx}
 \alias{.greedy_init_max_depth_idx}
-\title{Mark every node within \code{depth} hops of \code{current} using integer IDs}
+\title{Build the within-depth reachability vector via iterative BFS}
 \usage{
-.greedy_init_max_depth_idx(nbr_idx, within_vec, current, depth)
+.greedy_init_max_depth_idx(nbr_idx, n_nodes, start, depth)
 }
 \arguments{
-\item{nbr_idx}{A list of integer vectors representing node neighbors.}
+\item{nbr_idx}{List of integer neighbour-index vectors.}
 
-\item{within_vec}{A logical vector acting as a set of reachable node IDs.}
+\item{n_nodes}{Total node count (length of returned vector).}
 
-\item{current}{The integer node ID currently being expanded.}
+\item{start}{Integer node ID to expand from.}
 
-\item{depth}{Remaining depth budget.}
+\item{depth}{Maximum hop distance.}
 }
 \value{
-Invisibly \code{NULL}; \code{within_vec} is modified in place via assignment.
+Logical vector of length \code{n_nodes}.
 }
 \description{
-Mark every node within \code{depth} hops of \code{current} using integer IDs
+Returns a logical vector (not modifies in place) so that the result is
+usable from any calling context without relying on \code{<<-}, which
+resolves to *lexical* parent environments rather than the calling frame.
 }

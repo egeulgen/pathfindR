@@ -7,17 +7,16 @@
 .greedy_filter(comps, overlap_threshold, subnetwork_num)
 }
 \arguments{
-\item{comps}{components}
+\item{comps}{List of subnetwork objects (score-sorted, descending).}
 
-\item{subnetwork_num}{number of subnetworks}
+\item{overlap_threshold}{Numeric threshold in (0, 1).}
 
-\item{ovelap_threshold}{overlap threshold}
+\item{subnetwork_num}{Maximum number of subnetworks to return.}
 }
 \value{
-filtered components
+Filtered list of subnetwork objects.
 }
 \description{
-Walks the score-sorted list keeping a subnetwork and discarding any later
-subnetwork whose overlap with a kept one exceeds the threshold, up to a
-maximum number of results.
+Walks the score-sorted list, keeping a subnetwork and discarding any later
+one whose Jaccard overlap with a kept one exceeds the threshold.
 }

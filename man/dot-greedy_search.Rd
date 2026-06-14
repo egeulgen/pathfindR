@@ -9,7 +9,7 @@
 \arguments{
 \item{network}{A network from \code{.build_network()}.}
 
-\item{sc}{A score context.}
+\item{sc}{A score context from \code{.build_score_context()}.}
 
 \item{params}{A list of run parameters.}
 

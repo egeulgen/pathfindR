@@ -2,20 +2,23 @@
 % Please edit documentation in R/active_snw_search_greedy.R
 \name{.greedy_removal_idx}
 \alias{.greedy_removal_idx}
-\title{Greedy removal pass using vector indexing}
+\title{Greedy removal pass}
 \usage{
-.greedy_removal_idx(
-  comp_state,
-  comp_members,
-  removable_vec,
-  node2predecessor,
-  node2dependent_count,
-  sc
-)
+.greedy_removal_idx(state, z_vec, sc_means, sc_stds)
+}
+\arguments{
+\item{state}{Environment holding all mutable component state.}
+
+\item{z_vec}{Numeric z-score vector aligned to node indices.}
+
+\item{sc_means}{Numeric vector of MC means.}
+
+\item{sc_stds}{Numeric vector of MC stds.}
 }
 \value{
-Invisibly \code{NULL}.
+Invisibly NULL.
 }
 \description{
-Greedy removal pass using vector indexing
+Tries removing each leaf node; keeps the removal if the score improves.
+All state is mutated in place through the \code{state} environment.
 }

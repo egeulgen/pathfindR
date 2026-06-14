@@ -2,49 +2,45 @@
 % Please edit documentation in R/active_snw_search_greedy.R
 \name{.greedy_expand_idx}
 \alias{.greedy_expand_idx}
-\title{Recursive greedy expansion of a component using flat vectors}
+\title{Recursive greedy expansion}
 \usage{
 .greedy_expand_idx(
   nbr_idx,
-  sc,
+  z_vec,
+  sc_means,
+  sc_stds,
   within_vec,
   search_depth,
   depth,
-  comp_state,
-  comp_members,
-  last_added,
-  removable_vec,
-  node2predecessor,
-  node2dependent_count
+  state,
+  last_added
 )
 }
 \arguments{
-\item{nbr_idx}{A list of integer vectors of neighbors.}
+\item{nbr_idx}{List of integer neighbour-index vectors.}
 
-\item{sc}{A score context.}
+\item{z_vec}{Numeric z-score vector aligned to node indices.}
 
-\item{within_vec}{Either NULL or a logical vector of allowed nodes.}
+\item{sc_means}{Numeric vector of MC means (indexed by subnetwork size).}
 
-\item{search_depth}{The depth budget restored on every improvement.}
+\item{sc_stds}{Numeric vector of MC stds  (indexed by subnetwork size).}
 
-\item{depth}{The remaining depth budget.}
+\item{within_vec}{Logical vector of allowed nodes, or NULL for no limit.}
 
-\item{comp_state}{A list environment holding mutable running state:
-\code{size}, \code{zsum}, \code{score}, and \code{best_score}.}
+\item{search_depth}{Depth budget restored on every improvement.}
 
-\item{comp_members}{A logical vector tracking if a node ID is in the component.}
+\item{depth}{Remaining depth budget for this call.}
 
-\item{last_added}{The integer node ID added most recently.}
+\item{state}{Environment holding all mutable component state.}
 
-\item{removable_vec}{A logical vector acting as a set of removable node IDs.}
-
-\item{node2predecessor}{An integer vector tracking the path.}
-
-\item{node2dependent_count}{An integer vector tracking dependency counts.}
+\item{last_added}{Integer node ID most recently added.}
 }
 \value{
-Logical; whether the best score improved on this branch.
+Logical; TRUE if the best score improved anywhere in this subtree.
 }
 \description{
-Recursive greedy expansion of a component using flat vectors
+All mutable per-seed state lives in the \code{state} environment so that
+changes made in recursive calls are immediately visible to the parent call.
+\code{.score_subnetwork} is inlined here (~28x faster than a function call
+in a tight loop, as measured by micro-benchmark).
 }
