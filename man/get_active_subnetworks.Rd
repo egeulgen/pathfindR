@@ -50,7 +50,7 @@ is set to 2}
 search. Options are greedy search (GR), simulated annealing (SA) or genetic
 algorithm (GA) for the search (default = 'GR').}
 
-\item{seed_for_stochastic_methods}{seed for reproducibility while running active subnetwork search (applies for GR and SA)}
+\item{seed_for_stochastic_methods}{seed for reproducibility while running active subnetwork search}
 
 \item{verbose}{boolean value indicating whether to print messages (default=FALSE)}
 

@@ -34,8 +34,8 @@
 #' @param gr_subnetwork_num Greedy search: maximum number of subnetworks to
 #'   return.
 #' @param seed Seed for the random number generator, used both for the
-#'   Monte-Carlo score calibration and for the search, so that runs are
-#'   reproducible.
+#'   Monte-Carlo score calibration and for the search (if needed), so that
+#'   runs are reproducible.
 #' @param verbose Logical; emit progress messages.
 #'
 #' @return A list of character vectors, each holding the gene names of one

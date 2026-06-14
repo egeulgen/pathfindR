@@ -16,6 +16,7 @@
 #'   \code{means} and \code{stds} (numeric vectors indexed by subnetwork size),
 #'   and \code{nodes}.
 .build_score_context <- function(network, experiment, params) {
+  set.seed(params$seed)
   nodes <- network$nodes
   N <- length(nodes)
 

@@ -66,8 +66,8 @@ higher-scoring one by more than this fraction are discarded.}
 return.}
 
 \item{seed}{Seed for the random number generator, used both for the
-Monte-Carlo score calibration and for the search, so that runs are
-reproducible.}
+Monte-Carlo score calibration and for the search (if needed), so that
+runs are reproducible.}
 
 \item{verbose}{Logical; emit progress messages.}
 }

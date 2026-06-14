@@ -13,7 +13,7 @@
 #' @param search_method algorithm to use when performing active subnetwork
 #'  search. Options are greedy search (GR), simulated annealing (SA) or genetic
 #'  algorithm (GA) for the search (default = 'GR').
-#' @param seed_for_stochastic_methods seed for reproducibility while running active subnetwork search (applies for GR and SA)
+#' @param seed_for_stochastic_methods seed for reproducibility while running active subnetwork search
 #' @param verbose boolean value indicating whether to print messages (default=FALSE)
 #' @param start_with_all_positives if TRUE: in GA, adds an individual with all positive
 #'  nodes. In SA, initializes candidate solution with all positive nodes. (default = FALSE)
