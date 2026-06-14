@@ -25,16 +25,8 @@
   ol_threshold <- as.numeric(params$gr_overlap_threshold)
   max_output <- as.integer(params$gr_subnetwork_num)
 
-  # Build integer neighbour index directly from the igraph edge list.
-  el <- igraph::as_edgelist(network$g, names = FALSE)
-  both <- rbind(el, el[, 2:1, drop = FALSE])
-  both <- both[order(both[, 1L]), , drop = FALSE]
-  rs <- c(1L, which(diff(both[, 1L]) > 0L) + 1L, nrow(both) + 1L)
-  nbr_idx <- lapply(seq_len(n_nodes), function(i) {
-    s <- rs[i]
-    e <- rs[i + 1L] - 1L
-    if (s <= e) both[s:e, 2L] else integer(0L)
-  })
+  # Ensure deterministic exploration order
+  nbr_idx <- lapply(igraph::adjacent_vertices(network$g, igraph::V(network$g)), function(v) sort(as.integer(v)))
 
   z_vec <- as.numeric(score_context$z[nodes])
   sc_means <- as.numeric(score_context$means)
