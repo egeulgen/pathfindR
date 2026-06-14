@@ -56,7 +56,7 @@ reference:
       - summarize_enrichment_results
   - title: "Active Subnetwork Search Functions"
     desc: >
-    Active subnetwork search-related functions
+     Active subnetwork search-related functions
     contents:
     - active_subnetwork_search
     - filter_active_subnetworks
