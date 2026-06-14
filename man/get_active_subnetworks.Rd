@@ -100,8 +100,19 @@ processed_df <- example_pathfindR_input[1:15, -2]
 colnames(processed_df) <- c("GENE", "P_VALUE")
 pin_path <- return_pin_path("KEGG")
 network <- build_network(pin_path)
-experiment_df <- data.frame(gene = processed_df$GENE, pvalue = processed_df$P_VALUE)
-score_context <- build_score_context(network, experiment_df, list(p_for_nonsignificant = 0.5, seed = 1234L))
-GR_snws <- get_active_subnetworks(processed_df, network = network, score_context = score_context)
+experiment_df <- data.frame(
+  gene = processed_df$GENE,
+  pvalue = processed_df$P_VALUE
+)
+score_context <- build_score_context(
+  network,
+  experiment_df,
+  list(p_for_nonsignificant = 0.5, seed = 1234L)
+)
+GR_snws <- get_active_subnetworks(
+  processed_df,
+  network = network,
+  score_context = score_context
+)
 }
 }
