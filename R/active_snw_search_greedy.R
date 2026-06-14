@@ -164,12 +164,6 @@
 
 #' Filter candidates by mutual overlap using an inverted node index
 #'
-#' Instead of an O(n²) double loop, builds a node→candidate inverted index so
-#' each kept component only compares against the small set of candidates that
-#' share at least one node with it.  For the tiny components produced at
-#' depth=1 this reduces comparisons from O(n²) to O(n × d) where d is the
-#' mean number of candidates sharing a node (~9x faster at N=12 000).
-#'
 #' @param idx_list  List of sorted integer index vectors, one per candidate.
 #' @param scores    Numeric scores aligned to \code{idx_list} (desc order).
 #' @param threshold Overlap threshold in (0, 1).
