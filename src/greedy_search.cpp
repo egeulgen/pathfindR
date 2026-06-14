@@ -157,28 +157,37 @@ ExpandResult greedy_expand(
 double greedy_removal(
     SearchState& state, const double* z_vec,
     const double* sc_means, const double* sc_stds,
-    int& size, double& zsum, double best_score, int n_nodes
+    int& size, double& zsum, double best_score, int n_nodes, int seed
 ) {
+  std::vector<int> removable_list;
   for (int cur = 0; cur < n_nodes; ++cur) {
     if (state.removable_vec[cur]) {
-      int new_size = size - 1;
-      double new_zsum = zsum - z_vec[cur];
-      double new_score = (new_size <= 1) ? 0.0 :
-        (new_zsum / std::sqrt(new_size) - sc_means[new_size - 1]) / sc_stds[new_size - 1];
+      removable_list.push_back(cur);
+    }
+  }
 
-      if (new_score > best_score) {
-        best_score = new_score;
-        size = new_size;
-        zsum = new_zsum;
-        state.comp_members[cur] = false;
-        int pred = state.node2predecessor[cur] - 1;
-        if (pred >= 0) {
-          int dep = state.node2dep_count[pred] - 1;
-          if (dep == 0) {
-            state.removable_vec[pred] = true;
-          } else {
-            state.node2dep_count[pred] = dep;
-          }
+  // Shuffle to mimic the arbitrary order of the Java HashSet
+  std::mt19937 g(seed);
+  std::shuffle(removable_list.begin(), removable_list.end(), g);
+
+  for (int cur : removable_list) {
+    int new_size = size - 1;
+    double new_zsum = zsum - z_vec[cur];
+    double new_score = (new_size <= 1) ? 0.0 :
+      (new_zsum / std::sqrt(new_size) - sc_means[new_size - 1]) / sc_stds[new_size - 1];
+
+    if (new_score > best_score) {
+      best_score = new_score;
+      size = new_size;
+      zsum = new_zsum;
+      state.comp_members[cur] = false;
+      int pred = state.node2predecessor[cur] - 1;
+      if (pred >= 0) {
+        int dep = state.node2dep_count[pred] - 1;
+        if (dep == 0) {
+          state.removable_vec[pred] = true;
+        } else {
+          state.node2dep_count[pred] = dep;
         }
       }
     }
@@ -252,7 +261,7 @@ List run_greedy_search(
     );
 
     double final_best = greedy_removal(
-      state, p_z_vec, p_sc_means, p_sc_stds, res.size, res.zsum, res.best_score, n_nodes
+      state, p_z_vec, p_sc_means, p_sc_stds, res.size, res.zsum, res.best_score, n_nodes, seed
     );
 
     if (final_best > 0) {
