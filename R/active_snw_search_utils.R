@@ -1,16 +1,3 @@
-#' Convert an upper-tail p-value to a z-score
-#'
-#' Returns the value \code{z} such that \eqn{P(Z > z) = p} for a standard
-#' normal variable, i.e. \code{qnorm(1 - p)}. Significant (small) p-values map
-#' to large positive z-scores; \code{p = 0.5} maps to \code{0}.
-#'
-#' @param p Numeric vector of p-values, assumed already clamped away from 0/1.
-#'
-#' @return Numeric vector of z-scores.
-.upper_tail_zscore <- function(p) {
-  stats::qnorm(1 - p)
-}
-
 #' Parse the experiment input into a clean gene / p-value data frame
 #'
 #' Accepts a data frame. If columns named \code{gene} and \code{pvalue}

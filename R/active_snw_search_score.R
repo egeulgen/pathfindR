@@ -77,24 +77,6 @@ build_score_context <- function(network, experiment, params) {
   score
 }
 
-#' Create a subnetwork object from a vector of node names
-#'
-#' @param sc A score context.
-#' @param nodes Character vector of node names.
-#'
-#' @return A list with elements \code{nodes}, \code{zsum} and \code{score}.
-.make_subnetwork <- function(sc, nodes) {
-  if (length(nodes) == 0L) {
-    return(list(nodes = character(0), zsum = 0, score = 0))
-  }
-  zsum <- sum(sc$z[nodes])
-  list(
-    nodes = nodes,
-    zsum  = zsum,
-    score = .score_subnetwork(sc, length(nodes), zsum, TRUE)
-  )
-}
-
 #' Find the connected components among a set of "on" nodes
 #'
 #' Returns one group of node names per connected component of the subgraph
@@ -136,54 +118,4 @@ build_score_context <- function(network, experiment, params) {
   }
   scores <- vapply(subs, function(s) s$score, numeric(1))
   subs[order(scores, decreasing = TRUE)]
-}
-
-# -----------------------------------------------------------------------------
-# Mutable component object (used by the greedy search). It is an environment so
-# that add / remove operations are reflected in place across recursive calls.
-# -----------------------------------------------------------------------------
-
-#' Create a mutable component seeded with a single node
-#'
-#' @param sc A score context.
-#' @param start_node A single node name to start from.
-#'
-#' @return An environment representing the component.
-.component_new <- function(sc, start_node) {
-  comp <- new.env(parent = emptyenv())
-  comp$sc <- sc
-  comp$nodes <- start_node
-  comp$members <- new.env(parent = emptyenv())
-  assign(start_node, TRUE, envir = comp$members)
-  comp$zsum <- sc$z[[start_node]]
-  comp$score <- .score_subnetwork(sc, 1L, comp$zsum, TRUE)
-  comp
-}
-
-#' Whether a component contains a node
-#' @noRd
-.component_contains <- function(comp, node) {
-  exists(node, envir = comp$members, inherits = FALSE)
-}
-
-#' Add a node to a component, updating its score in place
-#' @noRd
-.component_add <- function(comp, node) {
-  comp$nodes <- c(comp$nodes, node)
-  assign(node, TRUE, envir = comp$members)
-  comp$zsum <- comp$zsum + comp$sc$z[[node]]
-  comp$score <- .score_subnetwork(comp$sc, length(comp$nodes), comp$zsum, TRUE)
-  invisible(NULL)
-}
-
-#' Remove a node from a component, updating its score in place
-#' @noRd
-.component_remove <- function(comp, node) {
-  if (.component_contains(comp, node)) {
-    comp$nodes <- comp$nodes[comp$nodes != node]
-    rm(list = node, envir = comp$members)
-    comp$zsum <- comp$zsum - comp$sc$z[[node]]
-    comp$score <- .score_subnetwork(comp$sc, length(comp$nodes), comp$zsum, TRUE)
-  }
-  invisible(NULL)
 }

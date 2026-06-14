@@ -69,7 +69,6 @@ reference:
     - .greedy_search
     - .simulated_annealing
     - .genetic_algorithm
-    - .component_new
     - .find_components_named
     - .find_subnetworks
     - .ga_compare
@@ -82,7 +81,6 @@ reference:
     - .parse_experiment
     - .score_subnetwork
     - .sort_subnetworks_desc
-    - .upper_tail_zscore
     - example_unfiltered_snws
   - title: "Clustering-related functions"
     desc: >
