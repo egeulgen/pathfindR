@@ -87,6 +87,7 @@ reference:
     - .score_subnetwork
     - .sort_subnetworks_desc
     - .upper_tail_zscore
+    - example_unfiltered_snws
   - title: "Clustering-related functions"
     desc: >
       Clustering-related functions
