@@ -5,8 +5,8 @@ input_genes <- paste0("GENE", 1:10)
 input_p_vals <- runif(10, min = 0.00001, max = 0.05)
 input_data_frame <- data.frame(GENE = input_genes, P_VALUE = input_p_vals)
 
-pool <- paste0("GENE", 1:50)
-n_edges <- 100
+pool <- paste0("GENE", 1:25)
+n_edges <- 50
 toy_pin_df <- data.frame(
   InteractorA = sample(pool, n_edges, replace = TRUE),
   pp = "pp",
