@@ -52,8 +52,6 @@ library(pathfindR)
 knitr::kable(head(example_pathfindR_input))
 ```
 
-> For a detailed step-by-step explanation and an unwrapped demonstration of the active-subnetwork-oriented enrichment analysis, see the vignette [Step-by-Step Execution of the pathfindR Enrichment Workflow](manual_execution.html)
-
 Executing the workflow is straightforward (but does typically take several minutes):
 
 ```{r run_pathfindR}

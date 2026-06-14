@@ -6,7 +6,8 @@
 \usage{
 get_active_subnetworks(
   input_for_search,
-  pin_name_path = "Biogrid",
+  network,
+  score_context,
   score_quan_thr = 0.8,
   sig_gene_thr = 0.02,
   search_method = "GR",
@@ -19,6 +20,7 @@ get_active_subnetworks(
   sa_iterations = 10000,
   ga_population_size = 400,
   ga_iterations = 10000,
+  gaThread = 5,
   ga_crossover_rate = 1,
   ga_mutation_rate = 0,
   gr_max_depth = 1,
@@ -34,9 +36,13 @@ must be a data frame containing at least these 2 columns: \describe{
   \item{P_VALUE}{p value obtained through a test, e.g. differential expression/methylation}
 }}
 
-\item{pin_name_path}{Name of the chosen PIN or absolute/path/to/PIN.sif. If PIN name,
-must be one of c('Biogrid', 'STRING', 'GeneMania', 'IntAct', 'KEGG', 'mmu_STRING'). If
-path/to/PIN.sif, the file must comply with the PIN specifications. (Default = 'Biogrid')}
+\item{network}{Prebuilt network object as returned by \code{.build_network()},
+built once by \code{active_snw_enrichment_wrapper} and passed to every
+iteration to avoid redundant PIN file I/O.}
+
+\item{score_context}{Prebuilt score context as returned by \code{.build_score_context()},
+built once by \code{active_snw_enrichment_wrapper} and passed to every
+iteration to avoid redundant Monte-Carlo calibration.}
 
 \item{score_quan_thr}{active subnetwork score quantile threshold. Must be
 between 0 and 1 or set to -1 for not filtering. (Default = 0.8)}
@@ -93,6 +99,10 @@ before returning final subnetworks.
 \donttest{
 processed_df <- example_pathfindR_input[1:15, -2]
 colnames(processed_df) <- c("GENE", "P_VALUE")
-GR_snws <- get_active_subnetworks(processed_df, pin_name_path = "KEGG")
+pin_path <- return_pin_path("KEGG")
+network <- .build_network(pin_path)
+experiment_df <- data.frame(gene = processed_df$GENE, pvalue = processed_df$P_VALUE)
+score_context <- .build_score_context(network, experiment_df, list(p_for_nonsignificant = 0.5, seed = 1234L))
+GR_snws <- get_active_subnetworks(processed_df, network = network, score_context = score_context)
 }
 }

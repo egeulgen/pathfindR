@@ -74,20 +74,36 @@ active_snw_enrichment_wrapper <- function(input_processed, pin_path, gset_list, 
   }
 
   gene_init_prob <- 0.1
-  dirs <- c()
   if (iterations > 1) {
     gene_init_prob <- seq(from = 0.01, to = 0.2, length.out = iterations)
-
-    for (i in base::seq_len(iterations)) {
-      dir_i <- file.path("active_snw_searches", paste0("Iteration_", i))
-      dir.create(dir_i, recursive = TRUE, showWarnings = FALSE)
-      dirs <- c(dirs, dir_i)
-    }
   }
+
+  ## Build the network and Monte-Carlo score context once, before any
+  ## iteration starts.  Both objects are identical across iterations:
+  ## the network depends only on the PIN file, and the MC calibration
+  ## (means/stds) depends only on network topology and the z-score
+  ## distribution derived from input_processed — neither changes between
+  ## iterations.  Only the per-iteration seed and gene_init_prob vary,
+  ## and those affect only the stochastic search itself, not the context.
+  message("## Building network and score context (once for all iterations)")
+  network <- .build_network(pin_path)
+
+  ## Construct the base params needed by .build_score_context.
+  ## seed = 1234L here is used only for the MC permutation; the actual
+  ## per-iteration search seed is supplied separately via single_iter_wrapper.
+  base_params <- list(
+    p_for_nonsignificant = 0.5,
+    seed                 = 1234L
+  )
+  experiment_df <- data.frame(
+    gene = base::toupper(input_processed$GENE),
+    pvalue = input_processed$P_VALUE
+  )
+  score_context <- .build_score_context(network, experiment_df, base_params)
 
   if (iterations == 1) {
     combined_res <- single_iter_wrapper(
-      i = NULL, dirs, input_processed, pin_path,
+      i = NULL, input_processed, pin_path, network, score_context,
       score_quan_thr, sig_gene_thr, search_method, verbose, start_with_all_positives,
       gene_init_prob, sa_initial_temp, sa_final_temp, sa_iterations, ga_population_size, ga_iterations, ga_crossover_rate,
       ga_mutation_rate, gr_max_depth, gr_search_depth, gr_overlap_threshold, gr_subnetwork_num, gset_list, adj_method,
@@ -103,7 +119,7 @@ active_snw_enrichment_wrapper <- function(input_processed, pin_path, gset_list, 
         .packages = "pathfindR"
       ) %dopar% {
         single_iter_wrapper(
-          i, dirs, input_processed, pin_path, score_quan_thr,
+          i, input_processed, pin_path, network, score_context, score_quan_thr,
           sig_gene_thr, search_method, verbose, start_with_all_positives,
           gene_init_prob, sa_initial_temp, sa_final_temp, sa_iterations, ga_population_size, ga_iterations,
           ga_crossover_rate, ga_mutation_rate, gr_max_depth, gr_search_depth, gr_overlap_threshold, gr_subnetwork_num,
@@ -115,7 +131,7 @@ active_snw_enrichment_wrapper <- function(input_processed, pin_path, gset_list, 
       combined_res <- c()
       for (i in 1:iterations) {
         current_res <- single_iter_wrapper(
-          i, dirs, input_processed, score_quan_thr, sig_gene_thr,
+          i, dirs, input_processed, pin_path, network, score_context, score_quan_thr, sig_gene_thr,
           search_method, verbose, start_with_all_positives, gene_init_prob,
           sa_initial_temp, sa_final_temp, sa_iterations, ga_population_size, ga_iterations, ga_crossover_rate,
           ga_mutation_rate, gr_max_depth, gr_search_depth, gr_overlap_threshold, gr_subnetwork_num, gset_list,
@@ -131,25 +147,18 @@ active_snw_enrichment_wrapper <- function(input_processed, pin_path, gset_list, 
 #' Active Subnetwork Search + Enrichment Analysis Wrapper for a Single Iteration
 #'
 #' @param i current iteration index (default = \code{NULL})
-#' @param dirs vector of directories for parallel runs
 #' @inheritParams get_active_subnetworks
 #' @inheritParams enrichment_analyses
 #' @inheritParams active_snw_enrichment_wrapper
 #'
 #' @return Data frame of enrichment results using active subnetwork search results
-single_iter_wrapper <- function(i = NULL, dirs, input_processed, pin_path, score_quan_thr,
+single_iter_wrapper <- function(i = NULL, input_processed, pin_path, network, sc, score_quan_thr,
                                 sig_gene_thr, search_method, verbose, start_with_all_positives, gene_init_prob,
                                 sa_initial_temp, sa_final_temp, sa_iterations, ga_population_size, ga_iterations, ga_crossover_rate, ga_mutation_rate, gr_max_depth,
                                 gr_search_depth, gr_overlap_threshold, gr_subnetwork_num, gset_list, adj_method, enrichment_threshold,
                                 list_active_snw_genes) {
-  snws_file <- "active_snws"
-  dir_for_parallel_run <- NULL
-  if (!is.null(i)) {
-    snws_file <- paste0("active_snws_", i)
-    dir_for_parallel_run <- dirs[i]
-  }
   snws <- get_active_subnetworks(
-    input_for_search = input_processed, pin_name_path = pin_path,
+    input_for_search = input_processed,
     score_quan_thr = score_quan_thr,
     sig_gene_thr = sig_gene_thr, search_method = search_method, seed_for_stochastic_methods = ifelse(is.null(i),
       1234, i
@@ -157,7 +166,8 @@ single_iter_wrapper <- function(i = NULL, dirs, input_processed, pin_path, score
     gene_init_prob = ifelse(!is.null(i), gene_init_prob[i], gene_init_prob), sa_initial_temp = sa_initial_temp,
     sa_final_temp = sa_final_temp, sa_iterations = sa_iterations, ga_population_size = ga_population_size, ga_iterations = ga_iterations,
     ga_crossover_rate = ga_crossover_rate, ga_mutation_rate = ga_mutation_rate, gr_max_depth = gr_max_depth, gr_search_depth = gr_search_depth,
-    gr_overlap_threshold = gr_overlap_threshold, gr_subnetwork_num = gr_subnetwork_num
+    gr_overlap_threshold = gr_overlap_threshold, gr_subnetwork_num = gr_subnetwork_num,
+    network = network, sc = sc
   )
   enrichment_res <- enrichment_analyses(
     snws = snws, sig_genes_vec = input_processed$GENE,

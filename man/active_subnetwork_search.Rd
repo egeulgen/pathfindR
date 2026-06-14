@@ -5,76 +5,30 @@
 \title{Active subnetwork search}
 \usage{
 active_subnetwork_search(
-  pin_path,
-  experiment,
+  network,
+  score_context,
   method = c("GR", "SA", "GA"),
-  start_with_all_positives = FALSE,
-  gene_init_prob = 0.1,
-  sa_initial_temp = 1,
-  sa_final_temp = 0.01,
-  sa_iterations = 10000L,
-  ga_population_size = 400L,
-  ga_iterations = 200L,
-  ga_crossover_rate = 1,
-  ga_mutation_rate = 0,
-  gr_max_depth = 1L,
-  gr_search_depth = 1L,
-  gr_overlap_threshold = 0.5,
-  gr_subnetwork_num = 1000,
-  seed = 1234L,
+  params,
   verbose = FALSE
 )
 }
 \arguments{
-\item{pin_path}{Character string specifying the path to the SIF file.
-The file should be tab-delimited and contain at least 3 columns.}
+\item{network}{A network list as returned by \code{.build_network()}.}
 
-\item{experiment}{A data frame of gene / p-value pairs. Columns named
-\code{gene} and \code{pvalue} are used if present, otherwise the first two
-columns are taken as gene and p-value. Gene names are upper-cased and, if a
-gene appears more than once, its smallest p-value is kept.}
+\item{score_context}{A score context list as returned by \code{.build_score_context()}.}
 
 \item{method}{Search strategy: \code{"GR"} (greedy, the default),
 \code{"SA"} (simulated annealing) or \code{"GA"} (genetic algorithm).}
 
-\item{start_with_all_positives}{Logical. For \code{SA}/\code{GA}, initialise
-the candidate solution with all positive-z-score nodes switched on instead
-of random initialisation.}
-
-\item{gene_init_prob}{Probability of switching a gene on in the random
-initial solution for \code{SA}/\code{GA}.}
-
-\item{sa_initial_temp, sa_final_temp, sa_iterations}{Simulated-annealing
-schedule: initial temperature, final temperature and number of iterations.}
-
-\item{ga_population_size, ga_iterations}{Genetic-algorithm population size and
-maximum number of generations.}
-
-\item{ga_crossover_rate, ga_mutation_rate}{Genetic-algorithm crossover
-probability and per-gene mutation rate.}
-
-\item{gr_max_depth}{Greedy search: maximum distance from the seed at which
-nodes may be added (\code{0} = no limit).}
-
-\item{gr_search_depth}{Greedy search: depth budget restored on every
-improvement.}
-
-\item{gr_overlap_threshold}{Greedy search: subnetworks overlapping a
-higher-scoring one by more than this fraction are discarded.}
-
-\item{gr_subnetwork_num}{Greedy search: maximum number of subnetworks to
-return.}
-
-\item{seed}{Seed for the random number generator, used both for the
-Monte-Carlo score calibration and for the search (if needed), so that
-runs are reproducible.}
+\item{params}{A fully-formed params list controlling the search, as built
+by \code{get_active_subnetworks()}.}
 
 \item{verbose}{Logical; emit progress messages.}
 }
 \value{
-A list of character vectors, each holding the gene names of one
-  high-scoring subnetwork, ordered from highest to lowest score. The list is
-  empty when no positive-scoring subnetwork is found.
+A list of subnetwork objects sorted by score descending, each with
+  elements \code{nodes} (character vector of gene names) and \code{score}.
+  The list is empty when no positive-scoring subnetwork is found.
 }
 \description{
 Searches a molecular interaction network for connected subnetworks of genes
@@ -83,27 +37,7 @@ Gene p-values are converted to z-scores, subnetwork scores are calibrated
 against a Monte-Carlo background, and one of three search strategies is used
 to find high-scoring connected subnetworks.
 }
-\examples{
-\dontrun{
-toy_pin_df <- data.frame(
-  V1 = c("A", "A", "B", "B", "C", "C", "C", "D", "D", "E"),
-  V2 = "pp",
-  V3 = c("B", "C", "A", "C", "A", "B", "D", "C", "E", "D")
-)
-
-sif_file <- tempfile(fileext = ".sif")
-write.table(
-  toy_pin_df,
-  sif_file,
-  sep = "\t",
-  row.names = FALSE,
-  col.names = FALSE,
-  quote = FALSE
-)
-experiment <- data.frame(
-  gene   = c("A", "B", "C", "D", "E"),
-  pvalue = c(0.001, 0.002, 0.001, 0.5, 0.6)
-)
-active_subnetwork_search(pin_path, experiment, method = "GR")
-}
+\seealso{
+\code{\link{get_active_subnetworks}} which builds \code{network},
+  \code{score_context} and \code{params} and calls this function.
 }
