@@ -25,10 +25,15 @@
   ol_threshold <- as.numeric(params$gr_overlap_threshold)
   max_output <- as.integer(params$gr_subnetwork_num)
 
-  # Directly hand Rcpp the pre-built neighbor ID lists from network$nbr
-  # Converting strings to integer indices based on name2id map
-  nbr_idx <- lapply(nodes, function(nd) {
-    as.integer(network$name2id[network$nbr[[nd]]])
+  # Build integer neighbour index directly from the igraph edge list.
+  el <- igraph::as_edgelist(network$g, names = FALSE)
+  both <- rbind(el, el[, 2:1, drop = FALSE])
+  both <- both[order(both[, 1L]), , drop = FALSE]
+  rs <- c(1L, which(diff(both[, 1L]) > 0L) + 1L, nrow(both) + 1L)
+  nbr_idx <- lapply(seq_len(n_nodes), function(i) {
+    s <- rs[i]
+    e <- rs[i + 1L] - 1L
+    if (s <= e) both[s:e, 2L] else integer(0L)
   })
 
   z_vec <- as.numeric(score_context$z[nodes])
