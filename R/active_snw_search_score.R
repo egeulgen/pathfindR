@@ -77,6 +77,24 @@ build_score_context <- function(network, experiment, params) {
   score
 }
 
+#' Create a subnetwork object from a vector of node names
+#'
+#' @param sc A score context.
+#' @param nodes Character vector of node names.
+#'
+#' @return A list with elements \code{nodes}, \code{zsum} and \code{score}.
+.make_subnetwork <- function(sc, nodes) {
+  if (length(nodes) == 0L) {
+    return(list(nodes = character(0), zsum = 0, score = 0))
+  }
+  zsum <- sum(sc$z[nodes])
+  list(
+    nodes = nodes,
+    zsum  = zsum,
+    score = .score_subnetwork(sc, length(nodes), zsum, TRUE)
+  )
+}
+
 #' Find the connected components among a set of "on" nodes
 #'
 #' Returns one group of node names per connected component of the subgraph
