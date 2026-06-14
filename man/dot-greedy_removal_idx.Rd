@@ -4,21 +4,39 @@
 \alias{.greedy_removal_idx}
 \title{Greedy removal pass}
 \usage{
-.greedy_removal_idx(state, z_vec, sc_means, sc_stds)
+.greedy_removal_idx(
+  vstate,
+  z_vec,
+  sc_means,
+  sc_stds,
+  size,
+  zsum,
+  score,
+  best_score
+)
 }
 \arguments{
-\item{state}{Environment holding all mutable component state.}
+\item{vstate}{Environment holding mutable node vectors.}
 
-\item{z_vec}{Numeric z-score vector aligned to node indices.}
+\item{z_vec}{Numeric z-score vector.}
 
-\item{sc_means}{Numeric vector of MC means.}
+\item{sc_means}{Monte-Carlo means.}
 
-\item{sc_stds}{Numeric vector of MC stds.}
+\item{sc_stds}{Monte-Carlo stds.}
+
+\item{size}{Current component size.}
+
+\item{zsum}{Current z-score sum.}
+
+\item{score}{Current calibrated score.}
+
+\item{best_score}{Best score seen so far.}
 }
 \value{
-Invisibly NULL.
+Updated best_score (numeric).
 }
 \description{
-Tries removing each leaf node; keeps the removal if the score improves.
-All state is mutated in place through the \code{state} environment.
+Tries removing each removable leaf; keeps the removal if the score
+improves. All state lives in \code{vstate}; the four scalars are passed
+and the updated best_score is returned.
 }

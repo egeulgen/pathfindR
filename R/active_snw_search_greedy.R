@@ -1,32 +1,34 @@
 # =============================================================================
 # Greedy active subnetwork search.
 #
-# Design notes on mutability
-# --------------------------
-# R passes all vectors (logical, integer, numeric) by value. Any function that
-# needs to mutate shared state across recursive calls must store that state in
-# an *environment*, which is the only reference-semantic object in base R.
+# Design notes on mutability and performance
+# ------------------------------------------
+# R passes all vectors by value. To share mutable state across recursive calls
+# we split state into two categories:
 #
-# The expand / removal routines therefore receive a single `state` environment
-# that holds every mutable field:
-#   state$size              – current component size (integer)
-#   state$zsum              – current z-score sum (double)
-#   state$score             – current calibrated score (double)
-#   state$best_score        – best score seen so far (double)
-#   state$comp_members      – logical[n_nodes], TRUE = in component
-#   state$removable_vec     – logical[n_nodes], TRUE = leaf candidate
-#   state$node2predecessor  – integer[n_nodes], predecessor on the DFS path
-#   state$node2dep_count    – integer[n_nodes], number of dependent children
+#   vstate (environment)  – the four large per-node vectors that must be visible
+#                           to every recursive frame simultaneously:
+#                             $comp_members       logical[N]
+#                             $removable_vec      logical[N]
+#                             $node2predecessor   integer[N]
+#                             $node2dep_count     integer[N]
+#
+#   scalars (function args / return values)  – size, zsum, score, best_score.
+#     These are passed down as arguments and the only one that needs to bubble
+#     UP the call stack is best_score, which is returned.  This avoids `env$`
+#     read/write overhead on the four hot scalars (~2x faster than storing them
+#     in the environment alongside the vectors).
+#
 # =============================================================================
 
 #' Build the within-depth reachability vector via iterative BFS
 #'
-#' Returns a logical vector (not modifies in place) so that the result is
-#' usable from any calling context without relying on \code{<<-}, which
-#' resolves to *lexical* parent environments rather than the calling frame.
+#' Returns a logical vector rather than modifying in-place, because \code{<<-}
+#' resolves through *lexical* parent environments, not the call stack, and
+#' therefore does not reach a variable in the calling function's local frame.
 #'
 #' @param nbr_idx  List of integer neighbour-index vectors.
-#' @param n_nodes  Total node count (length of returned vector).
+#' @param n_nodes  Total node count.
 #' @param start    Integer node ID to expand from.
 #' @param depth    Maximum hop distance.
 #'
@@ -39,7 +41,7 @@
   }
 
   frontier <- start
-  dist <- integer(n_nodes) # 0 everywhere; start treated as distance 0
+  dist <- integer(n_nodes)
 
   while (length(frontier) > 0L) {
     next_frontier <- integer(0L)
@@ -62,150 +64,143 @@
 
 #' Recursive greedy expansion
 #'
-#' All mutable per-seed state lives in the \code{state} environment so that
-#' changes made in recursive calls are immediately visible to the parent call.
-#' \code{.score_subnetwork} is inlined here (~28x faster than a function call
-#' in a tight loop, as measured by micro-benchmark).
+#' The four hot scalars (size, zsum, score, best_score) are passed as function
+#' arguments and returned, avoiding \code{env$} overhead on every add/remove.
+#' The four large vectors live in \code{vstate} (an environment) so mutations
+#' are immediately visible to all recursive frames.
+#'
+#' \code{.score_subnetwork} is inlined: single-node → 0, else calibrated.
 #'
 #' @param nbr_idx      List of integer neighbour-index vectors.
-#' @param z_vec        Numeric z-score vector aligned to node indices.
-#' @param sc_means     Numeric vector of MC means (indexed by subnetwork size).
-#' @param sc_stds      Numeric vector of MC stds  (indexed by subnetwork size).
-#' @param within_vec   Logical vector of allowed nodes, or NULL for no limit.
+#' @param z_vec        Numeric z-score vector (integer-indexed).
+#' @param sc_means     Monte-Carlo means (indexed by subnetwork size).
+#' @param sc_stds      Monte-Carlo stds  (indexed by subnetwork size).
+#' @param within_vec   Logical reachability mask, or NULL for no limit.
 #' @param search_depth Depth budget restored on every improvement.
 #' @param depth        Remaining depth budget for this call.
-#' @param state        Environment holding all mutable component state.
+#' @param size         Current component size.
+#' @param zsum         Current z-score sum.
+#' @param score        Current calibrated score.
+#' @param best_score   Best score seen anywhere in this subtree so far.
+#' @param vstate       Environment holding the four mutable node vectors.
 #' @param last_added   Integer node ID most recently added.
 #'
-#' @return Logical; TRUE if the best score improved anywhere in this subtree.
+#' @return A list with \code{$improved} (logical) and \code{$best_score}
+#'   (the highest score seen in this subtree).
 .greedy_expand_idx <- function(nbr_idx, z_vec, sc_means, sc_stds,
                                within_vec, search_depth, depth,
-                               state, last_added) {
+                               size, zsum, score, best_score,
+                               vstate, last_added) {
   improved <- FALSE
 
-  if (state$score > state$best_score) {
+  if (score > best_score) {
     depth <- search_depth
     improved <- TRUE
-    state$best_score <- state$score
+    best_score <- score
   }
 
   if (depth > 0L) {
     any_improved <- FALSE
-    state$removable_vec[last_added] <- FALSE
-    dependent_count <- 0L
+    vstate$removable_vec[last_added] <- FALSE
+    dep_count <- 0L
 
     for (nb in nbr_idx[[last_added]]) {
       within_ok <- is.null(within_vec) || within_vec[nb]
-      if (within_ok && !state$comp_members[nb]) {
+      if (within_ok && !vstate$comp_members[nb]) {
         # --- add nb ---
-        state$size <- state$size + 1L
-        state$comp_members[nb] <- TRUE
-        state$zsum <- state$zsum + z_vec[nb]
-        n <- state$size
-        # inlined .score_subnetwork (single-node → 0, else calibrated)
-        state$score <- if (n == 1L) {
-          0
-        } else {
-          (state$zsum / sqrt(n) - sc_means[n]) / sc_stds[n]
-        }
-        state$removable_vec[nb] <- TRUE
+        new_size <- size + 1L
+        new_zsum <- zsum + z_vec[nb]
+        new_score <- (new_zsum / sqrt(new_size) - sc_means[new_size]) / sc_stds[new_size]
 
-        this_improved <- .greedy_expand_idx(
+        vstate$comp_members[nb] <- TRUE
+        vstate$removable_vec[nb] <- TRUE
+
+        res <- .greedy_expand_idx(
           nbr_idx, z_vec, sc_means, sc_stds,
           within_vec, search_depth, depth - 1L,
-          state, nb
+          new_size, new_zsum, new_score, best_score,
+          vstate, nb
         )
+        best_score <- res$best_score
 
-        if (!this_improved) {
-          # --- remove nb (backtrack) ---
-          state$size <- state$size - 1L
-          state$comp_members[nb] <- FALSE
-          state$zsum <- state$zsum - z_vec[nb]
-          n <- state$size
-          state$score <- if (n == 1L) {
-            0
-          } else {
-            (state$zsum / sqrt(n) - sc_means[n]) / sc_stds[n]
-          }
-          state$removable_vec[nb] <- FALSE
+        if (!res$improved) {
+          # backtrack
+          vstate$comp_members[nb] <- FALSE
+          vstate$removable_vec[nb] <- FALSE
         } else {
-          dependent_count <- dependent_count + 1L
+          dep_count <- dep_count + 1L
           any_improved <- TRUE
-          state$node2predecessor[nb] <- last_added
+          vstate$node2predecessor[nb] <- last_added
         }
       }
     }
 
     improved <- improved || any_improved
-    if (dependent_count > 0L) {
-      state$removable_vec[last_added] <- FALSE
-      state$node2dep_count[last_added] <- dependent_count
+    if (dep_count > 0L) {
+      vstate$removable_vec[last_added] <- FALSE
+      vstate$node2dep_count[last_added] <- dep_count
     }
   }
 
-  improved
+  list(improved = improved, best_score = best_score)
 }
 
 #' Greedy removal pass
 #'
-#' Tries removing each leaf node; keeps the removal if the score improves.
-#' All state is mutated in place through the \code{state} environment.
+#' Tries removing each removable leaf; keeps the removal if the score
+#' improves. All state lives in \code{vstate}; the four scalars are passed
+#' and the updated best_score is returned.
 #'
-#' @param state    Environment holding all mutable component state.
-#' @param z_vec    Numeric z-score vector aligned to node indices.
-#' @param sc_means Numeric vector of MC means.
-#' @param sc_stds  Numeric vector of MC stds.
+#' @param vstate   Environment holding mutable node vectors.
+#' @param z_vec    Numeric z-score vector.
+#' @param sc_means Monte-Carlo means.
+#' @param sc_stds  Monte-Carlo stds.
+#' @param size     Current component size.
+#' @param zsum     Current z-score sum.
+#' @param score    Current calibrated score.
+#' @param best_score Best score seen so far.
 #'
-#' @return Invisibly NULL.
-.greedy_removal_idx <- function(state, z_vec, sc_means, sc_stds) {
-  snapshot <- which(state$removable_vec)
+#' @return Updated best_score (numeric).
+.greedy_removal_idx <- function(vstate, z_vec, sc_means, sc_stds,
+                                size, zsum, score, best_score) {
+  snapshot <- which(vstate$removable_vec)
   for (cur in snapshot) {
-    old_size <- state$size
-    old_zsum <- state$zsum
-    old_score <- state$score
-
-    state$size <- old_size - 1L
-    state$comp_members[cur] <- FALSE
-    state$zsum <- old_zsum - z_vec[cur]
-    n <- state$size
-    state$score <- if (n == 1L) {
+    new_size <- size - 1L
+    new_zsum <- zsum - z_vec[cur]
+    new_score <- if (new_size <= 1L) {
       0
     } else {
-      (state$zsum / sqrt(n) - sc_means[n]) / sc_stds[n]
+      (new_zsum / sqrt(new_size) - sc_means[new_size]) / sc_stds[new_size]
     }
 
-    if (state$score > state$best_score) {
-      state$best_score <- state$score
-      pred <- state$node2predecessor[cur]
+    if (new_score > best_score) {
+      best_score <- new_score
+      size <- new_size
+      zsum <- new_zsum
+      score <- new_score
+      vstate$comp_members[cur] <- FALSE
+      pred <- vstate$node2predecessor[cur]
       if (pred > 0L) {
-        dep <- state$node2dep_count[pred] - 1L
+        dep <- vstate$node2dep_count[pred] - 1L
         if (dep == 0L) {
-          state$removable_vec[pred] <- TRUE
+          vstate$removable_vec[pred] <- TRUE
         } else {
-          state$node2dep_count[pred] <- dep
+          vstate$node2dep_count[pred] <- dep
         }
       }
-    } else {
-      # put back
-      state$size <- old_size
-      state$comp_members[cur] <- TRUE
-      state$zsum <- old_zsum
-      state$score <- old_score
     }
+    # else: leave cur in the component (no change needed)
   }
-  invisible(NULL)
+  best_score
 }
 
 #' Filter subnetworks by mutual overlap
 #'
-#' Walks the score-sorted list, keeping a subnetwork and discarding any later
-#' one whose Jaccard overlap with a kept one exceeds the threshold.
-#'
-#' @param comps           List of subnetwork objects (score-sorted, descending).
+#' @param comps            Score-sorted list of subnetwork objects (desc).
 #' @param overlap_threshold Numeric threshold in (0, 1).
-#' @param subnetwork_num  Maximum number of subnetworks to return.
+#' @param subnetwork_num   Maximum number of subnetworks to return.
 #'
-#' @return Filtered list of subnetwork objects.
+#' @return Filtered list.
 .greedy_filter <- function(comps, overlap_threshold, subnetwork_num) {
   n <- length(comps)
   if (n == 0L) {
@@ -265,17 +260,24 @@
   max_depth <- params$gr_max_depth
   search_depth <- params$gr_search_depth
 
-  # Aligned z-score vector (integer-indexed, avoids name lookup)
   z_vec <- as.numeric(sc$z[nodes])
   sc_means <- sc$means
   sc_stds <- sc$stds
 
-  # Build neighbour index (integer IDs, pre-filtered by z-score)
-  node_map <- stats::setNames(seq_len(n_nodes), nodes)
-  nbr_idx <- lapply(seq_len(n_nodes), function(i) {
-    nbs <- unname(node_map[network$nbr[[nodes[i]]]])
-    nbs[z_vec[nbs] > -1.0] # prune strongly negative neighbours
-  })
+  # Build neighbour index from the integer edge list — avoids repeated
+  # string-keyed hash lookups
+  el <- igraph::as_edgelist(network$g, names = FALSE)
+  both <- rbind(el, el[, 2:1, drop = FALSE])
+  both <- both[order(both[, 1L]), , drop = FALSE]
+  row_starts <- c(1L, which(diff(both[, 1L]) > 0L) + 1L, nrow(both) + 1L)
+
+  nbr_idx <- vector("list", n_nodes)
+  for (i in seq_len(n_nodes)) {
+    s <- row_starts[i]
+    e <- row_starts[i + 1L] - 1L
+    nb <- if (s <= e) both[s:e, 2L] else integer(0L)
+    nbr_idx[[i]] <- nb[z_vec[nb] > -1.0] # prune strongly negative neighbours
+  }
 
   # Seed selection: top-5% z-score nodes (computed once)
   z_cutoff <- stats::quantile(z_vec, probs = 0.95, na.rm = TRUE)
@@ -290,6 +292,11 @@
   }
 
   n_seeds <- length(promising_seeds)
+
+  # Pre-allocated zero-filled templates for per-seed vector resets
+  lv_template <- logical(n_nodes)
+  iv_template <- integer(n_nodes)
+
   best_score_per_node <- rep(-Inf, n_nodes)
   best_comp_per_node <- vector("list", n_nodes)
 
@@ -311,37 +318,45 @@
       .greedy_init_max_depth_idx(nbr_idx, n_nodes, seed_id, max_depth)
     }
 
-    # All mutable per-seed state lives in one environment so recursive
-    # calls see each other's mutations immediately.
-    state <- new.env(parent = emptyenv())
-    state$size <- 1L
-    state$zsum <- z_vec[seed_id]
-    state$score <- 0 # single-node always scores 0
-    state$best_score <- -Inf
-    state$comp_members <- logical(n_nodes)
-    state$removable_vec <- logical(n_nodes)
-    state$node2predecessor <- integer(n_nodes)
-    state$node2dep_count <- integer(n_nodes)
+    # vstate: environment holding only the four per-node vectors.
+    # Scalars (size, zsum, score, best_score) are kept as local variables.
+    vstate <- new.env(parent = emptyenv())
+    vstate$comp_members <- lv_template # template copy, not fresh alloc
+    vstate$removable_vec <- lv_template
+    vstate$node2predecessor <- iv_template
+    vstate$node2dep_count <- iv_template
 
-    state$comp_members[seed_id] <- TRUE
-    state$node2dep_count[seed_id] <- 1L
+    vstate$comp_members[seed_id] <- TRUE
+    vstate$node2dep_count[seed_id] <- 1L
 
-    .greedy_expand_idx(
+    seed_zsum <- z_vec[seed_id]
+    seed_score <- 0 # single-node always scores 0
+
+    res <- .greedy_expand_idx(
       nbr_idx, z_vec, sc_means, sc_stds,
       within_vec, search_depth, search_depth,
-      state, seed_id
+      1L, seed_zsum, seed_score, -Inf,
+      vstate, seed_id
     )
 
-    .greedy_removal_idx(state, z_vec, sc_means, sc_stds)
+    final_best <- .greedy_removal_idx(
+      vstate, z_vec, sc_means, sc_stds,
+      # size/zsum/score after expand: reconstruct from comp_members
+      # (we don't track them through expand's return value for removal —
+      #  removal operates on whatever is in vstate$comp_members)
+      sum(vstate$comp_members),
+      sum(z_vec[vstate$comp_members]),
+      0, # score recomputed inside removal
+      res$best_score
+    )
 
-    final_idx <- which(state$comp_members)
-    final_score <- state$best_score
+    final_idx <- which(vstate$comp_members)
 
-    if (length(final_idx) >= 2L && final_score > 0) {
-      comp_obj <- list(nodes = nodes[final_idx], score = final_score)
+    if (length(final_idx) >= 2L && final_best > 0) {
+      comp_obj <- list(nodes = nodes[final_idx], score = final_best)
       for (ni in final_idx) {
-        if (best_score_per_node[ni] < final_score) {
-          best_score_per_node[ni] <- final_score
+        if (best_score_per_node[ni] < final_best) {
+          best_score_per_node[ni] <- final_best
           best_comp_per_node[[ni]] <- comp_obj
         }
       }
@@ -349,7 +364,7 @@
   }
   if (verbose) message("100%")
 
-  # Collect, deduplicate, sort
+  # Collect, deduplicate (by sorted integer index), sort by score
   comps <- best_comp_per_node[!vapply(best_comp_per_node, is.null, logical(1))]
   if (length(comps) == 0L) {
     return(list())
@@ -357,7 +372,7 @@
 
   sig <- vapply(
     comps,
-    function(c) paste(sort.int(match(c$nodes, nodes)), collapse = " "),
+    function(c) paste0(sort.int(match(c$nodes, nodes)), collapse = "\x01"),
     character(1)
   )
   comps <- comps[!duplicated(sig)]

@@ -12,35 +12,51 @@
   within_vec,
   search_depth,
   depth,
-  state,
+  size,
+  zsum,
+  score,
+  best_score,
+  vstate,
   last_added
 )
 }
 \arguments{
 \item{nbr_idx}{List of integer neighbour-index vectors.}
 
-\item{z_vec}{Numeric z-score vector aligned to node indices.}
+\item{z_vec}{Numeric z-score vector (integer-indexed).}
 
-\item{sc_means}{Numeric vector of MC means (indexed by subnetwork size).}
+\item{sc_means}{Monte-Carlo means (indexed by subnetwork size).}
 
-\item{sc_stds}{Numeric vector of MC stds  (indexed by subnetwork size).}
+\item{sc_stds}{Monte-Carlo stds  (indexed by subnetwork size).}
 
-\item{within_vec}{Logical vector of allowed nodes, or NULL for no limit.}
+\item{within_vec}{Logical reachability mask, or NULL for no limit.}
 
 \item{search_depth}{Depth budget restored on every improvement.}
 
 \item{depth}{Remaining depth budget for this call.}
 
-\item{state}{Environment holding all mutable component state.}
+\item{size}{Current component size.}
+
+\item{zsum}{Current z-score sum.}
+
+\item{score}{Current calibrated score.}
+
+\item{best_score}{Best score seen anywhere in this subtree so far.}
+
+\item{vstate}{Environment holding the four mutable node vectors.}
 
 \item{last_added}{Integer node ID most recently added.}
 }
 \value{
-Logical; TRUE if the best score improved anywhere in this subtree.
+A list with \code{$improved} (logical) and \code{$best_score}
+  (the highest score seen in this subtree).
 }
 \description{
-All mutable per-seed state lives in the \code{state} environment so that
-changes made in recursive calls are immediately visible to the parent call.
-\code{.score_subnetwork} is inlined here (~28x faster than a function call
-in a tight loop, as measured by micro-benchmark).
+The four hot scalars (size, zsum, score, best_score) are passed as function
+arguments and returned, avoiding \code{env$} overhead on every add/remove.
+The four large vectors live in \code{vstate} (an environment) so mutations
+are immediately visible to all recursive frames.
+}
+\details{
+\code{.score_subnetwork} is inlined: single-node → 0, else calibrated.
 }
