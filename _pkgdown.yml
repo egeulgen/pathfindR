@@ -80,8 +80,6 @@ reference:
     - .ga_sort_desc
     - .greedy_expand_idx
     - .greedy_filter_int
-    - .greedy_init_max_depth_idx
-    - .greedy_removal_idx
     - .make_subnetwork
     - .parse_experiment
     - .score_subnetwork

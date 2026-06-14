@@ -6,42 +6,6 @@
 # to yield the final ranked candidates.
 # =============================================================================
 
-#' Build the within-depth reachability vector via iterative BFS
-#'
-#' @param nbr_idx  List of integer neighbour-index vectors.
-#' @param n_nodes  Total node count.
-#' @param start    Integer seed node ID.
-#' @param depth    Maximum hop distance.
-#' @return Logical vector of length \code{n_nodes}.
-.greedy_init_max_depth_idx <- function(nbr_idx, n_nodes, start, depth) {
-  within_vec <- logical(n_nodes)
-  within_vec[start] <- TRUE
-  if (depth == 0L) {
-    return(within_vec)
-  }
-
-  frontier <- start
-  dist <- integer(n_nodes)
-
-  while (length(frontier) > 0L) {
-    nf <- integer(0L)
-    for (cur in frontier) {
-      d_next <- dist[cur] + 1L
-      if (d_next <= depth) {
-        for (nb in nbr_idx[[cur]]) {
-          if (!within_vec[nb]) {
-            within_vec[nb] <- TRUE
-            dist[nb] <- d_next
-            nf <- c(nf, nb)
-          }
-        }
-      }
-    }
-    frontier <- nf
-  }
-  within_vec
-}
-
 #' Recursive greedy expansion
 #'
 #' Scalars are passed as arguments and returned to avoid env$ lookup overhead.
@@ -119,47 +83,6 @@
   }
 
   list(improved = improved, best_score = best_score, size = size, zsum = zsum)
-}
-
-#' Greedy removal pass
-#'
-#' @param vstate     Environment with mutable node vectors.
-#' @param z_vec      Numeric z-score vector.
-#' @param sc_means   MC means.
-#' @param sc_stds    MC stds.
-#' @param size       Current component size (from expand return value).
-#' @param zsum       Current z-score sum (from expand return value).
-#' @param best_score Best score so far.
-#' @return Updated best_score.
-.greedy_removal_idx <- function(vstate, z_vec, sc_means, sc_stds,
-                                size, zsum, best_score) {
-  snapshot <- which(vstate$removable_vec)
-  for (cur in snapshot) {
-    new_size <- size - 1L
-    new_zsum <- zsum - z_vec[cur]
-    new_score <- if (new_size <= 1L) {
-      0
-    } else {
-      (new_zsum / sqrt(new_size) - sc_means[new_size]) / sc_stds[new_size]
-    }
-
-    if (new_score > best_score) {
-      best_score <- new_score
-      size <- new_size
-      zsum <- new_zsum
-      vstate$comp_members[cur] <- FALSE
-      pred <- vstate$node2predecessor[cur]
-      if (pred > 0L) {
-        dep <- vstate$node2dep_count[pred] - 1L
-        if (dep == 0L) {
-          vstate$removable_vec[pred] <- TRUE
-        } else {
-          vstate$node2dep_count[pred] <- dep
-        }
-      }
-    }
-  }
-  best_score
 }
 
 #' Filter candidates by mutual overlap using an inverted node index
@@ -260,59 +183,19 @@
   # collect the distinct components afterwards.
   node2best <- vector("list", n_nodes)
 
-  percent <- 0L
-  for (i in seq_along(promising_seeds)) {
-    seed_id <- promising_seeds[i]
+  if (verbose) message("Searching seeds...")
 
-    if (verbose) {
-      new_pct <- (100L * (i - 1L)) %/% n_seeds
-      if (new_pct > percent) {
-        percent <- new_pct
-        message(percent, "% (", i, "/", n_seeds, " seeds)")
-      }
-    }
+  # Call the compiled Rcpp function instead of a heavy R loop
+  node2best <- run_greedy_search_cpp(
+    nbr_idx      = nbr_idx,
+    z_vec        = z_vec,
+    sc_means     = sc_means,
+    sc_stds      = sc_stds,
+    max_depth    = max_depth,
+    search_depth = search_depth,
+    n_nodes      = n_nodes
+  )
 
-    within_vec <- if (max_depth == 0L) {
-      NULL
-    } else {
-      .greedy_init_max_depth_idx(nbr_idx, n_nodes, seed_id, max_depth)
-    }
-
-    vstate <- new.env(parent = emptyenv())
-    vstate$comp_members <- lv_template
-    vstate$removable_vec <- lv_template
-    vstate$node2predecessor <- iv_template
-    vstate$node2dep_count <- iv_template
-
-    vstate$comp_members[seed_id] <- TRUE
-    vstate$node2dep_count[seed_id] <- 1L
-
-    seed_zsum <- z_vec[seed_id]
-
-    res <- .greedy_expand_idx(
-      nbr_idx, z_vec, sc_means, sc_stds,
-      within_vec, search_depth, search_depth,
-      1L, seed_zsum, 0, -Inf,
-      vstate, seed_id
-    )
-
-    # Pass size/zsum from expand directly — no O(N) sum() scans needed
-    final_best <- .greedy_removal_idx(
-      vstate, z_vec, sc_means, sc_stds,
-      res$size, res$zsum, res$best_score
-    )
-
-    final_idx <- which(vstate$comp_members)
-
-    if (length(final_idx) >= 2L && final_best > 0) {
-      for (nd in final_idx) {
-        ex <- node2best[[nd]]
-        if (is.null(ex) || final_best > ex$score) {
-          node2best[[nd]] <- list(idx = final_idx, score = final_best)
-        }
-      }
-    }
-  }
   if (verbose) message("100%")
 
   # Collect the distinct best-per-node components
