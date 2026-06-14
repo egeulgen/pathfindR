@@ -21,6 +21,7 @@
 #' @return A list of subnetwork objects (all connected components of the final
 #'   solution, sorted by score descending).
 .simulated_annealing <- function(network, sc, params, verbose = FALSE) {
+  set.seed(params$seed)
   nodes <- network$nodes
   N <- length(nodes)
   if (N == 0L) {

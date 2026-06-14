@@ -251,6 +251,7 @@
 #'
 #' @return A list of subnetwork objects.
 .greedy_search <- function(network, sc, params, verbose = FALSE) {
+  set.seed(params$seed)
   nodes <- network$nodes
   n_nodes <- length(nodes)
   if (n_nodes == 0L) {
