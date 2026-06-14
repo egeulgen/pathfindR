@@ -50,7 +50,8 @@ Imports:
     igraph,
     R.utils,
     msigdbr (>= 24.1.0),
-    knitr
+    knitr,
+    Rcpp
 Depends: R (>= 4.3.0),
     pathfindR.data (>= 2.0)
 Suggests: 
@@ -61,3 +62,5 @@ Suggests:
 VignetteBuilder: knitr
 Config/roxygen2/version: 8.0.0
 RoxygenNote: 8.0.0
+LinkingTo: 
+    Rcpp

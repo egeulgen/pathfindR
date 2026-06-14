@@ -1,3 +1,9 @@
+## usethis namespace: start
+#' @importFrom Rcpp sourceCpp
+#' @useDynLib pathfindR, .registration = TRUE
+## usethis namespace: end
+NULL
+
 #' pathfindR: A package for Enrichment Analysis Utilizing Active Subnetworks
 #'
 #' pathfindR is a tool for active-subnetwork-oriented gene set enrichment analysis.
