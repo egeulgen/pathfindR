@@ -58,6 +58,7 @@ reference:
     desc: >
      Active subnetwork search-related functions
     contents:
+    - get_active_subnetworks
     - active_subnetwork_search
     - filter_active_subnetworks
     - input_processing
@@ -85,6 +86,7 @@ reference:
     - .parse_experiment
     - .score_subnetwork
     - .sort_subnetworks_desc
+    - .upper_tail_zscore
   - title: "Clustering-related functions"
     desc: >
       Clustering-related functions
