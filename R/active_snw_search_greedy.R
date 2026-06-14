@@ -25,7 +25,8 @@
   ol_threshold <- as.numeric(params$gr_overlap_threshold)
   max_output <- as.integer(params$gr_subnetwork_num)
 
-  # Convert neighbor names to integer ID indices for performance
+  # Directly hand Rcpp the pre-built neighbor ID lists from network$nbr
+  # Converting strings to integer indices based on name2id map
   nbr_idx <- lapply(nodes, function(nd) {
     as.integer(network$name2id[network$nbr[[nd]]])
   })
@@ -34,7 +35,7 @@
   sc_means <- as.numeric(score_context$means)
   sc_stds <- as.numeric(score_context$stds)
 
-  if (verbose) message("Running greedy search and filtering in C++...")
+  if (verbose) message("Running greedy search in C++...")
   candidates <- run_greedy_search(
     nbr_idx            = nbr_idx,
     z_vec              = z_vec,
