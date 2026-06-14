@@ -285,40 +285,56 @@ List run_greedy_search(
 
   std::sort(unique_candidates.begin(), unique_candidates.end());
 
-  // 4. Clean Jaccard Filtering pass
+  // 4. Overlap filtering with inverted index.
+  // For each kept subnetwork we record which nodes it owns. For each new
+  // candidate we only compare against keepers that share at least one node
+  // (found via the inverted index), skipping all non-overlapping pairs.
+  // idx values are 1-based; node2kept is sized n_nodes+1 to accommodate them.
   std::vector<Subnetwork> filtered_networks;
   filtered_networks.reserve(subnetwork_num);
+
+  std::vector<std::vector<int>> node2kept(n_nodes + 1);
 
   for (const auto& cand : unique_candidates) {
     if ((int)filtered_networks.size() >= subnetwork_num) break;
 
+    // Collect the set of already-kept subnetworks that share any node
+    std::vector<int> candidates_to_check;
+    for (int ni : cand.idx) {
+      for (int ki : node2kept[ni]) {
+        candidates_to_check.push_back(ki);
+      }
+    }
+    // Deduplicate
+    std::sort(candidates_to_check.begin(), candidates_to_check.end());
+    candidates_to_check.erase(
+      std::unique(candidates_to_check.begin(), candidates_to_check.end()),
+      candidates_to_check.end()
+    );
+
     bool keep = true;
-    for (const auto& accepted : filtered_networks) {
+    for (int ki : candidates_to_check) {
+      const auto& accepted = filtered_networks[ki];
+      // Merge-based intersection on sorted idx vectors (both already sorted)
       int intersection_count = 0;
       size_t p1 = 0, p2 = 0;
-
       while (p1 < cand.idx.size() && p2 < accepted.idx.size()) {
-        if (cand.idx[p1] == accepted.idx[p2]) {
-          intersection_count++;
-          p1++; p2++;
-        } else if (cand.idx[p1] < accepted.idx[p2]) {
-          p1++;
-        } else {
-          p2++;
-        }
+        if      (cand.idx[p1] == accepted.idx[p2]) { intersection_count++; p1++; p2++; }
+        else if (cand.idx[p1] <  accepted.idx[p2]) { p1++; }
+        else                                        { p2++; }
       }
 
-      int union_count = cand.idx.size() + accepted.idx.size() - intersection_count;
-      double jaccard_overlap = (double)intersection_count / union_count;
-
-      if (jaccard_overlap > overlap_threshold) {
+      int min_size = (int)std::min(cand.idx.size(), accepted.idx.size());
+      if ((double)intersection_count / min_size > overlap_threshold) {
         keep = false;
         break;
       }
     }
 
     if (keep) {
+      int kept_idx = (int)filtered_networks.size();
       filtered_networks.push_back(cand);
+      for (int ni : cand.idx) node2kept[ni].push_back(kept_idx);
     }
   }
 
