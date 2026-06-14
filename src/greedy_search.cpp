@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <random>
 
 using namespace Rcpp;
 
@@ -49,7 +50,6 @@ struct Subnetwork {
   }
 };
 
-// Fast BFS running natively over a flattened flat graph structure
 void greedy_init_max_depth(
     const int* flat_nbrs, const int* nbr_offsets,
     int start_idx, int depth, SearchState& state
@@ -81,7 +81,6 @@ void greedy_init_max_depth(
   }
 }
 
-// Pure pointer-arithmetic recursive step (Zero Rcpp/R object access overhead)
 ExpandResult greedy_expand(
     const int* flat_nbrs, const int* nbr_offsets,
     const double* z_vec, const double* sc_means, const double* sc_stds,
@@ -103,8 +102,17 @@ ExpandResult greedy_expand(
     int start_offset = nbr_offsets[last_added];
     int end_offset = nbr_offsets[last_added + 1];
 
+    // Collect neighbors to shuffle them to mimic Java HashSet iteration
+    std::vector<int> neighbors;
+    neighbors.reserve(end_offset - start_offset);
     for (int i = start_offset; i < end_offset; ++i) {
-      int nb = flat_nbrs[i];
+      neighbors.push_back(flat_nbrs[i]);
+    }
+
+    std::mt19937 g(42);
+    std::shuffle(neighbors.begin(), neighbors.end(), g);
+
+    for (int nb : neighbors) {
       if (use_within && !state.within_vec[nb]) continue;
 
       if (!state.comp_members[nb]) {
@@ -145,7 +153,6 @@ ExpandResult greedy_expand(
   return {improved, best_score, size, zsum};
 }
 
-// Removal step over pure arrays
 double greedy_removal(
     SearchState& state, const double* z_vec,
     const double* sc_means, const double* sc_stds,
