@@ -63,10 +63,28 @@ build_network <- function(sif_path) {
     stop("SIF file must contain at least 3 columns.")
   }
 
-  edges <- sif[, c(1, 3)]
-  colnames(edges) <- c("source", "target")
+  src <- toupper(as.character(sif[[1]]))
+  tgt <- toupper(as.character(sif[[3]]))
 
-  g <- igraph::graph_from_data_frame(edges, directed = FALSE)
+  # Track first-seen insertion order for MC calibration.
+  all_mentioned <- c(rbind(src, tgt))
+  insertion_order <- all_mentioned[!duplicated(all_mentioned)]
+
+  # Remove self-loops and duplicate edges before handing off to igraph.
+  # Doing this here (rather than via igraph::simplify) preserves the vertex
+  # insertion order that igraph::graph_from_data_frame produces, which must
+  # match the SIF insertion order above.
+  keep <- src != tgt
+  src <- src[keep]
+  tgt <- tgt[keep]
+  keep2 <- !duplicated(paste0(pmin(src, tgt), "\x01", pmax(src, tgt)))
+  src <- src[keep2]
+  tgt <- tgt[keep2]
+
+  g <- igraph::graph_from_data_frame(
+    data.frame(source = src, target = tgt, stringsAsFactors = FALSE),
+    directed = FALSE
+  )
 
   node_names <- igraph::V(g)$name
   if (is.null(node_names)) node_names <- character(0)
@@ -74,11 +92,11 @@ build_network <- function(sif_path) {
   nbr <- lapply(igraph::adjacent_vertices(g, igraph::V(g)), igraph::as_ids)
   names(nbr) <- node_names
 
-  result <- list(
-    g       = g,
-    nodes   = node_names,
-    nbr     = nbr,
-    name2id = stats::setNames(seq_along(node_names), node_names)
+  list(
+    g               = g,
+    nodes           = node_names,
+    nbr             = nbr,
+    name2id         = stats::setNames(seq_along(node_names), node_names),
+    insertion_order = insertion_order
   )
-  return(result)
 }
