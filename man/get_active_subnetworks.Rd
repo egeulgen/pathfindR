@@ -5,7 +5,7 @@
 \title{Get Active Subnetworks}
 \usage{
 get_active_subnetworks(
-  input_for_search,
+  significant_genes,
   network,
   score_context,
   score_quan_thr = 0.8,
@@ -29,11 +29,7 @@ get_active_subnetworks(
 )
 }
 \arguments{
-\item{input_for_search}{input the input data that active subnetwork search uses. The input
-must be a data frame containing at least these 2 columns: \describe{
-  \item{GENE}{Gene Symbol}
-  \item{P_VALUE}{p value obtained through a test, e.g. differential expression/methylation}
-}}
+\item{significant_genes}{vector of significant genes for the experiment}
 
 \item{network}{Prebuilt network object as returned by \code{build_network()},
 built once by \code{active_snw_enrichment_wrapper} and passed to every
@@ -96,21 +92,17 @@ before returning final subnetworks.
 }
 \examples{
 \donttest{
-processed_df <- example_pathfindR_input[1:15, -2]
-colnames(processed_df) <- c("GENE", "P_VALUE")
+experiment_df <- example_pathfindR_input[1:15, c(1, 3)]
+colnames(experiment_df) <- c("gene", "pvalue")
 pin_path <- return_pin_path("KEGG")
 network <- build_network(pin_path)
-experiment_df <- data.frame(
-  gene = processed_df$GENE,
-  pvalue = processed_df$P_VALUE
-)
 score_context <- build_score_context(
   network,
   experiment_df,
   list(p_for_nonsignificant = 0.5, seed = 1234L)
 )
 GR_snws <- get_active_subnetworks(
-  processed_df,
+  significant_genes = experiment_df$gene,
   network = network,
   score_context = score_context
 )

@@ -6,10 +6,9 @@
 \usage{
 single_iter_wrapper(
   i = NULL,
-  input_processed,
   pin_path,
   network,
-  score_context,
+  experiment_df,
   score_quan_thr,
   sig_gene_thr,
   search_method,
@@ -36,17 +35,11 @@ single_iter_wrapper(
 \arguments{
 \item{i}{current iteration index (default = \code{NULL})}
 
-\item{input_processed}{processed input data frame}
-
 \item{pin_path}{path/to/PIN/file}
 
 \item{network}{Prebuilt network object as returned by \code{build_network()},
 built once by \code{active_snw_enrichment_wrapper} and passed to every
 iteration to avoid redundant PIN file I/O.}
-
-\item{score_context}{Prebuilt score context as returned by \code{build_score_context()},
-built once by \code{active_snw_enrichment_wrapper} and passed to every
-iteration to avoid redundant Monte-Carlo calibration.}
 
 \item{score_quan_thr}{active subnetwork score quantile threshold. Must be
 between 0 and 1 or set to -1 for not filtering. (Default = 0.8)}
