@@ -41,6 +41,8 @@ single_iter_wrapper(
 built once by \code{active_snw_enrichment_wrapper} and passed to every
 iteration to avoid redundant PIN file I/O.}
 
+\item{experiment_df}{input experiment data frame}
+
 \item{score_quan_thr}{active subnetwork score quantile threshold. Must be
 between 0 and 1 or set to -1 for not filtering. (Default = 0.8)}
 

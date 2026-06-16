@@ -218,6 +218,7 @@ active_snw_enrichment_wrapper <- function(
 #' Active Subnetwork Search + Enrichment Analysis Wrapper for a Single Iteration
 #'
 #' @param i current iteration index (default = \code{NULL})
+#' @param experiment_df input experiment data frame
 #' @inheritParams get_active_subnetworks
 #' @inheritParams enrichment_analyses
 #' @inheritParams active_snw_enrichment_wrapper
