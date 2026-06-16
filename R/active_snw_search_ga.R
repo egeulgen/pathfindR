@@ -9,24 +9,24 @@
 #' Build a GA individual from a logical genome
 #'
 #' Computes the connected subnetworks induced by the on-nodes and stores their
-#' scores (sorted descending) for fast fitness comparison.
+#' scores (sorted descending) for fast fitness comparison. The scores are
+#' obtained with the C++ component scorer over the precomputed CSR adjacency,
+#' which is the only thing the fitness comparison (\code{.ga_compare} /
+#' \code{.ga_sort_desc}) ever reads. The node membership of a genome is not
+#' materialised here — it is reconstructed once, for the best individual, at the
+#' end of \code{.genetic_algorithm()}.
 #'
-#' @param network A network from \code{build_network()}.
-#' @param sc A score context from \code{build_score_context()}.
 #' @param rep_logical A logical vector aligned to \code{network$nodes}
 #'   (\code{TRUE} = node on). May be empty.
+#' @param csr_offsets,csr_nbrs CSR adjacency from \code{build_network()}.
+#' @param z_vec Per-node z-scores aligned to the node order.
+#' @param means,stds Score-context calibration vectors.
 #'
-#' @return A list with elements \code{rep} (the genome), \code{subs} (the
-#'   score-sorted subnetwork objects) and \code{scores} (their scores).
-.ga_make_individual <- function(network, sc, rep_logical) {
-  on_names <- network$nodes[which(rep_logical)]
-  subs <- .sort_subnetworks_desc(.find_subnetworks(network, sc, on_names))
-  scores <- if (length(subs) == 0L) {
-    numeric(0)
-  } else {
-    vapply(subs, function(s) s$score, numeric(1))
-  }
-  list(rep = rep_logical, subs = subs, scores = scores)
+#' @return A list with elements \code{rep} (the genome) and \code{scores} (the
+#'   descending component scores).
+.ga_make_individual <- function(rep_logical, csr_offsets, csr_nbrs, z_vec, means, stds) {
+  scores <- component_scores_sorted(rep_logical, csr_offsets, csr_nbrs, z_vec, means, stds)
+  list(rep = rep_logical, scores = scores)
 }
 
 #' Fitness of an individual
@@ -223,6 +223,14 @@
 
   set.seed(params$seed)
 
+  # Precomputed inputs for the C++ component scorer (built once, reused for
+  # every individual evaluation).
+  z_vec <- as.numeric(sc$z[nodes])
+  means <- as.numeric(sc$means)
+  stds <- as.numeric(sc$stds)
+  offsets <- network$csr_offsets
+  nbrs <- network$csr_nbrs
+
   pop_size <- params$ga_population_size
   n_replace <- as.integer(pop_size * 0.1)
 
@@ -230,11 +238,11 @@
   population <- vector("list", pop_size)
   for (i in seq_len(pop_size)) {
     rep_i <- stats::runif(N) < params$gene_init_prob
-    population[[i]] <- .ga_make_individual(network, sc, rep_i)
+    population[[i]] <- .ga_make_individual(rep_i, offsets, nbrs, z_vec, means, stds)
   }
   if (isTRUE(params$start_with_all_positives)) {
     rep_pos <- as.numeric(sc$z[nodes]) > 0
-    population[[pop_size]] <- .ga_make_individual(network, sc, rep_pos)
+    population[[pop_size]] <- .ga_make_individual(rep_pos, offsets, nbrs, z_vec, means, stds)
   }
   population <- .ga_sort_desc(population)
 
@@ -258,8 +266,8 @@
         population[[i2]]$rep,
         params, "UNIFORM"
       )
-      new_pop[[length(new_pop) + 1L]] <- .ga_make_individual(network, sc, kids[[1L]])
-      new_pop[[length(new_pop) + 1L]] <- .ga_make_individual(network, sc, kids[[2L]])
+      new_pop[[length(new_pop) + 1L]] <- .ga_make_individual(kids[[1L]], offsets, nbrs, z_vec, means, stds)
+      new_pop[[length(new_pop) + 1L]] <- .ga_make_individual(kids[[2L]], offsets, nbrs, z_vec, means, stds)
     }
     if (length(new_pop) > pop_size) new_pop <- new_pop[seq_len(pop_size)]
     new_pop <- .ga_sort_desc(new_pop)
@@ -269,7 +277,7 @@
       if (n_replace >= 1L) {
         for (i in seq_len(n_replace)) {
           rep_r <- stats::runif(N) < params$gene_init_prob
-          new_pop[[pop_size - i + 1L]] <- .ga_make_individual(network, sc, rep_r)
+          new_pop[[pop_size - i + 1L]] <- .ga_make_individual(rep_r, offsets, nbrs, z_vec, means, stds)
         }
       }
       add_random_count <- 0L
@@ -306,5 +314,8 @@
     if (iter >= params$ga_iterations) running <- FALSE
   }
 
-  population[[1L]]$subs
+  # Materialise the best individual's subnetworks once (the search itself only
+  # ever needed the scores held on each individual).
+  best_rep <- population[[1L]]$rep
+  .sort_subnetworks_desc(.find_subnetworks(network, sc, nodes[which(best_rep)]))
 }

@@ -150,40 +150,43 @@ test_that("`single_iter_wrappers()` -- produces same results when same seed is s
   )
 
   ## When
-  seed_vals <- c(123, 456, 123)
-  results <- list()
-  for (idx in 1:3) {
-    results[[idx]] <- single_iter_wrapper(
-      i = seed_vals[idx],
-      pin_path = sif_file,
-      network = network,
-      experiment_df = toy_experiment_df,
-      score_quan_thr = 0.8,
-      sig_gene_thr = 0.02,
-      search_method = "GR",
-      verbose = FALSE,
-      start_with_all_positives = FALSE,
-      gene_init_prob = 0.1,
-      sa_initial_temp = 1,
-      sa_final_temp = 0.01,
-      sa_iterations = 10000,
-      ga_population_size = 400,
-      ga_iterations = 200,
-      ga_crossover_rate = 1,
-      ga_mutation_rate = 0,
-      gr_max_depth = 1,
-      gr_search_depth = 1,
-      gr_overlap_threshold = 0.5,
-      gr_subnetwork_num = 1000,
-      gset_list = mock_gset_list,
-      adj_method = "bonferroni",
-      enrichment_threshold = 0.05,
-      list_active_snw_genes = FALSE
-    )
+  for (search_method in c("GR", "SA", "GA")) {
+    seed_vals <- c(123, 456, 123)
+    results <- list()
+    for (idx in 1:3) {
+      results[[idx]] <- single_iter_wrapper(
+        i = seed_vals[idx],
+        pin_path = sif_file,
+        network = network,
+        experiment_df = toy_experiment_df,
+        score_quan_thr = 0.8,
+        sig_gene_thr = 0.02,
+        search_method = "GR",
+        verbose = FALSE,
+        start_with_all_positives = FALSE,
+        gene_init_prob = 0.1,
+        sa_initial_temp = 1,
+        sa_final_temp = 0.01,
+        sa_iterations = 10000,
+        ga_population_size = 400,
+        ga_iterations = 200,
+        ga_crossover_rate = 1,
+        ga_mutation_rate = 0,
+        gr_max_depth = 1,
+        gr_search_depth = 1,
+        gr_overlap_threshold = 0.5,
+        gr_subnetwork_num = 1000,
+        gset_list = mock_gset_list,
+        adj_method = "bonferroni",
+        enrichment_threshold = 0.05,
+        list_active_snw_genes = FALSE
+      )
+    }
+    ## Then
+    expect_false(identical(results[[1]], results[[2]]))
+    expect_identical(results[[1]], results[[3]])
   }
-  ## Then
-  expect_false(identical(results[[1]], results[[2]]))
-  expect_identical(results[[1]], results[[3]])
+
 })
 
 test_that("`active_snw_enrichment_wrapper()` -- argument checks work", {

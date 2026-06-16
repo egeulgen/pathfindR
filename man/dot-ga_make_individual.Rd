@@ -4,21 +4,28 @@
 \alias{.ga_make_individual}
 \title{Build a GA individual from a logical genome}
 \usage{
-.ga_make_individual(network, sc, rep_logical)
+.ga_make_individual(rep_logical, csr_offsets, csr_nbrs, z_vec, means, stds)
 }
 \arguments{
-\item{network}{A network from \code{build_network()}.}
-
-\item{sc}{A score context from \code{build_score_context()}.}
-
 \item{rep_logical}{A logical vector aligned to \code{network$nodes}
 (\code{TRUE} = node on). May be empty.}
+
+\item{csr_offsets, csr_nbrs}{CSR adjacency from \code{build_network()}.}
+
+\item{z_vec}{Per-node z-scores aligned to the node order.}
+
+\item{means, stds}{Score-context calibration vectors.}
 }
 \value{
-A list with elements \code{rep} (the genome), \code{subs} (the
-  score-sorted subnetwork objects) and \code{scores} (their scores).
+A list with elements \code{rep} (the genome) and \code{scores} (the
+  descending component scores).
 }
 \description{
 Computes the connected subnetworks induced by the on-nodes and stores their
-scores (sorted descending) for fast fitness comparison.
+scores (sorted descending) for fast fitness comparison. The scores are
+obtained with the C++ component scorer over the precomputed CSR adjacency,
+which is the only thing the fitness comparison (\code{.ga_compare} /
+\code{.ga_sort_desc}) ever reads. The node membership of a genome is not
+materialised here — it is reconstructed once, for the best individual, at the
+end of \code{.genetic_algorithm()}.
 }

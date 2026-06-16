@@ -17,7 +17,8 @@ A list with elements: \code{g} (an \code{igraph} graph),
   \code{nbr_idx} (list of 1-based neighbour-id vectors aligned to \code{nodes},
   in Java HashSet order, ready for \code{run_greedy_search()}) and
   \code{name2id} (named integer vector mapping node name to its index in
-  \code{nodes}).
+  \code{nodes}) and \code{csr_offsets} / \code{csr_nbrs} (a compressed
+  sparse-row, 0-based adjacency used by the SA / GA component scorer).
 }
 \description{
 Reads a Simple Interaction Format (SIF) file and converts it into an

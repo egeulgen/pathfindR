@@ -21,3 +21,11 @@ get_java_mc_calibration <- function(z_scores, trials = 2000L, seed = 1234L) {
     .Call(`_pathfindR_get_java_mc_calibration`, z_scores, trials, seed)
 }
 
+component_scores_sorted <- function(on, csr_offsets, csr_nbrs, z, means, stds) {
+    .Call(`_pathfindR_component_scores_sorted`, on, csr_offsets, csr_nbrs, z, means, stds)
+}
+
+component_labels <- function(on, csr_offsets, csr_nbrs) {
+    .Call(`_pathfindR_component_labels`, on, csr_offsets, csr_nbrs)
+}
+

@@ -57,7 +57,8 @@
 #'   \code{nbr_idx} (list of 1-based neighbour-id vectors aligned to \code{nodes},
 #'   in Java HashSet order, ready for \code{run_greedy_search()}) and
 #'   \code{name2id} (named integer vector mapping node name to its index in
-#'   \code{nodes}).
+#'   \code{nodes}) and \code{csr_offsets} / \code{csr_nbrs} (a compressed
+#'   sparse-row, 0-based adjacency used by the SA / GA component scorer).
 #'
 #' @export
 build_network <- function(sif_path) {
@@ -148,11 +149,29 @@ build_network <- function(sif_path) {
     vertices = data.frame(name = nodes, stringsAsFactors = FALSE)
   )
 
+  # --- CSR adjacency for the SA / GA component scorer -------------------------
+  # Flatten the (Java-ordered) per-node neighbour id lists into compressed
+  # sparse row form with 0-based ids, so component_scores_sorted() can scan the
+  # graph without any per-call allocation. Built once here and reused across all
+  # SA iterations / GA individual evaluations.
+  csr_offsets <- integer(N + 1L)
+  csr_offsets[1L] <- 0L
+  for (i in seq_len(N)) {
+    csr_offsets[i + 1L] <- csr_offsets[i] + length(nbr_idx[[i]])
+  }
+  csr_nbrs <- integer(csr_offsets[N + 1L])
+  if (length(csr_nbrs) > 0L) {
+    # nbr_idx holds 1-based ids; the C++ scorer expects 0-based.
+    csr_nbrs <- as.integer(unlist(nbr_idx, use.names = FALSE)) - 1L
+  }
+
   list(
-    g       = g,
-    nodes   = nodes,
-    nbr     = nbr,
-    nbr_idx = nbr_idx,
-    name2id = name2id
+    g           = g,
+    nodes       = nodes,
+    nbr         = nbr,
+    nbr_idx     = nbr_idx,
+    name2id     = name2id,
+    csr_offsets = csr_offsets,
+    csr_nbrs    = csr_nbrs
   )
 }
