@@ -78,32 +78,22 @@ active_snw_enrichment_wrapper <- function(input_processed, pin_path, gset_list, 
     gene_init_prob <- seq(from = 0.01, to = 0.2, length.out = iterations)
   }
 
-  ## Build the network and Monte-Carlo score context once, before any
-  ## iteration starts.  Both objects are identical across iterations:
-  ## the network depends only on the PIN file, and the MC calibration
-  ## (means/stds) depends only on network topology and the z-score
-  ## distribution derived from input_processed — neither changes between
-  ## iterations.  Only the per-iteration seed and gene_init_prob vary,
-  ## and those affect only the stochastic search itself, not the context.
-  message("## Building network and score context (once for all iterations)")
+  ## Build the network once, before any iteration starts.  The network depends
+  ## only on the PIN file, so it is genuinely identical across iterations and the
+  ## (expensive) SIF parse + Java-order reconstruction is done a single time.
+  message("## Building network (once for all iterations)")
   network <- build_network(pin_path)
 
-  ## Construct the base params needed by build_score_context.
-  ## seed = 1234L here is used only for the MC permutation; the actual
-  ## per-iteration search seed is supplied separately via single_iter_wrapper.
-  base_params <- list(
-    p_for_nonsignificant = 0.5,
-    seed                 = 1234L
-  )
+  ## Seed-independent experiment data frame consumed by build_score_context();
+  ## built once and passed to every iteration.
   experiment_df <- data.frame(
     gene = base::toupper(input_processed$GENE),
     pvalue = input_processed$P_VALUE
   )
-  score_context <- build_score_context(network, experiment_df, base_params)
 
   if (iterations == 1) {
     combined_res <- single_iter_wrapper(
-      i = NULL, input_processed, pin_path, network, score_context,
+      i = NULL, input_processed, pin_path, network, experiment_df,
       score_quan_thr, sig_gene_thr, search_method, verbose, start_with_all_positives,
       gene_init_prob, sa_initial_temp, sa_final_temp, sa_iterations, ga_population_size, ga_iterations, ga_crossover_rate,
       ga_mutation_rate, gr_max_depth, gr_search_depth, gr_overlap_threshold, gr_subnetwork_num, gset_list, adj_method,
@@ -119,7 +109,7 @@ active_snw_enrichment_wrapper <- function(input_processed, pin_path, gset_list, 
         .packages = "pathfindR"
       ) %dopar% {
         single_iter_wrapper(
-          i, input_processed, pin_path, network, score_context, score_quan_thr,
+          i, input_processed, pin_path, network, experiment_df, score_quan_thr,
           sig_gene_thr, search_method, verbose, start_with_all_positives,
           gene_init_prob, sa_initial_temp, sa_final_temp, sa_iterations, ga_population_size, ga_iterations,
           ga_crossover_rate, ga_mutation_rate, gr_max_depth, gr_search_depth, gr_overlap_threshold, gr_subnetwork_num,
@@ -131,7 +121,7 @@ active_snw_enrichment_wrapper <- function(input_processed, pin_path, gset_list, 
       combined_res <- c()
       for (i in 1:iterations) {
         current_res <- single_iter_wrapper(
-          i, input_processed, pin_path, network, score_context, score_quan_thr, sig_gene_thr,
+          i, input_processed, pin_path, network, experiment_df, score_quan_thr, sig_gene_thr,
           search_method, verbose, start_with_all_positives, gene_init_prob,
           sa_initial_temp, sa_final_temp, sa_iterations, ga_population_size, ga_iterations, ga_crossover_rate,
           ga_mutation_rate, gr_max_depth, gr_search_depth, gr_overlap_threshold, gr_subnetwork_num, gset_list,
@@ -152,17 +142,30 @@ active_snw_enrichment_wrapper <- function(input_processed, pin_path, gset_list, 
 #' @inheritParams active_snw_enrichment_wrapper
 #'
 #' @return Data frame of enrichment results using active subnetwork search results
-single_iter_wrapper <- function(i = NULL, input_processed, pin_path, network, score_context, score_quan_thr,
+single_iter_wrapper <- function(i = NULL, input_processed, pin_path, network, experiment_df, score_quan_thr,
                                 sig_gene_thr, search_method, verbose, start_with_all_positives, gene_init_prob,
                                 sa_initial_temp, sa_final_temp, sa_iterations, ga_population_size, ga_iterations, ga_crossover_rate, ga_mutation_rate, gr_max_depth,
                                 gr_search_depth, gr_overlap_threshold, gr_subnetwork_num, gset_list, adj_method, enrichment_threshold,
                                 list_active_snw_genes) {
+  ## Per-iteration seed.  Matches the original pathfindR, which runs the search
+  ## (and its Monte-Carlo calibration) with `-seedForRandom = i` on iteration i,
+  ## and with 1234 for a single (i = NULL) run.
+  iter_seed <- ifelse(is.null(i), 1234, i)
+
+  ## Build this iteration's score context with that seed.  The z-scores are
+  ## seed-independent; the means/stds (and hence the calibrated scores driving
+  ## the score-quantile filter) depend on the seed, which is what gives each
+  ## iteration a different — and collectively more diverse — set of subnetworks.
+  score_context <- build_score_context(
+    network, experiment_df,
+    list(p_for_nonsignificant = 0.5, seed = iter_seed)
+  )
+
   snws <- get_active_subnetworks(
     input_for_search = input_processed,
     score_quan_thr = score_quan_thr,
-    sig_gene_thr = sig_gene_thr, search_method = search_method, seed_for_stochastic_methods = ifelse(is.null(i),
-      1234, i
-    ), verbose = verbose, start_with_all_positives = start_with_all_positives,
+    sig_gene_thr = sig_gene_thr, search_method = search_method, seed_for_stochastic_methods = iter_seed,
+    verbose = verbose, start_with_all_positives = start_with_all_positives,
     gene_init_prob = ifelse(!is.null(i), gene_init_prob[i], gene_init_prob), sa_initial_temp = sa_initial_temp,
     sa_final_temp = sa_final_temp, sa_iterations = sa_iterations, ga_population_size = ga_population_size, ga_iterations = ga_iterations,
     ga_crossover_rate = ga_crossover_rate, ga_mutation_rate = ga_mutation_rate, gr_max_depth = gr_max_depth, gr_search_depth = gr_search_depth,
