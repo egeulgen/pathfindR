@@ -5,8 +5,9 @@
 //
 // Exact C++ replicas of the Java primitives that drive the active-subnetwork
 // search's deterministic ordering and random-number generation.  Pulled into
-// a single header so that greedy_search.cpp, score_calculation_utils.cpp, and
-// any future algorithm file can share one authoritative copy.
+// a single header for re-usability.
+//
+// see: https://tinyurl.com/java-implementation
 //
 // Every routine here has been validated bit-for-bit against
 // ActiveSubnetworkSearch.jar (OpenJDK 21):
@@ -14,22 +15,9 @@
 //   * java_string_hashcode  — Java String.hashCode()
 //   * java_spread           — HashMap internal hash spreading (h ^ h>>>16)
 //   * java_cap_for          — HashMap/HashSet table capacity for a given size
-//   * java_iteration_order  — HashMap/HashSet key/element iteration order
-//   * java_node_order       — Rcpp export: networkNodeList order from SIF edges
-//   * java_neighbour_order  — Rcpp export: per-node HashSet neighbour order
 //   * JavaRandom            — java.util.Random (48-bit LCG)
 //   * java_shuffle          — Collections.shuffle(list, rnd)
 //
-// Validation summary
-// ------------------
-// Ordering model  : 2 000 / 2 000 random HashSets across every resize boundary
-//                   (12→13, 24→25, 48→49, 96→97, …) — zero mismatches.
-// JavaRandom      : nextInt and shuffle sequences match Java reference output
-//                   bit-for-bit.
-// Node / neighbour order : reproduced from SIF with zero mismatches on graphs
-//                   up to 300 nodes / 2 500 edges.
-// MC calibration  : means/stds match Java to 10 decimal digits (only the
-//                   size-N std differs in the last ULP, where variance ≈ 0).
 // =============================================================================
 
 #include <Rcpp.h>
@@ -70,23 +58,6 @@ static inline int java_cap_for(int size) {
   int cap = 16;
   while (size > static_cast<int>(cap * 0.75)) cap <<= 1;
   return cap;
-}
-
-// Given precomputed Java String.hashCode values in *insertion order*, return
-// the indices that put elements into Java HashSet/HashMap iteration order.
-// Stable sort ensures ties keep their original insertion order.
-static std::vector<int> java_iteration_order(
-    const std::vector<int>& hashes_in_insertion_order) {
-  int N   = static_cast<int>(hashes_in_insertion_order.size());
-  int cap = java_cap_for(N);
-  std::vector<int> idx(N);
-  for (int i = 0; i < N; ++i) idx[i] = i;
-  std::stable_sort(idx.begin(), idx.end(), [&](int a, int b) {
-    int ba = java_spread(hashes_in_insertion_order[a]) & (cap - 1);
-    int bb = java_spread(hashes_in_insertion_order[b]) & (cap - 1);
-    return ba < bb;
-  });
-  return idx;
 }
 
 // -----------------------------------------------------------------------------

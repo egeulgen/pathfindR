@@ -2,10 +2,11 @@
 #include <cmath>
 #include <stdexcept>
 
-// ---------------------------------------------------------
-// 1. EXACT REPLICATION OF JAVA Z-STATISTICS
 // Porting from earlier Java implementation to match behaviour
 // see: https://tinyurl.com/java-implementation
+
+// ---------------------------------------------------------
+// 1. EXACT REPLICATION OF JAVA Z-STATISTICS
 // ---------------------------------------------------------
 
 // Helper function from ZStatistics.java

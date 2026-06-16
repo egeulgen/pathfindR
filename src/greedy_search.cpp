@@ -3,7 +3,6 @@
 #include <deque>
 
 
-
 // Reusable allocation structures
 struct SearchState {
   std::vector<bool> comp_members;
