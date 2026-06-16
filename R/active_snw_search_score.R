@@ -1,8 +1,19 @@
 #' Build the score context
 #'
-#' Computes per-node z-scores from the experiment p-values and the
-#' Monte-Carlo mean / standard deviation of the raw subnetwork score at every
-#' possible subnetwork size, which are used to calibrate (normalise) scores.
+#' Computes per-node z-scores from the experiment p-values and the Monte-Carlo
+#' mean / standard deviation of the raw subnetwork score at every possible
+#' subnetwork size, used to calibrate (normalise) scores.
+#'
+#' The Monte-Carlo step is an exact replica of the Java reference's
+#' \code{ScoreCalculations.calculateMeanAndStdForMonteCarlo}: it shuffles the
+#' z-score vector 2000 times with a \code{java.util.Random}-equivalent generator
+#' and Fisher-Yates shuffle (see \code{get_java_mc_calibration()} in
+#' \file{score_calculation_utils.cpp}). Because \code{Collections.shuffle} starts
+#' from \code{networkNodeList} order, the z-score vector MUST be in Java node
+#' order; \code{network$nodes} (from \code{build_network()}) provides exactly that,
+#' so \code{z} is built over it directly. With the matching seed this reproduces
+#' the Java means/stds to floating-point precision, which is what aligns the
+#' calibrated scores and rankings with the Java output.
 #'
 #' P-values are clamped to a safe range, the smallest p-value is kept when a
 #' gene appears more than once, and network nodes without a p-value are given
@@ -10,7 +21,8 @@
 #'
 #' @param network A network as returned by \code{build_network()}.
 #' @param experiment A data frame of gene / p-value pairs.
-#' @param params A list of run parameters.
+#' @param params A list of run parameters. \code{params$seed} must match the Java
+#'   \code{-seedForRandom} value (Java default 1234) for identical calibration.
 #'
 #' @return A list with elements \code{z} (named z-score vector),
 #'   \code{means} and \code{stds} (numeric vectors indexed by subnetwork size),
@@ -43,7 +55,7 @@ build_score_context <- function(network, experiment, params) {
   z_vec <- get_java_zscores(as.numeric(pmap))
   z <- stats::setNames(z_vec, nodes)
 
-  # Use the C++ Monte Carlo implementation
+  # Exact Java Monte-Carlo replica. z_vec is in Java node order (network$nodes)
   mc_data <- get_java_mc_calibration(z_vec, trials = 2000, seed = params$seed)
 
   list(

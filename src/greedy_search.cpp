@@ -1,11 +1,8 @@
-#include <Rcpp.h>
+#include "java_compat.h"
 #include <cmath>
-#include <vector>
-#include <string>
-#include <algorithm>
-#include <random>
+#include <deque>
 
-using namespace Rcpp;
+
 
 // Reusable allocation structures
 struct SearchState {
@@ -15,6 +12,11 @@ struct SearchState {
   std::vector<int> node2dep_count;
   std::vector<bool> within_vec;
   std::vector<int> dist;
+
+  // Insertion order into the Java `removableNodes` HashSet, so the removal
+  // worklist can be initialised in Java's HashSet iteration order.
+  std::vector<int> removable_ins_order;   // insertion rank per node (-1 if not inserted)
+  int removable_ins_counter;
 
   std::vector<int> frontier;
   std::vector<int> next_frontier;
@@ -26,6 +28,8 @@ struct SearchState {
     std::fill(node2dep_count.begin(), node2dep_count.end(), 0);
     std::fill(within_vec.begin(), within_vec.end(), false);
     std::fill(dist.begin(), dist.end(), 0);
+    std::fill(removable_ins_order.begin(), removable_ins_order.end(), -1);
+    removable_ins_counter = 0;
     frontier.clear();
     next_frontier.clear();
   }
@@ -116,6 +120,11 @@ ExpandResult greedy_expand(
 
         state.comp_members[nb] = true;
         state.removable_vec[nb] = true;
+        // Record the order this node entered the removableNodes set (Java adds
+        // it via removableNodes.add(newNeighbor) at this point).
+        if (state.removable_ins_order[nb] < 0) {
+          state.removable_ins_order[nb] = state.removable_ins_counter++;
+        }
 
         ExpandResult res = greedy_expand(
           flat_nbrs, nbr_offsets, z_vec, sc_means, sc_stds, use_within,
@@ -150,16 +159,37 @@ ExpandResult greedy_expand(
 double greedy_removal(
     SearchState& state, const double* z_vec,
     const double* sc_means, const double* sc_stds,
-    int& size, double& zsum, double best_score, int n_nodes
+    int& size, double& zsum, double best_score, int n_nodes,
+    const int* node_hash
 ) {
-  std::vector<int> removable_list;
-  for (int cur = 0; cur < n_nodes; ++cur) {
-    if (state.removable_vec[cur]) {
-      removable_list.push_back(cur);
-    }
-  }
+  // Java does: LinkedList list = new LinkedList(removableNodes); then processes
+  // from the front, and may APPEND a predecessor mid-pass when it becomes
+  // removable. We reproduce both (a) the initial order = Java HashSet iteration
+  // order of removableNodes, and (b) the dynamic append behaviour.
 
-  for (int cur : removable_list) {
+  // (a) Collect removable nodes and order them as Java's HashSet would iterate.
+  std::vector<int> rem;
+  for (int cur = 0; cur < n_nodes; ++cur) {
+    if (state.removable_vec[cur]) rem.push_back(cur);
+  }
+  // First arrange by insertion order, then stable-sort by bucket index using the
+  // capacity for this set's size -- exactly the HashSet iteration model.
+  std::sort(rem.begin(), rem.end(), [&](int a, int b) {
+    return state.removable_ins_order[a] < state.removable_ins_order[b];
+  });
+  int cap = java_cap_for((int)rem.size());
+  std::stable_sort(rem.begin(), rem.end(), [&](int a, int b) {
+    int ba = java_spread(node_hash[a]) & (cap - 1);
+    int bb = java_spread(node_hash[b]) & (cap - 1);
+    return ba < bb;
+  });
+
+  std::deque<int> work(rem.begin(), rem.end());
+
+  while (!work.empty()) {
+    int cur = work.front();
+    work.pop_front();
+
     int new_size = size - 1;
     double new_zsum = zsum - z_vec[cur];
     double new_score = (new_size <= 1) ? 0.0 :
@@ -172,14 +202,12 @@ double greedy_removal(
       state.comp_members[cur] = false;
       int pred = state.node2predecessor[cur] - 1;
       if (pred >= 0) {
-        int dep = state.node2dep_count[pred] - 1;
-        if (dep == 0) {
-          state.removable_vec[pred] = true;
-        } else {
-          state.node2dep_count[pred] = dep;
+        if (--state.node2dep_count[pred] == 0) {
+          work.push_back(pred);              // predecessor now removable (Java appends)
         }
       }
     }
+    // else: node stays in the component (Java re-adds it); nothing to do.
   }
   return best_score;
 }
@@ -190,6 +218,14 @@ List run_greedy_search(
     CharacterVector node_names, int max_depth, int search_depth, int n_nodes,
     double overlap_threshold, int subnetwork_num
 ) {
+  // Per-node Java String.hashCode, used to reproduce the HashSet iteration order
+  // of the removableNodes set inside greedy_removal. node_names is in Java order.
+  std::vector<int> node_hash(n_nodes);
+  for (int i = 0; i < n_nodes; ++i) {
+    node_hash[i] = java_string_hashcode(as<std::string>(node_names[i]));
+  }
+  const int* p_node_hash = node_hash.data();
+
   // 1. Flatten the R List into contiguous standard vectors
   std::vector<int> flat_nbrs;
   std::vector<int> nbr_offsets(n_nodes + 1, 0);
@@ -229,6 +265,7 @@ List run_greedy_search(
   state.node2dep_count.resize(n_nodes);
   state.within_vec.resize(n_nodes);
   state.dist.resize(n_nodes);
+  state.removable_ins_order.resize(n_nodes);
 
   bool use_within = (max_depth > 0);
 
@@ -250,7 +287,8 @@ List run_greedy_search(
     );
 
     double final_best = greedy_removal(
-      state, p_z_vec, p_sc_means, p_sc_stds, res.size, res.zsum, res.best_score, n_nodes
+      state, p_z_vec, p_sc_means, p_sc_stds, res.size, res.zsum, res.best_score, n_nodes,
+      p_node_hash
     );
 
     if (final_best > 0) {
@@ -274,22 +312,35 @@ List run_greedy_search(
     }
   }
 
-  // 3. Unique filtering
-  std::vector<Subnetwork> unique_candidates;
-  unique_candidates.reserve(n_nodes);
-
-  std::sort(seed_best_subnetworks.begin(), seed_best_subnetworks.end(), [](const Subnetwork& a, const Subnetwork& b){
-    return a.idx < b.idx;
-  });
-
-  for (int i = 0; i < n_nodes; ++i) {
-    if (seed_best_subnetworks[i].idx.empty()) continue;
-    if (i == 0 || seed_best_subnetworks[i].idx != seed_best_subnetworks[i-1].idx) {
-      unique_candidates.push_back(seed_best_subnetworks[i]);
+  // 3. Build the candidate list exactly as Java does.
+  //
+  // Java collects `new ArrayList<>(node2BestComponent.values())`. Because every
+  // node is used as a seed and the seed is never removable, each node's final
+  // component always contains that node, so node2BestComponent ends up with an
+  // entry for EVERY node. Its values() therefore has one entry per node, with
+  // duplicate Subnetwork references where several nodes share the same best
+  // component. The map's key set is all nodes, so its bucket-iteration order
+  // equals networkNodeList order -- i.e. the order of `node_names` here.
+  //
+  // We therefore emit one entry per node, in node order, WITHOUT de-duplicating.
+  // (A node whose best component is size<2 or score<=0 was never recorded, which
+  // is equivalent to Java's post-sort prefilter that strips those out.)
+  // Keeping the duplicates is essential: the overlap filter below collapses them
+  // (overlap 1.0), and the Java off-by-one drops the final entry of THIS list.
+  std::vector<Subnetwork> candidates;
+  candidates.reserve(n_nodes);
+  for (int nd = 0; nd < n_nodes; ++nd) {
+    if (has_valid_subnetwork[nd]) {
+      candidates.push_back(seed_best_subnetworks[nd]);
     }
   }
 
-  std::sort(unique_candidates.begin(), unique_candidates.end());
+  // Java: Collections.sort(list, Collections.reverseOrder()) where
+  // Subnetwork.compareTo returns signum(this.score - other.score). That is a
+  // score-only, stable descending sort; ties keep the values() order (node
+  // order). std::stable_sort with a score-only comparator reproduces it.
+  std::stable_sort(candidates.begin(), candidates.end(),
+                   [](const Subnetwork& a, const Subnetwork& b){ return a.score > b.score; });
 
   // 4. Overlap filtering with inverted index.
   // For each kept subnetwork we record which nodes it owns. For each new
@@ -301,7 +352,16 @@ List run_greedy_search(
 
   std::vector<std::vector<int>> node2kept(n_nodes + 1);
 
-  for (const auto& cand : unique_candidates) {
+  // NOTE: the Java reference loops `while (i < subnetworkList.size() - 1 ...)`,
+  // so the LAST (lowest-scoring) entry of the sorted candidate list is never
+  // visited as the outer subnetwork and is silently dropped. We reproduce that
+  // off-by-one exactly by iterating only up to candidates.size() - 1.
+  // (Behaviour-matching the frozen Java jar, even though dropping the final
+  // candidate is arguably a bug there.)
+  int last_cand = (int)candidates.size() - 1;   // exclusive bound -> skips final entry
+
+  for (int ci = 0; ci < last_cand; ++ci) {
+    const auto& cand = candidates[ci];
     if ((int)filtered_networks.size() >= subnetwork_num) break;
 
     // Collect the set of already-kept subnetworks that share any node

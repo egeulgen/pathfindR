@@ -29,18 +29,17 @@
   sc_means <- as.numeric(score_context$means)
   sc_stds <- as.numeric(score_context$stds)
 
-  # Build the neighbour index sorted by ascending z-score. The greedy expansion
-  # tries neighbours in order and keeps the first one whose addition improves
-  # the score. Placing low-z (non-significant) neighbours first means they are
-  # evaluated and quickly rejected, so the expansion reaches high-z neighbours
-  # while best_score is still low -- giving them the best chance to register as
-  # score-improving and be included. This is order-independent of the arbitrary
-  # edge-list order from igraph and materially increases overlap with the
-  # original Java implementation of active subnetwork search
-  # (pathfindR <= v2.X.Y).
-  nbr_raw <- lapply(igraph::adjacent_vertices(network$g, igraph::V(network$g)), as.integer)
-  nbr_idx <- lapply(nbr_raw, function(ids) ids[order(z_vec[ids], decreasing = FALSE)])
-
+  # Neighbour iteration order is taken directly from build_network()'s
+  # reconstruction of Java's per-node HashSet iteration order (network$nbr_idx,
+  # 1-based ids aligned to `nodes`). This replaces the earlier heuristic that
+  # sorted neighbours by ascending z-score: to match the Java reference exactly
+  # the greedy expansion must visit neighbours in the same order Java does, which
+  # is the HashSet order, not a score-based order. `nodes` is already in Java's
+  # networkNodeList order, so seeds are processed in the same order too.
+  nbr_idx <- network$nbr_idx
+  if (is.null(nbr_idx)) {
+    stop("network$nbr_idx is missing; rebuild the network with build_network().")
+  }
 
   if (verbose) message("Running greedy search in C++...")
   candidates <- run_greedy_search(

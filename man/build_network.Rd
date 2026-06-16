@@ -8,17 +8,35 @@ build_network(sif_path)
 }
 \arguments{
 \item{sif_path}{Character string specifying the path to the SIF file.
-The file should be tab-delimited and contain at least 3 columns.}
+The file should be whitespace/tab-delimited with 2 or 3 columns.}
 }
 \value{
 A list with elements: \code{g} (an \code{igraph} graph),
-  \code{nodes} (character vector of node names in graph order),
-  \code{nbr} (named list of neighbour-name vectors) and \code{name2id}
-  (named integer vector mapping node name to vertex id).
+  \code{nodes} (node names in Java \code{networkNodeList} order),
+  \code{nbr} (named list of neighbour-name vectors in Java HashSet order),
+  \code{nbr_idx} (list of 1-based neighbour-id vectors aligned to \code{nodes},
+  in Java HashSet order, ready for \code{run_greedy_search()}) and
+  \code{name2id} (named integer vector mapping node name to its index in
+  \code{nodes}).
 }
 \description{
 Reads a Simple Interaction Format (SIF) file and converts it into an
-undirected \code{\link[igraph]{igraph}} graph object. The SIF file is expected to
-contain at least three columns where the first and third columns represent
-interacting genes or nodes. The second column (interaction type) is ignored.
+undirected \code{\link[igraph]{igraph}} graph object. Following the Java
+reference's SIFReader, the column count is taken from the first line: a 2-column
+file uses columns 1 and 2 as the interacting nodes, a 3-column file uses columns
+1 and 3 (the middle interaction-type column is ignored). Node names are
+upper-cased and self-interactions are discarded.
+}
+\details{
+To reproduce the Java implementation's greedy search bit-for-bit, this function
+also reconstructs two order-sensitive structures that the Java code derives from
+its HashMap/HashSet traversal:
+  * \code{nodes}: the node order of Java's \code{networkNodeList}
+    (\code{adjacency.keySet()} iteration order), via \code{java_node_order()}.
+  * \code{nbr_idx}: per-node neighbour lists in Java's \code{HashSet} iteration
+    order, via \code{java_neighbour_order()}.
+These orders drive both the Monte-Carlo calibration (which shuffles z-scores in
+node order) and the greedy expansion/removal, so matching them is what makes the
+R/C++ output align with the Java reference. The \code{igraph} object is retained
+for the SA / GA algorithms, whose component scoring is order-independent.
 }

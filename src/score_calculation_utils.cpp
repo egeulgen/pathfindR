@@ -1,11 +1,6 @@
-#include <Rcpp.h>
+#include "java_compat.h"
 #include <cmath>
-#include <vector>
-#include <random>
-#include <algorithm>
 #include <stdexcept>
-
-using namespace Rcpp;
 
 // ---------------------------------------------------------
 // 1. EXACT REPLICATION OF JAVA Z-STATISTICS
@@ -52,28 +47,39 @@ NumericVector get_java_zscores(NumericVector pvals) {
 
 
 // ---------------------------------------------------------
-// 2. MONTE CARLO BACKGROUND DISTRIBUTION
+// 2. MONTE CARLO BACKGROUND DISTRIBUTION (exact Java replica)
+//
+// IMPORTANT: z_scores MUST be supplied in Java's networkNodeList order
+// (i.e. adjacency.keySet() iteration order, reconstructed on the R side by
+// .java_node_order()). Collections.shuffle starts from that arrangement, so a
+// different starting order with the same seed yields different permutations and
+// therefore different means/stds. With the correct order this reproduces the
+// Java means/stds to floating-point precision.
 // ---------------------------------------------------------
 
 // [[Rcpp::export]]
-List get_java_mc_calibration(NumericVector z_scores, int trials = 2000, int seed = 42) {
+List get_java_mc_calibration(NumericVector z_scores, int trials = 2000, int seed = 1234) {
   int n = z_scores.size();
 
   // Internal accumulators use n+1 to map directly to subnetwork sizes
   std::vector<double> samplingScoreSums(n + 1, 0.0);
   std::vector<double> samplingScoreSquareSums(n + 1, 0.0);
 
+  // Copy z-scores; this vector is shuffled in place each trial.
   std::vector<double> z_vec = as<std::vector<double>>(z_scores);
-  std::mt19937 gen(seed);
+
+  JavaRandom rng(seed);
 
   for (int trial = 0; trial < trials; ++trial) {
-    std::shuffle(z_vec.begin(), z_vec.end(), gen);
+    java_shuffle(z_vec, rng);
 
     double zSum = 0.0;
     for (int i = 0; i < n; ++i) {
       zSum += z_vec[i];
       int numberOfNodesInSubnetwork = i + 1;
 
+      // Java's calculateScoreOfSubnetwork returns 0 for size-1; sizes > 1 use
+      // the raw zSum/sqrt(k) here (normalisation is off during calibration).
       if (numberOfNodesInSubnetwork > 1) {
         double score = zSum / std::sqrt((double)numberOfNodesInSubnetwork);
         samplingScoreSums[numberOfNodesInSubnetwork] += score;
@@ -82,7 +88,8 @@ List get_java_mc_calibration(NumericVector z_scores, int trials = 2000, int seed
     }
   }
 
-  // Output vectors are size n to match C++ greedy_expand 0-based lookup
+  // Output vectors are size n; index i represents subnetwork size (i+1),
+  // matching the 0-based lookup in greedy_expand (sc_means[new_size - 1]).
   NumericVector samplingScoreMeans(n);
   NumericVector samplingScoreStds(n);
 
@@ -91,13 +98,14 @@ List get_java_mc_calibration(NumericVector z_scores, int trials = 2000, int seed
 
     if (size == 1) {
       samplingScoreMeans[i] = 0.0;
-      // Failsafe: Set std to 1.0 instead of 0.0 to strictly prevent div-by-zero
-      // even though size 1 networks are bypassed in scoring.
+      // Size-1 networks score 0 and are bypassed; 1.0 guards against div-by-zero.
       samplingScoreStds[i] = 1.0;
     } else {
       double mean = samplingScoreSums[size] / trials;
       samplingScoreMeans[i] = mean;
 
+      // var = E[x^2] - E[x]^2, matching the Java accumulation, with Java's
+      // identical 1e-7 stabiliser inside the sqrt.
       double var = (samplingScoreSquareSums[size] / trials) - (mean * mean);
       samplingScoreStds[i] = std::sqrt(var + 0.0000001);
     }

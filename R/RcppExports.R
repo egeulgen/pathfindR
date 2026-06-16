@@ -5,11 +5,19 @@ run_greedy_search <- function(nbr_idx, z_vec, sc_means, sc_stds, node_names, max
     .Call(`_pathfindR_run_greedy_search`, nbr_idx, z_vec, sc_means, sc_stds, node_names, max_depth, search_depth, n_nodes, overlap_threshold, subnetwork_num)
 }
 
+java_node_order <- function(src, tgt) {
+    .Call(`_pathfindR_java_node_order`, src, tgt)
+}
+
+java_neighbour_order <- function(nbr_insertion_ids, nbr_insertion_names) {
+    .Call(`_pathfindR_java_neighbour_order`, nbr_insertion_ids, nbr_insertion_names)
+}
+
 get_java_zscores <- function(pvals) {
     .Call(`_pathfindR_get_java_zscores`, pvals)
 }
 
-get_java_mc_calibration <- function(z_scores, trials = 2000L, seed = 42L) {
+get_java_mc_calibration <- function(z_scores, trials = 2000L, seed = 1234L) {
     .Call(`_pathfindR_get_java_mc_calibration`, z_scores, trials, seed)
 }
 

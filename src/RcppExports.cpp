@@ -30,6 +30,30 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// java_node_order
+CharacterVector java_node_order(CharacterVector src, CharacterVector tgt);
+RcppExport SEXP _pathfindR_java_node_order(SEXP srcSEXP, SEXP tgtSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< CharacterVector >::type src(srcSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type tgt(tgtSEXP);
+    rcpp_result_gen = Rcpp::wrap(java_node_order(src, tgt));
+    return rcpp_result_gen;
+END_RCPP
+}
+// java_neighbour_order
+IntegerVector java_neighbour_order(IntegerVector nbr_insertion_ids, CharacterVector nbr_insertion_names);
+RcppExport SEXP _pathfindR_java_neighbour_order(SEXP nbr_insertion_idsSEXP, SEXP nbr_insertion_namesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< IntegerVector >::type nbr_insertion_ids(nbr_insertion_idsSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type nbr_insertion_names(nbr_insertion_namesSEXP);
+    rcpp_result_gen = Rcpp::wrap(java_neighbour_order(nbr_insertion_ids, nbr_insertion_names));
+    return rcpp_result_gen;
+END_RCPP
+}
 // get_java_zscores
 NumericVector get_java_zscores(NumericVector pvals);
 RcppExport SEXP _pathfindR_get_java_zscores(SEXP pvalsSEXP) {
@@ -57,6 +81,8 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_pathfindR_run_greedy_search", (DL_FUNC) &_pathfindR_run_greedy_search, 10},
+    {"_pathfindR_java_node_order", (DL_FUNC) &_pathfindR_java_node_order, 2},
+    {"_pathfindR_java_neighbour_order", (DL_FUNC) &_pathfindR_java_neighbour_order, 2},
     {"_pathfindR_get_java_zscores", (DL_FUNC) &_pathfindR_get_java_zscores, 1},
     {"_pathfindR_get_java_mc_calibration", (DL_FUNC) &_pathfindR_get_java_mc_calibration, 3},
     {NULL, NULL, 0}
