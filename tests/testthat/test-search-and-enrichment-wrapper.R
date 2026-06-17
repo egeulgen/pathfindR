@@ -241,5 +241,5 @@ test_that("`active_snw_enrichment_wrapper()` -- argument checks work", {
     input_processed = mock_input,
     pin_path = mock_pin_path, gset_list = list(), enrichment_threshold = 0.05, list_active_snw_genes = FALSE,
     n_processes = 0
-  ), "`n_processes` should be > 1")
+  ), "`n_processes` should be >= 1")
 })

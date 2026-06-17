@@ -60,7 +60,7 @@ active_snw_enrichment_wrapper <- function(
       stop("`n_processes` should be either NULL or a positive integer")
     }
     if (n_processes < 1) {
-      stop("`n_processes` should be > 1")
+      stop("`n_processes` should be >= 1")
     }
   }
 
