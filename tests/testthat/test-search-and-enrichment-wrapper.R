@@ -186,7 +186,6 @@ test_that("`single_iter_wrappers()` -- produces same results when same seed is s
     expect_false(identical(results[[1]], results[[2]]))
     expect_identical(results[[1]], results[[3]])
   }
-
 })
 
 test_that("`active_snw_enrichment_wrapper()` -- argument checks work", {

@@ -76,7 +76,7 @@
       if (length(new_scores) > 0L) {
         cur_scores <- new_scores
       } else {
-        on[idx] <- !on[idx]   # revert: neither state has subnetworks
+        on[idx] <- !on[idx] # revert: neither state has subnetworks
       }
       Temp <- Temp * (1 - temp_step)
       next
