@@ -28,8 +28,6 @@
     return(list())
   }
 
-  set.seed(params$seed)
-
   z <- sc$z[nodes]
   on <- stats::setNames(logical(N), nodes)
 
