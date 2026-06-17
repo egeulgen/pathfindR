@@ -54,6 +54,13 @@ static inline int java_spread(int h) {
 
 // HashMap/HashSet table capacity for `size` elements
 //   cap = 16;  while (size > cap * 0.75) cap *= 2;
+// NOTE: parity holds only for the linked-list bucket model.
+// Java treeifies a bucket when it reaches >= 8 entries *and* the table
+// capacity is >= 64, at which point iteration order becomes tree order and
+// would diverge from this reconstruction.  At load factor 0.75 this
+// requires a bucket collision run of 8+, which is astronomically unlikely
+// for String.hashCode values on realistic gene/protein names, so in
+// practice this is never triggered.
 static inline int java_cap_for(int size) {
   int cap = 16;
   while (size > static_cast<int>(cap * 0.75)) cap <<= 1;
