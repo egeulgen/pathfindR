@@ -17,7 +17,12 @@ jobs:
 
       - name: Run Branch Naming Policy Action
         uses: nicklegan/github-repo-branch-naming-policy-action@v1.1.1
-        if: github.ref_type == 'branch' || github.ref_type == 'pull_request'
+        if: |
+          github.ref_type == 'branch' ||
+          (
+            github.event_name == 'pull_request' &&
+            !github.event.pull_request.head.repo.fork
+          )
         with:
           token: ${{ secrets.REPO_TOKEN }}
           regex: '^(feature|fix|docs|refactor|test|release|chore|experiment)\/[a-zA-Z0-9-]+$'
