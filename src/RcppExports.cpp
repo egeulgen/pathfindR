@@ -78,6 +78,28 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// run_simulated_annealing
+LogicalVector run_simulated_annealing(IntegerVector csr_offsets, IntegerVector csr_nbrs, NumericVector z, NumericVector means, NumericVector stds, int n_nodes, double gene_init_prob, bool start_with_all_positives, double sa_initial_temp, double sa_final_temp, int sa_iterations, int seed);
+RcppExport SEXP _pathfindR_run_simulated_annealing(SEXP csr_offsetsSEXP, SEXP csr_nbrsSEXP, SEXP zSEXP, SEXP meansSEXP, SEXP stdsSEXP, SEXP n_nodesSEXP, SEXP gene_init_probSEXP, SEXP start_with_all_positivesSEXP, SEXP sa_initial_tempSEXP, SEXP sa_final_tempSEXP, SEXP sa_iterationsSEXP, SEXP seedSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< IntegerVector >::type csr_offsets(csr_offsetsSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type csr_nbrs(csr_nbrsSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type z(zSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type means(meansSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type stds(stdsSEXP);
+    Rcpp::traits::input_parameter< int >::type n_nodes(n_nodesSEXP);
+    Rcpp::traits::input_parameter< double >::type gene_init_prob(gene_init_probSEXP);
+    Rcpp::traits::input_parameter< bool >::type start_with_all_positives(start_with_all_positivesSEXP);
+    Rcpp::traits::input_parameter< double >::type sa_initial_temp(sa_initial_tempSEXP);
+    Rcpp::traits::input_parameter< double >::type sa_final_temp(sa_final_tempSEXP);
+    Rcpp::traits::input_parameter< int >::type sa_iterations(sa_iterationsSEXP);
+    Rcpp::traits::input_parameter< int >::type seed(seedSEXP);
+    rcpp_result_gen = Rcpp::wrap(run_simulated_annealing(csr_offsets, csr_nbrs, z, means, stds, n_nodes, gene_init_prob, start_with_all_positives, sa_initial_temp, sa_final_temp, sa_iterations, seed));
+    return rcpp_result_gen;
+END_RCPP
+}
 // component_scores_sorted
 NumericVector component_scores_sorted(LogicalVector on, IntegerVector csr_offsets, IntegerVector csr_nbrs, NumericVector z, NumericVector means, NumericVector stds);
 RcppExport SEXP _pathfindR_component_scores_sorted(SEXP onSEXP, SEXP csr_offsetsSEXP, SEXP csr_nbrsSEXP, SEXP zSEXP, SEXP meansSEXP, SEXP stdsSEXP) {
@@ -114,6 +136,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_pathfindR_java_neighbour_order", (DL_FUNC) &_pathfindR_java_neighbour_order, 2},
     {"_pathfindR_get_java_zscores", (DL_FUNC) &_pathfindR_get_java_zscores, 1},
     {"_pathfindR_get_java_mc_calibration", (DL_FUNC) &_pathfindR_get_java_mc_calibration, 3},
+    {"_pathfindR_run_simulated_annealing", (DL_FUNC) &_pathfindR_run_simulated_annealing, 12},
     {"_pathfindR_component_scores_sorted", (DL_FUNC) &_pathfindR_component_scores_sorted, 6},
     {"_pathfindR_component_labels", (DL_FUNC) &_pathfindR_component_labels, 3},
     {NULL, NULL, 0}

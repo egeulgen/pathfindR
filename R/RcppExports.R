@@ -21,6 +21,10 @@ get_java_mc_calibration <- function(z_scores, trials = 2000L, seed = 1234L) {
     .Call(`_pathfindR_get_java_mc_calibration`, z_scores, trials, seed)
 }
 
+run_simulated_annealing <- function(csr_offsets, csr_nbrs, z, means, stds, n_nodes, gene_init_prob, start_with_all_positives, sa_initial_temp, sa_final_temp, sa_iterations, seed) {
+    .Call(`_pathfindR_run_simulated_annealing`, csr_offsets, csr_nbrs, z, means, stds, n_nodes, gene_init_prob, start_with_all_positives, sa_initial_temp, sa_final_temp, sa_iterations, seed)
+}
+
 component_scores_sorted <- function(on, csr_offsets, csr_nbrs, z, means, stds) {
     .Call(`_pathfindR_component_scores_sorted`, on, csr_offsets, csr_nbrs, z, means, stds)
 }
