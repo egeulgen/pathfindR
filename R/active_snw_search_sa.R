@@ -71,6 +71,17 @@
 
     new_scores <- component_scores_sorted(on, offsets, nbrs, z_vec, means, stds)
 
+    # If the current solution is empty, always accept an improving move.
+    if (length(cur_scores) == 0L) {
+      if (length(new_scores) > 0L) {
+        cur_scores <- new_scores
+      } else {
+        on[idx] <- !on[idx]   # revert: neither state has subnetworks
+      }
+      Temp <- Temp * (1 - temp_step)
+      next
+    }
+
     decision <- FALSE
     keep <- FALSE
     m <- min(length(cur_scores), length(new_scores))
