@@ -19,7 +19,7 @@ get_active_subnetworks(
   sa_final_temp = 0.01,
   sa_iterations = 10000,
   ga_population_size = 400,
-  ga_iterations = 10000,
+  ga_iterations = 200,
   ga_crossover_rate = 1,
   ga_mutation_rate = 0,
   gr_max_depth = 1,
