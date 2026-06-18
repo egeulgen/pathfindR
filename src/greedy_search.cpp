@@ -44,13 +44,6 @@ struct ExpandResult {
 struct Subnetwork {
   std::vector<int> idx;
   double score;
-
-  bool operator<(const Subnetwork& other) const {
-    if (std::abs(score - other.score) > 1e-9) {
-      return score > other.score;
-    }
-    return idx.size() > other.idx.size();
-  }
 };
 
 void greedy_init_max_depth(
@@ -105,8 +98,6 @@ ExpandResult greedy_expand(
     int start_offset = nbr_offsets[last_added];
     int end_offset = nbr_offsets[last_added + 1];
 
-    std::vector<int> neighbors;
-    neighbors.reserve(end_offset - start_offset);
     for (int i = start_offset; i < end_offset; ++i) {
       int nb = flat_nbrs[i];
 
