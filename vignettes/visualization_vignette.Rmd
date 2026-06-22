@@ -131,7 +131,7 @@ See `?term_gene_heatmap` for more details.
 
 ## `create_term_gene_graph()` & `create_term_gene_plot`: Term-Gene Graph
 
-The function `create_term_gene_graph()` and `create_term_gene_plot()` (adapted from the Gene-Concept network visualization by the R package `enrichplot`) can be utilized to visualize which significant genes are involved in the enriched terms. The function creates the term-gene graph, displaying the connections between genes and biological terms (enriched pathways or gene sets). This allows for the investigation of multiple terms to which significant genes are related. The graph also enables determination of the degree of overlap between the enriched terms by identifying shared and/or distinct significant genes.
+The functions `create_term_gene_graph()` and `create_term_gene_plot()` (adapted from the Gene-Concept network visualization by the R package `enrichplot`) can be utilized to visualize which significant genes are involved in the enriched terms. The function creates the term-gene graph, displaying the connections between genes and biological terms (enriched pathways or gene sets). This allows for the investigation of multiple terms to which significant genes are related. The graph also enables determination of the degree of overlap between the enriched terms by identifying shared and/or distinct significant genes.
 By default, the function visualizes the term-gene graph for the top 10 enriched terms:
 
 ```{r term_gene1}
