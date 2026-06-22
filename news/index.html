@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.7.0.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.0.0</span>
       </span>
     </div>
 
@@ -75,16 +75,16 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="development version" id="pathfindr-development-version">pathfindR (development version)<a class="anchor" aria-label="anchor" href="#pathfindr-development-version"></a></h2>
+<h2 class="page-header" data-toc-text="3.0.0" id="pathfindr-300">pathfindR 3.0.0<a class="anchor" aria-label="anchor" href="#pathfindr-300"></a></h2>
 <div class="section level3">
-<h3 id="major-changes-development-version">Major Changes<a class="anchor" aria-label="anchor" href="#major-changes-development-version"></a></h3>
+<h3 id="major-changes-3-0-0">Major Changes<a class="anchor" aria-label="anchor" href="#major-changes-3-0-0"></a></h3>
 <ul><li>Re-implemented the active subnetwork search (GR/SA/GA) in R and C++ (via Rcpp), removing the Java dependency. For GR and SA, results are numerically identical to the legacy JAR given the same seed and inputs.</li>
 <li>Renamed the exported function <code>active_snw_search()</code> to <code><a href="../reference/get_active_subnetworks.html">get_active_subnetworks()</a></code> (its signature has also changed).</li>
 <li>Renamed the exported function <code>filterActiveSnws()</code> to <code><a href="../reference/filter_active_subnetworks.html">filter_active_subnetworks()</a></code>.</li>
 <li>Renamed the utility function <code>fetch_gene_set()</code> to <code><a href="../reference/fetch_gene_sets.html">fetch_gene_sets()</a></code>.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="minor-changes-and-bug-fixes-development-version">Minor Changes and Bug Fixes<a class="anchor" aria-label="anchor" href="#minor-changes-and-bug-fixes-development-version"></a></h3>
+<h3 id="minor-changes-and-bug-fixes-3-0-0">Minor Changes and Bug Fixes<a class="anchor" aria-label="anchor" href="#minor-changes-and-bug-fixes-3-0-0"></a></h3>
 <ul><li>Removed the package start-up message.</li>
 <li>Split <code>term_gene_graph()</code> into <code><a href="../reference/create_term_gene_graph.html">create_term_gene_graph()</a></code> and <code><a href="../reference/create_term_gene_plot.html">create_term_gene_plot()</a></code>: <code><a href="../reference/create_term_gene_graph.html">create_term_gene_graph()</a></code> builds the <code>igraph</code> structure, while <code><a href="../reference/create_term_gene_plot.html">create_term_gene_plot()</a></code> visualizes the graph from the information available in that <code>igraph</code> object.</li>
 </ul></div>
