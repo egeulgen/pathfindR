@@ -13,25 +13,25 @@ isColor <- function(x) {
 #' Order input data frame by provided columnn
 #'
 #' @param df the input data frame to be ordered
-#' @param order_by A column name in `result_df`
+#' @param order_by A column name
 #'
 #' @return The ordered data frame or raises error
 order_df_by_columnn <- function(df, order_by) {
-  if (!c(order_by %in% colnames(result_df))) {
-    stop("`order_by` column doesn't exist in `result_df`")
+  if (!c(order_by %in% colnames(df))) {
+    stop("`order_by` column doesn't exist in `df`")
   }
-  col_values <- result_df[[order_by]]
+  col_values <- df[[order_by]]
   if (anyNA(col_values)) {
     stop("Column values of `order_by` cannot have NAs!")
   }
   result_df <- tryCatch(
     {
-      result_df[order(result_df[[order_by]], decreasing = FALSE), ]
+      df[order(df[[order_by]], decreasing = FALSE), ]
     },
     error = function(e) {
       stop(
         sprintf(
-          "`order_by`(%s) cannot be used to order the `result_df`: error: %s",
+          "`order_by`(%s) cannot be used to order the `df`: error: %s",
           order_by,
           e$message
         )

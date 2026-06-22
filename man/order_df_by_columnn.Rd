@@ -9,7 +9,7 @@ order_df_by_columnn(df, order_by)
 \arguments{
 \item{df}{the input data frame to be ordered}
 
-\item{order_by}{A column name in `result_df`}
+\item{order_by}{A column name}
 }
 \value{
 The ordered data frame or raises error
