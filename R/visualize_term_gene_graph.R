@@ -8,10 +8,9 @@
 #'   \item{Down_regulated}{the down-regulated genes in the input involved in the given term's gene set, comma-separated}
 #' }
 #' @param genes_df (optional) the input data that was used with \code{\link{run_pathfindR}} (default: \code{NULL}).
-#'   It must be a data frame with 2 or 3 columns: \enumerate{
+#'   It must be a data frame with at least 2 columns: \enumerate{
 #'   \item Gene.Symbol (required)
 #'   \item logFC (required)
-#'   \item adj.P.Val (optional)
 #' }
 #' @param order_by Argument to order the `result_df`, this influences the `num_terms` displayed (default: \code{'lowest_p'}).
 #' @param term_size Argument to indicate whether to use number of significant genes ('num_genes')
@@ -23,20 +22,20 @@
 #' @param use_edge_weights Boolean argument to indicate whether genes are weighted by their term interactions, similar to an Up-Set plot but in graph context (default = \code{FALSE}).
 #'  or the -log10(lowest p value) ('p_val') for adjusting the term node sizes (default: \code{'num_genes'})
 #' @return A \link[igraph]{igraph} object
-#' 
+#'
 #' @details
-#' This function constructs an \link[igraph]{igraph} object from pathfindR output, creating a network that connects enriched biological terms to their involved genes. 
-#' By default, the graph connects term nodes to up-regulated genes and down-regulated genes. 
-#' The size of term nodes can be adjusted by either the number of significant genes (`term_size = 'num_genes'`) or by the statistical significance 
+#' This function constructs an \link[igraph]{igraph} object from pathfindR output, creating a network that connects enriched biological terms to their involved genes.
+#' By default, the graph connects term nodes to up-regulated genes and down-regulated genes.
+#' The size of term nodes can be adjusted by either the number of significant genes (`term_size = 'num_genes'`) or by the statistical significance
 #' (`term_size = 'p_val'`, using -log10(lowest p value)).
 #'
-#' When `genes_df` is provided, gene nodes contain values and not mere up/down binary values, allowing visualization of 
+#' When `genes_df` is provided, gene nodes contain values and not mere up/down binary values, allowing visualization of
 #' expression direction and magnitude. When `term_fill` is supplied, term nodes obtain values enabling simultaneous visualization of pathway enrichment strength.
 #'
-#' Setting `use_edge_weights = TRUE` highlights hub genes by weighting edges based on how many terms a gene participates in, similar to an Up-Set plot but in 
-#' a graph context. The `num_terms` parameter controls how many top enriched terms are included (default: top 10), and `order_by` determines the ordering 
+#' Setting `use_edge_weights = TRUE` highlights hub genes by weighting edges based on how many terms a gene participates in, similar to an Up-Set plot but in
+#' a graph context. The `num_terms` parameter controls how many top enriched terms are included (default: top 10), and `order_by` determines the ordering
 #' criterion for term selection. The resulting igraph object can be visualized using \link[pathfindR]{create_term_gene_plot}.
-#' 
+#'
 #' @import ggraph
 #' @export
 #'
@@ -46,24 +45,24 @@
 #'      result_df = example_pathfindR_output
 #'      )
 #' g <- create_term_gene_graph(
-#'      result_df = example_pathfindR_output, 
+#'      result_df = example_pathfindR_output,
 #'      num_terms = 5
 #'      )
 #' g <- create_term_gene_graph(
-#'      result_df = example_pathfindR_output, 
+#'      result_df = example_pathfindR_output,
 #'      term_size = 'p_val'
 #'      )
-#' 
+#'
 #' # Coloring the term nodes
 #' g <- create_term_gene_graph(
-#'      result_df = example_pathfindR_output, 
+#'      result_df = example_pathfindR_output,
 #'      term_fill = "Fold_Enrichment"
 #'      )
-#' 
+#'
 #' # Adding edge weights
 #' g <- create_term_gene_graph(
-#'      result_df = example_pathfindR_output, 
-#'      term_fill = "Fold_Enrichment", 
+#'      result_df = example_pathfindR_output,
+#'      term_fill = "Fold_Enrichment",
 #'      use_edge_weights = TRUE
 #'      )
 create_term_gene_graph <- function(
@@ -74,12 +73,12 @@ create_term_gene_graph <- function(
   term_fill = NULL,
   num_terms = 10,
   use_description = FALSE,
-  use_edge_weights = FALSE  
+  use_edge_weights = FALSE
 ) {
 
   ## Error handling
   #--------------------------------------------------------------------#
-  
+
   if (!is.data.frame(result_df) | inherits(result_df, "data.table")) {
     stop("`result_df` should be a data.frame!")
   }
@@ -132,7 +131,7 @@ create_term_gene_graph <- function(
       num_terms <- n_rows
       cat("`num_terms` is less than n rows of `result_df`, setting `num_terms` to ", num_terms)
     }
-    result_df <- result_df[1:num_terms, ] 
+    result_df <- result_df[1:num_terms, ]
   }
 
   if (!is.logical(use_description)) {
@@ -241,7 +240,7 @@ create_term_gene_graph <- function(
 
 
 #' Create Term-Gene Plot
-#' 
+#'
 #' @param graph A \link[igraph]{igraph} returned from \link[pathfindR]{create_term_gene_graph}.
 #' @param layout The type of layout to create (see \code{\link[ggraph]{ggraph}} for details (default: \code{'stress'})
 #' @param gene_node_fill A character vector to customize the fill gradient colors of the gene nodes when `genes_df` is supplied, color order is in low -> mid -> high (default: \code{c("#7E2795", "white", "#27AE60")}).
@@ -251,20 +250,20 @@ create_term_gene_graph <- function(
 #' @param term_fill_label A character to change the term node legend name (default: \code{NULL}).
 #' @param term_size_label A character to change the term node size legend name (default: \code{NULL}).
 #' @return A \link[ggraph]{ggraph} object
-#' 
+#'
 #' @details
-#' This function creates a visualization of the term-gene graph (adapted from the Gene-Concept network visualization in the \code{enrichplot} package). 
-#' It displays which input genes are involved in enriched biological terms, showing connections between genes and pathway/terms nodes. 
+#' This function creates a visualization of the term-gene graph (adapted from the Gene-Concept network visualization in the \code{enrichplot} package).
+#' It displays which input genes are involved in enriched biological terms, showing connections between genes and pathway/terms nodes.
 #' The graph facilitates investigation of multi-term relationships and identifies shared versus distinct genes across enriched terms.
 #'
 #' Node coloring depends on the inputs provided to \link[pathfindR]{create_term_gene_graph}:
 #' \itemize{
 #'   \item If `genes_df` was NOT supplied: term nodes are beige (`term_node_color`), up-regulated genes are green, and down-regulated genes are red.
-#'   \item If `genes_df` WAS supplied: gene nodes are colored by logFC using a gradient (`gene_node_fill`: default purple → white → green), 
+#'   \item If `genes_df` WAS supplied: gene nodes are colored by logFC using a gradient (`gene_node_fill`: default purple → white → green),
 #'         and term nodes can be colored by `term_fill` values (default yellow → white → blue) if `term_fill` was provided.
 #' }
 #'
-#' Term node size reflects either the number of associated genes (`term_size = 'num_genes'`) or statistical significance (`term_size = 'p_val'`). 
+#' Term node size reflects either the number of associated genes (`term_size = 'num_genes'`) or statistical significance (`term_size = 'p_val'`).
 #' When `use_edge_weights = TRUE` was set in `create_term_gene_graph`, edge widths represent hub gene importance (genes appearing in multiple terms).
 #' The layout can be customized via the `layout` parameter (default: "stress"), and legends automatically reflect the applied coloring schemes.
 #'
@@ -338,7 +337,7 @@ create_term_gene_plot <- function(
     names(node_colors) <- names(type_descriptions)
     node_colors <- node_colors[levels(node_type)]
   }
-  
+
   ### Create graph
   if (!is.null(weight_node_values)) {
     p <- ggraph::ggraph(graph, layout = layout) +
@@ -543,8 +542,8 @@ create_term_gene_plot <- function(
     )
   if (!is.null(num_terms)) {
     p <- p + ggplot2::ggtitle(
-      "Term-Gene Graph", 
-      subtitle = paste(c("Top", num_terms, "terms"), 
+      "Term-Gene Graph",
+      subtitle = paste(c("Top", num_terms, "terms"),
       collapse = " ")
     )
   }
