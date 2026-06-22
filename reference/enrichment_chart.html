@@ -18,7 +18,7 @@ enrichment results."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/a
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.7.0.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.7.0.9002</span>
       </span>
     </div>
 
@@ -90,7 +90,8 @@ enrichment results.</p>
 <span>  top_terms <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>  plot_by_cluster <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  num_bubbles <span class="op">=</span> <span class="fl">4</span>,</span>
-<span>  even_breaks <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  even_breaks <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  order_by <span class="op">=</span> <span class="st">"lowest_p"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -146,6 +147,10 @@ displayed in the legend <code># genes</code>. If <code>TRUE</code> (default), se
 equal breaks and the number of displayed bubbles may be different than the
 number set by <code>num_bubbles</code>. If the exact number set by
 <code>num_bubbles</code> is required, set this argument to <code>FALSE</code></p></dd>
+
+
+<dt id="arg-order-by">order_by<a class="anchor" aria-label="anchor" href="#arg-order-by"></a></dt>
+<dd><p>the order and coloring of the dots (default: <code>'lowest_p'</code>).</p></dd>
 
 </dl></div>
     <div id="value">
