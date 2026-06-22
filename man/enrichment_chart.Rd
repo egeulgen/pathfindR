@@ -9,7 +9,8 @@ enrichment_chart(
   top_terms = 10,
   plot_by_cluster = FALSE,
   num_bubbles = 4,
-  even_breaks = TRUE
+  even_breaks = TRUE,
+  order_by = "lowest_p"
 )
 }
 \arguments{
@@ -40,6 +41,8 @@ displayed in the legend \code{# genes}. If \code{TRUE} (default), sets
 equal breaks and the number of displayed bubbles may be different than the
 number set by \code{num_bubbles}. If the exact number set by
 \code{num_bubbles} is required, set this argument to \code{FALSE}}
+
+\item{order_by}{the order and coloring of the dots (default: \code{'lowest_p'}).}
 }
 \value{
 a \code{\link[ggplot2]{ggplot2}} object containing the bubble chart.

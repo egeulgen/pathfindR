@@ -15,7 +15,8 @@
 #' } The change values in this data frame are used to color the affected genes
 #' @param num_terms Number of top enriched terms to use while creating the plot. Set to \code{NULL} to use
 #'  all enriched terms (default = 10)
-#' @inheritParams term_gene_graph
+#' @param use_description Boolean argument to indicate whether term descriptions
+#'  (in the 'Term_Description' column) should be used. (default: \code{FALSE})
 #' @inheritParams plot_scores
 #' @param legend_title legend title (default = 'change')
 #' @param sort_terms_by_p boolean to indicate whether to sort terms by 'lowest_p'

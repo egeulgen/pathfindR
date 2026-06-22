@@ -24,7 +24,8 @@ reference:
       - score_terms
       - plot_scores
       - term_gene_heatmap
-      - term_gene_graph
+      - create_term_gene_graph
+      - create_term_gene_plot
       - UpSet_plot
       - visualize_terms
       - cluster_graph_vis
@@ -87,4 +88,5 @@ reference:
       - gset_list_from_gmt
       - create_HTML_report
       - isColor
+      - isOrderable
       - safe_get_content

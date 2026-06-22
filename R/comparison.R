@@ -65,7 +65,11 @@ combine_pathfindR_results <- function(result_A, result_B, plot_common = TRUE) {
 #' @param selected_terms the vector of selected terms for creating the graph
 #' (either IDs or term descriptions). If set to \code{'common'}, all of the
 #' common terms are used. (default = 'common')
-#' @inheritParams term_gene_graph
+#' @param use_description Boolean argument to indicate whether term descriptions
+#'  (in the 'Term_Description' column) should be used. (default: \code{FALSE})
+#' @param layout The type of layout to create (see \code{\link[ggraph]{ggraph}} for details (default: \code{'stress'})
+#' @param node_size Argument to indicate whether to use number of significant genes ('num_genes')
+#'  or the -log10(lowest p value) ('p_val') for adjusting the term node sizes (default = 'num_genes')
 #'
 #' @return a  \code{\link[ggraph]{ggraph}} object containing the combined term-gene graph.
 #'  Each node corresponds to an enriched term (orange if common, different shades of blue otherwise),

@@ -26,6 +26,7 @@
 #'  equal breaks and the number of displayed bubbles may be different than the
 #'  number set by \code{num_bubbles}. If the exact number set by
 #'  \code{num_bubbles} is required, set this argument to \code{FALSE}
+#' @param order_by the order and coloring of the dots (default: \code{'lowest_p'}).
 #'
 #' @return a \code{\link[ggplot2]{ggplot2}} object containing the bubble chart.
 #' The x-axis corresponds to fold enrichment values while the y-axis indicates
@@ -41,7 +42,7 @@
 #' @examples
 #' g <- enrichment_chart(example_pathfindR_output)
 enrichment_chart <- function(result_df, top_terms = 10, plot_by_cluster = FALSE,
-                             num_bubbles = 4, even_breaks = TRUE) {
+                             num_bubbles = 4, even_breaks = TRUE, order_by = "lowest_p") {
   message("Plotting the enrichment bubble chart")
   necessary <- c(
     "Term_Description", "Fold_Enrichment", "lowest_p", "Up_regulated",
@@ -66,8 +67,11 @@ enrichment_chart <- function(result_df, top_terms = 10, plot_by_cluster = FALSE,
     }
   }
 
-  # sort by lowest adj.p
-  result_df <- result_df[order(result_df$lowest_p), ]
+  ### Order and filter for top N genes
+  result_df <- isOrderable(order_by, result_df)
+  if (!is.data.frame(result_df)) {
+    stop(result_df)
+  }
 
   ## Filter for top_terms
   if (!is.null(top_terms)) {
@@ -97,10 +101,31 @@ enrichment_chart <- function(result_df, top_terms = 10, plot_by_cluster = FALSE,
 
   result_df$Term_Description <- factor(result_df$Term_Description, levels = rev(unique(result_df$Term_Description)))
 
-  log_p <- -log10(result_df$lowest_p)
+  g <- ggplot2::ggplot(
+      data = result_df, 
+      mapping = ggplot2::aes(x = .data$Fold_Enrichment,
+                          y = .data$Term_Description)
+        )
 
-  g <- ggplot2::ggplot(result_df, ggplot2::aes(.data$Fold_Enrichment, .data$Term_Description))
-  g <- g + ggplot2::geom_point(ggplot2::aes(color = log_p, size = num_genes), na.rm = TRUE)
+  if (order_by %in% c("lowest_p", "highest_p")) {
+      log_p <- -log10(result_df[[order_by]])
+
+      g <- g + ggplot2::geom_point(
+      mapping = ggplot2::aes(color = log_p,
+                              size = num_genes),
+      na.rm = TRUE
+      )
+
+      color_label <- expression(-log[10](p))
+  } else {
+      g <- g + ggplot2::geom_point(
+      mapping = ggplot2::aes(color = !!sym(order_by),
+                              size = num_genes),
+      na.rm = TRUE
+      )
+      color_label <- order_by
+  }
+
   g <- g + ggplot2::theme_bw()
   g <- g + ggplot2::theme(
     axis.text.x = ggplot2::element_text(size = 10), axis.text.y = ggplot2::element_text(size = 10),
@@ -108,7 +133,7 @@ enrichment_chart <- function(result_df, top_terms = 10, plot_by_cluster = FALSE,
   )
   g <- g + ggplot2::xlab("Fold Enrichment")
   g <- g + ggplot2::theme(axis.title.y = ggplot2::element_blank())
-  g <- g + ggplot2::labs(size = "# genes", color = expression(-log[10](p)))
+  g <- g + ggplot2::labs(size = "# genes", color = color_label)
 
   ## breaks for # genes
   if (max(num_genes) < num_bubbles) {

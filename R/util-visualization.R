@@ -10,6 +10,34 @@ isColor <- function(x) {
   tryCatch(is.matrix(grDevices::col2rgb(x)), error = function(e) FALSE)
 }
 
+#' Check if column can be ordered
+#'
+#' @param result_df A \link[base]{data.frame}
+#' @param order_by A column name in `result_df`
+#'
+#' @return A \link[base]{data.frame} or an error message
+isOrderable <- function(order_by, result_df) {
+  if (!c(order_by %in% colnames(result_df))) {
+    return("`order_by` column doesn't exist in `result_df`")
+  }
+  col_values <- result_df[[order_by]]
+  if (anyNA(col_values)) {
+    return("Column values of `order_by` cannot have NAs!")
+  }
+  result_df <- tryCatch(
+  {
+      result_df[order(result_df[[order_by]], decreasing = FALSE), ]
+  },
+  error = function(e) {
+    sprintf(
+      "`order_by`(%s) cannot be used to order the `result_df`: error: %s",
+      order_by,
+      e$message
+    )
+  })
+  return(result_df)
+}
+
 #' Color hsa KEGG pathway
 #'
 #' @param pw_id hsa KEGG pathway id (e.g. hsa05012)

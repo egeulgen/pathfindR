@@ -1,85 +1,198 @@
-test_that("`term_gene_graph()` -- produces a ggplot object using the correct data", {
-  # Top 10 (default)
-  expect_is(p <- term_gene_graph(example_pathfindR_output), "ggplot")
-  expect_equal(sum(p$data$type == "term"), 10)
-
-  # Top 3
-  expect_is(
-    p <- term_gene_graph(example_pathfindR_output, num_terms = 3),
-    "ggplot"
-  )
-  expect_equal(sum(p$data$type == "term"), 3)
-
-  # All terms
-  expect_is(
-    p <- term_gene_graph(example_pathfindR_output[1:15, ], num_terms = NULL),
-    "ggplot"
-  )
-  expect_equal(sum(p$data$type == "term"), 15)
-
-  # Top 1000, expect to plot top nrow(output)
-  expect_is(
-    p <- term_gene_graph(example_pathfindR_output[1:15, ], num_terms = 1000),
-    "ggplot"
-  )
-  expect_equal(sum(p$data$type == "term"), 15)
-
-  # use_description = TRUE
-  expect_is(
-    p <- term_gene_graph(example_pathfindR_output, use_description = TRUE),
-    "ggplot"
-  )
-  expect_equal(sum(p$data$type == "term"), 10)
-
-  # node_size = 'p_val'
-  expect_is(
-    p <- term_gene_graph(example_pathfindR_output, node_size = "p_val"),
-    "ggplot"
-  )
-  expect_equal(sum(p$data$type == "term"), 10)
-})
-
-test_that("`term_gene_graph()` -- argument checks work", {
+test_that("`create_term_gene_graph()` -- check arguments", {
+  ## Checking Error handling
   expect_error(
-    term_gene_graph(example_pathfindR_output, num_terms = "INVALID"),
+    create_term_gene_graph(list(ID = 1, lowest_p = 0.01, Up_regulated = "A", Down_regulated = "B")),
+    "`result_df` should be a data.frame!"
+  )
+
+  bad_df <- data.frame(
+    lowest_p = 0.01, Up_regulated = "A", Down_regulated = "B"
+  )
+  expect_error(
+    create_term_gene_graph(bad_df),
+    "All of ID, lowest_p, Up_regulated, Down_regulated must be present in `results_df`!"
+  )
+
+  expect_error(
+    create_term_gene_graph(bad_df, use_description = TRUE),
+    "All of Term_Description, lowest_p, Up_regulated, Down_regulated must be present in `results_df`!"
+  )
+
+  expect_error(
+    create_term_gene_graph(example_pathfindR_output, genes_df = list(Gene.symbol = "A", logFC = 1)),
+    "`genes_df` should be a data.frame!"
+  )
+
+  tmp <- example_pathfindR_output
+
+  expect_error(
+    create_term_gene_graph(tmp, order_by = "INVALID"),
+    "`order_by` column doesn't exist in `result_df`"
+  )
+
+  tmp$INVALID <- NA
+  expect_error(
+    create_term_gene_graph(tmp, order_by = "INVALID"),
+    "Column values of `order_by` cannot have NAs!"
+  )
+
+  expect_error(
+    create_term_gene_graph(example_pathfindR_output, term_fill = "nonexistent"),
+    "`term_fill` is not found in the supplied `result_df`!"
+  )
+
+  expect_error(
+    create_term_gene_graph(example_pathfindR_output, term_size = "nonexistent"),
+    '`term_size` should be one of "num_genes", "p_val"'
+  )
+
+  expect_error(
+    create_term_gene_graph(example_pathfindR_output, num_terms = "five"),
     "`num_terms` must either be numeric or NULL!"
   )
 
   expect_error(
-    term_gene_graph(example_pathfindR_output, use_description = "INVALID"),
+    create_term_gene_graph(example_pathfindR_output, use_description = "FALSE"),
     "`use_description` must either be TRUE or FALSE!"
   )
 
-  val_node_size <- c("num_genes", "p_val")
   expect_error(
-    term_gene_graph(example_pathfindR_output, node_size = "INVALID"),
-    paste0("`node_size` should be one of ", paste(dQuote(val_node_size), collapse = ", "))
+    create_term_gene_graph(example_pathfindR_output, use_edge_weights = "FALSE"),
+    "`use_edge_weights` must either be TRUE or FALSE!"
   )
 
-  expect_error(term_gene_graph(result_df = "INVALID"), "`result_df` should be a data frame")
+})
 
-  wrong_df <- example_pathfindR_output[, -c(1, 2)]
-  ID_column <- "ID"
-  necessary_cols <- c(ID_column, "lowest_p", "Up_regulated", "Down_regulated")
-  expect_error(term_gene_graph(wrong_df, use_description = FALSE), paste(
-    c(
-      "All of",
-      paste(necessary_cols, collapse = ", "), "must be present in `results_df`!"
-    ),
-    collapse = " "
-  ))
+test_that("`create_term_gene_graph()` -- check igraph creation", {
+  genes_df <- example_pathfindR_input[, c(1, 2)]
+  colnames(genes_df) <- c("Gene.symbol", "folds")
+  expect_error(
+    create_term_gene_graph(example_pathfindR_output, genes_df)
+  )
 
-  ID_column <- "Term_Description"
-  necessary_cols <- c(ID_column, "lowest_p", "Up_regulated", "Down_regulated")
-  expect_error(term_gene_graph(wrong_df, use_description = TRUE), paste(
-    c(
-      "All of",
-      paste(necessary_cols, collapse = ", "), "must be present in `results_df`!"
-    ),
-    collapse = " "
-  ))
+  ## Checking functional behavior
+  genes_df <- example_pathfindR_input[, c(1, 2, 3)]
 
-  expect_error(term_gene_graph(example_pathfindR_output, node_colors = list()))
-  expect_error(term_gene_graph(example_pathfindR_output, node_colors = c(1, 2, 3)))
-  expect_error(term_gene_graph(example_pathfindR_output, node_colors = c("red", "blue")))
+  expect_is(g <- create_term_gene_graph(example_pathfindR_output), "igraph")
+  expect_null(igraph::E(g)$weight)
+  expect_null(igraph::V(g)$logFC)
+  expect_null(igraph::V(g)$term_fill)
+  expect_is(igraph::V(g)$size, "numeric")
+  expect_equal(sum(igraph::V(g)$type == "term"), 10)
+
+  expect_is(g <- create_term_gene_graph(example_pathfindR_output, genes_df), "igraph")
+  expect_null(igraph::E(g)$weight)
+  expect_is(igraph::V(g)$logFC, "numeric")
+  expect_null(igraph::V(g)$term_fill)
+  expect_is(igraph::V(g)$size, "numeric")
+  expect_equal(sum(igraph::V(g)$type == "term"), 10)
+
+  expect_is(g <- create_term_gene_graph(example_pathfindR_output, genes_df, term_fill = "Fold_Enrichment"), "igraph")
+  expect_null(igraph::E(g)$weight)
+  expect_is(igraph::V(g)$logFC, "numeric")
+  expect_is(igraph::V(g)$term_fill, "numeric")
+  expect_is(igraph::V(g)$size, "numeric")
+  expect_equal(sum(igraph::V(g)$type == "term"), 10)
+
+  expect_is(g <- create_term_gene_graph(example_pathfindR_output, genes_df, term_fill = "Fold_Enrichment", use_edge_weights = TRUE), "igraph")
+  expect_is(igraph::E(g)$weight, "numeric")
+  expect_is(igraph::V(g)$logFC, "numeric")
+  expect_is(igraph::V(g)$term_fill, "numeric")
+  expect_is(igraph::V(g)$size, "numeric")
+  expect_equal(sum(igraph::V(g)$type == "term"), 10)
+
+  expect_is(g <- create_term_gene_graph(example_pathfindR_output, genes_df, term_fill = "Fold_Enrichment", use_edge_weights = TRUE, term_size = "p_val"), "igraph")
+  expect_is(igraph::E(g)$weight, "numeric")
+  expect_is(igraph::V(g)$logFC, "numeric")
+  expect_is(igraph::V(g)$term_fill, "numeric")
+  expect_is(igraph::V(g)$size, "numeric")
+  expect_equal(sum(igraph::V(g)$type == "term"), 10)
+
+  expect_is(g <- create_term_gene_graph(example_pathfindR_output, genes_df, term_fill = "Fold_Enrichment", use_edge_weights = TRUE, num_terms = 3), "igraph")
+  expect_is(igraph::E(g)$weight, "numeric")
+  expect_is(igraph::V(g)$logFC, "numeric")
+  expect_is(igraph::V(g)$term_fill, "numeric")
+  expect_is(igraph::V(g)$size, "numeric")
+  expect_equal(sum(igraph::V(g)$type == "term"), 3)
+
+  ## Corrects `num_terms` to maximum number of rows of input
+  expect_is(g <- create_term_gene_graph(example_pathfindR_output, num_terms = 150), "igraph")
+  expect_equal(sum(igraph::V(g)$type == "term"), nrow(example_pathfindR_output))
+})
+
+
+test_that("`create_term_gene_plot()` -- check arguments", {
+  ## Checking Error handling
+  expect_error(
+    create_term_gene_plot(list()),
+    "`graph` needs to be of class 'igraph'!"
+  )
+
+  genes_df <- example_pathfindR_input[, c(1, 2, 3)]
+  g <- create_term_gene_graph(example_pathfindR_output, genes_df, term_fill = "Fold_Enrichment")
+
+  expect_error(
+    create_term_gene_plot(g, gene_node_fill = c("green", "red")),
+    "`gene_node_fill` needs to be of length 3!"
+  )
+
+  expect_error(
+    create_term_gene_plot(g, gene_node_fill = c("green", "red", "invalid")),
+    "Not all elements in `gene_node_fill` are valid colors!"
+  )
+
+  expect_error(
+    create_term_gene_plot(g, term_node_fill = c("#CCBB44", "#4477AA")),
+    "`term_node_fill` needs to be of length 3!"
+  )
+
+  expect_error(
+    create_term_gene_plot(g, term_node_fill = c("#CCBB44", "invalid", "#4477AA")),
+    "Not all elements in `term_node_fill` are valid colors!"
+  )
+
+  expect_error(
+    create_term_gene_plot(g, gene_node_color = c("green")),
+    "`gene_node_color` needs to be of length 2!"
+  )
+
+  expect_error(
+    create_term_gene_plot(g, gene_node_color = c("green", "red", "blue")),
+    "`gene_node_color` needs to be of length 2!"
+  )
+
+  expect_error(
+    create_term_gene_plot(g, gene_node_color = c("green", "notacolor")),
+    "Not all elements in `gene_node_color` are valid colors!"
+  )
+
+  expect_error(
+    create_term_gene_plot(g, term_node_color = "#INVALID"),
+    "`term_node_color` is not a valid color!"
+  )
+})
+
+test_that("`create_term_gene_plot()` -- Check ggraph creation", {
+  ## Default functionality
+  g <- create_term_gene_graph(example_pathfindR_output, term_fill = "Fold_Enrichment")
+  expect_is(p <- create_term_gene_plot(g), "ggraph")  
+
+  g <- create_term_gene_graph(example_pathfindR_output)
+  expect_is(p <- create_term_gene_plot(g), "ggraph")
+
+  ## `genes_df` is included
+  genes_df <- example_pathfindR_input[, c(1, 2, 3)]
+  g <- create_term_gene_graph(example_pathfindR_output, genes_df, term_fill = "Fold_Enrichment")
+  expect_is(p <- create_term_gene_plot(g), "ggraph")
+
+  g <- create_term_gene_graph(example_pathfindR_output, genes_df, term_fill = "Fold_Enrichment", use_edge_weights = TRUE)
+  expect_is(p <- create_term_gene_plot(g), "ggraph")
+
+  expect_is(p <- create_term_gene_plot(g, term_fill_label = "Fold Enrichment"), "ggraph")
+  expect_is(p <- create_term_gene_plot(g, term_size_label = "# genes"), "ggraph")
+
+  expect_is(create_term_gene_plot(g, layout = "stress"), "ggraph")
+  expect_is(create_term_gene_plot(g, layout = "kk"), "ggraph")
+  expect_is(create_term_gene_plot(g, layout = "fr"), "ggraph")
+  expect_error(create_term_gene_plot(g, layout = "INVALID"))
 })

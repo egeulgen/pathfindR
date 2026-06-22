@@ -80,6 +80,37 @@ test_that("`enrichment_chart()` -- produces a ggplot object with correct labels"
   expect_equal(labels$y, "Term_Description")
 })
 
+test_that("`enrichment_chart()` -- order_by arg-related tests", {
+  # Change order_by
+  expect_is(g <- enrichment_chart(example_pathfindR_output_clustered, order_by = "highest_p"),
+      "ggplot")
+  expect_equal(ggplot2::quo_name(g$mapping$x), "Fold_Enrichment")
+  expect_equal(ggplot2::quo_name(g$mapping$y), "Term_Description")
+  
+  labels <- ggplot2::get_labs(g)
+  expect_equal(labels$size, "# genes")
+  expect_equal(labels$colour, expression(-log[10](p)))
+  expect_equal(labels$x, "Fold Enrichment")
+  expect_equal(labels$y, "Term_Description")
+
+  # check if order is correct
+  input_ordered <- example_pathfindR_output_clustered[order(example_pathfindR_output_clustered[["highest_p"]], decreasing = FALSE), ]
+  expect_equal(input_ordered$ID[1:10], g$data$ID)
+
+  tmp <- example_pathfindR_output
+
+  expect_error(
+    enrichment_chart(tmp, order_by = "INVALID"),
+    "`order_by` column doesn't exist in `result_df`"
+  )
+
+  tmp$INVALID <- NA
+  expect_error(
+    enrichment_chart(tmp, order_by = "INVALID"),
+    "Column values of `order_by` cannot have NAs!"
+  )
+})
+
 test_that("`enrichment_chart()` -- argument checks work", {
   necessary <- c(
     "Term_Description", "Fold_Enrichment", "lowest_p", "Up_regulated",

@@ -5,7 +5,7 @@
 #' @inheritParams return_pin_path
 #' @param num_snws number of top subnetworks to be visualized (leave blank if
 #' you want to visualize all subnetworks)
-#' @inheritParams term_gene_graph
+#' @param layout The type of layout to create (see \code{\link[ggraph]{ggraph}} for details (default: \code{'stress'})
 #' @param ... additional arguments for \code{\link{input_processing}}
 #'
 #' @return a list of ggplot objects of graph visualizations of identified active

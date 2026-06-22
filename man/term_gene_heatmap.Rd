@@ -37,7 +37,7 @@ term_gene_heatmap(
 all enriched terms (default = 10)}
 
 \item{use_description}{Boolean argument to indicate whether term descriptions
-(in the 'Term_Description' column) should be used. (default = \code{FALSE})}
+(in the 'Term_Description' column) should be used. (default: \code{FALSE})}
 
 \item{low}{a string indicating the color of 'low' values in the coloring gradient (default = 'green')}
 
