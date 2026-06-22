@@ -108,5 +108,5 @@ reference:
       - gset_list_from_gmt
       - create_HTML_report
       - isColor
-      - isOrderable
+      - order_df_by_columnn
       - safe_get_content

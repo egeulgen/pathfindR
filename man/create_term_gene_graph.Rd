@@ -67,27 +67,27 @@ criterion for term selection. The resulting igraph object can be visualized usin
 \examples{
 # Normal gene-term with up/down regulated genes
 g <- create_term_gene_graph(
-     result_df = example_pathfindR_output
-     )
+  result_df = example_pathfindR_output
+)
 g <- create_term_gene_graph(
-     result_df = example_pathfindR_output,
-     num_terms = 5
-     )
+  result_df = example_pathfindR_output,
+  num_terms = 5
+)
 g <- create_term_gene_graph(
-     result_df = example_pathfindR_output,
-     term_size = 'p_val'
-     )
+  result_df = example_pathfindR_output,
+  term_size = "p_val"
+)
 
 # Coloring the term nodes
 g <- create_term_gene_graph(
-     result_df = example_pathfindR_output,
-     term_fill = "Fold_Enrichment"
-     )
+  result_df = example_pathfindR_output,
+  term_fill = "Fold_Enrichment"
+)
 
 # Adding edge weights
 g <- create_term_gene_graph(
-     result_df = example_pathfindR_output,
-     term_fill = "Fold_Enrichment",
-     use_edge_weights = TRUE
-     )
+  result_df = example_pathfindR_output,
+  term_fill = "Fold_Enrichment",
+  use_edge_weights = TRUE
+)
 }

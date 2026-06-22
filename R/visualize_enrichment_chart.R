@@ -67,11 +67,7 @@ enrichment_chart <- function(result_df, top_terms = 10, plot_by_cluster = FALSE,
     }
   }
 
-  ### Order and filter for top N genes
-  result_df <- isOrderable(order_by, result_df)
-  if (!is.data.frame(result_df)) {
-    stop(result_df)
-  }
+  result_df <- order_df_by_columnn(result_df, order_by)
 
   ## Filter for top_terms
   if (!is.null(top_terms)) {

@@ -103,11 +103,7 @@ create_term_gene_graph <- function(
     }
   }
 
-  ### Order and filter for top N genes
-  result_df <- isOrderable(order_by, result_df)
-  if (!is.data.frame(result_df)) {
-    stop(result_df)
-  }
+  result_df <- order_df_by_columnn(result_df, order_by)
 
   val_term_size <- c("num_genes", "p_val")
   if (!term_size %in% val_term_size) {

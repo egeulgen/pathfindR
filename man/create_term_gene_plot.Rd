@@ -57,7 +57,7 @@ The layout can be customized via the `layout` parameter (default: "stress"), and
 \examples{
 # Normal gene-term with up/down regulated genes
 g <- create_term_gene_graph(
-     result_df = example_pathfindR_output
-     )
+  result_df = example_pathfindR_output
+)
 plt <- create_term_gene_plot(g)
 }
