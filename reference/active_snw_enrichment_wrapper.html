@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.7.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.7.0.9003</span>
       </span>
     </div>
 
@@ -36,9 +36,6 @@
     </li>
     <li>
       <a href="../articles/intro_vignette.html">Introduction to pathfindR</a>
-    </li>
-    <li>
-      <a href="../articles/manual_execution.html">Step-by-Step Execution of the pathfindR Enrichment Workflow</a>
     </li>
     <li>
       <a href="../articles/non_hs_analysis.html">pathfindR Analysis for non-Homo-sapiens organisms</a>
@@ -92,24 +89,23 @@
 <span>  adj_method <span class="op">=</span> <span class="st">"bonferroni"</span>,</span>
 <span>  search_method <span class="op">=</span> <span class="st">"GR"</span>,</span>
 <span>  disable_parallel <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  use_all_positives <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  start_with_all_positives <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  iterations <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>  n_processes <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  score_quan_thr <span class="op">=</span> <span class="fl">0.8</span>,</span>
 <span>  sig_gene_thr <span class="op">=</span> <span class="fl">0.02</span>,</span>
-<span>  saTemp0 <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  saTemp1 <span class="op">=</span> <span class="fl">0.01</span>,</span>
-<span>  saIter <span class="op">=</span> <span class="fl">10000</span>,</span>
-<span>  gaPop <span class="op">=</span> <span class="fl">400</span>,</span>
-<span>  gaIter <span class="op">=</span> <span class="fl">200</span>,</span>
-<span>  gaThread <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>  gaCrossover <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  gaMut <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>  grMaxDepth <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  grSearchDepth <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  grOverlap <span class="op">=</span> <span class="fl">0.5</span>,</span>
-<span>  grSubNum <span class="op">=</span> <span class="fl">1000</span>,</span>
-<span>  silent_option <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  sa_initial_temp <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  sa_final_temp <span class="op">=</span> <span class="fl">0.01</span>,</span>
+<span>  sa_iterations <span class="op">=</span> <span class="fl">10000</span>,</span>
+<span>  ga_population_size <span class="op">=</span> <span class="fl">400</span>,</span>
+<span>  ga_iterations <span class="op">=</span> <span class="fl">200</span>,</span>
+<span>  ga_crossover_rate <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  ga_mutation_rate <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  gr_max_depth <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  gr_search_depth <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  gr_overlap_threshold <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  gr_subnetwork_num <span class="op">=</span> <span class="fl">1000</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -156,7 +152,7 @@ algorithm (GA) for the search (default = 'GR').</p></dd>
 via <code>foreach</code> (default = FALSE)</p></dd>
 
 
-<dt id="arg-use-all-positives">use_all_positives<a class="anchor" aria-label="anchor" href="#arg-use-all-positives"></a></dt>
+<dt id="arg-start-with-all-positives">start_with_all_positives<a class="anchor" aria-label="anchor" href="#arg-start-with-all-positives"></a></dt>
 <dd><p>if TRUE: in GA, adds an individual with all positive
 nodes. In SA, initializes candidate solution with all positive nodes. (default = FALSE)</p></dd>
 
@@ -184,59 +180,52 @@ calculated to be &lt; 2 (e.g. 50 signif. genes x 0.01 = 0.5), the threshold numb
 is set to 2</p></dd>
 
 
-<dt id="arg-satemp-">saTemp0<a class="anchor" aria-label="anchor" href="#arg-satemp-"></a></dt>
+<dt id="arg-sa-initial-temp">sa_initial_temp<a class="anchor" aria-label="anchor" href="#arg-sa-initial-temp"></a></dt>
 <dd><p>Initial temperature for SA (default = 1.0)</p></dd>
 
 
-<dt id="arg-satemp-">saTemp1<a class="anchor" aria-label="anchor" href="#arg-satemp-"></a></dt>
+<dt id="arg-sa-final-temp">sa_final_temp<a class="anchor" aria-label="anchor" href="#arg-sa-final-temp"></a></dt>
 <dd><p>Final temperature for SA (default = 0.01)</p></dd>
 
 
-<dt id="arg-saiter">saIter<a class="anchor" aria-label="anchor" href="#arg-saiter"></a></dt>
+<dt id="arg-sa-iterations">sa_iterations<a class="anchor" aria-label="anchor" href="#arg-sa-iterations"></a></dt>
 <dd><p>Iteration number for SA (default = 10000)</p></dd>
 
 
-<dt id="arg-gapop">gaPop<a class="anchor" aria-label="anchor" href="#arg-gapop"></a></dt>
+<dt id="arg-ga-population-size">ga_population_size<a class="anchor" aria-label="anchor" href="#arg-ga-population-size"></a></dt>
 <dd><p>Population size for GA (default = 400)</p></dd>
 
 
-<dt id="arg-gaiter">gaIter<a class="anchor" aria-label="anchor" href="#arg-gaiter"></a></dt>
+<dt id="arg-ga-iterations">ga_iterations<a class="anchor" aria-label="anchor" href="#arg-ga-iterations"></a></dt>
 <dd><p>Iteration number for GA (default = 200)</p></dd>
 
 
-<dt id="arg-gathread">gaThread<a class="anchor" aria-label="anchor" href="#arg-gathread"></a></dt>
-<dd><p>Number of threads to be used in GA (default = 5)</p></dd>
-
-
-<dt id="arg-gacrossover">gaCrossover<a class="anchor" aria-label="anchor" href="#arg-gacrossover"></a></dt>
+<dt id="arg-ga-crossover-rate">ga_crossover_rate<a class="anchor" aria-label="anchor" href="#arg-ga-crossover-rate"></a></dt>
 <dd><p>Applies crossover with the given probability in GA (default = 1, i.e. always perform crossover)</p></dd>
 
 
-<dt id="arg-gamut">gaMut<a class="anchor" aria-label="anchor" href="#arg-gamut"></a></dt>
+<dt id="arg-ga-mutation-rate">ga_mutation_rate<a class="anchor" aria-label="anchor" href="#arg-ga-mutation-rate"></a></dt>
 <dd><p>For GA, applies mutation with given mutation rate (default = 0, i.e. mutation off)</p></dd>
 
 
-<dt id="arg-grmaxdepth">grMaxDepth<a class="anchor" aria-label="anchor" href="#arg-grmaxdepth"></a></dt>
+<dt id="arg-gr-max-depth">gr_max_depth<a class="anchor" aria-label="anchor" href="#arg-gr-max-depth"></a></dt>
 <dd><p>Sets max depth in greedy search, 0 for no limit (default = 1)</p></dd>
 
 
-<dt id="arg-grsearchdepth">grSearchDepth<a class="anchor" aria-label="anchor" href="#arg-grsearchdepth"></a></dt>
+<dt id="arg-gr-search-depth">gr_search_depth<a class="anchor" aria-label="anchor" href="#arg-gr-search-depth"></a></dt>
 <dd><p>Search depth in greedy search (default = 1)</p></dd>
 
 
-<dt id="arg-groverlap">grOverlap<a class="anchor" aria-label="anchor" href="#arg-groverlap"></a></dt>
+<dt id="arg-gr-overlap-threshold">gr_overlap_threshold<a class="anchor" aria-label="anchor" href="#arg-gr-overlap-threshold"></a></dt>
 <dd><p>Overlap threshold for results of greedy search (default = 0.5)</p></dd>
 
 
-<dt id="arg-grsubnum">grSubNum<a class="anchor" aria-label="anchor" href="#arg-grsubnum"></a></dt>
+<dt id="arg-gr-subnetwork-num">gr_subnetwork_num<a class="anchor" aria-label="anchor" href="#arg-gr-subnetwork-num"></a></dt>
 <dd><p>Number of subnetworks to be presented in the results (default = 1000)</p></dd>
 
 
-<dt id="arg-silent-option">silent_option<a class="anchor" aria-label="anchor" href="#arg-silent-option"></a></dt>
-<dd><p>boolean value indicating whether to print the messages
-to the console (FALSE) or not (TRUE, this will print to a temp. file) during
-active subnetwork search (default = TRUE). This option was added because
-during parallel runs, the console messages get disorderly printed.</p></dd>
+<dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
+<dd><p>boolean value indicating whether to print messages (default=FALSE)</p></dd>
 
 </dl></div>
     <div id="value">

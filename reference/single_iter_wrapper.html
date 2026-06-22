@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.7.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.7.0.9003</span>
       </span>
     </div>
 
@@ -36,9 +36,6 @@
     </li>
     <li>
       <a href="../articles/intro_vignette.html">Introduction to pathfindR</a>
-    </li>
-    <li>
-      <a href="../articles/manual_execution.html">Step-by-Step Execution of the pathfindR Enrichment Workflow</a>
     </li>
     <li>
       <a href="../articles/non_hs_analysis.html">pathfindR Analysis for non-Homo-sapiens organisms</a>
@@ -85,27 +82,26 @@
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">single_iter_wrapper</span><span class="op">(</span></span>
 <span>  i <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  <span class="va">dirs</span>,</span>
-<span>  <span class="va">input_processed</span>,</span>
 <span>  <span class="va">pin_path</span>,</span>
+<span>  <span class="va">network</span>,</span>
+<span>  <span class="va">experiment_df</span>,</span>
 <span>  <span class="va">score_quan_thr</span>,</span>
 <span>  <span class="va">sig_gene_thr</span>,</span>
 <span>  <span class="va">search_method</span>,</span>
-<span>  <span class="va">silent_option</span>,</span>
-<span>  <span class="va">use_all_positives</span>,</span>
-<span>  <span class="va">geneInitProbs</span>,</span>
-<span>  <span class="va">saTemp0</span>,</span>
-<span>  <span class="va">saTemp1</span>,</span>
-<span>  <span class="va">saIter</span>,</span>
-<span>  <span class="va">gaPop</span>,</span>
-<span>  <span class="va">gaIter</span>,</span>
-<span>  <span class="va">gaThread</span>,</span>
-<span>  <span class="va">gaCrossover</span>,</span>
-<span>  <span class="va">gaMut</span>,</span>
-<span>  <span class="va">grMaxDepth</span>,</span>
-<span>  <span class="va">grSearchDepth</span>,</span>
-<span>  <span class="va">grOverlap</span>,</span>
-<span>  <span class="va">grSubNum</span>,</span>
+<span>  <span class="va">verbose</span>,</span>
+<span>  <span class="va">start_with_all_positives</span>,</span>
+<span>  <span class="va">gene_init_prob</span>,</span>
+<span>  <span class="va">sa_initial_temp</span>,</span>
+<span>  <span class="va">sa_final_temp</span>,</span>
+<span>  <span class="va">sa_iterations</span>,</span>
+<span>  <span class="va">ga_population_size</span>,</span>
+<span>  <span class="va">ga_iterations</span>,</span>
+<span>  <span class="va">ga_crossover_rate</span>,</span>
+<span>  <span class="va">ga_mutation_rate</span>,</span>
+<span>  <span class="va">gr_max_depth</span>,</span>
+<span>  <span class="va">gr_search_depth</span>,</span>
+<span>  <span class="va">gr_overlap_threshold</span>,</span>
+<span>  <span class="va">gr_subnetwork_num</span>,</span>
 <span>  <span class="va">gset_list</span>,</span>
 <span>  <span class="va">adj_method</span>,</span>
 <span>  <span class="va">enrichment_threshold</span>,</span>
@@ -121,16 +117,18 @@
 <dd><p>current iteration index (default = <code>NULL</code>)</p></dd>
 
 
-<dt id="arg-dirs">dirs<a class="anchor" aria-label="anchor" href="#arg-dirs"></a></dt>
-<dd><p>vector of directories for parallel runs</p></dd>
-
-
-<dt id="arg-input-processed">input_processed<a class="anchor" aria-label="anchor" href="#arg-input-processed"></a></dt>
-<dd><p>processed input data frame</p></dd>
-
-
 <dt id="arg-pin-path">pin_path<a class="anchor" aria-label="anchor" href="#arg-pin-path"></a></dt>
 <dd><p>path/to/PIN/file</p></dd>
+
+
+<dt id="arg-network">network<a class="anchor" aria-label="anchor" href="#arg-network"></a></dt>
+<dd><p>Prebuilt network object as returned by <code><a href="build_network.html">build_network()</a></code>,
+built once by <code>active_snw_enrichment_wrapper</code> and passed to every
+iteration to avoid redundant PIN file I/O.</p></dd>
+
+
+<dt id="arg-experiment-df">experiment_df<a class="anchor" aria-label="anchor" href="#arg-experiment-df"></a></dt>
+<dd><p>input experiment data frame</p></dd>
 
 
 <dt id="arg-score-quan-thr">score_quan_thr<a class="anchor" aria-label="anchor" href="#arg-score-quan-thr"></a></dt>
@@ -151,67 +149,60 @@ search. Options are greedy search (GR), simulated annealing (SA) or genetic
 algorithm (GA) for the search (default = 'GR').</p></dd>
 
 
-<dt id="arg-silent-option">silent_option<a class="anchor" aria-label="anchor" href="#arg-silent-option"></a></dt>
-<dd><p>boolean value indicating whether to print the messages
-to the console (FALSE) or not (TRUE, this will print to a temp. file) during
-active subnetwork search (default = TRUE). This option was added because
-during parallel runs, the console messages get disorderly printed.</p></dd>
+<dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
+<dd><p>boolean value indicating whether to print messages (default=FALSE)</p></dd>
 
 
-<dt id="arg-use-all-positives">use_all_positives<a class="anchor" aria-label="anchor" href="#arg-use-all-positives"></a></dt>
+<dt id="arg-start-with-all-positives">start_with_all_positives<a class="anchor" aria-label="anchor" href="#arg-start-with-all-positives"></a></dt>
 <dd><p>if TRUE: in GA, adds an individual with all positive
 nodes. In SA, initializes candidate solution with all positive nodes. (default = FALSE)</p></dd>
 
 
-<dt id="arg-geneinitprobs">geneInitProbs<a class="anchor" aria-label="anchor" href="#arg-geneinitprobs"></a></dt>
+<dt id="arg-gene-init-prob">gene_init_prob<a class="anchor" aria-label="anchor" href="#arg-gene-init-prob"></a></dt>
 <dd><p>For SA and GA, probability of adding a gene in initial solution (default = 0.1)</p></dd>
 
 
-<dt id="arg-satemp-">saTemp0<a class="anchor" aria-label="anchor" href="#arg-satemp-"></a></dt>
+<dt id="arg-sa-initial-temp">sa_initial_temp<a class="anchor" aria-label="anchor" href="#arg-sa-initial-temp"></a></dt>
 <dd><p>Initial temperature for SA (default = 1.0)</p></dd>
 
 
-<dt id="arg-satemp-">saTemp1<a class="anchor" aria-label="anchor" href="#arg-satemp-"></a></dt>
+<dt id="arg-sa-final-temp">sa_final_temp<a class="anchor" aria-label="anchor" href="#arg-sa-final-temp"></a></dt>
 <dd><p>Final temperature for SA (default = 0.01)</p></dd>
 
 
-<dt id="arg-saiter">saIter<a class="anchor" aria-label="anchor" href="#arg-saiter"></a></dt>
+<dt id="arg-sa-iterations">sa_iterations<a class="anchor" aria-label="anchor" href="#arg-sa-iterations"></a></dt>
 <dd><p>Iteration number for SA (default = 10000)</p></dd>
 
 
-<dt id="arg-gapop">gaPop<a class="anchor" aria-label="anchor" href="#arg-gapop"></a></dt>
+<dt id="arg-ga-population-size">ga_population_size<a class="anchor" aria-label="anchor" href="#arg-ga-population-size"></a></dt>
 <dd><p>Population size for GA (default = 400)</p></dd>
 
 
-<dt id="arg-gaiter">gaIter<a class="anchor" aria-label="anchor" href="#arg-gaiter"></a></dt>
+<dt id="arg-ga-iterations">ga_iterations<a class="anchor" aria-label="anchor" href="#arg-ga-iterations"></a></dt>
 <dd><p>Iteration number for GA (default = 200)</p></dd>
 
 
-<dt id="arg-gathread">gaThread<a class="anchor" aria-label="anchor" href="#arg-gathread"></a></dt>
-<dd><p>Number of threads to be used in GA (default = 5)</p></dd>
-
-
-<dt id="arg-gacrossover">gaCrossover<a class="anchor" aria-label="anchor" href="#arg-gacrossover"></a></dt>
+<dt id="arg-ga-crossover-rate">ga_crossover_rate<a class="anchor" aria-label="anchor" href="#arg-ga-crossover-rate"></a></dt>
 <dd><p>Applies crossover with the given probability in GA (default = 1, i.e. always perform crossover)</p></dd>
 
 
-<dt id="arg-gamut">gaMut<a class="anchor" aria-label="anchor" href="#arg-gamut"></a></dt>
+<dt id="arg-ga-mutation-rate">ga_mutation_rate<a class="anchor" aria-label="anchor" href="#arg-ga-mutation-rate"></a></dt>
 <dd><p>For GA, applies mutation with given mutation rate (default = 0, i.e. mutation off)</p></dd>
 
 
-<dt id="arg-grmaxdepth">grMaxDepth<a class="anchor" aria-label="anchor" href="#arg-grmaxdepth"></a></dt>
+<dt id="arg-gr-max-depth">gr_max_depth<a class="anchor" aria-label="anchor" href="#arg-gr-max-depth"></a></dt>
 <dd><p>Sets max depth in greedy search, 0 for no limit (default = 1)</p></dd>
 
 
-<dt id="arg-grsearchdepth">grSearchDepth<a class="anchor" aria-label="anchor" href="#arg-grsearchdepth"></a></dt>
+<dt id="arg-gr-search-depth">gr_search_depth<a class="anchor" aria-label="anchor" href="#arg-gr-search-depth"></a></dt>
 <dd><p>Search depth in greedy search (default = 1)</p></dd>
 
 
-<dt id="arg-groverlap">grOverlap<a class="anchor" aria-label="anchor" href="#arg-groverlap"></a></dt>
+<dt id="arg-gr-overlap-threshold">gr_overlap_threshold<a class="anchor" aria-label="anchor" href="#arg-gr-overlap-threshold"></a></dt>
 <dd><p>Overlap threshold for results of greedy search (default = 0.5)</p></dd>
 
 
-<dt id="arg-grsubnum">grSubNum<a class="anchor" aria-label="anchor" href="#arg-grsubnum"></a></dt>
+<dt id="arg-gr-subnetwork-num">gr_subnetwork_num<a class="anchor" aria-label="anchor" href="#arg-gr-subnetwork-num"></a></dt>
 <dd><p>Number of subnetworks to be presented in the results (default = 1000)</p></dd>
 
 

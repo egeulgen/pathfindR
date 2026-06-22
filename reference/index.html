@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.7.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.7.0.9003</span>
       </span>
     </div>
 
@@ -36,9 +36,6 @@
     </li>
     <li>
       <a href="../articles/intro_vignette.html">Introduction to pathfindR</a>
-    </li>
-    <li>
-      <a href="../articles/manual_execution.html">Step-by-Step Execution of the pathfindR Enrichment Workflow</a>
     </li>
     <li>
       <a href="../articles/non_hs_analysis.html">pathfindR Analysis for non-Homo-sapiens organisms</a>
@@ -162,7 +159,7 @@
         <td><p>Combined Results Graph</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="enrichment-related-functions">Enrichment-related functions <a href="#enrichment-related-functions" class="anchor" aria-hidden="true"></a></h2>
-          <p class="section-desc"></p><p>Active subnetwork search- and Enrichment-related functions</p>
+          <p class="section-desc"></p><p>Enrichment-related functions</p>
         </th>
       </tr></tbody><tbody><tr><td>
           <p><code><a href="active_snw_enrichment_wrapper.html">active_snw_enrichment_wrapper()</a></code> </p>
@@ -172,10 +169,6 @@
           <p><code><a href="single_iter_wrapper.html">single_iter_wrapper()</a></code> </p>
         </td>
         <td><p>Active Subnetwork Search + Enrichment Analysis Wrapper for a Single Iteration</p></td>
-      </tr><tr><td>
-          <p><code><a href="active_snw_search.html">active_snw_search()</a></code> </p>
-        </td>
-        <td><p>Perform Active Subnetwork Search</p></td>
       </tr><tr><td>
           <p><code><a href="annotate_term_genes.html">annotate_term_genes()</a></code> </p>
         </td>
@@ -193,13 +186,29 @@
         </td>
         <td><p>Fetch Gene Set Objects</p></td>
       </tr><tr><td>
-          <p><code><a href="filterActiveSnws.html">filterActiveSnws()</a></code> </p>
-        </td>
-        <td><p>Parse Active Subnetwork Search Output File and Filter the Subnetworks</p></td>
-      </tr><tr><td>
           <p><code><a href="hyperg_test.html">hyperg_test()</a></code> </p>
         </td>
         <td><p>Hypergeometric Distribution-based Hypothesis Testing</p></td>
+      </tr><tr><td>
+          <p><code><a href="summarize_enrichment_results.html">summarize_enrichment_results()</a></code> </p>
+        </td>
+        <td><p>Summarize Enrichment Results</p></td>
+      </tr></tbody><tbody><tr><th colspan="2">
+          <h2 id="active-subnetwork-search-functions">Active Subnetwork Search Functions <a href="#active-subnetwork-search-functions" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p><p>Active subnetwork search-related functions</p>
+        </th>
+      </tr></tbody><tbody><tr><td>
+          <p><code><a href="get_active_subnetworks.html">get_active_subnetworks()</a></code> </p>
+        </td>
+        <td><p>Get Active Subnetworks</p></td>
+      </tr><tr><td>
+          <p><code><a href="active_subnetwork_search.html">active_subnetwork_search()</a></code> </p>
+        </td>
+        <td><p>Active subnetwork search</p></td>
+      </tr><tr><td>
+          <p><code><a href="filter_active_subnetworks.html">filter_active_subnetworks()</a></code> </p>
+        </td>
+        <td><p>Parse Active Subnetwork Search Output File and Filter the Subnetworks</p></td>
       </tr><tr><td>
           <p><code><a href="input_processing.html">input_processing()</a></code> </p>
         </td>
@@ -213,9 +222,77 @@
         </td>
         <td><p>Return The Path to Given Protein-Protein Interaction Network (PIN)</p></td>
       </tr><tr><td>
-          <p><code><a href="summarize_enrichment_results.html">summarize_enrichment_results()</a></code> </p>
+          <p><code><a href="build_score_context.html">build_score_context()</a></code> </p>
         </td>
-        <td><p>Summarize Enrichment Results</p></td>
+        <td><p>Build the score context</p></td>
+      </tr><tr><td>
+          <p><code><a href="build_network.html">build_network()</a></code> </p>
+        </td>
+        <td><p>Build the undirected interaction network from a SIF file</p></td>
+      </tr><tr><td>
+          <p><code><a href="dot-greedy_search.html">.greedy_search()</a></code> </p>
+        </td>
+        <td><p>Run the greedy active subnetwork search</p></td>
+      </tr><tr><td>
+          <p><code><a href="dot-simulated_annealing.html">.simulated_annealing()</a></code> </p>
+        </td>
+        <td><p>Run the simulated annealing active subnetwork search</p></td>
+      </tr><tr><td>
+          <p><code><a href="dot-genetic_algorithm.html">.genetic_algorithm()</a></code> </p>
+        </td>
+        <td><p>Run the genetic-algorithm active subnetwork search</p></td>
+      </tr><tr><td>
+          <p><code><a href="dot-find_components_named.html">.find_components_named()</a></code> </p>
+        </td>
+        <td><p>Find the connected components among a set of "on" nodes</p></td>
+      </tr><tr><td>
+          <p><code><a href="dot-find_subnetworks.html">.find_subnetworks()</a></code> </p>
+        </td>
+        <td><p>Find the scored subnetworks among a set of "on" nodes</p></td>
+      </tr><tr><td>
+          <p><code><a href="dot-ga_compare.html">.ga_compare()</a></code> </p>
+        </td>
+        <td><p>Compare two individuals rank-by-rank</p></td>
+      </tr><tr><td>
+          <p><code><a href="dot-ga_crossover_mutation.html">.ga_crossover_mutation()</a></code> </p>
+        </td>
+        <td><p>Crossover and mutation of two parent genomes</p></td>
+      </tr><tr><td>
+          <p><code><a href="dot-ga_make_individual.html">.ga_make_individual()</a></code> </p>
+        </td>
+        <td><p>Build a GA individual from a logical genome</p></td>
+      </tr><tr><td>
+          <p><code><a href="dot-ga_pick.html">.ga_pick()</a></code> </p>
+        </td>
+        <td><p>Pick one index by rank-proportional (roulette) selection</p></td>
+      </tr><tr><td>
+          <p><code><a href="dot-ga_score.html">.ga_score()</a></code> </p>
+        </td>
+        <td><p>Fitness of an individual</p></td>
+      </tr><tr><td>
+          <p><code><a href="dot-ga_sort_desc.html">.ga_sort_desc()</a></code> </p>
+        </td>
+        <td><p>Sort a population from best to worst</p></td>
+      </tr><tr><td>
+          <p><code><a href="dot-make_subnetwork.html">.make_subnetwork()</a></code> </p>
+        </td>
+        <td><p>Create a subnetwork object from a vector of node names</p></td>
+      </tr><tr><td>
+          <p><code><a href="dot-parse_experiment.html">.parse_experiment()</a></code> </p>
+        </td>
+        <td><p>Parse the experiment input into a clean gene / p-value data frame</p></td>
+      </tr><tr><td>
+          <p><code><a href="dot-score_subnetwork.html">.score_subnetwork()</a></code> </p>
+        </td>
+        <td><p>Score a subnetwork from its size and z-score sum</p></td>
+      </tr><tr><td>
+          <p><code><a href="dot-sort_subnetworks_desc.html">.sort_subnetworks_desc()</a></code> </p>
+        </td>
+        <td><p>Sort a list of subnetwork objects by score, descending</p></td>
+      </tr><tr><td>
+          <p><code><a href="example_unfiltered_snws.html">example_unfiltered_snws</a></code> </p>
+        </td>
+        <td><p>Example Unfiltered Active Subnetworks</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="clustering-related-functions">Clustering-related functions <a href="#clustering-related-functions" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p><p>Clustering-related functions</p>
@@ -253,18 +330,6 @@
           <p class="section-desc"></p><p>Miscellaneous functions</p>
         </th>
       </tr></tbody><tbody><tr><td>
-          <p><code><a href="configure_output_dir.html">configure_output_dir()</a></code> </p>
-        </td>
-        <td><p>Configure Output Directory Name</p></td>
-      </tr><tr><td>
-          <p><code><a href="check_java_version.html">check_java_version()</a></code> </p>
-        </td>
-        <td><p>Check Java Version</p></td>
-      </tr><tr><td>
-          <p><code><a href="fetch_java_version.html">fetch_java_version()</a></code> </p>
-        </td>
-        <td><p>Obtain Java Version</p></td>
-      </tr><tr><td>
           <p><code><a href="get_biogrid_pin.html">get_biogrid_pin()</a></code> </p>
         </td>
         <td><p>Retrieve the Requested Release of Organism-specific BioGRID PIN</p></td>
@@ -297,9 +362,9 @@
         </td>
         <td><p>Check if value is a valid color</p></td>
       </tr><tr><td>
-          <p><code><a href="isOrderable.html">isOrderable()</a></code> </p>
+          <p><code><a href="order_df_by_columnn.html">order_df_by_columnn()</a></code> </p>
         </td>
-        <td><p>Check if column can be ordered</p></td>
+        <td><p>Order input data frame by provided columnn</p></td>
       </tr><tr><td>
           <p><code><a href="safe_get_content.html">safe_get_content()</a></code> </p>
         </td>

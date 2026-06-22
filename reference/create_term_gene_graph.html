@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.7.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.7.0.9003</span>
       </span>
     </div>
 
@@ -36,9 +36,6 @@
     </li>
     <li>
       <a href="../articles/intro_vignette.html">Introduction to pathfindR</a>
-    </li>
-    <li>
-      <a href="../articles/manual_execution.html">Step-by-Step Execution of the pathfindR Enrichment Workflow</a>
     </li>
     <li>
       <a href="../articles/non_hs_analysis.html">pathfindR Analysis for non-Homo-sapiens organisms</a>
@@ -121,9 +118,8 @@
 
 <dt id="arg-genes-df">genes_df<a class="anchor" aria-label="anchor" href="#arg-genes-df"></a></dt>
 <dd><p>(optional) the input data that was used with <code><a href="run_pathfindr.html">run_pathfindR</a></code> (default: <code>NULL</code>).
-  It must be a data frame with 2 or 3 columns:</p><ol><li><p>Gene.Symbol (required)</p></li>
+  It must be a data frame with at least 2 columns:</p><ol><li><p>Gene.Symbol (required)</p></li>
 <li><p>logFC (required)</p></li>
-<li><p>adj.P.Val (optional)</p></li>
 </ol></dd>
 
 
@@ -175,29 +171,29 @@ criterion for term selection. The resulting igraph object can be visualized usin
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Normal gene-term with up/down regulated genes</span></span></span>
 <span class="r-in"><span><span class="va">g</span> <span class="op">&lt;-</span> <span class="fu">create_term_gene_graph</span><span class="op">(</span></span></span>
-<span class="r-in"><span>     result_df <span class="op">=</span> <span class="va">example_pathfindR_output</span></span></span>
-<span class="r-in"><span>     <span class="op">)</span></span></span>
+<span class="r-in"><span>  result_df <span class="op">=</span> <span class="va">example_pathfindR_output</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">g</span> <span class="op">&lt;-</span> <span class="fu">create_term_gene_graph</span><span class="op">(</span></span></span>
-<span class="r-in"><span>     result_df <span class="op">=</span> <span class="va">example_pathfindR_output</span>, </span></span>
-<span class="r-in"><span>     num_terms <span class="op">=</span> <span class="fl">5</span></span></span>
-<span class="r-in"><span>     <span class="op">)</span></span></span>
+<span class="r-in"><span>  result_df <span class="op">=</span> <span class="va">example_pathfindR_output</span>,</span></span>
+<span class="r-in"><span>  num_terms <span class="op">=</span> <span class="fl">5</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">g</span> <span class="op">&lt;-</span> <span class="fu">create_term_gene_graph</span><span class="op">(</span></span></span>
-<span class="r-in"><span>     result_df <span class="op">=</span> <span class="va">example_pathfindR_output</span>, </span></span>
-<span class="r-in"><span>     term_size <span class="op">=</span> <span class="st">'p_val'</span></span></span>
-<span class="r-in"><span>     <span class="op">)</span></span></span>
+<span class="r-in"><span>  result_df <span class="op">=</span> <span class="va">example_pathfindR_output</span>,</span></span>
+<span class="r-in"><span>  term_size <span class="op">=</span> <span class="st">"p_val"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Coloring the term nodes</span></span></span>
 <span class="r-in"><span><span class="va">g</span> <span class="op">&lt;-</span> <span class="fu">create_term_gene_graph</span><span class="op">(</span></span></span>
-<span class="r-in"><span>     result_df <span class="op">=</span> <span class="va">example_pathfindR_output</span>, </span></span>
-<span class="r-in"><span>     term_fill <span class="op">=</span> <span class="st">"Fold_Enrichment"</span></span></span>
-<span class="r-in"><span>     <span class="op">)</span></span></span>
+<span class="r-in"><span>  result_df <span class="op">=</span> <span class="va">example_pathfindR_output</span>,</span></span>
+<span class="r-in"><span>  term_fill <span class="op">=</span> <span class="st">"Fold_Enrichment"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Adding edge weights</span></span></span>
 <span class="r-in"><span><span class="va">g</span> <span class="op">&lt;-</span> <span class="fu">create_term_gene_graph</span><span class="op">(</span></span></span>
-<span class="r-in"><span>     result_df <span class="op">=</span> <span class="va">example_pathfindR_output</span>, </span></span>
-<span class="r-in"><span>     term_fill <span class="op">=</span> <span class="st">"Fold_Enrichment"</span>, </span></span>
-<span class="r-in"><span>     use_edge_weights <span class="op">=</span> <span class="cn">TRUE</span></span></span>
-<span class="r-in"><span>     <span class="op">)</span></span></span>
+<span class="r-in"><span>  result_df <span class="op">=</span> <span class="va">example_pathfindR_output</span>,</span></span>
+<span class="r-in"><span>  term_fill <span class="op">=</span> <span class="st">"Fold_Enrichment"</span>,</span></span>
+<span class="r-in"><span>  use_edge_weights <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>
