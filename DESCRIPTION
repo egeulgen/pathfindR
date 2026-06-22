@@ -60,7 +60,6 @@ Suggests:
     covr,
     mockery
 VignetteBuilder: knitr
-Config/roxygen2/version: 8.0.0
 RoxygenNote: 8.0.0
 LinkingTo: 
     Rcpp
