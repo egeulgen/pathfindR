@@ -51,7 +51,7 @@ build_score_context <- function(network, experiment, params) {
   pmap[is.na(pmap)] <- params$p_for_nonsignificant
 
   # Use the Java approximation for Z-scores
-  # this is to match version <=2.X.Y behaviour
+  # this is to match version <=2.X.Y behavior
   z_vec <- get_java_zscores(as.numeric(pmap))
   z <- stats::setNames(z_vec, nodes)
 
@@ -70,7 +70,7 @@ build_score_context <- function(network, experiment, params) {
 #'
 #' Single-node subnetworks always score 0. Otherwise the raw score is
 #' \code{zsum / sqrt(n)}, optionally calibrated against the Monte-Carlo
-#' distribution and optionally penalised for size.
+#' distribution and optionally penalized for size.
 #'
 #' @param sc A score context from \code{build_score_context()}.
 #' @param n Number of nodes in the subnetwork.

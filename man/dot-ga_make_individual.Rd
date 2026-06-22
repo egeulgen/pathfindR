@@ -26,6 +26,6 @@ scores (sorted descending) for fast fitness comparison. The scores are
 obtained with the C++ component scorer over the precomputed CSR adjacency,
 which is the only thing the fitness comparison (\code{.ga_compare} /
 \code{.ga_sort_desc}) ever reads. The node membership of a genome is not
-materialised here — it is reconstructed once, for the best individual, at the
+materialized here — it is reconstructed once, for the best individual, at the
 end of \code{.genetic_algorithm()}.
 }

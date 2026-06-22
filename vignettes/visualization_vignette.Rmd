@@ -159,7 +159,7 @@ By default the node sizes are plotted proportional to the number of genes a term
 create_term_gene_graph(example_pathfindR_output, num_terms = 3, term_size = "p_val")
 ```
 
-`create_term_gene_graph` can also take the `genes_df` as input to visualise fold-changes, Fold Enrichments of the term nodes and an up-set like plot in graph context.
+`create_term_gene_graph` can also take the `genes_df` as input to visualize fold-changes, Fold Enrichments of the term nodes and an up-set like plot in graph context.
 
 ```{r term_gene5}
 g <- create_term_gene_graph(

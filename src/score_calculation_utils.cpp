@@ -2,7 +2,7 @@
 #include <cmath>
 #include <stdexcept>
 
-// Porting from earlier Java implementation to match behaviour
+// Porting from earlier Java implementation to match behavior
 // see: https://tinyurl.com/java-implementation
 
 // ---------------------------------------------------------

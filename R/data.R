@@ -5,7 +5,7 @@
 #'
 #' @format A list with 1000 elements. Each containing a named list:
 #' \describe{
-#'   \item{nodes}{actove subnetwork nodes}
+#'   \item{nodes}{active subnetwork nodes}
 #'   \item{score}{score of the active subnetwork}
 #' }
 "example_unfiltered_snws"

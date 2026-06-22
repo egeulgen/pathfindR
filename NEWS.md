@@ -14,12 +14,12 @@
 - Removed the package start-up message.
 - Split `term_gene_graph()` into `create_term_gene_graph()` and
   `create_term_gene_plot()`: `create_term_gene_graph()` builds the `igraph`
-  structure, while `create_term_gene_plot()` visualises the graph from the
+  structure, while `create_term_gene_plot()` visualizes the graph from the
   information available in that `igraph` object.
 
 # pathfindR 2.7.0
 ## Minor Changes and Bug Fixes
-- Moved org.Hs.eg.db from "Imports" to "Suggests" per new CRAN policy. Relevant functions revert to default behaviour if the required package is not installed.
+- Moved org.Hs.eg.db from "Imports" to "Suggests" per new CRAN policy. Relevant functions revert to default behavior if the required package is not installed.
 
 # pathfindR 2.6.0
 

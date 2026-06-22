@@ -155,7 +155,7 @@ double greedy_removal(
   // Java does: LinkedList list = new LinkedList(removableNodes); then processes
   // from the front, and may APPEND a predecessor mid-pass when it becomes
   // removable. We reproduce both (a) the initial order = Java HashSet iteration
-  // order of removableNodes, and (b) the dynamic append behaviour.
+  // order of removableNodes, and (b) the dynamic append behavior.
 
   // (a) Collect removable nodes and order them as Java's HashSet would iterate.
   std::vector<int> rem;
@@ -346,7 +346,7 @@ List run_greedy_search(
   // so the LAST (lowest-scoring) entry of the sorted candidate list is never
   // visited as the outer subnetwork and is silently dropped. We reproduce that
   // off-by-one exactly by iterating only up to candidates.size() - 1.
-  // (Behaviour-matching the frozen Java jar, even though dropping the final
+  // (Behavior-matching the frozen Java jar, even though dropping the final
   // candidate is arguably a bug there.)
   int last_cand = (int)candidates.size() - 1;   // exclusive bound -> skips final entry
 
