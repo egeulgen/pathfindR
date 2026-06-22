@@ -25,16 +25,17 @@ isOrderable <- function(order_by, result_df) {
     return("Column values of `order_by` cannot have NAs!")
   }
   result_df <- tryCatch(
-  {
+    {
       result_df[order(result_df[[order_by]], decreasing = FALSE), ]
-  },
-  error = function(e) {
-    sprintf(
-      "`order_by`(%s) cannot be used to order the `result_df`: error: %s",
-      order_by,
-      e$message
-    )
-  })
+    },
+    error = function(e) {
+      sprintf(
+        "`order_by`(%s) cannot be used to order the `result_df`: error: %s",
+        order_by,
+        e$message
+      )
+    }
+  )
   return(result_df)
 }
 

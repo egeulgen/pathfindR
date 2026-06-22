@@ -42,29 +42,29 @@
 #' @examples
 #' # Normal gene-term with up/down regulated genes
 #' g <- create_term_gene_graph(
-#'      result_df = example_pathfindR_output
-#'      )
+#'   result_df = example_pathfindR_output
+#' )
 #' g <- create_term_gene_graph(
-#'      result_df = example_pathfindR_output,
-#'      num_terms = 5
-#'      )
+#'   result_df = example_pathfindR_output,
+#'   num_terms = 5
+#' )
 #' g <- create_term_gene_graph(
-#'      result_df = example_pathfindR_output,
-#'      term_size = 'p_val'
-#'      )
+#'   result_df = example_pathfindR_output,
+#'   term_size = "p_val"
+#' )
 #'
 #' # Coloring the term nodes
 #' g <- create_term_gene_graph(
-#'      result_df = example_pathfindR_output,
-#'      term_fill = "Fold_Enrichment"
-#'      )
+#'   result_df = example_pathfindR_output,
+#'   term_fill = "Fold_Enrichment"
+#' )
 #'
 #' # Adding edge weights
 #' g <- create_term_gene_graph(
-#'      result_df = example_pathfindR_output,
-#'      term_fill = "Fold_Enrichment",
-#'      use_edge_weights = TRUE
-#'      )
+#'   result_df = example_pathfindR_output,
+#'   term_fill = "Fold_Enrichment",
+#'   use_edge_weights = TRUE
+#' )
 create_term_gene_graph <- function(
   result_df,
   genes_df = NULL,
@@ -75,7 +75,6 @@ create_term_gene_graph <- function(
   use_description = FALSE,
   use_edge_weights = FALSE
 ) {
-
   ## Error handling
   #--------------------------------------------------------------------#
 
@@ -160,14 +159,14 @@ create_term_gene_graph <- function(
 
   ### Merging genes and terms if `genes_df` is supplied
   if (!is.null(genes_df)) {
-      graph_df <- merge(
-          x = graph_df,
-          y = genes_df,
-          by.x = "Gene",
-          by.y = "Gene.symbol",
-          all = TRUE
-        )
-      graph_df <- graph_df[!is.na(graph_df$Term), ]
+    graph_df <- merge(
+      x = graph_df,
+      y = genes_df,
+      by.x = "Gene",
+      by.y = "Gene.symbol",
+      all = TRUE
+    )
+    graph_df <- graph_df[!is.na(graph_df$Term), ]
   }
 
   up_genes <- lapply(result_df$Up_regulated, function(x) unlist(strsplit(x, ", ")))
@@ -178,43 +177,42 @@ create_term_gene_graph <- function(
   cond_term <- names(igraph::V(g)) %in% result_df[, ID_column]
 
   if (!is.null(genes_df)) {
-      cond_gene <- !cond_term
+    cond_gene <- !cond_term
 
-      # store a node class for layout/shape if needed
-      #-----------------------------------------------------
-      igraph::V(g)$type <- ifelse(cond_term, "term", "gene")
+    # store a node class for layout/shape if needed
+    #-----------------------------------------------------
+    igraph::V(g)$type <- ifelse(cond_term, "term", "gene")
 
-      # store logFC only for gene nodes
-      #-----------------------------------------------------
-      gene_names <- igraph::V(g)$name[cond_gene]
-      gene_logFC <- graph_df$logFC[match(gene_names, graph_df$Gene)]
+    # store logFC only for gene nodes
+    #-----------------------------------------------------
+    gene_names <- igraph::V(g)$name[cond_gene]
+    gene_logFC <- graph_df$logFC[match(gene_names, graph_df$Gene)]
 
-      # Create a full-length vector with NA for term nodes
-      #-----------------------------------------------------
-      logFC_full <- rep(NA_real_, igraph::vcount(g))
-      suppressWarnings(logFC_full[cond_gene] <- gene_logFC)
-      igraph::V(g)$logFC <- logFC_full
-
+    # Create a full-length vector with NA for term nodes
+    #-----------------------------------------------------
+    logFC_full <- rep(NA_real_, igraph::vcount(g))
+    suppressWarnings(logFC_full[cond_gene] <- gene_logFC)
+    igraph::V(g)$logFC <- logFC_full
   } else {
-      up_genes <- lapply(result_df$Up_regulated, function(x) unlist(strsplit(x, ", ")))
-      up_genes <- unlist(up_genes)
+    up_genes <- lapply(result_df$Up_regulated, function(x) unlist(strsplit(x, ", ")))
+    up_genes <- unlist(up_genes)
 
-      cond_up_gene <- names(igraph::V(g)) %in% up_genes
+    cond_up_gene <- names(igraph::V(g)) %in% up_genes
 
-      node_type <-  ifelse(cond_term, "term", ifelse(cond_up_gene, "up", "down"))
-      node_type <- factor(node_type, levels = c("term", "up", "down"))
-      node_type <- droplevels(node_type)
-      igraph::V(g)$type <- node_type
+    node_type <- ifelse(cond_term, "term", ifelse(cond_up_gene, "up", "down"))
+    node_type <- factor(node_type, levels = c("term", "up", "down"))
+    node_type <- droplevels(node_type)
+    igraph::V(g)$type <- node_type
   }
 
   # Adjust node sizes
   if (term_size == "num_genes") {
-      sizes <- igraph::degree(g)
-      sizes <- ifelse(igraph::V(g)$type == "term", sizes, 2)
+    sizes <- igraph::degree(g)
+    sizes <- ifelse(igraph::V(g)$type == "term", sizes, 2)
   } else {
-      idx <- match(names(igraph::V(g)), result_df[, ID_column])
-      sizes <- -log10(result_df$lowest_p[idx])
-      sizes[is.na(sizes)] <- 2
+    idx <- match(names(igraph::V(g)), result_df[, ID_column])
+    sizes <- -log10(result_df$lowest_p[idx])
+    sizes[is.na(sizes)] <- 2
   }
   igraph::V(g)$size <- sizes
   igraph::V(g)$label.cex <- 0.5
@@ -273,8 +271,8 @@ create_term_gene_graph <- function(
 #' @examples
 #' # Normal gene-term with up/down regulated genes
 #' g <- create_term_gene_graph(
-#'      result_df = example_pathfindR_output
-#'      )
+#'   result_df = example_pathfindR_output
+#' )
 #' plt <- create_term_gene_plot(g)
 create_term_gene_plot <- function(
   graph,
@@ -286,7 +284,6 @@ create_term_gene_plot <- function(
   term_fill_label = NULL,
   term_size_label = NULL
 ) {
-
   ## Error handling
   #--------------------------------------------------------------------#
 
@@ -305,19 +302,25 @@ create_term_gene_plot <- function(
     if (!all(sapply(X = gene_node_fill, FUN = isColor))) {
       stop("Not all elements in `gene_node_fill` are valid colors!")
     }
-  } else stop("`gene_node_fill` needs to be of length 3!")
+  } else {
+    stop("`gene_node_fill` needs to be of length 3!")
+  }
 
   if (length(term_node_fill) == 3) {
     if (!all(sapply(X = term_node_fill, FUN = isColor))) {
       stop("Not all elements in `term_node_fill` are valid colors!")
     }
-  } else stop("`term_node_fill` needs to be of length 3!")
+  } else {
+    stop("`term_node_fill` needs to be of length 3!")
+  }
 
   if (length(gene_node_color) == 2) {
     if (!all(sapply(X = gene_node_color, FUN = isColor))) {
       stop("Not all elements in `gene_node_color` are valid colors!")
     }
-  } else stop("`gene_node_color` needs to be of length 2!")
+  } else {
+    stop("`gene_node_color` needs to be of length 2!")
+  }
 
   if (!isColor(term_node_color)) {
     stop("`term_node_color` is not a valid color!")
@@ -329,7 +332,7 @@ create_term_gene_plot <- function(
   if (is.null(gene_node_values)) {
     node_type <- igraph::V(graph)$type
 
-    type_descriptions <- c(term="enriched term", up="up-regulated gene", down="down-regulated gene")
+    type_descriptions <- c(term = "enriched term", up = "up-regulated gene", down = "down-regulated gene")
     type_descriptions <- type_descriptions[levels(node_type)]
 
     node_colors <- c(term_node_color, gene_node_color)
@@ -342,12 +345,12 @@ create_term_gene_plot <- function(
   if (!is.null(weight_node_values)) {
     p <- ggraph::ggraph(graph, layout = layout) +
       ggraph::geom_edge_link(
-          mapping = ggplot2::aes(
-            width = .data$weight * 0.1
-          ),
-          color = "darkgrey",
-          alpha = 0.8,
-          show.legend = FALSE
+        mapping = ggplot2::aes(
+          width = .data$weight * 0.1
+        ),
+        color = "darkgrey",
+        alpha = 0.8,
+        show.legend = FALSE
       )
   } else {
     p <- ggraph::ggraph(graph, layout = layout) +
@@ -355,7 +358,7 @@ create_term_gene_plot <- function(
         alpha = 0.8,
         color = "darkgrey",
         show.legend = FALSE
-    )
+      )
   }
 
   # First layer for gene nodes, if `genes_df` is supplied
@@ -384,7 +387,8 @@ create_term_gene_plot <- function(
       ggraph::geom_node_point(
         mapping = ggplot2::aes(
           fill = .data$type,
-          size = .data$size),
+          size = .data$size
+        ),
         shape = 21,
         colour = "black"
       ) +
@@ -392,7 +396,7 @@ create_term_gene_plot <- function(
         values = node_colors,
         labels = type_descriptions
       )
-    }
+  }
 
 
   if (!is.null(gene_node_values) || !is.null(term_fill)) {
@@ -479,7 +483,6 @@ create_term_gene_plot <- function(
             labels = type_descriptions[1]
           )
       }
-
     } else {
       p1 <- p +
         ggraph::scale_edge_width(guide = "none") +
@@ -487,7 +490,8 @@ create_term_gene_plot <- function(
           data = gene_term,
           mapping = ggplot2::aes(
             fill = .data$type,
-            size = .data$size),
+            size = .data$size
+          ),
           colour = "black",
           shape = 21
         ) +
@@ -524,27 +528,29 @@ create_term_gene_plot <- function(
 
   p <- p1 +
     ggplot2::scale_size(
-    range = c(5, 10),
-    breaks = round(seq(
+      range = c(5, 10),
+      breaks = round(seq(
         round(min(igraph::V(graph)$size)),
         round(max(igraph::V(graph)$size)),
-        length.out = 4)),
-    name = ifelse(is.null(term_size_label), "term size", term_size_label)
+        length.out = 4
+      )),
+      name = ifelse(is.null(term_size_label), "term size", term_size_label)
     ) +
     ggplot2::theme_void() +
     suppressWarnings(
-        ggraph::geom_node_text(
-          mapping = ggplot2::aes(label = .data$name),
-          nudge_y = 0.2,
-          repel = TRUE,
-          max.overlaps = 20
-        )
+      ggraph::geom_node_text(
+        mapping = ggplot2::aes(label = .data$name),
+        nudge_y = 0.2,
+        repel = TRUE,
+        max.overlaps = 20
+      )
     )
   if (!is.null(num_terms)) {
     p <- p + ggplot2::ggtitle(
       "Term-Gene Graph",
       subtitle = paste(c("Top", num_terms, "terms"),
-      collapse = " ")
+        collapse = " "
+      )
     )
   }
 

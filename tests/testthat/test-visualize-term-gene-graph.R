@@ -60,7 +60,6 @@ test_that("`create_term_gene_graph()` -- check arguments", {
     create_term_gene_graph(example_pathfindR_output, use_edge_weights = "FALSE"),
     "`use_edge_weights` must either be TRUE or FALSE!"
   )
-
 })
 
 test_that("`create_term_gene_graph()` -- check igraph creation", {
@@ -175,7 +174,7 @@ test_that("`create_term_gene_plot()` -- check arguments", {
 test_that("`create_term_gene_plot()` -- Check ggraph creation", {
   ## Default functionality
   g <- create_term_gene_graph(example_pathfindR_output, term_fill = "Fold_Enrichment")
-  expect_is(p <- create_term_gene_plot(g), "ggraph")  
+  expect_is(p <- create_term_gene_plot(g), "ggraph")
 
   g <- create_term_gene_graph(example_pathfindR_output)
   expect_is(p <- create_term_gene_plot(g), "ggraph")

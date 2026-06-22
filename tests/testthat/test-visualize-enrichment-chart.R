@@ -82,11 +82,13 @@ test_that("`enrichment_chart()` -- produces a ggplot object with correct labels"
 
 test_that("`enrichment_chart()` -- order_by arg-related tests", {
   # Change order_by
-  expect_is(g <- enrichment_chart(example_pathfindR_output_clustered, order_by = "highest_p"),
-      "ggplot")
+  expect_is(
+    g <- enrichment_chart(example_pathfindR_output_clustered, order_by = "highest_p"),
+    "ggplot"
+  )
   expect_equal(ggplot2::quo_name(g$mapping$x), "Fold_Enrichment")
   expect_equal(ggplot2::quo_name(g$mapping$y), "Term_Description")
-  
+
   labels <- ggplot2::get_labs(g)
   expect_equal(labels$size, "# genes")
   expect_equal(labels$colour, expression(-log[10](p)))
