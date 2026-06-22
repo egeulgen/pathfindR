@@ -37,7 +37,7 @@ test_that("`order_df_by_columnn()` -- identifies if column can be ordered and or
   )
   expect_error(
     order_df_by_columnn(input_df, "bad"),
-    "`order_by`(bad) cannot be used to order the `df`: error: unimplemented type 'list' in 'greater'\n"
+    "`order_by` \\(bad\\) cannot be used to order the `df`:"
   )
 })
 

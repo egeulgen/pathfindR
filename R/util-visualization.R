@@ -31,10 +31,11 @@ order_df_by_columnn <- function(df, order_by) {
     error = function(e) {
       stop(
         sprintf(
-          "`order_by`(%s) cannot be used to order the `df`: error: %s",
+          "`order_by` (%s) cannot be used to order the `df`: %s",
           order_by,
           e$message
-        )
+        ),
+        call. = FALSE
       )
     }
   )
