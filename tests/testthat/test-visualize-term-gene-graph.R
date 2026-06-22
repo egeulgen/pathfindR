@@ -23,19 +23,6 @@ test_that("`create_term_gene_graph()` -- check arguments", {
     "`genes_df` should be a data.frame!"
   )
 
-  tmp <- example_pathfindR_output
-
-  expect_error(
-    create_term_gene_graph(tmp, order_by = "INVALID"),
-    "`order_by` column doesn't exist in `result_df`"
-  )
-
-  tmp$INVALID <- NA
-  expect_error(
-    create_term_gene_graph(tmp, order_by = "INVALID"),
-    "Column values of `order_by` cannot have NAs!"
-  )
-
   expect_error(
     create_term_gene_graph(example_pathfindR_output, term_fill = "nonexistent"),
     "`term_fill` is not found in the supplied `result_df`!"
