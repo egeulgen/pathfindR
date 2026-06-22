@@ -120,6 +120,7 @@ run_pathfindR <- function(
   )
 
   if (!is.null(output_dir)) {
+    if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
     create_HTML_report(
       input = input, input_processed = input_processed, final_res = final_res,
       dir_for_report = output_dir
