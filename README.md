@@ -6,7 +6,7 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/egeulgen/pathfindR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/egeulgen/pathfindR/actions/workflows/R-CMD-check.yaml)
-[![codecov](https://codecov.io/gh/egeulgen/pathfindR/graph/badge.svg?token=8m9aPaXzNr)](https://codecov.io/gh/egeulgen/pathfindR)
+[![codecov](https://app.codecov.io/gh/egeulgen/pathfindR/graph/badge.svg?token=8m9aPaXzNr)](https://app.codecov.io/gh/egeulgen/pathfindR)
 [![CRAN
 version](https://www.r-pkg.org/badges/version/pathfindR)](https://cran.r-project.org/package=pathfindR)
 [![CRAN total
@@ -74,8 +74,6 @@ docker pull egeulgen/pathfindr:latest
 # pull image for a specific version (e.g., 1.4.1)
 docker pull egeulgen/pathfindr:1.4.1
 ```
-
-Online app on superbio.ai: <https://app.superbio.ai/apps/111/>
 
 # Enrichment Analysis with pathfindR
 
@@ -289,15 +287,15 @@ title="Term-Gene Heatmap" alt="Term-Gene Heatmap" />
 
 ## Term-Gene Graph
 
-The function `term_gene_graph()` (adapted from the Gene-Concept network
-visualization by the R package `enrichplot`) can be utilized to
-visualize which significant genes are involved in the enriched terms.
-The function creates the term-gene graph, displaying the connections
-between genes and biological terms (enriched pathways or gene sets).
-This allows for the investigation of multiple terms to which significant
-genes are related. The graph also enables the determination of the
-degree of overlap between the enriched terms by identifying shared
-and/or distinct significant genes.
+The functions `create_term_gene_graph()` and `create_term_gene_plot()`
+(adapted from the Gene-Concept network visualization by the R package
+`enrichplot`) can be utilized to visualize which significant genes are
+involved in the enriched terms. The function creates the term-gene
+graph, displaying the connections between genes and biological terms
+(enriched pathways or gene sets). This allows for the investigation of
+multiple terms to which significant genes are related. The graph also
+enables the determination of the degree of overlap between the enriched
+terms by identifying shared and/or distinct significant genes.
 
 <figure>
 <img

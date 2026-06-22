@@ -131,7 +131,7 @@ See `?term_gene_heatmap` for more details.
 
 ## `create_term_gene_graph()` & `create_term_gene_plot`: Term-Gene Graph
 
-The function `create_term_gene_graph()` and `create_term_gene_plot()` (adapted from the Gene-Concept network visualization by the R package `enrichplot`) can be utilized to visualize which significant genes are involved in the enriched terms. The function creates the term-gene graph, displaying the connections between genes and biological terms (enriched pathways or gene sets). This allows for the investigation of multiple terms to which significant genes are related. The graph also enables determination of the degree of overlap between the enriched terms by identifying shared and/or distinct significant genes.
+The functions `create_term_gene_graph()` and `create_term_gene_plot()` (adapted from the Gene-Concept network visualization by the R package `enrichplot`) can be utilized to visualize which significant genes are involved in the enriched terms. The function creates the term-gene graph, displaying the connections between genes and biological terms (enriched pathways or gene sets). This allows for the investigation of multiple terms to which significant genes are related. The graph also enables determination of the degree of overlap between the enriched terms by identifying shared and/or distinct significant genes.
 By default, the function visualizes the term-gene graph for the top 10 enriched terms:
 
 ```{r term_gene1}
@@ -159,7 +159,7 @@ By default the node sizes are plotted proportional to the number of genes a term
 create_term_gene_graph(example_pathfindR_output, num_terms = 3, term_size = "p_val")
 ```
 
-`create_term_gene_graph` can also take the `genes_df` as input to visualise fold-changes, Fold Enrichments of the term nodes and an up-set like plot in graph context.
+`create_term_gene_graph` can also take the `genes_df` as input to visualize fold-changes, Fold Enrichments of the term nodes and an up-set like plot in graph context.
 
 ```{r term_gene5}
 g <- create_term_gene_graph(

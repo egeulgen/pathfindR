@@ -1,19 +1,19 @@
 ## Test environments
-* local OS X 26.2, R 4.5.2
-* macOS-latest (on GitHub-Actions), R 4.5.2
-* windows-latest (on GitHub-Actions), R 4.5.2
-* ubuntu-latest (on GitHub-Actions), R 4.5.2
-* ubuntu-latest (on GitHub-Actions), R devel
-* ubuntu-latest (on GitHub-Actions), R 4.4.3
-* win-builder (devel and release)
+* local macOS 15.7.4, R 4.6.0
+* macOS-latest (GitHub Actions), R 4.6.0
+* windows-latest (GitHub Actions), R 4.6.0
+* ubuntu-latest (GitHub Actions), R 4.6.0
+* ubuntu-latest (GitHub Actions), R oldrel
+* ubuntu-latest (GitHub Actions), R devel
+* win-builder (release and devel)
 
 ## R CMD check results
-  There were no ERRORs, WARNINGs or NOTEs.
-  
-  This is a minor release for 'pathfindR', fixing the CRAN errors due to strong
-  dependencies on a package from Bioconductor data annotation repository. The
-  package was moved to 'Suggests' and code was updated to conditionally execute
-  if installed, raising an informative message if not.
-  
+0 errors | 0 warnings | 0 notes
+
+This is a major release. It re-implements the active subnetwork search in R and
+C++ (via Rcpp) and removes the Java dependency, so the package no longer
+declares 'SystemRequirements: Java'. This release also renames a few exported
+functions and includes minor fixes; see NEWS.md for details.
+
 ## Downstream dependencies
-  There are currently no downstream dependencies for this package.
+There are currently no downstream dependencies for this package.

@@ -21,5 +21,5 @@ A numeric score.
 \description{
 Single-node subnetworks always score 0. Otherwise the raw score is
 \code{zsum / sqrt(n)}, optionally calibrated against the Monte-Carlo
-distribution and optionally penalised for size.
+distribution and optionally penalized for size.
 }
