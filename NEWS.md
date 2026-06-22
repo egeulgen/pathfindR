@@ -1,4 +1,4 @@
-# pathfindR (development version)
+# pathfindR 3.0.0
 
 ## Major Changes
 - Re-implemented the active subnetwork search (GR/SA/GA) in R and C++ (via
