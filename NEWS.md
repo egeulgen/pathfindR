@@ -11,7 +11,10 @@
 - renamed `active_snw_search()` function to `get_active_subnetworks()`
 - renamed `filterActiveSnws()` function to `filter_active_subnetworks()`
 - removed the package start up message
-- Split `term_gene_graph` into `create_term_gene_graph` and `create_term_gene_plot`, one creates the `igraph` structure while the other visualises the graph based on the information available in the `igraph` object.
+- Split `term_gene_graph` into `create_term_gene_graph` and `create_term_gene_plot`,
+   `create_term_gene_graph` creates the `igraph` structure while
+   `create_term_gene_plot` visualises the graph based on the information available 
+   in the `igraph` object.
 
 # pathfindR 2.7.0
 ## Minor Changes and Bug Fixes
