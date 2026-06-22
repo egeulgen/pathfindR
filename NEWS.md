@@ -1,19 +1,21 @@
 # pathfindR (development version)
 
 ## Major Changes
-- re-implemented active subnetwork search (GR/SA/GA) in R/C++, removing the
-  Java dependency; results for GR/SA are numerically identical to the legacy JAR
-  (same seed, same inputs)
-- renamed `fetch_gene_set()` utility function to `fetch_gene_sets()`
-- renamed `active_snw_search()` function to `get_active_subnetworks()`, also changes in signature
-- renamed `filterActiveSnws()` function to `filter_active_subnetworks()`
+- Re-implemented the active subnetwork search (GR/SA/GA) in R and C++ (via
+  Rcpp), removing the Java dependency. For GR and SA, results are numerically
+  identical to the legacy JAR given the same seed and inputs.
+- Renamed the exported function `active_snw_search()` to
+  `get_active_subnetworks()` (its signature has also changed).
+- Renamed the exported function `filterActiveSnws()` to
+  `filter_active_subnetworks()`.
+- Renamed the utility function `fetch_gene_set()` to `fetch_gene_sets()`.
 
 ## Minor Changes and Bug Fixes
-- removed the package start up message
-- Split `term_gene_graph` into `create_term_gene_graph` and `create_term_gene_plot`,
-   `create_term_gene_graph` creates the `igraph` structure while
-   `create_term_gene_plot` visualises the graph based on the information available 
-   in the `igraph` object.
+- Removed the package start-up message.
+- Split `term_gene_graph()` into `create_term_gene_graph()` and
+  `create_term_gene_plot()`: `create_term_gene_graph()` builds the `igraph`
+  structure, while `create_term_gene_plot()` visualises the graph from the
+  information available in that `igraph` object.
 
 # pathfindR 2.7.0
 ## Minor Changes and Bug Fixes
