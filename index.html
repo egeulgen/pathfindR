@@ -142,7 +142,6 @@
 <span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a></span>
 <span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co"># pull image for a specific version (e.g., 1.4.1)</span></span>
 <span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="ex">docker</span> pull egeulgen/pathfindr:1.4.1</span></code></pre></div>
-<p>Online app on superbio.ai: <a href="https://app.superbio.ai/apps/111/" class="external-link uri">https://app.superbio.ai/apps/111/</a></p>
 </div>
 <div class="section level1">
 <h1 id="enrichment-analysis-with-pathfindr">Enrichment Analysis with pathfindR<a class="anchor" aria-label="anchor" href="#enrichment-analysis-with-pathfindr"></a>
@@ -292,7 +291,7 @@ Term-Gene Heatmap
 <div class="section level2">
 <h2 id="term-gene-graph">Term-Gene Graph<a class="anchor" aria-label="anchor" href="#term-gene-graph"></a>
 </h2>
-<p>The function <code>term_gene_graph()</code> (adapted from the Gene-Concept network visualization by the R package <code>enrichplot</code>) can be utilized to visualize which significant genes are involved in the enriched terms. The function creates the term-gene graph, displaying the connections between genes and biological terms (enriched pathways or gene sets). This allows for the investigation of multiple terms to which significant genes are related. The graph also enables the determination of the degree of overlap between the enriched terms by identifying shared and/or distinct significant genes.</p>
+<p>The functions <code><a href="reference/create_term_gene_graph.html">create_term_gene_graph()</a></code> and <code><a href="reference/create_term_gene_plot.html">create_term_gene_plot()</a></code> (adapted from the Gene-Concept network visualization by the R package <code>enrichplot</code>) can be utilized to visualize which significant genes are involved in the enriched terms. The function creates the term-gene graph, displaying the connections between genes and biological terms (enriched pathways or gene sets). This allows for the investigation of multiple terms to which significant genes are related. The graph also enables the determination of the degree of overlap between the enriched terms by identifying shared and/or distinct significant genes.</p>
 <figure><img src="https://github.com/egeulgen/pathfindR/blob/master/vignettes/term_gene.png?raw=true" title="Term-Gene Graph" alt="Term-Gene Graph"><figcaption aria-hidden="true">
 Term-Gene Graph
 </figcaption></figure>
@@ -377,7 +376,7 @@ Combined Results Graph
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://github.com/egeulgen/pathfindR/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/egeulgen/pathfindR/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
-<li><a href="https://codecov.io/gh/egeulgen/pathfindR" class="external-link"><img src="https://codecov.io/gh/egeulgen/pathfindR/graph/badge.svg?token=8m9aPaXzNr" alt="codecov"></a></li>
+<li><a href="https://app.codecov.io/gh/egeulgen/pathfindR" class="external-link"><img src="https://app.codecov.io/gh/egeulgen/pathfindR/graph/badge.svg?token=8m9aPaXzNr" alt="codecov"></a></li>
 <li><a href="https://cran.r-project.org/package=pathfindR" class="external-link"><img src="https://www.r-pkg.org/badges/version/pathfindR" alt="CRAN version"></a></li>
 <li><a href="https://cran.r-project.org/package=pathfindR" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/pathfindR" alt="CRAN total downloads"></a></li>
 <li><a href="http://bioconda.github.io/recipes/r-pathfindr/README.html" class="external-link"><img src="https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat" alt="install with bioconda"></a></li>
