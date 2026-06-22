@@ -162,10 +162,9 @@ create_term_gene_graph(example_pathfindR_output, num_terms = 3, term_size = "p_v
 `create_term_gene_graph` can also take the `genes_df` as input to visualise fold-changes, Fold Enrichments of the term nodes and an up-set like plot in graph context.
 
 ```{r term_gene5}
-genes_df <- example_pathfindR_input[, c(1, 2)]
 g <- create_term_gene_graph(
-  result_df = example_pathfindR_output,
-  genes_df = genes_df,
+  result_df = pathfindR.data::example_pathfindR_output,
+  genes_df = pathfindR.data::example_pathfindR_input,
   term_fill = "Fold_Enrichment",
   num_terms = 3,
   use_edge_weights = TRUE

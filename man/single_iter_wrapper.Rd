@@ -6,27 +6,26 @@
 \usage{
 single_iter_wrapper(
   i = NULL,
-  dirs,
-  input_processed,
   pin_path,
+  network,
+  experiment_df,
   score_quan_thr,
   sig_gene_thr,
   search_method,
-  silent_option,
-  use_all_positives,
-  geneInitProbs,
-  saTemp0,
-  saTemp1,
-  saIter,
-  gaPop,
-  gaIter,
-  gaThread,
-  gaCrossover,
-  gaMut,
-  grMaxDepth,
-  grSearchDepth,
-  grOverlap,
-  grSubNum,
+  verbose,
+  start_with_all_positives,
+  gene_init_prob,
+  sa_initial_temp,
+  sa_final_temp,
+  sa_iterations,
+  ga_population_size,
+  ga_iterations,
+  ga_crossover_rate,
+  ga_mutation_rate,
+  gr_max_depth,
+  gr_search_depth,
+  gr_overlap_threshold,
+  gr_subnetwork_num,
   gset_list,
   adj_method,
   enrichment_threshold,
@@ -36,11 +35,13 @@ single_iter_wrapper(
 \arguments{
 \item{i}{current iteration index (default = \code{NULL})}
 
-\item{dirs}{vector of directories for parallel runs}
-
-\item{input_processed}{processed input data frame}
-
 \item{pin_path}{path/to/PIN/file}
+
+\item{network}{Prebuilt network object as returned by \code{build_network()},
+built once by \code{active_snw_enrichment_wrapper} and passed to every
+iteration to avoid redundant PIN file I/O.}
+
+\item{experiment_df}{input experiment data frame}
 
 \item{score_quan_thr}{active subnetwork score quantile threshold. Must be
 between 0 and 1 or set to -1 for not filtering. (Default = 0.8)}
@@ -54,39 +55,34 @@ is set to 2}
 search. Options are greedy search (GR), simulated annealing (SA) or genetic
 algorithm (GA) for the search (default = 'GR').}
 
-\item{silent_option}{boolean value indicating whether to print the messages
-to the console (FALSE) or not (TRUE, this will print to a temp. file) during
-active subnetwork search (default = TRUE). This option was added because
-during parallel runs, the console messages get disorderly printed.}
+\item{verbose}{boolean value indicating whether to print messages (default=FALSE)}
 
-\item{use_all_positives}{if TRUE: in GA, adds an individual with all positive
+\item{start_with_all_positives}{if TRUE: in GA, adds an individual with all positive
 nodes. In SA, initializes candidate solution with all positive nodes. (default = FALSE)}
 
-\item{geneInitProbs}{For SA and GA, probability of adding a gene in initial solution (default = 0.1)}
+\item{gene_init_prob}{For SA and GA, probability of adding a gene in initial solution (default = 0.1)}
 
-\item{saTemp0}{Initial temperature for SA (default = 1.0)}
+\item{sa_initial_temp}{Initial temperature for SA (default = 1.0)}
 
-\item{saTemp1}{Final temperature for SA (default = 0.01)}
+\item{sa_final_temp}{Final temperature for SA (default = 0.01)}
 
-\item{saIter}{Iteration number for SA (default = 10000)}
+\item{sa_iterations}{Iteration number for SA (default = 10000)}
 
-\item{gaPop}{Population size for GA (default = 400)}
+\item{ga_population_size}{Population size for GA (default = 400)}
 
-\item{gaIter}{Iteration number for GA (default = 200)}
+\item{ga_iterations}{Iteration number for GA (default = 200)}
 
-\item{gaThread}{Number of threads to be used in GA (default = 5)}
+\item{ga_crossover_rate}{Applies crossover with the given probability in GA (default = 1, i.e. always perform crossover)}
 
-\item{gaCrossover}{Applies crossover with the given probability in GA (default = 1, i.e. always perform crossover)}
+\item{ga_mutation_rate}{For GA, applies mutation with given mutation rate (default = 0, i.e. mutation off)}
 
-\item{gaMut}{For GA, applies mutation with given mutation rate (default = 0, i.e. mutation off)}
+\item{gr_max_depth}{Sets max depth in greedy search, 0 for no limit (default = 1)}
 
-\item{grMaxDepth}{Sets max depth in greedy search, 0 for no limit (default = 1)}
+\item{gr_search_depth}{Search depth in greedy search (default = 1)}
 
-\item{grSearchDepth}{Search depth in greedy search (default = 1)}
+\item{gr_overlap_threshold}{Overlap threshold for results of greedy search (default = 0.5)}
 
-\item{grOverlap}{Overlap threshold for results of greedy search (default = 0.5)}
-
-\item{grSubNum}{Number of subnetworks to be presented in the results (default = 1000)}
+\item{gr_subnetwork_num}{Number of subnetworks to be presented in the results (default = 1000)}
 
 \item{gset_list}{list for gene sets.}
 

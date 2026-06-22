@@ -5,7 +5,7 @@
 \title{Visualize Active Subnetworks}
 \usage{
 visualize_active_subnetworks(
-  active_snw_path,
+  active_snws,
   genes_df,
   pin_name_path = "Biogrid",
   num_snws,
@@ -16,7 +16,8 @@ visualize_active_subnetworks(
 )
 }
 \arguments{
-\item{active_snw_path}{path to the output of an Active Subnetwork Search}
+\item{active_snws}{active subnetwork search results.
+A list containing input \code{subnetworks} (nodes) and \code{scores} (score).}
 
 \item{genes_df}{the input data that was used with \code{\link{run_pathfindR}}.
   It must be a data frame with 3 columns: \enumerate{
@@ -53,13 +54,9 @@ and yellows are non-input genes
 Visualize Active Subnetworks
 }
 \examples{
-path2snw_list <- system.file(
-  "extdata/resultActiveSubnetworkSearch.txt",
-  package = "pathfindR"
-)
 # visualize top 2 active subnetworks
 g_list <- visualize_active_subnetworks(
-  active_snw_path = path2snw_list,
+  active_snws = example_unfiltered_snws,
   genes_df = example_pathfindR_input[1:10, ],
   pin_name_path = "KEGG",
   num_snws = 2

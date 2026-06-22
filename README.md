@@ -63,11 +63,6 @@ install.packages("devtools") # if you have not installed "devtools"
 devtools::install_github("egeulgen/pathfindR")
 ```
 
-> **IMPORTANT NOTE** For the active subnetwork search component to work,
-> the user must have [Java (\>= 8.0)](https://www.java.com/en/download/)
-> installed, and the path/to/java must be in the PATH environment
-> variable.
-
 We also have docker images available on [Docker
 Hub](https://hub.docker.com/repository/docker/egeulgen/pathfindr) and
 [GitHub](https://github.com/egeulgen/pathfindR/packages):

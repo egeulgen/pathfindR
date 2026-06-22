@@ -13,8 +13,8 @@ test_that("`isColor()` -- identifies colors correctly", {
   expect_false(isColor(list()))
 })
 
-test_that("`isOrderable()` -- identifies if column can be ordered", {
-  result_df <- data.frame(
+test_that("`order_df_by_columnn()` -- identifies if column can be ordered and orders data frame", {
+  input_df <- data.frame(
     values = c(5, 1, 10),
     floats = c(0.5, 0.3, 0.2),
     chars = c("second", "first", "third"),
@@ -22,17 +22,23 @@ test_that("`isOrderable()` -- identifies if column can be ordered", {
     bad = I(list(c(1, 2), c(3, 4), c(5, 6)))
   )
 
-  expect_is(out <- isOrderable("values", result_df), "data.frame")
+  expect_is(out <- order_df_by_columnn(input_df, "values"), "data.frame")
   expect_equal(out$values, c(1, 5, 10))
 
-  expect_is(out <- isOrderable("floats", result_df), "data.frame")
+  expect_is(out <- order_df_by_columnn(input_df, "floats"), "data.frame")
   expect_equal(out$floats, c(0.2, 0.3, 0.5))
 
-  expect_is(out <- isOrderable("chars", result_df), "data.frame")
+  expect_is(out <- order_df_by_columnn(input_df, "chars"), "data.frame")
   expect_equal(out$chars, c("first", "second", "third"))
 
-  expect_equal(isOrderable("incomplete", result_df), "Column values of `order_by` cannot have NAs!")
-  expect_equal(isOrderable("bad", result_df), "`order_by`(bad) cannot be used to order the `result_df`: error: unimplemented type 'list' in 'greater'\n")
+  expect_error(
+    order_df_by_columnn(input_df, "incomplete"),
+    "Column values of `order_by` cannot have NAs!"
+  )
+  expect_error(
+    order_df_by_columnn(input_df, "bad"),
+    "`order_by` \\(bad\\) cannot be used to order the `df`:"
+  )
 })
 
 test_that("`color_kegg_pathway()` -- works as expected", {

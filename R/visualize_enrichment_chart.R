@@ -67,11 +67,7 @@ enrichment_chart <- function(result_df, top_terms = 10, plot_by_cluster = FALSE,
     }
   }
 
-  ### Order and filter for top N genes
-  result_df <- isOrderable(order_by, result_df)
-  if (!is.data.frame(result_df)) {
-    stop(result_df)
-  }
+  result_df <- order_df_by_columnn(result_df, order_by)
 
   ## Filter for top_terms
   if (!is.null(top_terms)) {
@@ -102,28 +98,34 @@ enrichment_chart <- function(result_df, top_terms = 10, plot_by_cluster = FALSE,
   result_df$Term_Description <- factor(result_df$Term_Description, levels = rev(unique(result_df$Term_Description)))
 
   g <- ggplot2::ggplot(
-      data = result_df, 
-      mapping = ggplot2::aes(x = .data$Fold_Enrichment,
-                          y = .data$Term_Description)
-        )
+    data = result_df,
+    mapping = ggplot2::aes(
+      x = .data$Fold_Enrichment,
+      y = .data$Term_Description
+    )
+  )
 
   if (order_by %in% c("lowest_p", "highest_p")) {
-      log_p <- -log10(result_df[[order_by]])
+    log_p <- -log10(result_df[[order_by]])
 
-      g <- g + ggplot2::geom_point(
-      mapping = ggplot2::aes(color = log_p,
-                              size = num_genes),
+    g <- g + ggplot2::geom_point(
+      mapping = ggplot2::aes(
+        color = log_p,
+        size = num_genes
+      ),
       na.rm = TRUE
-      )
+    )
 
-      color_label <- expression(-log[10](p))
+    color_label <- expression(-log[10](p))
   } else {
-      g <- g + ggplot2::geom_point(
-      mapping = ggplot2::aes(color = !!sym(order_by),
-                              size = num_genes),
+    g <- g + ggplot2::geom_point(
+      mapping = ggplot2::aes(
+        color = !!sym(order_by),
+        size = num_genes
+      ),
       na.rm = TRUE
-      )
-      color_label <- order_by
+    )
+    color_label <- order_by
   }
 
   g <- g + ggplot2::theme_bw()

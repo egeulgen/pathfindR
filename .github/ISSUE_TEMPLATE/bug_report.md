@@ -30,4 +30,4 @@ If applicable, add screenshots to help explain your problem.
 Please provide the R session information (by running `sessionInfo()`)
 
 **Additional context**
-Add any other context about the problem here. While pathfindR is an R package, the active subnetwork search functionality is written in Java. If you suspect any issue regarding java please provide your Java version (by running `java --version`)
+Add any other context about the problem here.

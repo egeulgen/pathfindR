@@ -13,24 +13,23 @@ active_snw_enrichment_wrapper(
   adj_method = "bonferroni",
   search_method = "GR",
   disable_parallel = FALSE,
-  use_all_positives = FALSE,
+  start_with_all_positives = FALSE,
   iterations = 10,
   n_processes = NULL,
   score_quan_thr = 0.8,
   sig_gene_thr = 0.02,
-  saTemp0 = 1,
-  saTemp1 = 0.01,
-  saIter = 10000,
-  gaPop = 400,
-  gaIter = 200,
-  gaThread = 5,
-  gaCrossover = 1,
-  gaMut = 0,
-  grMaxDepth = 1,
-  grSearchDepth = 1,
-  grOverlap = 0.5,
-  grSubNum = 1000,
-  silent_option = TRUE
+  sa_initial_temp = 1,
+  sa_final_temp = 0.01,
+  sa_iterations = 10000,
+  ga_population_size = 400,
+  ga_iterations = 200,
+  ga_crossover_rate = 1,
+  ga_mutation_rate = 0,
+  gr_max_depth = 1,
+  gr_search_depth = 1,
+  gr_overlap_threshold = 0.5,
+  gr_subnetwork_num = 1000,
+  verbose = FALSE
 )
 }
 \arguments{
@@ -57,7 +56,7 @@ algorithm (GA) for the search (default = 'GR').}
 \item{disable_parallel}{boolean to indicate whether to disable parallel runs
 via \code{foreach} (default = FALSE)}
 
-\item{use_all_positives}{if TRUE: in GA, adds an individual with all positive
+\item{start_with_all_positives}{if TRUE: in GA, adds an individual with all positive
 nodes. In SA, initializes candidate solution with all positive nodes. (default = FALSE)}
 
 \item{iterations}{number of iterations for active subnetwork search and
@@ -75,34 +74,29 @@ the subnetwork (Default = 0.02) If the number of genes to use as threshold is
 calculated to be < 2 (e.g. 50 signif. genes x 0.01 = 0.5), the threshold number
 is set to 2}
 
-\item{saTemp0}{Initial temperature for SA (default = 1.0)}
+\item{sa_initial_temp}{Initial temperature for SA (default = 1.0)}
 
-\item{saTemp1}{Final temperature for SA (default = 0.01)}
+\item{sa_final_temp}{Final temperature for SA (default = 0.01)}
 
-\item{saIter}{Iteration number for SA (default = 10000)}
+\item{sa_iterations}{Iteration number for SA (default = 10000)}
 
-\item{gaPop}{Population size for GA (default = 400)}
+\item{ga_population_size}{Population size for GA (default = 400)}
 
-\item{gaIter}{Iteration number for GA (default = 200)}
+\item{ga_iterations}{Iteration number for GA (default = 200)}
 
-\item{gaThread}{Number of threads to be used in GA (default = 5)}
+\item{ga_crossover_rate}{Applies crossover with the given probability in GA (default = 1, i.e. always perform crossover)}
 
-\item{gaCrossover}{Applies crossover with the given probability in GA (default = 1, i.e. always perform crossover)}
+\item{ga_mutation_rate}{For GA, applies mutation with given mutation rate (default = 0, i.e. mutation off)}
 
-\item{gaMut}{For GA, applies mutation with given mutation rate (default = 0, i.e. mutation off)}
+\item{gr_max_depth}{Sets max depth in greedy search, 0 for no limit (default = 1)}
 
-\item{grMaxDepth}{Sets max depth in greedy search, 0 for no limit (default = 1)}
+\item{gr_search_depth}{Search depth in greedy search (default = 1)}
 
-\item{grSearchDepth}{Search depth in greedy search (default = 1)}
+\item{gr_overlap_threshold}{Overlap threshold for results of greedy search (default = 0.5)}
 
-\item{grOverlap}{Overlap threshold for results of greedy search (default = 0.5)}
+\item{gr_subnetwork_num}{Number of subnetworks to be presented in the results (default = 1000)}
 
-\item{grSubNum}{Number of subnetworks to be presented in the results (default = 1000)}
-
-\item{silent_option}{boolean value indicating whether to print the messages
-to the console (FALSE) or not (TRUE, this will print to a temp. file) during
-active subnetwork search (default = TRUE). This option was added because
-during parallel runs, the console messages get disorderly printed.}
+\item{verbose}{boolean value indicating whether to print messages (default=FALSE)}
 }
 \value{
 Data frame of combined pathfindR enrichment results

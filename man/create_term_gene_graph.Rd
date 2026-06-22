@@ -25,10 +25,9 @@ create_term_gene_graph(
 }}
 
 \item{genes_df}{(optional) the input data that was used with \code{\link{run_pathfindR}} (default: \code{NULL}).
-  It must be a data frame with 2 or 3 columns: \enumerate{
+  It must be a data frame with at least 2 columns: \enumerate{
   \item Gene.Symbol (required)
   \item logFC (required)
-  \item adj.P.Val (optional)
 }}
 
 \item{order_by}{Argument to order the `result_df`, this influences the `num_terms` displayed (default: \code{'lowest_p'}).}
@@ -53,42 +52,42 @@ A \link[igraph]{igraph} object
 Create Term-Gene Graph
 }
 \details{
-This function constructs an \link[igraph]{igraph} object from pathfindR output, creating a network that connects enriched biological terms to their involved genes. 
-By default, the graph connects term nodes to up-regulated genes and down-regulated genes. 
-The size of term nodes can be adjusted by either the number of significant genes (`term_size = 'num_genes'`) or by the statistical significance 
+This function constructs an \link[igraph]{igraph} object from pathfindR output, creating a network that connects enriched biological terms to their involved genes.
+By default, the graph connects term nodes to up-regulated genes and down-regulated genes.
+The size of term nodes can be adjusted by either the number of significant genes (`term_size = 'num_genes'`) or by the statistical significance
 (`term_size = 'p_val'`, using -log10(lowest p value)).
 
-When `genes_df` is provided, gene nodes contain values and not mere up/down binary values, allowing visualization of 
+When `genes_df` is provided, gene nodes contain values and not mere up/down binary values, allowing visualization of
 expression direction and magnitude. When `term_fill` is supplied, term nodes obtain values enabling simultaneous visualization of pathway enrichment strength.
 
-Setting `use_edge_weights = TRUE` highlights hub genes by weighting edges based on how many terms a gene participates in, similar to an Up-Set plot but in 
-a graph context. The `num_terms` parameter controls how many top enriched terms are included (default: top 10), and `order_by` determines the ordering 
+Setting `use_edge_weights = TRUE` highlights hub genes by weighting edges based on how many terms a gene participates in, similar to an Up-Set plot but in
+a graph context. The `num_terms` parameter controls how many top enriched terms are included (default: top 10), and `order_by` determines the ordering
 criterion for term selection. The resulting igraph object can be visualized using \link[pathfindR]{create_term_gene_plot}.
 }
 \examples{
 # Normal gene-term with up/down regulated genes
 g <- create_term_gene_graph(
-     result_df = example_pathfindR_output
-     )
+  result_df = example_pathfindR_output
+)
 g <- create_term_gene_graph(
-     result_df = example_pathfindR_output, 
-     num_terms = 5
-     )
+  result_df = example_pathfindR_output,
+  num_terms = 5
+)
 g <- create_term_gene_graph(
-     result_df = example_pathfindR_output, 
-     term_size = 'p_val'
-     )
+  result_df = example_pathfindR_output,
+  term_size = "p_val"
+)
 
 # Coloring the term nodes
 g <- create_term_gene_graph(
-     result_df = example_pathfindR_output, 
-     term_fill = "Fold_Enrichment"
-     )
+  result_df = example_pathfindR_output,
+  term_fill = "Fold_Enrichment"
+)
 
 # Adding edge weights
 g <- create_term_gene_graph(
-     result_df = example_pathfindR_output, 
-     term_fill = "Fold_Enrichment", 
-     use_edge_weights = TRUE
-     )
+  result_df = example_pathfindR_output,
+  term_fill = "Fold_Enrichment",
+  use_edge_weights = TRUE
+)
 }

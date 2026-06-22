@@ -10,31 +10,35 @@ isColor <- function(x) {
   tryCatch(is.matrix(grDevices::col2rgb(x)), error = function(e) FALSE)
 }
 
-#' Check if column can be ordered
+#' Order input data frame by provided columnn
 #'
-#' @param result_df A \link[base]{data.frame}
-#' @param order_by A column name in `result_df`
+#' @param df the input data frame to be ordered
+#' @param order_by A column name
 #'
-#' @return A \link[base]{data.frame} or an error message
-isOrderable <- function(order_by, result_df) {
-  if (!c(order_by %in% colnames(result_df))) {
-    return("`order_by` column doesn't exist in `result_df`")
+#' @return The ordered data frame or raises error
+order_df_by_columnn <- function(df, order_by) {
+  if (!c(order_by %in% colnames(df))) {
+    stop("`order_by` column doesn't exist in `df`")
   }
-  col_values <- result_df[[order_by]]
+  col_values <- df[[order_by]]
   if (anyNA(col_values)) {
-    return("Column values of `order_by` cannot have NAs!")
+    stop("Column values of `order_by` cannot have NAs!")
   }
   result_df <- tryCatch(
-  {
-      result_df[order(result_df[[order_by]], decreasing = FALSE), ]
-  },
-  error = function(e) {
-    sprintf(
-      "`order_by`(%s) cannot be used to order the `result_df`: error: %s",
-      order_by,
-      e$message
-    )
-  })
+    {
+      df[order(df[[order_by]], decreasing = FALSE), ]
+    },
+    error = function(e) {
+      stop(
+        sprintf(
+          "`order_by` (%s) cannot be used to order the `df`: %s",
+          order_by,
+          e$message
+        ),
+        call. = FALSE
+      )
+    }
+  )
   return(result_df)
 }
 

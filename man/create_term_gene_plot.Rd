@@ -39,25 +39,25 @@ A \link[ggraph]{ggraph} object
 Create Term-Gene Plot
 }
 \details{
-This function creates a visualization of the term-gene graph (adapted from the Gene-Concept network visualization in the \code{enrichplot} package). 
-It displays which input genes are involved in enriched biological terms, showing connections between genes and pathway/terms nodes. 
+This function creates a visualization of the term-gene graph (adapted from the Gene-Concept network visualization in the \code{enrichplot} package).
+It displays which input genes are involved in enriched biological terms, showing connections between genes and pathway/terms nodes.
 The graph facilitates investigation of multi-term relationships and identifies shared versus distinct genes across enriched terms.
 
 Node coloring depends on the inputs provided to \link[pathfindR]{create_term_gene_graph}:
 \itemize{
   \item If `genes_df` was NOT supplied: term nodes are beige (`term_node_color`), up-regulated genes are green, and down-regulated genes are red.
-  \item If `genes_df` WAS supplied: gene nodes are colored by logFC using a gradient (`gene_node_fill`: default purple → white → green), 
+  \item If `genes_df` WAS supplied: gene nodes are colored by logFC using a gradient (`gene_node_fill`: default purple → white → green),
         and term nodes can be colored by `term_fill` values (default yellow → white → blue) if `term_fill` was provided.
 }
 
-Term node size reflects either the number of associated genes (`term_size = 'num_genes'`) or statistical significance (`term_size = 'p_val'`). 
+Term node size reflects either the number of associated genes (`term_size = 'num_genes'`) or statistical significance (`term_size = 'p_val'`).
 When `use_edge_weights = TRUE` was set in `create_term_gene_graph`, edge widths represent hub gene importance (genes appearing in multiple terms).
 The layout can be customized via the `layout` parameter (default: "stress"), and legends automatically reflect the applied coloring schemes.
 }
 \examples{
 # Normal gene-term with up/down regulated genes
 g <- create_term_gene_graph(
-     result_df = example_pathfindR_output
-     )
+  result_df = example_pathfindR_output
+)
 plt <- create_term_gene_plot(g)
 }

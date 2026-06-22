@@ -1,6 +1,7 @@
 #' Parse Active Subnetwork Search Output File and Filter the Subnetworks
 #'
-#' @param active_snw_path path to the output of an Active Subnetwork Search
+#' @param active_snws active subnetwork search results.
+#' A list containing input \code{subnetworks} (nodes) and \code{scores} (score).
 #' @param sig_genes_vec vector of significant gene symbols. In the scope of this
 #'   package, these are the input genes that were used for active subnetwork search
 #' @param score_quan_thr active subnetwork score quantile threshold. Must be
@@ -20,23 +21,13 @@
 #'   pathfindR enrichment workflow
 #'
 #' @examples
-#' path2snw_list <- system.file(
-#'   "extdata/resultActiveSubnetworkSearch.txt",
-#'   package = "pathfindR"
-#' )
-#' filtered <- filterActiveSnws(
-#'   active_snw_path = path2snw_list,
+#' filtered <- filter_active_subnetworks(
+#'   active_snws = example_unfiltered_snws,
 #'   sig_genes_vec = example_pathfindR_input$Gene.symbol
 #' )
-filterActiveSnws <- function(active_snw_path, sig_genes_vec, score_quan_thr = 0.8,
-                             sig_gene_thr = 0.02) {
+filter_active_subnetworks <- function(active_snws, sig_genes_vec, score_quan_thr = 0.8,
+                                      sig_gene_thr = 0.02) {
   ## Arg. checks
-  active_snw_path <- suppressWarnings(normalizePath(active_snw_path))
-
-  if (!file.exists(active_snw_path)) {
-    stop("The active subnetwork file does not exist! Check the `active_snw_path` argument")
-  }
-
   if (!is.atomic(sig_genes_vec)) {
     stop("`sig_genes_vec` should be a vector")
   }
@@ -55,21 +46,17 @@ filterActiveSnws <- function(active_snw_path, sig_genes_vec, score_quan_thr = 0.
     stop("`sig_gene_thr` should be in [0, 1]")
   }
 
-  output <- readLines(active_snw_path)
-
-  if (length(output) == 0) {
+  if (length(active_snws) == 0) {
     return(NULL)
   }
 
   score_vec <- c()
   subnetworks <- list()
-  for (i in base::seq_len(length(output))) {
-    snw <- output[[i]]
+  for (i in seq_along(active_snws)) {
+    snw <- active_snws[[i]]
 
-    snw <- unlist(strsplit(snw, "\\s"))
-
-    score_vec <- c(score_vec, as.numeric(snw[1]))
-    subnetworks[[i]] <- snw[-1]
+    score_vec <- c(score_vec, snw$score)
+    subnetworks[[i]] <- snw$nodes
   }
 
   # keep subnetworks with score over the 'score_quan_thr'th quantile
