@@ -2,14 +2,13 @@
 
 ## Major Changes
 - re-implemented active subnetwork search (GR/SA/GA) in R/C++, removing the
-  Java dependency; results are numerically identical to the legacy JAR
-  (same seed, same inputs), except that the lowest-scoring greedy candidate
-  is dropped (as before) to preserve parity with the JAR
+  Java dependency; results for GR/SA are numerically identical to the legacy JAR
+  (same seed, same inputs)
+- renamed `fetch_gene_set()` utility function to `fetch_gene_sets()`
+- renamed `active_snw_search()` function to `get_active_subnetworks()`, also changes in signature
+- renamed `filterActiveSnws()` function to `filter_active_subnetworks()`
 
 ## Minor Changes and Bug Fixes
-- renamed `fetch_gene_set()` utility function to `fetch_gene_sets()`
-- renamed `active_snw_search()` function to `get_active_subnetworks()`
-- renamed `filterActiveSnws()` function to `filter_active_subnetworks()`
 - removed the package start up message
 - Split `term_gene_graph` into `create_term_gene_graph` and `create_term_gene_plot`,
    `create_term_gene_graph` creates the `igraph` structure while
