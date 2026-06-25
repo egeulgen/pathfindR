@@ -6,6 +6,16 @@ template:
       api_key: 7f13d388d59fea08d4add29291ea2896
       index_name: pathfindr
 url: https://egeulgen.github.io/pathfindR/
+navbar:
+  structure:
+    left:  [intro, reference, articles, tutorials, news, blog]
+    right: [search, github]
+  components:
+    blog:
+      icon: fas fa-rss
+      text: Blog
+      href: https://egeulgen.github.io/pathfindR_blog/
+      aria-label: Blog
 news:
 - one_page: false
 reference:
