@@ -7,8 +7,6 @@ test_that("`visualize_active_subnetworks()` -- returns list of ggraph objects", 
   empty_snws <- list()
   expect_null(visualize_active_subnetworks(active_snws = empty_snws, genes_df = input_data_frame))
 
-  skip_on_cran()
-
   example_snws_len <- length(example_unfiltered_snws)
 
   # default

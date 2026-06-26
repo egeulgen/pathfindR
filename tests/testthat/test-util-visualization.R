@@ -42,8 +42,6 @@ test_that("`order_df_by_columnn()` -- identifies if column can be ordered and or
 })
 
 test_that("`color_kegg_pathway()` -- works as expected", {
-  skip_on_cran()
-
   pw_id <- "hsa00010"
   change_vec <- c(-2, 4, 6)
   names(change_vec) <- c("hsa:2821", "hsa:226", "hsa:229")
@@ -74,8 +72,6 @@ test_that("`color_kegg_pathway()` -- exceptions are handled properly", {
     pw_id = "hsa03040", change_vec = change_vec,
     node_cols = c("red", "#FFFFFF", "INVALID")
   ), "`node_cols` should be a vector of valid colors")
-
-  skip_on_cran()
 
   constant_vec <- rep(1e+06, 3)
   names(constant_vec) <- c("hsa:2821", "hsa:226", "hsa:229")

@@ -1,5 +1,4 @@
 test_that("`UpSet_plot()` -- produces a ggplot object", {
-  skip_on_cran()
   # Top 10 (default)
   expect_is(p <- UpSet_plot(example_pathfindR_output), "ggplot")
 
