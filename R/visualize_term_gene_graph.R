@@ -325,7 +325,7 @@ create_term_gene_plot <- function(
   ## MAIN
   #--------------------------------------------------------------------#
 
-  if (is.null(gene_node_values)) {
+  if (is.null(gene_node_values) || is.null(term_fill)) {
     node_type <- igraph::V(graph)$type
 
     type_descriptions <- c(term = "enriched term", up = "up-regulated gene", down = "down-regulated gene")

@@ -2,6 +2,8 @@
 
 ## Minor Changes and Bug Fixes
 - Removed unused `component_labels` utility function
+- Fixes issue in `create_term_gene_plot()`: when no `term_fill` information is
+  present in the input graph, the function should revert to default node colors
 
 # pathfindR 3.0.0
 
