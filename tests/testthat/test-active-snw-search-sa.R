@@ -195,3 +195,103 @@ test_that("`.simulated_annealing()` -- progress messages are emitted only when v
     run_simulated_annealing = function(...) c(1L, 1L, 1L, 0L)
   )
 })
+
+# ---- integration: real C++ run on a toy case --------------------------------
+#
+# These tests do NOT mock run_simulated_annealing -- they exercise the real C++
+# loop. They additionally need `build_network()` (and its java_* helpers) and
+# withr. They are deterministic by construction: a connected triangle whose
+# nodes all have positive z-scores has a single global optimum (the whole
+# triangle), and with the temperature frozen at a tiny value no worsening move
+# is ever accepted, so once the solution is at the optimum it cannot leave it.
+# That makes the outcome independent of which nodes the RNG happens to toggle.
+
+# Build a real triangle network (A-B-C) and a positive-z score context for it.
+make_toy <- function(env = parent.frame()) {
+  sif <- withr::local_tempfile(fileext = ".sif", .local_envir = env)
+  writeLines(c("A B", "B C", "C A"), sif)
+  network <- build_network(sif)
+  nm <- network$nodes
+  sc <- list(
+    z     = stats::setNames(rep(3, length(nm)), nm), # all positive
+    means = rep(0, length(nm)), # mean 0, sd 1 -> score == raw
+    stds  = rep(1, length(nm)),
+    nodes = nm
+  )
+  list(network = network, sc = sc)
+}
+
+# Frozen temperature => greedy-with-no-uphill: equal initial and final temps
+# means a constant temperature, and a tiny value makes exp(-delta/T) underflow
+# to 0 for any worsening move, so they are always rejected.
+frozen_params <- function(...) {
+  defaults <- list(
+    start_with_all_positives = TRUE,
+    gene_init_prob           = 0,
+    sa_initial_temp          = 1e-12,
+    sa_final_temp            = 1e-12,
+    sa_iterations            = 200L,
+    seed                     = 1234L
+  )
+  utils::modifyList(defaults, list(...))
+}
+
+test_that("`.simulated_annealing()` -- start_with_all_positives=TRUE retains the full optimal module (real C++)", {
+  toy <- make_toy()
+  res <- .simulated_annealing(
+    toy$network, toy$sc,
+    frozen_params(start_with_all_positives = TRUE)
+  )
+
+  expect_equal(length(res), 1L)
+  expect_setequal(res[[1]]$nodes, c("A", "B", "C"))
+  expect_true(res[[1]]$score > 0)
+})
+
+test_that("`.simulated_annealing()` -- start_with_all_positives=FALSE with gene_init_prob=1 starts all-on and reaches the same module (real C++)", {
+  toy <- make_toy()
+  res <- .simulated_annealing(
+    toy$network, toy$sc,
+    frozen_params(start_with_all_positives = FALSE, gene_init_prob = 1)
+  )
+
+  expect_equal(length(res), 1L)
+  expect_setequal(res[[1]]$nodes, c("A", "B", "C"))
+  expect_true(res[[1]]$score > 0)
+})
+
+test_that("`.simulated_annealing()` -- TRUE and all-on FALSE converge to the same frozen optimum (real C++)", {
+  toy <- make_toy()
+  res_true <- .simulated_annealing(
+    toy$network, toy$sc, frozen_params(start_with_all_positives = TRUE)
+  )
+  res_false <- .simulated_annealing(
+    toy$network, toy$sc,
+    frozen_params(start_with_all_positives = FALSE, gene_init_prob = 1)
+  )
+
+  expect_setequal(res_true[[1]]$nodes, res_false[[1]]$nodes)
+  expect_equal(res_true[[1]]$score, res_false[[1]]$score)
+})
+
+test_that("`.simulated_annealing()` -- a stochastic FALSE initialization is reproducible for a fixed seed (real C++)", {
+  toy <- make_toy()
+  params <- list(
+    start_with_all_positives = FALSE,
+    gene_init_prob           = 0.5,
+    sa_initial_temp          = 1.0,
+    sa_final_temp            = 0.01,
+    sa_iterations            = 500L,
+    seed                     = 1234L
+  )
+
+  r1 <- .simulated_annealing(toy$network, toy$sc, params)
+  r2 <- .simulated_annealing(toy$network, toy$sc, params)
+
+  nodes_of <- function(r) lapply(r, function(s) sort(s$nodes))
+  expect_equal(nodes_of(r1), nodes_of(r2))
+  expect_equal(
+    vapply(r1, function(s) s$score, numeric(1)),
+    vapply(r2, function(s) s$score, numeric(1))
+  )
+})
