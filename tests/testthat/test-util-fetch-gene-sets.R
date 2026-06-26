@@ -1,5 +1,4 @@
 test_that("`fetch_gene_sets()` -- can fetch all gene set objects", {
-  skip_on_cran()
   for (gset_name in c(
     "KEGG", "mmu_KEGG", "Reactome", "BioCarta", "cell_markers",
     "GO-All", "GO-BP", "GO-CC", "GO-MF"
@@ -28,7 +27,6 @@ test_that("`fetch_gene_sets()` -- can fetch all gene set objects", {
 
 
 test_that("`fetch_gene_sets()` -- min/max_gset_size args correctly filter gene sets", {
-  skip_on_cran()
   min_max_pairs <- list(c(min = 10, max = 300), c(min = 50, max = 200))
   num_of_terms_after_size_filtering <- c()
   for (idx in seq_along(min_max_pairs)) {

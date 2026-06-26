@@ -29,7 +29,3 @@ component_scores_sorted <- function(on, csr_offsets, csr_nbrs, z, means, stds) {
     .Call(`_pathfindR_component_scores_sorted`, on, csr_offsets, csr_nbrs, z, means, stds)
 }
 
-component_labels <- function(on, csr_offsets, csr_nbrs) {
-    .Call(`_pathfindR_component_labels`, on, csr_offsets, csr_nbrs)
-}
-

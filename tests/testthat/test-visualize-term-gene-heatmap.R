@@ -1,5 +1,4 @@
 test_that("`term_gene_heatmap()` -- produces a ggplot object using the correct data", {
-  skip_on_cran()
   # Top 10 (default)
   expect_is(p <- term_gene_heatmap(example_pathfindR_output), "ggplot")
   expect_equal(length(unique(p$data$Enriched_Term)), 10)

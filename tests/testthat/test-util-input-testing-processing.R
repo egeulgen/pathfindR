@@ -75,6 +75,19 @@ test_that("`input_processing()` -- works as expected", {
   expect_is(processed_df3 <- input_processing(input_multimap), "data.frame")
 })
 
+test_that("`input_processing()` -- does not convert symbols if org.Hs.eg.db not installed", {
+  mockery::stub(input_processing, "requireNamespace", FALSE)
+  input_df <- example_pathfindR_input[1:10, ]
+  toy_PIN <- data.frame(
+    V1 = sample(example_pathfindR_input$Gene.symbol, 100),
+    V2 = "pp", V3 = sample(example_pathfindR_input$Gene.symbol, 100)
+  )
+  mockery::stub(input_processing, "return_pin_path", NULL)
+  mockery::stub(input_processing, "utils::read.delim", toy_PIN)
+
+  expect_message(processed_df <- input_processing(input_df), "Package 'org.Hs.eg.db' is not installed")
+})
+
 test_that("`input_processing()` -- errors and warnings work", {
   input_df <- example_pathfindR_input[1:10, ]
 

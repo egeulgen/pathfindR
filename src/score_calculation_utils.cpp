@@ -12,9 +12,9 @@
 // Helper function from ZStatistics.java
 double oneMinusNormalCDFInversePLT5(double p) {
   if (p < 0) {
-    stop("oneMinusNormalCDFInversePLT5 called with negative p");
+    stop("oneMinusNormalCDFInversePLT5 called with negative p");  // # nocov
   } else if (p > 0.5) {
-    stop("oneMinusNormalCDFInversePLT5 called with p > 0.5");
+    stop("oneMinusNormalCDFInversePLT5 called with p > 0.5");  // # nocov
   }
 
   double t = std::sqrt(-2.0 * std::log(p));

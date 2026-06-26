@@ -1,6 +1,23 @@
-## Tests for functions related to data generation - September 2025
 library(httr)
 library(ggkegg)
+
+test_that("safe_get_content returns parsed content on success", {
+  fake_res <- structure(list(), class = "response")
+
+  fake_GET <- function(url, ...) fake_res
+  fake_http_error <- function(res) FALSE
+  fake_content <- function(res, ...) "<html>hello world</html>"
+
+  with_mocked_bindings(
+    {
+      result <- safe_get_content("http://example.com")
+      expect_equal(result, "<html>hello world</html>")
+    },
+    GET = fake_GET,
+    http_error = fake_http_error,
+    content = fake_content
+  )
+})
 
 test_that("safe_get_content handles GET error via mocking", {
   fake_GET <- function(...) stop("Simulated connection failure")
@@ -165,7 +182,6 @@ test_that("`gset_list_from_gmt()` -- works as expected", {
 
 
 test_that("`get_kegg_gsets()` -- works as expected", {
-  skip_on_cran()
   mock_response <- "pathway1\tdescription\npathway2\tdescription2"
 
   mock_pw_graph1 <- igraph::graph_from_data_frame(
@@ -216,8 +232,6 @@ test_that("`get_kegg_gsets()` -- works as expected", {
 })
 
 test_that("`get_reactome_gsets()` -- works as expected", {
-  skip_on_cran()
-
   pw1 <- "Pathway1"
   pw2 <- "Pathway2"
   desc1 <- "Description1"

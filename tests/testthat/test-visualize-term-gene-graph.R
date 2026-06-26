@@ -162,25 +162,28 @@ test_that("`create_term_gene_plot()` -- check arguments", {
 test_that("`create_term_gene_plot()` -- Check ggraph creation", {
   input_terms_df <- example_pathfindR_output[1:10, ]
   ## Default functionality
-  g <- create_term_gene_graph(input_terms_df, term_fill = "Fold_Enrichment")
-  expect_is(p <- create_term_gene_plot(g), "ggraph")
+  g0 <- create_term_gene_graph(input_terms_df, term_fill = "Fold_Enrichment")
+  expect_is(create_term_gene_plot(g0), "ggraph")
 
-  g <- create_term_gene_graph(input_terms_df)
-  expect_is(p <- create_term_gene_plot(g), "ggraph")
+  g0 <- create_term_gene_graph(input_terms_df)
+  expect_is(create_term_gene_plot(g0), "ggraph")
 
   ## `genes_df` is included
   genes_df <- example_pathfindR_input[1:10, ]
-  g <- create_term_gene_graph(input_terms_df, genes_df, term_fill = "Fold_Enrichment")
-  expect_is(p <- create_term_gene_plot(g), "ggraph")
+  g1 <- create_term_gene_graph(input_terms_df, genes_df)
+  expect_is(create_term_gene_plot(g1), "ggraph")
 
-  g <- create_term_gene_graph(input_terms_df, genes_df, term_fill = "Fold_Enrichment", use_edge_weights = TRUE)
-  expect_is(p <- create_term_gene_plot(g), "ggraph")
+  g2 <- create_term_gene_graph(input_terms_df, genes_df, term_fill = "Fold_Enrichment")
+  expect_is(create_term_gene_plot(g2), "ggraph")
 
-  expect_is(p <- create_term_gene_plot(g, term_fill_label = "Fold Enrichment"), "ggraph")
-  expect_is(p <- create_term_gene_plot(g, term_size_label = "# genes"), "ggraph")
+  g3 <- create_term_gene_graph(input_terms_df, genes_df, term_fill = "Fold_Enrichment", use_edge_weights = TRUE)
+  expect_is(create_term_gene_plot(g3), "ggraph")
 
-  expect_is(create_term_gene_plot(g, layout = "stress"), "ggraph")
-  expect_is(create_term_gene_plot(g, layout = "kk"), "ggraph")
-  expect_is(create_term_gene_plot(g, layout = "fr"), "ggraph")
-  expect_error(create_term_gene_plot(g, layout = "INVALID"))
+  expect_is(create_term_gene_plot(g3, term_fill_label = "Fold Enrichment"), "ggraph")
+  expect_is(create_term_gene_plot(g3, term_size_label = "# genes"), "ggraph")
+
+  expect_is(create_term_gene_plot(g0, layout = "stress"), "ggraph")
+  expect_is(create_term_gene_plot(g0, layout = "kk"), "ggraph")
+  expect_is(create_term_gene_plot(g0, layout = "fr"), "ggraph")
+  expect_error(create_term_gene_plot(g0, layout = "INVALID"))
 })
