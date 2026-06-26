@@ -30,6 +30,30 @@ test_that("`active_snw_enrichment_wrapper()` -- wraps and combines each output a
   )
 })
 
+test_that("`active_snw_enrichment_wrapper()` -- if using GA method, warning is raised and iterations set to 1", {
+  mock_input <- example_pathfindR_input[1:10, c(1, 3)]
+  colnames(mock_input) <- c("GENE", "P_VALUE")
+
+  mock_pin_path <- "/path/to/pin"
+
+  mock_output <- data.frame(A = c(1, 2), B = c(3, 4))
+
+  with_mocked_bindings(
+    {
+      expect_warning(
+        res <- pathfindR:::active_snw_enrichment_wrapper(
+          input_processed = mock_input, pin_path = mock_pin_path, search_method = "GA",
+          gset_list = list(), enrichment_threshold = 0.05, list_active_snw_genes = FALSE,
+          iterations = 123
+        )
+      )
+      expect_identical(res, mock_output)
+    },
+    single_iter_wrapper = function(...) mock_output,
+    build_network = function(...) list(),
+    .package = "pathfindR"
+  )
+})
 
 test_that("`active_snw_enrichment_wrapper()` -- produces same result when run sequentially and in parallel", {
   ## Given
