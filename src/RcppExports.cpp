@@ -116,19 +116,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// component_labels
-IntegerVector component_labels(LogicalVector on, IntegerVector csr_offsets, IntegerVector csr_nbrs);
-RcppExport SEXP _pathfindR_component_labels(SEXP onSEXP, SEXP csr_offsetsSEXP, SEXP csr_nbrsSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< LogicalVector >::type on(onSEXP);
-    Rcpp::traits::input_parameter< IntegerVector >::type csr_offsets(csr_offsetsSEXP);
-    Rcpp::traits::input_parameter< IntegerVector >::type csr_nbrs(csr_nbrsSEXP);
-    rcpp_result_gen = Rcpp::wrap(component_labels(on, csr_offsets, csr_nbrs));
-    return rcpp_result_gen;
-END_RCPP
-}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_pathfindR_run_greedy_search", (DL_FUNC) &_pathfindR_run_greedy_search, 10},
@@ -138,7 +125,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_pathfindR_get_java_mc_calibration", (DL_FUNC) &_pathfindR_get_java_mc_calibration, 3},
     {"_pathfindR_run_simulated_annealing", (DL_FUNC) &_pathfindR_run_simulated_annealing, 12},
     {"_pathfindR_component_scores_sorted", (DL_FUNC) &_pathfindR_component_scores_sorted, 6},
-    {"_pathfindR_component_labels", (DL_FUNC) &_pathfindR_component_labels, 3},
     {NULL, NULL, 0}
 };
 
