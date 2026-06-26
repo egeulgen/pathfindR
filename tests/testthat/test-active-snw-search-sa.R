@@ -1,4 +1,4 @@
-# Graph: A-B-C is one path component; D is isolated.
+# Graph: A-B-C is one path component; D is isolated
 make_network <- function() {
   g <- igraph::graph_from_literal(A - B, B - C, D)
   list(
@@ -9,7 +9,7 @@ make_network <- function() {
   )
 }
 
-# z deliberately stored out of node order to test re-alignment to network$nodes.
+# z deliberately stored out of node order to test re-alignment to network$nodes
 make_sc <- function() {
   list(
     z     = c(D = 5, A = 2, C = 3, B = 1),
@@ -30,8 +30,6 @@ make_params <- function(...) {
   )
   utils::modifyList(defaults, list(...))
 }
-
-# ---- tests ------------------------------------------------------------------
 
 test_that("`.simulated_annealing()` -- an empty network returns an empty list without entering C++", {
   with_mocked_bindings(
@@ -94,21 +92,56 @@ test_that("`.simulated_annealing()` -- marshals z (in node order), means/stds, C
   expect_identical(captured$seed, 1234L) # double -> integer
 })
 
-test_that("`.simulated_annealing()` -- start_with_all_positives uses isTRUE semantics", {
+# Helper: run the search with a given `start_with_all_positives` value and
+# return whatever was actually forwarded to the C++ routine.
+forwarded_swap_flag <- function(value, present = TRUE) {
   captured <- new.env(parent = emptyenv())
+  params <- make_params()
+  if (present) {
+    params$start_with_all_positives <- value
+  } else {
+    params$start_with_all_positives <- NULL
+  }
   with_mocked_bindings(
     {
-      .simulated_annealing(
-        make_network(), make_sc(),
-        make_params(start_with_all_positives = 1)
-      )
+      .simulated_annealing(make_network(), make_sc(), params)
     },
     run_simulated_annealing = function(..., start_with_all_positives) {
       captured$flag <- start_with_all_positives
       rep(FALSE, 4)
     }
   )
-  expect_identical(captured$flag, FALSE) # 1 is not a literal TRUE
+  captured$flag
+}
+
+test_that("`.simulated_annealing()` -- start_with_all_positives = TRUE is forwarded as TRUE", {
+  expect_identical(forwarded_swap_flag(TRUE), TRUE)
+})
+
+test_that("`.simulated_annealing()` -- start_with_all_positives = FALSE is forwarded as FALSE", {
+  expect_identical(forwarded_swap_flag(FALSE), FALSE)
+})
+
+test_that("`.simulated_annealing()` -- non-TRUE start_with_all_positives values collapse to FALSE (isTRUE semantics)", {
+  # isTRUE() only accepts a length-1 logical TRUE; everything else is FALSE.
+  expect_identical(forwarded_swap_flag(1), FALSE) # numeric 1
+  expect_identical(forwarded_swap_flag("TRUE"), FALSE) # character
+  expect_identical(forwarded_swap_flag(NA), FALSE) # logical NA
+  expect_identical(forwarded_swap_flag(c(TRUE, TRUE)), FALSE) # length > 1
+})
+
+test_that("`.simulated_annealing()` -- a missing start_with_all_positives defaults to FALSE", {
+  # params$start_with_all_positives is NULL -> isTRUE(NULL) is FALSE, no error.
+  expect_identical(forwarded_swap_flag(NULL, present = FALSE), FALSE)
+})
+
+test_that("`.simulated_annealing()` -- the flag is always a single logical, never the raw input", {
+  for (val in list(TRUE, FALSE, 1, 0, "TRUE", NA, c(TRUE, FALSE))) {
+    flag <- forwarded_swap_flag(val)
+    expect_type(flag, "logical")
+    expect_length(flag, 1L)
+    expect_false(is.na(flag))
+  }
 })
 
 test_that("`.simulated_annealing()` -- the returned mask selects on-nodes whose subnetworks are returned", {
