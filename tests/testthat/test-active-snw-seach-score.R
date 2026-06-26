@@ -35,7 +35,7 @@ test_that("`build_score_context()` -- keeps the smallest p-value, defaults non-s
 
   network <- list(nodes = c("A", "B", "C"))
   experiment <- data.frame(
-    gene   = c("a", "b", "a"),       # 'a' appears twice; lower-case -> upper-cased
+    gene = c("a", "b", "a"), # 'a' appears twice; lower-case -> upper-cased
     pvalue = c(0.01, 0.5, 0.001),
     stringsAsFactors = FALSE
   )
@@ -47,7 +47,7 @@ test_that("`build_score_context()` -- keeps the smallest p-value, defaults non-s
   expect_equal(names(sc$z), c("A", "B", "C"))
   expect_equal(unname(sc$z["A"]), 0.001) # smallest p-value for duplicated gene
   expect_equal(unname(sc$z["B"]), 0.5)
-  expect_equal(unname(sc$z["C"]), 0.7)   # absent from experiment -> default
+  expect_equal(unname(sc$z["C"]), 0.7) # absent from experiment -> default
 
   # MC replica is driven with 2000 trials, the run seed, and the node-ordered vector
   expect_equal(captured$trials, 2000)
@@ -74,7 +74,7 @@ test_that("`build_score_context()` -- clamps p-values into the safe (0, 1) range
   sc <- build_score_context(
     network, experiment, list(seed = 1, p_for_nonsignificant = 0.5)
   )
-  expect_equal(unname(sc$z["A"]), 1e-13)     # 0 -> MIN_SIG
+  expect_equal(unname(sc$z["A"]), 1e-13) # 0 -> MIN_SIG
   expect_equal(unname(sc$z["B"]), 1 - 1e-13) # 1 -> MAX_SIG
 })
 
@@ -94,7 +94,7 @@ test_that("`build_score_context()` -- drops genes absent from the network and de
   )
   expect_equal(unname(sc$z["A"]), 0.02)
   expect_equal(unname(sc$z["B"]), 0.9) # no p-value -> default
-  expect_equal(length(sc$z), 2L)       # foreign gene did not leak in
+  expect_equal(length(sc$z), 2L) # foreign gene did not leak in
 })
 
 
@@ -180,7 +180,7 @@ test_that("`.find_subnetworks()` -- returns one scored subnetwork per component"
 
   sizes <- vapply(subs, function(s) length(s$nodes), integer(1))
   abc <- subs[[which(sizes == 3L)]]
-  de  <- subs[[which(sizes == 2L)]]
+  de <- subs[[which(sizes == 2L)]]
 
   expect_setequal(abc$nodes, c("A", "B", "C"))
   expect_equal(abc$zsum, sum(sc$z[c("A", "B", "C")]))
@@ -204,9 +204,9 @@ test_that("`.sort_subnetworks_desc()` -- a list of 0 or 1 subnetworks is returne
 
 test_that("`.sort_subnetworks_desc()` -- subnetworks are ordered by score, highest first", {
   subs <- list(
-    list(nodes = "low",  score = 1),
+    list(nodes = "low", score = 1),
     list(nodes = "high", score = 5),
-    list(nodes = "mid",  score = 3)
+    list(nodes = "mid", score = 3)
   )
   out <- .sort_subnetworks_desc(subs)
   expect_equal(vapply(out, function(s) s$score, numeric(1)), c(5, 3, 1))

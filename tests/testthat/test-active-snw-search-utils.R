@@ -11,7 +11,7 @@ test_that("`.parse_experiment()` -- named gene/pvalue columns are used case-inse
   # gene is column 2, pvalue is column 1 -> must still be picked by name
   df <- data.frame(
     PValue = c(0.01, 0.2),
-    GENE   = c("tp53", "egfr"),
+    GENE = c("tp53", "egfr"),
     stringsAsFactors = FALSE
   )
   out <- .parse_experiment(df)
@@ -21,8 +21,8 @@ test_that("`.parse_experiment()` -- named gene/pvalue columns are used case-inse
 
 test_that("`.parse_experiment()` -- falls back to the first two columns when names are absent", {
   df <- data.frame(
-    g     = c("a", "b"),
-    p     = c(0.5, 0.6),
+    g = c("a", "b"),
+    p = c(0.5, 0.6),
     extra = c(1, 2),
     stringsAsFactors = FALSE
   )
@@ -33,7 +33,7 @@ test_that("`.parse_experiment()` -- falls back to the first two columns when nam
 
 test_that("`.parse_experiment()` -- gene names are upper-cased and column types are correct", {
   df <- data.frame(
-    gene   = c("brca1", "brca2"),
+    gene = c("brca1", "brca2"),
     pvalue = c("0.001", "0.5"), # character p-values must be coerced to numeric
     stringsAsFactors = FALSE
   )
@@ -56,7 +56,7 @@ test_that("`.parse_experiment()` -- factor gene columns are coerced to character
 
 test_that("`.parse_experiment()` -- row count and ordering are preserved", {
   df <- data.frame(
-    gene   = c("a", "b", "c"),
+    gene = c("a", "b", "c"),
     pvalue = c(0.3, 0.1, 0.9),
     stringsAsFactors = FALSE
   )
@@ -81,9 +81,9 @@ test_that("`.parse_experiment()` -- fewer than two columns is an error", {
 
 test_that("`.parse_experiment()` -- only the named columns are kept; trailing columns are dropped", {
   df <- data.frame(
-    gene   = c("a", "b"),
+    gene = c("a", "b"),
     pvalue = c(0.1, 0.2),
-    junk   = c("x", "y"),
+    junk = c("x", "y"),
     stringsAsFactors = FALSE
   )
   out <- .parse_experiment(df)
@@ -202,8 +202,8 @@ test_that("`build_network()` -- nbr_idx contains no self-loops or duplicates", {
   net <- build_network(make_sif(c("a b", "b c", "c a", "c d")))
   for (i in seq_along(net$nodes)) {
     ids <- net$nbr_idx[[i]]
-    expect_false(i %in% ids)        # no self-loop
-    expect_equal(anyDuplicated(ids), 0L)  # no duplicate neighbours
+    expect_false(i %in% ids) # no self-loop
+    expect_equal(anyDuplicated(ids), 0L) # no duplicate neighbours
   }
 })
 
@@ -213,16 +213,22 @@ test_that("`build_network()` -- CSR offsets and neighbours are well-formed", {
 
   expect_length(net$csr_offsets, N + 1L)
   expect_equal(net$csr_offsets[1L], 0L)
-  expect_true(all(diff(net$csr_offsets) >= 0))                 # non-decreasing
-  expect_equal(diff(net$csr_offsets),                          # span == degree
-               vapply(net$nbr_idx, length, integer(1)))
-  expect_equal(net$csr_offsets[N + 1L],                        # 2 * |E|
-               2L * igraph::ecount(net$g))
+  expect_true(all(diff(net$csr_offsets) >= 0)) # non-decreasing
+  expect_equal(
+    diff(net$csr_offsets), # span == degree
+    vapply(net$nbr_idx, length, integer(1))
+  )
+  expect_equal(
+    net$csr_offsets[N + 1L], # 2 * |E|
+    2L * igraph::ecount(net$g)
+  )
 
   expect_length(net$csr_nbrs, net$csr_offsets[N + 1L])
   # csr_nbrs is the 0-based flattening of nbr_idx in node order
-  expect_equal(net$csr_nbrs,
-               as.integer(unlist(net$nbr_idx, use.names = FALSE)) - 1L)
+  expect_equal(
+    net$csr_nbrs,
+    as.integer(unlist(net$nbr_idx, use.names = FALSE)) - 1L
+  )
   expect_true(all(net$csr_nbrs >= 0L & net$csr_nbrs < N))
 })
 
