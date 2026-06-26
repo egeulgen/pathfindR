@@ -10,13 +10,14 @@ test_that("`active_subnetwork_search()` -- an empty network returns an empty lis
   with_mocked_bindings(
     {
       result <- active_subnetwork_search(
-        list(nodes = character(0)), fake_sc, method = "GR", params = fake_params
+        list(nodes = character(0)), fake_sc,
+        method = "GR", params = fake_params
       )
       expect_equal(result, list())
     },
-    .greedy_search        = function(...) stop("should not be called"),
-    .simulated_annealing  = function(...) stop("should not be called"),
-    .genetic_algorithm    = function(...) stop("should not be called")
+    .greedy_search = function(...) stop("should not be called"),
+    .simulated_annealing = function(...) stop("should not be called"),
+    .genetic_algorithm = function(...) stop("should not be called")
   )
 })
 
@@ -38,9 +39,9 @@ test_that("`active_subnetwork_search()` -- dispatches to the strategy named by `
       expect_equal(sa[[1]]$nodes, "from_SA")
       expect_equal(ga[[1]]$nodes, "from_GA")
     },
-    .greedy_search       = function(...) list(sn("from_GR", 1)),
+    .greedy_search = function(...) list(sn("from_GR", 1)),
     .simulated_annealing = function(...) list(sn("from_SA", 1)),
-    .genetic_algorithm   = function(...) list(sn("from_GA", 1))
+    .genetic_algorithm = function(...) list(sn("from_GA", 1))
   )
 })
 
@@ -50,9 +51,9 @@ test_that("`active_subnetwork_search()` -- defaults to the greedy (GR) strategy"
       result <- active_subnetwork_search(fake_network, fake_sc, params = fake_params)
       expect_equal(result[[1]]$nodes, "from_GR")
     },
-    .greedy_search       = function(...) list(sn("from_GR", 1)),
+    .greedy_search = function(...) list(sn("from_GR", 1)),
     .simulated_annealing = function(...) stop("should not be called"),
-    .genetic_algorithm   = function(...) stop("should not be called")
+    .genetic_algorithm = function(...) stop("should not be called")
   )
 })
 
@@ -104,13 +105,17 @@ test_that("`active_subnetwork_search()` -- emits progress messages only when ver
   with_mocked_bindings(
     {
       expect_message(
-        active_subnetwork_search(fake_network, fake_sc, method = "GR",
-                                 params = fake_params, verbose = TRUE),
+        active_subnetwork_search(fake_network, fake_sc,
+          method = "GR",
+          params = fake_params, verbose = TRUE
+        ),
         "Searching subnetworks"
       )
       expect_no_message(
-        active_subnetwork_search(fake_network, fake_sc, method = "GR",
-                                 params = fake_params, verbose = FALSE)
+        active_subnetwork_search(fake_network, fake_sc,
+          method = "GR",
+          params = fake_params, verbose = FALSE
+        )
       )
     },
     .greedy_search = function(...) list(sn("a", 1))
@@ -121,8 +126,10 @@ test_that("`active_subnetwork_search()` -- forwards network, score_context, para
   captured <- new.env(parent = emptyenv())
   with_mocked_bindings(
     {
-      active_subnetwork_search(fake_network, fake_sc, method = "SA",
-                               params = fake_params, verbose = TRUE)
+      active_subnetwork_search(fake_network, fake_sc,
+        method = "SA",
+        params = fake_params, verbose = TRUE
+      )
     },
     .simulated_annealing = function(network, score_context, params, verbose) {
       captured$network <- network

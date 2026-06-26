@@ -25,8 +25,8 @@ make_params <- function(...) {
     start_with_all_positives = TRUE,
     sa_initial_temp          = 1,
     sa_final_temp            = 0.01,
-    sa_iterations            = 100,  # double on purpose -> must be coerced to int
-    seed                     = 1234  # double on purpose -> must be coerced to int
+    sa_iterations            = 100, # double on purpose -> must be coerced to int
+    seed                     = 1234 # double on purpose -> must be coerced to int
   )
   utils::modifyList(defaults, list(...))
 }
@@ -91,15 +91,17 @@ test_that("`.simulated_annealing()` -- marshals z (in node order), means/stds, C
   expect_identical(captured$sa_initial_temp, 1)
   expect_identical(captured$sa_final_temp, 0.01)
   expect_identical(captured$sa_iterations, 100L) # double -> integer
-  expect_identical(captured$seed, 1234L)         # double -> integer
+  expect_identical(captured$seed, 1234L) # double -> integer
 })
 
 test_that("`.simulated_annealing()` -- start_with_all_positives uses isTRUE semantics", {
   captured <- new.env(parent = emptyenv())
   with_mocked_bindings(
     {
-      .simulated_annealing(make_network(), make_sc(),
-                           make_params(start_with_all_positives = 1))
+      .simulated_annealing(
+        make_network(), make_sc(),
+        make_params(start_with_all_positives = 1)
+      )
     },
     run_simulated_annealing = function(..., start_with_all_positives) {
       captured$flag <- start_with_all_positives
@@ -130,7 +132,7 @@ test_that("`.simulated_annealing()` -- multiple components come back sorted by s
       scores <- vapply(result, function(s) s$score, numeric(1))
       expect_true(scores[1] >= scores[2])
       expect_setequal(result[[1]]$nodes, c("A", "B", "C")) # higher-scoring first
-      expect_equal(result[[2]]$nodes, "D")                 # isolated singleton, score 0
+      expect_equal(result[[2]]$nodes, "D") # isolated singleton, score 0
     },
     run_simulated_annealing = function(...) rep(TRUE, 4) # everything on
   )
