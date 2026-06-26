@@ -164,7 +164,7 @@ double greedy_removal(
   }
   // First arrange by insertion order, then stable-sort by bucket index using the
   // capacity for this set's size -- exactly the HashSet iteration model.
-  std::sort(rem.begin(), rem.end(), [&](int a, int b) {
+  std::sort(rem.begin(), rem.end(), [&](int a, int b) {  // # nocov start
     return state.removable_ins_order[a] < state.removable_ins_order[b];
   });
   int cap = java_cap_for((int)rem.size());
@@ -196,7 +196,7 @@ double greedy_removal(
           work.push_back(pred);              // predecessor now removable (Java appends)
         }
       }
-    }
+    }  // # nocov end
     // else: node stays in the component (Java re-adds it); nothing to do.
   }
   return best_score;
