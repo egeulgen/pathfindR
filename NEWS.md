@@ -1,5 +1,8 @@
 # pathfindR (development version)
 
+## Minor Changes and Bug Fixes
+- Removed unused `component_labels` utility function
+
 # pathfindR 3.0.0
 
 ## Major Changes
