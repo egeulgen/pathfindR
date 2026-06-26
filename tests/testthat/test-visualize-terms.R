@@ -86,6 +86,17 @@ test_that("`visualize_KEGG_diagram()` -- skips pathway if non-existent", {
   expect_length(expect_is, 1)
 })
 
+test_that("`visualize_KEGG_diagram()` -- rerurns empty output if org.Hs.eg.db not installed", {
+  mockery::stub(visualize_KEGG_diagram, "requireNamespace", FALSE)
+  expect_message(
+    res <- visualize_KEGG_diagram(
+      kegg_pw_ids = single_result$ID, input_processed = processed_input
+    ),
+    "Package 'org.Hs.eg.db' is not installed"
+  )
+  expect_identical(res, list())
+})
+
 test_that("`visualize_KEGG_diagram()` -- argument checks work", {
   expect_error(
     visualize_KEGG_diagram(kegg_pw_ids = list(), input_processed = processed_input),
