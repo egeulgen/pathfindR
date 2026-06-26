@@ -86,7 +86,7 @@ test_that("`visualize_KEGG_diagram()` -- skips pathway if non-existent", {
   expect_length(expect_is, 1)
 })
 
-test_that("`visualize_KEGG_diagram()` -- rerurns empty output if org.Hs.eg.db not installed", {
+test_that("`visualize_KEGG_diagram()` -- returns empty output if org.Hs.eg.db not installed", {
   mockery::stub(visualize_KEGG_diagram, "requireNamespace", FALSE)
   expect_message(
     res <- visualize_KEGG_diagram(
