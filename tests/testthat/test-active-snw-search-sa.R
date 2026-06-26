@@ -199,8 +199,8 @@ test_that("`.simulated_annealing()` -- progress messages are emitted only when v
 # ---- integration: real C++ run on a toy case --------------------------------
 #
 # These tests do NOT mock run_simulated_annealing -- they exercise the real C++
-# loop. They additionally need `build_network()` (and its java_* helpers) and
-# withr. They are deterministic by construction: a connected triangle whose
+# loop. They additionally need `build_network()` (and its java_* helpers).
+# They are deterministic by construction: a connected triangle whose
 # nodes all have positive z-scores has a single global optimum (the whole
 # triangle), and with the temperature frozen at a tiny value no worsening move
 # is ever accepted, so once the solution is at the optimum it cannot leave it.
@@ -208,7 +208,7 @@ test_that("`.simulated_annealing()` -- progress messages are emitted only when v
 
 # Build a real triangle network (A-B-C) and a positive-z score context for it.
 make_toy <- function(env = parent.frame()) {
-  sif <- withr::local_tempfile(fileext = ".sif", .local_envir = env)
+  sif <- tempfile(fileext = ".sif")
   writeLines(c("A B", "B C", "C A"), sif)
   network <- build_network(sif)
   nm <- network$nodes

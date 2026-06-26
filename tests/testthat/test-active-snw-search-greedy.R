@@ -121,7 +121,7 @@ test_that("`.greedy_search()` -- emits a progress message only when verbose", {
 
 # Build a real network from a SIF and a positive-z (mean 0, sd 1) score context
 build_toy <- function(sif_lines, neg = NULL, env = parent.frame()) {
-  sif <- withr::local_tempfile(fileext = ".sif", .local_envir = env)
+  sif <- tempfile(fileext = ".sif")
   writeLines(sif_lines, sif)
   network <- build_network(sif)
   nm <- network$nodes
@@ -141,9 +141,6 @@ toy_params <- function() {
 }
 
 test_that("`.greedy_search()` -- integration: greedily recovers the full positive module (real C++)", {
-  skip_if_not_installed("igraph")
-  skip_if_not_installed("withr")
-
   toy <- build_toy(c("A B", "B C", "C A"))
   res <- .greedy_search(toy$network, toy$sc, toy_params())
 
@@ -158,9 +155,6 @@ test_that("`.greedy_search()` -- integration: greedily recovers the full positiv
 })
 
 test_that("`.greedy_search()` -- integration: is deterministic for identical inputs (real C++)", {
-  skip_if_not_installed("igraph")
-  skip_if_not_installed("withr")
-
   toy <- build_toy(c("A B", "B C", "C A"))
   r1 <- .greedy_search(toy$network, toy$sc, toy_params())
   r2 <- .greedy_search(toy$network, toy$sc, toy_params())
@@ -174,9 +168,6 @@ test_that("`.greedy_search()` -- integration: is deterministic for identical inp
 })
 
 test_that("`.greedy_search()` -- integration: excludes a strongly negative neighbour from the module (real C++)", {
-  skip_if_not_installed("igraph")
-  skip_if_not_installed("withr")
-
   # D hangs off C but has a strongly negative z, so adding it never improves the score
   toy <- build_toy(c("A B", "B C", "C A", "C D"), neg = c(D = -10))
   res <- .greedy_search(toy$network, toy$sc, toy_params())

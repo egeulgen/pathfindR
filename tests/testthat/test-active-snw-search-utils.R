@@ -92,7 +92,7 @@ test_that("`.parse_experiment()` -- only the named columns are kept; trailing co
 
 
 make_sif <- function(lines, env = parent.frame()) {
-  path <- withr::local_tempfile(fileext = ".sif", .local_envir = env)
+  path <- tempfile(fileext = ".sif")
   writeLines(lines, path)
   path
 }
