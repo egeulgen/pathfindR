@@ -85,8 +85,16 @@ test_that("`create_kappa_matrix()` -- argument checks works", {
 test_that("`hierarchical_term_clustering()` -- returns integer vector", {
   m <- mockery::mock(NULL, cycle = TRUE)
   mockery::stub(hierarchical_term_clustering, "graphics::plot", m)
-  mockery::stub(hierarchical_term_clustering, "stats::heatmap", m)
   mockery::stub(hierarchical_term_clustering, "stats::rect.hclust", m)
+  mockery::stub(
+    hierarchical_term_clustering,
+    "stats::heatmap",
+    function(x, distfun, hclustfun, ...) {
+      d <- distfun(x)
+      hclustfun(d)
+      invisible(NULL)
+    }
+  )
 
   expected_message_regex <- "The maximum average silhouette width was -?(0\\.?\\d{0,2}|1) for k = \\d+ \n\n"
   expect_message(clu_res <- hierarchical_term_clustering(input_kappa_mat, enrichment_res,
