@@ -7,7 +7,7 @@
   identical results. Also hardened `JavaRandom::nextInt` and `java_cap_for`
   against the same class of undefined behaviour.
 - Removed unused `component_labels` utility function
-- Fixes issue in `create_term_gene_plot()`: when no `term_fill` information is
+- Fixed issue in `create_term_gene_plot()`: when no `term_fill` information is
   present in the input graph, the function should revert to default node colors
 
 # pathfindR 3.0.0
