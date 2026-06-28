@@ -1,6 +1,11 @@
 # pathfindR (development version)
 
 ## Minor Changes and Bug Fixes
+- * Fixed signed integer overflow in the C++ active subnetwork search
+  (`java_string_hashcode`) reported by gcc-UBSAN and clang-UBSAN on CRAN.
+  Hash accumulation now uses defined unsigned-wrap arithmetic while preserving
+  identical results. Also hardened `JavaRandom::nextInt` and `java_cap_for`
+  against the same class of undefined behaviour.
 - Removed unused `component_labels` utility function
 - Fixes issue in `create_term_gene_plot()`: when no `term_fill` information is
   present in the input graph, the function should revert to default node colors
