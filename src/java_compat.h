@@ -40,10 +40,13 @@ using namespace Rcpp;
 // -----------------------------------------------------------------------------
 
 // Java String.hashCode(): h = 31*h + c  (signed 32-bit int, wraps on overflow)
+// Java defines int arithmetic to wrap (two's complement); C++ signed overflow is
+// undefined behaviour. We accumulate in uint32_t (defined modular wrap) and cast
+// back, which reproduces Java's exact bit pattern without tripping UBSAN.
 static inline int java_string_hashcode(const std::string& s) {
-  int h = 0;
-  for (unsigned char c : s) h = 31 * h + static_cast<int>(c);
-  return h;
+  uint32_t h = 0;
+  for (unsigned char c : s) h = 31u * h + c;
+  return static_cast<int>(h);
 }
 
 // HashMap internal spreading: h ^ (h >>> 16)  (unsigned right-shift)
@@ -62,9 +65,11 @@ static inline int java_spread(int h) {
 // for String.hashCode values on realistic gene/protein names, so in
 // practice this is never triggered.
 static inline int java_cap_for(int size) {
-  int cap = 16;
+  // cap doubles via left shift; done in unsigned to avoid signed-overflow UB at
+  // pathological sizes (the value is always a small power of two in practice).
+  unsigned cap = 16;
   while (size > static_cast<int>(cap * 0.75)) cap <<= 1;
-  return cap;
+  return static_cast<int>(cap);
 }
 
 // -----------------------------------------------------------------------------
@@ -101,7 +106,13 @@ struct JavaRandom {
     do {
       bits = next(31);
       val  = bits % bound;
-    } while (bits - val + (bound - 1) < 0);
+      // Java's rejection test relies on int overflow wrapping negative. Reproduce
+      // that wrap in uint32_t (defined) and test the sign, instead of overflowing
+      // a signed int (UB). Do NOT widen to int64: that changes the accept set and
+      // would alter the RNG stream.
+    } while (static_cast<int32_t>(static_cast<uint32_t>(bits)
+                                  - static_cast<uint32_t>(val)
+                                  + static_cast<uint32_t>(bound - 1)) < 0);
     return val;
   }
 
