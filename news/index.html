@@ -88,7 +88,7 @@
 <ul><li><ul><li>Fixed signed integer overflow in the C++ active subnetwork search (<code>java_string_hashcode</code>) reported by gcc-UBSAN and clang-UBSAN on CRAN. Hash accumulation now uses defined unsigned-wrap arithmetic while preserving identical results. Also hardened <code>JavaRandom::nextInt</code> and <code>java_cap_for</code> against the same class of undefined behaviour.</li>
 </ul></li>
 <li>Removed unused <code>component_labels</code> utility function</li>
-<li>Fixes issue in <code><a href="../reference/create_term_gene_plot.html">create_term_gene_plot()</a></code>: when no <code>term_fill</code> information is present in the input graph, the function should revert to default node colors</li>
+<li>Fixed issue in <code><a href="../reference/create_term_gene_plot.html">create_term_gene_plot()</a></code>: when no <code>term_fill</code> information is present in the input graph, the function should revert to default node colors</li>
 </ul></div>
 </div>
     <div class="section level2">
