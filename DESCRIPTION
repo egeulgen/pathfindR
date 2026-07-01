@@ -53,7 +53,7 @@ Imports:
     knitr,
     Rcpp
 Depends: R (>= 4.3.0),
-    pathfindR.data (>= 2.0)
+    pathfindR.data (>= 2.2)
 Suggests: 
     org.Hs.eg.db,
     testthat (>= 2.3.2),
