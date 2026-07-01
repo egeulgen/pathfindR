@@ -57,7 +57,7 @@ Perform Enrichment Analyses on the Input Subnetworks
 }
 \examples{
 enr_res <- enrichment_analyses(
-  snws = example_active_snws[1:2],
+  snws = example_active_snws$subnetworks[1:2],
   sig_genes_vec = example_pathfindR_input$Gene.symbol[1:25],
   pin_name_path = "KEGG"
 )
