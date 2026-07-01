@@ -1,6 +1,6 @@
 {
   "R": {
-    "Version": "4.6.0",
+    "Version": "4.6.1",
     "Repositories": [
       {
         "Name": "CRAN",
@@ -3740,7 +3740,7 @@
     },
     "pathfindR.data": {
       "Package": "pathfindR.data",
-      "Version": "2.1.0",
+      "Version": "2.2.0",
       "Source": "Repository",
       "Title": "Data Package for 'pathfindR'",
       "Authors@R": "c(person(\"Ege\", \"Ulgen\", role = c(\"cre\", \"cph\"),  email = \"egeulgen@gmail.com\", comment = c(ORCID = \"0000-0003-2090-3621\")), person(\"Ozan\", \"Ozisik\", role = \"aut\", email = \"ozanytu@gmail.com\", comment = c(ORCID = \"0000-0001-5980-8002\")))",
@@ -3752,11 +3752,11 @@
       "Depends": [
         "R (>= 4.0)"
       ],
-      "RoxygenNote": "7.3.1",
       "URL": "https://github.com/egeulgen/pathfindR.data",
       "BugReports": "https://github.com/egeulgen/pathfindR.data/issues",
+      "Config/roxygen2/version": "8.0.0",
       "NeedsCompilation": "no",
-      "Author": "Ege Ulgen [cre, cph] (<https://orcid.org/0000-0003-2090-3621>), Ozan Ozisik [aut] (<https://orcid.org/0000-0001-5980-8002>)",
+      "Author": "Ege Ulgen [cre, cph] (ORCID: <https://orcid.org/0000-0003-2090-3621>), Ozan Ozisik [aut] (ORCID: <https://orcid.org/0000-0001-5980-8002>)",
       "Repository": "CRAN"
     },
     "pillar": {
