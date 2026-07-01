@@ -149,7 +149,7 @@ subnw_start_idx <- 1:3
 for (idx in seq_along(subnw_start_idx)) {
   j <- subnw_start_idx[idx]
   res <- enrichment_analyses(
-    snws = example_active_snws[j:j + 2], sig_genes_vec = example_pathfindR_input$Gene.symbol,
+    snws = example_active_snws$subnetworks[j:j + 2], sig_genes_vec = example_pathfindR_input$Gene.symbol,
     genes_by_term = tmp_gset_genes, term_descriptions = tmp_gset_desc, list_active_snw_genes = TRUE
   )
   if (!is.null(res)) {
@@ -170,9 +170,12 @@ test_that("`enrichment_analyses()` -- returns a data frame", {
   mock_lapply <- mockery::mock(c(), all_iter_enr_res, cycle = TRUE)
   mockery::stub(enrichment_analyses, "lapply", mock_lapply)
 
+  toy_snws <- example_active_snws$subnetworks[1:3]
+  toy_sig_genes <- example_pathfindR_input$Gene.symbol
+
   # default
   expect_is(enr_res1 <- enrichment_analyses(
-    snws = example_active_snws[1:3], sig_genes_vec = example_pathfindR_input$Gene.symbol,
+    snws = toy_snws, sig_genes_vec = toy_sig_genes,
     list_active_snw_genes = FALSE
   ), "data.frame")
   total <- sum(vapply(
@@ -183,7 +186,7 @@ test_that("`enrichment_analyses()` -- returns a data frame", {
 
   # list active snw genes
   expect_is(enr_res2 <- enrichment_analyses(
-    snws = example_active_snws[1:3], sig_genes_vec = example_pathfindR_input$Gene.symbol,
+    snws = toy_snws, sig_genes_vec = toy_sig_genes,
     list_active_snw_genes = TRUE
   ), "data.frame")
   expect_true(ncol(enr_res2) == ncol(enr_res1) + 1)
