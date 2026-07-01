@@ -56,10 +56,11 @@ Depends: R (>= 4.3.0),
     pathfindR.data (>= 2.2)
 Suggests: 
     org.Hs.eg.db,
-    testthat (>= 2.3.2),
+    testthat (>= 3.0.0),
     covr,
     mockery
 VignetteBuilder: knitr
-RoxygenNote: 8.0.0
 LinkingTo: 
     Rcpp
+Config/testthat/parallel: true
+Config/roxygen2/version: 8.0.0
