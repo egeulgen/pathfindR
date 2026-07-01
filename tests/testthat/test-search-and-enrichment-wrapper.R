@@ -89,6 +89,7 @@ test_that("`active_snw_enrichment_wrapper()` -- produces same result when run se
     col.names = FALSE,
     quote = FALSE
   )
+  on.exit(unlink(sif_file), add = TRUE)
 
   # input data - gene sets
   mock_genes_by_term <- list(A = c("GENE5", "GENE3", "GENE7", "GENE1", "GENE4"), B = c("GENE6", "GENE9", "GENE17", "GENE3"))
