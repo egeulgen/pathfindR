@@ -1,9 +1,14 @@
 # pathfindR (development version)
 
+## Minor Changes and Bug Fixes
+
+- Fixed tests after `pathfindR.data@2.2.0` release with change in structure of
+`example_active_snws` data
+
 # pathfindR 3.0.1
 
 ## Minor Changes and Bug Fixes
-- * Fixed signed integer overflow in the C++ active subnetwork search
+- Fixed signed integer overflow in the C++ active subnetwork search
   (`java_string_hashcode`) reported by gcc-UBSAN and clang-UBSAN on CRAN.
   Hash accumulation now uses defined unsigned-wrap arithmetic while preserving
   identical results. Also hardened `JavaRandom::nextInt` and `java_cap_for`
