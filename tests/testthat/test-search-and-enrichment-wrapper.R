@@ -89,6 +89,7 @@ test_that("`active_snw_enrichment_wrapper()` -- produces same result when run se
     col.names = FALSE,
     quote = FALSE
   )
+  on.exit(unlink(sif_file), add = TRUE)
 
   # input data - gene sets
   mock_genes_by_term <- list(A = c("GENE5", "GENE3", "GENE7", "GENE1", "GENE4"), B = c("GENE6", "GENE9", "GENE17", "GENE3"))
@@ -119,53 +120,60 @@ test_that("`active_snw_enrichment_wrapper()` -- produces same result when run se
   expect_identical(parallel_res, sequential_res)
 })
 
-test_that("`single_iter_wrappers()` -- produces same results when same seed is set", {
+test_that("`single_iter_wrapper()` produces same results when same seed is set", {
+  set.seed(42)
   ## Given
-  # Input data - experiment
-  n_input_genes <- 50
-
+  pool <- paste0("GENE", 1:250)
+  n_input_genes <- 75
   input_genes <- paste0("GENE", seq_len(n_input_genes))
 
-  prop_alt <- 0.1 # 10% true positives
+  prop_alt <- 0.3
   is_alt <- rbinom(n_input_genes, 1, prop_alt)
+  signal_genes <- input_genes[is_alt == 1]
+
+  # near-zero p-values for signal genes -> strong, clearly separable signal
   input_p_vals <- ifelse(
     is_alt == 1,
-    rbeta(n_input_genes, 0.5, 5), # skewed toward 0 (signals)
-    runif(n_input_genes) # nulls
+    runif(n_input_genes, min = 0, max = 1e-4),
+    runif(n_input_genes)
   )
   toy_input_df <- data.frame(GENE = input_genes, P_VALUE = input_p_vals)
 
-  # Input data - interaction network
-  pool <- paste0("GENE", 1:250)
-  n_edges <- 1e4
-  toy_pin_df <- data.frame(
-    InteractorA = sample(pool, n_edges, replace = TRUE),
+  # PIN: a dense clique among the signal genes guarantees a discoverable
+  # connected module, plus random background edges as noise.
+  seed_edges <- as.data.frame(t(combn(signal_genes, 2)))
+  names(seed_edges) <- c("InteractorA", "InteractorB")
+  seed_edges$pp <- "pp"
+  seed_edges <- seed_edges[c("InteractorA", "pp", "InteractorB")]
+
+  n_background_edges <- 800
+  background_edges <- data.frame(
+    InteractorA = sample(pool, n_background_edges, replace = TRUE),
     pp = "pp",
-    InteractorB = sample(pool, n_edges, replace = TRUE),
+    InteractorB = sample(pool, n_background_edges, replace = TRUE),
     stringsAsFactors = FALSE
   )
-  # remove self-loops
-  toy_pin_df <- subset(toy_pin_df, InteractorA != InteractorB)
-  # remove duplicate edges
-  toy_pin_df <- toy_pin_df[
-    !duplicated(
-      t(apply(toy_pin_df[c("InteractorA", "InteractorB")], 1, sort))
-    ),
-  ]
-  sif_file <- tempfile(fileext = ".sif")
-  write.table(
-    toy_pin_df,
-    sif_file,
-    sep = "\t",
-    row.names = FALSE,
-    col.names = FALSE,
-    quote = FALSE
-  )
 
-  # input data - gene sets
-  mock_genes_by_term <- list(A = c("GENE5", "GENE3", "GENE7", "GENE1", "GENE4"), B = c("GENE6", "GENE9", "GENE17", "GENE3"))
-  mock_term_descriptions <- c(A = "gene set A", B = "genes set B")
-  mock_gset_list <- list(genes_by_term = mock_genes_by_term, term_descriptions = mock_term_descriptions)
+  toy_pin_df <- rbind(seed_edges, background_edges)
+  toy_pin_df <- subset(toy_pin_df, InteractorA != InteractorB)
+  toy_pin_df <- toy_pin_df[
+    !duplicated(t(apply(toy_pin_df[c("InteractorA", "InteractorB")], 1, sort))),
+  ]
+
+  sif_file <- tempfile(fileext = ".sif")
+  write.table(toy_pin_df, sif_file,
+    sep = "\t",
+    row.names = FALSE, col.names = FALSE, quote = FALSE
+  )
+  on.exit(unlink(sif_file), add = TRUE)
+
+  mock_gset_list <- list(
+    genes_by_term = list(
+      A = c("GENE5", "GENE3", "GENE7", "GENE1", "GENE4"),
+      B = c("GENE6", "GENE9", "GENE17", "GENE3")
+    ),
+    term_descriptions = c(A = "gene set A", B = "genes set B")
+  )
 
   network <- build_network(sif_file)
   toy_experiment_df <- data.frame(
@@ -173,42 +181,52 @@ test_that("`single_iter_wrappers()` -- produces same results when same seed is s
     pvalue = toy_input_df$P_VALUE
   )
 
-  ## When
-  for (search_method in c("GR", "SA", "GA")) {
-    seed_vals <- c(123, 456, 123)
-    results <- list()
-    for (idx in 1:3) {
-      results[[idx]] <- single_iter_wrapper(
-        i = seed_vals[idx],
-        pin_path = sif_file,
-        network = network,
-        experiment_df = toy_experiment_df,
-        score_quan_thr = 0.8,
-        sig_gene_thr = 0.02,
-        search_method = "GR",
-        verbose = FALSE,
-        start_with_all_positives = FALSE,
-        gene_init_prob = 0.1,
-        sa_initial_temp = 1,
-        sa_final_temp = 0.01,
-        sa_iterations = 10000,
-        ga_population_size = 400,
-        ga_iterations = 200,
-        ga_crossover_rate = 1,
-        ga_mutation_rate = 0,
-        gr_max_depth = 1,
-        gr_search_depth = 1,
-        gr_overlap_threshold = 0.5,
-        gr_subnetwork_num = 1000,
-        gset_list = mock_gset_list,
-        adj_method = "bonferroni",
-        enrichment_threshold = 0.05,
-        list_active_snw_genes = FALSE
-      )
-    }
-    ## Then
-    expect_false(identical(results[[1]], results[[2]]))
-    expect_identical(results[[1]], results[[3]])
+  n_iter <- 3
+  gene_init_prob_vec <- rep(0.4, n_iter)
+
+  run_once <- function(i, search_method) {
+    pathfindR:::single_iter_wrapper(
+      i = i,
+      pin_path = sif_file,
+      network = network,
+      experiment_df = toy_experiment_df,
+      score_quan_thr = -1,
+      sig_gene_thr = 0,
+      search_method = search_method,
+      verbose = FALSE,
+      start_with_all_positives = FALSE,
+      gene_init_prob = gene_init_prob_vec,
+      sa_initial_temp = 1,
+      sa_final_temp = 0.01,
+      sa_iterations = 10000,
+      ga_population_size = 400,
+      ga_iterations = 200,
+      ga_crossover_rate = 1,
+      ga_mutation_rate = 0,
+      gr_max_depth = 1,
+      gr_search_depth = 1,
+      gr_overlap_threshold = 0.5,
+      gr_subnetwork_num = 1000,
+      gset_list = mock_gset_list,
+      adj_method = "bonferroni",
+      enrichment_threshold = 0.5,
+      list_active_snw_genes = FALSE
+    )
+  }
+
+  ## When / Then
+  for (search_method in c("GR", "SA")) {
+    iter_idx <- c(1, 2, 1)
+    results <- lapply(iter_idx, run_once, search_method = search_method)
+
+    expect_false(
+      identical(results[[1]], results[[2]]),
+      info = sprintf("[%s] different seeds unexpectedly gave identical results", search_method)
+    )
+    expect_identical(
+      results[[1]], results[[3]],
+      info = sprintf("[%s] same seed did not reproduce identical results", search_method)
+    )
   }
 })
 

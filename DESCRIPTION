@@ -1,7 +1,7 @@
 Package: pathfindR
 Type: Package
 Title: Enrichment Analysis Utilizing Active Subnetworks
-Version: 3.0.1.9000
+Version: 3.0.1.9001
 Authors@R: c(person("Ege", "Ulgen",
                     role = c("cre", "cph"), 
                     email = "egeulgen@gmail.com",
@@ -53,13 +53,14 @@ Imports:
     knitr,
     Rcpp
 Depends: R (>= 4.3.0),
-    pathfindR.data (>= 2.0)
+    pathfindR.data (>= 2.2.0)
 Suggests: 
     org.Hs.eg.db,
-    testthat (>= 2.3.2),
+    testthat (>= 3.0.0),
     covr,
     mockery
 VignetteBuilder: knitr
-RoxygenNote: 8.0.0
 LinkingTo: 
     Rcpp
+Config/testthat/parallel: true
+Config/roxygen2/version: 8.0.0
