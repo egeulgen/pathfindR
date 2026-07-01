@@ -34,7 +34,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pathfindR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.0.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.0.1.9001</span>
       </span>
     </div>
 
@@ -107,7 +107,7 @@
       <h1 data-toc-skip>Introduction to pathfindR</h1>
                         <h4 data-toc-skip class="author">Ege Ulgen</h4>
             
-            <h4 data-toc-skip class="date">2026-06-29</h4>
+            <h4 data-toc-skip class="date">2026-07-01</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/egeulgen/pathfindR/blob/master/vignettes/intro_vignette.Rmd" class="external-link"><code>vignettes/intro_vignette.Rmd</code></a></small>
       <div class="hidden name"><code>intro_vignette.Rmd</code></div>
@@ -434,15 +434,15 @@ the rheumatoid arthritis gene-level differential expression input data
 <code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">example_pathfindR_output</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
-<col width="4%">
-<col width="19%">
+<col width="3%">
+<col width="15%">
 <col width="7%">
-<col width="5%">
 <col width="4%">
 <col width="4%">
+<col width="3%">
 <col width="4%">
-<col width="29%">
-<col width="22%">
+<col width="28%">
+<col width="27%">
 </colgroup>
 <thead><tr class="header">
 <th align="left">ID</th>
@@ -459,25 +459,26 @@ the rheumatoid arthritis gene-level differential expression input data
 <tr class="odd">
 <td align="left">hsa05415</td>
 <td align="left">Diabetic cardiomyopathy</td>
-<td align="right">3.333277</td>
+<td align="right">3.744993</td>
 <td align="right">10</td>
-<td align="right">0.0441272</td>
+<td align="right">0.0871034</td>
 <td align="right">0</td>
-<td align="right">0.0000000</td>
-<td align="left">NCF4, MMP9, NDUFA1, NDUFB3, UQCRQ, COX6A1, COX7A2,
-COX7C, GAPDH</td>
-<td align="left">ATP2A2, MTOR, PDHA1, PDHB, VDAC1, SLC25A5, PARP1</td>
+<td align="right">0.000000</td>
+<td align="left">NCF4, NDUFA1, NDUFB3, UQCRQ, COX6A1, COX7A2, COX7C,
+MMP9, GAPDH</td>
+<td align="left">SLC25A5, VDAC1, ATP2A2, MTOR, PDHA1, PDHB, PARP1</td>
 </tr>
 <tr class="even">
-<td align="left">hsa04130</td>
-<td align="left">SNARE interactions in vesicular transport</td>
-<td align="right">4.772647</td>
+<td align="left">hsa03082</td>
+<td align="left">ATP-dependent chromatin remodeling</td>
+<td align="right">4.213117</td>
 <td align="right">10</td>
-<td align="right">0.0142394</td>
+<td align="right">0.0245786</td>
 <td align="right">0</td>
-<td align="right">0.0036008</td>
-<td align="left">STX6</td>
-<td align="left">STX2, BET1L, SNAP23</td>
+<td align="right">0.000312</td>
+<td align="left"></td>
+<td align="left">ARID1A, SMARCA4, ACTB, ACTG1, BRD7, BRD9, HDAC1, EP400,
+TRRAP</td>
 </tr>
 </tbody>
 </table>
@@ -599,23 +600,21 @@ clusters and returns a data frame with cluster assignments.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## First 2 rows of clustered data frame</span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">example_pathfindR_output_clustered</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<table class="table">
+<table style="width:100%;" class="table">
 <colgroup>
-<col width="1%">
 <col width="3%">
-<col width="11%">
+<col width="14%">
 <col width="6%">
 <col width="4%">
 <col width="4%">
 <col width="3%">
 <col width="4%">
-<col width="27%">
-<col width="21%">
+<col width="25%">
+<col width="24%">
 <col width="3%">
 <col width="6%">
 </colgroup>
 <thead><tr class="header">
-<th align="left"></th>
 <th align="left">ID</th>
 <th align="left">Term_Description</th>
 <th align="right">Fold_Enrichment</th>
@@ -630,32 +629,30 @@ clusters and returns a data frame with cluster assignments.</p>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">1</td>
 <td align="left">hsa05415</td>
 <td align="left">Diabetic cardiomyopathy</td>
-<td align="right">3.333277</td>
+<td align="right">3.744993</td>
 <td align="right">10</td>
-<td align="right">0.0441272</td>
+<td align="right">0.0871034</td>
 <td align="right">0</td>
-<td align="right">0e+00</td>
-<td align="left">NCF4, MMP9, NDUFA1, NDUFB3, UQCRQ, COX6A1, COX7A2,
-COX7C, GAPDH</td>
-<td align="left">ATP2A2, MTOR, PDHA1, PDHB, VDAC1, SLC25A5, PARP1</td>
+<td align="right">0.000000</td>
+<td align="left">NCF4, NDUFA1, NDUFB3, UQCRQ, COX6A1, COX7A2, COX7C,
+MMP9, GAPDH</td>
+<td align="left">SLC25A5, VDAC1, ATP2A2, MTOR, PDHA1, PDHB, PARP1</td>
 <td align="right">1</td>
 <td align="left">Representative</td>
 </tr>
 <tr class="even">
-<td align="left">3</td>
-<td align="left">hsa00190</td>
-<td align="left">Oxidative phosphorylation</td>
-<td align="right">3.003128</td>
+<td align="left">hsa03082</td>
+<td align="left">ATP-dependent chromatin remodeling</td>
+<td align="right">4.213117</td>
 <td align="right">10</td>
-<td align="right">0.0213591</td>
+<td align="right">0.0245786</td>
 <td align="right">0</td>
-<td align="right">1e-07</td>
-<td align="left">NDUFA1, NDUFB3, UQCRQ, COX6A1, COX7A2, COX7C, ATP6V1D,
-ATP6V0E1</td>
-<td align="left">ATP6V0E2</td>
+<td align="right">0.000312</td>
+<td align="left"></td>
+<td align="left">ARID1A, SMARCA4, ACTB, ACTG1, BRD7, BRD9, HDAC1, EP400,
+TRRAP</td>
 <td align="right">1</td>
 <td align="left">Member</td>
 </tr>
@@ -668,15 +665,15 @@ ATP6V0E1</td>
 <colgroup>
 <col width="1%">
 <col width="3%">
-<col width="15%">
-<col width="5%">
+<col width="16%">
+<col width="6%">
+<col width="4%">
 <col width="3%">
 <col width="3%">
 <col width="3%">
+<col width="24%">
+<col width="24%">
 <col width="3%">
-<col width="22%">
-<col width="28%">
-<col width="2%">
 <col width="5%">
 </colgroup>
 <thead><tr class="header">
@@ -698,244 +695,142 @@ ATP6V0E1</td>
 <td align="left">1</td>
 <td align="left">hsa05415</td>
 <td align="left">Diabetic cardiomyopathy</td>
-<td align="right">3.333277</td>
+<td align="right">3.744993</td>
 <td align="right">10</td>
-<td align="right">0.0441272</td>
+<td align="right">0.0871034</td>
 <td align="right">0.0000000</td>
 <td align="right">0.0000000</td>
-<td align="left">NCF4, MMP9, NDUFA1, NDUFB3, UQCRQ, COX6A1, COX7A2,
-COX7C, GAPDH</td>
-<td align="left">ATP2A2, MTOR, PDHA1, PDHB, VDAC1, SLC25A5, PARP1</td>
+<td align="left">NCF4, NDUFA1, NDUFB3, UQCRQ, COX6A1, COX7A2, COX7C,
+MMP9, GAPDH</td>
+<td align="left">SLC25A5, VDAC1, ATP2A2, MTOR, PDHA1, PDHB, PARP1</td>
 <td align="right">1</td>
 <td align="left">Representative</td>
 </tr>
 <tr class="even">
-<td align="left">2</td>
+<td align="left">3</td>
 <td align="left">hsa04130</td>
 <td align="left">SNARE interactions in vesicular transport</td>
-<td align="right">4.772647</td>
+<td align="right">4.936581</td>
 <td align="right">10</td>
-<td align="right">0.0142394</td>
+<td align="right">0.0338571</td>
 <td align="right">0.0000000</td>
-<td align="right">0.0036008</td>
+<td align="right">0.0000000</td>
 <td align="left">STX6</td>
-<td align="left">STX2, BET1L, SNAP23</td>
+<td align="left">BET1L, SNAP23, STX2</td>
 <td align="right">2</td>
 <td align="left">Representative</td>
 </tr>
 <tr class="odd">
-<td align="left">5</td>
-<td align="left">hsa04714</td>
-<td align="left">Thermogenesis</td>
-<td align="right">2.563911</td>
+<td align="left">7</td>
+<td align="left">hsa03013</td>
+<td align="left">Nucleocytoplasmic transport</td>
+<td align="right">3.954058</td>
 <td align="right">10</td>
-<td align="right">0.0274995</td>
+<td align="right">0.0150067</td>
 <td align="right">0.0000000</td>
-<td align="right">0.0000026</td>
-<td align="left">NDUFA1, NDUFB3, UQCRQ, COX6A1, COX7A2, COX7C</td>
-<td align="left">ADCY7, CREB1, KDM1A, SMARCA4, ACTG1, ACTB, ARID1A,
-MTOR</td>
+<td align="right">0.0109558</td>
+<td align="left">NUP214</td>
+<td align="left">NUP62, NUP93, UBE2I, RANGAP1, SUMO3, EIF4A3, RNPS1,
+SRRM1, TNPO1</td>
 <td align="right">3</td>
 <td align="left">Representative</td>
 </tr>
 <tr class="even">
-<td align="left">9</td>
-<td align="left">hsa04921</td>
-<td align="left">Oxytocin signaling pathway</td>
-<td align="right">2.624956</td>
+<td align="left">12</td>
+<td align="left">hsa03083</td>
+<td align="left">Polycomb repressive complex</td>
+<td align="right">2.483341</td>
 <td align="right">10</td>
-<td align="right">0.0569575</td>
-<td align="right">0.0000001</td>
-<td align="right">0.0000001</td>
-<td align="left">MYL6B, MYL6</td>
-<td align="left">EEF2K, EEF2, CALM3, CALM1, NFATC3, ACTG1, ACTB,
-ADCY7</td>
+<td align="right">0.0079062</td>
+<td align="right">0.0000007</td>
+<td align="right">0.0495676</td>
+<td align="left">CBX3</td>
+<td align="left">PHF19, RING1, KDM2B, HDAC1</td>
 <td align="right">4</td>
 <td align="left">Representative</td>
 </tr>
 <tr class="odd">
-<td align="left">10</td>
-<td align="left">hsa04064</td>
-<td align="left">NF-kappa B signaling pathway</td>
-<td align="right">3.058201</td>
-<td align="right">10</td>
-<td align="right">0.0413279</td>
-<td align="right">0.0000002</td>
-<td align="right">0.0000002</td>
-<td align="left">LY96</td>
-<td align="left">PRKCQ, CARD11, TICAM1, IKBKB, PARP1, UBE2I,
-CSNK2A2</td>
+<td align="left">14</td>
+<td align="left">hsa00071</td>
+<td align="left">Fatty acid degradation</td>
+<td align="right">2.841404</td>
+<td align="right">1</td>
+<td align="right">0.0062893</td>
+<td align="right">0.0000034</td>
+<td align="right">0.0000034</td>
+<td align="left"></td>
+<td align="left">HADH, ECHS1, ALDH9A1</td>
 <td align="right">5</td>
 <td align="left">Representative</td>
 </tr>
 <tr class="even">
-<td align="left">11</td>
-<td align="left">hsa03040</td>
-<td align="left">Spliceosome</td>
-<td align="right">3.854831</td>
+<td align="left">18</td>
+<td align="left">hsa03430</td>
+<td align="left">Mismatch repair</td>
+<td align="right">5.312191</td>
 <td align="right">10</td>
-<td align="right">0.0150963</td>
-<td align="right">0.0000002</td>
-<td align="right">0.0000196</td>
-<td align="left">SF3B6, LSM3, BUD31</td>
-<td align="left">SNRPB, SF3B2, U2AF2, PUF60, SNU13, DDX23, EIF4A3,
-HNRNPA1, PCBP1, SRSF8, SRSF5</td>
+<td align="right">0.0232130</td>
+<td align="right">0.0000088</td>
+<td align="right">0.0002342</td>
+<td align="left"></td>
+<td align="left">MLH1, POLD2, RPA1</td>
 <td align="right">6</td>
 <td align="left">Representative</td>
 </tr>
 <tr class="odd">
-<td align="left">12</td>
-<td align="left">hsa03013</td>
-<td align="left">Nucleocytoplasmic transport</td>
-<td align="right">3.822751</td>
-<td align="right">10</td>
-<td align="right">0.0142394</td>
-<td align="right">0.0000006</td>
-<td align="right">0.0006419</td>
-<td align="left">NUP214</td>
-<td align="left">RANGAP1, UBE2I, SUMO3, NUP62, NUP93, TNPO1, EIF4A3,
-RNPS1, SRRM1</td>
-<td align="right">7</td>
-<td align="left">Representative</td>
-</tr>
-<tr class="even">
-<td align="left">18</td>
+<td align="left">23</td>
 <td align="left">hsa04141</td>
 <td align="left">Protein processing in endoplasmic reticulum</td>
-<td align="right">1.458309</td>
-<td align="right">10</td>
-<td align="right">0.0142394</td>
-<td align="right">0.0000165</td>
-<td align="right">0.0000165</td>
-<td align="left">CKAP4, DDIT3</td>
-<td align="left">DDOST, EDEM1, PDIA4, UBE2G1</td>
-<td align="right">8</td>
-<td align="left">Representative</td>
-</tr>
-<tr class="odd">
-<td align="left">34</td>
-<td align="left">hsa00020</td>
-<td align="left">Citrate cycle (TCA cycle)</td>
-<td align="right">3.937434</td>
-<td align="right">10</td>
-<td align="right">0.0137498</td>
-<td align="right">0.0001922</td>
-<td align="right">0.0013467</td>
-<td align="left"></td>
-<td align="left">MDH2, PDHA1, PDHB</td>
-<td align="right">9</td>
-<td align="left">Representative</td>
-</tr>
-<tr class="even">
-<td align="left">37</td>
-<td align="left">hsa04110</td>
-<td align="left">Cell cycle</td>
-<td align="right">1.550171</td>
-<td align="right">10</td>
-<td align="right">0.0206246</td>
-<td align="right">0.0002953</td>
-<td align="right">0.0004008</td>
-<td align="left"></td>
-<td align="left">RBL2, ABL1, HDAC1, CDKN1C, ANAPC1</td>
-<td align="right">10</td>
-<td align="left">Representative</td>
-</tr>
-<tr class="odd">
-<td align="left">45</td>
-<td align="left">hsa03010</td>
-<td align="left">Ribosome</td>
-<td align="right">1.837469</td>
-<td align="right">10</td>
-<td align="right">0.0068749</td>
-<td align="right">0.0005741</td>
-<td align="right">0.0005741</td>
-<td align="left">MRPS18C, RPS24, MRPL33, RPL26, RPL31, RPL39</td>
-<td align="left">RPLP2</td>
-<td align="right">11</td>
+<td align="right">1.480974</td>
+<td align="right">7</td>
+<td align="right">0.0065359</td>
+<td align="right">0.0000170</td>
+<td align="right">0.0153838</td>
+<td align="left">DDIT3, CKAP4</td>
+<td align="left">DDOST, EDEM1, UBE2G1, PDIA4</td>
+<td align="right">7</td>
 <td align="left">Representative</td>
 </tr>
 <tr class="even">
 <td align="left">46</td>
 <td align="left">hsa03050</td>
 <td align="left">Proteasome</td>
-<td align="right">1.749971</td>
+<td align="right">1.810080</td>
 <td align="right">10</td>
-<td align="right">0.0075481</td>
-<td align="right">0.0006684</td>
-<td align="right">0.0018936</td>
+<td align="right">0.0180547</td>
+<td align="right">0.0006553</td>
+<td align="right">0.0025872</td>
 <td align="left"></td>
 <td align="left">PSMD7, PSMB10</td>
-<td align="right">12</td>
+<td align="right">8</td>
 <td align="left">Representative</td>
 </tr>
 <tr class="odd">
-<td align="left">50</td>
-<td align="left">hsa03022</td>
-<td align="left">Basal transcription factors</td>
-<td align="right">4.374927</td>
-<td align="right">4</td>
-<td align="right">0.0056694</td>
-<td align="right">0.0008495</td>
-<td align="right">0.0059660</td>
-<td align="left">GTF2B, GTF2H5</td>
-<td align="left">TAF1L, TAF4, TAF15</td>
-<td align="right">13</td>
-<td align="left">Representative</td>
-</tr>
-<tr class="even">
-<td align="left">67</td>
-<td align="left">hsa03460</td>
-<td align="left">Fanconi anemia pathway</td>
-<td align="right">2.410674</td>
-<td align="right">7</td>
-<td align="right">0.0062893</td>
-<td align="right">0.0034174</td>
-<td align="right">0.0034174</td>
-<td align="left"></td>
-<td align="left">TELO2, MLH1, RPA1</td>
-<td align="right">14</td>
-<td align="left">Representative</td>
-</tr>
-<tr class="odd">
-<td align="left">89</td>
-<td align="left">hsa00330</td>
-<td align="left">Arginine and proline metabolism</td>
-<td align="right">4.921793</td>
-<td align="right">7</td>
-<td align="right">0.0062893</td>
-<td align="right">0.0157779</td>
-<td align="right">0.0469727</td>
-<td align="left">ARG1</td>
-<td align="left">CKB, ALDH9A1, CNDP2, PYCR2, GOT1</td>
-<td align="right">15</td>
-<td align="left">Representative</td>
-</tr>
-<tr class="even">
-<td align="left">100</td>
-<td align="left">hsa00062</td>
-<td align="left">Fatty acid elongation</td>
-<td align="right">3.423856</td>
+<td align="left">124</td>
+<td align="left">hsa03010</td>
+<td align="left">Ribosome</td>
+<td align="right">1.770730</td>
 <td align="right">1</td>
-<td align="right">0.0055249</td>
-<td align="right">0.0244440</td>
-<td align="right">0.0244440</td>
-<td align="left"></td>
-<td align="left">HADH, ECHS1</td>
-<td align="right">16</td>
+<td align="right">0.0063694</td>
+<td align="right">0.0279007</td>
+<td align="right">0.0279007</td>
+<td align="left">RPL26, RPL39, RPL31, MRPL33, MRPS18C, RPS24</td>
+<td align="left">MRPL49, RPLP2</td>
+<td align="right">9</td>
 <td align="left">Representative</td>
 </tr>
-<tr class="odd">
-<td align="left">107</td>
-<td align="left">hsa03060</td>
-<td align="left">Protein export</td>
-<td align="right">1.789743</td>
-<td align="right">3</td>
-<td align="right">0.0055249</td>
-<td align="right">0.0300181</td>
-<td align="right">0.0300181</td>
+<tr class="even">
+<td align="left">134</td>
+<td align="left">hsa00052</td>
+<td align="left">Galactose metabolism</td>
+<td align="right">1.357560</td>
+<td align="right">4</td>
+<td align="right">0.0075034</td>
+<td align="right">0.0426637</td>
+<td align="right">0.0426637</td>
+<td align="left">HK3</td>
 <td align="left"></td>
-<td align="left">SRP54</td>
-<td align="right">17</td>
+<td align="right">10</td>
 <td align="left">Representative</td>
 </tr>
 </tbody>
@@ -1114,17 +1009,17 @@ sets:</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">example_custom_genesets_result</span><span class="op">)</span></span></code></pre></div>
-<table class="table">
+<table style="width:100%;" class="table">
 <colgroup>
 <col width="1%">
 <col width="4%">
 <col width="4%">
-<col width="2%">
-<col width="2%">
-<col width="2%">
-<col width="2%">
-<col width="76%">
 <col width="3%">
+<col width="2%">
+<col width="2%">
+<col width="2%">
+<col width="74%">
+<col width="4%">
 </colgroup>
 <thead><tr class="header">
 <th align="left">ID</th>
@@ -1141,28 +1036,28 @@ sets:</p>
 <tr class="odd">
 <td align="left">TF2</td>
 <td align="left">MYC target genes</td>
-<td align="right">18.61325</td>
+<td align="right">18.61497</td>
 <td align="right">1</td>
-<td align="right">0.9435484</td>
-<td align="right">0.00e+00</td>
-<td align="right">0.00e+00</td>
-<td align="left">ACVR2B, ADAMTS19, ARL3, BEX1, C9orf139, CCDC6, CEP57,
-CNNM1, CNPY3, COL25A1, DEPDC7, DZIP1, EBNA1BP2, EIF3A, ELOVL5, FAM117A,
-FKBP5, HPCA, HSP90AB1, KCNQ5, KLF11, LCLAT1, MMP23B, MNT, NEK6, OPRD1,
-PFN1, POGK, REEP3, SAMD12, SLC24A4, SMC3, TBL1X, TESK2, TFB2M, TIMM8A,
-USP2, WDR77, XPO5, ZBTB11, ZCWPW1</td>
+<td align="right">0.6822917</td>
+<td align="right">0.0e+00</td>
+<td align="right">0.0e+00</td>
+<td align="left">ADPRHL1, AEN, ANKRD13B, ATP6V1C1, BMP2, CCNYL1, CFL1,
+CNNM1, DOHH, FAM76B, FGF11, FHOD1, FLT3, GAPDH, GNAS, GNB2, HEBP2, ILF3,
+JOSD1, JPH1, KCNQ5, LHX9, MAP7, NEURL2, POP1, PPP1R3C, REEP3, RELB,
+SLC12A6, SLC39A11, SNTB2, TBL1Y, TIMM9, TMUB1, TSC1, TUBA4A, USP36,
+ZBTB11</td>
 <td align="left"></td>
 </tr>
 <tr class="even">
 <td align="left">TF1</td>
 <td align="left">CREB target genes</td>
-<td align="right">21.08612</td>
+<td align="right">20.73646</td>
 <td align="right">1</td>
-<td align="right">0.2177419</td>
-<td align="right">1.16e-05</td>
-<td align="right">1.16e-05</td>
-<td align="left">ADAP1, ELOVL5, HAS1, HSP90AB1, ID1, NOL4, PLK4, PNMA3,
-SCAMP5, SNAP25, ZBTB11, ZNF687</td>
+<td align="right">0.1406250</td>
+<td align="right">2.7e-06</td>
+<td align="right">2.7e-06</td>
+<td align="left">CDS1, DHX36, GPBP1, IRF2BPL, MBIP, PPP2R2A, RCAN1,
+RELB, RUNDC3A, THOC1, ZBTB11</td>
 <td align="left"></td>
 </tr>
 </tbody>
