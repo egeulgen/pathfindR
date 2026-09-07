@@ -46,9 +46,11 @@ import(pathfindR.data)
 import(rmarkdown)
 importFrom(Rcpp,sourceCpp)
 importFrom(ggkegg,pathway)
-importFrom(httr,GET)
-importFrom(httr,content)
-importFrom(httr,http_error)
-importFrom(httr,status_code)
-importFrom(httr,timeout)
+importFrom(httr,
+  GET,
+  content,
+  http_error,
+  status_code,
+  timeout
+)
 useDynLib(pathfindR, .registration = TRUE)

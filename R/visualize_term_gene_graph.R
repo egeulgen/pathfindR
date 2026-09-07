@@ -9,7 +9,7 @@
 #' }
 #' @param genes_df (optional) the input data that was used with \code{\link{run_pathfindR}} (default: \code{NULL}).
 #'   It must be a data frame with at least 2 columns: \enumerate{
-#'   \item Gene.Symbol (required)
+#'   \item Gene.symbol (required)
 #'   \item logFC (required)
 #' }
 #' @param order_by Argument to order the `result_df`, this influences the `num_terms` displayed (default: \code{'lowest_p'}).
@@ -21,6 +21,7 @@
 #'  (in the 'Term_Description' column) should be used. (default: \code{FALSE})
 #' @param use_edge_weights Boolean argument to indicate whether genes are weighted by their term interactions, similar to an Up-Set plot but in graph context (default = \code{FALSE}).
 #'  or the -log10(lowest p value) ('p_val') for adjusting the term node sizes (default: \code{'num_genes'})
+#' @param ... additional arguments for \code{\link{input_processing}} (used if \code{genes_df} is provided).
 #' @return A \link[igraph]{igraph} object
 #'
 #' @details
@@ -73,7 +74,8 @@ create_term_gene_graph <- function(
   term_fill = NULL,
   num_terms = 10,
   use_description = FALSE,
-  use_edge_weights = FALSE
+  use_edge_weights = FALSE,
+  ...
 ) {
   ## Error handling
   #--------------------------------------------------------------------#
@@ -101,6 +103,7 @@ create_term_gene_graph <- function(
         collapse = " "
       ))
     }
+    genes_df <- input_processing(input = genes_df, ...)
   }
 
   result_df <- order_df_by_columnn(result_df, order_by)
@@ -159,7 +162,7 @@ create_term_gene_graph <- function(
       x = graph_df,
       y = genes_df,
       by.x = "Gene",
-      by.y = "Gene.symbol",
+      by.y = "GENE",
       all = TRUE
     )
     graph_df <- graph_df[!is.na(graph_df$Term), ]
@@ -182,13 +185,13 @@ create_term_gene_graph <- function(
     # store logFC only for gene nodes
     #-----------------------------------------------------
     gene_names <- igraph::V(g)$name[cond_gene]
-    gene_logFC <- graph_df$logFC[match(gene_names, graph_df$Gene)]
+    gene_CHANGE <- graph_df$CHANGE[match(gene_names, graph_df$Gene)]
 
     # Create a full-length vector with NA for term nodes
     #-----------------------------------------------------
-    logFC_full <- rep(NA_real_, igraph::vcount(g))
-    suppressWarnings(logFC_full[cond_gene] <- gene_logFC)
-    igraph::V(g)$logFC <- logFC_full
+    CHANGE_full <- rep(NA_real_, igraph::vcount(g))
+    suppressWarnings(CHANGE_full[cond_gene] <- gene_CHANGE)
+    igraph::V(g)$logFC <- CHANGE_full
   } else {
     up_genes <- lapply(result_df$Up_regulated, function(x) unlist(strsplit(x, ", ")))
     up_genes <- unlist(up_genes)
