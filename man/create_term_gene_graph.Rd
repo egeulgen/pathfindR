@@ -12,7 +12,8 @@ create_term_gene_graph(
   term_fill = NULL,
   num_terms = 10,
   use_description = FALSE,
-  use_edge_weights = FALSE
+  use_edge_weights = FALSE,
+  ...
 )
 }
 \arguments{
@@ -26,7 +27,7 @@ create_term_gene_graph(
 
 \item{genes_df}{(optional) the input data that was used with \code{\link{run_pathfindR}} (default: \code{NULL}).
   It must be a data frame with at least 2 columns: \enumerate{
-  \item Gene.Symbol (required)
+  \item Gene.symbol (required)
   \item logFC (required)
 }}
 
@@ -44,6 +45,8 @@ all enriched terms (default = 10, i.e. top 10 terms)}
 
 \item{use_edge_weights}{Boolean argument to indicate whether genes are weighted by their term interactions, similar to an Up-Set plot but in graph context (default = \code{FALSE}).
 or the -log10(lowest p value) ('p_val') for adjusting the term node sizes (default: \code{'num_genes'})}
+
+\item{...}{additional arguments for \code{\link{input_processing}} (used if \code{genes_df} is provided).}
 }
 \value{
 A \link[igraph]{igraph} object
